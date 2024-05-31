@@ -12,12 +12,16 @@
 		"tauri": "tauri"
 	},
 	"dependencies": {
+<<<<<<< HEAD
 		"@tauri-apps/api": ">=2.0.0-beta.12",
+=======
+		"@tauri-apps/api": ">=2.0.0-beta.13",
+>>>>>>> b417d2f392cb2e3fcf18ba5a2dfd3756ecfbac07
 		"@tauri-apps/plugin-shell": ">=2.0.0-beta.6",
 		"solid-js": "1.8.17"
 	},
 	"devDependencies": {
-		"@tauri-apps/cli": ">=2.0.0-beta.0",
+		"@tauri-apps/cli": ">=2.0.0-beta.20",
 		"internal-ip": "8.0.0",
 		"typescript": "5.4.5",
 		"vite": "5.2.12",
