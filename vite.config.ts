@@ -1,3 +1,4 @@
+// @ts-expect-error
 const Mobile = !!/android|ios/.exec(process.env.TAURI_ENV_PLATFORM);
 
 export default (await import("vite")).defineConfig({
