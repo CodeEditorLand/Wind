@@ -1,20 +1,17 @@
-import { internalIpV4 } from "internal-ip";
-import { defineConfig } from "vite";
-import solid from "vite-plugin-solid";
+const Mobile = !!/android|ios/.exec(process.env.TAURI_ENV_PLATFORM);
 
-const mobile = !!/android|ios/.exec(process.env.TAURI_ENV_PLATFORM);
-
-export default defineConfig(async () => ({
-	plugins: [solid()],
+export default (await import("vite")).defineConfig(async () => ({
+	publicDir: "Public",
+	plugins: [(await import("vite-plugin-solid")).default()],
 	clearScreen: false,
 	server: {
 		port: 1420,
 		strictPort: true,
-		host: mobile ? "0.0.0.0" : false,
-		hmr: mobile
+		host: Mobile ? "0.0.0.0" : false,
+		hmr: Mobile
 			? {
 					protocol: "ws",
-					host: await internalIpV4(),
+					host: await (await import("internal-ip")).internalIpV4(),
 					port: 1421,
 				}
 			: undefined,
