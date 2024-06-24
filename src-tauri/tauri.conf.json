@@ -30,7 +30,7 @@
 			"pattern": {
 				"use": "isolation",
 				"options": {
-					"dir": "../.astro/"
+					"dir": "../Target/"
 				}
 			}
 		}
