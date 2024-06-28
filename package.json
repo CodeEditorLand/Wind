@@ -1,24 +1,15 @@
 {
-	"name": "interface",
+	"name": "@codeeditorland/water",
 	"version": "0.0.0",
 	"license": "MIT",
 	"type": "module",
 	"scripts": {
-		"prepublishOnly": "vite build",
-		"Start": "vite",
-		"tauri": "tauri"
+		"prepublishOnly": "Build 'Source/**/*.ts' ; Build 'Source/**/*.tsx'"
 	},
 	"dependencies": {
-		"@tauri-apps/api": "2.0.0-beta.13",
-		"@tauri-apps/plugin-shell": "2.0.0-beta.6",
 		"solid-js": "1.8.17"
 	},
 	"devDependencies": {
-		"@playform/build": "0.0.11",
-		"@tauri-apps/cli": "2.0.0-beta.20",
-		"internal-ip": "8.0.0",
-		"typescript": "5.5.2",
-		"vite": "5.3.2",
-		"vite-plugin-solid": "2.10.2"
+		"@playform/build": "0.0.11"
 	}
 }
