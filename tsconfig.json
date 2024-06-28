@@ -7,5 +7,5 @@
 		"outDir": "Target"
 	},
 	"extends": "@playform/build/tsconfig",
-	"include": ["Source", "vite.config.ts"]
+	"include": ["Source"]
 }
