@@ -1,3 +1,7 @@
+/**
+ * @module Action
+ * @
+ */
 export const _Function = (await import("solid-js")).createContext({
 	Editors: (await import("@Context/Action/Editors")).default,
 }) satisfies Type;

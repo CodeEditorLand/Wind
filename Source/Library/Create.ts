@@ -1,3 +1,7 @@
+/**
+ * @module Create
+ *
+ */
 export default (async (
 	...[[Store, [Item, _Item]], Value = null]: Parameters<Interface>
 ) => {
