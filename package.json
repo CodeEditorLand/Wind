@@ -16,6 +16,7 @@
 		"@typescript-eslint/parser": "7.14.1",
 		"monaco-editor": "0.50.0",
 		"monaco-themes": "0.4.4",
+		"solid-devtools": "0.30.1",
 		"solid-js": "1.8.18",
 		"store": "2.0.12",
 		"tippy.js": "6.3.7",
