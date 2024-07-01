@@ -1,4 +1,6 @@
 /**
+ * @module Pad
+ *
  * The Pad function takes a string, a desired length, and an optional padding character,
  * and returns a new string with the original string padded to the desired length.
  *
