@@ -28,12 +28,10 @@ export default async <T>([[Item, _Item], Store]: Property<T>): Promise<
 	return [Store, [Item, _Item]];
 };
 
-import type Interface from "../Interface/Persist.js";
-
 import type { Signal } from "solid-js";
 
 export const { default: Local } = await import("store");
 
-export type Property<T> = [Signal<T>, Interface];
+export type Property<T> = [Signal<T>, string];
 
-export type Return<T> = [Interface, Signal<T>];
+export type Return<T> = [string, Signal<T>];
