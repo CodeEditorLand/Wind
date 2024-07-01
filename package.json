@@ -7,7 +7,10 @@
 		"prepublishOnly": "Build 'Source/**/*.{ts,tsx}'"
 	},
 	"dependencies": {
-		"solid-js": "1.8.18"
+		"monaco-editor": "0.50.0",
+		"solid-js": "1.8.18",
+		"tippy.js": "6.3.7",
+		"zod": "3.23.8"
 	},
 	"devDependencies": {
 		"@playform/build": "0.0.11"

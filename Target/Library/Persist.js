@@ -1,0 +1,1 @@
+var o=async([[t,r],e])=>((await import("solid-js")).createEffect((await import("solid-js")).on(t,async a=>i.set(e,JSON.stringify((await import("@codeeditorland/common/Target/Function/Put.js")).default(a))),{defer:!1})),[e,[t,r]]);const{default:i}=await import("store");export{i as Local,o as default};
