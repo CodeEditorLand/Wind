@@ -237,41 +237,6 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 					{(Field, Property) => (
 						<div class="w-full">
 							<div class="Editor">
-								{Type === "HTML" ? (
-									<p class="Help">
-										Available variables are:&nbsp;&nbsp;
-										<Tip>
-											{/* biome-ignore lint/a11y/useKeyWithClickEvents: */}
-											<kbd onClick={Copy}>
-												<span>{"{"}</span>
-												Cover
-												<span>{"}"}</span>
-											</kbd>
-										</Tip>
-										,&nbsp;
-										<Tip>
-											{/* biome-ignore lint/a11y/useKeyWithClickEvents: */}
-											<kbd onClick={Copy}>
-												<span>{"{"}</span>
-												Artist
-												<span>{"}"}</span>
-											</kbd>
-										</Tip>
-										&nbsp;and&nbsp;
-										<Tip>
-											{/* biome-ignore lint/a11y/useKeyWithClickEvents: */}
-											<kbd onClick={Copy}>
-												<span>{"{"}</span>
-												Song
-												<span>{"}"}</span>
-											</kbd>
-										</Tip>
-										.
-									</p>
-								) : (
-									""
-								)}
-
 								<code ref={Code} class="Monaco" />
 
 								{Field.error && (
@@ -310,67 +275,6 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 						<input type="hidden" {...Property} value={Type} />
 					)}
 				</Field>
-
-				<div class="Action grid grid-flow-col items-center justify-items-center gap-x-2">
-					<div class="grid grid-flow-col items-center justify-items-center">
-						<Button Type="submit">
-							<picture>
-								<source
-									media="(prefers-color-scheme: light)"
-									srcset={`${LightUpdate.src}`}
-								/>
-								<source
-									media="(prefers-color-scheme: dark)"
-									srcset={`${DarkUpdate.src}`}
-								/>
-								<img
-									alt="Update"
-									src={LightUpdate.src}
-									class="Icon pr-3"
-								/>
-							</picture>
-
-							<span>Update</span>
-						</Button>
-						<Button
-							Type="reset"
-							Action={() => {
-								Instance.getModel()?.setValue(Content[0]());
-
-								Instance.getAction(
-									"editor.action.formatDocument",
-								)?.run();
-							}}>
-							<picture>
-								<source
-									srcset={`${LightReset.src}`}
-									media="(prefers-color-scheme: light)"
-								/>
-								<source
-									media="(prefers-color-scheme: dark)"
-									srcset={`${DarkReset.src}`}
-								/>
-								<img
-									alt="Reset"
-									src={LightReset.src}
-									class="Icon"
-								/>
-							</picture>
-							&nbsp;&nbsp;&nbsp;
-							<span>Reset</span>
-						</Button>
-						<Button
-							Action={() => {
-								Instance.getModel()?.setValue(Return(Type));
-
-								Instance.getAction(
-									"editor.action.formatDocument",
-								)?.run();
-							}}>
-							<span>Default</span>
-						</Button>
-					</div>
-				</div>
 			</Form>
 		</div>
 	);
@@ -412,18 +316,6 @@ export const Update: SubmitHandler<Type> = ({ Content, Field }, Event) => {
 	}
 };
 
-export const { default: DarkReset } = await import(
-	"@Asset/Image/DarkReset.svg"
-);
-export const { default: DarkUpdate } = await import(
-	"@Asset/Image/DarkUpdate.svg"
-);
-export const { default: LightReset } = await import(
-	"@Asset/Image/LightReset.svg"
-);
-export const { default: LightUpdate } = await import(
-	"@Asset/Image/LightUpdate.svg"
-);
 export const { default: Action } = await import("@Context/Action/Context");
 export const { default: Connection } = await import(
 	"@Context/Connection/Context"
