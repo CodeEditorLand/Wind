@@ -1,1 +1,1 @@
-import{For as s,Show as i}from"solid-js";var m=({Of:r,rel:t,type:o,crossorigin:n})=>React.createElement(s,{each:r},e=>React.createElement(i,{when:e},e&&React.createElement("link",{type:o??"text/css",rel:t??"preconnect",crossorigin:n??"anonymous",href:e})));export{m as default};
+import{For as S,Show as F}from"solid-js";var J=({Of:r,rel:t,type:o,crossorigin:n})=><S each={r}>{e=><F when={e}>{e&&<link type={o??"text/css"}rel={t??"preconnect"}crossorigin={n??"anonymous"}href={e}/>}</F>}</S>;export{J as default};
