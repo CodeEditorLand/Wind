@@ -12,10 +12,6 @@ export type Type = {
 };
 export declare const Return: (Type: Editor["Type"]) => any;
 export declare const Update: SubmitHandler<Type>;
-export declare const DarkReset: any;
-export declare const DarkUpdate: any;
-export declare const LightReset: any;
-export declare const LightUpdate: any;
 export declare const Action: {
     Editors: Type;
 };
