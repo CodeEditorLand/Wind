@@ -78,7 +78,7 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 					? "Dark"
 					: "Light",
 				wrappingStrategy: "advanced",
-				wordWrap: "on",
+				word: "on",
 				bracketPairColorization: {
 					enabled: true,
 					independentColorPoolPerBracketType: true,
@@ -288,13 +288,30 @@ export type Type = {
 export const Return = (Type: Editor["Type"]) => {
 	switch (Type) {
 		case "CSS":
-			return CSS;
+			return `
+/* Example CSS Code */
+body {
+
+}			
+`;
 
 		case "HTML":
-			return HTML;
+			return `
+<!-- Example HTML Code -->
+<!doctype html>
+<html lang="en">
+	<body>
+	</body>
+</html>
+`;
 
 		case "TypeScript":
-			return TypeScript;
+			return `
+/**
+ * Example TypeScript Code
+ */
+export default () => ({});
+`;
 
 		default:
 			return "";
@@ -304,15 +321,16 @@ export const Return = (Type: Editor["Type"]) => {
 // @TODO: If a user logs out then logs in again, the keys are persisted in local storage, however the Access Token is no longer valid, they will either roll keys or renew. If they renew no problem. If they roll keys, their HTML gets reset.
 export const Update: SubmitHandler<Type> = ({ Content, Field }, Event) => {
 	if (Event) {
-		Event.preventDefault(),
-			Connection.Socket[0]()?.send(
-				JSON.stringify({
-					Key: Store.Items[0]()?.get("Key")?.[0](),
-					Identifier: Store.Items[0]()?.get("Identifier")?.[0](),
-					To: Field,
-					Input: Content,
-				}),
-			);
+		Event.preventDefault();
+
+		Connection.Socket[0]()?.send(
+			JSON.stringify({
+				Key: Store.Items[0]()?.get("Key")?.[0](),
+				Identifier: Store.Items[0]()?.get("Identifier")?.[0](),
+				To: Field,
+				Input: Content,
+			}),
+		);
 	}
 };
 
@@ -325,15 +343,7 @@ export const { default: Store } = await import("@Context/Store/Context");
 export const { default: Anchor } = await import("@Element/Anchor");
 export const { default: Button } = await import("@Element/Button");
 export const { default: Tip, Fn: Copy } = await import("@Element/Tip/Copy");
-export const { default: Merge } = await import("@Library/Merge");
-export const { default: Wrap } = await import("@Library/Wrap");
-export const { default: CSS } = await import("@Option/Edit/Theme/Default/CSS");
-export const { default: HTML } = await import(
-	"@Option/Edit/Theme/Default/HTML"
-);
-export const { default: TypeScript } = await import(
-	"@Option/Edit/Theme/Default/TypeScript"
-);
+export const { default: Merge } = await import("@Function/Merge.js");
 
 import {
 	clearError,
