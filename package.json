@@ -1,23 +1,23 @@
 {
-	"name": "@codeeditorland/water",
+	"name": "@codeeditorland/wind",
 	"version": "0.0.0",
 	"private": false,
-	"description": "💧 Water —",
+	"description": "🌬️ Wind —",
 	"keywords": [
 		"typescript",
 		"solid",
 		"monaco",
-		"water",
+		"wind",
 		"codeeditorland",
 		"playform"
 	],
-	"homepage": "HTTPS://GitHub.Com/CodeEditorLand/Water#readme",
+	"homepage": "HTTPS://GitHub.Com/CodeEditorLand/Wind#readme",
 	"bugs": {
-		"url": "HTTPS://GitHub.Com/CodeEditorLand/Water/issues"
+		"url": "HTTPS://GitHub.Com/CodeEditorLand/Wind/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/CodeEditorLand/Water.git"
+		"url": "git+https://github.com/CodeEditorLand/Wind.git"
 	},
 	"license": "SEE LICENSE IN LICENSE",
 	"author": {
