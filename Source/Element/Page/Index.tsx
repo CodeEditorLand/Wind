@@ -3,7 +3,7 @@ import type { Type as Environment } from "@Library/Environment";
 import { Suspense, lazy } from "solid-js";
 
 const Action = lazy(() => import("@Context/Action"));
-const Connection = lazy(() => import("@Context/Connection"));
+const Connection = lazy(() => import("@Context/Connection.js"));
 const Edit = lazy(() => import("@Element/Editor"));
 const _Environment = lazy(() => import("@Context/Environment"));
 const Session = lazy(() => import("@Context/Session"));
@@ -38,6 +38,9 @@ export default (Data: Environment) => (
 																		</Suspense>
 																		<Suspense>
 																			<Edit Type="CSS" />
+																		</Suspense>
+																		<Suspense>
+																			<Edit Type="TypeScript" />
 																		</Suspense>
 																	</Action>
 																</Suspense>

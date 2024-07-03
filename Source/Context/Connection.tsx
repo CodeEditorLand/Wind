@@ -1,5 +1,6 @@
 export default async ({ children }: { children?: JSX.Element }) => {
 	const { createEffect, on } = await import("solid-js");
+
 	const { default: Connection, _Function } = await import(
 		"@Context/Connection/Context.js"
 	);
