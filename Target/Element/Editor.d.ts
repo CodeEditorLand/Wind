@@ -10,7 +10,7 @@ export type Type = {
     Field: Editor["Type"];
     Content: string;
 };
-export declare const Return: (Type: Editor["Type"]) => any;
+export declare const Return: (Type: Editor["Type"]) => "" | "\n/* Example CSS Code */\nbody {\n\n}\t\t\t\n" | "\n<!-- Example HTML Code -->\n<!doctype html>\n<html lang=\"en\">\n\t<body>\n\t</body>\n</html>\n" | "\n/**\n * Example TypeScript Code\n */\nexport default () => ({});\n";
 export declare const Update: SubmitHandler<Type>;
 export declare const Action: {
     Editors: Type;
@@ -37,11 +37,7 @@ export declare const Tip: ({ children, }: {
 }) => Promise<import("solid-js").JSX.Element>, Copy: (Event: MouseEvent & {
     currentTarget: HTMLElement;
 }) => void;
-export declare const Merge: any;
-export declare const Wrap: any;
-export declare const CSS: any;
-export declare const HTML: any;
-export declare const TypeScript: any;
+export declare const Merge: <Ts extends readonly unknown[]>(...objects: Ts) => import("deepmerge-ts").DeepMergeHKT<Ts, import("deepmerge-ts").GetDeepMergeFunctionsURIs<{}>, import("deepmerge-ts").DeepMergeBuiltInMetaData>;
 import type Editor from "@Context/Action/Editor";
 import type { SubmitHandler } from "@modular-forms/solid";
 import "@Stylesheet/Element/Action.scss";
