@@ -20,7 +20,7 @@ export const Fn = (
 	}
 };
 
-export default async ({
+export default ({
 	children,
 }: {
 	// biome-ignore lint/suspicious/noExplicitAny:
@@ -29,6 +29,8 @@ export default async ({
 	<Tip
 		Content="Copy to clipboard."
 		onHidden={(Instance) => Instance.setContent("Copy to clipboard.")}>
-		{(await import("solid-js")).children(() => children)}
+		{children(() => children)}
 	</Tip>
 );
+
+export const { children } = await import("solid-js");

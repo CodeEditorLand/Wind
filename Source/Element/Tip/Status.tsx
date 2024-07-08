@@ -15,8 +15,8 @@ export type Property = {
 	ClassButton?: string | (() => string);
 };
 
-export default async (Property: Property) => {
-	const { Class, ClassButton } = (await import("@Function/Merge.js")).default(
+export default (Property: Property) => {
+	const { Class, ClassButton } = Merge(
 		{
 			Class: "",
 			ClassButton: "",
@@ -86,3 +86,5 @@ export default async (Property: Property) => {
 		</Tip>
 	);
 };
+
+export const { default: Merge } = await import("@Function/Merge.js");

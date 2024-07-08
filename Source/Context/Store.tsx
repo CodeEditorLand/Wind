@@ -1,4 +1,4 @@
-export default async ({
+export default ({
 	children,
 	Data,
 }: {
