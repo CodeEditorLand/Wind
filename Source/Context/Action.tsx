@@ -1,20 +1,41 @@
-import type { JSX } from "solid-js";
+self.MonacoEnvironment = {
+	createTrustedTypesPolicy: () => undefined,
+	getWorker: async (_WorkerID, Label) => {
+		switch (Label) {
+			case "css":
+				return new (
+					await import(
+						// @ts-expect-error
+						"monaco-editor/esm/vs/language/css/css.worker.js?worker"
+					)
+				).default();
 
-import { _Function } from "@Context/Action/Context";
-import "@Script/Monaco";
-import Light from "@Script/Monaco/Theme/Active4D.json";
-import Dark from "@Script/Monaco/Theme/Amoled.json";
+			case "html":
+				return new (
+					await import(
+						// @ts-expect-error
+						"monaco-editor/esm/vs/language/html/html.worker.js?worker"
+					)
+				).default();
 
-import { editor as Monaco } from "monaco-editor";
+			case "typescript":
+				return new (
+					await import(
+						// @ts-expect-error
+						"monaco-editor/esm/vs/language/typescript/ts.worker.js?worker"
+					)
+				).default();
 
-Monaco.defineTheme("Light", Light as Monaco.IStandaloneThemeData);
-Monaco.defineTheme("Dark", Dark as Monaco.IStandaloneThemeData);
-
-window
-	.matchMedia("(prefers-color-scheme: dark)")
-	.addEventListener("change", ({ matches }) =>
-		Monaco.setTheme(matches ? "Dark" : "Light"),
-	);
+			default:
+				return new (
+					await import(
+						// @ts-expect-error
+						"monaco-editor/esm/vs/editor/editor.worker.js?worker"
+					)
+				).default();
+		}
+	},
+};
 
 export default ({ children }: { children?: JSX.Element }) => (
 	<_Function.Provider value={_Function.defaultValue}>
@@ -30,3 +51,34 @@ export default ({ children }: { children?: JSX.Element }) => (
 		{children}
 	</_Function.Provider>
 );
+
+// TODO: IMPORT AND SET ASYNC
+export const { editor: Monaco, languages } = await import("monaco-editor");
+
+languages.typescript.typescriptDefaults.setEagerModelSync(true);
+
+Monaco.defineTheme(
+	"Light",
+	(await import("@Script/Monaco/Theme/Active4D.json"))
+		.default as editor.IStandaloneThemeData,
+);
+Monaco.defineTheme(
+	"Dark",
+	(await import("@Script/Monaco/Theme/Amoled.json"))
+		.default as editor.IStandaloneThemeData,
+);
+// TODO: END IMPORT AND SET ASYNC
+
+// TODO: WATCH THIS ASYNC
+window
+	.matchMedia("(prefers-color-scheme: dark)")
+	.addEventListener("change", ({ matches }) =>
+		Monaco.setTheme(matches ? "Dark" : "Light"),
+	);
+// TODO: END WATCH THIS ASYNC
+
+export const { _Function } = await import("@Context/Action/Context");
+
+import type { editor } from "monaco-editor";
+
+import type { JSX } from "solid-js";

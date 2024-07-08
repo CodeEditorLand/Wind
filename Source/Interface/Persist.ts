@@ -7,7 +7,7 @@ export default interface Interface {
 	 * The `Persist` function takes an item and a store, and saves the item to the store
 	 * using Local Storage, while also returning the store and the item as a signal.
 	 *
-	 * // @TODO: Properly document
+	 * TODO: Properly document
 	 * @param  A signal representing the item to be persisted.
 	 *
 	 */

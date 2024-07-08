@@ -318,7 +318,7 @@ export default () => ({});
 	}
 };
 
-// @TODO: If a user logs out then logs in again, the keys are persisted in local storage, however the Access Token is no longer valid, they will either roll keys or renew. If they renew no problem. If they roll keys, their HTML gets reset.
+// TODO: If a user logs out then logs in again, the keys are persisted in local storage, however the Access Token is no longer valid, they will either roll keys or renew. If they renew no problem. If they roll keys, their HTML gets reset.
 export const Update: SubmitHandler<Type> = ({ Content, Field }, Event) => {
 	if (Event) {
 		Event.preventDefault();
