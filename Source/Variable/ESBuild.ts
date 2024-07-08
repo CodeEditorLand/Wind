@@ -46,6 +46,7 @@ export default {
 				},
 			],
 		}),
+		(await import("esbuild-plugin-solid")).solidPlugin(),
 	],
 } satisfies BuildOptions as BuildOptions;
 

@@ -44,5 +44,6 @@ export default {
                 },
             ],
         }),
+        (await import("esbuild-plugin-solid")).solidPlugin(),
     ],
 };

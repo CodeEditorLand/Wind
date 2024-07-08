@@ -1,1 +1,1 @@
-import o,{_Function as t}from"./Environment/Context.js";var i=({children:r,Data:e})=>o.Data[1](e)&&createComponent(t.Provider,{value:t.defaultValue},r);export{i as default};
+import{createComponent as o}from"solid-js/web";import n,{_Function as e}from"./Environment/Context.js";var i=({children:t,Data:r})=>n.Data[1](r)&&o(e.Provider,{get value(){return e.defaultValue},children:t});export{i as default};
