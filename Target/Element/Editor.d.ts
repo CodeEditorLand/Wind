@@ -4,7 +4,7 @@
  */
 declare const _default: ({ Type }?: {
     Type: Editor["Type"];
-}) => import("solid-js").JSX.Element;
+}) => Promise<import("solid-js").JSX.Element>;
 export default _default;
 export type Type = {
     Field: Editor["Type"];

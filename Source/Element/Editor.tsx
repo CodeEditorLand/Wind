@@ -2,7 +2,7 @@
  * @module Editor
  *
  */
-export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
+export default async ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 	const [Edit, { Form, Field }] = createForm<Type>();
 
 	const Identifier = crypto.randomUUID();
