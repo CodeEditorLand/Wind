@@ -33,10 +33,16 @@ export default {
         },
         (await import("esbuild-plugin-copy")).copy({
             resolveFrom: "out",
-            assets: {
-                from: ["./Source/Script/Monaco/Theme/*.json"],
-                to: ["./Script/Monaco/Theme/"],
-            },
+            assets: [
+                {
+                    from: ["./Source/Script/Monaco/Theme/*.json"],
+                    to: ["./Script/Monaco/Theme/"],
+                },
+                {
+                    from: ["./Source/Stylesheet/**/*.scss"],
+                    to: ["./Stylesheet/"],
+                },
+            ],
         }),
     ],
 };
