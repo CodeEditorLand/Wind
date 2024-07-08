@@ -27,7 +27,7 @@
 	},
 	"type": "module",
 	"scripts": {
-		"prepublishOnly": "Build 'Source/**/*.{ts,tsx}'"
+		"prepublishOnly": "Build 'Source/**/*.{ts,tsx}' --ESBuild Source/Variable/ESBuild.ts"
 	},
 	"dependencies": {
 		"@codeeditorland/common": "0.0.6",
@@ -47,6 +47,7 @@
 		"zod": "3.23.8"
 	},
 	"devDependencies": {
-		"@playform/build": "0.0.11"
+		"@playform/build": "0.0.11",
+		"esbuild-plugin-copy": "2.1.1"
 	}
 }

@@ -5,6 +5,6 @@ import { createSignal } from "solid-js";
 
 export default Create(
 	Persist([createSignal(new Map([])), "Session"]),
-) satisfies Interface as Interface;
+) satisfies Interface;
 
 import type Interface from "../../Interface/Create.js";

@@ -2,12 +2,12 @@ import type { Type as Environment } from "@Library/Environment";
 
 import { Suspense, lazy } from "solid-js";
 
-const Action = lazy(() => import("@Context/Action"));
+const Action = lazy(() => import("@Context/Action.js"));
 const Connection = lazy(() => import("@Context/Connection.js"));
-const Edit = lazy(() => import("@Element/Editor"));
-const _Environment = lazy(() => import("@Context/Environment"));
-const Session = lazy(() => import("@Context/Session"));
-const Store = lazy(() => import("@Context/Store"));
+const Edit = lazy(() => import("@Element/Editor.js"));
+const _Environment = lazy(() => import("@Context/Environment.js"));
+const Session = lazy(() => import("@Context/Session.js"));
+const Store = lazy(() => import("@Context/Store.js"));
 
 export default (Data: Environment) => (
 	<Suspense>

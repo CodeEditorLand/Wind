@@ -25,10 +25,10 @@ export declare const Connection: {
     States: Type;
 };
 export declare const Session: {
-    Data: import("../Interface/Create").default;
+    Data: Promise<[import("solid-js").Accessor<unknown>, import("solid-js").Setter<unknown>]>;
 };
 export declare const Store: {
-    Items: import("../Interface/Items").Type;
+    Items: import("solid-js").Signal<Map<import("../Interface/Create").default, import("../Context/Store/Item").Type>>;
 };
 export declare const Anchor: (Property: import("@Element/Anchor").Property) => import("solid-js").JSX.Element;
 export declare const Button: (Property: import("@Element/Button").Property) => Promise<import("solid-js").JSX.Element>;

@@ -10,7 +10,7 @@ export default async ({
 
 		const Search = Current.searchParams.get(Name);
 
-		const Item: Item = (await import("@Library/Create")).default(
+		const Item: Item = (await import("@Library/Create.js")).default(
 			(await import("@Library/Persist")).default([
 				(await import("solid-js")).createSignal(""),
 				Name,

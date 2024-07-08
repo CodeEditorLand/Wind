@@ -4,9 +4,9 @@ export type Type = Context<{
     Data: Data;
 }>;
 export declare const _Function: Context<{
-    Data: import("../../Interface/Create.js").default;
+    Data: Promise<[import("solid-js").Accessor<unknown>, import("solid-js").Setter<unknown>]>;
 }>;
 declare const _default: {
-    Data: import("../../Interface/Create.js").default;
+    Data: Promise<[import("solid-js").Accessor<unknown>, import("solid-js").Setter<unknown>]>;
 };
 export default _default;

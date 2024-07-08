@@ -5,6 +5,6 @@ import { createSignal } from "solid-js";
 
 export default createSignal(
 	new Map<Into, Item>(),
-) satisfies Interface as Interface;
+) satisfies Interface;
 
 import type Interface from "../../Interface/Items.js";

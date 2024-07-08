@@ -18,7 +18,7 @@ export default (async (
 	_Item(Value ?? Existing);
 
 	return [Item, _Item];
-}) satisfies Interface as Interface;
+}) satisfies Interface;
 
 import type Interface from "../Interface/Create.js";
 
