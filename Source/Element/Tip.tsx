@@ -2,8 +2,8 @@ import type { Concrete } from "@Element/Button";
 
 import type { Instance } from "tippy.js";
 
-import "@Script/Tippy/Style/Theme/BorderDark.scss";
-import "@Script/Tippy/Style/Theme/BorderLight.scss";
+import "@Stylesheet/Element/Tippy/Dark.scss";
+import "@Stylesheet/Element/Tippy/Light.scss";
 
 import "tippy.js/animations/shift-away.css";
 import "tippy.js/dist/tippy.css";

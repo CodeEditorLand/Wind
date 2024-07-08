@@ -1,4 +1,5 @@
-import Merge from "@Library/Merge";
+import Merge from "@Function/Merge.js";
+
 import "@Stylesheet/Element/Anchor.scss";
 
 import { children as Show } from "solid-js";

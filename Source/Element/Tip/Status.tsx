@@ -4,8 +4,8 @@ import Connection from "@Context/Connection/Context";
 import Button from "@Element/Button";
 import Tip from "@Element/Tip";
 
-import "@Script/Tippy/Style/Theme/BorderDark.scss";
-import "@Script/Tippy/Style/Theme/BorderLight.scss";
+import "@Stylesheet/Element/Tippy/Dark.scss";
+import "@Stylesheet/Element/Tippy/Light.scss";
 
 import "tippy.js/animations/shift-away.css";
 import "tippy.js/dist/tippy.css";
