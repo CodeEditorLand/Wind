@@ -361,6 +361,3 @@ import { For, createEffect, createSignal, on } from "solid-js";
 import type Editor from "@Context/Action/Editor";
 
 import type { SubmitHandler } from "@modular-forms/solid";
-
-import "@Stylesheet/Element/Action.scss";
-import "@Stylesheet/Element/Editor.scss";

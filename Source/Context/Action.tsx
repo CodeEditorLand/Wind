@@ -2,13 +2,13 @@ import type { JSX } from "solid-js";
 
 import { _Function } from "@Context/Action/Context";
 import "@Script/Monaco";
-import LightTheme from "@Script/Monaco/Theme/Active4D.json";
-import DarkTheme from "@Script/Monaco/Theme/Amoled.json";
+import Light from "@Script/Monaco/Theme/Active4D.json";
+import Dark from "@Script/Monaco/Theme/Amoled.json";
 
 import { editor as Monaco } from "monaco-editor";
 
-Monaco.defineTheme("Light", LightTheme as Monaco.IStandaloneThemeData);
-Monaco.defineTheme("Dark", DarkTheme as Monaco.IStandaloneThemeData);
+Monaco.defineTheme("Light", Light as Monaco.IStandaloneThemeData);
+Monaco.defineTheme("Dark", Dark as Monaco.IStandaloneThemeData);
 
 window
 	.matchMedia("(prefers-color-scheme: dark)")

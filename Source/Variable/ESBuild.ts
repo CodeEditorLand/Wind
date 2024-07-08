@@ -37,19 +37,10 @@ export default {
 			resolveFrom: "out",
 			assets: {
 				from: ["./Source/Script/Monaco/Theme/*.json"],
-				to: ["./tmp-assets"],
+				to: ["./Script/Monaco/Theme/"],
 			},
-		}),
+			}),
 	],
-	define: {
-		"process.env.VERSION_PACKAGE": `'${
-			(
-				await (
-					await import("../Function/JSON.js")
-				).default("package.json")
-			)?.version
-		}'`,
-	},
 } satisfies BuildOptions as BuildOptions;
 
 import type { BuildOptions } from "esbuild";
