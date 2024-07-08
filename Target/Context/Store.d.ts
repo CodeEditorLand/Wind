@@ -1,7 +1,7 @@
 declare const _default: ({ children, Data, }: {
     children: JSX.Element;
     Data?: Map<Kind, Into>;
-}) => Promise<JSX.Element>;
+}) => JSX.Element;
 export default _default;
 export declare const _Function: import("solid-js").Context<{
     Items: import("solid-js").Signal<Map<import("../Interface/Create").default, Item>>;

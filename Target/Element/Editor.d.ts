@@ -34,7 +34,7 @@ export declare const Anchor: (Property: import("@Element/Anchor").Property) => i
 export declare const Button: (Property: import("@Element/Button").Property) => import("solid-js").JSX.Element;
 export declare const Tip: ({ children, }: {
     children?: any;
-}) => Promise<import("solid-js").JSX.Element>, Copy: (Event: MouseEvent & {
+}) => import("solid-js").JSX.Element, Copy: (Event: MouseEvent & {
     currentTarget: HTMLElement;
 }) => void;
 export declare const Merge: <Ts extends readonly unknown[]>(...objects: Ts) => import("deepmerge-ts").DeepMergeHKT<Ts, import("deepmerge-ts").GetDeepMergeFunctionsURIs<{}>, import("deepmerge-ts").DeepMergeBuiltInMetaData>;
