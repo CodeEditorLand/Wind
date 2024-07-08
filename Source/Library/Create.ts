@@ -2,7 +2,7 @@
  * @module Create
  *
  */
-export default ((
+export default (
 	...[[Store, [Item, _Item]], Value = null]: Parameters<Interface>
 ) => {
 	let Existing = get(Store);
@@ -16,7 +16,7 @@ export default ((
 	_Item(Value ?? Existing);
 
 	return [Item, _Item];
-}) ;
+};
 
 import type Interface from "../Interface/Create.js";
 
