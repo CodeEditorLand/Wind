@@ -46,7 +46,12 @@ export default {
 				},
 			],
 		}),
-		(await import("esbuild-plugin-solid")).solidPlugin(),
+		(await import("esbuild-plugin-solid")).solidPlugin({
+			solid: {
+				hydratable: true,
+				builtIns: [],
+			},
+		}),
 	],
 } satisfies BuildOptions as BuildOptions;
 
