@@ -16,7 +16,7 @@ export default ((
 	_Item(Value ?? Existing);
 
 	return [Item, _Item];
-}) satisfies Interface;
+}) ;
 
 import type Interface from "../Interface/Create.js";
 

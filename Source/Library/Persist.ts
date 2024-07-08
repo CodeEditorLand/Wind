@@ -2,11 +2,9 @@
  * @module Persist
  *
  */
-export default <T>([[Item, _Item], Store]: Property<T>): Promise<
-	Return<T>
-> => {
-	(await import("solid-js")).createEffect(
-		(await import("solid-js")).on(
+export default <T>([[Item, _Item], Store]: Property<T>): Return<T> => {
+	createEffect(
+		on(
 			Item,
 			async (Item) =>
 				Local.set(
@@ -35,3 +33,5 @@ export const { default: Local } = await import("store");
 export type Property<T> = [Signal<T>, string];
 
 export type Return<T> = [string, Signal<T>];
+
+export const { createEffect, on } = await import("solid-js");
