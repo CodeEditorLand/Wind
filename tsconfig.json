@@ -4,7 +4,9 @@
 		"jsx": "preserve",
 		"jsxImportSource": "solid-js",
 		"lib": ["DOM", "DOM.Iterable", "ESNext"],
-		"outDir": "Target"
+		"outDir": "Target",
+		"jsxFactory": "h",
+		"jsxFragmentFactory": "Fragment"
 	},
 	"extends": "@playform/build/tsconfig",
 	"include": ["Source"]
