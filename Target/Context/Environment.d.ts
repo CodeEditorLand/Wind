@@ -3,5 +3,5 @@ import type { JSX } from "solid-js";
 declare const _default: ({ children, Data }: {
     children?: JSX.Element;
     Data: Data;
-}) => any;
+}) => unknown;
 export default _default;

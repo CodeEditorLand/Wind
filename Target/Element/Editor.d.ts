@@ -25,7 +25,7 @@ export declare const Connection: {
     States: Type;
 };
 export declare const Session: {
-    Data: [import("solid-js").Accessor<unknown>, import("solid-js").Setter<unknown>];
+    Data: import("solid-js").Accessor<unknown>[];
 };
 export declare const Store: {
     Items: import("solid-js").Signal<Map<import("../Interface/Create").default, import("../Context/Store/Item").Type>>;

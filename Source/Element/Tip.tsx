@@ -25,10 +25,8 @@ export type Property = {
 	Class?: string | (() => string);
 };
 
-export default async (Property: Property) => {
-	const { children, Content, Class, onMount, onHidden } = (
-		await import("@Function/Merge.js")
-	).default(
+export default (Property: Property) => {
+	const { children, Content, Class, onMount, onHidden } = Merge(
 		{
 			children: "",
 			Content: "",
@@ -39,31 +37,32 @@ export default async (Property: Property) => {
 
 	let Fn!: Tip;
 
-	(await import("solid-js")).onMount(
-		async () =>
-			(await import("tippy.js")).default(Fn, {
-				content: Content ?? "",
-				arrow: false,
-				inertia: false,
-				animation: "shift-away",
-				theme: window.matchMedia("(prefers-color-scheme: dark)").matches
-					? "dark-border"
-					: "light-border",
-				hideOnClick: false,
-				onMount: (instance) =>
-					window
-						.matchMedia("(prefers-color-scheme: dark)")
-						.addEventListener("change", ({ matches }) =>
-							instance.setProps({
-								theme: matches ? "dark-border" : "light-border",
-							}),
-						),
-				offset: [0, 5],
-				placement: "bottom",
-				interactive: true,
-				onHidden: (Instance) => onHidden?.(Instance),
-			}) && onMount?.(Fn),
-	);
+	SonMount(() => {
+		Tippy(Fn, {
+			content: Content ?? "",
+			arrow: false,
+			inertia: false,
+			animation: "shift-away",
+			theme: window.matchMedia("(prefers-color-scheme: dark)").matches
+				? "dark-border"
+				: "light-border",
+			hideOnClick: false,
+			onMount: (instance) =>
+				window
+					.matchMedia("(prefers-color-scheme: dark)")
+					.addEventListener("change", ({ matches }) =>
+						instance.setProps({
+							theme: matches ? "dark-border" : "light-border",
+						}),
+					),
+			offset: [0, 5],
+			placement: "bottom",
+			interactive: true,
+			onHidden: (Instance) => onHidden?.(Instance),
+		});
+
+		return onMount?.(Fn);
+	});
 
 	return (
 		<div
@@ -71,7 +70,18 @@ export default async (Property: Property) => {
 				typeof Class === "function" ? Class() : Class
 			}`.trim()}
 			ref={Fn}>
-			{(await import("solid-js")).children(() => children)()}
+			{children(() => children)()}
 		</div>
 	);
 };
+
+export const { default: Merge } = await import("@Function/Merge.js");
+
+export const { default: Tippy } = await import("tippy.js");
+
+export const {
+	createEffect,
+	on,
+	children,
+	onMount: SonMount,
+} = await import("solid-js");
