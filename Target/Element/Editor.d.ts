@@ -40,3 +40,5 @@ export declare const Tip: ({ children, }: {
 export declare const Merge: <Ts extends readonly unknown[]>(...objects: Ts) => import("deepmerge-ts").DeepMergeHKT<Ts, import("deepmerge-ts").GetDeepMergeFunctionsURIs<{}>, import("deepmerge-ts").DeepMergeBuiltInMetaData>;
 import type Editor from "@Context/Action/Editor";
 import type { SubmitHandler } from "@modular-forms/solid";
+import "@Stylesheet/Element/Action.scss";
+import "@Stylesheet/Element/Editor.scss";
