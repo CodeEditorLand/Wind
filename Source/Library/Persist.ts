@@ -2,7 +2,7 @@
  * @module Persist
  *
  */
-export default async <T>([[Item, _Item], Store]: Property<T>): Promise<
+export default <T>([[Item, _Item], Store]: Property<T>): Promise<
 	Return<T>
 > => {
 	(await import("solid-js")).createEffect(

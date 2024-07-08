@@ -1,1 +1,1 @@
-var c=async(...[[t,[n,e]],o=null])=>{let r=a(t);try{r=(await import("@codeeditorland/common/Target/Function/Get.js")).default(JSON.parse(a(t)))}catch(s){console.log(s)}return e(o??r),[n,e]};const{get:a}=await import("store");export{c as default,a as get};
+var i=(...[[t,[o,e]],n=null])=>{let r=a(t);try{r=c(JSON.parse(a(t)))}catch(s){console.log(s)}return e(n??r),[o,e]};const{get:a}=await import("store"),{default:c}=await import("@codeeditorland/common/Target/Function/Get.js");export{c as Get,i as default,a as get};

@@ -4,9 +4,9 @@ export type Type = Context<{
     Data: Data;
 }>;
 export declare const _Function: Context<{
-    Data: Promise<[import("solid-js").Accessor<unknown>, import("solid-js").Setter<unknown>]>;
+    Data: [import("solid-js").Accessor<unknown>, import("solid-js").Setter<unknown>];
 }>;
 declare const _default: {
-    Data: Promise<[import("solid-js").Accessor<unknown>, import("solid-js").Setter<unknown>]>;
+    Data: [import("solid-js").Accessor<unknown>, import("solid-js").Setter<unknown>];
 };
 export default _default;

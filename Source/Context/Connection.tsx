@@ -1,10 +1,4 @@
-export default async ({ children }: { children?: JSX.Element }) => {
-	const { createEffect, on } = await import("solid-js");
-
-	const { default: Connection, _Function } = await import(
-		"@Context/Connection/Context.js"
-	);
-
+export default ({ children }: { children?: JSX.Element }) => {
 	createEffect(
 		on(
 			Connection.State,
@@ -43,3 +37,9 @@ export default async ({ children }: { children?: JSX.Element }) => {
 };
 
 import type { JSX } from "solid-js";
+
+export const { createEffect, on } = await import("solid-js");
+
+export const { default: Connection, _Function } = await import(
+	"@Context/Connection/Context.js"
+);

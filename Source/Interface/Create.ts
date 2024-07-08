@@ -18,7 +18,7 @@ export default interface Interface {
 		[Store, [Item, _Item]]: Property<T>,
 		// biome-ignore lint/suspicious/noExplicitAny:
 		Value: any,
-	): Promise<Return<T>>;
+	): Return<T>;
 }
 
 export type Property<T> = [string, Signal<T>];
