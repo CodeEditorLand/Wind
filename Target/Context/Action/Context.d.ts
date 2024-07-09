@@ -10,7 +10,7 @@ declare const _default: {
 };
 export default _default;
 import type { Context } from "solid-js";
-import type Editors from "../../Interface/Context/Editors.js";
+import type Editors from "@Interface/Context/Editors.js";
 export type Type = Context<{
     Editors: Editors;
 }>;
