@@ -46,7 +46,7 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 
 	Action.Editors[0]().set(Identifier, {
 		Type,
-		Hidden: Action.Editors[0]().size > 0 ? true : false,
+		Hidden: Action.Editors[0]().size > 0,
 		Content: Content[0](),
 	});
 
@@ -165,25 +165,13 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 					},
 				),
 			);
-
-			Connection.Socket[0]()?.send(
-				JSON.stringify({
-					Key: Store.Items[0]()?.get("Key")?.[0](),
-					Identifier: Store.Items[0]()?.get("Identifier")?.[0](),
-					From: "Content",
-					View: Type,
-				}),
-			);
 		}
 	});
 
 	return (
 		<div
 			class={
-				!Action.Editors[0]()?.get(Identifier)?.Hidden &&
-				Session.Data[0]()?.get("Name")
-					? ""
-					: "hidden"
+				Action.Editors[0]()?.get(Identifier)?.Hidden ? "hidden" : ""
 			}>
 			<p>
 				Edit your{" "}
@@ -195,9 +183,7 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 									Action.Editors[0]().forEach(
 										(_Editor, Identifier) => {
 											_Editor.Hidden =
-												Editor[0] === Identifier
-													? false
-													: true;
+												Editor[0] !== Identifier;
 
 											Action.Editors[1](
 												Merge(
@@ -323,14 +309,9 @@ export const Update: SubmitHandler<Type> = ({ Content, Field }, Event) => {
 	if (Event) {
 		Event.preventDefault();
 
-		Connection.Socket[0]()?.send(
-			JSON.stringify({
-				Key: Store.Items[0]()?.get("Key")?.[0](),
-				Identifier: Store.Items[0]()?.get("Identifier")?.[0](),
-				To: Field,
-				Input: Content,
-			}),
-		);
+		// TODO: Send data over to the @tauri-apps/api/event
+		console.log(Content);
+		console.log(Field);
 	}
 };
 
@@ -338,7 +319,6 @@ export const { default: Action } = await import("@Context/Action/Context");
 export const { default: Connection } = await import(
 	"@Context/Connection/Context"
 );
-export const { default: Session } = await import("@Context/Session/Context");
 export const { default: Store } = await import("@Context/Store/Context");
 export const { default: Anchor } = await import("@Element/Anchor");
 export const { default: Button } = await import("@Element/Button");

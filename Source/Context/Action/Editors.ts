@@ -8,3 +8,5 @@ export default (await import("@Library/Create.js")).default(
 		"Editors",
 	]),
 ) satisfies Type;
+
+import { Type } from "@Interface/Context/Editors";

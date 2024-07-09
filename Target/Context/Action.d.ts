@@ -4,7 +4,7 @@ declare const _default: ({ children }: {
 export default _default;
 export declare const Monaco: typeof editor, languages: typeof import("monaco-editor").languages;
 export declare const _Function: import("solid-js").Context<{
-    Editors: Type;
+    Editors: import("solid-js").Accessor<unknown>[];
 }>;
 import type { editor } from "monaco-editor";
 import type { JSX } from "solid-js";

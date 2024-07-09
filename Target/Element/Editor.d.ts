@@ -13,19 +13,10 @@ export type Type = {
 export declare const Return: (Type: Editor["Type"]) => "" | "\n/* Example CSS Code */\nbody {\n\n}\t\t\t\n" | "\n<!-- Example HTML Code -->\n<!doctype html>\n<html lang=\"en\">\n\t<body>\n\t</body>\n</html>\n" | "\n/**\n * Example TypeScript Code\n */\nexport default () => ({});\n";
 export declare const Update: SubmitHandler<Type>;
 export declare const Action: {
-    Editors: Type;
+    Editors: import("solid-js").Accessor<unknown>[];
 };
 export declare const Connection: {
     Messages: import("solid-js").Signal<import("../Context/Connection/Message").Type>;
-    Socket: import("solid-js").Signal<WebSocket & {
-        reconnect: () => void;
-    }>;
-    State: import("solid-js").Accessor<0 | 2 | 1 | 3>;
-    Status: import("solid-js").Signal<Type>;
-    States: Type;
-};
-export declare const Session: {
-    Data: import("solid-js").Accessor<unknown>[];
 };
 export declare const Store: {
     Items: import("solid-js").Signal<Map<import("../Interface/Create").default, import("../Context/Store/Item").Type>>;

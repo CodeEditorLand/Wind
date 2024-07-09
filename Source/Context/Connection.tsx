@@ -1,33 +1,17 @@
 export default ({ children }: { children?: JSX.Element }) => {
-	createEffect(
-		on(
-			Connection.State,
-			(State) => Connection.Status[1](Connection.States[State]),
-			{
-				defer: false,
-			},
-		),
-	);
-
-	createEffect(
-		on(
-			Connection.Socket[0],
-			(WebSocket) =>
-				WebSocket?.addEventListener("message", async (Message) =>
-					Connection.Messages[1](
-						(await import("@Function/Merge.js")).default(
-							Connection.Messages[0](),
-							await (
-								await import(
-									"@codeeditorland/common/Target/Function/Get.js"
-								)
-							).default(JSON.parse(Message.data)),
-						),
-					),
-				),
-			{ defer: false },
-		),
-	);
+	// TODO: LISTEN TO CHANGES FROM @tauri-apps/api/event
+	// (await import('@tauri-apps/api/event')).listen?.addEventListener("message", async (Message) =>
+	// 	Connection.Messages[1](
+	// 		(await import("@Function/Merge.js")).default(
+	// 			Connection.Messages[0](),
+	// 			await (
+	// 				await import(
+	// 					"@codeeditorland/common/Target/Function/Get.js"
+	// 				)
+	// 			).default(JSON.parse(Message.data)),
+	// 		),
+	// 	),
+	// );
 
 	return (
 		<_Function.Provider value={_Function.defaultValue}>

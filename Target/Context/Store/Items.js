@@ -1,1 +1,1 @@
-import{createSignal as e}from"solid-js";var r=e(new Map);export{r as default};
+var t=(await import("solid-js")).createSignal(new Map);export{t as default};

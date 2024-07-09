@@ -1,1 +1,0 @@
-import{createComponent as o}from"solid-js/web";import n,{_Function as e}from"./Environment/Context.js";var i=({children:t,Data:r})=>n.Data[1](r)&&o(e.Provider,{get value(){return e.defaultValue},children:t});export{i as default};

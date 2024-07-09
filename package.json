@@ -32,8 +32,6 @@
 	"dependencies": {
 		"@codeeditorland/common": "0.0.6",
 		"@modular-forms/solid": "0.22.1",
-		"@solid-primitives/event-listener": "2.3.3",
-		"@solid-primitives/websocket": "1.2.2",
 		"@types/store": "2.0.5",
 		"@typescript-eslint/eslint-plugin": "7.16.0",
 		"@typescript-eslint/parser": "7.16.0",

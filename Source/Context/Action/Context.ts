@@ -11,7 +11,7 @@ export default (await import("solid-js")).useContext(_Function);
 
 import type { Context } from "solid-js";
 
-import type Editors from "../../Interface/Context/Editors.js";
+import type Editors from "@Interface/Context/Editors.js";
 
 export type Type = Context<{
 	Editors: Editors;

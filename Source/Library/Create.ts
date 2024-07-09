@@ -18,7 +18,7 @@ export default (
 	return [Item, _Item];
 };
 
-import type Interface from "../Interface/Create.js";
+import type Interface from "@Interface/Create.js";
 
 export const { get } = await import("store");
 
