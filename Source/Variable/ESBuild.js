@@ -13,6 +13,7 @@ export default {
     target: "esnext",
     tsconfig: "tsconfig.json",
     write: true,
+    jsxSideEffects: true,
     plugins: [
         {
             name: "Target",
