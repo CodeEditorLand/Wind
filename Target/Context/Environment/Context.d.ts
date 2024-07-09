@@ -1,4 +1,4 @@
-import type { Type as Data } from "@Context/Environment/Data";
+import type { Type as Data } from "../Environment/Data.js";
 import type { Context } from "solid-js";
 export type Type = Context<{
     Data: Data;

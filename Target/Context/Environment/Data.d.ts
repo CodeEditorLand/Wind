@@ -1,4 +1,4 @@
-import type { _Function } from "@Library/Environment";
+import type { _Function } from "../../Library/Environment.js";
 import type { Signal } from "solid-js";
 import type { z } from "zod";
 export type Type = Signal<z.infer<Exclude<typeof _Function, boolean>>>;
