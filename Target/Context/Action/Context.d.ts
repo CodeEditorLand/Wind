@@ -3,11 +3,11 @@
  *
  */
 export declare const _Function: Context<{
-    Editors: import("solid-js").Accessor<unknown>[];
-}>;
+    Editors: Editors;
+} | undefined>;
 declare const _default: {
-    Editors: import("solid-js").Accessor<unknown>[];
-};
+    Editors: Editors;
+} | undefined;
 export default _default;
 import type { Context } from "solid-js";
 import type Editors from "@Interface/Context/Editors.js";
