@@ -7,48 +7,51 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 
 	const Identifier = crypto.randomUUID();
 
-	createEffect(
-		on(
-			Action.Editors[0],
-			(Editors) => {
-				setValue(
-					Edit,
-					"Content",
-					Editors.get(Identifier)?.Content ?? "",
-					{
-						shouldFocus: false,
-						shouldTouched: false,
-					},
-				);
+	// TODO: Uncomment
+	// createEffect(
+	// 	on(
+	// 		Action.Editors[0],
+	// 		(Editors) => {
+	// 			setValue(
+	// 				Edit,
+	// 				"Content",
+	// 				Editors.get(Identifier)?.Content ?? "",
+	// 				{
+	// 					shouldFocus: false,
+	// 					shouldTouched: false,
+	// 				},
+	// 			);
 
-				validate(Edit);
-			},
-			{ defer: false },
-		),
-	);
+	// 			validate(Edit);
+	// 		},
+	// 		{ defer: false },
+	// 	),
+	// );
 
 	const Content = createSignal(Return(Type));
 
-	createEffect(
-		on(
-			Connection.Messages[0],
-			(Messages) =>
-				Messages?.get("Type") && Content[1](Messages?.get("Type")),
-			{
-				defer: false,
-			},
-		),
-	);
+	// TODO: UNCOMMENT
+	// createEffect(
+	// 	on(
+	// 		Connection.Messages[0],
+	// 		(Messages) =>
+	// 			Messages?.get("Type") && Content[1](Messages?.get("Type")),
+	// 		{
+	// 			defer: false,
+	// 		},
+	// 	),
+	// );
 
 	let Code!: HTMLElement;
 
 	let Instance!: Monaco.IStandaloneCodeEditor;
 
-	Action.Editors[0]().set(Identifier, {
-		Type,
-		Hidden: Action.Editors[0]().size > 0,
-		Content: Content[0](),
-	});
+	// TODO: UNCOMMENT
+	// Action.Editors[0]().set(Identifier, {
+	// 	Type,
+	// 	Hidden: Action.Editors[0]().size > 0,
+	// 	Content: Content[0](),
+	// });
 
 	onMount(() => {
 		if (Code instanceof HTMLElement) {
@@ -78,7 +81,8 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 					? "Dark"
 					: "Light",
 				wrappingStrategy: "advanced",
-				word: "on",
+				// TODO: UNCOMMENT
+				// word: "on",
 				bracketPairColorization: {
 					enabled: true,
 					independentColorPoolPerBracketType: true,
@@ -118,26 +122,27 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 				}
 			});
 
-			Instance.getModel()?.onDidChangeContent(() => {
-				Action.Editors[1](
-					Merge(
-						Action.Editors[0](),
-						new Map([
-							[
-								Identifier,
-								{
-									Content:
-										Instance.getModel()?.getValue() ?? "",
-									Hidden:
-										Action.Editors[0]()?.get(Identifier)
-											?.Hidden ?? true,
-									Type,
-								},
-							],
-						]),
-					),
-				);
-			});
+			// TODO: UNCOMMENT
+			// Instance.getModel()?.onDidChangeContent(() => {
+			// 	Action.Editors[1](
+			// Merge(
+			// 			Action.Editors[0](),
+			// 			new Map([
+			// 				[
+			// 					Identifier,
+			// 					{
+			// 						Content:
+			// 							Instance.getModel()?.getValue() ?? "",
+			// 						Hidden:
+			// 							Action.Editors[0]()?.get(Identifier)
+			// 								?.Hidden ?? true,
+			// 						Type,
+			// 					},
+			// 				],
+			// 			]),
+			// 		),
+			// 	);
+			// });
 
 			Instance.onDidChangeModelLanguageConfiguration(() =>
 				Instance.getAction("editor.action.formatDocument")?.run(),
@@ -169,11 +174,12 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 	});
 
 	return (
-		<div
-			class={
-				Action.Editors[0]()?.get(Identifier)?.Hidden ? "hidden" : ""
-			}>
-			<p>
+		// TODO: UNCOMMENT
+		// class={
+		// 	Action.Editors[0]()?.get(Identifier)?.Hidden ? "hidden" : ""
+		// }
+		<div>
+			{/* // TODO: UNCOMMENT <p>
 				Edit your{" "}
 				<For each={Array.from(Action.Editors[0]().entries())}>
 					{(Editor, _Index) => (
@@ -186,7 +192,7 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 												Editor[0] !== Identifier;
 
 											Action.Editors[1](
-												Merge(
+												// Merge(
 													Action.Editors[0](),
 													new Map([
 														[Identifier, _Editor],
@@ -214,7 +220,7 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 				here:
 			</p>
 
-			<br />
+			<br /> */}
 
 			<Form method="post" onSubmit={Update}>
 				<Field
@@ -244,10 +250,11 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 
 								<input
 									{...Property}
-									value={
-										Action.Editors[0]()?.get(Identifier)
-											?.Content ?? ""
-									}
+									// TODO: UNCOMMENT
+									// value={
+									// 	Action.Editors[0]()?.get(Identifier)
+									// 		?.Content ?? ""
+									// }
 									type="hidden"
 									required={true}
 								/>
@@ -315,15 +322,20 @@ export const Update: SubmitHandler<Type> = ({ Content, Field }, Event) => {
 	}
 };
 
-export const { default: Action } = await import("@Context/Action/Context");
-export const { default: Connection } = await import(
-	"@Context/Connection/Context"
-);
-export const { default: Store } = await import("@Context/Store/Context");
-export const { default: Anchor } = await import("@Element/Anchor");
-export const { default: Button } = await import("@Element/Button");
-export const { default: Tip, Fn: Copy } = await import("@Element/Tip/Copy");
-export const { default: Merge } = await import("@Function/Merge.js");
+// TODO: UNCOMMENT
+// export const { default: Action } = await import("@Context/Action/Context");
+
+// TODO: UNCOMMENT
+// export const { default: Connection } = await import(
+// 	"@Context/Connection/Context"
+// );
+
+// TODO: UNCOMMENT
+// export const { default: Store } = await import("@Context/Store/Context");
+// export const { default: Anchor } = await import("@Element/Anchor");
+// export const { default: Button } = await import("@Element/Button");
+// export const { default: Tip, Fn: Copy } = await import("@Element/Tip/Copy");
+// // export const { default: Merge } = await import("@Function/Merge.js");
 
 import {
 	clearError,
