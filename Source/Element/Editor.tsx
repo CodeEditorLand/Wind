@@ -54,6 +54,7 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 	// });
 
 	onMount(() => {
+		console.log(this);
 		if (Code instanceof HTMLElement) {
 			Instance = Monaco.create(Code, {
 				value: Content[0](),
