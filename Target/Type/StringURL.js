@@ -1,1 +1,1 @@
-const { default: t } = await import("../Variable/StringURL.js");
+const{default:t}=await import("../Variable/StringURL.js");
