@@ -14,4 +14,14 @@ export type Concrete<Type> = {
 declare const _default: (Property: Property) => import("solid-js").JSX.Element;
 export default _default;
 export declare const children: typeof import("solid-js").children;
-export declare const Merge: <Ts extends readonly unknown[]>(...objects: Ts) => import("deepmerge-ts").DeepMergeHKT<Ts, import("deepmerge-ts").GetDeepMergeFunctionsURIs<{}>, import("deepmerge-ts").DeepMergeBuiltInMetaData>;
+export declare const Merge: <Ts extends readonly unknown[]>(...objects: Ts) => import("deepmerge-ts").DeepMergeHKT<Ts, Readonly<{
+    DeepMergeRecordsURI: "DeepMergeRecordsDefaultURI";
+    DeepMergeArraysURI: "DeepMergeArraysDefaultURI";
+    DeepMergeSetsURI: "DeepMergeSetsDefaultURI";
+    DeepMergeMapsURI: "DeepMergeMapsDefaultURI";
+    DeepMergeOthersURI: "DeepMergeLeafURI";
+    DeepMergeFilterValuesURI: "DeepMergeFilterValuesDefaultURI";
+}>, Readonly<{
+    key: PropertyKey;
+    parents: ReadonlyArray<Readonly<Record<PropertyKey, unknown>>>;
+}>>;
