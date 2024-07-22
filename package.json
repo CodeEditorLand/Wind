@@ -34,8 +34,8 @@
 		"@codeeditorland/common": "0.0.6",
 		"@modular-forms/solid": "0.22.1",
 		"@types/store": "2.0.5",
-		"@typescript-eslint/eslint-plugin": "8.0.0-alpha.47",
-		"@typescript-eslint/parser": "8.0.0-alpha.47",
+		
+		
 		"esbuild-plugin-solid": "0.6.0",
 		"monaco-editor": "0.51.0-dev-20240628",
 		"monaco-themes": "0.4.4",
