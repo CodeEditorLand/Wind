@@ -15,4 +15,4 @@ body {
  * Example TypeScript Code
  */
 export default () => ({});
-`;default:return""}},P=({Content:t,Field:o},a)=>{a&&(a.preventDefault(),console.log(t),console.log(o))};import{clearError as F,createForm as O,required as z,validate as I}from"@modular-forms/solid";import{editor as v}from"monaco-editor";import{onMount as A}from"solid-js";import{createEffect as H,createSignal as B,on as W}from"solid-js";import"@Stylesheet/Element/Action.scss";import"@Stylesheet/Element/Editor.scss";w(["click"]);export{T as Return,P as Update,X as default};
+`;default:return""}},P=({Content:t,Field:o},a)=>{a&&(a.preventDefault(),console.log(t),console.log(o))};import{clearError as F,createForm as O,required as z,validate as I}from"@modular-forms/solid";import{editor as v}from"monaco-editor";import{onMount as A}from"solid-js";import{createEffect as H,createSignal as B,on as W}from"solid-js";import"../Stylesheet/Element/Action.scss";import"../Stylesheet/Element/Editor.scss";w(["click"]);export{T as Return,P as Update,X as default};
