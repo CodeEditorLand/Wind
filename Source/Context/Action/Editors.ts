@@ -9,4 +9,4 @@ export default (await import("@Library/Create.js")).default(
 	]),
 ) satisfies Type;
 
-import { Type } from "@Interface/Context/Editors";
+import type { Type } from "@Interface/Context/Editors";

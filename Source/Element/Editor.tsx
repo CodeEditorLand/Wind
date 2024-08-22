@@ -342,14 +342,13 @@ import {
 	clearError,
 	createForm,
 	required,
-	setValue,
 	validate,
 } from "@modular-forms/solid";
 
 import { editor as Monaco } from "monaco-editor";
 import { onMount } from "solid-js";
 
-import { For, createEffect, createSignal, on } from "solid-js";
+import { createEffect, createSignal, on } from "solid-js";
 
 import type Editor from "@Context/Action/Editor";
 
