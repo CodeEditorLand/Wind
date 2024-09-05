@@ -1,3 +1,6 @@
+import type { editor } from "monaco-editor";
+import type { JSX } from "solid-js";
+
 self.MonacoEnvironment = {
 	createTrustedTypesPolicy: () => undefined,
 	getWorker: async (_WorkerID, Label) => {
@@ -6,7 +9,7 @@ self.MonacoEnvironment = {
 				return new (
 					await import(
 						// @ts-expect-error
-						"monaco-editor/esm/vs/language/css/css.worker.js?worker"
+						"monaco-editor/esm/vs/language/css/css.worker?worker"
 					)
 				).default();
 
@@ -14,7 +17,7 @@ self.MonacoEnvironment = {
 				return new (
 					await import(
 						// @ts-expect-error
-						"monaco-editor/esm/vs/language/html/html.worker.js?worker"
+						"monaco-editor/esm/vs/language/html/html.worker?worker"
 					)
 				).default();
 
@@ -22,7 +25,7 @@ self.MonacoEnvironment = {
 				return new (
 					await import(
 						// @ts-expect-error
-						"monaco-editor/esm/vs/language/typescript/ts.worker.js?worker"
+						"monaco-editor/esm/vs/language/typescript/ts.worker?worker"
 					)
 				).default();
 
@@ -30,7 +33,7 @@ self.MonacoEnvironment = {
 				return new (
 					await import(
 						// @ts-expect-error
-						"monaco-editor/esm/vs/editor/editor.worker.js?worker"
+						"monaco-editor/esm/vs/editor/editor.worker?worker"
 					)
 				).default();
 		}
@@ -48,6 +51,7 @@ export default ({ children }: { children?: JSX.Element }) => (
 			}}
 			href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400&display=swap"
 		/>
+
 		{children}
 	</_Function.Provider>
 );
@@ -62,6 +66,7 @@ Monaco.defineTheme(
 	(await import("@Script/Monaco/Theme/Active4D.json"))
 		.default as editor.IStandaloneThemeData,
 );
+
 Monaco.defineTheme(
 	"Dark",
 	(await import("@Script/Monaco/Theme/Amoled.json"))
@@ -78,7 +83,3 @@ window
 // TODO: END WATCH THIS ASYNC
 
 export const { _Function } = await import("@Context/Action/Context");
-
-import type { editor } from "monaco-editor";
-
-import type { JSX } from "solid-js";

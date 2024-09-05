@@ -1,3 +1,32 @@
+// TODO: UNCOMMENT
+// export const { default: Action } = await import("@Context/Action/Context");
+
+// TODO: UNCOMMENT
+// export const { default: Connection } = await import(
+// 	"@Context/Connection/Context"
+// );
+
+// TODO: UNCOMMENT
+// export const { default: Store } = await import("@Context/Store/Context");
+// export const { default: Anchor } = await import("@Element/Anchor");
+// export const { default: Button } = await import("@Element/Button");
+// export const { default: Tip, Fn: Copy } = await import("@Element/Tip/Copy");
+// // export const { default: Merge } = await import("@Function/Merge.js");
+
+import type Editor from "@Context/Action/Editor";
+import {
+	clearError,
+	createForm,
+	required,
+	validate,
+	type SubmitHandler,
+} from "@modular-forms/solid";
+import { editor as Monaco } from "monaco-editor";
+import { createEffect, createSignal, on, onCleanup, onMount } from "solid-js";
+
+import "@Stylesheet/Element/Action.scss";
+import "@Stylesheet/Element/Editor.scss";
+
 /**
  * @module Editor
  *
@@ -5,9 +34,9 @@
 export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 	const [Edit, { Form, Field }] = createForm<Type>();
 
-	const Identifier = crypto.randomUUID();
-
 	// TODO: Uncomment
+	// const Identifier = crypto.randomUUID();
+
 	// createEffect(
 	// 	on(
 	// 		Action.Editors[0],
@@ -54,7 +83,6 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 	// });
 
 	onMount(() => {
-		console.log(this);
 		if (Code instanceof HTMLElement) {
 			Instance = Monaco.create(Code, {
 				value: Content[0](),
@@ -174,6 +202,11 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 		}
 	});
 
+	onCleanup(() => {
+		console.log(Code);
+		console.log(2);
+	});
+
 	return (
 		// TODO: UNCOMMENT
 		// class={
@@ -222,6 +255,7 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 			</p>
 
 			<br /> */}
+
 
 			<Form method="post" onSubmit={Update}>
 				<Field
@@ -318,41 +352,7 @@ export const Update: SubmitHandler<Type> = ({ Content, Field }, Event) => {
 		Event.preventDefault();
 
 		// TODO: Send data over to the @tauri-apps/api/event
-		console.log(Content);
-		console.log(Field);
+		// console.log(Content);
+		// console.log(Field);
 	}
 };
-
-// TODO: UNCOMMENT
-// export const { default: Action } = await import("@Context/Action/Context");
-
-// TODO: UNCOMMENT
-// export const { default: Connection } = await import(
-// 	"@Context/Connection/Context"
-// );
-
-// TODO: UNCOMMENT
-// export const { default: Store } = await import("@Context/Store/Context");
-// export const { default: Anchor } = await import("@Element/Anchor");
-// export const { default: Button } = await import("@Element/Button");
-// export const { default: Tip, Fn: Copy } = await import("@Element/Tip/Copy");
-// // export const { default: Merge } = await import("@Function/Merge.js");
-
-import {
-	clearError,
-	createForm,
-	required,
-	validate,
-} from "@modular-forms/solid";
-
-import { editor as Monaco } from "monaco-editor";
-import { onMount } from "solid-js";
-
-import { createEffect, createSignal, on } from "solid-js";
-
-import type Editor from "@Context/Action/Editor";
-
-import type { SubmitHandler } from "@modular-forms/solid";
-
-import "@Stylesheet/Element/Action.scss";
-import "@Stylesheet/Element/Editor.scss";
