@@ -83,6 +83,8 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 	// });
 
 	onMount(() => {
+		console.log(Code);
+
 		if (Code instanceof HTMLElement) {
 			Instance = Monaco.create(Code, {
 				value: Content[0](),
@@ -255,7 +257,6 @@ export default ({ Type }: { Type: Editor["Type"] } = { Type: "HTML" }) => {
 			</p>
 
 			<br /> */}
-
 
 			<Form method="post" onSubmit={Update}>
 				<Field
