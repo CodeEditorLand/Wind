@@ -32,7 +32,7 @@
 	},
 	"dependencies": {
 		"@codeeditorland/common": "0.0.6",
-		"@modular-forms/solid": "0.22.1",
+		"@modular-forms/solid": "0.23.0",
 		"@types/store": "2.0.5",
 		"deepmerge-ts": "7.1.0",
 		"esbuild-plugin-solid": "0.6.0",
