@@ -39,7 +39,7 @@
 		"monaco-editor": "0.52.0",
 		"monaco-themes": "0.4.4",
 		"solid-devtools": "0.30.1",
-		"solid-js": "1.8.22",
+		"solid-js": "1.8.23",
 		"store": "2.0.12",
 		"tippy.js": "6.3.7",
 		"vite-plugin-node-polyfills": "0.22.0",
