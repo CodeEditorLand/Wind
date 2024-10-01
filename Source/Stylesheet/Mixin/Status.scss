@@ -3,7 +3,7 @@
 
 	&.Connecting,
 	&.Disconnecting {
-		@apply animate-pulse border border-solid border-black/50 dark:border-none;
+		@apply animate-pulse border border-solid border-black/50;
 	}
 
 	&.Connected {
