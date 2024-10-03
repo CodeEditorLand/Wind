@@ -1,7 +1,3 @@
-/**
- * @module Action
- *
- */
 export declare const _Function: Context<{
     Editors: Editors;
 } | undefined>;
