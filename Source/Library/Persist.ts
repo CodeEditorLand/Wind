@@ -1,3 +1,5 @@
+import type { Signal } from "solid-js";
+
 /**
  * @module Persist
  *
@@ -25,8 +27,6 @@ export default <T>([[Item, _Item], Store]: Property<T>): Return<T> => {
 
 	return [Store, [Item, _Item]];
 };
-
-import type { Signal } from "solid-js";
 
 export const { default: Local } = await import("store");
 

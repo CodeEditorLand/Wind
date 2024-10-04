@@ -1,3 +1,5 @@
+import type { Type } from "@Interface/Context/Editors";
+
 /**
  * @module Action
  *
@@ -8,5 +10,3 @@ export default (await import("@Library/Create.js")).default(
 		"Editors",
 	]),
 ) satisfies Type;
-
-import type { Type } from "@Interface/Context/Editors";

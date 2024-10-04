@@ -1,5 +1,4 @@
 import type { Type as Message } from "@Context/Connection/Messages";
-
 import type { Context } from "solid-js";
 
 export type Type = Context<{

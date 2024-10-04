@@ -1,3 +1,5 @@
+import type { BuildOptions } from "esbuild";
+
 /**
  * @module ESBuild
  *
@@ -20,7 +22,9 @@ export default {
 				onStart(async () => {
 					try {
 						outdir
-							? await (await import("fs/promises")).rm(outdir, {
+							? await (
+									await import("fs/promises")
+								).rm(outdir, {
 									recursive: true,
 								})
 							: {};
@@ -46,5 +50,3 @@ export default {
 		(await import("esbuild-plugin-solid")).solidPlugin(),
 	],
 } satisfies BuildOptions as BuildOptions;
-
-import type { BuildOptions } from "esbuild";

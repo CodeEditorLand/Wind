@@ -1,3 +1,5 @@
+import type { Signal } from "solid-js";
+
 /**
  * @module Create
  *
@@ -24,5 +26,3 @@ export default interface Interface {
 export type Property<T> = [string, Signal<T>];
 
 export type Return<T> = Signal<T>;
-
-import type { Signal } from "solid-js";

@@ -1,5 +1,4 @@
 import type Items from "@Interface/Items.js";
-
 import type { Context } from "solid-js";
 
 export type Type = Context<{
