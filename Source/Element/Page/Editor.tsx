@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "solid-js";
+import { lazy, Suspense } from "solid-js";
 
 const Action = lazy(() => import("@Context/Action.js"));
 

@@ -1,6 +1,5 @@
-import type { Instance } from "tippy.js";
-
 import Tip from "@Element/Tip";
+import type { Instance } from "tippy.js";
 
 export const Fn = (
 	Event: MouseEvent & {

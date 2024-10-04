@@ -1,3 +1,8 @@
+import type Into from "@Context/Store/Into";
+import type Item from "@Context/Store/Item";
+import type Kind from "@Context/Store/Kind";
+import type { JSX } from "solid-js";
+
 export default ({
 	children,
 	Data,
@@ -66,9 +71,3 @@ export default ({
 };
 
 export const { _Function } = await import("@Context/Store/Context");
-
-import type Into from "@Context/Store/Into";
-import type Item from "@Context/Store/Item";
-import type Kind from "@Context/Store/Kind";
-
-import type { JSX } from "solid-js";

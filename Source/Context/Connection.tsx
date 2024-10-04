@@ -1,3 +1,5 @@
+import type { JSX } from "solid-js";
+
 export default ({ children }: { children?: JSX.Element }) => {
 	// TODO: LISTEN TO CHANGES FROM @tauri-apps/api/event
 	// (await import('@tauri-apps/api/event')).listen?.addEventListener("message", async (Message) =>
@@ -19,8 +21,6 @@ export default ({ children }: { children?: JSX.Element }) => {
 		</_Function.Provider>
 	);
 };
-
-import type { JSX } from "solid-js";
 
 export const { createEffect, on } = await import("solid-js");
 

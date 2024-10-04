@@ -1,6 +1,5 @@
-import type { JSX } from "solid-js/jsx-runtime";
-
 import { For, Show } from "solid-js";
+import type { JSX } from "solid-js/jsx-runtime";
 
 export interface Property extends JSX.LinkHTMLAttributes<HTMLLinkElement> {
 	Of?: string[];
