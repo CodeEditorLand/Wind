@@ -2,6 +2,10 @@ import type Editor from "@Context/Action/Editor";
 import { type SubmitHandler } from "@modular-forms/solid";
 import "@Stylesheet/Element/Action.scss";
 import "@Stylesheet/Element/Editor.scss";
+/**
+ * @module Editor
+ *
+ */
 declare const _default: ({ Type }?: {
     Type: Editor["Type"];
 }) => import("solid-js").JSX.Element;
