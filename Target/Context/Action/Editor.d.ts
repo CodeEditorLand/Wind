@@ -3,7 +3,7 @@
  *
  */
 export default interface Interface {
-    Type: "HTML" | "CSS" | "TypeScript";
-    Hidden: boolean;
-    Content: string;
+	Type: "HTML" | "CSS" | "TypeScript";
+	Hidden: boolean;
+	Content: string;
 }
