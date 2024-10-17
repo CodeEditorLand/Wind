@@ -1,5 +1,5 @@
-@import "../Mixin/Anchor.scss";
+@use "../Mixin/Anchor.scss";
 
 .Anchor {
-	@include Anchor();
+	@include Anchor.Anchor();
 }

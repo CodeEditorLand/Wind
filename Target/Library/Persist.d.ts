@@ -1,5 +1,4 @@
 import type { Signal } from "solid-js";
-
 /**
  * @module Persist
  *
@@ -9,5 +8,4 @@ export default _default;
 export declare const Local: StoreJsAPI;
 export type Property<T> = [Signal<T>, string];
 export type Return<T> = [string, Signal<T>];
-export declare const createEffect: typeof import("solid-js").createEffect,
-	on: typeof import("solid-js").on;
+export declare const createEffect: typeof import("solid-js").createEffect, on: typeof import("solid-js").on;
