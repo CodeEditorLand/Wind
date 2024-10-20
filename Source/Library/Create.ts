@@ -5,7 +5,7 @@ import type Interface from "@Interface/Create.js";
  *
  */
 export default (
-	...[[Store, [Item, _Item]], Value = null]: Parameters<Interface>
+	...[[Store, [Item, _Item]], Value = null]
 ) => {
 	let Existing = get(Store);
 
