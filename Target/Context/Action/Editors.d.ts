@@ -2,5 +2,5 @@
  * @module Action
  *
  */
-declare const _default: import("solid-js").Accessor<unknown>[];
+declare const _default: any[];
 export default _default;
