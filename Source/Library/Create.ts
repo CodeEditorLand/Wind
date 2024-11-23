@@ -4,9 +4,7 @@ import type Interface from "@Interface/Create.js";
  * @module Create
  *
  */
-export default (
-	...[[Store, [Item, _Item]], Value = null]
-) => {
+export default (...[[Store, [Item, _Item]], Value = null]) => {
 	let Existing = get(Store);
 
 	try {
