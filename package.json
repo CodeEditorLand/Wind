@@ -31,7 +31,7 @@
 		"prepublishOnly": "Build 'Source/**/*.{ts,tsx}' --ESBuild Source/Variable/ESBuild.ts"
 	},
 	"dependencies": {
-		"@codeeditorland/common": "0.0.1",
+		"@codeeditorland/common": "0.0.6",
 		"@modular-forms/solid": "0.25.0",
 		"@types/store": "2.0.5",
 		"deepmerge-ts": "7.1.3",
