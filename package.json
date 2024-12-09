@@ -1,14 +1,37 @@
 {
-	"author": {
-		"email": "Source/Open@Editor.Land",
-		"name": "🖋️ Source — 👐🏻 Open —",
-		"url": "HTTPS://Editor.Land"
-	},
+	"name": "@codeeditorland/wind",
+	"version": "0.0.1",
+	"private": false,
+	"description": "🌬️ Wind —",
+	"keywords": [
+		"typescript",
+		"solid",
+		"monaco",
+		"wind",
+		"codeeditorland",
+		"playform"
+	],
+	"homepage": "HTTPS://GitHub.Com/CodeEditorLand/Wind#readme",
 	"bugs": {
 		"url": "HTTPS://GitHub.Com/CodeEditorLand/Wind/issues"
 	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/CodeEditorLand/Wind.git"
+	},
+	"license": "SEE LICENSE IN LICENSE",
+	"author": {
+		"name": "🖋️ Source — 👐🏻 Open —",
+		"email": "Source/Open@Editor.Land",
+		"url": "HTTPS://Editor.Land"
+	},
+	"type": "module",
+	"scripts": {
+		"Run": "Build 'Source/**/*.{ts,tsx}' --ESBuild Source/Variable/ESBuild.ts --Watch",
+		"prepublishOnly": "Build 'Source/**/*.{ts,tsx}' --ESBuild Source/Variable/ESBuild.ts"
+	},
 	"dependencies": {
-		"@codeeditorland/common": "0.0.6",
+		"@codeeditorland/common": "0.0.1",
 		"@modular-forms/solid": "0.25.0",
 		"@types/store": "2.0.5",
 		"deepmerge-ts": "7.1.3",
@@ -22,31 +45,8 @@
 		"vite-plugin-node-polyfills": "0.22.0",
 		"zod": "3.23.8"
 	},
-	"description": "🌬️ Wind —",
 	"devDependencies": {
 		"@playform/build": "0.2.0",
 		"esbuild-plugin-copy": "2.1.1"
-	},
-	"homepage": "HTTPS://GitHub.Com/CodeEditorLand/Wind#readme",
-	"keywords": [
-		"typescript",
-		"solid",
-		"monaco",
-		"wind",
-		"codeeditorland",
-		"playform"
-	],
-	"license": "SEE LICENSE IN LICENSE",
-	"name": "@codeeditorland/wind",
-	"private": false,
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/CodeEditorLand/Wind.git"
-	},
-	"scripts": {
-		"Run": "Build 'Source/**/*.{ts,tsx}' --ESBuild Source/Variable/ESBuild.ts --Watch",
-		"prepublishOnly": "Build 'Source/**/*.{ts,tsx}' --ESBuild Source/Variable/ESBuild.ts"
-	},
-	"type": "module",
-	"version": "0.0.1"
+	}
 }
