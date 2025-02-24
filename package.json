@@ -34,7 +34,7 @@
 		"@codeeditorland/common": "0.0.6",
 		"@modular-forms/solid": "0.25.0",
 		"@types/store": "2.0.5",
-		"deepmerge-ts": "7.1.4",
+		"deepmerge-ts": "7.1.5",
 		"esbuild-plugin-solid": "0.6.0",
 		"monaco-editor": "0.52.2",
 		"monaco-themes": "0.4.4",
