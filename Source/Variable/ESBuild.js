@@ -31,6 +31,7 @@ export default {
                 });
             },
         },
+        // @ts-expect-error
         (await import("esbuild-plugin-copy")).copy({
             resolveFrom: "out",
             assets: [
@@ -44,6 +45,7 @@ export default {
                 },
             ],
         }),
+        // @ts-expect-error
         (await import("esbuild-plugin-solid")).solidPlugin(),
     ],
 };

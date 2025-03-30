@@ -34,6 +34,7 @@ export default {
 				});
 			},
 		} as Plugin,
+		// @ts-expect-error
 		(await import("esbuild-plugin-copy")).copy({
 			resolveFrom: "out",
 			assets: [
@@ -47,6 +48,7 @@ export default {
 				},
 			],
 		}),
+		// @ts-expect-error
 		(await import("esbuild-plugin-solid")).solidPlugin(),
 	],
 } satisfies BuildOptions as BuildOptions;
