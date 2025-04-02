@@ -1,1 +1,45 @@
-import{template as n}from"solid-js/web";import{delegateEvents as f}from"solid-js/web";import{className as p}from"solid-js/web";import{effect as l}from"solid-js/web";import{insert as c}from"solid-js/web";import{setAttribute as $}from"solid-js/web";import{use as u}from"solid-js/web";var _=n("<button>");import d from"../Function/Merge.js";import"../Stylesheet/Element/Anchor.scss";import{children as b}from"solid-js";var w=m=>{const{Action:s,Type:i,children:a,Class:r}=d({children:"",Type:"button",Action:()=>{},Class:""},m);let e;return(()=>{var t=_(),o=e;return typeof o=="function"?u(o,t):e=t,t.$$click=()=>{s(e),e.blur()},$(t,"type",i),c(t,()=>b(()=>a)()),l(()=>p(t,`Anchor ${typeof r=="function"?r(e):r}`.trim())),t})()};f(["click"]);export{w as default};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { template as _$template } from "solid-js/web";
+import { delegateEvents as _$delegateEvents } from "solid-js/web";
+import { className as _$className } from "solid-js/web";
+import { effect as _$effect } from "solid-js/web";
+import { insert as _$insert } from "solid-js/web";
+import { setAttribute as _$setAttribute } from "solid-js/web";
+import { use as _$use } from "solid-js/web";
+var _tmpl$ = /* @__PURE__ */ _$template(`<button>`);
+import Merge from "../Function/Merge.js";
+import "../Stylesheet/Element/Anchor.scss";
+import { createSignal, children as Show } from "solid-js";
+var Anchor_default = /* @__PURE__ */ __name((Property) => {
+  const {
+    Action,
+    Type,
+    children,
+    Class
+  } = Merge({
+    children: "",
+    Type: "button",
+    Action: /* @__PURE__ */ __name(() => {
+    }, "Action"),
+    Class: ""
+  }, Property);
+  const [Fn, _Fn] = createSignal();
+  return (() => {
+    var _el$ = _tmpl$();
+    _$use(_Fn, _el$);
+    _el$.$$click = () => {
+      Action(Fn());
+      Fn()?.blur();
+    };
+    _$setAttribute(_el$, "type", Type);
+    _$insert(_el$, () => Show(() => children)());
+    _$effect(() => _$className(_el$, `Anchor ${typeof Class === "function" ? Class(Fn()) : Class}`.trim()));
+    return _el$;
+  })();
+}, "default");
+_$delegateEvents(["click"]);
+export {
+  Anchor_default as default
+};
+//# sourceMappingURL=Anchor.js.map

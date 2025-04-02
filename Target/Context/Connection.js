@@ -1,1 +1,29 @@
-import{createComponent as o}from"solid-js/web";var n=({children:e})=>o(t.Provider,{get value(){return t.defaultValue},children:e});const{createEffect:a,on:c}=await import("solid-js"),{default:i,_Function:t}=await import("./Connection/Context.js");export{i as Connection,t as _Function,a as createEffect,n as default,c as on};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { createComponent as _$createComponent } from "solid-js/web";
+var Connection_default = /* @__PURE__ */ __name(({
+  children
+}) => {
+  return _$createComponent(_Function.Provider, {
+    get value() {
+      return _Function.defaultValue;
+    },
+    children
+  });
+}, "default");
+const {
+  createEffect,
+  on
+} = await import("solid-js");
+const {
+  default: Connection,
+  _Function
+} = await import("./Connection/Context.js");
+export {
+  Connection,
+  _Function,
+  createEffect,
+  Connection_default as default,
+  on
+};
+//# sourceMappingURL=Connection.js.map

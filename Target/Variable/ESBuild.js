@@ -1,1 +1,57 @@
-var i={color:!0,format:"esm",logLevel:"debug",metafile:!0,minify:!0,outdir:"Target",platform:"node",target:"esnext",tsconfig:"tsconfig.json",write:!0,plugins:[{name:"Target",setup({onStart:e,initialOptions:{outdir:t}}){e(async()=>{try{t&&await(await import("node:fs/promises")).rm(t,{recursive:!0})}catch(o){console.log(o)}})}},(await import("esbuild-plugin-copy")).copy({resolveFrom:"out",assets:[{from:["./Source/Script/Monaco/Theme/*.json"],to:["./Script/Monaco/Theme/"]},{from:["./Source/Stylesheet/**/*.scss"],to:["./Stylesheet/"]}]}),(await import("esbuild-plugin-solid")).solidPlugin()]};export{i as default};
+const On = process.env["NODE_ENV"] === "development" || process.env["TAURI_ENV_DEBUG"] === "true";
+var ESBuild_default = {
+  color: true,
+  format: "esm",
+  logLevel: "debug",
+  metafile: true,
+  minify: !On,
+  outdir: "Target",
+  platform: "node",
+  target: "esnext",
+  tsconfig: "tsconfig.json",
+  write: true,
+  legalComments: On ? "inline" : "none",
+  bundle: false,
+  assetNames: "Asset/[name]-[hash]",
+  sourcemap: On,
+  drop: On ? [] : ["debugger"],
+  ignoreAnnotations: !On,
+  keepNames: On,
+  plugins: [
+    {
+      name: "Target",
+      setup({ onStart, initialOptions: { outdir } }) {
+        onStart(async () => {
+          try {
+            outdir ? await (await import("node:fs/promises")).rm(outdir, {
+              recursive: true
+            }) : {};
+          } catch (_Error) {
+            console.log(_Error);
+          }
+        });
+      }
+    },
+    // @ts-expect-error
+    (await import("esbuild-plugin-copy")).copy({
+      resolveFrom: "out",
+      assets: [
+        {
+          from: ["./Source/Script/Monaco/Theme/*.json"],
+          to: ["./Script/Monaco/Theme/"]
+        },
+        {
+          from: ["./Source/Stylesheet/**/*.scss"],
+          to: ["./Stylesheet/"]
+        }
+      ]
+    }),
+    // @ts-expect-error
+    (await import("esbuild-plugin-solid")).solidPlugin()
+  ]
+};
+export {
+  On,
+  ESBuild_default as default
+};
+//# sourceMappingURL=ESBuild.js.map

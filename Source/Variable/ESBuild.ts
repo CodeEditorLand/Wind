@@ -1,5 +1,9 @@
 import type { BuildOptions, Plugin } from "esbuild";
 
+export const On =
+	process.env["NODE_ENV"] === "development" ||
+	process.env["TAURI_ENV_DEBUG"] === "true";
+
 /**
  * @module ESBuild
  *
@@ -9,12 +13,19 @@ export default {
 	format: "esm",
 	logLevel: "debug",
 	metafile: true,
-	minify: true,
+	minify: !On,
 	outdir: "Target",
 	platform: "node",
 	target: "esnext",
 	tsconfig: "tsconfig.json",
 	write: true,
+	legalComments: On ? "inline" : "none",
+	bundle: false,
+	assetNames: "Asset/[name]-[hash]",
+	sourcemap: On,
+	drop: On ? [] : ["debugger"],
+	ignoreAnnotations: !On,
+	keepNames: On,
 	plugins: [
 		{
 			name: "Target",

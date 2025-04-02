@@ -2,9 +2,9 @@ import Merge from "@Function/Merge.js";
 
 import "@Stylesheet/Element/Anchor.scss";
 
-import { children as Show } from "solid-js";
+import { createSignal, children as Show } from "solid-js";
 
-export type Type = HTMLButtonElement;
+export type Type = HTMLButtonElement | undefined;
 
 export interface Property {
 	// biome-ignore lint/suspicious/noExplicitAny:
@@ -32,18 +32,18 @@ export default (Property: Property) => {
 		Property,
 	) as Concrete<Property> satisfies Concrete<Property>;
 
-	let Fn: HTMLButtonElement;
+	const [Fn, _Fn] = createSignal<Type>();
 
 	return (
 		<button
 			class={`Anchor ${
-				typeof Class === "function" ? Class(Fn) : Class
+				typeof Class === "function" ? Class(Fn()) : Class
 			}`.trim()}
 			onClick={() => {
-				Action(Fn);
-				Fn.blur();
+				Action(Fn());
+				Fn()?.blur();
 			}}
-			ref={Fn}
+			ref={_Fn}
 			type={Type}>
 			{Show(() => children)()}
 		</button>

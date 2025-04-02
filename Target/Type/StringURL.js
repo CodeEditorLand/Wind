@@ -1,1 +1,2 @@
-const{default:t}=await import("../Variable/StringURL.js");
+const { default: StringURL } = await import("../Variable/StringURL.js");
+//# sourceMappingURL=StringURL.js.map

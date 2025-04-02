@@ -1,5 +1,5 @@
 import "@Stylesheet/Element/Anchor.scss";
-export type Type = HTMLButtonElement;
+export type Type = HTMLButtonElement | undefined;
 export interface Property {
     children?: any;
     Type?: "submit" | "reset" | "button";
