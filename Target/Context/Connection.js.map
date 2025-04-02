@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../Source/Context/Connection.tsx"],
-  "sourcesContent": ["import type { JSX } from \"solid-js\";\r\n\r\nexport default ({ children }: { children?: JSX.Element }) => {\r\n\t// TODO: LISTEN TO CHANGES FROM @tauri-apps/api/event\r\n\t// (await import('@tauri-apps/api/event')).listen?.addEventListener(\"message\", async (Message) =>\r\n\t// \tConnection.Messages[1](\r\n\t// \t\t(await import(\"@Function/Merge.js\")).default(\r\n\t// \t\t\tConnection.Messages[0](),\r\n\t// \t\t\tawait (\r\n\t// \t\t\t\tawait import(\r\n\t// \t\t\t\t\t\"@codeeditorland/common/Target/Function/Get.js\"\r\n\t// \t\t\t\t)\r\n\t// \t\t\t).default(JSON.parse(Message.data)),\r\n\t// \t\t),\r\n\t// \t),\r\n\t// );\r\n\r\n\treturn (\r\n\t\t<_Function.Provider value={_Function.defaultValue}>\r\n\t\t\t{children}\r\n\t\t</_Function.Provider>\r\n\t);\r\n};\r\n\r\nexport const { createEffect, on } = await import(\"solid-js\");\r\n\r\nexport const { default: Connection, _Function } = await import(\r\n\t\"@Context/Connection/Context.js\"\r\n);\r\n"],
-  "mappings": ";;;AAEA,IAAA,qBAAe,wBAAC;EAAEA;AAAqC,MAAM;AAe5D,SAAAC,kBACEC,UAAUC,UAAQ;IAAA,IAACC,QAAK;AAAA,aAAEF,UAAUG;IAAY;IAAAL;EACvC,CAAA;AAGZ,GApBe;AAsBR,MAAM;EAAEM;EAAcC;AAAG,IAAI,MAAM,OAAO,UAAU;AAEpD,MAAM;EAAEC,SAASC;EAAYP;AAAU,IAAI,MAAM,OACvD,gCACD;",
-  "names": ["children", "_$createComponent", "_Function", "Provider", "value", "defaultValue", "createEffect", "on", "default", "Connection"]
-}

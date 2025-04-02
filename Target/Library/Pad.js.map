@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../Source/Library/Pad.ts"],
-  "sourcesContent": ["/**\n * @module Pad\n *\n * The Pad function takes a string, a desired length, and an optional padding character,\n * and returns a new string with the original string padded to the desired length.\n *\n * @param Str - The `Str` parameter is a string that you want to pad with\n * additional characters.\n *\n * @param Length - The `Length` parameter is the total length that you want the\n * resulting string to be after padding.\n *\n * @param [Pad= ] - The `Pad` parameter is a string that represents the character(s)\n * used for padding. By default, it is set to a single space character (\" \").\n *\n */\nexport default (Str: string, Length: number, Pad = \" \") =>\n\tStr.padStart((Str.length + Length) / 2, Pad).padEnd(Length, Pad);\n"],
-  "mappings": ";;AAgBA,IAAO,cAAQ,wBAAC,KAAa,QAAgB,MAAM,QAClD,IAAI,UAAU,IAAI,SAAS,UAAU,GAAG,GAAG,EAAE,OAAO,QAAQ,GAAG,GADjD;",
-  "names": []
-}
