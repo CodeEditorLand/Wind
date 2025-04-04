@@ -46,7 +46,7 @@
 		"zod": "3.24.2"
 	},
 	"devDependencies": {
-		"@playform/build": "0.2.1",
+		"@playform/build": "0.2.2",
 		"esbuild-plugin-copy": "2.1.1"
 	}
 }
