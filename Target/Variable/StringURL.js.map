@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../Source/Variable/StringURL.ts"],
+  "sourcesContent": ["/**\n * @module StringURL\n *\n */\nexport default (await import(\"zod\"))\n\t.string()\n\t.url(\"Must be a URL.\")\n\t.endsWith(\"/\", { message: \"URL must end with /.\" });\n"],
+  "mappings": "AAIA,IAAO,qBAAS,MAAM,OAAO,KAAK,GAChC,OAAO,EACP,IAAI,gBAAgB,EACpB,SAAS,KAAK,EAAE,SAAS,uBAAuB,CAAC;",
+  "names": []
+}

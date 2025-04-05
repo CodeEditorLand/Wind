@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Context/Connection/Context.ts"],
+  "sourcesContent": ["import type { Type as Message } from \"@Context/Connection/Messages\";\nimport type { Context } from \"solid-js\";\n\nexport type Type = Context<{\n\tMessages: Message;\n}>;\n\nexport const _Function = (await import(\"solid-js\")).createContext({\n\tMessages: (await import(\"@Context/Connection/Messages\")).default,\n}) satisfies Type;\n\n// biome-ignore lint/correctness/useHookAtTopLevel:\nexport default (await import(\"solid-js\")).useContext(_Function);\n"],
+  "mappings": "AAOO,MAAM,aAAa,MAAM,OAAO,UAAU,GAAG,cAAc;AAAA,EACjE,WAAW,MAAM,OAAO,8BAA8B,GAAG;AAC1D,CAAC;AAGD,IAAO,mBAAS,MAAM,OAAO,UAAU,GAAG,WAAW,SAAS;",
+  "names": []
+}

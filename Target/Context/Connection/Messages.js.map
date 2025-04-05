@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Context/Connection/Messages.ts"],
+  "sourcesContent": ["import type Message from \"@Context/Connection/Message\";\nimport { createSignal, type Signal } from \"solid-js\";\n\nexport type Type = Signal<Message>;\n\nexport default createSignal<Message>(new Map([])) satisfies Type;\n"],
+  "mappings": "AACA,SAAS,oBAAiC;AAI1C,IAAO,mBAAQ,aAAsB,oBAAI,IAAI,CAAC,CAAC,CAAC;",
+  "names": []
+}

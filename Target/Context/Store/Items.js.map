@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Context/Store/Items.ts"],
+  "sourcesContent": ["import type Item from \"@Context/Store/Item\";\nimport type Into from \"@Interface/Create.js\";\nimport type Interface from \"@Interface/Items.js\";\n\n/**\n * @module Items\n *\n */\nexport default (await import(\"solid-js\")).createSignal(\n\tnew Map<Into, Item>(),\n) satisfies Interface;\n"],
+  "mappings": "AAQA,IAAO,iBAAS,MAAM,OAAO,UAAU,GAAG;AAAA,EACzC,oBAAI,IAAgB;AACrB;",
+  "names": []
+}

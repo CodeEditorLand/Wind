@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Context/Action/Context.ts"],
+  "sourcesContent": ["import type Editors from \"@Interface/Context/Editors.js\";\nimport type { Context } from \"solid-js\";\n\n/**\n * @module Action\n *\n */\nexport const _Function = (await import(\"solid-js\"))\n\t.createContext\n\t// TODO: UNCOMMENT\n\t// \t{\n\t// \tEditors: (await import(\"@Context/Action/Editors\")).default,\n\t// }\n\t() satisfies Type;\n\n// biome-ignore lint/correctness/useHookAtTopLevel:\nexport default (await import(\"solid-js\")).useContext(_Function);\n\nexport type Type = Context<{\n\tEditors: Editors;\n}>;\n"],
+  "mappings": "AAOO,MAAM,aAAa,MAAM,OAAO,UAAU,GAC/C,cAKA;AAGF,IAAO,mBAAS,MAAM,OAAO,UAAU,GAAG,WAAW,SAAS;",
+  "names": []
+}
