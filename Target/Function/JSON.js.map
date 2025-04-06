@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../Source/Function/JSON.ts"],
-  "sourcesContent": ["import type Interface from \"@Interface/JSON.js\";\r\n\r\n/**\r\n * @module JSON\r\n *\r\n */\r\nexport default (async (...[File, From]) =>\r\n\tJSON.parse(\r\n\t\t(\r\n\t\t\tawait (\r\n\t\t\t\tawait import(\"node:fs/promises\")\r\n\t\t\t).readFile(`${From ?? \".\"}/${File}`, \"utf-8\")\r\n\t\t).toString(),\r\n\t)) satisfies Interface as Interface;\r\n"],
-  "mappings": ";;AAMA,IAAO,eAAS,iCAAU,CAAC,MAAM,IAAI,MACpC,KAAK;AAAA,GAEH,OACC,MAAM,OAAO,kBAAkB,GAC9B,SAAS,GAAG,QAAQ,GAAG,IAAI,IAAI,IAAI,OAAO,GAC3C,SAAS;AACZ,GAPe;",
-  "names": []
-}

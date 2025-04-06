@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../Source/Type/StringURL.ts"],
-  "sourcesContent": ["/**\n * @module StringURL\n *\n */\nconst { default: StringURL } = await import(\"@Variable/StringURL.js\");\n\nexport type Type = typeof StringURL;\n\nexport type { Type as default };\n"],
-  "mappings": "AAIA,MAAM,EAAE,SAAS,UAAU,IAAI,MAAM,OAAO,wBAAwB;",
-  "names": []
-}
