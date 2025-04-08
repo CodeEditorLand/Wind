@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../Source/Library/Persist.ts"],
+  "sourcesContent": ["import type { Signal } from \"solid-js\";\n\n/**\n * @module Persist\n *\n */\nexport default <T>([[Item, _Item], Store]: Property<T>): Return<T> => {\n\tcreateEffect(\n\t\ton(\n\t\t\tItem,\n\t\t\tasync (Item) =>\n\t\t\t\tLocal.set(\n\t\t\t\t\tStore,\n\t\t\t\t\tJSON.stringify(\n\t\t\t\t\t\t(\n\t\t\t\t\t\t\tawait import(\n\t\t\t\t\t\t\t\t\"@codeeditorland/common/Target/Function/Put.js\"\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t).default(Item),\n\t\t\t\t\t),\n\t\t\t\t),\n\t\t\t{\n\t\t\t\tdefer: false,\n\t\t\t},\n\t\t),\n\t);\n\n\treturn [Store, [Item, _Item]];\n};\n\nexport const { default: Local } = await import(\"store\");\n\nexport type Property<T> = [Signal<T>, string];\n\nexport type Return<T> = [string, Signal<T>];\n\nexport const { createEffect, on } = await import(\"solid-js\");\n"],
+  "mappings": ";;AAMA,IAAO,kBAAQ,wBAAI,CAAC,CAAC,MAAM,KAAK,GAAG,KAAK,MAA8B;AACrE;AAAA,IACC;AAAA,MACC;AAAA,MACA,OAAOA,UACN,MAAM;AAAA,QACL;AAAA,QACA,KAAK;AAAA,WAEH,MAAM,OACL,+CACD,GACC,QAAQA,KAAI;AAAA,QACf;AAAA,MACD;AAAA,MACD;AAAA,QACC,OAAO;AAAA,MACR;AAAA,IACD;AAAA,EACD;AAEA,SAAO,CAAC,OAAO,CAAC,MAAM,KAAK,CAAC;AAC7B,GAtBe;AAwBR,MAAM,EAAE,SAAS,MAAM,IAAI,MAAM,OAAO,OAAO;AAM/C,MAAM,EAAE,cAAc,GAAG,IAAI,MAAM,OAAO,UAAU;",
+  "names": ["Item"]
+}

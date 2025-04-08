@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../Source/Element/Link.tsx"],
+  "sourcesContent": ["import { For, Show } from \"solid-js\";\r\nimport type { JSX } from \"solid-js/jsx-runtime\";\r\n\r\nexport interface Property extends JSX.LinkHTMLAttributes<HTMLLinkElement> {\r\n\tOf?: string[];\r\n}\r\n\r\nexport default ({ Of, rel, type, crossorigin }: Property) => (\r\n\t<For each={Of}>\r\n\t\t{(Link) => (\r\n\t\t\t<Show when={Link}>\r\n\t\t\t\t{Link && (\r\n\t\t\t\t\t<link\r\n\t\t\t\t\t\ttype={type ?? \"text/css\"}\r\n\t\t\t\t\t\trel={rel ?? \"preconnect\"}\r\n\t\t\t\t\t\tcrossorigin={crossorigin ?? \"anonymous\"}\r\n\t\t\t\t\t\thref={Link}\r\n\t\t\t\t\t/>\r\n\t\t\t\t)}\r\n\t\t\t</Show>\r\n\t\t)}\r\n\t</For>\r\n);\r\n"],
+  "mappings": ";;;;;;;AAAA,SAASA,KAAKC,YAAY;AAO1B,IAAA,eAAe,wBAAC;EAAEC;EAAIC;EAAKC;EAAMC;AAAsB,MAACC,kBACtDN,KAAG;EAACO,MAAML;EAAEM,UACVC,iCAAIH,kBACJL,MAAI;IAACS,MAAMD;IAAI,IAAAD,WAAA;AAAA,aACdC,SAAI,MAAA;AAAA,YAAAE,OAAAC,OAAA;AAAAC,uBAAAF,MAAA,QAEGP,QAAQ,UAAU;AAAAS,uBAAAF,MAAA,OACnBR,OAAO,YAAY;AAAAU,uBAAAF,MAAA,eACXN,eAAe,WAAW;AAAAQ,uBAAAF,MAAA,QACjCF,IAAI;AAAA,eAAAE;MAAA,GAAA;IAEX;EAAA,CAAA,GATDF;AAWD,CAAA,GAbY;",
+  "names": ["For", "Show", "Of", "rel", "type", "crossorigin", "_$createComponent", "each", "children", "Link", "when", "_el$", "_tmpl$", "_$setAttribute"]
+}

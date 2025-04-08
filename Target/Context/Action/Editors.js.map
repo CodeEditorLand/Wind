@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Context/Action/Editors.ts"],
+  "sourcesContent": ["import type { Type } from \"@Interface/Context/Editors\";\n\n/**\n * @module Action\n *\n */\nexport default (await import(\"@Library/Create.js\")).default(\n\t(await import(\"@Library/Persist\")).default([\n\t\t(await import(\"solid-js\")).createSignal(new Map([])),\n\t\t\"Editors\",\n\t]),\n) satisfies Type;\n"],
+  "mappings": "AAMA,IAAO,mBAAS,MAAM,OAAO,oBAAoB,GAAG;AAAA,GAClD,MAAM,OAAO,kBAAkB,GAAG,QAAQ;AAAA,KACzC,MAAM,OAAO,UAAU,GAAG,aAAa,oBAAI,IAAI,CAAC,CAAC,CAAC;AAAA,IACnD;AAAA,EACD,CAAC;AACF;",
+  "names": []
+}
