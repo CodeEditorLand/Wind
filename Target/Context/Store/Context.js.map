@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Context/Store/Context.ts"],
-  "sourcesContent": ["import type Items from \"@Interface/Items.js\";\nimport type { Context } from \"solid-js\";\n\nexport type Type = Context<{\n\tItems: Items;\n}>;\n\nexport const _Function = (await import(\"solid-js\")).createContext({\n\tItems: (await import(\"@Context/Store/Items\")).default,\n}) satisfies Type;\n\n// biome-ignore lint/correctness/useHookAtTopLevel:\nexport default (await import(\"solid-js\")).useContext(_Function);\n"],
-  "mappings": "AAOO,MAAM,aAAa,MAAM,OAAO,UAAU,GAAG,cAAc;AAAA,EACjE,QAAQ,MAAM,OAAO,sBAAsB,GAAG;AAC/C,CAAC;AAGD,IAAO,mBAAS,MAAM,OAAO,UAAU,GAAG,WAAW,SAAS;",
-  "names": []
-}

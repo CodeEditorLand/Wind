@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../Source/Library/Create.ts"],
-  "sourcesContent": ["import type Interface from \"@Interface/Create.js\";\n\n/**\n * @module Create\n *\n */\nexport default (...[[Store, [Item, _Item]], Value = null]) => {\n\tlet Existing = get(Store);\n\n\ttry {\n\t\tExisting = Get(JSON.parse(get(Store)));\n\t} catch (_Error) {\n\t\tconsole.log(_Error);\n\t}\n\n\t_Item(Value ?? Existing);\n\n\treturn [Item, _Item];\n};\n\nexport const { get } = await import(\"store\");\n\nexport const { default: Get } = await import(\n\t\"@codeeditorland/common/Target/Function/Get.js\"\n);\n"],
-  "mappings": ";;AAMA,IAAO,iBAAQ,2BAAI,CAAC,CAAC,OAAO,CAAC,MAAM,KAAK,CAAC,GAAG,QAAQ,IAAI,MAAM;AAC7D,MAAI,WAAW,IAAI,KAAK;AAExB,MAAI;AACH,eAAW,IAAI,KAAK,MAAM,IAAI,KAAK,CAAC,CAAC;AAAA,EACtC,SAAS,QAAQ;AAChB,YAAQ,IAAI,MAAM;AAAA,EACnB;AAEA,QAAM,SAAS,QAAQ;AAEvB,SAAO,CAAC,MAAM,KAAK;AACpB,GAZe;AAcR,MAAM,EAAE,IAAI,IAAI,MAAM,OAAO,OAAO;AAEpC,MAAM,EAAE,SAAS,IAAI,IAAI,MAAM,OACrC,+CACD;",
-  "names": []
-}
