@@ -6,7 +6,10 @@
 		"lib": ["DOM", "DOM.Iterable", "ESNext"],
 		"outDir": "Target",
 		"jsxFactory": "createComponent",
-		"jsxFragmentFactory": "Fragment"
+		"jsxFragmentFactory": "Fragment",
+		"paths": {
+			"@Editor/*": ["../../Dependency/Microsoft/Dependency/Editor/src/*"]
+		}
 	},
 	"extends": "@playform/build/tsconfig",
 	"include": ["Source"]
