@@ -1,17 +1,18 @@
 import type { IWorkbenchConstructionOptions } from "@Editor/vs/workbench/browser/web.api.js";
-import {
-	createEffect,
-	createSignal,
-	For,
-	onMount,
-	Show,
-	type Component,
-} from "solid-js";
-import { createStore, produce } from "solid-js/store";
 
 import Schema from "../generated/workbench-config-schema.json";
 
-const Configuration = {
+export const { default: Render } = await import(
+	"@Source/Configuration/Render.jsx"
+);
+
+export const { createEffect, createSignal, For, onMount, Show } = await import(
+	"solid-js"
+);
+
+export const { createStore, produce } = await import("solid-js/store");
+
+const Default = {
 	// --- Core Local Configuration ---
 	// Explicitly set to null to indicate no remote server authority
 	remoteAuthority: "",
@@ -149,10 +150,8 @@ const Configuration = {
 	// productQualityChangeHandler: undefined,
 } satisfies IWorkbenchConstructionOptions as IWorkbenchConstructionOptions;
 
-const localStorageKey = "landCodeDebugConfig";
+const KeyLocal = "Configuration";
 
-// --- Helper Type for Schema Properties ---
-// Basic representation, enhance if needed
 interface SchemaProperty {
 	type: string;
 
@@ -166,226 +165,42 @@ interface SchemaProperty {
 
 	properties?: Record<string, SchemaProperty>;
 
-	// For arrays
 	items?: SchemaProperty;
 }
 
-// --- Recursive Renderer Component/Function ---
-const SchemaPropertyRenderer: Component<{
-	propKey: string;
-
-	propSchema: SchemaProperty;
-
-	currentValue: any;
-
-	// Path for nested updates
-	path: string[];
-
-	onUpdate: (path: string[], value: any) => void;
-}> = (Property) => {
-	const Identifier = () => Property.path.join(".");
-
-	const Change = (event: Event) => {
-		const Target = event.currentTarget as
-			| HTMLInputElement
-			| HTMLSelectElement
-			| HTMLTextAreaElement;
-
-		let Value: any;
-
-		if (Target instanceof HTMLInputElement && Target.type === "checkbox") {
-			Value = Target.checked;
-		} else if (
-			Target instanceof HTMLInputElement &&
-			Target.type === "number"
-		) {
-			Value = Target.value === "" ? undefined : parseFloat(Target.value);
-		} else if (Target instanceof HTMLTextAreaElement) {
-			// Array as JSON
-			try {
-				Value = JSON.parse(Target.value);
-
-				if (!Array.isArray(Value)) throw new Error("Not an array");
-			} catch (_Error) {
-				console.warn(
-					`Invalid JSON array in textarea for ${Identifier()}:`,
-
-					_Error,
-				);
-
-				// Optionally provide visual feedback here
-				// Don't update state with invalid JSON
-				return;
-			}
-		} else {
-			// Text, Select
-			Value = Target.value;
-
-			if (
-				Target instanceof HTMLSelectElement &&
-				Value === "__undefined__"
-			) {
-				// Treat empty select as undefined
-				Value = undefined;
-			}
-		}
-
-		Property.onUpdate(Property.path, Value);
-	};
-
-	// Determine initial value, considering default from schema
-	const _Value = () =>
-		Property.currentValue !== undefined
-			? Property.currentValue
-			: Property.propSchema.default;
-
-	return (
-		<div class="Property">
-			<label for={Identifier()} title={Property.propSchema.description}>
-				{Property.propKey}:{" "}
-				{Property.propSchema.title
-					? `(${Property.propSchema.title})`
-					: ""}
-				{/* Optional: Add description span */}
-			</label>
-			{/* --- Input Types based on Schema --- */}
-			{Property.propSchema.type === "string" &&
-				!Property.propSchema.enum && (
-					<input
-						type="text"
-						id={Identifier()}
-						value={_Value() ?? ""}
-						onInput={Change}
-					/>
-				)}
-			{Property.propSchema.type === "boolean" && (
-				<input
-					type="checkbox"
-					id={Identifier()}
-					checked={_Value() ?? false}
-					onChange={Change}
-				/>
-			)}
-			{(Property.propSchema.type === "number" ||
-				Property.propSchema.type === "integer") && (
-				<input
-					type="number"
-					id={Identifier()}
-					value={_Value() ?? ""}
-					step={Property.propSchema.type === "integer" ? "1" : "any"}
-					onInput={Change}
-				/>
-			)}
-			{Property.propSchema.enum && (
-				<select id={Identifier()} onChange={Change}>
-					<option value="__undefined__">-- Select --</option>{" "}
-					{/* Represents undefined */}
-					<For each={Property.propSchema.enum}>
-						{(enumValue) => (
-							<option
-								value={String(enumValue)}
-								selected={_Value() === enumValue}>
-								{String(enumValue)}
-							</option>
-						)}
-					</For>
-				</select>
-			)}
-			{Property.propSchema.type === "object" &&
-				Property.propSchema.properties && (
-					<fieldset class="config-object">
-						<legend>{Property.propKey}</legend>
-
-						<For
-							each={Object.entries(
-								Property.propSchema.properties,
-							)}>
-							{([subKey, subSchema]) => (
-								<SchemaPropertyRenderer
-									propKey={subKey}
-									propSchema={subSchema as SchemaProperty}
-									// Pass down nested value
-									currentValue={_Value()?.[subKey]}
-									// Extend path
-									path={[...Property.path, subKey]}
-									onUpdate={Property.onUpdate}
-								/>
-							)}
-						</For>
-					</fieldset>
-				)}
-			// Basic array handling
-			{Property.propSchema.type === "array" && (
-				<textarea
-					id={Identifier()}
-					rows={4}
-					// Use input to allow partial JSON validation later if desired
-					onInput={Change}>
-					{JSON.stringify(_Value() ?? [], null, 2)}
-				</textarea>
-			)}
-			{/* Add handling for other types or show unsupported */}
-			{!(
-				Property.propSchema.type === "string" &&
-				!Property.propSchema.enum
-			) &&
-				!(Property.propSchema.type === "boolean") &&
-				!(
-					Property.propSchema.type === "number" ||
-					Property.propSchema.type === "integer"
-				) &&
-				!Property.propSchema.enum &&
-				!(
-					Property.propSchema.type === "object" &&
-					Property.propSchema.properties
-				) &&
-				!(Property.propSchema.type === "array") && (
-					<span>[Unsupported type: {Property.propSchema.type}]</span>
-				)}
-		</div>
-	);
-};
-
-// --- Main Editor Component ---
-const ConfigEditor: Component = () => {
-	// Use createStore for reactive nested object updates
+export default () => {
 	const [configStore, setConfigStore] = createStore<Record<string, any>>({});
 
-	const [displayJson, setDisplayJson] = createSignal("");
+	const [Display, setDisplayJson] = createSignal("");
 
-	// Load initial state from LocalStorage or defaults
-	const loadConfig = () => {
+	const Load = () => {
 		console.log("Loading config...");
 
-		const saved = localStorage.getItem(localStorageKey);
+		const Saved = localStorage.getItem(KeyLocal);
 
-		let loadedState;
+		let Loaded;
 
 		try {
-			loadedState = saved
-				? JSON.parse(saved)
-				: // Deep copy default
-					JSON.parse(JSON.stringify(Configuration));
+			Loaded = Saved
+				? JSON.parse(Saved)
+				: JSON.parse(JSON.stringify(Default));
 		} catch (e) {
 			console.error("Failed to parse stored config, using defaults:", e);
 
-			loadedState = JSON.parse(JSON.stringify(Configuration));
+			Loaded = JSON.parse(JSON.stringify(Default));
 		}
 
-		// Reset store completely
-		setConfigStore(loadedState);
+		setConfigStore(Loaded);
 
-		console.log("Loaded config state:", loadedState);
+		console.log("Loaded config state:", Loaded);
 	};
 
-	// Save current state to LocalStorage
-	const saveConfig = () => {
+	const Save = () => {
 		try {
-			// Prune undefined keys before saving for cleaner JSON
-			// Solid's store proxy might need careful handling for stringify
-			const plainObject = JSON.parse(JSON.stringify(configStore));
-
-			localStorage.setItem(localStorageKey, JSON.stringify(plainObject));
+			localStorage.setItem(
+				KeyLocal,
+				JSON.stringify(JSON.parse(JSON.stringify(configStore))),
+			);
 
 			console.log("Saved config to LocalStorage.");
 
@@ -399,8 +214,7 @@ const ConfigEditor: Component = () => {
 		}
 	};
 
-	// Reset state to defaults
-	const resetConfig = () => {
+	const Reset = () => {
 		if (
 			confirm(
 				"Reset configuration to defaults? This will overwrite your LocalStorage settings.",
@@ -408,23 +222,20 @@ const ConfigEditor: Component = () => {
 		) {
 			console.log("Resetting config to defaults.");
 
-			// Reset store
-			setConfigStore(JSON.parse(JSON.stringify(Configuration)));
+			setConfigStore(JSON.parse(JSON.stringify(Default)));
 
 			// Optionally save immediately after reset
 			// saveConfig();
 		}
 	};
 
-	// Update the store based on input path and value
-	const handleUpdate = (path: string[], value: any) => {
+	const Update = (path: string[], value: any) => {
 		console.log(
 			`Updating store at path [${path.join(".")}] with value:`,
 
 			value,
 		);
 
-		// Use produce for easier immutable updates on nested paths
 		setConfigStore(
 			produce((s) => {
 				let current: any = s;
@@ -434,7 +245,6 @@ const ConfigEditor: Component = () => {
 						!current[path[i]] ||
 						typeof current[path[i]] !== "object"
 					) {
-						// Ensure path exists
 						current[path[i]] = {};
 					}
 
@@ -442,7 +252,6 @@ const ConfigEditor: Component = () => {
 				}
 
 				if (value === undefined) {
-					// Remove key if value is undefined
 					delete current[path[path.length - 1]];
 				} else {
 					current[path[path.length - 1]] = value;
@@ -451,24 +260,24 @@ const ConfigEditor: Component = () => {
 		);
 	};
 
-	// Effect to update the JSON display whenever the store changes
 	createEffect(() => {
-		// Stringify the proxied store object
-		// Use JSON.parse(JSON.stringify()) to get a plain object without proxies for display/save
 		try {
-			const plainObject = JSON.parse(JSON.stringify(configStore));
-
-			setDisplayJson(JSON.stringify(plainObject, null, 2));
-		} catch (e) {
-			console.error("Error stringifying config store:", e);
+			setDisplayJson(
+				JSON.stringify(
+					JSON.parse(JSON.stringify(configStore)),
+					null,
+					2,
+				),
+			);
+		} catch (_Error) {
+			console.error("Error stringifying config store:", _Error);
 
 			setDisplayJson("Error displaying config.");
 		}
 	});
 
-	// Load config when the component mounts
 	onMount(() => {
-		loadConfig();
+		Load();
 	});
 
 	return (
@@ -480,21 +289,17 @@ const ConfigEditor: Component = () => {
 			</p>
 
 			<form id="config-form" onSubmit={(e) => e.preventDefault()}>
-				{/* Check if schema properties exist before iterating */}
-
 				<Show
 					when={Schema?.properties}
 					fallback={<p>Loading schema...</p>}>
 					<For each={Object.entries(Schema.properties!)}>
-						{([key, propSch]) => (
-							<SchemaPropertyRenderer
-								propKey={key}
+						{([Key, propSch]) => (
+							<Render
+								propKey={Key}
 								propSchema={propSch as SchemaProperty}
-								// Read from store
-								currentValue={configStore[key]}
-								// Initial path
-								path={[key]}
-								onUpdate={handleUpdate}
+								currentValue={configStore[Key]}
+								path={[Key]}
+								onUpdate={Update}
 							/>
 						)}
 					</For>
@@ -502,18 +307,16 @@ const ConfigEditor: Component = () => {
 			</form>
 
 			<div class="config-buttons">
-				<button onClick={saveConfig}>Save to LocalStorage</button>
+				<button onClick={Save}>Save to LocalStorage</button>
 
-				<button onClick={loadConfig}>Load from LocalStorage</button>
+				<button onClick={Load}>Load from LocalStorage</button>
 
-				<button onClick={resetConfig}>Reset to Defaults</button>
+				<button onClick={Reset}>Reset to Defaults</button>
 			</div>
 
 			<h3>Current Configuration (Live)</h3>
 
-			<pre>{displayJson()}</pre>
+			<pre>{Display()}</pre>
 		</div>
 	);
 };
-
-export default ConfigEditor;
