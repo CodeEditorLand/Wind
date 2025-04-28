@@ -4,4 +4,8 @@ declare const _default: ({ children }: {
 }) => JSX.Element;
 export default _default;
 export declare const createEffect: typeof import("solid-js").createEffect, on: typeof import("solid-js").on;
-export declare const Connection: any, _Function: any;
+export declare const Connection: {
+    Messages: import("solid-js").Signal<import("./Connection/Message").Type>;
+}, _Function: import("solid-js").Context<{
+    Messages: import("solid-js").Signal<import("./Connection/Message").Type>;
+}>;

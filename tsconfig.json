@@ -8,6 +8,25 @@
 		"jsxFactory": "createComponent",
 		"jsxFragmentFactory": "Fragment",
 		"paths": {
+			"@Asset/*": ["Source/Asset/*"],
+			"@Class/*": ["Source/Class/*"],
+			"@Component/*": ["Source/Component/*"],
+			"@Context/*": ["Source/Context/*"],
+			"@Element/*": ["Source/Element/*"],
+			"@Function/*": ["Source/Function/*"],
+			"@Interface/*": ["Source/Interface/*"],
+			"@Layout/*": ["Source/Layout/*"],
+			"@Library/*": ["Source/Library/*"],
+			"@Notation/*": ["Source/Notation/*"],
+			"@Option/*": ["Source/Option/*"],
+			"@Page/*": ["Source/pages/*"],
+			"@Script/*": ["Source/Script/*"],
+			"@Stylesheet/*": ["Source/Stylesheet/*"],
+			"@Target/*": ["Source/Target/*"],
+			"@Test/*": ["Source/Test/*"],
+			"@Type/*": ["Source/Type/*"],
+			"@Variable/*": ["Source/Variable/*"],
+
 			"@Source/*": ["Source/*"],
 			"@Editor/*": ["../../Dependency/Microsoft/Dependency/Editor/src/*"]
 		}

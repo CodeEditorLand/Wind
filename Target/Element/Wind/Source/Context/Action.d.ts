@@ -5,4 +5,6 @@ declare const _default: ({ children }: {
 }) => JSX.Element;
 export default _default;
 export declare const Monaco: typeof editor, languages: typeof import("monaco-editor").languages;
-export declare const _Function: any;
+export declare const _Function: import("solid-js").Context<{
+    Editors: import("../Interface/Context/Editors").Type;
+} | undefined>;

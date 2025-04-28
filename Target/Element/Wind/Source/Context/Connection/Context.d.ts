@@ -4,9 +4,9 @@ export type Type = Context<{
     Messages: Message;
 }>;
 export declare const _Function: Context<{
-    Messages: any;
+    Messages: import("solid-js").Signal<import("./Message").Type>;
 }>;
 declare const _default: {
-    Messages: any;
+    Messages: import("solid-js").Signal<import("./Message").Type>;
 };
 export default _default;
