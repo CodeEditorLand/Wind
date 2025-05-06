@@ -102,7 +102,7 @@ export interface IHostService {
      * Captures a screenshot.
      */
     getScreenshot(rect?: IRectangle): Promise<VSBuffer | undefined>;
-    getElementData(offsetX: number, offsetY: number, token: CancellationToken): Promise<IElementData | undefined>;
+    getElementData(rect: IRectangle, token: CancellationToken): Promise<IElementData | undefined>;
     /**
      * Get the native handle of the window.
      */

@@ -1,3 +1,4 @@
+import { Lazy } from './lazy.js';
 /**
  * Create a localized difference of the time between now and the specified date.
  * @param date The date to generate the difference from.
@@ -18,8 +19,9 @@ export declare function fromNowByDay(date: number | Date, appendAgoLabel?: boole
 export declare function getDurationString(ms: number, useFullTimeWords?: boolean): string;
 export declare function toLocalISOString(date: Date): string;
 export declare const safeIntl: {
-    DateTimeFormat(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): Intl.DateTimeFormat;
-    Collator(locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): Intl.Collator;
-    Segmenter(locales?: Intl.LocalesArgument, options?: Intl.SegmenterOptions): Intl.Segmenter;
-    Locale(tag: Intl.Locale | string, options?: Intl.LocaleOptions): Intl.Locale;
+    DateTimeFormat(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): Lazy<Intl.DateTimeFormat>;
+    Collator(locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): Lazy<Intl.Collator>;
+    Segmenter(locales?: Intl.LocalesArgument, options?: Intl.SegmenterOptions): Lazy<Intl.Segmenter>;
+    Locale(tag: Intl.Locale | string, options?: Intl.LocaleOptions): Lazy<Intl.Locale>;
+    NumberFormat(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): Lazy<Intl.NumberFormat>;
 };

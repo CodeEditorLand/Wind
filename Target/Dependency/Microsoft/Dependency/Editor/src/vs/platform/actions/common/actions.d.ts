@@ -366,7 +366,7 @@ interface IBaseAction2Options extends IAction2CommonOptions {
      */
     f1?: false;
 }
-interface ICommandPaletteOptions extends IAction2CommonOptions {
+export interface ICommandPaletteOptions extends IAction2CommonOptions {
     /**
      * The title of the command that will be displayed in the command palette after the category.
      *  This overrides {@link ICommandAction.title} to ensure a string isn't used so that the title

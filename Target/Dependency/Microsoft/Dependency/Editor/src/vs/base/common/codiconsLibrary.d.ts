@@ -586,4 +586,5 @@ export declare const codiconsLibrary: {
     readonly repoPinned: import("./themables.js").ThemeIcon;
     readonly keyboardTabAbove: import("./themables.js").ThemeIcon;
     readonly keyboardTabBelow: import("./themables.js").ThemeIcon;
+    readonly gitPullRequestDone: import("./themables.js").ThemeIcon;
 };

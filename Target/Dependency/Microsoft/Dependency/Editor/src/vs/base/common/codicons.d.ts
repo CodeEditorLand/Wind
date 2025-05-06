@@ -660,4 +660,5 @@ export declare const Codicon: {
     readonly repoPinned: ThemeIcon;
     readonly keyboardTabAbove: ThemeIcon;
     readonly keyboardTabBelow: ThemeIcon;
+    readonly gitPullRequestDone: ThemeIcon;
 };

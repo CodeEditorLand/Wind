@@ -136,7 +136,7 @@ export interface ICommonNativeHostService {
     getOSColorScheme(): Promise<IColorScheme>;
     hasWSLFeatureInstalled(): Promise<boolean>;
     getScreenshot(rect?: IRectangle): Promise<VSBuffer | undefined>;
-    getElementData(offsetX: number, offsetY: number, token: CancellationToken): Promise<IElementData | undefined>;
+    getElementData(rect: IRectangle, token: CancellationToken, cancellationId?: number): Promise<IElementData | undefined>;
     getProcessId(): Promise<number | undefined>;
     killProcess(pid: number, code: string): Promise<void>;
     triggerPaste(options?: INativeHostOptions): Promise<void>;

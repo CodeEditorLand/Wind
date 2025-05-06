@@ -2,18 +2,20 @@ import { Event } from '../../../base/common/event.js';
 import { IDisposable } from '../../../base/common/lifecycle.js';
 import Severity from '../../../base/common/severity.js';
 import { URI } from '../../../base/common/uri.js';
+export interface IMarkerReadOptions {
+    owner?: string;
+    resource?: URI;
+    severities?: number;
+    take?: number;
+    ignoreResourceFilters?: boolean;
+}
 export interface IMarkerService {
     readonly _serviceBrand: undefined;
     getStatistics(): MarkerStatistics;
     changeOne(owner: string, resource: URI, markers: IMarkerData[]): void;
     changeAll(owner: string, data: IResourceMarker[]): void;
     remove(owner: string, resources: URI[]): void;
-    read(filter?: {
-        owner?: string;
-        resource?: URI;
-        severities?: number;
-        take?: number;
-    }): IMarker[];
+    read(filter?: IMarkerReadOptions): IMarker[];
     installResourceFilter(resource: URI, reason: string): IDisposable;
     readonly onMarkerChanged: Event<readonly URI[]>;
 }
