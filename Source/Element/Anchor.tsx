@@ -2,7 +2,7 @@ import Merge from "@Function/Merge.js";
 
 import "@Stylesheet/Element/Anchor.scss";
 
-import { createSignal, children as Show } from "solid-js";
+import { children as Show, createSignal } from "solid-js";
 
 export type Type = HTMLButtonElement | undefined;
 

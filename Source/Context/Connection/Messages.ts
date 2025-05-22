@@ -1,5 +1,5 @@
 import type Message from "@Context/Connection/Message";
-import { createSignal, type Signal } from "solid-js";
+import { type Signal, createSignal } from "solid-js";
 
 export type Type = Signal<Message>;
 

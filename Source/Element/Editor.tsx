@@ -15,11 +15,11 @@
 
 import type Editor from "@Context/Action/Editor";
 import {
+	type SubmitHandler,
 	clearError,
 	createForm,
 	required,
 	validate,
-	type SubmitHandler,
 } from "@modular-forms/solid";
 import { editor as Monaco } from "monaco-editor";
 import { createEffect, createSignal, on, onCleanup, onMount } from "solid-js";

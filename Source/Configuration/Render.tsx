@@ -1,4 +1,4 @@
-import { For, type Component } from "solid-js";
+import { type Component, For } from "solid-js";
 
 export default ((Property) => {
 	const Identifier = () => Property.path.join(".");
@@ -17,7 +17,10 @@ export default ((Property) => {
 			Target instanceof HTMLInputElement &&
 			Target.type === "number"
 		) {
-			Value = Target.value === "" ? undefined : parseFloat(Target.value);
+			Value =
+				Target.value === ""
+					? undefined
+					: Number.parseFloat(Target.value);
 		} else if (Target instanceof HTMLTextAreaElement) {
 			// Array as JSON
 			try {
@@ -140,7 +143,8 @@ export default ((Property) => {
 					id={Identifier()}
 					rows={4}
 					// Use input to allow partial JSON validation later if desired
-					onInput={Change}>
+					onInput={Change}
+				>
 					{JSON.stringify(_Value() ?? [], null, 2)}
 				</textarea>
 			)}

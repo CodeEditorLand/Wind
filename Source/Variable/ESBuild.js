@@ -1,60 +1,63 @@
-export const On = process.env["NODE_ENV"] === "development" ||
-    process.env["TAURI_ENV_DEBUG"] === "true";
+export const On =
+	process.env["NODE_ENV"] === "development" ||
+	process.env["TAURI_ENV_DEBUG"] === "true";
 /**
  * @module ESBuild
  *
  */
 export default {
-    color: true,
-    format: "esm",
-    logLevel: "debug",
-    metafile: true,
-    minify: !On,
-    outdir: "Target",
-    platform: "node",
-    target: "esnext",
-    tsconfig: "tsconfig.json",
-    write: true,
-    legalComments: On ? "inline" : "none",
-    bundle: false,
-    assetNames: "Asset/[name]-[hash]",
-    sourcemap: On,
-    drop: On ? [] : ["debugger"],
-    ignoreAnnotations: !On,
-    keepNames: On,
-    plugins: [
-        {
-            name: "Target",
-            setup({ onStart, initialOptions: { outdir } }) {
-                onStart(async () => {
-                    try {
-                        outdir
-                            ? await (await import("node:fs/promises")).rm(outdir, {
-                                recursive: true,
-                            })
-                            : {};
-                    }
-                    catch (_Error) {
-                        console.log(_Error);
-                    }
-                });
-            },
-        },
-        // @ts-expect-error
-        (await import("esbuild-plugin-copy")).copy({
-            resolveFrom: "out",
-            assets: [
-                {
-                    from: ["./Source/Script/Monaco/Theme/*.json"],
-                    to: ["./Script/Monaco/Theme/"],
-                },
-                {
-                    from: ["./Source/Stylesheet/**/*.scss"],
-                    to: ["./Stylesheet/"],
-                },
-            ],
-        }),
-        // @ts-expect-error
-        (await import("esbuild-plugin-solid")).solidPlugin(),
-    ],
+	color: true,
+	format: "esm",
+	logLevel: "debug",
+	metafile: true,
+	minify: !On,
+	outdir: "Target",
+	platform: "node",
+	target: "esnext",
+	tsconfig: "tsconfig.json",
+	write: true,
+	legalComments: On ? "inline" : "none",
+	bundle: false,
+	assetNames: "Asset/[name]-[hash]",
+	sourcemap: On,
+	drop: On ? [] : ["debugger"],
+	ignoreAnnotations: !On,
+	keepNames: On,
+	plugins: [
+		{
+			name: "Target",
+			setup({ onStart, initialOptions: { outdir } }) {
+				onStart(async () => {
+					try {
+						outdir
+							? await (await import("node:fs/promises")).rm(
+									outdir,
+									{
+										recursive: true,
+									},
+								)
+							: {};
+					} catch (_Error) {
+						console.log(_Error);
+					}
+				});
+			},
+		},
+		// @ts-expect-error
+		(await import("esbuild-plugin-copy")).copy({
+			resolveFrom: "out",
+			assets: [
+				{
+					from: ["./Source/Script/Monaco/Theme/*.json"],
+					to: ["./Script/Monaco/Theme/"],
+				},
+				{
+					from: ["./Source/Stylesheet/**/*.scss"],
+					to: ["./Stylesheet/"],
+				},
+			],
+		}),
+		// @ts-expect-error
+		(await import("esbuild-plugin-solid")).solidPlugin(),
+	],
 };
