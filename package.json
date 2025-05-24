@@ -43,11 +43,7 @@
 		"store": "2.0.12",
 		"tippy.js": "6.3.7",
 		"vite-plugin-node-polyfills": "0.23.0",
-<<<<<<< HEAD
 		"zod": "3.25.28"
-=======
-		"zod": "3.25.23"
->>>>>>> 2170c4dfbea17d88030f28b5cb7bbbc98227e05a
 	},
 	"devDependencies": {
 		"@playform/build": "0.2.4",
