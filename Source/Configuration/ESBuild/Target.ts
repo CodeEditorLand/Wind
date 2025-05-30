@@ -2,6 +2,8 @@ import type { BuildOptions } from "esbuild";
 
 export const On = (await import("./Wind.js")).On;
 
+export const Bundle = (await import("./Wind.js")).Bundle;
+
 /**
  * @module ESBuild
  *
@@ -31,6 +33,13 @@ export default async (Current: BuildOptions): Promise<BuildOptions> =>
 
 			outbase: "Source",
 
-			external: ["vs/*"],
+			external: Bundle
+				? [
+						"@tauri-apps/api/path",
+						"@tauri-apps/plugin-dialog",
+						"effect",
+						"vs/*",
+					]
+				: [],
 		},
 	);

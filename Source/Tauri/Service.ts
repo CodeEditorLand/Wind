@@ -1,9 +1,10 @@
 import type {
+	DialogFilter as TauriDialogFilter,
 	OpenDialogOptions as TauriOpenDialogOptions,
 	SaveDialogOptions as TauriSaveDialogOptions,
 } from "@tauri-apps/plugin-dialog";
-import { Effect, Option } from "effect";
-// Assuming these VSCode imports are correct relative to your project structure
+import { Context, Data, Effect, Layer, Option, pipe } from "effect";
+// VSCode specific imports
 import { Schemas } from "vs/base/common/network";
 import { URI } from "vs/base/common/uri";
 import { ICodeEditorService } from "vs/editor/browser/services/codeEditorService";
@@ -14,6 +15,7 @@ import { IConfigurationService } from "vs/platform/configuration/common/configur
 import {
 	IFileDialogService,
 	IDialogService as IVsCodeDialogService,
+	type FileFilter,
 	type IOpenDialogOptions,
 	type IPickAndOpenOptions,
 	type ISaveDialogOptions,
@@ -38,14 +40,14 @@ import { IHistoryService } from "vs/workbench/services/history/common/history";
 import { IHostService as IVsCodeHostService } from "vs/workbench/services/host/browser/host"; // Aliased
 import { IPathService } from "vs/workbench/services/path/common/pathService";
 
-// Import helpers and error types from our new file
+// Import helpers and error types
 import {
 	effectGetFinalDefaultPath,
 	effectOpenInHostService,
 	effectTauriMessageDialog,
 	effectTauriOpenDialog,
 	effectTauriSaveDialog,
-	HostService, // The Effect Tag
+	HostService,
 	makeFileToOpen,
 	makeFolderToOpen,
 	makeWorkspaceToOpen,
@@ -59,17 +61,78 @@ import {
 	vscodeFiltersToTauriFiltersOption,
 } from "../Effect/Tauri.js";
 
-// Combined error types for this service's operations
+// --- Error Union Types for this service ---
 type DialogOperationError = TauriPathError | TauriDialogError;
-
 type PickAndOpenServiceError = DialogOperationError | OpenWindowError;
+type FileDialogServiceError = PickAndOpenServiceError | SuperCallError;
+
+// --- Pure helper functions for constructing options (can remain here or be moved) ---
+// These helpers might use internal `const` for clarity, but are pure from outside.
+const _pureCreateTauriOpenDialogOptions = (
+	title: string,
+	isMultiple: boolean,
+	isDirectory: boolean,
+	defaultPathOpt: Option.Option<string>,
+	filtersOpt: Option.Option<TauriDialogFilter[]>,
+): TauriOpenDialogOptions =>
+	pipe(
+		{ title, multiple: isMultiple, directory } as TauriOpenDialogOptions,
+		(currentOpts) =>
+			Option.match(defaultPathOpt, {
+				onNone: () => currentOpts,
+				onSome: (dp) => ({ ...currentOpts, defaultPath: dp }),
+			}),
+		(currentOpts) =>
+			Option.match(filtersOpt, {
+				onNone: () => currentOpts,
+				onSome: (filters) => ({ ...currentOpts, filters }),
+			}),
+	);
+
+const _pureCreateTauriSaveDialogOptions = (
+	title: string,
+	defaultPathOpt: Option.Option<string>,
+	filtersOpt: Option.Option<TauriDialogFilter[]>,
+): TauriSaveDialogOptions =>
+	pipe(
+		{ title } as TauriSaveDialogOptions,
+		(currentOpts) =>
+			Option.match(defaultPathOpt, {
+				onNone: () => currentOpts,
+				onSome: (dp) => ({ ...currentOpts, defaultPath: dp }),
+			}),
+		(currentOpts) =>
+			Option.match(filtersOpt, {
+				onNone: () => currentOpts,
+				onSome: (filters) => ({ ...currentOpts, filters }),
+			}),
+	);
+
+const _pureCreateOpenWindowOptions = (
+	options: IPickAndOpenOptions,
+): IOpenWindowOptions =>
+	pipe(
+		{
+			forceNewWindow: options.forceNewWindow ?? false,
+		} as IOpenWindowOptions,
+		(currentOpts) =>
+			typeof (options as any).forceReuseWindow === "boolean"
+				? {
+						...currentOpts,
+						forceReuseWindow: (options as any).forceReuseWindow,
+					}
+				: currentOpts,
+		(currentOpts) =>
+			options.remoteAuthority !== undefined
+				? { ...currentOpts, remoteAuthority: options.remoteAuthority }
+				: currentOpts,
+	);
 
 export class TauriFileDialogService
 	extends AbstractFileDialogService
 	implements IFileDialogService
 {
 	override readonly _serviceBrand: undefined;
-
 	private readonly effectHostService: IVsCodeHostService;
 
 	constructor(
@@ -111,329 +174,260 @@ export class TauriFileDialogService
 			codeEditorService,
 			logService,
 		);
-
 		this.effectHostService = hostService;
-
 		this._serviceBrand = undefined;
 	}
 
-	// Helper to run effects and provide HostService context
-	private runEffect<A, E>(
+	private runEffect<A, E extends FileDialogServiceError>(
 		effect: Effect.Effect<A, E, HostService>,
 	): Promise<A> {
 		return Effect.runPromise(
 			Effect.provideService(effect, HostService, this.effectHostService),
 		);
 	}
-
-	private runEffectOption<A, E>(
+	private runEffectOption<A, E extends FileDialogServiceError>(
 		effect: Effect.Effect<Option.Option<A>, E, HostService>,
 	): Promise<A | undefined> {
 		return this.runEffect(effect.pipe(Effect.map(Option.getOrUndefined)));
 	}
-
-	private runEffectToVoid<E>(
+	private runEffectToVoid<E extends FileDialogServiceError>(
 		effect: Effect.Effect<any, E, HostService>,
 	): Promise<void> {
 		return this.runEffect(Effect.void(effect));
 	}
 
-	// --- Internal Effect-based Logic ---
+	// --- Internal Effect-based Logic (Maximally Piped) ---
 
 	private _pickAndOpenLogic(
 		options: IPickAndOpenOptions,
 		dialogConfig: {
-			titleKey: string; // For localization or default title
+			titleKey: string;
 			defaultTitle: string;
-
 			tauriDirectory: boolean;
-
 			itemType: "file" | "folder" | "workspace";
-
 			defaultWorkspaceFilter?: boolean;
 		},
 	): Effect.Effect<void, PickAndOpenServiceError, HostService> {
-		return Effect.gen(function* ($) {
-			const specificOptions = options as IPickAndOpenOptions &
-				Partial<IOpenDialogOptions>;
-
-			const defaultPathOption = yield* $(
-				effectGetFinalDefaultPath(specificOptions.defaultUri),
-			);
-
-			const tauriDialogOpts: TauriOpenDialogOptions = {
-				title:
-					specificOptions.title ||
-					localize(dialogConfig.titleKey, dialogConfig.defaultTitle),
-				multiple: false,
-				directory: dialogConfig.tauriDirectory,
-			};
-
-			Option.tap(defaultPathOption, (dp) =>
-				Effect.sync(() => {
-					tauriDialogOpts.defaultPath = dp;
-				}),
-			);
-
-			if (dialogConfig.itemType !== "folder") {
-				// Files or Workspaces might have filters
-				let tauriFiltersOption = vscodeFiltersToTauriFiltersOption(
-					specificOptions.filters,
-				);
-
-				if (
-					dialogConfig.defaultWorkspaceFilter &&
-					Option.isNone(tauriFiltersOption)
-				) {
-					tauriFiltersOption = Option.some([
-						{
-							name: "VS Code Workspace",
-							extensions: ["code-workspace"],
-						},
-					]);
-				}
-				Option.tap(tauriFiltersOption, (filters) =>
-					Effect.sync(() => {
-						tauriDialogOpts.filters = filters;
-					}),
-				);
-			}
-
-			const selectedOption = yield* $(
+		return pipe(
+			effectGetFinalDefaultPath(
+				(options as IPickAndOpenOptions & Partial<IOpenDialogOptions>)
+					.defaultUri,
+			),
+			Effect.map(
+				(
+					defaultPathOpt, // Result of previous Effect is defaultPathOpt
+				) =>
+					_pureCreateTauriOpenDialogOptions(
+						// This is a pure function
+						(
+							options as IPickAndOpenOptions &
+								Partial<IOpenDialogOptions>
+						).title ||
+							localize(
+								dialogConfig.titleKey,
+								dialogConfig.defaultTitle,
+							),
+						false, // multiple
+						dialogConfig.tauriDirectory,
+						defaultPathOpt,
+						pipe(
+							// Pure computation for filters
+							vscodeFiltersToTauriFiltersOption(
+								(
+									options as IPickAndOpenOptions &
+										Partial<IOpenDialogOptions>
+								).filters,
+							),
+							Option.orElse(() =>
+								dialogConfig.defaultWorkspaceFilter
+									? Option.some([
+											{
+												name: "VS Code Workspace",
+												extensions: ["code-workspace"],
+											} as TauriDialogFilter,
+										])
+									: Option.none(),
+							),
+							Option.filter(
+								() => dialogConfig.itemType !== "folder",
+							), // Only apply if not folder
+						),
+					),
+			),
+			Effect.flatMap((tauriDialogOpts) =>
 				effectTauriOpenDialog(tauriDialogOpts),
-			);
-
-			const selectedUriOption =
-				processTauriOpenResultToSingleUriOption(selectedOption);
-
-			yield* $(
-				Option.matchEffect(selectedUriOption, {
+			),
+			Effect.map(processTauriOpenResultToSingleUriOption),
+			Effect.flatMap(
+				Option.matchEffect({
 					onNone: () => Effect.void,
-					onSome: (uri) => {
-						const openWindowOpts: IOpenWindowOptions = {
-							forceNewWindow: options.forceNewWindow ?? false,
-						};
-
-						if (
-							typeof (options as any).forceReuseWindow ===
-							"boolean"
-						) {
-							openWindowOpts.forceReuseWindow = (
-								options as any
-							).forceReuseWindow;
-						}
-						if (options.remoteAuthority !== undefined) {
-							openWindowOpts.remoteAuthority =
-								options.remoteAuthority;
-						}
-
-						let itemToOpen:
-							| IFolderToOpen
-							| IFileToOpen
-							| IWorkspaceToOpen;
-
-						if (dialogConfig.itemType === "folder")
-							itemToOpen = makeFolderToOpen(uri);
-						else if (dialogConfig.itemType === "file")
-							itemToOpen = makeFileToOpen(uri);
-						else itemToOpen = makeWorkspaceToOpen(uri); // workspace
-
-						return effectOpenInHostService(
-							[itemToOpen],
-							openWindowOpts,
-						);
-					},
+					onSome: (uri) =>
+						effectOpenInHostService(
+							[
+								dialogConfig.itemType === "folder"
+									? makeFolderToOpen(uri)
+									: dialogConfig.itemType === "file"
+										? makeFileToOpen(uri)
+										: makeWorkspaceToOpen(uri),
+							],
+							_pureCreateOpenWindowOptions(options),
+						),
 				}),
-			);
-		});
+			),
+		);
 	}
 
 	private _showOpenDialogLogic(
 		options: IOpenDialogOptions,
 	): Effect.Effect<Option.Option<URI[]>, DialogOperationError, HostService> {
-		return Effect.gen(function* ($) {
-			const defaultPathOption = yield* $(
-				effectGetFinalDefaultPath(options.defaultUri),
-			);
-
-			const tauriOptions: TauriOpenDialogOptions = {
-				title: options.title || localize("open", "Open"),
-				multiple: !!options.canSelectMany,
-				directory: false, // Default to files
-			};
-
-			Option.tap(defaultPathOption, (dp) =>
-				Effect.sync(() => {
-					tauriOptions.defaultPath = dp;
-				}),
-			);
-
-			Option.tap(
-				vscodeFiltersToTauriFiltersOption(options.filters),
-				(filters) =>
-					Effect.sync(() => {
-						tauriOptions.filters = filters;
-					}),
-			);
-
-			if (options.canSelectFolders) {
-				tauriOptions.directory = true;
-
-				if (options.canSelectFiles) {
-					// Tauri cannot select both files and folders. Prioritizing folders.
-					// Log a warning if necessary.
-					yield* $(
-						Effect.logWarning(
-							"Tauri 'open' dialog cannot select both files and folders. Prioritizing folders.",
+		return pipe(
+			effectGetFinalDefaultPath(options.defaultUri),
+			Effect.flatMap((defaultPathOpt) =>
+				pipe(
+					options.canSelectFolders && options.canSelectFiles
+						? Effect.logWarning(
+								"Tauri 'open' dialog cannot select both files and folders. Prioritizing folders.",
+							)
+						: Effect.void,
+					Effect.andThen(() =>
+						effectTauriOpenDialog(
+							_pureCreateTauriOpenDialogOptions(
+								options.title || localize("open", "Open"),
+								!!options.canSelectMany,
+								!!options.canSelectFolders, // if canSelectFiles is also true, directory becomes true
+								!!options.canSelectFiles,
+								defaultPathOpt,
+								vscodeFiltersToTauriFiltersOption(
+									options.filters,
+								),
+							),
 						),
-					);
-				}
-			}
-			// If only canSelectFiles is true, directory remains false (default).
-
-			const selectedOption = yield* $(
-				effectTauriOpenDialog(tauriOptions),
-			);
-
-			return processTauriOpenResultToUriArrayOption(selectedOption);
-		});
+					),
+				),
+			),
+			Effect.map(processTauriOpenResultToUriArrayOption),
+		);
 	}
 
 	private _showSaveDialogLogic(
 		options: ISaveDialogOptions,
 	): Effect.Effect<Option.Option<URI>, DialogOperationError, HostService> {
-		return Effect.gen(function* ($) {
-			const tauriOptions: TauriSaveDialogOptions = {
-				title: options.title || localize("saveAsTitle", "Save As"),
-			};
-
-			Option.tap(
-				yield* $(effectGetFinalDefaultPath(options.defaultUri)),
-				(dp) =>
-					Effect.sync(() => {
-						tauriOptions.defaultPath = dp;
-					}),
-			);
-
-			Option.tap(
-				vscodeFiltersToTauriFiltersOption(options.filters),
-				(filters) =>
-					Effect.sync(() => {
-						tauriOptions.filters = filters;
-					}),
-			);
-
-			return processTauriSaveResultToUriOption(
-				yield* $(effectTauriSaveDialog(tauriOptions)),
-			);
-		});
+		return pipe(
+			effectGetFinalDefaultPath(options.defaultUri),
+			Effect.map((defaultPathOpt) =>
+				_pureCreateTauriSaveDialogOptions(
+					options.title || localize("saveAsTitle", "Save As"),
+					defaultPathOpt,
+					vscodeFiltersToTauriFiltersOption(options.filters),
+				),
+			),
+			Effect.flatMap((tauriSaveOpts) =>
+				effectTauriSaveDialog(tauriSaveOpts),
+			),
+			Effect.map(processTauriSaveResultToUriOption),
+		);
 	}
 
 	// --- Public IFileDialogService Methods ---
-
 	public override async pickFileToSave(
 		defaultUri: URI,
 		availableFileSystems?: string[],
 	): Promise<URI | undefined> {
-		const options: ISaveDialogOptions = this.getPickFileToSaveDialogOptions(
-			defaultUri,
-			availableFileSystems,
+		return this.runEffectOption(
+			this._showSaveDialogLogic(
+				// Pure construction of ISaveDialogOptions
+				((uri, systems) => {
+					const opts = this.getPickFileToSaveDialogOptions(
+						uri,
+						systems,
+					);
+					if (opts.title === undefined)
+						opts.title = localize("saveAsTitle", "Save As");
+					return opts;
+				})(defaultUri, availableFileSystems),
+			),
 		);
-
-		if (options.title === undefined) {
-			options.title = localize("saveAsTitle", "Save As");
-		}
-		const effect = this._showSaveDialogLogic(options);
-
-		return this.runEffectOption(effect);
 	}
 
 	override async pickFileFolderAndOpen(
 		options: IPickAndOpenOptions,
 	): Promise<void> {
-		// Defaulting to folder selection logic for this ambiguous VSCode method name
-		const logicEffect = this._pickAndOpenLogic(options, {
-			titleKey: "openFileOrFolderDefaultTitle", // Example localization key
-			defaultTitle: "Open File or Folder",
-			tauriDirectory: true,
-			itemType: "folder",
-		});
-
-		return this.runEffectToVoid(logicEffect);
+		return this.runEffectToVoid(
+			this._pickAndOpenLogic(options, {
+				titleKey: "openFileOrFolderDefaultTitle",
+				defaultTitle: "Open File or Folder",
+				tauriDirectory: true,
+				itemType: "folder",
+			}),
+		);
 	}
 
 	override async pickFileAndOpen(
 		options: IPickAndOpenOptions,
 	): Promise<void> {
-		const logicEffect = this._pickAndOpenLogic(options, {
-			titleKey: "openFileDefaultTitle",
-			defaultTitle: "Open File",
-			tauriDirectory: false,
-			itemType: "file",
-		});
-
-		return this.runEffectToVoid(logicEffect);
+		return this.runEffectToVoid(
+			this._pickAndOpenLogic(options, {
+				titleKey: "openFileDefaultTitle",
+				defaultTitle: "Open File",
+				tauriDirectory: false,
+				itemType: "file",
+			}),
+		);
 	}
 
 	override async pickFolderAndOpen(
 		options: IPickAndOpenOptions,
 	): Promise<void> {
-		const logicEffect = this._pickAndOpenLogic(options, {
-			titleKey: "openFolderDefaultTitle",
-			defaultTitle: "Open Folder",
-			tauriDirectory: true,
-			itemType: "folder",
-		});
-
-		return this.runEffectToVoid(logicEffect);
+		return this.runEffectToVoid(
+			this._pickAndOpenLogic(options, {
+				titleKey: "openFolderDefaultTitle",
+				defaultTitle: "Open Folder",
+				tauriDirectory: true,
+				itemType: "folder",
+			}),
+		);
 	}
 
 	override async pickWorkspaceAndOpen(
 		options: IPickAndOpenOptions,
 	): Promise<void> {
-		const logicEffect = this._pickAndOpenLogic(options, {
-			titleKey: "openWorkspaceDefaultTitle",
-			defaultTitle: "Open Workspace",
-			tauriDirectory: false, // Workspaces are files
-			itemType: "workspace",
-			defaultWorkspaceFilter: true,
-		});
-
-		return this.runEffectToVoid(logicEffect);
+		return this.runEffectToVoid(
+			this._pickAndOpenLogic(options, {
+				titleKey: "openWorkspaceDefaultTitle",
+				defaultTitle: "Open Workspace",
+				tauriDirectory: false,
+				itemType: "workspace",
+				defaultWorkspaceFilter: true,
+			}),
+		);
 	}
 
 	override async showOpenDialog(
 		options: IOpenDialogOptions,
 	): Promise<URI[] | undefined> {
-		const effect = this._showOpenDialogLogic(options);
-
-		// If Option is None, map to undefined; otherwise, map Some<URI[]> to URI[]
-		return this.runEffect(effect.pipe(Effect.map(Option.getOrUndefined)));
+		return this.runEffectOption(
+			this._showOpenDialogLogic(options).pipe(
+				Effect.map(Option.getOrElse(() => [] as URI[])),
+			),
+		);
 	}
 
 	override async showSaveDialog(
 		options: ISaveDialogOptions,
 	): Promise<URI | undefined> {
-		const effect = this._showSaveDialogLogic(options);
-
-		return this.runEffectOption(effect);
+		return this.runEffectOption(this._showSaveDialogLogic(options));
 	}
 
 	// --- Other Protected Methods ---
-
 	protected override async showUnsupportedBrowserWarning(
 		context: "open" | "save",
 	): Promise<undefined> {
-		const message = `The requested file operation (${context}) might not be fully optimal in this environment.`;
-
-		// This effect does not require HostService from context, so can be run directly
 		await Effect.runPromise(
-			effectTauriMessageDialog(message, {
-				title: "Notice",
-				kind: "warning",
-			}),
+			effectTauriMessageDialog(
+				`The requested file operation (${context}) might not be fully optimal in this environment.`,
+				{ title: "Notice", kind: "warning" },
+			),
 		);
-
 		return undefined;
 	}
 
@@ -445,28 +439,29 @@ export class TauriFileDialogService
 		) {
 			return false;
 		}
-		// If AbstractFileDialogService.shouldUseSimplified exists and is meaningful:
-		// try {
-		//   return super.shouldUseSimplified(schema);
-
-		// } catch {
-		//   // Fallback if super method doesn't exist or throws
-		//   return true;
-
-		// }
-		return true; // Default for non-local schemes
+		try {
+			return super.shouldUseSimplified(schema);
+		} catch {
+			return true;
+		}
 	}
 
-	private effectFromSuperPromise<T, Args extends any[]>(
+	private _effectFromSuperPromise<T, Args extends any[]>(
 		methodName: string,
-		superFn: (...args: Args) => Promise<T>,
-	): (...args: Args) => Effect.Effect<T, SuperCallError, HostService> {
+		superFn: (...args: Args) => Promise<T | undefined>,
+	): (
+		...args: Args
+	) => Effect.Effect<Option.Option<T>, SuperCallError, HostService> {
+		// Assuming HostService if super might use it, else never
 		return (...args: Args) =>
-			Effect.tryPromise({
-				try: () => superFn.apply(this, args), // Ensure 'this' context is correct for super call
-				catch: (e) =>
-					new SuperCallError({ method: methodName, cause: e }),
-			});
+			pipe(
+				Effect.tryPromise({
+					try: () => superFn.apply(this, args),
+					catch: (e) =>
+						new SuperCallError({ method: methodName, cause: e }),
+				}),
+				Effect.map(Option.fromNullable),
+			);
 	}
 
 	protected override async pickFileToSaveSimplified(
@@ -474,21 +469,19 @@ export class TauriFileDialogService
 		options: ISaveDialogOptions,
 	): Promise<URI | undefined> {
 		if (schema === Schemas.file) {
-			const effect = this._showSaveDialogLogic({
-				...options,
-				title: options.title ?? localize("saveAsTitle", "Save As"),
-			});
-
-			return this.runEffectOption(effect);
+			return this.runEffectOption(
+				this._showSaveDialogLogic({
+					...options,
+					title: options.title ?? localize("saveAsTitle", "Save As"),
+				}),
+			);
 		}
-		const superCallEffect = this.effectFromSuperPromise(
-			"pickFileToSaveSimplified",
-			super.pickFileToSaveSimplified,
-		)(schema, options);
-
 		return this.runEffectOption(
-			superCallEffect.pipe(Effect.map(Option.fromNullable)),
-		); // Super might return undefined directly
+			this._effectFromSuperPromise(
+				"pickFileToSaveSimplified",
+				super.pickFileToSaveSimplified,
+			)(schema, options),
+		);
 	}
 
 	protected override async pickFileAndOpenSimplified(
@@ -497,21 +490,21 @@ export class TauriFileDialogService
 		remote: boolean,
 	): Promise<void> {
 		if (schema === Schemas.file) {
-			const logicEffect = this._pickAndOpenLogic(options, {
-				titleKey: "openFileDefaultTitle",
-				defaultTitle: "Open File",
-				tauriDirectory: false,
-				itemType: "file",
-			});
-
-			return this.runEffectToVoid(logicEffect);
+			return this.runEffectToVoid(
+				this._pickAndOpenLogic(options, {
+					titleKey: "openFileDefaultTitle",
+					defaultTitle: "Open File",
+					tauriDirectory: false,
+					itemType: "file",
+				}),
+			);
 		}
-		const superCallEffect = this.effectFromSuperPromise(
-			"pickFileAndOpenSimplified",
-			super.pickFileAndOpenSimplified,
-		)(schema, options, remote);
-
-		return this.runEffectToVoid(superCallEffect);
+		return this.runEffectToVoid(
+			this._effectFromSuperPromise(
+				"pickFileAndOpenSimplified",
+				super.pickFileAndOpenSimplified,
+			)(schema, options, remote),
+		);
 	}
 
 	protected override async pickFolderAndOpenSimplified(
@@ -519,21 +512,21 @@ export class TauriFileDialogService
 		options: IPickAndOpenOptions,
 	): Promise<void> {
 		if (schema === Schemas.file) {
-			const logicEffect = this._pickAndOpenLogic(options, {
-				titleKey: "openFolderDefaultTitle",
-				defaultTitle: "Open Folder",
-				tauriDirectory: true,
-				itemType: "folder",
-			});
-
-			return this.runEffectToVoid(logicEffect);
+			return this.runEffectToVoid(
+				this._pickAndOpenLogic(options, {
+					titleKey: "openFolderDefaultTitle",
+					defaultTitle: "Open Folder",
+					tauriDirectory: true,
+					itemType: "folder",
+				}),
+			);
 		}
-		const superCallEffect = this.effectFromSuperPromise(
-			"pickFolderAndOpenSimplified",
-			super.pickFolderAndOpenSimplified,
-		)(schema, options);
-
-		return this.runEffectToVoid(superCallEffect);
+		return this.runEffectToVoid(
+			this._effectFromSuperPromise(
+				"pickFolderAndOpenSimplified",
+				super.pickFolderAndOpenSimplified,
+			)(schema, options),
+		);
 	}
 
 	protected override async pickWorkspaceAndOpenSimplified(
@@ -541,21 +534,21 @@ export class TauriFileDialogService
 		options: IPickAndOpenOptions,
 	): Promise<void> {
 		if (schema === Schemas.file) {
-			const logicEffect = this._pickAndOpenLogic(options, {
-				titleKey: "openWorkspaceDefaultTitle",
-				defaultTitle: "Open Workspace",
-				tauriDirectory: false,
-				itemType: "workspace",
-				defaultWorkspaceFilter: true,
-			});
-
-			return this.runEffectToVoid(logicEffect);
+			return this.runEffectToVoid(
+				this._pickAndOpenLogic(options, {
+					titleKey: "openWorkspaceDefaultTitle",
+					defaultTitle: "Open Workspace",
+					tauriDirectory: false,
+					itemType: "workspace",
+					defaultWorkspaceFilter: true,
+				}),
+			);
 		}
-		const superCallEffect = this.effectFromSuperPromise(
-			"pickWorkspaceAndOpenSimplified",
-			super.pickWorkspaceAndOpenSimplified,
-		)(schema, options);
-
-		return this.runEffectToVoid(superCallEffect);
+		return this.runEffectToVoid(
+			this._effectFromSuperPromise(
+				"pickWorkspaceAndOpenSimplified",
+				super.pickWorkspaceAndOpenSimplified,
+			)(schema, options),
+		);
 	}
 }

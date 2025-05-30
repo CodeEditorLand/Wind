@@ -1,4 +1,4 @@
-import { Context, Data, Effect, Option, pipe } from "effect";
+import { Context, Data, Effect, Option } from "effect";
 
 /**
  * A function that returns a Promise.
@@ -13,7 +13,7 @@ type PromiseProvider<Args extends any[], R> = (...args: Args) => Promise<R>;
  * @template TEffectError - The custom error type, extends Data.TaggedError.
  */
 type ErrorFactory<
-	PErrorPayload extends Record<string, any>,
+	PErrorPayload extends Record<string, any>, // Properties specific to this error (excluding cause)
 	TEffectError extends Data.TaggedError<
 		string,
 		{ cause: unknown } & PErrorPayload
@@ -23,11 +23,6 @@ type ErrorFactory<
 /**
  * Creates a function that wraps a standard promise-returning API call into an Effect.
  * The generated function will take the same arguments as the original API.
- *
- * @param apiFn - The promise-returning function to wrap.
- * @param errorFactory - A factory function to create a custom error on promise rejection.
- * @param staticErrorPayload - The static part of the payload for the errorFactory (values known at generation time).
- * @returns A function (...args: Args) => Effect.Effect<R, TEffectError>.
  */
 export function makeEffectFromPromise<
 	Args extends any[],
@@ -45,7 +40,7 @@ export function makeEffectFromPromise<
 	return (...args: Args) =>
 		Effect.tryPromise({
 			try: () => apiFn(...args),
-			catch: (cause: any) =>
+			catch: (cause) =>
 				errorFactory({ ...staticErrorPayload, cause } as {
 					cause: unknown;
 				} & PErrorPayload),
@@ -55,11 +50,6 @@ export function makeEffectFromPromise<
 /**
  * Creates a function that wraps a promise-returning API (that might return null/undefined for "not found")
  * into an Effect that yields an Option.
- *
- * @param apiFn - The promise-returning function (may resolve to R | null | undefined).
- * @param errorFactory - A factory function for errors during promise execution (not for null/undefined result).
- * @param staticErrorPayload - Static properties for the custom error.
- * @returns A function (...args: Args) => Effect.Effect<Option.Option<R>, TEffectError>.
  */
 export function makeEffectOptionFromPromise<
 	Args extends any[],
@@ -77,7 +67,7 @@ export function makeEffectOptionFromPromise<
 	return (...args: Args) =>
 		Effect.tryPromise({
 			try: () => apiFn(...args),
-			catch: (cause: any) =>
+			catch: (cause) =>
 				errorFactory({ ...staticErrorPayload, cause } as {
 					cause: unknown;
 				} & PErrorPayload),
@@ -86,13 +76,6 @@ export function makeEffectOptionFromPromise<
 
 /**
  * Creates a function that wraps a call to a method of a service retrieved from Effect's Context.
- * The generated function takes the arguments of the service method.
- *
- * @param ServiceTag - The Context.Tag for the service.
- * @param methodName - The literal name of the method on the service interface.
- * @param errorFactory - A factory function to create a custom error on method promise rejection.
- * @param staticErrorPayload - Static properties for the custom error.
- * @returns A function (...args: MethodArgs) => Effect.Effect<MethodResult, TEffectError, S_Interface>.
  */
 export function makeEffectFromServiceMethod<
 	S_Interface,
@@ -129,34 +112,23 @@ export function makeEffectFromServiceMethod<
 	...args: MethodArgs
 ) => Effect.Effect<MethodResult, TEffectError, S_Interface> {
 	return (...args: MethodArgs) =>
-		Effect.flatMap(
-			ServiceTag,
-			(service: {
-				[x: string]: (...mArgs: MethodArgs) => Promise<MethodResult>;
-			}) => {
-				const method = service[methodName] as (
-					...mArgs: MethodArgs
-				) => Promise<MethodResult>;
-				return Effect.tryPromise({
-					try: () => method.apply(service, args),
-					catch: (cause: any) =>
-						errorFactory({ ...staticErrorPayload, cause } as {
-							cause: unknown;
-						} & PErrorPayload),
-				});
-			},
-		);
+		Effect.flatMap(ServiceTag, (service) => {
+			const method = service[methodName] as (
+				...mArgs: MethodArgs
+			) => Promise<MethodResult>;
+			return Effect.tryPromise({
+				try: () => method.apply(service, args),
+				catch: (cause) =>
+					errorFactory({ ...staticErrorPayload, cause } as {
+						cause: unknown;
+					} & PErrorPayload),
+			});
+		});
 }
 
 /**
  * Creates a function that wraps a call to a service method (that might return null/undefined)
  * into an Effect that yields an Option.
- *
- * @param ServiceTag - The Context.Tag for the service.
- * @param methodName - The literal name of the method on the service.
- * @param errorFactory - Factory for errors during method execution (not for null/undefined result).
- * @param staticErrorPayload - Static properties for the custom error.
- * @returns A function (...args: MethodArgs) => Effect.Effect<Option.Option<MethodResult>, TEffectError, S_Interface>.
  */
 export function makeEffectOptionFromServiceMethod<
 	S_Interface,
@@ -193,43 +165,16 @@ export function makeEffectOptionFromServiceMethod<
 	...args: MethodArgs
 ) => Effect.Effect<Option.Option<MethodResult>, TEffectError, S_Interface> {
 	return (...args: MethodArgs) =>
-		Effect.flatMap(
-			ServiceTag,
-			(service: {
-				[x: string]: (
-					...mArgs: MethodArgs
-				) => Promise<MethodResult | null | undefined>;
-			}) => {
-				const method = service[methodName] as (
-					...mArgs: MethodArgs
-				) => Promise<MethodResult | null | undefined>;
-				return Effect.tryPromise({
-					try: () => method.apply(service, args),
-					catch: (cause: any) =>
-						errorFactory({ ...staticErrorPayload, cause } as {
-							cause: unknown;
-						} & PErrorPayload),
-				}).pipe(Effect.map(Option.fromNullable));
-			},
-		);
-}
-
-/**
- * Creates an Effect that tries a primary Effect yielding an Option,
- * and if it's None, tries a fallback Effect also yielding an Option.
- * If the primary Effect fails with E1, that error is propagated, and fallback is not tried.
- */
-export function createOptionFallbackEffect<A, E1, R1, E2, R2>(
-	primaryEffect: Effect.Effect<Option.Option<A>, E1, R1>,
-	fallbackEffect: Effect.Effect<Option.Option<A>, E2, R2>,
-): Effect.Effect<Option.Option<A>, E1 | E2, R1 | R2> {
-	return pipe(
-		primaryEffect,
-		Effect.flatMap(
-			Option.match({
-				onSome: (value: any) => Effect.succeed(Option.some(value)),
-				onNone: () => fallbackEffect,
-			}),
-		),
-	);
+		Effect.flatMap(ServiceTag, (service) => {
+			const method = service[methodName] as (
+				...mArgs: MethodArgs
+			) => Promise<MethodResult | null | undefined>;
+			return Effect.tryPromise({
+				try: () => method.apply(service, args),
+				catch: (cause) =>
+					errorFactory({ ...staticErrorPayload, cause } as {
+						cause: unknown;
+					} & PErrorPayload),
+			}).pipe(Effect.map(Option.fromNullable));
+		});
 }
