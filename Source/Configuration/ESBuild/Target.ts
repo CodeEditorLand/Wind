@@ -33,13 +33,13 @@ export default async (Current: BuildOptions): Promise<BuildOptions> =>
 
 			outbase: "Source",
 
-			external: Bundle
-				? [
-						"@tauri-apps/api/path",
-						"@tauri-apps/plugin-dialog",
-						"effect",
-						"vs/*",
-					]
-				: [],
+			// external: Bundle
+			// 	? [
+			// 			"@tauri-apps/api/path",
+			// 			"@tauri-apps/plugin-dialog",
+			// 			"effect",
+			// 			"vs/*",
+			// 		]
+			// 	: [],
 		},
 	);

@@ -1,0 +1,28 @@
+// Integration/Tauri/Convert/FiltersToTauri.ts
+// Purpose: Purely converts VSCode FileFilter array to TauriDialogFilter array.
+
+import { Option, pipe } from "effect";
+
+import type { FileFilter as VsCodeFilter } from "../../../Platform/VSCode/Types.js"; // VSCode FileFilter
+import type { Filter as TauriFilter } from "../Types.js"; // Tauri DialogFilter
+
+/**
+ * @module FiltersToTauri
+ * @description Converts an array of VSCode FileFilters to an optional array of Tauri DialogFilters.
+ * Returns Option.none() if the input array is null, undefined, or empty.
+ */
+export default function Convert(
+	MaybeFilters?: readonly VsCodeFilter[],
+): Option.Option<TauriFilter[]> {
+	return pipe(
+		Option.fromNullable(MaybeFilters),
+		Option.filter((FiltersArray) => FiltersArray.length > 0),
+		Option.map((FiltersArray) =>
+			FiltersArray.map((AFilter: VsCodeFilter) => ({
+				// Renamed 'f' to 'AFilter'
+				name: AFilter.name,
+				extensions: [...AFilter.extensions],
+			})),
+		),
+	);
+}

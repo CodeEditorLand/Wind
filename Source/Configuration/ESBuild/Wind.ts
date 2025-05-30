@@ -30,7 +30,6 @@ export default {
 	drop: On ? [] : ["debugger"],
 	ignoreAnnotations: !On,
 	keepNames: On,
-	splitting: true,
 	plugins: [
 		{
 			name: "Target",
