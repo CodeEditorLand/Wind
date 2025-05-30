@@ -1,6 +1,7 @@
 export const On = process.env["NODE_ENV"] === "development" ||
     process.env["TAURI_ENV_DEBUG"] === "true";
 export const Clean = process.env["Clean"] === "true";
+export const Bundle = process.env["Bundle"] === "true";
 /**
  * @module ESBuild
  *
@@ -17,12 +18,13 @@ export default {
     tsconfig: "tsconfig.json",
     write: true,
     legalComments: On ? "inline" : "none",
-    bundle: false,
+    bundle: Bundle,
     assetNames: "Asset/[name]-[hash]",
     sourcemap: On,
     drop: On ? [] : ["debugger"],
     ignoreAnnotations: !On,
     keepNames: On,
+    splitting: true,
     plugins: [
         {
             name: "Target",
