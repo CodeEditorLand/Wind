@@ -1,5 +1,7 @@
+
+
 // Integration/Tauri/Wrappers.ts
-// Purpose: Aggregates Effect wrappers for Tauri & related APIs.
+// Purpose: Aggregates Effect wrappers for Tauri and related HostService APIs.
 
 export { default as FetchHomeDirectory } from "./Wrap/FetchHomeDirectory.js";
 export { default as FetchDocumentDirectory } from "./Wrap/FetchDocumentDirectory.js";

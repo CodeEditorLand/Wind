@@ -2,12 +2,11 @@
 
 import { Context, Effect, type Data } from "effect";
 
-import type ErrorProducer from "./Type/ErrorProducer.js"; // Adjusted path
+import type { ErrorProducer } from "./Type.js"; // Use type aggregator
 
 /**
  * @module FromMethod
- * @description Factory to create an Effect by calling a method on a service
- * retrieved from the Effect Context.
+ * @description Creates an Effect by calling a method on a service from Context.
  */
 export default function FromMethod<
 	Interface,

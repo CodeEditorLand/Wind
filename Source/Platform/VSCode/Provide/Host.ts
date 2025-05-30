@@ -1,34 +1,33 @@
 // Platform/VSCode/Provide/Host.ts
-// Purpose: Defines the Tag and Interface for VSCode's IHostService.
+// Purpose: Defines Tag and Interface for VSCode's IHostService.
 
 import { Context } from "effect";
 
-// Assuming types are aggregated if not directly imported
 import type {
 	FileOpenSpecification,
 	FolderOpenSpecification,
-	WindowOption,
+	WindowOpenOption,
 	WorkspaceOpenSpecification,
 } from "../Types.js";
 
 /**
- * @module Host (Service Interface: PerformHostAction)
- * @description Interface for a service that can open new windows or handle host-level operations.
- * Renamed from IHostService for action-orientation.
+ * @module Host (Service Interface: PerformAction)
+ * @description Interface for host-level actions, like opening windows.
  */
-export interface PerformHostAction {
+export interface PerformAction {
+	// Renamed IHostService to be more action-oriented
 	openWindow(
 		targets: ReadonlyArray<
 			| FolderOpenSpecification
 			| FileOpenSpecification
 			| WorkspaceOpenSpecification
 		>,
-		config?: WindowOption,
+		config?: WindowOpenOption, // Renamed parameter
 	): Promise<void>;
 }
 
 /**
  * @description Tag for accessing the HostService.
  */
-const Host = Context.Tag<PerformHostAction>("vscode/HostService");
-export default Host;
+const Tag = Context.Tag<PerformAction>("vscode/HostService"); // Tag ID remains for potential interop
+export default Tag;

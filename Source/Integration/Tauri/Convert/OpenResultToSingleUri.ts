@@ -1,9 +1,12 @@
 // Integration/Tauri/Convert/OpenResultToSingleUri.ts
-// Purpose: Purely processes Tauri's open dialog result (Option<string | string[]>) to Option<URI>.
+// Purpose: Purely processes Tauri's open dialog result (Option<string | string[]>) to Option<Uri>.
 
 import { Option, pipe } from "effect";
 
-import { Uri } from "../../../Platform/VSCode/Types.js"; // VSCode URI
+import {
+	UriConstructor as UriFileFactory,
+	type Uri,
+} from "../../../Platform/VSCode/Types.js"; // For Uri.file() and Uri type
 
 /**
  * @module OpenResultToSingleUri
@@ -19,6 +22,6 @@ export default function Convert(
 			(SelectedValue): SelectedValue is string =>
 				typeof SelectedValue === "string" && SelectedValue.length > 0,
 		),
-		Option.map((PathString) => Uri.file(PathString)), // Use Uri.file static method
+		Option.map((PathString) => UriFileFactory.file(PathString)),
 	);
 }

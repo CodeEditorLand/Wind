@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../Source/Integration/Tauri/Convert/UriToPathString.ts"],
+  "sourcesContent": ["// Integration/Tauri/Convert/UriToPathString.ts\n// Purpose: Purely converts a VSCode URI to an optional Tauri-compatible file system path string.\n\nimport { Option, pipe } from \"effect\";\n\n// Use types from the Platform/VSCode type aggregator\nimport {\n\tScheme,\n\tUriConstructor,\n\ttype Uri,\n} from \"../../../Platform/VSCode/Types.js\";\n\n/**\n * @module UriToPathString\n * @description Converts a VSCode URI to an optional Tauri-compatible file system path string.\n * Returns Option.none() if the URI is not a 'file' scheme or is null/undefined.\n */\nexport default function Convert(MaybeUri?: Uri): Option.Option<string> {\n\treturn pipe(\n\t\tOption.fromNullable(MaybeUri),\n\t\tOption.filter((CheckedUri) => CheckedUri.scheme === Scheme.file),\n\t\tOption.map((FileUri) => FileUri.fsPath),\n\t);\n}\n"],
+  "mappings": ";;AAGA,SAAS,QAAQ,YAAY;AAG7B;AAAA,EACC;AAAA,EACA;AAAA,OAEM;AAOQ,SAAR,QAAyB,UAAuC;AACtE,SAAO;AAAA,IACN,OAAO,aAAa,QAAQ;AAAA,IAC5B,OAAO,OAAO,CAAC,eAAe,WAAW,WAAW,OAAO,IAAI;AAAA,IAC/D,OAAO,IAAI,CAAC,YAAY,QAAQ,MAAM;AAAA,EACvC;AACD;AANwB;",
+  "names": []
+}

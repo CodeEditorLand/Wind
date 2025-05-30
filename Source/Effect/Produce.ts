@@ -1,8 +1,7 @@
 // Effect/Produce.ts
-// Purpose: Aggregates and exports from the Produce module.
+// Purpose: Aggregates and exports utilities for producing Effects.
 
-export type { default as AsyncFunction } from "./Produce/Type/AsyncFunction.js";
-export type { default as ErrorProducer } from "./Produce/Type/ErrorProducer.js";
+export * from "./Produce/Type.js"; // Re-exports AsyncFunction, ErrorProducer types
 
 export { default as FromAsync } from "./Produce/FromAsync.js";
 export { default as OptionalFromAsync } from "./Produce/OptionalFromAsync.js";

@@ -2,12 +2,11 @@
 
 import { Effect, type Data } from "effect";
 
-import type AsyncFunction from "./Type/AsyncFunction.js"; // Adjusted path to be within Produce directory
-import type ErrorProducer from "./Type/ErrorProducer.js"; // Adjusted path
+import type { AsyncFunction, ErrorProducer } from "./Type.js"; // Use type aggregator
 
 /**
  * @module FromAsync
- * @description Factory to create an Effect from a standard promise-returning API.
+ * @description Creates an Effect-returning function from a Promise-returning one.
  */
 export default function FromAsync<
 	Arguments extends any[],

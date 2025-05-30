@@ -1,24 +1,23 @@
 // Integration/Tauri/Errors.ts
-// Purpose: Aggregates and exports custom error types for Tauri integrations.
+// Purpose: Aggregates custom error types for Tauri integrations with descriptive aliases.
 
-// Import the default class export and re-export with a specific name
-import DialogProblemClass from "./Error/Dialog.js";
-import InheritanceProblemClass from "./Error/Inheritance.js";
-import PathProblemClass from "./Error/Path.js";
-import WindowProblemClass from "./Error/Window.js";
+import DialogProblemSource from "./Error/Dialog.js";
+import InheritanceProblemSource from "./Error/Inheritance.js";
+import PathProblemSource from "./Error/Path.js";
+import WindowProblemSource from "./Error/Window.js";
 
-/** Represents a problem during Tauri path operations. */
-export const PathProblem = PathProblemClass;
-export type PathProblem = PathProblemClass; // Export instance type
+/** Error during Tauri path operations. */
+export const PathProblem = PathProblemSource;
+export type PathProblem = PathProblemSource;
 
-/** Represents a problem during Tauri dialog operations. */
-export const DialogProblem = DialogProblemClass;
-export type DialogProblem = DialogProblemClass;
+/** Error during Tauri dialog operations. */
+export const DialogProblem = DialogProblemSource;
+export type DialogProblem = DialogProblemSource;
 
-/** Represents a problem with VSCode HostService window operations. */
-export const WindowProblem = WindowProblemClass;
-export type WindowProblem = WindowProblemClass;
+/** Error during VSCode HostService window operations. */
+export const WindowProblem = WindowProblemSource;
+export type WindowProblem = WindowProblemSource;
 
-/** Represents a problem emulating a superclass call. */
-export const InheritanceProblem = InheritanceProblemClass;
-export type InheritanceProblem = InheritanceProblemClass;
+/** Error emulating a superclass method call. */
+export const InheritanceProblem = InheritanceProblemSource;
+export type InheritanceProblem = InheritanceProblemSource;

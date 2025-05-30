@@ -1,32 +1,29 @@
 // Application/Dialog/Definition.ts
+// Purpose: Defines the concrete implementation object of the IFileDialogService.
 
-import { Effect, Layer, Option, pipe, Runtime } from "effect"; // Added Runtime
+import { Effect, Option, pipe, Runtime } from "effect";
 import { localize } from "vs/nls";
 import {
 	ConfirmResult,
-	IFileDialogService,
+	type IFileDialogService as FileDialog, // Using our exported type from Tag.ts or VSCode
 	type IOpenDialogOptions as VsCodeOpenOptions,
 	type IPickAndOpenOptions as VsCodePickOptions,
 	type ISaveDialogOptions as VsCodeSaveOptions,
 } from "vs/platform/dialogs/common/dialogs";
 
 import {
-	ProvideHost, // This is the Tag for HostService (PerformHostAction interface)
-	Uri, // Import both value and type
-	UriType,
-	// ... other necessary imports from Integration/Tauri
-} from "../../Integration/Tauri.js";
-import * as Orchestrate from "./Orchestration.js"; // Import all orchestrated logic
-import type { ServiceProblem } from "./Types.js";
+	ProvideHost,
+	UriConstructor,
+	type UriType,
+} from "../../Integration/Tauri.js"; // Main aggregator
 
-// Assuming HostServiceLive is a Layer<HostServiceTag, HostServiceError, HostServiceDeps>
-// This would be defined elsewhere, e.g. Platform/VSCode/Provide/HostLive.ts
-const HostServiceLivePlaceholder = Layer.succeed(ProvideHost, {
-	// Placeholder implementation
-	openWindow: () =>
-		Promise.resolve(console.log("Mock HostService.openWindow called")),
-});
+// Placeholder for the actual HostServiceLive layer or a similar mechanism to provide dependencies
+// In a real app, this would be a fully configured Layer.
+import { HostServiceLivePlaceholder } from "./_HostServicePlaceholder.js"; // TODO: Create this placeholder or real one
+import * as Orchestrate from "./Orchestration.js";
+import type { ServiceProblem } from "./Types.js"; // Error types for this service
 
+// Pure helper for options, previously in this file. Could also be in Factory/
 const _getAbstractPickFileToSaveOptions = (
 	path: UriType,
 	_fileSystems?: string[],
@@ -35,73 +32,67 @@ const _getAbstractPickFileToSaveOptions = (
 	title: localize("saveAsTitle", "Save As"),
 });
 
+// --- Runtime specific to this service module instance ---
+// This runtime is configured with necessary services (like HostService)
+// In a real app, this runtime might be part of a larger application runtime.
+// For a true singleton module replacing VSCode's DI, this runtime and its layer
+// configuration are key to how dependencies are injected when Effects are run.
+const ServiceRuntime = Runtime.make(HostServiceLivePlaceholder); // Provide the HostService layer
+
 /**
  * @module Definition (Service Definition)
  * @description The concrete implementation object for the IFileDialogService.
- * Methods here will adapt Effects to the Promise-based interface.
+ * Methods adapt Effects to the Promise-based interface using a configured Runtime.
  */
-const Definition: IFileDialogService = {
+const Definition: FileDialog = {
 	_serviceBrand: undefined,
 
-	// Each method now needs to create a Runtime or use a pre-existing one
-	// to run its respective Effect and return a Promise.
-	// For a true singleton service, the Runtime would be created once.
-	// Let's assume a helper to run these for now.
-	// The R (requirements) of these effects (like ProvideHost) must be satisfied.
-
-	_runEffect: <A, E extends ServiceProblem>(
+	_run: <A, E extends ServiceProblem>(
 		eff: Effect.Effect<A, E, ProvideHost>,
 	) => {
-		// This is a simplified runner. In a real app, this Runtime would be part of the application's core.
-		// It needs to be configured with all necessary layers (e.g., HostServiceLive).
-		const runnable = Effect.provide(eff, HostServiceLivePlaceholder); // Provide necessary layers
-		return Runtime.runPromise(Runtime.defaultRuntime)(runnable); // Use default runtime for simplicity here
+		// ProvideHost is the R type for many effects
+		return Runtime.runPromise(ServiceRuntime)(eff); // Use the pre-configured ServiceRuntime
 	},
-	_runEffectOption: <A, E extends ServiceProblem>(
+	_runOption: <A, E extends ServiceProblem>(
 		eff: Effect.Effect<Option.Option<A>, E, ProvideHost>,
 	) => {
-		return Definition._runEffect(
-			eff.pipe(Effect.map(Option.getOrUndefined)),
-		);
+		return Definition._run(eff.pipe(Effect.map(Option.getOrUndefined)));
 	},
-	_runEffectVoid: <E extends ServiceProblem>(
+	_runVoid: <E extends ServiceProblem>(
 		eff: Effect.Effect<any, E, ProvideHost>,
 	) => {
-		return Definition._runEffect(Effect.void(eff));
+		return Definition._run(Effect.void(eff));
 	},
 
-	pickFileFolderAndOpen: (options: VsCodePickOptions): Promise<void> => {
-		return Definition._runEffectVoid(
+	pickFileFolderAndOpen: (options: VsCodePickOptions) =>
+		Definition._runVoid(
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openFileOrFolderDefaultTitle",
 				defaultTitle: "Open File or Folder",
 				tauriDirectory: true,
 				itemType: "folder",
 			}),
-		);
-	},
-	pickFileAndOpen: (options: VsCodePickOptions): Promise<void> => {
-		return Definition._runEffectVoid(
+		),
+	pickFileAndOpen: (options: VsCodePickOptions) =>
+		Definition._runVoid(
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openFileDefaultTitle",
 				defaultTitle: "Open File",
 				tauriDirectory: false,
 				itemType: "file",
 			}),
-		);
-	},
-	pickFolderAndOpen: (options: VsCodePickOptions): Promise<void> => {
-		return Definition._runEffectVoid(
+		),
+	pickFolderAndOpen: (options: VsCodePickOptions) =>
+		Definition._runVoid(
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openFolderDefaultTitle",
 				defaultTitle: "Open Folder",
 				tauriDirectory: true,
 				itemType: "folder",
 			}),
-		);
-	},
-	pickWorkspaceAndOpen: (options: VsCodePickOptions): Promise<void> => {
-		return Definition._runEffectVoid(
+		),
+	pickWorkspaceAndOpen: (options: VsCodePickOptions) =>
+		Definition._runVoid(
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openWorkspaceDefaultTitle",
 				defaultTitle: "Open Workspace",
@@ -109,54 +100,57 @@ const Definition: IFileDialogService = {
 				itemType: "workspace",
 				defaultWorkspaceFilter: true,
 			}),
-		);
-	},
+		),
 
-	pickFileToSave: (
-		path: UriType,
-		fileSystems?: string[],
-	): Promise<UriType | undefined> => {
-		const effect = pipe(
-			Effect.succeed(
-				_getAbstractPickFileToSaveOptions(path, fileSystems),
-			), // Pure
-			Effect.flatMap((configOptions) =>
-				Orchestrate.PerformShowSave(configOptions),
+	pickFileToSave: (path: UriType, fileSystems?: string[]) =>
+		Definition._run(
+			pipe(
+				Effect.succeed(
+					_getAbstractPickFileToSaveOptions(path, fileSystems),
+				),
+				Effect.flatMap((configOptions) =>
+					Orchestrate.PerformShowSave(configOptions),
+				),
+				Effect.map(Option.getOrUndefined),
 			),
-			Effect.map(Option.getOrUndefined),
-		);
-		return Definition._runEffect(effect);
-	},
+		),
 
-	showSaveDialog: (
-		options: VsCodeSaveOptions,
-	): Promise<UriType | undefined> => {
-		return Definition._runEffectOption(
-			Orchestrate.PerformShowSave(options),
-		);
-	},
-	showOpenDialog: (
-		options: VsCodeOpenOptions,
-	): Promise<UriType[] | undefined> => {
-		const effect = Orchestrate.PerformShowOpen(options).pipe(
-			Effect.map(Option.getOrElse(() => [] as UriType[])),
-		);
-		return Definition._runEffect(effect); // This will resolve to URI[] or throw if effect fails
-	},
+	showSaveDialog: (options: VsCodeSaveOptions) =>
+		Definition._runOption(Orchestrate.PerformShowSave(options)),
+	showOpenDialog: (options: VsCodeOpenOptions) =>
+		Definition._run(
+			// Returns Promise<UriType[] | undefined>
+			Orchestrate.PerformShowOpen(options).pipe(
+				Effect.map(Option.getOrElse(() => [] as UriType[])),
+			),
+		),
 
-	// --- Abstract methods - Must also return Promises ---
-	defaultFilePath: (_filter?: string): Promise<UriType> =>
-		Definition._runEffect(Effect.succeed(Uri.file("/mock/file/path"))),
-	defaultFolderPath: (_filter?: string): Promise<UriType> =>
-		Definition._runEffect(Effect.succeed(Uri.file("/mock/folder/path"))),
-	defaultWorkspacePath: (_filter?: string): Promise<UriType> =>
-		Definition._runEffect(Effect.succeed(Uri.file("/mock/workspace/path"))),
-	preferredHome: (_filter?: string): Promise<UriType> =>
-		Definition._runEffect(Effect.succeed(Uri.file("/mock/home/path"))),
-	showSaveConfirm: (
-		_filesOrResources: (string | UriType)[],
-	): Promise<ConfirmResult> =>
-		Definition._runEffect(Effect.succeed(ConfirmResult.SAVE)),
+	defaultFilePath: (filter?: string) =>
+		Definition._run(
+			Effect.succeed(
+				UriConstructor.file(`/mock/file/${filter || "default"}`),
+			),
+		),
+	defaultFolderPath: (filter?: string) =>
+		Definition._run(
+			Effect.succeed(
+				UriConstructor.file(`/mock/folder/${filter || "default"}`),
+			),
+		),
+	defaultWorkspacePath: (filter?: string) =>
+		Definition._run(
+			Effect.succeed(
+				UriConstructor.file(`/mock/workspace/${filter || "default"}`),
+			),
+		),
+	preferredHome: (filter?: string) =>
+		Definition._run(
+			Effect.succeed(
+				UriConstructor.file(`/mock/home/${filter || "default"}`),
+			),
+		),
+	showSaveConfirm: (filesOrResources: (string | UriType)[]) =>
+		Definition._run(Effect.succeed(ConfirmResult.SAVE)),
 };
 
 export default Definition;

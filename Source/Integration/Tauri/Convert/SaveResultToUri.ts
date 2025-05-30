@@ -1,9 +1,12 @@
 // Integration/Tauri/Convert/SaveResultToUri.ts
-// Purpose: Purely processes Tauri's save dialog result (Option<string>) to Option<URI>.
+// Purpose: Purely processes Tauri's save dialog result (Option<string>) to Option<Uri>.
 
 import { Option, pipe } from "effect";
 
-import { Uri } from "../../../Platform/VSCode/Types.js";
+import {
+	UriConstructor as UriFileFactory,
+	type Uri,
+} from "../../../Platform/VSCode/Types.js";
 
 /**
  * @module SaveResultToUri
@@ -17,7 +20,7 @@ export default function Convert(
 		SelectedPathOption,
 		Option.filter(
 			(PathString): PathString is string => PathString.length > 0,
-		), // Ensure path is not empty
-		Option.map((PathString) => Uri.file(PathString)),
+		),
+		Option.map((PathString) => UriFileFactory.file(PathString)),
 	);
 }

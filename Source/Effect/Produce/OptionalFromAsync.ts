@@ -2,13 +2,11 @@
 
 import { Effect, Option, type Data } from "effect";
 
-import type AsyncFunction from "./Type/AsyncFunction.js"; // Adjusted path
-import type ErrorProducer from "./Type/ErrorProducer.js"; // Adjusted path
+import type { AsyncFunction, ErrorProducer } from "./Type.js"; // Use type aggregator
 
 /**
  * @module OptionalFromAsync
- * @description Factory to create an Effect yielding an Option from a promise
- * that may resolve to a nullable value.
+ * @description Creates an Effect<Option<Value>> from a Promise that might resolve to null/undefined.
  */
 export default function OptionalFromAsync<
 	Arguments extends any[],

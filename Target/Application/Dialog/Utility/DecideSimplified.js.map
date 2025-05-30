@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../Source/Application/Dialog/Utility/DecideSimplified.ts"],
+  "sourcesContent": ["// Application/Dialog/Utility/DecideSimplified.ts\nimport { VsCodeScheme } from \"../../../Integration/Tauri.js\";\n\nexport default function Decide(scheme: string): boolean {\n\treturn ![\n\t\tVsCodeScheme.file,\n\t\tVsCodeScheme.vscodeUserData,\n\t\tVsCodeScheme.tmp,\n\t].includes(scheme);\n}\n"],
+  "mappings": ";;AACA,SAAS,oBAAoB;AAEd,SAAR,OAAwB,QAAyB;AACvD,SAAO,CAAC;AAAA,IACP,aAAa;AAAA,IACb,aAAa;AAAA,IACb,aAAa;AAAA,EACd,EAAE,SAAS,MAAM;AAClB;AANwB;",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../Source/Integration/Tauri/Wrap/ShowMessageDialog.ts"],
+  "sourcesContent": ["// Integration/Tauri/Wrap/ShowMessageDialog.ts\n// Purpose: Effect wrapper for Tauri's message dialog.\n\nimport { message as SourceApi } from \"@tauri-apps/plugin-dialog\";\n\nimport { FromAsync } from \"../../../Effect/Produce.js\";\nimport { DialogProblem } from \"../Errors.js\";\n\nconst CreateProblem = (cause: unknown): DialogProblem =>\n\tnew DialogProblem({ cause, operation: \"message\" });\n\n/**\n * @module ShowMessageDialog\n * @description Effect to show a message dialog via Tauri.\n */\nconst Show = FromAsync(\n\tSourceApi as (\n\t\tmessage: string,\n\t\toptions?:\n\t\t\t| string\n\t\t\t| { title?: string; kind?: \"info\" | \"warning\" | \"error\" },\n\t) => Promise<void>,\n\tCreateProblem,\n\t{ operation: \"message\" },\n);\nexport default Show;\n"],
+  "mappings": ";;AAGA,SAAS,WAAW,iBAAiB;AAErC,SAAS,iBAAiB;AAC1B,SAAS,qBAAqB;AAE9B,MAAM,gBAAgB,wBAAC,UACtB,IAAI,cAAc,EAAE,OAAO,WAAW,UAAU,CAAC,GAD5B;AAOtB,MAAM,OAAO;AAAA,EACZ;AAAA,EAMA;AAAA,EACA,EAAE,WAAW,UAAU;AACxB;AACA,IAAO,4BAAQ;",
+  "names": []
+}

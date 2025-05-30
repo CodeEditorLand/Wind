@@ -2,12 +2,11 @@
 
 import { Context, Effect, Option, type Data } from "effect";
 
-import type ErrorProducer from "./Type/ErrorProducer.js"; // Adjusted path
+import type { ErrorProducer } from "./Type.js"; // Use type aggregator
 
 /**
  * @module OptionalFromMethod
- * @description Factory for an Effect yielding an Option by calling a service method
- * that may return a Promise resolving to a nullable value.
+ * @description Creates an Effect<Option<Value>> from a service method that might return a nullable Promise.
  */
 export default function OptionalFromMethod<
 	Interface,

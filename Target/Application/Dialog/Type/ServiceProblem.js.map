@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../Source/Application/Dialog/Type/ServiceProblem.ts"],
+  "sourcesContent": ["// Application/Dialog/Type/ServiceProblem.ts\n// Purpose: Defines the overall error union for the File Dialog Service.\n\nimport { InheritanceProblem } from \"../../../Integration/Tauri/Errors.js\"; // Use error aggregator\nimport type PickProblem from \"./PickProblem.js\";\n\n/**\n * @module ServiceProblem (Type)\n * @description Overall error union for the File Dialog Service,\n * encompassing pick problems and potential issues from emulating superclass calls.\n */\ntype Type = PickProblem | InheritanceProblem;\nexport default Type;\n"],
+  "mappings": "AAGA,SAAS,0BAA0B;",
+  "names": []
+}

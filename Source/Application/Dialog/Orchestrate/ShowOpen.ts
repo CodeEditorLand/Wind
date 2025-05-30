@@ -8,38 +8,35 @@ import {
 	ProcessOpenResultToUriArray,
 	RequestTauriOpen,
 	ResolveFinalDefaultPath,
-	type DialogProblem, // Renamed DialogOperationError
-	type Uri, // Now from Integration/Tauri's re-export
-	// HostServiceTag (ProvideHost) not explicitly needed here if RequestTauriOpen doesn't use it.
+	type OperationProblem, // Renamed from DialogProblem for this context
+	type UriType,
+	// ProvideHost might not be needed if RequestTauriOpen doesn't depend on it for just showing dialogs
 } from "../../../Integration/Tauri.js";
-import CreateShowOpenOptions from "../Factory/CreateShowOpenOptions.js";
+import CreateShowOpenOption from "../Factory/CreateShowOpenOption.js";
 
 /**
- * @module ShowOpen (Logic Orchestration)
+ * @module ShowOpen (Orchestration Logic)
  * @description Orchestrates the logic for showing an open dialog.
  */
 export default function Orchestrate(
 	options: VsCodeOpenOptions,
-): Effect.Effect<Option.Option<Uri[]>, DialogProblem, never> {
-	// Assuming no HostService needed for just showing dialog
+): Effect.Effect<Option.Option<UriType[]>, OperationProblem, never> {
+	// Context R is never if no services needed
 	return pipe(
 		ResolveFinalDefaultPath(options.defaultUri),
-		Effect.flatMap(
-			(
-				defaultPath, // Use flatMap to chain the logging effect properly
-			) =>
-				pipe(
-					options.canSelectFolders && options.canSelectFiles
-						? Effect.logWarning(
-								"Tauri 'open' dialog: VSCode requested both file and folder selection. Backend behavior for 'directory' flag will determine outcome.",
-							)
-						: Effect.void,
-					Effect.andThen(() =>
-						RequestTauriOpen(
-							CreateShowOpenOptions(options, defaultPath),
-						),
+		Effect.flatMap((defaultPath) =>
+			pipe(
+				options.canSelectFolders && options.canSelectFiles
+					? Effect.logWarning(
+							"Tauri 'open' dialog: VSCode requested both file and folder selection. Backend behavior for 'directory' flag will determine outcome.",
+						)
+					: Effect.void,
+				Effect.andThen(() =>
+					RequestTauriOpen(
+						CreateShowOpenOption(options, defaultPath),
 					),
 				),
+			),
 		),
 		Effect.map(ProcessOpenResultToUriArray),
 	);

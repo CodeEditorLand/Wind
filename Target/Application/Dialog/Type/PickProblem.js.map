@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../Source/Application/Dialog/Type/PickProblem.ts"],
+  "sourcesContent": ["// Application/Dialog/Type/PickProblem.ts\n// Purpose: Defines an error union for \"pick and open\" operations.\n\nimport { WindowProblem } from \"../../../Integration/Tauri/Errors.js\"; // Use error aggregator\nimport type OperationProblem from \"./OperationProblem.js\";\n\n/**\n * @module PickProblem (Type)\n * @description Union type for errors during \"pick and open\" operations,\n * including dialog operation problems and window opening problems.\n */\ntype Type = OperationProblem | WindowProblem;\nexport default Type;\n"],
+  "mappings": "AAGA,SAAS,qBAAqB;",
+  "names": []
+}

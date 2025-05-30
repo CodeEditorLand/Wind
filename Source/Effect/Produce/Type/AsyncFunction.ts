@@ -2,9 +2,8 @@
 
 /**
  * @module AsyncFunction
- * @description Type definition for a generic promise-returning function.
- * Represents a function that takes arguments and returns a Promise.
- * @template ArgumentsTuple - Tuple type of arguments for the promise-returning function.
+ * @description Represents a function that returns a Promise.
+ * @template ArgumentsTuple - Tuple for function arguments.
  * @template ResultValue - Success type of the Promise.
  */
 export default interface AsyncFunction<

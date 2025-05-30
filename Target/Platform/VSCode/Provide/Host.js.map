@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../Source/Platform/VSCode/Provide/Host.ts"],
+  "sourcesContent": ["// Platform/VSCode/Provide/Host.ts\n// Purpose: Defines Tag and Interface for VSCode's IHostService.\n\nimport { Context } from \"effect\";\n\nimport type {\n\tFileOpenSpecification,\n\tFolderOpenSpecification,\n\tWindowOpenOption,\n\tWorkspaceOpenSpecification,\n} from \"../Types.js\";\n\n/**\n * @module Host (Service Interface: PerformAction)\n * @description Interface for host-level actions, like opening windows.\n */\nexport interface PerformAction {\n\t// Renamed IHostService to be more action-oriented\n\topenWindow(\n\t\ttargets: ReadonlyArray<\n\t\t\t| FolderOpenSpecification\n\t\t\t| FileOpenSpecification\n\t\t\t| WorkspaceOpenSpecification\n\t\t>,\n\t\tconfig?: WindowOpenOption, // Renamed parameter\n\t): Promise<void>;\n}\n\n/**\n * @description Tag for accessing the HostService.\n */\nconst Tag = Context.Tag<PerformAction>(\"vscode/HostService\"); // Tag ID remains for potential interop\nexport default Tag;\n"],
+  "mappings": "AAGA,SAAS,eAAe;AA4BxB,MAAM,MAAM,QAAQ,IAAmB,oBAAoB;AAC3D,IAAO,eAAQ;",
+  "names": []
+}

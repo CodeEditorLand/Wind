@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../Source/Integration/Tauri/Error/Path.ts"],
+  "sourcesContent": ["\n\n// Integration/Tauri/Error/Path.ts\n// Purpose: Defines an error for Tauri path operations.\nimport { Data } from \"effect\";\n\n/**\n * @module Path (Error: Problem)\n * @description Represents a problem during Tauri path operations (homeDir, documentDir).\n * The class name is generic 'Problem'; its specific meaning (PathProblem)\n * is derived from the file path and its internal tag 'PathProblem'.\n */\nexport default class Problem extends Data.TaggedError(\"PathProblem\")<{\n\treadonly cause: unknown;\n\treadonly operation: \"homeDir\" | \"documentDir\";\n}> { constructor(props: { cause: unknown; operation: \"homeDir\" | \"documentDir\" }) { super(props); } }\n"],
+  "mappings": ";;AAIA,SAAS,YAAY;AAQrB,MAAO,gBAA8B,KAAK,YAAY,aAAa,EAGhE;AAAA,EAfH,OAeG;AAAA;AAAA;AAAA,EAAE,YAAY,OAAiE;AAAE,UAAM,KAAK;AAAA,EAAG;AAAE;",
+  "names": []
+}

@@ -1,7 +1,7 @@
 // Application/Dialog/OptionFactories.ts
 // Purpose: Aggregates pure option builder functions.
 
-export { default as CreatePickOpenOptions } from "./Factory/CreatePickOpenOptions.js";
-export { default as CreateShowOpenOptions } from "./Factory/CreateShowOpenOptions.js";
-export { default as CreateSaveOptions } from "./Factory/CreateSaveOptions.js";
-export { default as CreateWindowOptions } from "./Factory/CreateWindowOptions.js";
+export { default as CreatePickOpenOption } from "./Factory/CreatePickOpenOption.js";
+export { default as CreateShowOpenOption } from "./Factory/CreateShowOpenOption.js";
+export { default as CreateSaveOption } from "./Factory/CreateSaveOption.js";
+export { default as CreateWindowOption } from "./Factory/CreateWindowOption.js";

@@ -4,24 +4,24 @@
 import { Effect, Option, pipe } from "effect";
 
 import type { Uri } from "../../../Platform/VSCode/Types.js";
-import ConvertUriToPath from "../Converters/UriToPathString.js"; // Use direct path for clarity
+import { ConvertUriToPathString } from "../Converters.js"; // Aggregator
 
 import type { PathProblem } from "../Errors.js";
-import ResolveFallback from "./FallbackDefaultPath.js"; // Use the other resolver
+import ResolveFallbackDefaultPath from "./FallbackDefaultPath.js";
 
 /**
- * @module FinalDefaultPath
+ * @module FinalDefaultPath (Resolver)
  * @description Effectfully gets a dialog's final default path.
- * Tries a provided URI first, then uses a fallback mechanism.
+ * Tries a provided URI first, then uses a fallback mechanism. Yields Option<string>.
  */
 export default function Resolve(
 	MaybeUri?: Uri,
 ): Effect.Effect<Option.Option<string>, PathProblem> {
 	return pipe(
-		ConvertUriToPath(MaybeUri), // Pure conversion
+		ConvertUriToPathString(MaybeUri), // Pure conversion
 		Option.match({
 			onSome: (PathString) => Effect.succeed(Option.some(PathString)),
-			onNone: () => ResolveFallback, // Use the composed fallback effect
+			onNone: () => ResolveFallbackDefaultPath,
 		}),
 	);
 }

@@ -1,10 +1,11 @@
 // Application/Dialog/Orchestrate/PickAndOpen.ts
+// Purpose: Core logic for pick...AndOpen methods as a piped Effect.
 
 import { Effect, Option, pipe } from "effect";
-// Make sure these types are correctly imported/aliased
+// Import specific types from VSCode dialogs
 import type {
 	IOpenDialogOptions as VsCodeOpenOptions,
-	Partial as VsCodePartialIfAny,
+	Partial as VsCodePartialUtil,
 	IPickAndOpenOptions as VsCodePickOptions,
 } from "vs/platform/dialogs/common/dialogs";
 
@@ -13,28 +14,30 @@ import {
 	DefineFolderOpen,
 	DefineWorkspaceOpen,
 	ProcessOpenResultToSingleUri,
-	ProvideHost, // This is the Tag for HostService (PerformHostAction interface)
+	ProvideHost, // Tag for HostService
 	RequestHostWindowOpen,
 	RequestTauriOpen,
 	ResolveFinalDefaultPath,
-	type PickProblem, // Error type
-	type UriType, // Correct way to import URI type from our Uri.ts
+	type UriType, // VSCode URI type
 } from "../../../Integration/Tauri.js";
-// Aggregator import
+import CreatePickOpenOption from "../Factory/CreatePickOpenOption.js";
+import CreateWindowOption from "../Factory/CreateWindowOption.js";
+// Aggregator for Integration/Tauri
+import type { PickProblem } from "../Types.js"; // Service-specific error type
 
-import CreatePickOpenOptions from "../Factory/CreatePickOpenOptions.js";
-import CreateWindowOptions from "../Factory/CreateWindowOptions.js";
-
-// Assuming VsCodePartial is a utility type like Partial from TS
-type CombinedPickOptions = VsCodePickOptions &
-	VsCodePartialIfAny<VsCodeOpenOptions>;
+// Assuming VsCodePartialUtil is a utility type like Partial from TS
+type CombinedVsCodePickOptions = VsCodePickOptions &
+	VsCodePartialUtil<VsCodeOpenOptions>;
 
 /**
- * @module PickAndOpen (Logic Orchestration)
+ * @module PickAndOpen (Orchestration Logic)
+ * @description Orchestrates the logic for picking a file/folder/workspace and opening it.
+ * Requires ProvideHost (IHostService) from context for window operations.
  */
 export default function Orchestrate(
 	options: VsCodePickOptions,
 	config: {
+		// Renamed dialogConfig to config for brevity
 		titleKey: string;
 		defaultTitle: string;
 		tauriDirectory: boolean;
@@ -42,27 +45,29 @@ export default function Orchestrate(
 		defaultWorkspaceFilter?: boolean;
 	},
 ): Effect.Effect<void, PickProblem, ProvideHost> {
+	// Dependencies declared in R
 	return pipe(
-		ResolveFinalDefaultPath((options as CombinedPickOptions).defaultUri),
+		ResolveFinalDefaultPath(
+			(options as CombinedVsCodePickOptions).defaultUri,
+		),
 		Effect.map((defaultPath) =>
-			CreatePickOpenOptions(
-				options as CombinedPickOptions,
+			CreatePickOpenOption(
+				options as CombinedVsCodePickOptions,
 				config,
 				defaultPath,
 			),
 		),
 		Effect.flatMap((tauriOptions) => RequestTauriOpen(tauriOptions)),
 		Effect.map(ProcessOpenResultToSingleUri),
-		// Replace Option.matchEffect with Option.match where branches return Effect
 		Effect.flatMap(
 			(
 				maybeUri, // maybeUri is Option<UriType>
 			) =>
 				Option.match(maybeUri, {
+					// Use Option.match; branches return Effect
 					onNone: () => Effect.void,
 					onSome: (selectedUri: UriType) =>
 						RequestHostWindowOpen(
-							// Explicitly type selectedUri
 							[
 								config.itemType === "folder"
 									? DefineFolderOpen(selectedUri)
@@ -70,7 +75,7 @@ export default function Orchestrate(
 										? DefineFileOpen(selectedUri)
 										: DefineWorkspaceOpen(selectedUri),
 							],
-							CreateWindowOptions(options),
+							CreateWindowOption(options),
 						),
 				}),
 		),

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Integration/Tauri/Resolvers.ts"],
+  "sourcesContent": ["// Integration/Tauri/Resolvers.ts\n// Purpose: Aggregates composed path resolving Effects for Tauri integrations.\n\nexport { default as ResolveFallbackDefaultPath } from \"./Resolve/FallbackDefaultPath.js\";\nexport { default as ResolveFinalDefaultPath } from \"./Resolve/FinalDefaultPath.js\";\n"],
+  "mappings": "AAGA,SAAoB,WAAXA,gBAA6C;AACtD,SAAoB,WAAXA,gBAA0C;",
+  "names": ["default"]
+}

@@ -1,11 +1,11 @@
 // Platform/VSCode/Type/Scheme.ts
-// Purpose: Exports VSCode constants for common URI schemes.
+// Purpose: VSCode URI Scheme constants.
 
 import { Schemas as VsCodeSchemaConstants } from "vs/base/common/network";
 
 /**
  * @module Scheme
- * @description VSCode constants for common URI schemes (e.g., file, untitled).
+ * @description VSCode constants for common URI schemes.
  */
-const Scheme = VsCodeSchemaConstants;
-export default Scheme;
+const Constant = VsCodeSchemaConstants;
+export default Constant;

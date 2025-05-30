@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/Dialog/Live.ts"],
+  "sourcesContent": ["// Application/Dialog/Live.ts\n// Purpose: Defines the Layer that provides the live implementation of the File Dialog Service.\n\nimport { Layer } from \"effect\";\n\nimport Definition from \"./Definition.js\"; // The service implementation object\nimport DialogServiceTag from \"./Tag.js\"; // The Tag for IFileDialogService\n\n/**\n * @module Live (Service Layer)\n * @description Provides the live implementation of the IFileDialogService.\n * This layer makes the DialogService (our Definition) available in the Effect context\n * via the FileDialogServiceTag. The actual runtime to execute Effects within the\n * Definition's methods is part of the Definition itself now.\n */\nconst Live = Layer.succeed(DialogServiceTag, Definition);\n\nexport default Live;\n"],
+  "mappings": "AAGA,SAAS,aAAa;AAEtB,OAAO,gBAAgB;AACvB,OAAO,sBAAsB;AAS7B,MAAM,OAAO,MAAM,QAAQ,kBAAkB,UAAU;AAEvD,IAAO,eAAQ;",
+  "names": []
+}

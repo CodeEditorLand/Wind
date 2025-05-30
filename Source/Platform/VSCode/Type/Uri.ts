@@ -1,16 +1,14 @@
+
+
 // Platform/VSCode/Type/Uri.ts
-// Purpose: Defines and exports the VSCode URI type and class.
+// Purpose: VSCode URI definition.
 
 import { URI as VsCodeUriDefinition } from "vs/base/common/uri";
 
 /**
- * @module Uri (File name provides context)
- * @description Represents a Uniform Resource Identifier (URI) as defined by VSCode.
+ * @module Uri
+ * @description VSCode's Uniform Resource Identifier (URI) class and type.
  */
-export type Type = VsCodeUriDefinition; // Type alias for instance type
-
-/**
- * @description The VSCode URI class constructor and its static methods.
- */
-const Constructor = VsCodeUriDefinition; // Value (the class itself)
+export type Type = VsCodeUriDefinition;
+const Constructor = VsCodeUriDefinition;
 export default Constructor;

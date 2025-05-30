@@ -4,9 +4,9 @@ import type { Data } from "effect";
 
 /**
  * @module ErrorProducer
- * @description Type definition for a factory function that creates custom errors.
- * @template DataPayload - The payload properties specific to this error, excluding 'cause'.
- * @template ErrorType - The custom error type, must extend Data.TaggedError.
+ * @description Factory for creating custom Data.TaggedError instances.
+ * @template DataPayload - Error-specific payload (excluding 'cause').
+ * @template ErrorType - The custom Data.TaggedError type.
  */
 export default interface ErrorProducer<
 	DataPayload extends Record<string, any>,

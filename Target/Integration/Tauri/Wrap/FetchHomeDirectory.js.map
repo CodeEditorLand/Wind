@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../Source/Integration/Tauri/Wrap/FetchHomeDirectory.ts"],
+  "sourcesContent": ["\n\n// Integration/Tauri/Wrap/FetchHomeDirectory.ts\n// Purpose: Effect wrapper for fetching the Tauri home directory.\n\nimport { homeDir as SourceApi } from \"@tauri-apps/api/path\";\nimport { FromAsync } from \"../../../Effect/Produce.js\"; // Path to meta-factory aggregator\nimport { PathProblem } from \"../Errors.js\";          // Path to error aggregator\n\nconst CreateProblem = (cause: unknown): PathProblem =>\n    new PathProblem({ cause, operation: \"homeDir\" });\n\n/**\n * @module FetchHomeDirectory\n * @description Effect to get the user's home directory via Tauri.\n */\nconst Fetch = FromAsync(\n\tSourceApi,\n\tCreateProblem,\n\t{ operation: \"homeDir\" }\n);\nexport default Fetch;\n"],
+  "mappings": ";;AAKA,SAAS,WAAW,iBAAiB;AACrC,SAAS,iBAAiB;AAC1B,SAAS,mBAAmB;AAE5B,MAAM,gBAAgB,wBAAC,UACnB,IAAI,YAAY,EAAE,OAAO,WAAW,UAAU,CAAC,GAD7B;AAOtB,MAAM,QAAQ;AAAA,EACb;AAAA,EACA;AAAA,EACA,EAAE,WAAW,UAAU;AACxB;AACA,IAAO,6BAAQ;",
+  "names": []
+}

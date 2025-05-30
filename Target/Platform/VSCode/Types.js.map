@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Platform/VSCode/Types.ts"],
+  "sourcesContent": ["// Platform/VSCode/Types.ts\n// Purpose: Aggregates core VSCode type definitions.\n\nexport { default as UriConstructor, type Type as Uri } from \"./Type/Uri.js\"; // Export constructor and type\nexport { default as Scheme } from \"./Type/Scheme.js\";\nexport type { default as FileFilter } from \"./Type/FileFilter.js\";\nexport type { default as WindowOpenOption } from \"./Type/WindowOpenOption.js\";\nexport type { default as FolderOpenSpecification } from \"./Type/FolderOpenSpecification.js\";\nexport type { default as FileOpenSpecification } from \"./Type/FileOpenSpecification.js\";\nexport type { default as WorkspaceOpenSpecification } from \"./Type/WorkspaceOpenSpecification.js\";\n"],
+  "mappings": "AAGA,SAAoB,WAAXA,gBAAmD;AAC5D,SAAoB,WAAXA,gBAAyB;",
+  "names": ["default"]
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../Source/Platform/VSCode/Type/Uri.ts"],
+  "sourcesContent": ["\n\n// Platform/VSCode/Type/Uri.ts\n// Purpose: VSCode URI definition.\n\nimport { URI as VsCodeUriDefinition } from \"vs/base/common/uri\";\n\n/**\n * @module Uri\n * @description VSCode's Uniform Resource Identifier (URI) class and type.\n */\nexport type Type = VsCodeUriDefinition;\nconst Constructor = VsCodeUriDefinition;\nexport default Constructor;\n"],
+  "mappings": "AAKA,SAAS,OAAO,2BAA2B;AAO3C,MAAM,cAAc;AACpB,IAAO,cAAQ;",
+  "names": []
+}

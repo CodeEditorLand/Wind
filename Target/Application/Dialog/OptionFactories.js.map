@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/Dialog/OptionFactories.ts"],
+  "sourcesContent": ["// Application/Dialog/OptionFactories.ts\n// Purpose: Aggregates pure option builder functions.\n\nexport { default as CreatePickOpenOption } from \"./Factory/CreatePickOpenOption.js\";\nexport { default as CreateShowOpenOption } from \"./Factory/CreateShowOpenOption.js\";\nexport { default as CreateSaveOption } from \"./Factory/CreateSaveOption.js\";\nexport { default as CreateWindowOption } from \"./Factory/CreateWindowOption.js\";\n"],
+  "mappings": "AAGA,SAAoB,WAAXA,gBAAuC;AAChD,SAAoB,WAAXA,gBAAuC;AAChD,SAAoB,WAAXA,gBAAmC;AAC5C,SAAoB,WAAXA,gBAAqC;",
+  "names": ["default"]
+}

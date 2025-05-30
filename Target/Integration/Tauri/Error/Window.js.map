@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../Source/Integration/Tauri/Error/Window.ts"],
+  "sourcesContent": ["// Integration/Tauri/Error/Window.ts\n// Purpose: Defines an error for VSCode HostService window operations.\nimport { Data } from \"effect\";\n\n/**\n * @module Window (Error: Problem)\n * @description Represents a problem when interacting with the VSCode HostService for window operations.\n */\nexport default class Problem extends Data.TaggedError(\"WindowProblem\")<{\n\treadonly cause: unknown;\n\treadonly operation: \"hostServiceOpenWindow\";\n}> {\n\tconstructor(props: { cause: unknown; operation: \"hostServiceOpenWindow\" }) {\n\t\tsuper(props);\n\t}\n}\n"],
+  "mappings": ";;AAEA,SAAS,YAAY;AAMrB,MAAO,gBAA8B,KAAK,YAAY,eAAe,EAGlE;AAAA,EAXH,OAWG;AAAA;AAAA;AAAA,EACF,YAAY,OAA+D;AAC1E,UAAM,KAAK;AAAA,EACZ;AACD;",
+  "names": []
+}

@@ -3,8 +3,12 @@
 
 import { Option, pipe } from "effect";
 
-// Assuming types are imported from a central VSCode type aggregator for the project
-import { Scheme, Uri } from "../../../Platform/VSCode/Types.js"; // Adjust path as needed
+// Use types from the Platform/VSCode type aggregator
+import {
+	Scheme,
+	UriConstructor,
+	type Uri,
+} from "../../../Platform/VSCode/Types.js";
 
 /**
  * @module UriToPathString

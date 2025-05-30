@@ -1,5 +1,5 @@
 // Application/Dialog/Orchestration.ts
-// Purpose: Aggregates internal logic orchestration Effects.
+// Purpose: Aggregates internal logic orchestration Effects for the Dialog service.
 
 export { default as PerformPickAndOpen } from "./Orchestrate/PickAndOpen.js";
 export { default as PerformShowOpen } from "./Orchestrate/ShowOpen.js";

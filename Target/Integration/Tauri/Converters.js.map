@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Integration/Tauri/Converters.ts"],
+  "sourcesContent": ["// Integration/Tauri/Converters.ts\n// Purpose: Aggregates pure conversion utility functions for Tauri integrations.\n\nexport { default as ConvertUriToPathString } from \"./Convert/UriToPathString.js\";\nexport { default as ConvertFiltersToTauri } from \"./Convert/FiltersToTauri.js\";\nexport { default as ConvertOpenResultToSingleUri } from \"./Convert/OpenResultToSingleUri.js\";\nexport { default as ConvertOpenResultToUriArray } from \"./Convert/OpenResultToUriArray.js\";\nexport { default as ConvertSaveResultToUri } from \"./Convert/SaveResultToUri.js\";\n"],
+  "mappings": "AAGA,SAAoB,WAAXA,gBAAyC;AAClD,SAAoB,WAAXA,gBAAwC;AACjD,SAAoB,WAAXA,gBAA+C;AACxD,SAAoB,WAAXA,gBAA8C;AACvD,SAAoB,WAAXA,gBAAyC;",
+  "names": ["default"]
+}

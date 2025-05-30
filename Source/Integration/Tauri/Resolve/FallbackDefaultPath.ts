@@ -3,34 +3,37 @@
 
 import { Effect, Option, pipe } from "effect";
 
-import { PathProblem, type PathProblem as PathProblemType } from "../Errors.js"; // Use aggregator, imports both value and type
-import { FetchDocumentDirectory, FetchHomeDirectory } from "../Wrappers.js"; // Use aggregator
+import { PathProblem, type PathProblem as PathProblemType } from "../Errors.js"; // Aggregator
+import { FetchDocumentDirectory, FetchHomeDirectory } from "../Wrappers.js"; // Aggregator
 
-// Explicit type import if needed
+// Explicit type import
 
 /**
- * @module FallbackDefaultPath
+ * @module FallbackDefaultPath (Resolver)
  * @description Effect that attempts to get a fallback default path,
- * trying home directory then document directory.
+ * trying home directory then document directory. Yields Option<string>.
  */
 const Resolve = pipe(
-	FetchHomeDirectory, // This Effect has PathProblem in its E channel
+	FetchHomeDirectory,
 	Effect.map(Option.some),
-	Effect.catchTag("PathProblem", (e: PathProblemType) => {
-		// Explicitly type 'e' if inference fails
-		if (e.operation === "homeDir") {
-			// Now 'e.operation' should be accessible
-			return pipe(
-				FetchDocumentDirectory,
-				Effect.map(Option.some),
-				Effect.catchTag("PathProblem", (e2: PathProblemType) =>
-					e2.operation === "documentDir"
-						? Effect.succeed(Option.none<string>())
-						: Effect.fail(e2),
-				),
-			);
-		}
-		return Effect.fail(e);
-	}),
+	Effect.catchTag(
+		"PathProblem",
+		(
+			ErrorDetails: PathProblemType, // Explicit type for clarity
+		) =>
+			ErrorDetails.operation === "homeDir"
+				? pipe(
+						FetchDocumentDirectory,
+						Effect.map(Option.some),
+						Effect.catchTag(
+							"PathProblem",
+							(ErrorDetailsDoc: PathProblemType) =>
+								ErrorDetailsDoc.operation === "documentDir"
+									? Effect.succeed(Option.none<string>())
+									: Effect.fail(ErrorDetailsDoc),
+						),
+					)
+				: Effect.fail(ErrorDetails),
+	),
 );
 export default Resolve;

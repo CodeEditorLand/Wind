@@ -1,5 +1,5 @@
 // Integration/Tauri/Converters.ts
-// Purpose: Aggregates and exports pure conversion utility functions.
+// Purpose: Aggregates pure conversion utility functions for Tauri integrations.
 
 export { default as ConvertUriToPathString } from "./Convert/UriToPathString.js";
 export { default as ConvertFiltersToTauri } from "./Convert/FiltersToTauri.js";

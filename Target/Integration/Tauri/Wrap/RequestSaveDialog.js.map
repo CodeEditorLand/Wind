@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../Source/Integration/Tauri/Wrap/RequestSaveDialog.ts"],
+  "sourcesContent": ["// Integration/Tauri/Wrap/RequestSaveDialog.ts\n// Purpose: Effect wrapper for Tauri's save dialog.\n\nimport { save as SourceApi } from \"@tauri-apps/plugin-dialog\";\n\nimport { OptionalFromAsync } from \"../../../Effect/Produce.js\";\nimport { DialogProblem } from \"../Errors.js\";\nimport type { SaveOption as TauriSaveOption } from \"../Types.js\"; // Tauri's SaveDialogOptions\n\nconst CreateProblem = (cause: unknown): DialogProblem =>\n\tnew DialogProblem({ cause, operation: \"save\" });\n\n/**\n * @module RequestSaveDialog\n * @description Effect to request a save dialog from Tauri, yielding an Option.\n */\nconst Request = OptionalFromAsync(\n\tSourceApi as (options: TauriSaveOption) => Promise<string | null>,\n\tCreateProblem,\n\t{ operation: \"save\" },\n);\nexport default Request;\n"],
+  "mappings": ";;AAGA,SAAS,QAAQ,iBAAiB;AAElC,SAAS,yBAAyB;AAClC,SAAS,qBAAqB;AAG9B,MAAM,gBAAgB,wBAAC,UACtB,IAAI,cAAc,EAAE,OAAO,WAAW,OAAO,CAAC,GADzB;AAOtB,MAAM,UAAU;AAAA,EACf;AAAA,EACA;AAAA,EACA,EAAE,WAAW,OAAO;AACrB;AACA,IAAO,4BAAQ;",
+  "names": []
+}

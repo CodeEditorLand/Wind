@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../Source/Integration/Tauri/Convert/SaveResultToUri.ts"],
+  "sourcesContent": ["// Integration/Tauri/Convert/SaveResultToUri.ts\n// Purpose: Purely processes Tauri's save dialog result (Option<string>) to Option<Uri>.\n\nimport { Option, pipe } from \"effect\";\n\nimport {\n\tUriConstructor as UriFileFactory,\n\ttype Uri,\n} from \"../../../Platform/VSCode/Types.js\";\n\n/**\n * @module SaveResultToUri\n * @description Processes the optional result from a Tauri save dialog (a single path string)\n * and converts it to an optional URI.\n */\nexport default function Convert(\n\tSelectedPathOption: Option.Option<string>,\n): Option.Option<Uri> {\n\treturn pipe(\n\t\tSelectedPathOption,\n\t\tOption.filter(\n\t\t\t(PathString): PathString is string => PathString.length > 0,\n\t\t),\n\t\tOption.map((PathString) => UriFileFactory.file(PathString)),\n\t);\n}\n"],
+  "mappings": ";;AAGA,SAAS,QAAQ,YAAY;AAE7B;AAAA,EACC,kBAAkB;AAAA,OAEZ;AAOQ,SAAR,QACN,oBACqB;AACrB,SAAO;AAAA,IACN;AAAA,IACA,OAAO;AAAA,MACN,CAAC,eAAqC,WAAW,SAAS;AAAA,IAC3D;AAAA,IACA,OAAO,IAAI,CAAC,eAAe,eAAe,KAAK,UAAU,CAAC;AAAA,EAC3D;AACD;AAVwB;",
+  "names": []
+}

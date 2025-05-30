@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Integration/Tauri/Definitions.ts"],
+  "sourcesContent": ["// Integration/Tauri/Definitions.ts\n// Purpose: Aggregates pure URI object factory functions.\n\nexport { default as DefineFolderOpen } from \"./Define/FolderOpen.js\";\nexport { default as DefineFileOpen } from \"./Define/FileOpen.js\";\nexport { default as DefineWorkspaceOpen } from \"./Define/WorkspaceOpen.js\";\n"],
+  "mappings": "AAGA,SAAoB,WAAXA,gBAAmC;AAC5C,SAAoB,WAAXA,gBAAiC;AAC1C,SAAoB,WAAXA,gBAAsC;",
+  "names": ["default"]
+}

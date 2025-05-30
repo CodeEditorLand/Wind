@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../Source/Integration/Tauri/Wrap/FetchDocumentDirectory.ts"],
+  "sourcesContent": ["// Integration/Tauri/Wrap/FetchDocumentDirectory.ts\n// Purpose: Effect wrapper for fetching the Tauri document directory.\n\nimport { documentDir as SourceApi } from \"@tauri-apps/api/path\";\n\nimport { FromAsync } from \"../../../Effect/Produce.js\";\nimport { PathProblem } from \"../Errors.js\";\n\nconst CreateProblem = (cause: unknown): PathProblem =>\n\tnew PathProblem({ cause, operation: \"documentDir\" });\n\n/**\n * @module FetchDocumentDirectory\n * @description Effect to get the user's document directory via Tauri.\n */\nconst Fetch = FromAsync(SourceApi, CreateProblem, { operation: \"documentDir\" });\nexport default Fetch;\n"],
+  "mappings": ";;AAGA,SAAS,eAAe,iBAAiB;AAEzC,SAAS,iBAAiB;AAC1B,SAAS,mBAAmB;AAE5B,MAAM,gBAAgB,wBAAC,UACtB,IAAI,YAAY,EAAE,OAAO,WAAW,cAAc,CAAC,GAD9B;AAOtB,MAAM,QAAQ,UAAU,WAAW,eAAe,EAAE,WAAW,cAAc,CAAC;AAC9E,IAAO,iCAAQ;",
+  "names": []
+}

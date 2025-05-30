@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/Dialog/Tag.ts"],
+  "sourcesContent": ["// Application/Dialog/Tag.ts\n// Purpose: Defines the Effect Context Tag for IFileDialogService.\n\nimport { Context } from \"effect\";\n// Import the VSCode interface definition\nimport type { IFileDialogService as VsCodeFileDialogServiceInterface } from \"vs/platform/dialogs/common/dialogs\";\n\n/**\n * @module Tag (Service Tag)\n * @description Effect Context Tag for IFileDialogService.\n * This allows IFileDialogService to be injected and used within Effect-managed contexts.\n */\n// It's good practice to also export the interface type this Tag represents if it's not easily accessible\nexport type Interface = VsCodeFileDialogServiceInterface;\nconst Tag = Context.Tag<Interface>(\"vscode/FileDialogService\"); // Using VSCode's internal service ID\n\nexport default Tag;\n"],
+  "mappings": "AAGA,SAAS,eAAe;AAWxB,MAAM,MAAM,QAAQ,IAAe,0BAA0B;AAE7D,IAAO,cAAQ;",
+  "names": []
+}

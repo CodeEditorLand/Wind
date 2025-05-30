@@ -1,9 +1,12 @@
 // Integration/Tauri/Convert/OpenResultToUriArray.ts
-// Purpose: Purely processes Tauri's open dialog result (Option<string | string[]>) to Option<URI[]>.
+// Purpose: Purely processes Tauri's open dialog result (Option<string | string[]>) to Option<Uri[]>.
 
 import { Option, pipe } from "effect";
 
-import { Uri } from "../../../Platform/VSCode/Types.js";
+import {
+	UriConstructor as UriFileFactory,
+	type Uri,
+} from "../../../Platform/VSCode/Types.js";
 
 /**
  * @module OpenResultToUriArray
@@ -27,7 +30,9 @@ export default function Convert(
 				),
 		),
 		Option.map((ValidPathsArray) =>
-			ValidPathsArray.map((PathString) => Uri.file(PathString)),
+			ValidPathsArray.map((PathString) =>
+				UriFileFactory.file(PathString),
+			),
 		),
 	);
 }
