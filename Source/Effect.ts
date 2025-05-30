@@ -1,19 +1,21 @@
-import { Context, Data, Effect, Option } from "effect";
+import { Context, Data, Effect, Option, pipe } from "effect";
 
 /**
  * A function that returns a Promise.
  * @template Args - Tuple type of arguments for the promise-returning function.
  * @template R - Success type of the Promise.
  */
-type PromiseProvider<Args extends any[], R> = (...args: Args) => Promise<R>;
+export type PromiseProvider<Args extends any[], R> = (
+	...args: Args
+) => Promise<R>;
 
 /**
- * A constructor for a custom Data.TaggedError.
+ * A factory function to create a custom Data.TaggedError.
  * @template PErrorPayload - The payload properties specific to this error, excluding 'cause'.
  * @template TEffectError - The custom error type, extends Data.TaggedError.
  */
-type ErrorFactory<
-	PErrorPayload extends Record<string, any>, // Properties specific to this error (excluding cause)
+export type ErrorFactory<
+	PErrorPayload extends Record<string, any>,
 	TEffectError extends Data.TaggedError<
 		string,
 		{ cause: unknown } & PErrorPayload
@@ -48,7 +50,7 @@ export function makeEffectFromPromise<
 }
 
 /**
- * Creates a function that wraps a promise-returning API (that might return null/undefined for "not found")
+ * Creates a function that wraps a promise-returning API (that might return null/undefined)
  * into an Effect that yields an Option.
  */
 export function makeEffectOptionFromPromise<
@@ -76,6 +78,7 @@ export function makeEffectOptionFromPromise<
 
 /**
  * Creates a function that wraps a call to a method of a service retrieved from Effect's Context.
+ * The service method must return a Promise.
  */
 export function makeEffectFromServiceMethod<
 	S_Interface,
@@ -127,7 +130,7 @@ export function makeEffectFromServiceMethod<
 }
 
 /**
- * Creates a function that wraps a call to a service method (that might return null/undefined)
+ * Creates a function that wraps a call to a service method (that might return Promise<R | null | undefined>)
  * into an Effect that yields an Option.
  */
 export function makeEffectOptionFromServiceMethod<

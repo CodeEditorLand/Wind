@@ -1,0 +1,1 @@
+import{c as p}from"./chunk-7OUN2IRQ.js";import{c as a}from"./chunk-ZREYYUAY.js";import{b as r}from"./chunk-ONM26CSU.js";import{d as i}from"./chunk-Q5DBU42L.js";import{Effect as e,pipe as f}from"./effect.js";function s(t){return f(r(t.defaultUri),e.map(o=>p(t,o)),e.flatMap(o=>i(o)),e.map(a))}export{s as a};
