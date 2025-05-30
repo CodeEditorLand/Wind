@@ -4,12 +4,13 @@
 import { URI as VsCodeUriDefinition } from "vs/base/common/uri";
 
 /**
- * @module Uri
+ * @module Uri (File name provides context)
  * @description Represents a Uniform Resource Identifier (URI) as defined by VSCode.
  */
-export type Uri = VsCodeUriDefinition;
+export type Type = VsCodeUriDefinition; // Type alias for instance type
+
 /**
- * @description The VSCode URI class, providing static methods like URI.file().
+ * @description The VSCode URI class constructor and its static methods.
  */
-const UriConstructor = VsCodeUriDefinition;
-export default UriConstructor;
+const Constructor = VsCodeUriDefinition; // Value (the class itself)
+export default Constructor;

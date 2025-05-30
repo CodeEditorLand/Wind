@@ -1,36 +1,40 @@
 // Application/Dialog/Orchestrate/PickAndOpen.ts
-// Purpose: Core logic for pick...AndOpen methods as a piped Effect.
 
 import { Effect, Option, pipe } from "effect";
+// Make sure these types are correctly imported/aliased
 import type {
 	IOpenDialogOptions as VsCodeOpenOptions,
-	Partial as VsCodePartial,
+	Partial as VsCodePartialIfAny,
 	IPickAndOpenOptions as VsCodePickOptions,
 } from "vs/platform/dialogs/common/dialogs";
 
 import {
-	DefineFileOpen, // Renamed factories
+	DefineFileOpen,
 	DefineFolderOpen,
 	DefineWorkspaceOpen,
 	ProcessOpenResultToSingleUri,
-	ProvideHost, // Renamed HostServiceTag
-	RequestHostWindowOpen, // Renamed from effectOpenInHostService
+	ProvideHost, // This is the Tag for HostService (PerformHostAction interface)
+	RequestHostWindowOpen,
 	RequestTauriOpen,
-	ResolveFinalDefaultPath, // Renamed from effectGetFinalDefaultPath
+	ResolveFinalDefaultPath,
+	type PickProblem, // Error type
+	type UriType, // Correct way to import URI type from our Uri.ts
 } from "../../../Integration/Tauri.js";
+// Aggregator import
+
 import CreatePickOpenOptions from "../Factory/CreatePickOpenOptions.js";
 import CreateWindowOptions from "../Factory/CreateWindowOptions.js";
-import type { PickProblem } from "../Types.js"; // Renamed error type
+
+// Assuming VsCodePartial is a utility type like Partial from TS
+type CombinedPickOptions = VsCodePickOptions &
+	VsCodePartialIfAny<VsCodeOpenOptions>;
 
 /**
  * @module PickAndOpen (Logic Orchestration)
- * @description Orchestrates the logic for picking a file/folder/workspace and opening it.
- * Requires ProvideHost (IHostService) from context.
  */
 export default function Orchestrate(
 	options: VsCodePickOptions,
 	config: {
-		// Renamed dialogConfig
 		titleKey: string;
 		defaultTitle: string;
 		tauriDirectory: boolean;
@@ -38,37 +42,37 @@ export default function Orchestrate(
 		defaultWorkspaceFilter?: boolean;
 	},
 ): Effect.Effect<void, PickProblem, ProvideHost> {
-	// Dependencies declared in R
 	return pipe(
-		ResolveFinalDefaultPath(
-			(options as VsCodePickOptions & VsCodePartial<VsCodeOpenOptions>)
-				.defaultUri,
-		),
+		ResolveFinalDefaultPath((options as CombinedPickOptions).defaultUri),
 		Effect.map((defaultPath) =>
 			CreatePickOpenOptions(
-				options as VsCodePickOptions & VsCodePartial<VsCodeOpenOptions>,
+				options as CombinedPickOptions,
 				config,
 				defaultPath,
 			),
 		),
 		Effect.flatMap((tauriOptions) => RequestTauriOpen(tauriOptions)),
 		Effect.map(ProcessOpenResultToSingleUri),
+		// Replace Option.matchEffect with Option.match where branches return Effect
 		Effect.flatMap(
-			Option.matchEffect({
-				onNone: () => Effect.void,
-				onSome: (selectedUri) =>
-					RequestHostWindowOpen(
-						// This Effect requires ProvideHost
-						[
-							config.itemType === "folder"
-								? DefineFolderOpen(selectedUri)
-								: config.itemType === "file"
-									? DefineFileOpen(selectedUri)
-									: DefineWorkspaceOpen(selectedUri),
-						],
-						CreateWindowOptions(options),
-					),
-			}),
+			(
+				maybeUri, // maybeUri is Option<UriType>
+			) =>
+				Option.match(maybeUri, {
+					onNone: () => Effect.void,
+					onSome: (selectedUri: UriType) =>
+						RequestHostWindowOpen(
+							// Explicitly type selectedUri
+							[
+								config.itemType === "folder"
+									? DefineFolderOpen(selectedUri)
+									: config.itemType === "file"
+										? DefineFileOpen(selectedUri)
+										: DefineWorkspaceOpen(selectedUri),
+							],
+							CreateWindowOptions(options),
+						),
+				}),
 		),
 	);
 }

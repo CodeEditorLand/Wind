@@ -11,7 +11,7 @@ import {
 /**
  * @module WarnUnsupported
  * @description Shows a warning message dialog indicating an unsupported browser operation,
- * specific to the Tauri environment.
+ * specific to the Tauri environment. This was formerly showUnsupportedBrowserWarning.
  */
 export default function Warn(
 	context: "open" | "save",
