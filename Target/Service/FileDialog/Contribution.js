@@ -1,0 +1,1 @@
+import{IFileDialogService as i}from"vs/platform/dialogs/common/dialogs";import{InstantiationType as e,registerSingleton as r}from"vs/platform/instantiation/common/extensions";import{TauriFileDialogService as o}from"../FileDialog.js";r(i,o,e.Delayed);

@@ -1,36 +1,41 @@
 {
+	"$schema": "https://json.schemastore.org/tsconfig",
+
 	"compilerOptions": {
 		"baseUrl": "./",
-		"jsx": "preserve",
-		"jsxImportSource": "solid-js",
-		"lib": ["DOM", "DOM.Iterable", "ESNext"],
-		"outDir": "Target",
-		"jsxFactory": "createComponent",
-		"jsxFragmentFactory": "Fragment",
-		"paths": {
-			"@Asset/*": ["Source/Asset/*"],
-			"@Class/*": ["Source/Class/*"],
-			"@Component/*": ["Source/Component/*"],
-			"@Context/*": ["Source/Context/*"],
-			"@Element/*": ["Source/Element/*"],
-			"@Function/*": ["Source/Function/*"],
-			"@Interface/*": ["Source/Interface/*"],
-			"@Layout/*": ["Source/Layout/*"],
-			"@Library/*": ["Source/Library/*"],
-			"@Notation/*": ["Source/Notation/*"],
-			"@Option/*": ["Source/Option/*"],
-			"@Page/*": ["Source/pages/*"],
-			"@Script/*": ["Source/Script/*"],
-			"@Stylesheet/*": ["Source/Stylesheet/*"],
-			"@Target/*": ["Source/Target/*"],
-			"@Test/*": ["Source/Test/*"],
-			"@Type/*": ["Source/Type/*"],
-			"@Variable/*": ["Source/Variable/*"],
 
+		"emitDeclarationOnly": false,
+
+		"emitDecoratorMetadata": true,
+
+		"experimentalDecorators": true,
+
+		"lib": ["DOM", "ESNext"],
+
+		"module": "ESNext",
+
+		"moduleResolution": "Bundler",
+
+		"noEmit": true,
+
+		"outDir": "Target",
+
+		"paths": {
 			"@Source/*": ["Source/*"],
-			"@Editor/*": ["../../Dependency/Microsoft/Dependency/Editor/src/*"]
-		}
+
+			"@VSCode/*": ["../../Dependency/Microsoft/Dependency/Editor/src/*"],
+
+			"vs/*": ["../../Dependency/Microsoft/Dependency/Editor/src/vs/*"]
+		},
+
+		"rootDirs": [".", "../../Dependency/Microsoft/Dependency/Editor/src/"],
+
+		"target": "ESNext"
 	},
+
+	"exclude": ["Target"],
+
 	"extends": "@playform/build/tsconfig",
-	"include": ["Source"]
+
+	"include": ["Source", "@types/node"]
 }
