@@ -2,6 +2,7 @@ export const On = process.env["NODE_ENV"] === "development" ||
     process.env["TAURI_ENV_DEBUG"] === "true";
 export const Clean = process.env["Clean"] === "true";
 export const Bundle = process.env["Bundle"] === "true";
+export const Compile = process.env["Compile"] === "true";
 /**
  * @module ESBuild
  *
@@ -51,5 +52,9 @@ export default {
         },
     ],
     outbase: "Source/Configuration",
+    loader: {
+        ".json": "copy",
+        ".sh": "copy",
+    },
 };
 export const { sep, posix } = await import("node:path");

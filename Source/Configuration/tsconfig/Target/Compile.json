@@ -1,0 +1,19 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"extends": "../../../tsconfig.json",
+	"compilerOptions": {
+		"baseUrl": "./",
+		"outDir": "../../../Target",
+		"noCheck": true,
+		"noEmit": true,
+		"declaration": false,
+		"declarationMap": false,
+		"emitDeclarationOnly": false,
+		"allowJs": true,
+		"checkJs": false
+	},
+	"include": [
+		"../../../Target",
+	],
+	"exclude": []
+}

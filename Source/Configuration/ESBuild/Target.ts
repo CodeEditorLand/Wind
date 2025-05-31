@@ -4,12 +4,14 @@ export const On = (await import("./Wind.js")).On;
 
 export const Bundle = (await import("./Wind.js")).Bundle;
 
+export const Merge = (await import("deepmerge-ts")).deepmerge;
+
 /**
  * @module ESBuild
  *
  */
 export default async (Current: BuildOptions): Promise<BuildOptions> =>
-	(await import("deepmerge-ts")).deepmerge<[BuildOptions, BuildOptions]>(
+	Merge<[BuildOptions, BuildOptions]>(
 		(await import("./Wind.js")).default,
 
 		{
@@ -33,13 +35,39 @@ export default async (Current: BuildOptions): Promise<BuildOptions> =>
 
 			outbase: "Source",
 
-			// external: Bundle
-			// 	? [
-			// 			"@tauri-apps/api/path",
-			// 			"@tauri-apps/plugin-dialog",
-			// 			"effect",
-			// 			"vs/*",
-			// 		]
-			// 	: [],
+			plugins: Merge<[BuildOptions["plugins"], BuildOptions["plugins"]]>(
+				Current.plugins,
+				[
+					{
+						name: "Compile",
+						setup({ onEnd }) {
+							onEnd(async ({ metafile }) => {
+								const _Output = metafile?.outputs;
+
+								for (const Output in _Output) {
+									if (
+										Object.prototype.hasOwnProperty.call(
+											_Output,
+											Output,
+										)
+									) {
+										if (Output.endsWith(".js")) {
+											(
+												await import(
+													"@playform/build/Target/Function/Exec.js"
+												)
+											).default(
+												`Build '${Output}' \
+													--ESBuild Configuration/ESBuild/Target/Compile.js \
+													--TypeScript Configuration/tsconfig/Target/Compile.json`,
+											);
+										}
+									}
+								}
+							});
+						},
+					},
+				],
+			),
 		},
 	);
