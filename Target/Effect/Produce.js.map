@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../Source/Effect/Produce.ts"],
-  "sourcesContent": ["// Effect/Produce.ts\n// Purpose: Aggregates and exports utilities for producing Effects.\n\nexport * from \"./Produce/Type.js\"; // Re-exports AsyncFunction, ErrorProducer types\n\nexport { default as FromAsync } from \"./Produce/FromAsync.js\";\nexport { default as OptionalFromAsync } from \"./Produce/OptionalFromAsync.js\";\nexport { default as FromMethod } from \"./Produce/FromMethod.js\";\nexport { default as OptionalFromMethod } from \"./Produce/OptionalFromMethod.js\";\n"],
-  "mappings": "AAGA,cAAc;AAEd,SAAoB,WAAXA,gBAA4B;AACrC,SAAoB,WAAXA,gBAAoC;AAC7C,SAAoB,WAAXA,gBAA6B;AACtC,SAAoB,WAAXA,gBAAqC;",
-  "names": ["default"]
-}

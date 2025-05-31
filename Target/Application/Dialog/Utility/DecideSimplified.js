@@ -1,15 +1,1 @@
-var __defProp = Object.defineProperty;
-var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-import { VsCodeScheme } from "../../../Integration/Tauri.js";
-function Decide(scheme) {
-  return ![
-    VsCodeScheme.file,
-    VsCodeScheme.vscodeUserData,
-    VsCodeScheme.tmp
-  ].includes(scheme);
-}
-__name(Decide, "Decide");
-export {
-  Decide as default
-};
-//# sourceMappingURL=DecideSimplified.js.map
+import{VsCodeScheme as e}from"../../../Integration/Tauri.js";function t(o){return![e.file,e.vscodeUserData,e.tmp].includes(o)}export{t as default};

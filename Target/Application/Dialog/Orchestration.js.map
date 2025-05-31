@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Application/Dialog/Orchestration.ts"],
-  "sourcesContent": ["// Application/Dialog/Orchestration.ts\n// Purpose: Aggregates internal logic orchestration Effects for the Dialog service.\n\nexport { default as PerformPickAndOpen } from \"./Orchestrate/PickAndOpen.js\";\nexport { default as PerformShowOpen } from \"./Orchestrate/ShowOpen.js\";\nexport { default as PerformShowSave } from \"./Orchestrate/ShowSave.js\";\n"],
-  "mappings": "AAGA,SAAoB,WAAXA,gBAAqC;AAC9C,SAAoB,WAAXA,gBAAkC;AAC3C,SAAoB,WAAXA,gBAAkC;",
-  "names": ["default"]
-}

@@ -1,1 +1,0 @@
-//# sourceMappingURL=WorkspaceOpenSpecification.js.map

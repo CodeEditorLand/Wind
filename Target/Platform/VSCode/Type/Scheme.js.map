@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../Source/Platform/VSCode/Type/Scheme.ts"],
-  "sourcesContent": ["// Platform/VSCode/Type/Scheme.ts\n// Purpose: VSCode URI Scheme constants.\n\nimport { Schemas as VsCodeSchemaConstants } from \"vs/base/common/network\";\n\n/**\n * @module Scheme\n * @description VSCode constants for common URI schemes.\n */\nconst Constant = VsCodeSchemaConstants;\nexport default Constant;\n"],
-  "mappings": "AAGA,SAAS,WAAW,6BAA6B;AAMjD,MAAM,WAAW;AACjB,IAAO,iBAAQ;",
-  "names": []
-}

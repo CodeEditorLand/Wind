@@ -1,7 +1,1 @@
-import { URI as VsCodeUriDefinition } from "vs/base/common/uri";
-const Constructor = VsCodeUriDefinition;
-var Uri_default = Constructor;
-export {
-  Uri_default as default
-};
-//# sourceMappingURL=Uri.js.map
+import{URI as o}from"vs/base/common/uri";const t=o;var i=t;export{i as default};

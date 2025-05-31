@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../Source/Integration/Tauri/Define/FileOpen.ts"],
-  "sourcesContent": ["// Integration/Tauri/Define/FileOpen.ts\n// Purpose: Pure factory for creating VSCode IFileToOpen objects.\n\nimport type {\n\tFileOpenSpecification,\n\tUri,\n} from \"../../../Platform/VSCode/Types.js\";\n\n/**\n * @module FileOpen (Definition)\n * @description Creates an IFileToOpen (FileOpenSpecification) object for a given URI.\n */\nexport default function Define(Path: Uri): FileOpenSpecification {\n\treturn { fileUri: Path };\n}\n"],
-  "mappings": ";;AAYe,SAAR,OAAwB,MAAkC;AAChE,SAAO,EAAE,SAAS,KAAK;AACxB;AAFwB;",
-  "names": []
-}

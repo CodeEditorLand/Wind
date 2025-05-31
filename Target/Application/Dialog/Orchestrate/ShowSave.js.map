@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../Source/Application/Dialog/Orchestrate/ShowSave.ts"],
-  "sourcesContent": ["// Application/Dialog/Orchestrate/ShowSave.ts\n// Purpose: Core logic for showSaveDialog as a piped Effect.\n\nimport { Effect, Option, pipe } from \"effect\";\nimport type { ISaveDialogOptions as VsCodeSaveOptions } from \"vs/platform/dialogs/common/dialogs\";\n\nimport {\n\tProcessSaveResultToUri,\n\tRequestTauriSave,\n\tResolveFinalDefaultPath,\n\ttype OperationProblem,\n\ttype UriType,\n} from \"../../../Integration/Tauri.js\";\nimport CreateSaveOption from \"../Factory/CreateSaveOption.js\";\n\n/**\n * @module ShowSave (Orchestration Logic)\n * @description Orchestrates the logic for showing a save dialog.\n */\nexport default function Orchestrate(\n\toptions: VsCodeSaveOptions,\n): Effect.Effect<Option.Option<UriType>, OperationProblem, never> {\n\t// Context R is never\n\treturn pipe(\n\t\tResolveFinalDefaultPath(options.defaultUri),\n\t\tEffect.map((defaultPath) => CreateSaveOption(options, defaultPath)),\n\t\tEffect.flatMap((tauriOptions) => RequestTauriSave(tauriOptions)),\n\t\tEffect.map(ProcessSaveResultToUri),\n\t);\n}\n"],
-  "mappings": ";;AAGA,SAAS,QAAQ,QAAQ,YAAY;AAGrC;AAAA,EACC;AAAA,EACA;AAAA,EACA;AAAA,OAGM;AACP,OAAO,sBAAsB;AAMd,SAAR,YACN,SACiE;AAEjE,SAAO;AAAA,IACN,wBAAwB,QAAQ,UAAU;AAAA,IAC1C,OAAO,IAAI,CAAC,gBAAgB,iBAAiB,SAAS,WAAW,CAAC;AAAA,IAClE,OAAO,QAAQ,CAAC,iBAAiB,iBAAiB,YAAY,CAAC;AAAA,IAC/D,OAAO,IAAI,sBAAsB;AAAA,EAClC;AACD;AAVwB;",
-  "names": []
-}

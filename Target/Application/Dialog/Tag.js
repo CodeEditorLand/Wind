@@ -1,7 +1,1 @@
-import { Context } from "../../effect";
-const Tag = Context.Tag("vscode/FileDialogService");
-var Tag_default = Tag;
-export {
-  Tag_default as default
-};
-//# sourceMappingURL=Tag.js.map
+import{Context as e}from"../../effect";const o=e.Tag("vscode/FileDialogService");var a=o;export{a as default};

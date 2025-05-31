@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../Source/Integration/Tauri.ts"],
-  "sourcesContent": ["// Integration/Tauri.ts\n// Purpose: Main aggregator for the Integration/Tauri module.\n\n// Core VSCode Types & Context (re-exported for convenience)\nexport * from \"../../Platform/VSCode/Types.js\"; // Exports UriConstructor, Uri type, Scheme, FileFilter etc.\nexport * from \"../../Platform/VSCode/Provide.js\"; // Exports HostServiceTag (as Host) & PerformHostAction interface\n\n// Tauri Specific Types (from Integration/Tauri/Types.ts aggregator)\nexport * from \"./Tauri/Types.js\";\n\n// Errors (from Integration/Tauri/Errors.ts aggregator)\nexport * from \"./Tauri/Errors.js\";\n\n// Wrapped Effects for Tauri & Host APIs (from Integration/Tauri/Wrappers.ts aggregator)\nexport * from \"./Tauri/Wrappers.js\";\n\n// Pure Converters (from Integration/Tauri/Converters.ts aggregator)\nexport * from \"./Tauri/Converters.js\";\n\n// Pure URI Object Factories (from Integration/Tauri/Definitions.ts aggregator)\nexport * from \"./Tauri/Definitions.js\";\n\n// Composed Effects for Resolving Paths (from Integration/Tauri/Resolvers.ts aggregator)\nexport * from \"./Tauri/Resolvers.js\";\n"],
-  "mappings": "AAIA,cAAc;AACd,cAAc;AAGd,cAAc;AAGd,cAAc;AAGd,cAAc;AAGd,cAAc;AAGd,cAAc;AAGd,cAAc;",
-  "names": []
-}

@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../Source/Integration/Tauri/Resolve/FinalDefaultPath.ts"],
-  "sourcesContent": ["// Integration/Tauri/Resolve/FinalDefaultPath.ts\n// Purpose: Composed Effect for determining the final default path for dialogs.\n\nimport { Effect, Option, pipe } from \"effect\";\n\nimport type { Uri } from \"../../../Platform/VSCode/Types.js\";\nimport { ConvertUriToPathString } from \"../Converters.js\"; // Aggregator\n\nimport type { PathProblem } from \"../Errors.js\";\nimport ResolveFallbackDefaultPath from \"./FallbackDefaultPath.js\";\n\n/**\n * @module FinalDefaultPath (Resolver)\n * @description Effectfully gets a dialog's final default path.\n * Tries a provided URI first, then uses a fallback mechanism. Yields Option<string>.\n */\nexport default function Resolve(\n\tMaybeUri?: Uri,\n): Effect.Effect<Option.Option<string>, PathProblem> {\n\treturn pipe(\n\t\tConvertUriToPathString(MaybeUri), // Pure conversion\n\t\tOption.match({\n\t\t\tonSome: (PathString) => Effect.succeed(Option.some(PathString)),\n\t\t\tonNone: () => ResolveFallbackDefaultPath,\n\t\t}),\n\t);\n}\n"],
-  "mappings": ";;AAGA,SAAS,QAAQ,QAAQ,YAAY;AAGrC,SAAS,8BAA8B;AAGvC,OAAO,gCAAgC;AAOxB,SAAR,QACN,UACoD;AACpD,SAAO;AAAA,IACN,uBAAuB,QAAQ;AAAA;AAAA,IAC/B,OAAO,MAAM;AAAA,MACZ,QAAQ,wBAAC,eAAe,OAAO,QAAQ,OAAO,KAAK,UAAU,CAAC,GAAtD;AAAA,MACR,QAAQ,6BAAM,4BAAN;AAAA,IACT,CAAC;AAAA,EACF;AACD;AAVwB;",
-  "names": []
-}

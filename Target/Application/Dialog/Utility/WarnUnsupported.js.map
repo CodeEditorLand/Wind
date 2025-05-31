@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../Source/Application/Dialog/Utility/WarnUnsupported.ts"],
-  "sourcesContent": ["// Application/Dialog/Utility/WarnUnsupported.ts\nimport { Effect } from \"effect\";\n\nimport {\n\tShowTauriMessage,\n\ttype DialogProblem,\n} from \"../../../Integration/Tauri.js\";\n\nexport default function Warn(\n\tcontext: \"open\" | \"save\",\n): Effect.Effect<void, DialogProblem, never> {\n\treturn ShowTauriMessage(\n\t\t`The requested file operation (${context}) might not be fully optimal in this environment.`,\n\t\t{ title: \"Notice\", kind: \"warning\" },\n\t);\n}\n"],
-  "mappings": ";;AACA,SAAS,cAAc;AAEvB;AAAA,EACC;AAAA,OAEM;AAEQ,SAAR,KACN,SAC4C;AAC5C,SAAO;AAAA,IACN,iCAAiC,OAAO;AAAA,IACxC,EAAE,OAAO,UAAU,MAAM,UAAU;AAAA,EACpC;AACD;AAPwB;",
-  "names": []
-}

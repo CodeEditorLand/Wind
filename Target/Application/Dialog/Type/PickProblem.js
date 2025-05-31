@@ -1,2 +1,1 @@
-import { WindowProblem } from "../../../Integration/Tauri/Errors.js";
-//# sourceMappingURL=PickProblem.js.map
+import"../../../Integration/Tauri/Errors.js";

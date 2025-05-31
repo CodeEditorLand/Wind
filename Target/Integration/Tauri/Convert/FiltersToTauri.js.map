@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../Source/Integration/Tauri/Convert/FiltersToTauri.ts"],
-  "sourcesContent": ["// Integration/Tauri/Convert/FiltersToTauri.ts\n// Purpose: Purely converts VSCode FileFilter array to TauriDialogFilter array.\n\nimport { Option, pipe } from \"effect\";\n\nimport type { FileFilter as VsCodeFilter } from \"../../../Platform/VSCode/Types.js\";\nimport type { DialogFilter as TauriFilter } from \"../Types.js\"; // Tauri specific types\n\n/**\n * @module FiltersToTauri\n * @description Converts an array of VSCode FileFilters to an optional array of Tauri DialogFilters.\n * Returns Option.none() if the input array is null, undefined, or empty.\n */\nexport default function Convert(\n\tMaybeFilters?: readonly VsCodeFilter[],\n): Option.Option<TauriFilter[]> {\n\treturn pipe(\n\t\tOption.fromNullable(MaybeFilters),\n\t\tOption.filter((FiltersArray) => FiltersArray.length > 0),\n\t\tOption.map((FiltersArray) =>\n\t\t\tFiltersArray.map((AFilter: VsCodeFilter) => ({\n\t\t\t\tname: AFilter.name,\n\t\t\t\textensions: [...AFilter.extensions],\n\t\t\t})),\n\t\t),\n\t);\n}\n"],
-  "mappings": ";;AAGA,SAAS,QAAQ,YAAY;AAUd,SAAR,QACN,cAC+B;AAC/B,SAAO;AAAA,IACN,OAAO,aAAa,YAAY;AAAA,IAChC,OAAO,OAAO,CAAC,iBAAiB,aAAa,SAAS,CAAC;AAAA,IACvD,OAAO;AAAA,MAAI,CAAC,iBACX,aAAa,IAAI,CAAC,aAA2B;AAAA,QAC5C,MAAM,QAAQ;AAAA,QACd,YAAY,CAAC,GAAG,QAAQ,UAAU;AAAA,MACnC,EAAE;AAAA,IACH;AAAA,EACD;AACD;AAbwB;",
-  "names": []
-}

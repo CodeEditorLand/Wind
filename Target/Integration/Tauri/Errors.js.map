@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Integration/Tauri/Errors.ts"],
-  "sourcesContent": ["// Integration/Tauri/Errors.ts\n// Purpose: Aggregates custom error types for Tauri integrations with descriptive aliases.\n\nimport DialogProblemSource from \"./Error/Dialog.js\";\nimport InheritanceProblemSource from \"./Error/Inheritance.js\";\nimport PathProblemSource from \"./Error/Path.js\";\nimport WindowProblemSource from \"./Error/Window.js\";\n\n/** Error during Tauri path operations. */\nexport const PathProblem = PathProblemSource;\nexport type PathProblem = PathProblemSource;\n\n/** Error during Tauri dialog operations. */\nexport const DialogProblem = DialogProblemSource;\nexport type DialogProblem = DialogProblemSource;\n\n/** Error during VSCode HostService window operations. */\nexport const WindowProblem = WindowProblemSource;\nexport type WindowProblem = WindowProblemSource;\n\n/** Error emulating a superclass method call. */\nexport const InheritanceProblem = InheritanceProblemSource;\nexport type InheritanceProblem = InheritanceProblemSource;\n"],
-  "mappings": "AAGA,OAAO,yBAAyB;AAChC,OAAO,8BAA8B;AACrC,OAAO,uBAAuB;AAC9B,OAAO,yBAAyB;AAGzB,MAAM,cAAc;AAIpB,MAAM,gBAAgB;AAItB,MAAM,gBAAgB;AAItB,MAAM,qBAAqB;",
-  "names": []
-}

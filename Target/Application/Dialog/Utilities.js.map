@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Application/Dialog/Utilities.ts"],
-  "sourcesContent": ["// Application/Dialog/Utilities.ts\nexport { default as WarnUnsupported } from \"./Utility/WarnUnsupported.js\";\nexport { default as DecideSimplified } from \"./Utility/DecideSimplified.js\";\nexport { default as PickFileSaveSimplified } from \"./Utility/PickFileSaveSimplified.js\";\n// ... other simplified pickers\n"],
-  "mappings": "AACA,SAAoB,WAAXA,gBAAkC;AAC3C,SAAoB,WAAXA,gBAAmC;AAC5C,SAAoB,WAAXA,gBAAyC;",
-  "names": ["default"]
-}

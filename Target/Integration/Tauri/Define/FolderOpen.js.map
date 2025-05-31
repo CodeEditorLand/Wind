@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../Source/Integration/Tauri/Define/FolderOpen.ts"],
-  "sourcesContent": ["// Integration/Tauri/Define/FolderOpen.ts\n// Purpose: Pure factory for creating VSCode IFolderToOpen (FolderOpenSpecification) objects.\n\n// Using specific type import to match the new file structure for VSCode types\nimport type {\n\tFolderOpenSpecification,\n\tUri,\n} from \"../../../Platform/VSCode/Types.js\";\n\n/**\n * @module FolderOpen (Definition)\n * @description Creates an IFolderToOpen (FolderOpenSpecification) object for a given URI.\n */\nexport default function Define(Path: Uri): FolderOpenSpecification {\n\treturn { folderUri: Path };\n}\n"],
-  "mappings": ";;AAae,SAAR,OAAwB,MAAoC;AAClE,SAAO,EAAE,WAAW,KAAK;AAC1B;AAFwB;",
-  "names": []
-}

@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Integration/Tauri/Wrappers.ts"],
-  "sourcesContent": ["\n\n// Integration/Tauri/Wrappers.ts\n// Purpose: Aggregates Effect wrappers for Tauri and related HostService APIs.\n\nexport { default as FetchHomeDirectory } from \"./Wrap/FetchHomeDirectory.js\";\nexport { default as FetchDocumentDirectory } from \"./Wrap/FetchDocumentDirectory.js\";\nexport { default as RequestOpenDialog } from \"./Wrap/RequestOpenDialog.js\";\nexport { default as RequestSaveDialog } from \"./Wrap/RequestSaveDialog.js\";\nexport { default as ShowMessageDialog } from \"./Wrap/ShowMessageDialog.js\";\nexport { default as RequestHostWindowOpen } from \"./Wrap/RequestHostWindowOpen.js\";\n"],
-  "mappings": "AAKA,SAAoB,WAAXA,gBAAqC;AAC9C,SAAoB,WAAXA,gBAAyC;AAClD,SAAoB,WAAXA,gBAAoC;AAC7C,SAAoB,WAAXA,gBAAoC;AAC7C,SAAoB,WAAXA,gBAAoC;AAC7C,SAAoB,WAAXA,gBAAwC;",
-  "names": ["default"]
-}

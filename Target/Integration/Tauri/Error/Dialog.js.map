@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../Source/Integration/Tauri/Error/Dialog.ts"],
-  "sourcesContent": ["// Integration/Tauri/Error/Dialog.ts\n// Purpose: Defines an error for Tauri dialog operations.\nimport { Data } from \"effect\";\n\n/**\n * @module Dialog (Error: Problem)\n * @description Represents a problem during Tauri dialog operations (open, save, message).\n */\nexport default class Problem extends Data.TaggedError(\"DialogProblem\")<{\n\treadonly cause: unknown;\n\treadonly operation: \"open\" | \"save\" | \"message\";\n}> {\n\tconstructor(props: {\n\t\tcause: unknown;\n\t\toperation: \"open\" | \"save\" | \"message\";\n\t}) {\n\t\tsuper(props);\n\t}\n}\n"],
-  "mappings": ";;AAEA,SAAS,YAAY;AAMrB,MAAO,gBAA8B,KAAK,YAAY,eAAe,EAGlE;AAAA,EAXH,OAWG;AAAA;AAAA;AAAA,EACF,YAAY,OAGT;AACF,UAAM,KAAK;AAAA,EACZ;AACD;",
-  "names": []
-}

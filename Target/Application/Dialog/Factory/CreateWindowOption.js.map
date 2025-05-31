@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../Source/Application/Dialog/Factory/CreateWindowOption.ts"],
-  "sourcesContent": ["// Application/Dialog/Factory/CreateWindowOption.ts\n// Purpose: Purely constructs VSCode IOpenWindowOptions.\n\nimport { pipe } from \"effect\";\nimport type { IPickAndOpenOptions as VsCodePickOptions } from \"vs/platform/dialogs/common/dialogs\";\n\nimport type { WindowOption } from \"../../../Platform/VSCode/Types.js\"; // VSCode IOpenWindowOptions\n\n/**\n * @module CreateWindowOption (Factory)\n * @description Purely constructs VSCode WindowOpenOption from IPickAndOpenOptions.\n */\nexport default function Create(options: VsCodePickOptions): WindowOption {\n\treturn pipe(\n\t\t{ forceNewWindow: options.forceNewWindow ?? false } as WindowOption,\n\t\t(current) =>\n\t\t\ttypeof (options as any).forceReuseWindow === \"boolean\"\n\t\t\t\t? {\n\t\t\t\t\t\t...current,\n\t\t\t\t\t\tforceReuseWindow: (options as any).forceReuseWindow,\n\t\t\t\t\t}\n\t\t\t\t: current,\n\t\t(current) =>\n\t\t\toptions.remoteAuthority !== undefined // Check if remoteAuthority is explicitly provided\n\t\t\t\t? { ...current, remoteAuthority: options.remoteAuthority }\n\t\t\t\t: current,\n\t);\n}\n"],
-  "mappings": ";;AAGA,SAAS,YAAY;AASN,SAAR,OAAwB,SAA0C;AACxE,SAAO;AAAA,IACN,EAAE,gBAAgB,QAAQ,kBAAkB,MAAM;AAAA,IAClD,CAAC,YACA,OAAQ,QAAgB,qBAAqB,YAC1C;AAAA,MACA,GAAG;AAAA,MACH,kBAAmB,QAAgB;AAAA,IACpC,IACC;AAAA,IACJ,CAAC,YACA,QAAQ,oBAAoB,SACzB,EAAE,GAAG,SAAS,iBAAiB,QAAQ,gBAAgB,IACvD;AAAA,EACL;AACD;AAfwB;",
-  "names": []
-}

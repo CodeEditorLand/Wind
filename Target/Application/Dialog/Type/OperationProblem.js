@@ -1,5 +1,1 @@
-import {
-  PathProblem,
-  DialogProblem as TauriDialogProblem
-} from "../../../Integration/Tauri/Errors.js";
-//# sourceMappingURL=OperationProblem.js.map
+import"../../../Integration/Tauri/Errors.js";

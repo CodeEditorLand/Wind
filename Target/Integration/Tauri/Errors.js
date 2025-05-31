@@ -1,15 +1,1 @@
-import DialogProblemSource from "./Error/Dialog.js";
-import InheritanceProblemSource from "./Error/Inheritance.js";
-import PathProblemSource from "./Error/Path.js";
-import WindowProblemSource from "./Error/Window.js";
-const PathProblem = PathProblemSource;
-const DialogProblem = DialogProblemSource;
-const WindowProblem = WindowProblemSource;
-const InheritanceProblem = InheritanceProblemSource;
-export {
-  DialogProblem,
-  InheritanceProblem,
-  PathProblem,
-  WindowProblem
-};
-//# sourceMappingURL=Errors.js.map
+import o from"./Error/Dialog.js";import e from"./Error/Inheritance.js";import r from"./Error/Path.js";import t from"./Error/Window.js";const c=r,i=o,n=t,p=e;export{i as DialogProblem,p as InheritanceProblem,c as PathProblem,n as WindowProblem};

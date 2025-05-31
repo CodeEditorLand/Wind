@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../Source/Application/Dialog/Type/OperationProblem.ts"],
-  "sourcesContent": ["// Application/Dialog/Type/OperationProblem.ts\n// Purpose: Defines an error union for basic dialog operations.\n\n// Import specific problem types from the Integration/Tauri module's error aggregator\nimport {\n\tPathProblem,\n\tDialogProblem as TauriDialogProblem,\n} from \"../../../Integration/Tauri/Errors.js\";\n\n/**\n * @module OperationProblem (Type)\n * @description Union type for errors that can occur during basic dialog operations,\n * encompassing path resolution problems or Tauri dialog interaction problems.\n */\ntype Type = PathProblem | TauriDialogProblem;\nexport default Type;\n"],
-  "mappings": "AAIA;AAAA,EACC;AAAA,EACA,iBAAiB;AAAA,OACX;",
-  "names": []
-}

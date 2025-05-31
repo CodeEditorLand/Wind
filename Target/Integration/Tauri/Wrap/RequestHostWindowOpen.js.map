@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../Source/Integration/Tauri/Wrap/RequestHostWindowOpen.ts"],
-  "sourcesContent": ["// Integration/Tauri/Wrap/RequestHostWindowOpen.ts\n// Purpose: Effect wrapper for VSCode HostService's openWindow method.\n\nimport { FromMethod } from \"../../../Effect/Produce.js\";\nimport { Host as HostServiceTag } from \"../../../Platform/VSCode/Provide.js\"; // The Tag for IHostService\nimport { WindowProblem } from \"../Errors.js\";\n\nconst CreateProblem = (cause: unknown): WindowProblem =>\n\tnew WindowProblem({ cause, operation: \"hostServiceOpenWindow\" });\n\n/**\n * @module RequestHostWindowOpen\n * @description Effect to open a window using the VSCode HostService.\n * Requires HostService (PerformHostAction) from context.\n */\nconst Request = FromMethod(\n\tHostServiceTag, // Use the Tag\n\t\"openWindow\", // Method name on PerformHostAction interface\n\tCreateProblem,\n\t{ operation: \"hostServiceOpenWindow\" },\n);\nexport default Request;\n"],
-  "mappings": ";;AAGA,SAAS,kBAAkB;AAC3B,SAAS,QAAQ,sBAAsB;AACvC,SAAS,qBAAqB;AAE9B,MAAM,gBAAgB,wBAAC,UACtB,IAAI,cAAc,EAAE,OAAO,WAAW,wBAAwB,CAAC,GAD1C;AAQtB,MAAM,UAAU;AAAA,EACf;AAAA;AAAA,EACA;AAAA;AAAA,EACA;AAAA,EACA,EAAE,WAAW,wBAAwB;AACtC;AACA,IAAO,gCAAQ;",
-  "names": []
-}

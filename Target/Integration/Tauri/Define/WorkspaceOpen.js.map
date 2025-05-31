@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../Source/Integration/Tauri/Define/WorkspaceOpen.ts"],
-  "sourcesContent": ["// Integration/Tauri/Define/WorkspaceOpen.ts\n// Purpose: Pure factory for creating VSCode IWorkspaceToOpen objects.\n\nimport type {\n\tUri,\n\tWorkspaceOpenSpecification,\n} from \"../../../Platform/VSCode/Types.js\";\n\n/**\n * @module WorkspaceOpen (Definition)\n * @description Creates an IWorkspaceToOpen (WorkspaceOpenSpecification) object for a given URI.\n */\nexport default function Define(Path: Uri): WorkspaceOpenSpecification {\n\treturn { workspaceUri: Path };\n}\n"],
-  "mappings": ";;AAYe,SAAR,OAAwB,MAAuC;AACrE,SAAO,EAAE,cAAc,KAAK;AAC7B;AAFwB;",
-  "names": []
-}

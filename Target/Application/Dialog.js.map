@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../Source/Application/Dialog.ts"],
-  "sourcesContent": ["// Application/Dialog.ts\n// Purpose: Main aggregator for the Dialog Service module.\n\nexport * from \"./Dialog/Types.js\"; // Error type aliases\n\nexport { default as LiveDialogService } from \"./Dialog/Live.js\";\nexport {\n\tdefault as DialogServiceTag,\n\ttype Interface as FileDialog,\n} from \"./Dialog/Tag.js\"; // Export Tag & Interface\nexport { default as DialogServiceDefinition } from \"./Dialog/Definition.js\";\n\nexport * from \"./Dialog/Utilities.js\"; // Standalone utilities\n"],
-  "mappings": "AAGA,cAAc;AAEd,SAAoB,WAAXA,gBAAoC;AAC7C;AAAA,EACY,WAAXA;AAAA,OAEM;AACP,SAAoB,WAAXA,gBAA0C;AAEnD,cAAc;",
-  "names": ["default"]
-}

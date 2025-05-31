@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../Source/Integration/Tauri/Convert/OpenResultToSingleUri.ts"],
-  "sourcesContent": ["// Integration/Tauri/Convert/OpenResultToSingleUri.ts\n// Purpose: Purely processes Tauri's open dialog result (Option<string | string[]>) to Option<Uri>.\n\nimport { Option, pipe } from \"effect\";\n\nimport {\n\tUriConstructor as UriFileFactory,\n\ttype Uri,\n} from \"../../../Platform/VSCode/Types.js\"; // For Uri.file() and Uri type\n\n/**\n * @module OpenResultToSingleUri\n * @description Processes the optional result from a Tauri open dialog,\n * expecting a single file path, and converts it to an optional URI.\n */\nexport default function Convert(\n\tSelectedPathOption: Option.Option<string | string[]>,\n): Option.Option<Uri> {\n\treturn pipe(\n\t\tSelectedPathOption,\n\t\tOption.filter(\n\t\t\t(SelectedValue): SelectedValue is string =>\n\t\t\t\ttypeof SelectedValue === \"string\" && SelectedValue.length > 0,\n\t\t),\n\t\tOption.map((PathString) => UriFileFactory.file(PathString)),\n\t);\n}\n"],
-  "mappings": ";;AAGA,SAAS,QAAQ,YAAY;AAE7B;AAAA,EACC,kBAAkB;AAAA,OAEZ;AAOQ,SAAR,QACN,oBACqB;AACrB,SAAO;AAAA,IACN;AAAA,IACA,OAAO;AAAA,MACN,CAAC,kBACA,OAAO,kBAAkB,YAAY,cAAc,SAAS;AAAA,IAC9D;AAAA,IACA,OAAO,IAAI,CAAC,eAAe,eAAe,KAAK,UAAU,CAAC;AAAA,EAC3D;AACD;AAXwB;",
-  "names": []
-}

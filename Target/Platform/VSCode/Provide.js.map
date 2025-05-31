@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Platform/VSCode/Provide.ts"],
-  "sourcesContent": ["\n\n// Platform/VSCode/Provide.ts\n// Purpose: Aggregates VSCode service tags and interfaces.\n\nexport { default as Host, type PerformAction as HostAction } from \"./Provide/Host.js\"; // Export Tag and Interface type\n// ... Add other service tag exports here as they are defined.\n"],
-  "mappings": "AAKA,SAAoB,WAAXA,gBAAyD;",
-  "names": ["default"]
-}

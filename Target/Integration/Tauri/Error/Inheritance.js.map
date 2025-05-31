@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../Source/Integration/Tauri/Error/Inheritance.ts"],
-  "sourcesContent": ["// Integration/Tauri/Error/Inheritance.ts\n// Purpose: Defines an error for emulating superclass method calls.\nimport { Data } from \"effect\";\n\n/**\n * @module Inheritance (Error: Problem)\n * @description Represents a problem emulating a call to a super method,\n * typically from AbstractFileDialogService.\n */\nexport default class Problem extends Data.TaggedError(\"InheritanceProblem\")<{\n\treadonly method: string; // The name of the super method being emulated\n\treadonly cause: unknown;\n}> {\n\tconstructor(props: { cause: unknown; method: string }) {\n\t\tsuper(props);\n\t}\n}\n"],
-  "mappings": ";;AAEA,SAAS,YAAY;AAOrB,MAAO,gBAA8B,KAAK,YAAY,oBAAoB,EAGvE;AAAA,EAZH,OAYG;AAAA;AAAA;AAAA,EACF,YAAY,OAA2C;AACtD,UAAM,KAAK;AAAA,EACZ;AACD;",
-  "names": []
-}
