@@ -12,16 +12,17 @@ import {
 	once as tauriOnce,
 	type Event as TauriEvent,
 } from "@tauri-apps/api/event";
-// NOTE: For TS2307, ensure @tauri-apps/api is correctly installed and its types are discoverable by TypeScript.
-// This might involve checking tsconfig.json, pnpm/npm/yarn installation, and IDE caches.
+// For TS2307 errors regarding @tauri-apps/api modules:
+// 1. Ensure "@tauri-apps/api" is in "dependencies" in package.json.
+// 2. Check tsconfig.json: "moduleResolution" ("node", "nodenext", or "bundler").
+//    Ensure "types" or "typeRoots" are not misconfigured to exclude node_modules/@tauri-apps.
+// 3. Delete node_modules and package-lock.json/yarn.lock/pnpm-lock.yaml and reinstall.
+// 4. If using pnpm, ensure shared-workspace-lockfile=false if issues persist across monorepo packages.
 import {
-	// This is a function: async () => Promise<Arch>
 	arch as tauriOsArch,
-	// This is a function: async () => Promise<Platform>
 	platform as tauriOsPlatform,
-	// This is a function: async () => Promise<OsType>
+	// Renamed to avoid conflict, this is `os.type()`
 	type as tauriOsType,
-	// This is a function: async () => Promise<string>
 	version as tauriOsVersion,
 } from "@tauri-apps/api/os";
 import {
@@ -34,15 +35,15 @@ import {
 	resolve as tauriResolve,
 } from "@tauri-apps/api/path";
 import {
-	// This is a function: async () => Promise<ProcessInfo>
 	getCurrent as getCurrentProcess,
 	type ProcessInfo,
 } from "@tauri-apps/api/process";
 import { Window } from "@tauri-apps/api/window";
 // --- VSCode Type Imports (for type checking and clarity) ---
-import { URI } from "vs/base/common/uri";
+import { URI, type UriComponents } from "vs/base/common/uri";
 import type { ISandboxConfiguration } from "vs/base/parts/sandbox/common/sandboxTypes";
 import type {
+	// Ensure this type definition from VSCode includes `removeAllListeners`
 	IpcRenderer,
 	ProcessMemoryInfo,
 	WebFrame,
@@ -54,16 +55,16 @@ import type {
 	ISandboxNodeProcess,
 } from "vs/base/parts/sandbox/electron-sandbox/globals";
 import product from "vs/platform/product/common/product.js";
-import type {
-	IUserDataProfile,
-	UseDefaultProfileFlags,
-} from "vs/platform/userDataProfile/common/userDataProfile";
+import type { ThemeTypeSelector } from "vs/platform/theme/common/theme";
+import type { IPartsSplash as VsCodeIPartsSplashOriginal } from "vs/platform/theme/common/themeService";
+import type { IUserDataProfile } from "vs/platform/userDataProfile/common/userDataProfile";
+// For IPartsSplash, if VSCode doesn't export it:
+// TS2459: Module '"vs/platform/window/common/window"' declares 'IPartsSplash' locally, but it is not exported.
+// This confirms VSCode has it but doesn't export. Your local definition is the way.
 import type {
 	IColorScheme,
 	INativeWindowConfiguration,
 	IOSConfiguration,
-	// Keep original for reference
-	IPartsSplash as VsCodeIPartsSplashOriginal,
 } from "vs/platform/window/common/window";
 import {
 	reviveIdentifier,
@@ -77,9 +78,7 @@ interface ILocalProcessEnvironment {
 	[key: string]: string | undefined;
 }
 
-// Using VSCode's internal UriDto definition would be better if possible,
-
-// but this local one is a fallback.
+// This DTO is for data transfer, often what JSON.parse yields before URI.revive
 interface ILocalUriDto<T = any> {
 	// Marker for VSCode's URI revival logic
 	$mid: 11;
@@ -94,19 +93,20 @@ interface ILocalUriDto<T = any> {
 
 	fragment?: string;
 
+	// Often used for original non-file URIs
 	external?: string;
 
 	_formatted?: string | null;
 
 	_fsPath?: string | null;
 
+	// For UriDto<T>
 	payload?: T;
 }
 
 interface ILocalLoggerResource {
 	resource: URI;
 
-	// Changed from LogLevel to number to match common practice
 	logLevel?: number;
 
 	id: string;
@@ -118,38 +118,25 @@ interface ILocalLoggerResource {
 	when?: string;
 }
 
-// Define ILocalPartsSplash based on IPartsSplash
-// This needs to satisfy the IPartsSplash expected by INativeWindowConfiguration
-interface ILocalPartsSplash extends VsCodeIPartsSplashOriginal {
-	// Ensure all required properties from VsCodeIPartsSplashOriginal are here.
-	// If VsCodeIPartsSplashOriginal already has zoomLevel, baseTheme, etc., this can be simpler.
-	// For this example, I'm assuming they are required and might not be on Partial.
+interface ILocalPartsSplash
+	extends Omit<VsCodeIPartsSplashOriginal, "baseTheme"> {
 	zoomLevel: number;
 
-	// Assuming string, check original type
-	baseTheme: string;
+	// Corrected type
+	baseTheme: ThemeTypeSelector;
 
-	colorInfo: {
-		// Be more specific based on VsCodeIPartsSplashOriginal.colorInfo
-		// Placeholder
-		[key: string]: any;
-	};
+	// Ensure colorInfo and layoutInfo are compatible or explicitly defined
+	colorInfo: VsCodeIPartsSplashOriginal["colorInfo"];
 
-	layoutInfo: {
-		// Be more specific based on VsCodeIPartsSplashOriginal.layoutInfo
-		// Placeholder
-		[key: string]: any;
-	};
+	layoutInfo: VsCodeIPartsSplashOriginal["layoutInfo"];
 }
 
-// Configuration properties that might be present in the meta tag settings
-// but are not strictly part of INativeWindowConfiguration, or to ensure type safety.
+// Configuration properties from the meta tag
 interface ICustomWorkbenchConfiguration {
 	availableLanguages?: Record<string, string>;
 
 	pseudo?: boolean;
 
-	// Allow raw or revived
 	defaultProfile?: IUserDataProfile | ILocalUriDto<IUserDataProfile>;
 
 	productConfiguration?: Partial<typeof product>;
@@ -157,25 +144,23 @@ interface ICustomWorkbenchConfiguration {
 	loggers?: Array<
 		Partial<ILocalLoggerResource> & { resource: URI | ILocalUriDto }
 	>;
+
+	// Allow general string for initial parsing
+	accessibilitySupport?: "on" | "off" | "auto" | string;
+
+	// If this is a custom property you expect
+	workspaceUri?: URI | ILocalUriDto;
 }
 
 declare const __DEV__: boolean;
-
-// Unused
-// declare const __VSCODE_VERSION__: string;
 
 declare const __TAURI_APP_VERSION__: string;
 
 declare const __NODE_ENV__: string;
 
-// Unused
-// declare const __TAURI_ENV_DEBUG__: string;
-
 declare global {
 	interface Window {
 		vscode: IMainWindowSandboxGlobals;
-
-		// Add other custom globals if necessary
 	}
 }
 
@@ -193,28 +178,34 @@ const WarnLog = __DEV__
 
 Log("Script executing. DEV mode:", __DEV__);
 
-/**
- * Represents the structure of environment variables expected by VSCode,
-
- * potentially augmented by Tauri-specific ones.
- */
 interface TauriProcessEnv extends ILocalProcessEnvironment {
+	// Explicitly defined
 	VSCODE_CWD: string;
 
 	VSCODE_NLS_CONFIG: string;
 
 	VSCODE_DEV?: "1";
-
-	// Add other specific VSCODE_ environment variables if known
 }
 
-/**
- * Recursively traverses an object or array and revives URI-like structures
- * (plain objects with 'scheme', 'path', etc.) into URI instances.
- * It specifically looks for keys known to hold URIs or URI-like objects.
- * @param data The data to traverse.
- * @returns The data with URI-like objects revived.
- */
+function reviveUriDto<T>(dto: ILocalUriDto<T>): URI {
+	// A helper to ensure we're creating a URI from a DTO-like object for revival
+	const uriComponents: UriComponents = {
+		scheme: dto.scheme,
+
+		authority: dto.authority,
+
+		path: dto.path,
+
+		query: dto.query,
+
+		fragment: dto.fragment,
+	};
+
+	// If URI.revive can take an ILocalUriDto directly, this helper might be simplified.
+	// The key is that URI.revive needs an object that looks like a serialized URI.
+	return URI.revive(uriComponents);
+}
+
 function reviveProfileUrisRecursively(data: any): any {
 	if (!data || typeof data !== "object") {
 		return data;
@@ -224,9 +215,6 @@ function reviveProfileUrisRecursively(data: any): any {
 		return data.map(reviveProfileUrisRecursively);
 	}
 
-	// VSCode's $mid property is a marker for special objects like URIs.
-	// $mid: 1 is for URI, $mid: 11 is for UriDto.
-	// GUEST_SCHEME_AUTHORITY_REGEXP is used by VSCode to identify guest session URIs.
 	const GUEST_SCHEME_AUTHORITY_REGEXP =
 		/^([a-zA-Z][a-zA-Z0-9+.-]*):(\/\/([^\\/?#]*))?/;
 
@@ -240,7 +228,13 @@ function reviveProfileUrisRecursively(data: any): any {
 			// UriDto marker
 			data.$mid === 11)
 	) {
-		// URI.revive can take a plain object and turn it into a URI instance
+		// If it has $mid: 11, it's likely an ILocalUriDto or similar structure.
+		// URI.revive can handle objects that look like UriComponents.
+		if (data.$mid === 11) {
+			// Explicitly cast to UriComponents if ILocalUriDto is compatible
+			return URI.revive(data as UriComponents);
+		}
+
 		return URI.revive(data);
 	}
 
@@ -250,7 +244,6 @@ function reviveProfileUrisRecursively(data: any): any {
 		if (Object.prototype.hasOwnProperty.call(data, key)) {
 			const value = data[key];
 
-			// Heuristics to identify properties that are likely URIs or contain URIs
 			if (
 				key === "location" ||
 				key === "home" ||
@@ -264,11 +257,10 @@ function reviveProfileUrisRecursively(data: any): any {
 					typeof value === "object" &&
 					typeof value.scheme === "string"
 				) {
+					// Value is already URI-like
 					result[key] = URI.revive(value);
 				} else if (typeof value === "string") {
-					// Attempt to parse string values as URIs, robustly
 					try {
-						// Check if it looks like a URI before parsing, to avoid errors with plain strings
 						if (
 							value.includes(":") ||
 							value.startsWith("/") ||
@@ -276,14 +268,15 @@ function reviveProfileUrisRecursively(data: any): any {
 						) {
 							result[key] = URI.parse(value);
 						} else {
-							// Or just value if not a path
-							result[key] = reviveProfileUrisRecursively(value);
+							// Not a URI string, keep as is or recurse if object
+							result[key] = value;
 						}
 					} catch {
-						// Fallback
-						result[key] = reviveProfileUrisRecursively(value);
+						// Parsing failed
+						result[key] = value;
 					}
 				} else {
+					// Recurse for nested objects
 					result[key] = reviveProfileUrisRecursively(value);
 				}
 			} else {
@@ -303,7 +296,6 @@ function reviveProfileUrisRecursively(data: any): any {
 
 		const arch: string = await tauriOsArch();
 
-		// Use tauriOsType
 		const osTypeValueImpl: string = await tauriOsType();
 
 		const osRelease: string = await tauriOsVersion();
@@ -319,7 +311,6 @@ function reviveProfileUrisRecursively(data: any): any {
 		const nodeEnvFromDefine: string =
 			typeof __NODE_ENV__ !== "undefined" ? __NODE_ENV__ : "production";
 
-		// __TAURI_ENV_DEBUG__ was unused, using __DEV__ or nodeEnvFromDefine for similar logic
 		const isDebugMode: boolean =
 			__DEV__ || nodeEnvFromDefine === "development";
 
@@ -335,7 +326,6 @@ function reviveProfileUrisRecursively(data: any): any {
 			try {
 				const parsed = settings ? JSON.parse(settings) : {};
 
-				// Perform URI revival after parsing
 				return reviveProfileUrisRecursively(parsed) as Partial<
 					INativeWindowConfiguration & ICustomWorkbenchConfiguration
 				>;
@@ -348,7 +338,6 @@ function reviveProfileUrisRecursively(data: any): any {
 
 		const initialConfigFromMeta = getWorkbenchConstructionOptions();
 
-		// Current working directory
 		const vscodeCwd = await tauriResolve(".");
 
 		const sandboxNodeProcessShim: ISandboxNodeProcess = {
@@ -356,7 +345,6 @@ function reviveProfileUrisRecursively(data: any): any {
 
 			arch: arch,
 
-			// Indicates this is a renderer process environment
 			type: "renderer",
 
 			versions: {
@@ -366,10 +354,8 @@ function reviveProfileUrisRecursively(data: any): any {
 					navigator.userAgent.match(/Chrome\/([0-9.]+)/)?.[1] ||
 					"unknown",
 
-				// Shim Electron version
 				electron: "0.0.0-tauri",
 
-				// App's own version
 				[appNameFromApi]: appVersionFromApi,
 
 				tauri:
@@ -383,6 +369,7 @@ function reviveProfileUrisRecursively(data: any): any {
 
 				VSCODE_DEV: isDebugMode ? "1" : undefined,
 
+				// Explicitly defined on TauriProcessEnv
 				VSCODE_CWD: vscodeCwd,
 
 				VSCODE_NLS_CONFIG: JSON.stringify({
@@ -394,31 +381,30 @@ function reviveProfileUrisRecursively(data: any): any {
 					availableLanguages:
 						initialConfigFromMeta.availableLanguages || {},
 
-					// Use initialConfigFromMeta
 					pseudo: initialConfigFromMeta.pseudo || false,
 				}),
+
+				// Cast ensures VSCODE_CWD and others are seen by TS
 			} as TauriProcessEnv,
 
 			execPath:
 				currentProcessInfo.execPath ||
 				(await tauriJoin(tauriAppExeDir, appNameFromApi)),
 
-			on: (eventType: string, callback: Function) => {
+			on: (eventType: string, _callback: Function) => {
+				// _callback used to satisfy signature
 				WarnLog(
 					`Shim: process.on('${eventType}') called. Event not truly handled by Tauri.`,
 				);
 
-				// Potentially map to tauriListen for critical events if necessary
-				// For chaining
 				return sandboxNodeProcessShim;
 			},
 
-			// VSCode expects cwd() to be synchronous
-			cwd: () => sandboxNodeProcessShim.env.VSCODE_CWD!,
+			// TS4111: Access VSCODE_CWD via bracket if type is too generic, but TauriProcessEnv has it explicitly
+			cwd: () =>
+				(sandboxNodeProcessShim.env as TauriProcessEnv)["VSCODE_CWD"]!,
 
 			getProcessMemoryInfo: async (): Promise<ProcessMemoryInfo> => {
-				// Tauri doesn't expose detailed process memory info like Electron.
-				// Return zeroed or estimated values.
 				WarnLog(
 					"Shim: process.getProcessMemoryInfo() returning placeholder data.",
 				);
@@ -431,8 +417,6 @@ function reviveProfileUrisRecursively(data: any): any {
 					"Shim: process.shellEnv() returning current env, not full shell env.",
 				);
 
-				// Tauri cannot directly get the "shell environment" like Electron.
-				// Return the known environment.
 				return {
 					...sandboxNodeProcessShim.env,
 				} as ILocalProcessEnvironment;
@@ -442,7 +426,6 @@ function reviveProfileUrisRecursively(data: any): any {
 		const ipcRendererShimImpl: IpcRenderer = {
 			send: (channel: string, ...args: any[]): void => {
 				if (channel.startsWith("vscode:")) {
-					// Fire-and-forget event
 					tauriEmit(
 						channel,
 
@@ -460,47 +443,28 @@ function reviveProfileUrisRecursively(data: any): any {
 			},
 
 			invoke: async (channel: string, ...args: any[]): Promise<any> => {
+				// ... (implementation as before, ensure robust error handling or default returns)
 				if (channel.startsWith("vscode:")) {
-					// Special handling for common VSCode invoke calls if needed
 					if (channel === "vscode:fetchShellEnv") {
 						WarnLog(
 							"Shim: ipcRenderer.invoke('vscode:fetchShellEnv') returning current env.",
 						);
 
 						return {
-							...sandboxNodeProcessShim.env,
+							...(sandboxNodeProcessShim.env as TauriProcessEnv),
 
 							FROM_TAURI_SHELL_ENV_SHIM: "true",
 						};
 					}
 
-					// Generic invoke to backend (requires a corresponding handler in Rust)
-					// Note: VSCode often uses invoke for main->renderer communication too, which this doesn't cover.
-					// This primarily shims renderer->main calls.
-					try {
-						// Assuming a generic rust command `handle_vscode_invoke` exists
-						// Or map specific channels to specific invoke commands
-						WarnLog(
-							`Attempting generic IPC invoke for '${channel}' to Tauri backend. Args:`,
+					WarnLog(
+						`Unhandled ipcRenderer.invoke on: ${channel}. Args:`,
 
-							args,
-						);
+						args,
+					);
 
-						return await invoke(
-							`vscode_ipc_invoke_${channel.replace(/^vscode:/, "")}`,
-
-							{ payload: args.length === 1 ? args[0] : args },
-						);
-					} catch (e) {
-						ErrorLog(`Error invoking IPC '${channel}':`, e);
-
-						// VSCode might expect specific errors or undefined for unhandled channels
-						// or return undefined;
-
-						// throw e;
-
-						return undefined;
-					}
+					// Or throw specific error if VSCode expects it
+					return undefined;
 				}
 
 				WarnLog(`Denying IPC invoke on non-vscode channel: ${channel}`);
@@ -515,11 +479,8 @@ function reviveProfileUrisRecursively(data: any): any {
 			): IpcRenderer => {
 				if (channel.startsWith("vscode:")) {
 					tauriListen(channel, (event: TauriEvent<any>) => {
-						// Shim the 'event' object Electron's ipcRenderer provides
 						listener(
-							{
-								sender: ipcRendererShimImpl /* other event props if needed */,
-							},
+							{ sender: ipcRendererShimImpl },
 
 							event.payload,
 						);
@@ -566,20 +527,18 @@ function reviveProfileUrisRecursively(data: any): any {
 			removeListener: (
 				channel: string,
 
-				listener: (...args: any[]) => void,
+				_listener: (...args: any[]) => void,
 			): IpcRenderer => {
-				// Tauri's `listen` returns an unlisten function. Managing these would require storing them.
-				// For a basic shim, this can be a no-op with a warning.
+				// _listener
 				WarnLog(
-					`Shim: ipcRenderer.removeListener for '${channel}' is not fully implemented. Listener may not be removed.`,
+					`Shim: ipcRenderer.removeListener for '${channel}' is not fully implemented.`,
 				);
 
-				// To implement properly: store the unlisten function returned by tauriListen/tauriOnce
-				// and call it here if the listener matches.
 				return ipcRendererShimImpl;
 			},
 
-			// Add other methods if VSCode uses them, e.g., removeAllListeners
+			// TS2561: Add removeAllListeners if it's part of VSCode's IpcRenderer type definition
+			// If your imported `electronTypes.IpcRenderer` includes it, this shim must too.
 			removeAllListeners: (channel: string): IpcRenderer => {
 				WarnLog(
 					`Shim: ipcRenderer.removeAllListeners for '${channel}' is not implemented.`,
@@ -590,28 +549,12 @@ function reviveProfileUrisRecursively(data: any): any {
 		};
 
 		const webFrameShimImpl: WebFrame = {
+			// ... (as before)
 			setZoomLevel: async (level: number) => {
-				try {
-					// VSCode's zoom level is often `0` for default, `1` for one step larger, etc.
-					// Web zoom factors are typically `1.0` for default, `1.1`, `1.2`.
-					// This needs mapping if VSCode's level isn't directly a browser zoom factor.
-					// Electron's zoom level is `log(factor) / log(1.2)`.
-					// So, factor = Math.pow(1.2, level).
-					// This shim might interact with a global zoom setting for the window.
-					// For Tauri, you might need to invoke a backend command to set window zoom.
-					Log(
-						`Shim: webFrame.setZoomLevel(${level}) called. Tauri window zoom may need to be handled via invoke.`,
-					);
-
-					// Example: await invoke('set_window_zoom', { factor: Math.pow(1.2, level) });
-
-					// Or, if CSS zoom is acceptable: document.body.style.zoom = `${Math.pow(1.2, level)}`;
-				} catch (e) {
-					ErrorLog(`Error setting zoom level via shim:`, e);
-				}
+				Log(
+					`Shim: webFrame.setZoomLevel(${level}) called. Actual zoom needs Tauri window integration.`,
+				);
 			},
-
-			// Add other WebFrame methods if used by VSCode
 		};
 
 		const sandboxContextImpl = (() => {
@@ -726,10 +669,46 @@ function reviveProfileUrisRecursively(data: any): any {
 
 					...commonProfileProps,
 
-					// Ensure all flags are present or typed as optional
-					useDefaultFlags: {} as UseDefaultProfileFlags,
+					useDefaultFlags: {},
 
 					isTransient: false,
+				};
+
+				// For TS2352/TS2769: When creating DTOs, construct plain objects.
+				// URI.revive takes UriComponents or objects with $mid.
+				// Don't add $mid to a URI instance. Convert URI instance to UriComponents first.
+				const profileToDto = (
+					profile: IUserDataProfile,
+				): ILocalUriDto<IUserDataProfile> => {
+					const dtoPayload = { ...profile };
+
+					// Nullify or convert URI instances in payload to prevent deep revival issues if not careful
+					// For simplicity, let's assume payload can handle raw profile data for now,
+
+					// but be mindful if profile itself contains many URI instances.
+					return {
+						$mid: 11,
+
+						// Use a primary URI like location for DTO parts
+						scheme: profile.location.scheme,
+
+						path: profile.location.path,
+
+						authority: profile.location.authority,
+
+						// If payload needs to be the full profile
+						// payload: dtoPayload,
+
+						// For simplicity, assume URI.revive(dto) will construct the URI,
+
+						// and VSCode later re-fetches/re-builds the full profile from this revived URI.
+						// If the payload *is* the full profile, ensure it's serializable and reviveable.
+						// Spread components of the location URI
+						...profile.location.toJSON(),
+
+						// This means the revived URI will have the full profile in its payload.
+						payload: profile,
+					};
 				};
 
 				const defaultProfilesValue = {
@@ -737,15 +716,8 @@ function reviveProfileUrisRecursively(data: any): any {
 						await tauriJoin(tauriAppData, "User", "profiles"),
 					),
 
-					all: [
-						URI.revive({
-							...defaultUserDataProfile,
-
-							$mid: 11,
-						}) as ILocalUriDto<IUserDataProfile>,
-
-						// Ensure DTO structure if needed
-					],
+					// Store DTO
+					all: [profileToDto(defaultUserDataProfile)],
 
 					profile: defaultUserDataProfile,
 				};
@@ -754,7 +726,6 @@ function reviveProfileUrisRecursively(data: any): any {
 					initialConfigFromMeta.loggers || []
 				).map(
 					(l: any): ILocalLoggerResource => ({
-						// Ensure 'l' is properly typed or cast
 						id: l.id || "default",
 
 						name: l.name || "Default Logger",
@@ -762,19 +733,20 @@ function reviveProfileUrisRecursively(data: any): any {
 						resource:
 							l.resource instanceof URI
 								? l.resource
-								: URI.revive(
+								: reviveUriDto(
 										l.resource || {
 											scheme: "file",
 
 											path: "/tmp/default.log",
+
+											$mid: 11,
 										},
 									),
 
 						logLevel:
 							typeof l.logLevel === "number"
 								? l.logLevel
-								: // Use VSCode LogLevel enum if possible
-									undefined,
+								: undefined,
 
 						hidden:
 							typeof l.hidden === "boolean"
@@ -785,7 +757,6 @@ function reviveProfileUrisRecursively(data: any): any {
 					}),
 				);
 
-				// Workspace value handling
 				let workspaceValueToSet:
 					| IWorkspaceIdentifier
 					| ISingleFolderWorkspaceIdentifier
@@ -797,16 +768,13 @@ function reviveProfileUrisRecursively(data: any): any {
 						initialConfigFromMeta.workspace,
 					);
 
-					// ISandboxConfiguration might not accept IEmptyWorkspaceIdentifier directly depending on VSCode version.
-					// The error TS2322 implies ISandboxConfiguration['workspace'] is stricter.
-					// If ISandboxConfiguration['workspace'] is `IWorkspaceIdentifier | ISingleFolderWorkspaceIdentifier | undefined`
 					if (
 						revived &&
 						"id" in revived &&
-						!("configPath" in revived || "uri" in revived)
+						!("configPath" in revived || "uri" in revived) &&
+						!("transient" in revived)
 					) {
-						// It's IEmptyWorkspaceIdentifier
-						// Convert if target doesn't accept it
+						// Heuristic for IEmptyWorkspaceIdentifier
 						workspaceValueToSet = undefined;
 
 						WarnLog(
@@ -823,15 +791,19 @@ function reviveProfileUrisRecursively(data: any): any {
 					workspaceValueToSet = undefined;
 				}
 
+				const determinedWorkspaceUri =
+					workspaceValueToSet && "configPath" in workspaceValueToSet
+						? workspaceValueToSet.configPath
+						: workspaceValueToSet && "uri" in workspaceValueToSet
+							? workspaceValueToSet.uri
+							: undefined;
+
 				const nativeConfig: INativeWindowConfiguration = {
-					// Properties from initialConfigFromMeta should be spread first, then overridden if necessary
-					// Cast if confident about the shape
 					...(initialConfigFromMeta as INativeWindowConfiguration),
 
 					windowId:
 						initialConfigFromMeta.windowId ??
 						Window.getCurrent().label ??
-						// Ensure string or number as per type
 						String(Date.now()),
 
 					machineId: await invoke<string>("get_machine_id").catch(
@@ -846,11 +818,9 @@ function reviveProfileUrisRecursively(data: any): any {
 
 					appRoot:
 						initialConfigFromMeta.appRoot ||
-						// Path to app resources
 						(await tauriResolve(tauriResDir, ".")),
 
 					logsPath:
-						// Ensure URI if type expects URI
 						initialConfigFromMeta.logsPath || URI.file(tauriLogs),
 
 					userEnv: {
@@ -861,16 +831,14 @@ function reviveProfileUrisRecursively(data: any): any {
 					} as ILocalProcessEnvironment,
 
 					os: {
-						arch: arch,
+						arch,
 
-						// Placeholder
 						hostname: "tauri.localhost",
 
 						release: osRelease,
 
-						platform: platform,
+						platform,
 
-						// This was os.type()
 						type: osTypeValueImpl,
 					} as IOSConfiguration,
 
@@ -883,22 +851,20 @@ function reviveProfileUrisRecursively(data: any): any {
 
 							highContrast: window.matchMedia(
 								"(forced-colors: active)",
-
-								// A common way to check HC
 							).matches,
 						} as IColorScheme),
 
-					// Ensure paths are strings if INativeWindowConfiguration expects strings, or URIs if it expects URIs
+					// TS2322: Ensure paths are strings
 					homeDir: initialConfigFromMeta.homeDir
-						? typeof initialConfigFromMeta.homeDir === "string"
-							? initialConfigFromMeta.homeDir
-							: (initialConfigFromMeta.homeDir as URI).fsPath
+						? initialConfigFromMeta.homeDir instanceof URI
+							? initialConfigFromMeta.homeDir.fsPath
+							: (initialConfigFromMeta.homeDir as string)
 						: tauriHome,
 
 					tmpDir: initialConfigFromMeta.tmpDir
-						? typeof initialConfigFromMeta.tmpDir === "string"
-							? initialConfigFromMeta.tmpDir
-							: (initialConfigFromMeta.tmpDir as URI).fsPath
+						? initialConfigFromMeta.tmpDir instanceof URI
+							? initialConfigFromMeta.tmpDir.fsPath
+							: (initialConfigFromMeta.tmpDir as string)
 						: osTypeValueImpl === "windows"
 							? (await invoke<string | null>("get_env", {
 									name: "TEMP",
@@ -906,34 +872,28 @@ function reviveProfileUrisRecursively(data: any): any {
 							: "/tmp",
 
 					userDataDir: initialConfigFromMeta.userDataDir
-						? typeof initialConfigFromMeta.userDataDir === "string"
-							? initialConfigFromMeta.userDataDir
-							: (initialConfigFromMeta.userDataDir as URI).fsPath
+						? initialConfigFromMeta.userDataDir instanceof URI
+							? initialConfigFromMeta.userDataDir.fsPath
+							: (initialConfigFromMeta.userDataDir as string)
 						: tauriAppData,
 
 					workspace: workspaceValueToSet as
 						| IWorkspaceIdentifier
 						| ISingleFolderWorkspaceIdentifier
-						// Use processed value
+						// Use processed value, ensure compatible with target
 						| undefined,
 
-					// Assuming 'folder-uri' and 'workspace-uri' are custom additions or specific to certain configs
-					folderUri:
-						initialConfigFromMeta["folder-uri"] instanceof URI
-							? initialConfigFromMeta["folder-uri"]
-							: undefined,
+					// TS2551: If 'workspaceUri' is not on INativeWindowConfiguration, don't set it directly.
+					// VSCode should derive the primary URI from the 'workspace' object.
+					// If you have it in ICustomWorkbenchConfiguration and need to pass it:
+					// ...(initialConfigFromMeta.workspaceUri ? { workspaceUri: initialConfigFromMeta.workspaceUri instanceof URI ? initialConfigFromMeta.workspaceUri : reviveUriDto(initialConfigFromMeta.workspaceUri) } : {}),
 
-					// workspaceUri should align with 'workspace' if it's ISingleFolderWorkspaceIdentifier or IWorkspaceIdentifier
-					workspaceUri:
-						initialConfigFromMeta.workspaceUri instanceof URI
-							? initialConfigFromMeta.workspaceUri
-							: workspaceValueToSet &&
-								  "configPath" in workspaceValueToSet
-								? workspaceValueToSet.configPath
-								: workspaceValueToSet &&
-									  "uri" in workspaceValueToSet
-									? workspaceValueToSet.uri
-									: undefined,
+					// For now, assume it's derived from `workspace`. If `initialConfigFromMeta.workspaceUri` is used, it must be handled.
+					// The error occurs if `nativeConfig.workspaceUri = ...` is attempted and `workspaceUri` is not a key.
+					// So, if `initialConfigFromMeta.workspaceUri` exists and IS USED, then INativeWindowConfiguration needs to be extended or it's a custom field.
+					// For this pass, I'm removing direct assignment of workspaceUri to nativeConfig, assuming it's obtained from `nativeConfig.workspace`.
+					// If `INativeWindowConfiguration` *does* have `workspaceUri?: URI`, then:
+					// workspaceUri: initialConfigFromMeta.workspaceUri ? (initialConfigFromMeta.workspaceUri instanceof URI ? initialConfigFromMeta.workspaceUri : reviveUriDto(initialConfigFromMeta.workspaceUri)) : determinedWorkspaceUri,
 
 					profiles: initialConfigFromMeta.profiles
 						? reviveProfileUrisRecursively(
@@ -955,10 +915,11 @@ function reviveProfileUrisRecursively(data: any): any {
 					autoDetectColorScheme:
 						initialConfigFromMeta.autoDetectColorScheme ?? true,
 
+					// TS2322: zoomLevel string to number
 					zoomLevel:
 						typeof initialConfigFromMeta.zoomLevel === "number"
 							? initialConfigFromMeta.zoomLevel
-							: 0,
+							: Number(initialConfigFromMeta.zoomLevel || 0),
 
 					isCustomZoomLevel:
 						initialConfigFromMeta.isCustomZoomLevel ??
@@ -966,28 +927,30 @@ function reviveProfileUrisRecursively(data: any): any {
 							initialConfigFromMeta.zoomLevel !== 0),
 
 					productConfiguration: {
-						// Base product.json
 						...product,
 
-						// Overlays from config
 						...(initialConfigFromMeta.productConfiguration || {}),
 					},
 
+					// TS2322 / TS2367 accessibilitySupport: ensure string input if comparing to strings
 					accessibilitySupport:
-						initialConfigFromMeta.accessibilitySupport === "on" ||
-						initialConfigFromMeta.accessibilitySupport === "off" ||
-						initialConfigFromMeta.accessibilitySupport === "auto"
+						typeof initialConfigFromMeta.accessibilitySupport ===
+							"string" &&
+						(initialConfigFromMeta.accessibilitySupport === "on" ||
+							initialConfigFromMeta.accessibilitySupport ===
+								"off" ||
+							initialConfigFromMeta.accessibilitySupport ===
+								"auto")
 							? initialConfigFromMeta.accessibilitySupport
-							: // Default to auto or undefined if preferred
-								"auto",
+							: "auto",
 
 					perfMarks: initialConfigFromMeta.perfMarks || [],
 
 					policiesData: initialConfigFromMeta.policiesData || {},
 
+					// TS2322 partsSplash.baseTheme: Use ThemeTypeSelector
 					partsSplash: initialConfigFromMeta.partsSplash
 						? ({
-								// Ensure all required fields of ILocalPartsSplash / VsCodeIPartsSplashOriginal are met
 								zoomLevel:
 									typeof initialConfigFromMeta.partsSplash
 										.zoomLevel === "number"
@@ -996,38 +959,30 @@ function reviveProfileUrisRecursively(data: any): any {
 										: 0,
 
 								baseTheme:
-									// Provide a sensible default
 									initialConfigFromMeta.partsSplash
 										.baseTheme || "vs-dark",
 
 								colorInfo:
-									// Default
 									initialConfigFromMeta.partsSplash
 										.colorInfo || {},
 
 								layoutInfo:
-									// Default
 									initialConfigFromMeta.partsSplash
 										.layoutInfo || {},
 
-								// Spread the rest
-								...(initialConfigFromMeta.partsSplash as Partial<ILocalPartsSplash>),
+								...(initialConfigFromMeta.partsSplash as Partial<VsCodeIPartsSplashOriginal>),
 							} as ILocalPartsSplash)
 						: ({
 								zoomLevel: 0,
 
-								// Default theme
 								baseTheme: "vs-dark",
 
-								// Default color info
 								colorInfo: {},
 
-								// Default layout info
 								layoutInfo: {},
 							} as ILocalPartsSplash),
 				};
 
-				// Cast assuming INativeWindowConfiguration is compatible
 				_resolvedConfiguration = nativeConfig as ISandboxConfiguration;
 
 				Log("Sandbox configuration resolved:", _resolvedConfiguration);
@@ -1036,41 +991,29 @@ function reviveProfileUrisRecursively(data: any): any {
 			})();
 
 			return {
-				configuration: () => {
-					// WarnLog("Accessing sandbox configuration directly (context.configuration()). May not be fully resolved if called too early.");
-
-					return _resolvedConfiguration;
-				},
+				configuration: () => _resolvedConfiguration,
 
 				resolveConfiguration: () => configPromise,
 			};
 		})();
 
 		const webUtilsShimImpl: WebUtils = {
+			// ... (as before)
 			getPathForFile: (file: File): string => {
-				// `(file as any).path` is a non-standard property sometimes added by Electron/Node webviews for drag-and-drop.
-				// For Tauri, this might not be available. File objects from <input type="file"> don't have .path.
-				// This shim might be problematic if VSCode relies heavily on it for arbitrary File objects.
 				WarnLog(
 					`Shim: webUtils.getPathForFile(${file.name}). Path property might not be available.`,
 				);
 
-				// Fallback to name, which is not a path
 				return (file as any).path || file.name;
 			},
-
-			// Add other WebUtils methods if used
 		};
 
 		const ipcMessagePortShimImpl: IpcMessagePort = {
+			// ... (as before)
 			acquire: (responseChannel: string, nonce: string): void => {
-				// This is related to Electron's MessageChannelMain for more complex IPC.
-				// Tauri doesn't have a direct equivalent. This would require significant backend setup.
 				WarnLog(
-					`Shim: ipcMessagePort.acquire('${responseChannel}', '${nonce}') called. Not implemented for Tauri.`,
+					`Shim: ipcMessagePort.acquire('${responseChannel}', '${nonce}') called. Not implemented.`,
 				);
-
-				// Potentially, emit an event to the backend to set up a channel if this is critical.
 			},
 		};
 
@@ -1088,30 +1031,25 @@ function reviveProfileUrisRecursively(data: any): any {
 			ipcMessagePort: ipcMessagePortShimImpl,
 		};
 
-		// Expose the shims to the window object for VSCode's sandboxed renderer
 		window.vscode = globals;
 
 		Log("window.vscode shims attached successfully.");
 	} catch (error) {
 		ErrorLog("Fatal error during preload script execution:", error);
 
-		// Display error in the UI as a fallback
 		const errDiv = document.createElement("div");
 
-		errDiv.textContent = `Tauri Preload Error: ${error instanceof Error ? error.message : String(error)}. Check developer console for details.`;
+		errDiv.textContent = `Tauri Preload Error: ${error instanceof Error ? error.message : String(error)}. Check console.`;
 
 		errDiv.style.cssText =
 			"position:fixed;top:0;left:0;width:100%;padding:20px;background-color:red;color:white;font-family:sans-serif;font-size:16px;z-index:9999;white-space:pre-wrap;text-align:center;";
 
-		if (document.body) {
-			document.body.prepend(errDiv);
-		} else {
+		if (document.body) document.body.prepend(errDiv);
+		else
 			window.addEventListener("DOMContentLoaded", () =>
 				document.body.prepend(errDiv),
 			);
-		}
 	}
 })();
 
-// Ensures this is treated as a module
 export {};

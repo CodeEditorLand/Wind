@@ -12,6 +12,7 @@ import {
  * @module OpenResultToUriArray
  * @description Processes the optional result from a Tauri open dialog,
 
+
  * handling single or multiple selected paths, and converts them to an optional array of URIs.
  */
 export default function Convert(

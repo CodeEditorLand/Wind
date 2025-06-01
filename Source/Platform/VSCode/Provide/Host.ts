@@ -21,6 +21,7 @@ export interface PerformAction {
 			| FileOpenSpecification
 			| WorkspaceOpenSpecification
 		>,
+
 		config?: WindowOpenOption,
 	): Promise<void>;
 }
@@ -34,6 +35,7 @@ export interface PerformAction {
 const HostServiceTag = Context.GenericTag<PerformAction, PerformAction>(
 	"vscode/HostService",
 );
+
 // Type: Tag<PerformAction, PerformAction>
 
 export default HostServiceTag;

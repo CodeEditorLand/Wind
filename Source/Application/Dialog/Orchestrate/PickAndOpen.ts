@@ -12,12 +12,14 @@ import {
 	DefineFileOpen,
 	DefineFolderOpen,
 	DefineWorkspaceOpen,
-	RequestHostWindowOpen, // This effect requires HostServiceTag
+	// This effect requires HostServiceTag
+	RequestHostWindowOpen,
 	RequestOpenDialog,
 	ResolveFinalDefaultPath,
 	type Uri as UriType,
 } from "../../../Integration/Tauri.js";
-import HostServiceTag from "../../../Platform/VSCode/Provide/Host.js"; // Import the Tag itself
+// Import the Tag itself
+import HostServiceTag from "../../../Platform/VSCode/Provide/Host.js";
 import CreatePickOpenOption from "../Factory/CreatePickOpenOption.js";
 import CreateWindowOption from "../Factory/CreateWindowOption.js";
 import type { PickProblem } from "../Type.js";
@@ -33,11 +35,16 @@ type CombinedVsCodePickOptions = VsCodePickOptions & Partial<VsCodeOpenOptions>;
  */
 export default function Orchestrate(
 	options: VsCodePickOptions,
+
 	config: {
 		titleKey: string;
+
 		defaultTitle: string;
+
 		tauriDirectory: boolean;
+
 		itemType: "file" | "folder" | "workspace";
+
 		defaultWorkspaceFilter?: boolean;
 	},
 ): Effect.Effect<void, PickProblem, typeof HostServiceTag> {
@@ -48,15 +55,22 @@ export default function Orchestrate(
 		Effect.map((defaultPath) =>
 			CreatePickOpenOption(
 				options as CombinedVsCodePickOptions,
+
 				config,
+
 				defaultPath,
 			),
 		),
+
 		Effect.flatMap((tauriOptions) => RequestOpenDialog(tauriOptions)),
+
 		Effect.map(ConvertOpenResultToSingleUri),
+
 		Effect.flatMap((maybeUri: Option.Option<UriType>) =>
 			Option.match(maybeUri, {
-				onNone: () => Effect.void, // This branch has R = never
+				// This branch has R = never
+				onNone: () => Effect.void,
+
 				// RequestHostWindowOpen is Effect<void, WindowProblem, typeof HostServiceTag>
 				// This branch correctly introduces the HostServiceTag requirement.
 				onSome: (selectedUri: UriType) =>
@@ -69,6 +83,7 @@ export default function Orchestrate(
 									? DefineFileOpen(selectedUri)
 									: DefineWorkspaceOpen(selectedUri),
 						],
+
 						CreateWindowOption(options),
 					),
 			}),

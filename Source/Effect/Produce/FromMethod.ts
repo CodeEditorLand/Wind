@@ -22,8 +22,10 @@ import type { ErrorProducer } from "./Type.js";
  *          requiring the SourcedTagInstance in its context.
  */
 export default function FromMethod<
-	SourcedTagInstance extends Context.Tag<any, any>, // The Tag instance, e.g., HostServiceTag
-	SourcedService extends Context.Tag.Service<SourcedTagInstance>, // The service interface, e.g., PerformAction
+	// The Tag instance, e.g., HostServiceTag
+	SourcedTagInstance extends Context.Tag<any, any>,
+	// The service interface, e.g., PerformAction
+	SourcedService extends Context.Tag.Service<SourcedTagInstance>,
 	Method extends {
 		// Extracts keys of SourcedService that are async methods
 		[Key in keyof SourcedService]: SourcedService[Key] extends (
@@ -47,12 +49,17 @@ export default function FromMethod<
 	ErrorData extends Record<string, any>,
 	ErrorType extends Cause.YieldableError & {
 		readonly _tag: string;
+
 		readonly cause: unknown;
 	} & ErrorData,
 >(
-	ServiceTag: SourcedTagInstance, // e.g. HostServiceTag (which is Tag<PerformAction, PerformAction>)
+	// e.g. HostServiceTag (which is Tag<PerformAction, PerformAction>)
+	ServiceTag: SourcedTagInstance,
+
 	MethodName: Method,
+
 	CreateProblem: ErrorProducer<ErrorData, ErrorType>,
+
 	StaticData: ErrorData,
 ): (
 	...args: Arguments
@@ -68,11 +75,15 @@ export default function FromMethod<
 
 			return Effect.tryPromise({
 				try: () => Operation.apply(ServiceInstance, args),
+
 				catch: (cause) =>
 					CreateProblem({
 						...StaticData,
+
 						cause,
-					} as { readonly cause: unknown } & ErrorData), // Ensure type for CreateProblem
+
+						// Ensure type for CreateProblem
+					} as { readonly cause: unknown } & ErrorData),
 			});
 		});
 }

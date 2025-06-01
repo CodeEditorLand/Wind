@@ -4,10 +4,12 @@
 
 // it then tries to fetch the document directory. Other errors are propagated.
 
-import { Effect, Option, pipe } from "effect";
+// Removed unused 'pipe'
+import { Effect, Option } from "effect";
 
 // Ensure this is the TaggedError class/constructor
 import { PathProblem as PathProblemType } from "../Error.js";
+// These are functions returning Effects
 import { FetchDocumentDirectory, FetchHomeDirectory } from "../Wrapper.js";
 
 /**
@@ -27,8 +29,8 @@ const ResolveEffect: Effect.Effect<
 	Option.Option<string>,
 	PathProblemType,
 	never
-> = FetchHomeDirectory.pipe(
-	// Effect<string, PathProblemType, never>
+> = FetchHomeDirectory().pipe(
+	// Call the function to get the Effect
 	// Effect<Option.Option<string>, PathProblemType, never>
 	Effect.map(Option.some),
 
@@ -36,8 +38,8 @@ const ResolveEffect: Effect.Effect<
 		// Handle PathProblem errors
 		if (homeError.operation === "homeDir") {
 			// If homeDir failed, try documentDir
-			return FetchDocumentDirectory.pipe(
-				// Effect<string, PathProblemType, never>
+			return FetchDocumentDirectory().pipe(
+				// Call the function to get the Effect
 				// Effect<Option.Option<string>, PathProblemType, never>
 				Effect.map(Option.some),
 

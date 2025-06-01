@@ -3,7 +3,8 @@ import { Layer } from "effect";
 
 import HostServiceTag, {
 	type PerformAction,
-} from "../../Platform/VSCode/Provide/Host.js"; // This is Tag<PerformAction, PerformAction>
+} from "../../Platform/VSCode/Provide/Host.js";
+// This is Tag<PerformAction, PerformAction>
 
 // Import the interface directly
 import type {
@@ -20,7 +21,9 @@ import type {
  * It should be Layer.Layer<typeof HostServiceTag, never, never>.
  */
 export const HostServiceLivePlaceholder = Layer.succeed(
-	HostServiceTag, // The Tag instance
+	// The Tag instance
+	HostServiceTag,
+
 	// The implementation of PerformAction
 	{
 		openWindow: (
@@ -29,15 +32,22 @@ export const HostServiceLivePlaceholder = Layer.succeed(
 				| FileOpenSpecification
 				| WorkspaceOpenSpecification
 			>,
+
 			options?: WindowOpenOption,
 		): Promise<void> => {
 			console.log(
 				"[MockHostService] openWindow called with targets:",
+
 				JSON.stringify(targets, null, 2),
+
 				"and options:",
+
 				JSON.stringify(options, null, 2),
 			);
+
 			return Promise.resolve();
 		},
-	} satisfies PerformAction, // Explicitly satisfy the interface
+
+		// Explicitly satisfy the interface
+	} satisfies PerformAction,
 );

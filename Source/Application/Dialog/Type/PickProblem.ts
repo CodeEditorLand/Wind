@@ -8,6 +8,7 @@ import type OperationProblem from "./OperationProblem.js";
 /**
  * @module PickProblem (Type)
  * @description Union type for errors during "pick and open" operations,
+
  * including dialog operation problems and window opening problems.
  */
 export type Type = OperationProblem | WindowProblem;

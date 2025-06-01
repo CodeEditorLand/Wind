@@ -19,6 +19,7 @@ export type Interface = VsCodeFileDialogServiceInterface;
 const DialogServiceTag = Context.GenericTag<Interface, Interface>(
 	"vscode/FileDialogService",
 );
+
 // Type: Tag<Interface, Interface>
 
 export default DialogServiceTag;

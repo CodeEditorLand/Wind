@@ -1,7 +1,8 @@
 // Application/Dialog/Definition.ts
 // Purpose: Defines the concrete implementation object of the IFileDialogService.
 
-import { Effect, Layer, Option, Runtime, Scope } from "effect"; // Added Scope
+// Added Scope
+import { Effect, Layer, Option, Runtime, Scope } from "effect";
 import { localize } from "vs/nls";
 import {
 	ConfirmResult,
@@ -19,8 +20,10 @@ import {
 } from "../../Integration/Tauri.js";
 // Import the Tag itself, not the service interface type alias from here
 import HostServiceTag from "../../Platform/VSCode/Provide/Host.js";
-import { HostServiceLivePlaceholder } from "./_HostServicePlaceholder.js"; // This provides Layer for HostServiceTag
-import * as Orchestrate from "./Orchestration.js"; // Orchestration effects
+// This provides Layer for HostServiceTag
+import { HostServiceLivePlaceholder } from "./_HostServicePlaceholder.js";
+// Orchestration effects
+import * as Orchestrate from "./Orchestration.js";
 import type { ServiceProblem } from "./Type.js";
 
 // --- Runtime specific to this service module instance ---
@@ -52,7 +55,8 @@ type HostServiceRequirement = typeof HostServiceTag;
  * @returns A Promise resolving with the Effect's success value.
  */
 function _run<A, E extends ServiceProblem>(
-	eff: Effect.Effect<A, E, HostServiceRequirement>, // Effect requires the Tag
+	// Effect requires the Tag
+	eff: Effect.Effect<A, E, HostServiceRequirement>,
 ): Promise<A> {
 	return Runtime.runPromise(ServiceRuntime, eff);
 }
@@ -67,6 +71,7 @@ function _runOption<A, E extends ServiceProblem>(
 ): Promise<A | undefined> {
 	return Runtime.runPromise(
 		ServiceRuntime,
+
 		eff.pipe(Effect.map(Option.getOrUndefined)),
 	);
 }
@@ -90,9 +95,12 @@ function _runVoid<E extends ServiceProblem>(
  */
 const _getAbstractPickFileToSaveOptions = (
 	path: UriType,
-	_fileSystems?: string[], // Often for remote file systems, unused in basic shim
+
+	// Often for remote file systems, unused in basic shim
+	_fileSystems?: string[],
 ): VsCodeSaveOptions => ({
 	defaultUri: path,
+
 	title: localize("saveAsTitle", "Save As"),
 });
 
@@ -100,15 +108,19 @@ const _getAbstractPickFileToSaveOptions = (
  * The concrete implementation of VSCode's IFileDialogService.
  */
 const Definition: FileDialog = {
-	_serviceBrand: undefined, // Required by VSCode service interfaces
+	// Required by VSCode service interfaces
+	_serviceBrand: undefined,
 
 	pickFileFolderAndOpen: (options: VsCodePickOptions): Promise<void> =>
 		_runVoid(
 			// Orchestrate.PerformPickAndOpen now returns Effect<..., ..., typeof HostServiceTag>
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openFileOrFolderDefaultTitle",
+
 				defaultTitle: "Open File or Folder",
+
 				tauriDirectory: true,
+
 				itemType: "folder",
 			}),
 		),
@@ -117,8 +129,11 @@ const Definition: FileDialog = {
 		_runVoid(
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openFileDefaultTitle",
+
 				defaultTitle: "Open File",
+
 				tauriDirectory: false,
+
 				itemType: "file",
 			}),
 		),
@@ -127,8 +142,11 @@ const Definition: FileDialog = {
 		_runVoid(
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openFolderDefaultTitle",
+
 				defaultTitle: "Open Folder",
+
 				tauriDirectory: true,
+
 				itemType: "folder",
 			}),
 		),
@@ -137,9 +155,13 @@ const Definition: FileDialog = {
 		_runVoid(
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openWorkspaceDefaultTitle",
+
 				defaultTitle: "Open Workspace",
+
 				tauriDirectory: false,
+
 				itemType: "workspace",
+
 				defaultWorkspaceFilter: true,
 			}),
 		),
@@ -150,12 +172,14 @@ const Definition: FileDialog = {
 			Effect.succeed(
 				_getAbstractPickFileToSaveOptions(
 					defaultUri,
+
 					availableFileSystems,
 				),
 			).pipe(
 				Effect.flatMap((configOptions) =>
 					Orchestrate.PerformShowSave(configOptions),
 				),
+
 				Effect.map(Option.getOrUndefined),
 			),
 		),
@@ -173,6 +197,7 @@ const Definition: FileDialog = {
 		_run(
 			Orchestrate.PerformShowOpen(options).pipe(
 				Effect.map(Option.getOrElse(() => [] as UriType[])),
+
 				Effect.map((uris) => (uris.length > 0 ? uris : undefined)),
 			),
 		),
@@ -219,7 +244,9 @@ const Definition: FileDialog = {
 
 	showSaveConfirm: (
 		_filesOrResources: (string | UriType)[],
-	): Promise<ConfirmResult> => _run(Effect.succeed(ConfirmResult.SAVE)), // R = never
+
+		// R = never
+	): Promise<ConfirmResult> => _run(Effect.succeed(ConfirmResult.SAVE)),
 };
 
 export default Definition;

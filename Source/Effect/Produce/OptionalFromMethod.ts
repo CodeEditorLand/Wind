@@ -21,13 +21,16 @@ import type { ErrorProducer } from "./Type.js";
  * @returns A function that returns an Effect yielding an Option of the method's result.
  */
 export default function OptionalFromMethod<
-	SourcedTagInstance extends Context.Tag<any, any>, // The Tag instance
-	SourcedService extends Context.Tag.Service<SourcedTagInstance>, // The service interface
+	// The Tag instance
+	SourcedTagInstance extends Context.Tag<any, any>,
+	// The service interface
+	SourcedService extends Context.Tag.Service<SourcedTagInstance>,
 	Method extends {
 		// Extracts keys of SourcedService that are async methods resolving to V | null | undefined
 		[Key in keyof SourcedService]: SourcedService[Key] extends (
 			...args: any[]
-		) => Promise<any | null | undefined> // Method can resolve to null/undefined
+			// Method can resolve to null/undefined
+		) => Promise<any | null | undefined>
 			? Key
 			: never;
 	}[keyof SourcedService],
@@ -40,35 +43,46 @@ export default function OptionalFromMethod<
 	Value extends SourcedService[Method] extends (
 		...args: any[]
 	) => Promise<infer Res | null | undefined>
-		? NonNullable<Res> // Ensure Value is not nullable itself
+		? // Ensure Value is not nullable itself
+			NonNullable<Res>
 		: never,
 	ErrorData extends Record<string, any>,
 	ErrorType extends Cause.YieldableError & {
 		readonly _tag: string;
+
 		readonly cause: unknown;
 	} & ErrorData,
 >(
 	ServiceTag: SourcedTagInstance,
+
 	MethodName: Method,
+
 	CreateProblem: ErrorProducer<ErrorData, ErrorType>,
+
 	StaticData: ErrorData,
 ): (...args: Arguments) => Effect.Effect<
-	Option.Option<Value>, // The Effect yields an Option
+	// The Effect yields an Option
+	Option.Option<Value>,
 	ErrorType,
-	SourcedTagInstance // Effect requires the Tag itself as R
+	// Effect requires the Tag itself as R
+	SourcedTagInstance
 > {
 	return (...args: Arguments) =>
 		Effect.flatMap(ServiceTag, (ServiceInstance: SourcedService) => {
 			const Operation = (ServiceInstance as any)[MethodName] as (
 				...opArgs: Arguments
-			) => Promise<Value | null | undefined>; // Promise can be Value, null, or undefined
+				// Promise can be Value, null, or undefined
+			) => Promise<Value | null | undefined>;
 
 			return Effect.tryPromise({
 				try: () => Operation.apply(ServiceInstance, args),
+
 				catch: (cause) =>
 					CreateProblem({ ...StaticData, cause } as {
 						readonly cause: unknown;
 					} & ErrorData),
-			}).pipe(Effect.map(Option.fromNullable)); // Convert null/undefined result to Option.none()
+
+				// Convert null/undefined result to Option.none()
+			}).pipe(Effect.map(Option.fromNullable));
 		});
 }
