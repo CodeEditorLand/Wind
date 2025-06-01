@@ -1,12 +1,9 @@
 // Integration/Tauri/Wrap/RequestHostWindowOpen.ts
-// Purpose: Effect wrapper for VSCode HostService's openWindow method.
 
-// No need to import PerformAction interface if FromMethod correctly infers SourcedService
-// Used for Context.Tag.Service for type inference clarity
-import type { Context } from "effect";
+// Needed for SourcedIdentifier
+import type { Context } from "effect"; // For Context.Tag.Service and Context.Tag.Identifier
 
 import { FromMethod } from "../../../Effect/Produce.js";
-// This is Tag<PerformAction, PerformAction>
 import HostServiceTag from "../../../Platform/VSCode/Provide/Host.js";
 import type {
 	FileOpenSpecification,
@@ -19,7 +16,6 @@ import { WindowProblem } from "../Error.js";
 const CreateProblem = (cause: unknown): WindowProblem =>
 	new WindowProblem({ cause, operation: "hostServiceOpenWindow" });
 
-// Define the argument structure for the 'openWindow' method
 type OpenWindowArgs = [
 	targets: ReadonlyArray<
 		| FolderOpenSpecification
@@ -37,31 +33,16 @@ type OpenWindowArgs = [
  * The resulting Effect will require `HostServiceTag` in its context.
  */
 const Request = FromMethod<
-	// SourcedTagInstance: The Tag object itself
-	typeof HostServiceTag,
-	// SourcedService: PerformAction, inferred explicitly
-	Context.Tag.Service<typeof HostServiceTag>,
-	// Method name
+	typeof HostServiceTag, // SourcedTagInstance
+	Context.Tag.Service<typeof HostServiceTag>, // SourcedService (PerformAction)
+	Context.Tag.Identifier<typeof HostServiceTag>, // SourcedIdentifier (PerformAction)
 	"openWindow",
-	// Arguments type
 	OpenWindowArgs,
-	// Return type of the Promise
 	void,
-	// Static error data
 	{ operation: "hostServiceOpenWindow" },
-	// Error type
 	WindowProblem
->(
-	// Argument for ServiceTag parameter
-	HostServiceTag,
-
-	"openWindow",
-
-	CreateProblem,
-
-	{ operation: "hostServiceOpenWindow" },
-);
-
-// Type of Request: (...args: OpenWindowArgs) => Effect.Effect<void, WindowProblem, typeof HostServiceTag>
-
+>(HostServiceTag, "openWindow", CreateProblem, {
+	operation: "hostServiceOpenWindow",
+});
+// Return type: (...args) => Effect.Effect<void, WindowProblem, PerformAction>
 export default Request;

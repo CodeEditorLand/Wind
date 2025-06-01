@@ -19,10 +19,12 @@ import {
 	type Uri as UriType,
 } from "../../../Integration/Tauri.js";
 // Import the Tag itself
-import HostServiceTag from "../../../Platform/VSCode/Provide/Host.js";
+import { type PerformAction } from "../../../Platform/VSCode/Provide/Host.js";
 import CreatePickOpenOption from "../Factory/CreatePickOpenOption.js";
 import CreateWindowOption from "../Factory/CreateWindowOption.js";
 import type { PickProblem } from "../Type.js";
+
+// For R type
 
 type CombinedVsCodePickOptions = VsCodePickOptions & Partial<VsCodeOpenOptions>;
 
@@ -47,7 +49,7 @@ export default function Orchestrate(
 
 		defaultWorkspaceFilter?: boolean;
 	},
-): Effect.Effect<void, PickProblem, typeof HostServiceTag> {
+): Effect.Effect<void, PickProblem, PerformAction> {
 	// R is HostServiceTag
 	return ResolveFinalDefaultPath(
 		(options as CombinedVsCodePickOptions).defaultUri,

@@ -1,7 +1,6 @@
 // Application/Dialog/Definition.ts
 // Purpose: Defines the concrete implementation object of the IFileDialogService.
 
-// Added Scope
 import { Effect, Layer, Option, Runtime, Scope } from "effect";
 import { localize } from "vs/nls";
 import {
@@ -12,51 +11,46 @@ import {
 	type ISaveDialogOptions as VsCodeSaveOptions,
 } from "vs/platform/dialogs/common/dialogs";
 
-// We don't need to import PerformAction here if HostServiceRequirement is typeof HostServiceTag
-
 import {
 	UriConstructor,
 	type Uri as UriType,
 } from "../../Integration/Tauri.js";
-// Import the Tag itself, not the service interface type alias from here
-import HostServiceTag from "../../Platform/VSCode/Provide/Host.js";
-// This provides Layer for HostServiceTag
+// Import PerformAction interface for type R, and HostServiceTag for effects that need it
+import { type PerformAction } from "../../Platform/VSCode/Provide/Host.js";
 import { HostServiceLivePlaceholder } from "./_HostServicePlaceholder.js";
-// Orchestration effects
 import * as Orchestrate from "./Orchestration.js";
 import type { ServiceProblem } from "./Type.js";
 
 // --- Runtime specific to this service module instance ---
 
 // HostServiceLivePlaceholder is a Layer that provides HostServiceTag
+// Its inferred type is Layer.Layer<typeof HostServiceTag, never, never>
 const fileDialogServiceDependenciesLayer = HostServiceLivePlaceholder;
 
 // Layer.toRuntime creates an Effect that yields a Runtime.
-// The Runtime's context (R in Runtime<R>) will be the Tag itself (typeof HostServiceTag)
-// if the layer is defined as Layer<typeof HostServiceTag, ...>.
+// The Runtime's context (R in Runtime<R>) will be the Tag itself (typeof HostServiceTag).
 const runtimeEffect: Effect.Effect<
-	Runtime.Runtime<typeof HostServiceTag>,
+	Runtime.Runtime<PerformAction>, // R is PerformAction
 	never,
 	Scope.Scope
 > = Layer.toRuntime(fileDialogServiceDependenciesLayer);
 
 // Execute the effect to get the Runtime instance.
-// Effect.scoped provides the Scope needed by Layer.toRuntime.
-const ServiceRuntime: Runtime.Runtime<typeof HostServiceTag> = Effect.runSync(
+const ServiceRuntime: Runtime.Runtime<PerformAction> = Effect.runSync(
+	// R is PerformAction
 	Effect.scoped(runtimeEffect),
 );
 
 // The requirement for effects that depend on the host service is the Tag itself.
-type HostServiceRequirement = typeof HostServiceTag;
+type HostServiceRequirement = PerformAction;
 
 /**
  * Helper function to run an Effect that yields a value, using the service-specific runtime.
- * @param eff The Effect to run. It may require HostServiceRequirement.
+ * @param eff The Effect to run. It may require HostServiceRequirement (PerformAction).
  * @returns A Promise resolving with the Effect's success value.
  */
 function _run<A, E extends ServiceProblem>(
-	// Effect requires the Tag
-	eff: Effect.Effect<A, E, HostServiceRequirement>,
+	eff: Effect.Effect<A, E, HostServiceRequirement>, // Effect requires PerformAction
 ): Promise<A> {
 	return Runtime.runPromise(ServiceRuntime, eff);
 }
@@ -108,12 +102,11 @@ const _getAbstractPickFileToSaveOptions = (
  * The concrete implementation of VSCode's IFileDialogService.
  */
 const Definition: FileDialog = {
-	// Required by VSCode service interfaces
 	_serviceBrand: undefined,
 
 	pickFileFolderAndOpen: (options: VsCodePickOptions): Promise<void> =>
 		_runVoid(
-			// Orchestrate.PerformPickAndOpen now returns Effect<..., ..., typeof HostServiceTag>
+			// Orchestrate.PerformPickAndOpen returns Effect<..., ..., typeof HostServiceTag>
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openFileOrFolderDefaultTitle",
 
@@ -168,7 +161,6 @@ const Definition: FileDialog = {
 
 	pickFileToSave: (defaultUri: UriType, availableFileSystems?: string[]) =>
 		_run(
-			// Orchestrate.PerformShowSave has R = never, so this whole effect has R = never
 			Effect.succeed(
 				_getAbstractPickFileToSaveOptions(
 					defaultUri,
@@ -176,6 +168,7 @@ const Definition: FileDialog = {
 					availableFileSystems,
 				),
 			).pipe(
+				// PerformShowSave should have R = never if it doesn't use HostService
 				Effect.flatMap((configOptions) =>
 					Orchestrate.PerformShowSave(configOptions),
 				),
@@ -187,15 +180,15 @@ const Definition: FileDialog = {
 	showSaveDialog: (
 		options: VsCodeSaveOptions,
 	): Promise<UriType | undefined> =>
-		// Orchestrate.PerformShowSave has R = never
+		// R = never
 		_runOption(Orchestrate.PerformShowSave(options)),
 
 	showOpenDialog: (
 		options: VsCodeOpenOptions,
 	): Promise<UriType[] | undefined> =>
-		// Orchestrate.PerformShowOpen has R = never
 		_run(
 			Orchestrate.PerformShowOpen(options).pipe(
+				// R = never
 				Effect.map(Option.getOrElse(() => [] as UriType[])),
 
 				Effect.map((uris) => (uris.length > 0 ? uris : undefined)),
@@ -204,7 +197,6 @@ const Definition: FileDialog = {
 
 	defaultFilePath: (schemeFilter?: string) =>
 		_run(
-			// R = never
 			Effect.succeed(
 				UriConstructor.file(
 					`/mock/default-file-path/${schemeFilter || "default"}.txt`,
@@ -214,7 +206,6 @@ const Definition: FileDialog = {
 
 	defaultFolderPath: (schemeFilter?: string) =>
 		_run(
-			// R = never
 			Effect.succeed(
 				UriConstructor.file(
 					`/mock/default-folder-path/${schemeFilter || "default"}`,
@@ -224,7 +215,6 @@ const Definition: FileDialog = {
 
 	defaultWorkspacePath: (schemeFilter?: string) =>
 		_run(
-			// R = never
 			Effect.succeed(
 				UriConstructor.file(
 					`/mock/default-workspace-path/${schemeFilter || "default"}.code-workspace`,
@@ -234,7 +224,6 @@ const Definition: FileDialog = {
 
 	preferredHome: (schemeFilter?: string) =>
 		_run(
-			// R = never
 			Effect.succeed(
 				UriConstructor.file(
 					`/mock/preferred-home/${schemeFilter || "default"}`,
@@ -242,10 +231,10 @@ const Definition: FileDialog = {
 			),
 		),
 
+	// TS6133: _filesOrResources is declared but its value is never read.
+	// If it's part of an interface you must implement, prefix with underscore.
 	showSaveConfirm: (
 		_filesOrResources: (string | UriType)[],
-
-		// R = never
 	): Promise<ConfirmResult> => _run(Effect.succeed(ConfirmResult.SAVE)),
 };
 
