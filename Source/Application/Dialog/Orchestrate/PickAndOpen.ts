@@ -1,14 +1,13 @@
 // Application/Dialog/Orchestrate/PickAndOpen.ts
 // Purpose: Core logic for pick...AndOpen methods as a piped Effect.
 
-import { Effect, Option, pipe } from "effect";
+import { Effect, Option, pipe, type Context } from "effect";
 import type {
 	IOpenDialogOptions as VsCodeOpenOptions,
 	IPickAndOpenOptions as VsCodePickOptions,
 } from "vs/platform/dialogs/common/dialogs";
 
 import {
-	// Aliased to avoid conflict, used for typeof
 	HostServiceTag as ActualHostServiceTag,
 	ConvertOpenResultToSingleUri,
 	DefineFileOpen,
@@ -25,6 +24,8 @@ import type { PickProblem } from "../Type.js";
 
 type CombinedVsCodePickOptions = VsCodePickOptions & Partial<VsCodeOpenOptions>;
 
+type HostServiceType = Context.Tag.Service<typeof ActualHostServiceTag>;
+
 export default function Orchestrate(
 	options: VsCodePickOptions,
 
@@ -39,7 +40,7 @@ export default function Orchestrate(
 
 		defaultWorkspaceFilter?: boolean;
 	},
-): Effect.Effect<void, PickProblem, typeof ActualHostServiceTag.Type> {
+): Effect.Effect<void, PickProblem, HostServiceType> {
 	return pipe(
 		ResolveFinalDefaultPath(
 			(options as CombinedVsCodePickOptions).defaultUri,

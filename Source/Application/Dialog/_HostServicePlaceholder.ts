@@ -1,17 +1,8 @@
 // Application/Dialog/_HostServicePlaceholder.ts
-import { Layer } from "effect";
+// Context might be needed for Tag.Service
+import { Layer, type Context } from "effect";
 
-// Unused
-// import { Context } from "effect";
-
-// Unused
-// import { Effect } from "effect";
-
-import {
-	HostServiceTag,
-	// Unused
-	// type HostService,
-} from "../../Platform/VSCode/Provide.js";
+import { HostServiceTag } from "../../Platform/VSCode/Provide.js";
 import type {
 	FileOpenSpecification,
 	FolderOpenSpecification,
@@ -19,17 +10,20 @@ import type {
 	WorkspaceOpenSpecification,
 } from "../../Platform/VSCode/Type.js";
 
-// Access the service type via `HostServiceTag.Type` (or `Context.Tag.Service<typeof HostServiceTag>`)
+// The service type is Context.Tag.Service<typeof TagInstance>
+type HostServiceImpl = Context.Tag.Service<typeof HostServiceTag>;
+
 export const HostServiceLivePlaceholder: Layer.Layer<
-	// This should now correctly refer to PerformAction
-	typeof HostServiceTag.Type,
+	// Use the derived service type
+	HostServiceImpl,
 	never,
 	never
 > = Layer.succeed(
+	// Pass the Tag instance
 	HostServiceTag,
 
 	HostServiceTag.of({
-		// Tag.of is the correct way to create a service instance for a Tag
+		// Use Tag.of with an implementation matching HostServiceImpl
 		openWindow: (
 			targets: ReadonlyArray<
 				| FolderOpenSpecification

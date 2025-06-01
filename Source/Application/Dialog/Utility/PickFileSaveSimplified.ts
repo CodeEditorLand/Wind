@@ -1,10 +1,9 @@
 // Application/Dialog/Utility/PickFileSaveSimplified.ts
-import { Effect, Option } from "effect";
+import { Effect, Option, type Context } from "effect";
 import { localize } from "vs/nls";
 import type { ISaveDialogOptions as VsCodeSaveOptions } from "vs/platform/dialogs/common/dialogs";
 
 import {
-	// Aliased
 	HostServiceTag as ActualHostServiceTag,
 	InheritanceProblem,
 	type Uri as UriType,
@@ -13,15 +12,13 @@ import PerformShowSave from "../Orchestrate/ShowSave.js";
 import type { ServiceProblem } from "../Type.js";
 import DecideSimplified from "./DecideSimplified.js";
 
+type HostServiceType = Context.Tag.Service<typeof ActualHostServiceTag>;
+
 export default function Pick(
 	schema: string,
 
 	options: VsCodeSaveOptions,
-): Effect.Effect<
-	UriType | undefined,
-	ServiceProblem,
-	typeof ActualHostServiceTag.Type
-> {
+): Effect.Effect<UriType | undefined, ServiceProblem, HostServiceType> {
 	if (!DecideSimplified(schema)) {
 		return PerformShowSave({
 			...options,

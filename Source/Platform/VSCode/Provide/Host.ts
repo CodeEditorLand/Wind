@@ -31,4 +31,6 @@ export interface PerformAction {
  */
 const Tag = Context.Tag<PerformAction>("vscode/HostService");
 
+// The type of 'Tag' is now Context.Tag<PerformAction>
+
 export default Tag;

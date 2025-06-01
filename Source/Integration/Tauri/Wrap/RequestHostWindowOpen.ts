@@ -1,11 +1,15 @@
 // Integration/Tauri/Wrap/RequestHostWindowOpen.ts
 // Purpose: Effect wrapper for VSCode HostService's openWindow method.
 
+// Import Context
+import type { Context } from "effect";
+
 import { FromMethod } from "../../../Effect/Produce.js";
 import {
+	// This is the Tag instance
 	HostServiceTag,
-	// Renamed to avoid conflict with module name
-	type HostService as ActualHostService,
+	// PerformAction is HostServiceTag.Type essentially
+	// type PerformAction as HostService,
 } from "../../../Platform/VSCode/Provide.js";
 import type {
 	FileOpenSpecification,
@@ -17,6 +21,8 @@ import { WindowProblem } from "../Error.js";
 
 const CreateProblem = (cause: unknown): WindowProblem =>
 	new WindowProblem({ cause, operation: "hostServiceOpenWindow" });
+
+type HostServiceImpl = Context.Tag.Service<typeof HostServiceTag>;
 
 type OpenWindowArgs = [
 	targets: ReadonlyArray<
@@ -30,7 +36,7 @@ type OpenWindowArgs = [
 
 const Request = FromMethod<
 	// Interface type
-	ActualHostService,
+	HostServiceImpl,
 	// The Tag instance
 	typeof HostServiceTag,
 	"openWindow",

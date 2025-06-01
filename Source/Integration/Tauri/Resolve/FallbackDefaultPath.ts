@@ -16,26 +16,30 @@ const ResolveEffect: Effect.Effect<
 
 	Effect.map((path: string) => Option.some(path)),
 
-	// The issue with catchTag is often related to the tag not being a literal string type
-	// or the error type not precisely matching.
-	// Using "PathProblem" as const helps TypeScript infer its literal type.
-	Effect.catchTag("PathProblem" as const, (ErrorDetails: PathProblemType) =>
-		ErrorDetails.operation === "homeDir"
-			? pipe(
-					FetchDocumentDirectory,
+	Effect.catchTag(
+		"PathProblem",
 
-					Effect.map((docPath: string) => Option.some(docPath)),
+		(
+			// Removed 'as const' if it was causing issues; type narrowing should still work.
+			ErrorDetails: PathProblemType,
+		) =>
+			ErrorDetails.operation === "homeDir"
+				? pipe(
+						FetchDocumentDirectory,
 
-					Effect.catchTag(
-						"PathProblem" as const,
+						Effect.map((docPath: string) => Option.some(docPath)),
 
-						(ErrorDetailsDoc: PathProblemType) =>
-							ErrorDetailsDoc.operation === "documentDir"
-								? Effect.succeed(Option.none<string>())
-								: Effect.fail(ErrorDetailsDoc),
-					),
-				)
-			: Effect.fail(ErrorDetails),
+						Effect.catchTag(
+							// Removed 'as const'
+							"PathProblem",
+
+							(ErrorDetailsDoc: PathProblemType) =>
+								ErrorDetailsDoc.operation === "documentDir"
+									? Effect.succeed(Option.none<string>())
+									: Effect.fail(ErrorDetailsDoc),
+						),
+					)
+				: Effect.fail(ErrorDetails),
 	),
 );
 

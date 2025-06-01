@@ -5,12 +5,6 @@ import { Data } from "effect";
 /**
  * @module Inheritance (Error: Problem)
  * @description Represents a problem emulating a call to a super method,
-
-
-
-
-
-
  * typically from AbstractFileDialogService.
  */
 export default class Problem extends Data.TaggedError("InheritanceProblem")<{

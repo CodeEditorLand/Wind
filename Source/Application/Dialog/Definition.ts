@@ -1,7 +1,6 @@
 // Application/Dialog/Definition.ts
 // Purpose: Defines the concrete implementation object of the IFileDialogService.
 
-// Added Scope, Context
 import { Context, Effect, Layer, Option, pipe, Runtime, Scope } from "effect";
 import { localize } from "vs/nls";
 import {
@@ -17,66 +16,44 @@ import {
 	UriConstructor,
 	type Uri as UriType,
 } from "../../Integration/Tauri.js";
-// Removed unused imports for TS6133
-// import { Scheme as VsCodeScheme } from "../../Integration/Tauri.js";
-
-// import { ConvertOpenResultToSingleUri } from "../../Integration/Tauri.js";
-
-// import { ConvertOpenResultToUriArray } from "../../Integration/Tauri.js";
-
-// import { ConvertSaveResultToUri } from "../../Integration/Tauri.js";
-
-// import { RequestOpenDialog } from "../../Integration/Tauri.js";
-
-// import { RequestSaveDialog } from "../../Integration/Tauri.js";
-
 import { HostServiceLivePlaceholder } from "./_HostServicePlaceholder.js";
 import * as Orchestrate from "./Orchestration.js";
 import type { ServiceProblem } from "./Type.js";
 
-// Unused
-// import DialogServiceTag from "./Tag.js";
-
 // --- Runtime specific to this service module instance ---
-// Layer.build returns an Effect that, when run, produces the Context and a Scope finalizer.
-// We need to provide a Scope to run this effect.
 const ServiceRuntimeContextEffect: Effect.Effect<
-	// The context provided by the layer
-	Context.Context<typeof ActualHostServiceTag.Type>,
-	// Error type of Layer.build (should be never if placeholder is simple)
+	Context.Context<Context.Tag.Service<typeof ActualHostServiceTag>>,
 	never,
-	// Layer.build requires a Scope
 	Scope.Scope
 > = Layer.build(HostServiceLivePlaceholder);
 
 // To get the Context for Runtime.make, we run the effect that builds the layer.
-// This is typically done at application startup. For this module, we can do it here.
-const ServiceRuntimeContext: Context.Context<typeof ActualHostServiceTag.Type> =
-	Effect.runSync(
-		// Provide a global scope for this build
-		Effect.provide(ServiceRuntimeContextEffect, Scope.globalScope),
-	);
+// Scope.global is the global scope instance.
+const ServiceRuntimeContext = Effect.runSync(
+	Effect.provide(ServiceRuntimeContextEffect, Scope.global),
+);
 
 const ServiceRuntime = Runtime.make(ServiceRuntimeContext);
 
 const runEffect = Runtime.runPromise(ServiceRuntime);
 
+type HostServiceType = Context.Tag.Service<typeof ActualHostServiceTag>;
+
 function _run<A, E extends ServiceProblem>(
-	eff: Effect.Effect<A, E, typeof ActualHostServiceTag.Type>,
+	eff: Effect.Effect<A, E, HostServiceType>,
 ) {
 	return runEffect(eff);
 }
 
 function _runOption<A, E extends ServiceProblem>(
-	eff: Effect.Effect<Option.Option<A>, E, typeof ActualHostServiceTag.Type>,
+	eff: Effect.Effect<Option.Option<A>, E, HostServiceType>,
 ) {
 	return runEffect(eff.pipe(Effect.map(Option.getOrUndefined)));
 }
 
 function _runVoid<E extends ServiceProblem>(
-	eff: Effect.Effect<void, E, typeof ActualHostServiceTag.Type>,
+	eff: Effect.Effect<void, E, HostServiceType>,
 ) {
-	// Effect.void() is not needed here, runEffect handles void promises
 	return runEffect(eff);
 }
 

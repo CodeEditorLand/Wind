@@ -8,12 +8,6 @@ import type PickProblem from "./PickProblem.js";
 /**
  * @module ServiceProblem (Type)
  * @description Overall error union for the File Dialog Service,
-
-
-
-
-
-
  * encompassing pick problems and potential issues from emulating superclass calls.
  */
 export type Type = PickProblem | InheritanceProblem;
