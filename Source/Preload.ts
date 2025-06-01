@@ -173,7 +173,6 @@ interface TauriProcessEnv extends ILocalProcessEnvironment {
 }
 
 function reviveProfileUrisRecursively(data: any): any {
-	// ... (reviveProfileUrisRecursively remains the same)
 	if (!data || typeof data !== "object") return data;
 
 	if (Array.isArray(data)) return data.map(reviveProfileUrisRecursively);
