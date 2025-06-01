@@ -16,11 +16,15 @@ const CreateProblem = (cause: unknown): DialogProblem =>
 const Show = FromAsync(
 	SourceApi as (
 		message: string,
+
 		options?:
 			| string
 			| { title?: string; kind?: "info" | "warning" | "error" },
 	) => Promise<void>,
+
 	CreateProblem,
+
 	{ operation: "message" },
 );
+
 export default Show;

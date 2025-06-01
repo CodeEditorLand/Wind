@@ -2,7 +2,8 @@
 
 import { Context, Effect, type Data } from "effect";
 
-import type { ErrorProducer } from "./Type.js"; // Use type aggregator
+// Use type aggregator
+import type { ErrorProducer } from "./Type.js";
 
 /**
  * @module FromMethod
@@ -33,8 +34,11 @@ export default function FromMethod<
 	ErrorType extends Data.TaggedError<string, { cause: unknown } & ErrorData>,
 >(
 	ServiceTag: Tag,
+
 	MethodName: Method,
+
 	CreateProblem: ErrorProducer<ErrorData, ErrorType>,
+
 	StaticData: ErrorData,
 ): (...args: Arguments) => Effect.Effect<Value, ErrorType, Interface> {
 	return (...args: Arguments) =>
@@ -42,8 +46,10 @@ export default function FromMethod<
 			const Operation = ServiceInstance[MethodName] as (
 				...opArgs: Arguments
 			) => Promise<Value>;
+
 			return Effect.tryPromise({
 				try: () => Operation.apply(ServiceInstance, args),
+
 				catch: (cause) =>
 					CreateProblem({ ...StaticData, cause } as {
 						cause: unknown;

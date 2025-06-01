@@ -10,7 +10,10 @@ import {
 /**
  * @module OperationProblem (Type)
  * @description Union type for errors that can occur during basic dialog operations,
+
+
  * encompassing path resolution problems or Tauri dialog interaction problems.
  */
-type Type = PathProblem | TauriDialogProblem;
-export default Type;
+export type Type = PathProblem | TauriDialogProblem;
+
+export type { Type as default };

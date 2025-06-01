@@ -4,6 +4,8 @@ export const On = (await import("./Wind.js")).On;
 
 export const Bundle = (await import("./Wind.js")).Bundle;
 
+export const Compile = (await import("./Wind.js")).Compile;
+
 export const Merge = (await import("deepmerge-ts")).deepmerge;
 
 /**
@@ -35,39 +37,44 @@ export default async (Current: BuildOptions): Promise<BuildOptions> =>
 
 			outbase: "Source",
 
-			plugins: Merge<[BuildOptions["plugins"], BuildOptions["plugins"]]>(
-				Current.plugins,
-				[
-					{
-						name: "Compile",
-						setup({ onEnd }) {
-							onEnd(async ({ metafile }) => {
-								const _Output = metafile?.outputs;
+			plugins: Compile
+				? Merge<[BuildOptions["plugins"], BuildOptions["plugins"]]>(
+						Current.plugins,
 
-								for (const Output in _Output) {
-									if (
-										Object.prototype.hasOwnProperty.call(
-											_Output,
-											Output,
-										)
-									) {
-										if (Output.endsWith(".js")) {
-											(
-												await import(
-													"@playform/build/Target/Function/Exec.js"
+						[
+							{
+								name: "Compile",
+
+								setup({ onEnd }) {
+									onEnd(async ({ metafile }) => {
+										const _Output = metafile?.outputs;
+
+										for (const Output in _Output) {
+											if (
+												Object.prototype.hasOwnProperty.call(
+													_Output,
+
+													Output,
 												)
-											).default(
-												`Build '${Output}' \
+											) {
+												if (Output.endsWith(".js")) {
+													(
+														await import(
+															"@playform/build/Target/Function/Exec.js"
+														)
+													).default(
+														`Build '${Output}' \
 													--ESBuild Configuration/ESBuild/Target/Compile.js \
 													--TypeScript Configuration/tsconfig/Target/Compile.json`,
-											);
+													);
+												}
+											}
 										}
-									}
-								}
-							});
-						},
-					},
-				],
-			),
+									});
+								},
+							},
+						],
+					)
+				: [],
 		},
 	);

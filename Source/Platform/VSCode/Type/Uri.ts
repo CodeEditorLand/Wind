@@ -8,5 +8,7 @@ import { URI as VsCodeUriDefinition } from "vs/base/common/uri";
  * @description VSCode's Uniform Resource Identifier (URI) class and type.
  */
 export type Type = VsCodeUriDefinition;
+
 const Constructor = VsCodeUriDefinition;
+
 export default Constructor;

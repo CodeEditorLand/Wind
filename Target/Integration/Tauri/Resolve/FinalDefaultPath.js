@@ -1,1 +1,1 @@
-import{Effect as e,Option as o,pipe as m}from"../../../effect";import{ConvertUriToPathString as f}from"../Converters.js";import i from"./FallbackDefaultPath.js";function p(t){return m(f(t),o.match({onSome:r=>e.succeed(o.some(r)),onNone:()=>i}))}export{p as default};
+import{Effect as e,Option as o,pipe as m}from"../../../effect";import{ConvertUriToPathString as f}from"../Converter.js";import i from"./FallbackDefaultPath.js";function p(t){return m(f(t),o.match({onSome:r=>e.succeed(o.some(r)),onNone:()=>i}))}export{p as default};

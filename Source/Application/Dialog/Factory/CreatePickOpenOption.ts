@@ -23,48 +23,67 @@ type CombinedVsCodePickOptions = VsCodePickOptions &
 /**
  * @module CreatePickOpenOption (Factory)
  * @description Purely constructs TauriOpenOption based on VSCode's IPickAndOpenOptions,
+
+
  * dialog configuration, and a resolved default path.
  */
 export default function Create(
 	options: CombinedVsCodePickOptions,
+
 	config: {
 		titleKey: string;
+
 		defaultTitle: string;
+
 		tauriDirectory: boolean;
+
 		defaultWorkspaceFilter?: boolean;
+
 		itemType: "file" | "folder" | "workspace";
 	},
+
 	defaultPath: Option.Option<string>,
 ): TauriOpenOption {
 	return pipe(
 		{
 			title:
 				options.title || localize(config.titleKey, config.defaultTitle),
+
 			multiple: false,
+
 			directory: config.tauriDirectory,
 		} as TauriOpenOption,
+
 		(current) =>
 			Option.match(defaultPath, {
 				onNone: () => current,
+
 				onSome: (path) => ({ ...current, defaultPath: path }),
 			}),
+
 		(current) =>
 			pipe(
 				ConvertFiltersToTauri(options.filters),
+
 				Option.orElse(() =>
 					config.defaultWorkspaceFilter &&
 					config.itemType === "workspace"
 						? Option.some([
 								{
 									name: "VS Code Workspace",
+
 									extensions: ["code-workspace"],
 								} as TauriDialogFilter,
 							])
 						: Option.none(),
 				),
-				Option.filter(() => config.itemType !== "folder"), // Filters usually not for folder picking
+
+				// Filters usually not for folder picking
+				Option.filter(() => config.itemType !== "folder"),
+
 				Option.match({
 					onNone: () => current,
+
 					onSome: (filters) => ({ ...current, filters }),
 				}),
 			),

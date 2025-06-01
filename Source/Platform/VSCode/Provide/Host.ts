@@ -22,12 +22,16 @@ export interface PerformAction {
 			| FileOpenSpecification
 			| WorkspaceOpenSpecification
 		>,
-		config?: WindowOpenOption, // Renamed parameter
+
+		// Renamed parameter
+		config?: WindowOpenOption,
 	): Promise<void>;
 }
 
 /**
  * @description Tag for accessing the HostService.
  */
-const Tag = Context.Tag<PerformAction>("vscode/HostService"); // Tag ID remains for potential interop
+// Tag ID remains for potential interop
+const Tag = Context.Tag<PerformAction>("vscode/HostService");
+
 export default Tag;

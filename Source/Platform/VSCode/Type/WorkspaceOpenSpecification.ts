@@ -7,5 +7,6 @@ import type { IWorkspaceToOpen as Definition } from "vs/platform/window/common/w
  * @module WorkspaceOpenSpecification
  * @description Interface specifying a workspace to be opened.
  */
-type Type = Definition;
-export default Type;
+export type Type = Definition;
+
+export type { Type as default };

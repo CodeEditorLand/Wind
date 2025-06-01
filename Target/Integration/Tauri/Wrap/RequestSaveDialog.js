@@ -1,1 +1,1 @@
-import{save as e}from"@tauri-apps/plugin-dialog";import{OptionalFromAsync as r}from"../../../Effect/Produce.js";import{DialogProblem as t}from"../Errors.js";const a=o=>new t({cause:o,operation:"save"}),i=r(e,a,{operation:"save"});var m=i;export{m as default};
+import{save as e}from"@tauri-apps/plugin-dialog";import{OptionalFromAsync as r}from"../../../Effect/Produce.js";import{DialogProblem as t}from"../Error.js";const a=o=>new t({cause:o,operation:"save"}),i=r(e,a,{operation:"save"});var m=i;export{m as default};

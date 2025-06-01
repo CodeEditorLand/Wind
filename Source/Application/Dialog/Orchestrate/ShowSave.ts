@@ -23,8 +23,11 @@ export default function Orchestrate(
 	// Context R is never
 	return pipe(
 		ResolveFinalDefaultPath(options.defaultUri),
+
 		Effect.map((defaultPath) => CreateSaveOption(options, defaultPath)),
+
 		Effect.flatMap((tauriOptions) => RequestTauriSave(tauriOptions)),
+
 		Effect.map(ProcessSaveResultToUri),
 	);
 }

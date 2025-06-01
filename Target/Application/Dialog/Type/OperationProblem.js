@@ -1,1 +1,1 @@
-import"../../../Integration/Tauri/Errors.js";
+import"../../../Integration/Tauri/Error.js";

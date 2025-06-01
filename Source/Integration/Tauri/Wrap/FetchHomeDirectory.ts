@@ -3,8 +3,10 @@
 
 import { homeDir as SourceApi } from "@tauri-apps/api/path";
 
-import { FromAsync } from "../../../Effect/Produce.js"; // Path to meta-factory aggregator
-import { PathProblem } from "../Error.js"; // Path to error aggregator
+// Path to meta-factory aggregator
+import { FromAsync } from "../../../Effect/Produce.js";
+// Path to error aggregator
+import { PathProblem } from "../Error.js";
 
 const CreateProblem = (cause: unknown): PathProblem =>
 	new PathProblem({ cause, operation: "homeDir" });
@@ -14,4 +16,5 @@ const CreateProblem = (cause: unknown): PathProblem =>
  * @description Effect to get the user's home directory via Tauri.
  */
 const Fetch = FromAsync(SourceApi, CreateProblem, { operation: "homeDir" });
+
 export default Fetch;

@@ -4,7 +4,8 @@
 import { Option, pipe } from "effect";
 
 import type { FileFilter as VsCodeFilter } from "../../../Platform/VSCode/Type.js";
-import type { DialogFilter as TauriFilter } from "../Type.js"; // Tauri specific types
+// Tauri specific types
+import type { DialogFilter as TauriFilter } from "../Type.js";
 
 /**
  * @module FiltersToTauri
@@ -16,10 +17,13 @@ export default function Convert(
 ): Option.Option<TauriFilter[]> {
 	return pipe(
 		Option.fromNullable(MaybeFilters),
+
 		Option.filter((FiltersArray) => FiltersArray.length > 0),
+
 		Option.map((FiltersArray) =>
 			FiltersArray.map((AFilter: VsCodeFilter) => ({
 				name: AFilter.name,
+
 				extensions: [...AFilter.extensions],
 			})),
 		),

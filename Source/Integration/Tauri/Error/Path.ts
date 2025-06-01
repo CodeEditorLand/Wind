@@ -10,10 +10,12 @@ import { Data } from "effect";
  */
 export default class Problem extends Data.TaggedError("PathProblem")<{
 	readonly cause: unknown;
+
 	readonly operation: "homeDir" | "documentDir";
 }> {
 	constructor(props: {
 		cause: unknown;
+
 		operation: "homeDir" | "documentDir";
 	}) {
 		super(props);

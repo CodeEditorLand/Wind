@@ -2,7 +2,8 @@
 
 import { Context, Effect, Option, type Data } from "effect";
 
-import type { ErrorProducer } from "./Type.js"; // Use type aggregator
+// Use type aggregator
+import type { ErrorProducer } from "./Type.js";
 
 /**
  * @module OptionalFromMethod
@@ -33,8 +34,11 @@ export default function OptionalFromMethod<
 	ErrorType extends Data.TaggedError<string, { cause: unknown } & ErrorData>,
 >(
 	ServiceTag: Tag,
+
 	MethodName: Method,
+
 	CreateProblem: ErrorProducer<ErrorData, ErrorType>,
+
 	StaticData: ErrorData,
 ): (
 	...args: Arguments
@@ -44,8 +48,10 @@ export default function OptionalFromMethod<
 			const Operation = ServiceInstance[MethodName] as (
 				...opArgs: Arguments
 			) => Promise<Value | null | undefined>;
+
 			return Effect.tryPromise({
 				try: () => Operation.apply(ServiceInstance, args),
+
 				catch: (cause) =>
 					CreateProblem({ ...StaticData, cause } as {
 						cause: unknown;

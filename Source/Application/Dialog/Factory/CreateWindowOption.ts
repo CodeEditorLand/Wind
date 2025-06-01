@@ -4,7 +4,8 @@
 import { pipe } from "effect";
 import type { IPickAndOpenOptions as VsCodePickOptions } from "vs/platform/dialogs/common/dialogs";
 
-import type { WindowOption } from "../../../Platform/VSCode/Type.js"; // VSCode IOpenWindowOptions
+// VSCode IOpenWindowOptions
+import type { WindowOption } from "../../../Platform/VSCode/Type.js";
 
 /**
  * @module CreateWindowOption (Factory)
@@ -13,15 +14,19 @@ import type { WindowOption } from "../../../Platform/VSCode/Type.js"; // VSCode 
 export default function Create(options: VsCodePickOptions): WindowOption {
 	return pipe(
 		{ forceNewWindow: options.forceNewWindow ?? false } as WindowOption,
+
 		(current) =>
 			typeof (options as any).forceReuseWindow === "boolean"
 				? {
 						...current,
+
 						forceReuseWindow: (options as any).forceReuseWindow,
 					}
 				: current,
+
 		(current) =>
-			options.remoteAuthority !== undefined // Check if remoteAuthority is explicitly provided
+			// Check if remoteAuthority is explicitly provided
+			options.remoteAuthority !== undefined
 				? { ...current, remoteAuthority: options.remoteAuthority }
 				: current,
 	);

@@ -2,7 +2,8 @@
 // Purpose: Effect wrapper for VSCode HostService's openWindow method.
 
 import { FromMethod } from "../../../Effect/Produce.js";
-import { Host as HostServiceTag } from "../../../Platform/VSCode/Provide.js"; // The Tag for IHostService
+// The Tag for IHostService
+import { Host as HostServiceTag } from "../../../Platform/VSCode/Provide.js";
 import { WindowProblem } from "../Error.js";
 
 const CreateProblem = (cause: unknown): WindowProblem =>
@@ -14,9 +15,15 @@ const CreateProblem = (cause: unknown): WindowProblem =>
  * Requires HostService (PerformHostAction) from context.
  */
 const Request = FromMethod(
-	HostServiceTag, // Use the Tag
-	"openWindow", // Method name on PerformHostAction interface
+	// Use the Tag
+	HostServiceTag,
+
+	// Method name on PerformHostAction interface
+	"openWindow",
+
 	CreateProblem,
+
 	{ operation: "hostServiceOpenWindow" },
 );
+
 export default Request;

@@ -16,25 +16,43 @@ export const Compile = process.env["Compile"] === "true";
  */
 export default {
 	color: true,
+
 	format: "esm",
+
 	logLevel: "debug",
+
 	metafile: true,
+
 	minify: !On,
+
 	outdir: "Configuration",
+
 	platform: "node",
+
 	target: "esnext",
+
 	tsconfig: "tsconfig.json",
+
 	write: true,
+
 	legalComments: On ? "inline" : "none",
+
 	bundle: Bundle,
+
 	assetNames: "Asset/[name]-[hash]",
+
 	sourcemap: On,
+
 	drop: On ? [] : ["debugger"],
+
 	ignoreAnnotations: !On,
+
 	keepNames: On,
+
 	plugins: [
 		{
 			name: "Target",
+
 			// @ts-ignore
 			setup({ onStart, initialOptions: { outdir } }) {
 				switch (true) {
@@ -61,9 +79,12 @@ export default {
 			},
 		},
 	],
+
 	outbase: "Source/Configuration",
+
 	loader: {
 		".json": "copy",
+
 		".sh": "copy",
 	},
 } satisfies BuildOptions as BuildOptions;

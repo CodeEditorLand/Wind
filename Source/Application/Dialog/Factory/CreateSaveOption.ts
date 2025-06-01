@@ -16,20 +16,25 @@ import {
  */
 export default function Create(
 	options: VsCodeSaveOptions,
+
 	defaultPath: Option.Option<string>,
 ): TauriSaveOption {
 	return pipe(
 		{
 			title: options.title || localize("saveAsTitle", "Save As"),
 		} as TauriSaveOption,
+
 		(current) =>
 			Option.match(defaultPath, {
 				onNone: () => current,
+
 				onSome: (path) => ({ ...current, defaultPath: path }),
 			}),
+
 		(current) =>
 			Option.match(ConvertFiltersToTauri(options.filters), {
 				onNone: () => current,
+
 				onSome: (filters) => ({ ...current, filters }),
 			}),
 	);

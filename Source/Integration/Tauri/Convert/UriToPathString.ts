@@ -18,7 +18,9 @@ import {
 export default function Convert(MaybeUri?: Uri): Option.Option<string> {
 	return pipe(
 		Option.fromNullable(MaybeUri),
+
 		Option.filter((CheckedUri) => CheckedUri.scheme === Scheme.file),
+
 		Option.map((FileUri) => FileUri.fsPath),
 	);
 }

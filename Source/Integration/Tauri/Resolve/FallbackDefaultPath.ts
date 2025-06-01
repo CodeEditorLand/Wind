@@ -3,30 +3,41 @@
 
 import { Effect, Option, pipe } from "effect";
 
-import { PathProblem, type PathProblem as PathProblemType } from "../Error.js"; // Aggregator
-import { FetchDocumentDirectory, FetchHomeDirectory } from "../Wrapper.js"; // Aggregator
+// Aggregator
+import { PathProblem, type PathProblem as PathProblemType } from "../Error.js";
+// Aggregator
+import { FetchDocumentDirectory, FetchHomeDirectory } from "../Wrapper.js";
 
 // Explicit type import
 
 /**
  * @module FallbackDefaultPath (Resolver)
  * @description Effect that attempts to get a fallback default path,
+
+
  * trying home directory then document directory. Yields Option<string>.
  */
 const Resolve = pipe(
 	FetchHomeDirectory,
+
 	Effect.map(Option.some),
+
 	Effect.catchTag(
 		"PathProblem",
+
 		(
-			ErrorDetails: PathProblemType, // Explicit type for clarity
+			// Explicit type for clarity
+			ErrorDetails: PathProblemType,
 		) =>
 			ErrorDetails.operation === "homeDir"
 				? pipe(
 						FetchDocumentDirectory,
+
 						Effect.map(Option.some),
+
 						Effect.catchTag(
 							"PathProblem",
+
 							(ErrorDetailsDoc: PathProblemType) =>
 								ErrorDetailsDoc.operation === "documentDir"
 									? Effect.succeed(Option.none<string>())
@@ -36,4 +47,5 @@ const Resolve = pipe(
 				: Effect.fail(ErrorDetails),
 	),
 );
+
 export default Resolve;

@@ -7,5 +7,6 @@ import type { IOpenWindowOptions as Definition } from "vs/platform/window/common
  * @module WindowOpenOption
  * @description Interface for options when opening a new VSCode window.
  */
-type Type = Definition;
-export default Type;
+export type Type = Definition;
+
+export type { Type as default };

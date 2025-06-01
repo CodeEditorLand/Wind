@@ -5,7 +5,8 @@ import { open as SourceApi } from "@tauri-apps/plugin-dialog";
 
 import { OptionalFromAsync } from "../../../Effect/Produce.js";
 import { DialogProblem } from "../Error.js";
-import type { OpenOption as TauriOpenOption } from "../Type.js"; // Tauri's OpenDialogOptions
+// Tauri's OpenDialogOptions
+import type { OpenOption as TauriOpenOption } from "../Type.js";
 
 const CreateProblem = (cause: unknown): DialogProblem =>
 	new DialogProblem({ cause, operation: "open" });
@@ -18,7 +19,10 @@ const Request = OptionalFromAsync(
 	SourceApi as (
 		options: TauriOpenOption,
 	) => Promise<string | string[] | null>,
+
 	CreateProblem,
+
 	{ operation: "open" },
 );
+
 export default Request;

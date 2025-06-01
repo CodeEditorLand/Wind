@@ -8,6 +8,7 @@ import { Data } from "effect";
  */
 export default class Problem extends Data.TaggedError("WindowProblem")<{
 	readonly cause: unknown;
+
 	readonly operation: "hostServiceOpenWindow";
 }> {
 	constructor(props: { cause: unknown; operation: "hostServiceOpenWindow" }) {

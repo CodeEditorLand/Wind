@@ -4,8 +4,8 @@
 import { Effect, Option, pipe } from "effect";
 
 import type { Uri } from "../../../Platform/VSCode/Type.js";
-import { ConvertUriToPathString } from "../Converter.js"; // Aggregator
-
+// Aggregator
+import { ConvertUriToPathString } from "../Converter.js";
 import type { PathProblem } from "../Error.js";
 import ResolveFallbackDefaultPath from "./FallbackDefaultPath.js";
 
@@ -18,9 +18,12 @@ export default function Resolve(
 	MaybeUri?: Uri,
 ): Effect.Effect<Option.Option<string>, PathProblem> {
 	return pipe(
-		ConvertUriToPathString(MaybeUri), // Pure conversion
+		// Pure conversion
+		ConvertUriToPathString(MaybeUri),
+
 		Option.match({
 			onSome: (PathString) => Effect.succeed(Option.some(PathString)),
+
 			onNone: () => ResolveFallbackDefaultPath,
 		}),
 	);

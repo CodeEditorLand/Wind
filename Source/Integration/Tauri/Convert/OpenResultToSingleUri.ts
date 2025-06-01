@@ -13,6 +13,8 @@ import {
 /**
  * @module OpenResultToSingleUri
  * @description Processes the optional result from a Tauri open dialog,
+
+
  * expecting a single file path, and converts it to an optional URI.
  */
 export default function Convert(
@@ -20,10 +22,12 @@ export default function Convert(
 ): Option.Option<Uri> {
 	return pipe(
 		SelectedPathOption,
+
 		Option.filter(
 			(SelectedValue): SelectedValue is string =>
 				typeof SelectedValue === "string" && SelectedValue.length > 0,
 		),
+
 		Option.map((PathString) => UriFileFactory.file(PathString)),
 	);
 }

@@ -8,7 +8,8 @@ import {
 	ProcessOpenResultToUriArray,
 	RequestTauriOpen,
 	ResolveFinalDefaultPath,
-	type OperationProblem, // Renamed from DialogProblem for this context
+	// Renamed from DialogProblem for this context
+	type OperationProblem,
 	type UriType,
 	// ProvideHost might not be needed if RequestTauriOpen doesn't depend on it for just showing dialogs
 } from "../../../Integration/Tauri.js";
@@ -24,6 +25,7 @@ export default function Orchestrate(
 	// Context R is never if no services needed
 	return pipe(
 		ResolveFinalDefaultPath(options.defaultUri),
+
 		Effect.flatMap((defaultPath) =>
 			pipe(
 				options.canSelectFolders && options.canSelectFiles
@@ -31,6 +33,7 @@ export default function Orchestrate(
 							"Tauri 'open' dialog: VSCode requested both file and folder selection. Backend behavior for 'directory' flag will determine outcome.",
 						)
 					: Effect.void,
+
 				Effect.andThen(() =>
 					RequestTauriOpen(
 						CreateShowOpenOption(options, defaultPath),
@@ -38,6 +41,7 @@ export default function Orchestrate(
 				),
 			),
 		),
+
 		Effect.map(ProcessOpenResultToUriArray),
 	);
 }

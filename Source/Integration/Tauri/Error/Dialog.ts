@@ -8,10 +8,12 @@ import { Data } from "effect";
  */
 export default class Problem extends Data.TaggedError("DialogProblem")<{
 	readonly cause: unknown;
+
 	readonly operation: "open" | "save" | "message";
 }> {
 	constructor(props: {
 		cause: unknown;
+
 		operation: "open" | "save" | "message";
 	}) {
 		super(props);

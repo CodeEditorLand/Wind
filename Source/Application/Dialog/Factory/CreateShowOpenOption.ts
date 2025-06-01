@@ -16,22 +16,30 @@ import {
  */
 export default function Create(
 	options: VsCodeOpenOptions,
+
 	defaultPath: Option.Option<string>,
 ): TauriOpenOption {
 	return pipe(
 		{
 			title: options.title || localize("open", "Open"),
+
 			multiple: !!options.canSelectMany,
-			directory: !!options.canSelectFolders, // Prioritize folder if canSelectFolders is true
+
+			// Prioritize folder if canSelectFolders is true
+			directory: !!options.canSelectFolders,
 		} as TauriOpenOption,
+
 		(current) =>
 			Option.match(defaultPath, {
 				onNone: () => current,
+
 				onSome: (path) => ({ ...current, defaultPath: path }),
 			}),
+
 		(current) =>
 			Option.match(ConvertFiltersToTauri(options.filters), {
 				onNone: () => current,
+
 				onSome: (filters) => ({ ...current, filters }),
 			}),
 	);

@@ -11,6 +11,8 @@ import {
 /**
  * @module OpenResultToUriArray
  * @description Processes the optional result from a Tauri open dialog,
+
+
  * handling single or multiple selected paths, and converts them to an optional array of URIs.
  */
 export default function Convert(
@@ -18,9 +20,11 @@ export default function Convert(
 ): Option.Option<Uri[]> {
 	return pipe(
 		SelectedPathsOption,
+
 		Option.map((SelectedValue) =>
 			Array.isArray(SelectedValue) ? SelectedValue : [SelectedValue],
 		),
+
 		Option.filter(
 			(PathsArray) =>
 				PathsArray.length > 0 &&
@@ -29,6 +33,7 @@ export default function Convert(
 						typeof PathString === "string" && PathString.length > 0,
 				),
 		),
+
 		Option.map((ValidPathsArray) =>
 			ValidPathsArray.map((PathString) =>
 				UriFileFactory.file(PathString),

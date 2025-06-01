@@ -7,5 +7,6 @@ import type { FileFilter as Definition } from "vs/platform/dialogs/common/dialog
  * @module FileFilter
  * @description Interface for a VSCode dialog file filter.
  */
-type Type = Definition;
-export default Type;
+export type Type = Definition;
+
+export type { Type as default };

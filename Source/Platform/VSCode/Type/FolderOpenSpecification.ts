@@ -7,5 +7,6 @@ import type { IFolderToOpen as Definition } from "vs/platform/window/common/wind
  * @module FolderOpenSpecification
  * @description Interface specifying a folder to be opened.
  */
-type Type = Definition;
-export default Type;
+export type Type = Definition;
+
+export type { Type as default };

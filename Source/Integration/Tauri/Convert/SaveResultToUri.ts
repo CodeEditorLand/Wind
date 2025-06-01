@@ -18,9 +18,11 @@ export default function Convert(
 ): Option.Option<Uri> {
 	return pipe(
 		SelectedPathOption,
+
 		Option.filter(
 			(PathString): PathString is string => PathString.length > 0,
 		),
+
 		Option.map((PathString) => UriFileFactory.file(PathString)),
 	);
 }

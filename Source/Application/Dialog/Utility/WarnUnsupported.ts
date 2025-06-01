@@ -11,6 +11,7 @@ export default function Warn(
 ): Effect.Effect<void, DialogProblem, never> {
 	return ShowTauriMessage(
 		`The requested file operation (${context}) might not be fully optimal in this environment.`,
+
 		{ title: "Notice", kind: "warning" },
 	);
 }

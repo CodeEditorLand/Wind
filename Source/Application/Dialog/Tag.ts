@@ -12,6 +12,8 @@ import type { IFileDialogService as VsCodeFileDialogServiceInterface } from "vs/
  */
 // It's good practice to also export the interface type this Tag represents if it's not easily accessible
 export type Interface = VsCodeFileDialogServiceInterface;
-const Tag = Context.Tag<Interface>("vscode/FileDialogService"); // Using VSCode's internal service ID
+
+// Using VSCode's internal service ID
+const Tag = Context.Tag<Interface>("vscode/FileDialogService");
 
 export default Tag;

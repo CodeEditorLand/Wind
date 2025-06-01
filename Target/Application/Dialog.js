@@ -1,1 +1,1 @@
-export*from"./Dialog/Types.js";import{default as a}from"./Dialog/Live.js";import{default as t}from"./Dialog/Tag.js";import{default as l}from"./Dialog/Definition.js";export*from"./Dialog/Utilities.js";export{l as DialogServiceDefinition,t as DialogServiceTag,a as LiveDialogService};
+export*from"./Dialog/Type.js";import{default as a}from"./Dialog/Live.js";import{default as t}from"./Dialog/Tag.js";import{default as l}from"./Dialog/Definition.js";export*from"./Dialog/Utility.js";export{l as DialogServiceDefinition,t as DialogServiceTag,a as LiveDialogService};

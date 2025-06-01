@@ -8,4 +8,5 @@ import { Schemas as VsCodeSchemaConstants } from "vs/base/common/network";
  * @description VSCode constants for common URI schemes.
  */
 const Constant = VsCodeSchemaConstants;
+
 export default Constant;

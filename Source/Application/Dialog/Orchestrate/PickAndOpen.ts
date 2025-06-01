@@ -14,16 +14,19 @@ import {
 	DefineFolderOpen,
 	DefineWorkspaceOpen,
 	ProcessOpenResultToSingleUri,
-	ProvideHost, // Tag for HostService
+	// Tag for HostService
+	ProvideHost,
 	RequestHostWindowOpen,
 	RequestTauriOpen,
 	ResolveFinalDefaultPath,
-	type UriType, // VSCode URI type
+	// VSCode URI type
+	type UriType,
 } from "../../../Integration/Tauri.js";
 import CreatePickOpenOption from "../Factory/CreatePickOpenOption.js";
 import CreateWindowOption from "../Factory/CreateWindowOption.js";
 // Aggregator for Integration/Tauri
-import type { PickProblem } from "../Type.js"; // Service-specific error type
+// Service-specific error type
+import type { PickProblem } from "../Type.js";
 
 // Assuming VsCodePartialUtil is a utility type like Partial from TS
 type CombinedVsCodePickOptions = VsCodePickOptions &
@@ -36,12 +39,17 @@ type CombinedVsCodePickOptions = VsCodePickOptions &
  */
 export default function Orchestrate(
 	options: VsCodePickOptions,
+
 	config: {
 		// Renamed dialogConfig to config for brevity
 		titleKey: string;
+
 		defaultTitle: string;
+
 		tauriDirectory: boolean;
+
 		itemType: "file" | "folder" | "workspace";
+
 		defaultWorkspaceFilter?: boolean;
 	},
 ): Effect.Effect<void, PickProblem, ProvideHost> {
@@ -50,22 +58,30 @@ export default function Orchestrate(
 		ResolveFinalDefaultPath(
 			(options as CombinedVsCodePickOptions).defaultUri,
 		),
+
 		Effect.map((defaultPath) =>
 			CreatePickOpenOption(
 				options as CombinedVsCodePickOptions,
+
 				config,
+
 				defaultPath,
 			),
 		),
+
 		Effect.flatMap((tauriOptions) => RequestTauriOpen(tauriOptions)),
+
 		Effect.map(ProcessOpenResultToSingleUri),
+
 		Effect.flatMap(
 			(
-				maybeUri, // maybeUri is Option<UriType>
+				// maybeUri is Option<UriType>
+				maybeUri,
 			) =>
 				Option.match(maybeUri, {
 					// Use Option.match; branches return Effect
 					onNone: () => Effect.void,
+
 					onSome: (selectedUri: UriType) =>
 						RequestHostWindowOpen(
 							[
@@ -75,6 +91,7 @@ export default function Orchestrate(
 										? DefineFileOpen(selectedUri)
 										: DefineWorkspaceOpen(selectedUri),
 							],
+
 							CreateWindowOption(options),
 						),
 				}),

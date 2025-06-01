@@ -4,5 +4,8 @@
 export {
 	default as Host,
 	type PerformAction as HostAction,
-} from "./Provide/Host.js"; // Export Tag and Interface type
+
+	// Export Tag and Interface type
+} from "./Provide/Host.js";
+
 // ... Add other service tag exports here as they are defined.

@@ -14,17 +14,21 @@ import DecideSimplified from "./DecideSimplified.js";
 
 export default function Pick(
 	schema: string,
+
 	options: VsCodeSaveOptions,
 ): Effect.Effect<UriType | undefined, ServiceProblem, ProvideHost> {
 	if (!DecideSimplified(schema)) {
 		return PerformShowSave({
 			...options,
+
 			title: options.title ?? localize("saveAsTitle", "Save As"),
 		}).pipe(Effect.map(Option.getOrUndefined));
 	}
+
 	return Effect.fail(
 		new InheritanceProblem({
 			method: "pickFileSaveSimplified_Super",
+
 			cause: "Simplified non-file save not implemented",
 		}),
 	);

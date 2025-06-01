@@ -3,8 +3,10 @@
 
 import { Layer } from "effect";
 
-import Definition from "./Definition.js"; // The service implementation object
-import DialogServiceTag from "./Tag.js"; // The Tag for IFileDialogService
+// The service implementation object
+import Definition from "./Definition.js";
+// The Tag for IFileDialogService
+import DialogServiceTag from "./Tag.js";
 
 /**
  * @module Live (Service Layer)

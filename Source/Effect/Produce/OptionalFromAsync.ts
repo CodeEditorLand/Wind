@@ -2,7 +2,8 @@
 
 import { Effect, Option, type Data } from "effect";
 
-import type { AsyncFunction, ErrorProducer } from "./Type.js"; // Use type aggregator
+// Use type aggregator
+import type { AsyncFunction, ErrorProducer } from "./Type.js";
 
 /**
  * @module OptionalFromAsync
@@ -15,12 +16,15 @@ export default function OptionalFromAsync<
 	ErrorType extends Data.TaggedError<string, { cause: unknown } & ErrorData>,
 >(
 	Source: AsyncFunction<Arguments, Value | null | undefined>,
+
 	CreateProblem: ErrorProducer<ErrorData, ErrorType>,
+
 	StaticData: ErrorData,
 ): (...args: Arguments) => Effect.Effect<Option.Option<Value>, ErrorType> {
 	return (...args: Arguments) =>
 		Effect.tryPromise({
 			try: () => Source(...args),
+
 			catch: (cause) =>
 				CreateProblem({ ...StaticData, cause } as {
 					cause: unknown;
