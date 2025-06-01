@@ -6,17 +6,17 @@ import { Context } from "effect";
 import type { IFileDialogService as VsCodeFileDialogServiceInterface } from "vs/platform/dialogs/common/dialogs";
 
 /**
- * @module Tag (Service Tag)
- * @description Effect Context Tag for IFileDialogService.
- * This allows IFileDialogService to be injected and used within Effect-managed contexts.
+ * @module Tag (Service Tag for FileDialog)
+ * @description Represents the `IFileDialogService` interface from VSCode.
+ * This type alias is used for clarity and to type the service implementation.
  */
 export type Interface = VsCodeFileDialogServiceInterface;
 
-// Correct usage for effect@3.x:
-// Context.Tag<ServiceInterface>(IdentifierStringLiteral)
-const Tag = Context.Tag<Interface>("vscode/FileDialogService");
-
-// Tag's type is Context.Tag<Interface> which is equivalent to Context.Tag<Interface, Interface>
-// The service type can be accessed via Context.Tag.Service<typeof Tag>
+/**
+ * @description The `effect-ts` `Context.Tag` for accessing the `IFileDialogService`.
+ * This allows `IFileDialogService` to be injected into and used within `Effect`-managed contexts.
+ * The identifier "vscode/FileDialogService" uniquely identifies this service.
+ */
+const Tag = Context.Tag<"vscode/FileDialogService", Interface>();
 
 export default Tag;

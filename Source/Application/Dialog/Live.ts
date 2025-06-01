@@ -3,18 +3,33 @@
 
 import { Layer, type Context } from "effect";
 
+// The concrete implementation
 import Definition from "./Definition.js";
-// ActualDialogServiceTag is Context.Tag<Interface>
+// Import the Tag for the FileDialogService
 import ActualDialogServiceTag from "./Tag.js";
 
-// The service type provided by this layer
+// Infer the service type from the Tag
 type DialogServiceType = Context.Tag.Service<typeof ActualDialogServiceTag>;
 
-const Live: Layer.Layer<DialogServiceType, never, never> = Layer.succeed(
-	// The Tag instance
+/**
+ * @description A live Layer that provides the concrete implementation (`Definition`)
+ * for the `ActualDialogServiceTag`. This layer can be included in an application's
+ * main layer to make the `IFileDialogService` available throughout the application via Effect's context.
+ * This layer has no construction errors and no requirements itself, as `Definition` is self-contained
+ * (or its dependencies are managed via its internal runtime).
+ */
+const Live: Layer.Layer<
+	// Service provided
+	DialogServiceType,
+	// No error during construction
+	never,
+	// No requirements to build this layer
+	never
+> = Layer.succeed(
+	// The Tag being implemented
 	ActualDialogServiceTag,
 
-	// The implementation of DialogServiceType
+	// The implementation object
 	Definition,
 );
 
