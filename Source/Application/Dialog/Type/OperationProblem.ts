@@ -5,7 +5,7 @@
 import {
 	PathProblem,
 	DialogProblem as TauriDialogProblem,
-} from "../../../Integration/Tauri/Errors.js";
+} from "../../../Integration/Tauri/Error.js";
 
 /**
  * @module OperationProblem (Type)

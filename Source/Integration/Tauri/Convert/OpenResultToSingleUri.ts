@@ -6,7 +6,9 @@ import { Option, pipe } from "effect";
 import {
 	UriConstructor as UriFileFactory,
 	type Uri,
-} from "../../../Platform/VSCode/Types.js"; // For Uri.file() and Uri type
+} from "../../../Platform/VSCode/Type.js";
+
+// For Uri.file() and Uri type
 
 /**
  * @module OpenResultToSingleUri

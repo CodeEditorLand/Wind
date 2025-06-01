@@ -3,8 +3,8 @@
 
 import { Effect, Option, pipe } from "effect";
 
-import { PathProblem, type PathProblem as PathProblemType } from "../Errors.js"; // Aggregator
-import { FetchDocumentDirectory, FetchHomeDirectory } from "../Wrappers.js"; // Aggregator
+import { PathProblem, type PathProblem as PathProblemType } from "../Error.js"; // Aggregator
+import { FetchDocumentDirectory, FetchHomeDirectory } from "../Wrapper.js"; // Aggregator
 
 // Explicit type import
 

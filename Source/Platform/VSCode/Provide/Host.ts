@@ -8,7 +8,7 @@ import type {
 	FolderOpenSpecification,
 	WindowOpenOption,
 	WorkspaceOpenSpecification,
-} from "../Types.js";
+} from "../Type.js";
 
 /**
  * @module Host (Service Interface: PerformAction)

@@ -12,8 +12,6 @@
 		"allowJs": true,
 		"checkJs": false
 	},
-	"include": [
-		"../../../Target",
-	],
+	"include": ["../../../Target"],
 	"exclude": []
 }

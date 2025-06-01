@@ -4,7 +4,7 @@
 import { pipe } from "effect";
 import type { IPickAndOpenOptions as VsCodePickOptions } from "vs/platform/dialogs/common/dialogs";
 
-import type { WindowOption } from "../../../Platform/VSCode/Types.js"; // VSCode IOpenWindowOptions
+import type { WindowOption } from "../../../Platform/VSCode/Type.js"; // VSCode IOpenWindowOptions
 
 /**
  * @module CreateWindowOption (Factory)

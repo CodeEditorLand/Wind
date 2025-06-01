@@ -23,7 +23,7 @@ import {
 import CreatePickOpenOption from "../Factory/CreatePickOpenOption.js";
 import CreateWindowOption from "../Factory/CreateWindowOption.js";
 // Aggregator for Integration/Tauri
-import type { PickProblem } from "../Types.js"; // Service-specific error type
+import type { PickProblem } from "../Type.js"; // Service-specific error type
 
 // Assuming VsCodePartialUtil is a utility type like Partial from TS
 type CombinedVsCodePickOptions = VsCodePickOptions &

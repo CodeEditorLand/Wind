@@ -9,7 +9,7 @@ import {
 	UriType,
 } from "../../../Integration/Tauri.js";
 import PerformShowSave from "../Orchestrate/ShowSave.js";
-import type { ServiceProblem } from "../Types.js";
+import type { ServiceProblem } from "../Type.js";
 import DecideSimplified from "./DecideSimplified.js";
 
 export default function Pick(

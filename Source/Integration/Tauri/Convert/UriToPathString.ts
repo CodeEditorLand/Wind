@@ -8,7 +8,7 @@ import {
 	Scheme,
 	UriConstructor,
 	type Uri,
-} from "../../../Platform/VSCode/Types.js";
+} from "../../../Platform/VSCode/Type.js";
 
 /**
  * @module UriToPathString

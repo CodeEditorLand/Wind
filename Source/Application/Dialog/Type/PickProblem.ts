@@ -1,7 +1,7 @@
 // Application/Dialog/Type/PickProblem.ts
 // Purpose: Defines an error union for "pick and open" operations.
 
-import { WindowProblem } from "../../../Integration/Tauri/Errors.js"; // Use error aggregator
+import { WindowProblem } from "../../../Integration/Tauri/Error.js"; // Use error aggregator
 import type OperationProblem from "./OperationProblem.js";
 
 /**

@@ -4,7 +4,7 @@
 import { message as SourceApi } from "@tauri-apps/plugin-dialog";
 
 import { FromAsync } from "../../../Effect/Produce.js";
-import { DialogProblem } from "../Errors.js";
+import { DialogProblem } from "../Error.js";
 
 const CreateProblem = (cause: unknown): DialogProblem =>
 	new DialogProblem({ cause, operation: "message" });

@@ -4,8 +4,8 @@
 import { open as SourceApi } from "@tauri-apps/plugin-dialog";
 
 import { OptionalFromAsync } from "../../../Effect/Produce.js";
-import { DialogProblem } from "../Errors.js";
-import type { OpenOption as TauriOpenOption } from "../Types.js"; // Tauri's OpenDialogOptions
+import { DialogProblem } from "../Error.js";
+import type { OpenOption as TauriOpenOption } from "../Type.js"; // Tauri's OpenDialogOptions
 
 const CreateProblem = (cause: unknown): DialogProblem =>
 	new DialogProblem({ cause, operation: "open" });

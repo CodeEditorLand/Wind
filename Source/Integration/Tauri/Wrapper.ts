@@ -1,5 +1,3 @@
-
-
 // Integration/Tauri/Wrappers.ts
 // Purpose: Aggregates Effect wrappers for Tauri and related HostService APIs.
 

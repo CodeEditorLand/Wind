@@ -5,7 +5,7 @@
 import type {
 	FolderOpenSpecification,
 	Uri,
-} from "../../../Platform/VSCode/Types.js";
+} from "../../../Platform/VSCode/Type.js";
 
 /**
  * @module FolderOpen (Definition)

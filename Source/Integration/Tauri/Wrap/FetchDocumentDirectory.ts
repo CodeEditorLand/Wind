@@ -4,7 +4,7 @@
 import { documentDir as SourceApi } from "@tauri-apps/api/path";
 
 import { FromAsync } from "../../../Effect/Produce.js";
-import { PathProblem } from "../Errors.js";
+import { PathProblem } from "../Error.js";
 
 const CreateProblem = (cause: unknown): PathProblem =>
 	new PathProblem({ cause, operation: "documentDir" });

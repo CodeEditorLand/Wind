@@ -3,7 +3,7 @@
 
 import { FromMethod } from "../../../Effect/Produce.js";
 import { Host as HostServiceTag } from "../../../Platform/VSCode/Provide.js"; // The Tag for IHostService
-import { WindowProblem } from "../Errors.js";
+import { WindowProblem } from "../Error.js";
 
 const CreateProblem = (cause: unknown): WindowProblem =>
 	new WindowProblem({ cause, operation: "hostServiceOpenWindow" });

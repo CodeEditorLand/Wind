@@ -3,10 +3,10 @@
 
 import { Effect, Option, pipe } from "effect";
 
-import type { Uri } from "../../../Platform/VSCode/Types.js";
-import { ConvertUriToPathString } from "../Converters.js"; // Aggregator
+import type { Uri } from "../../../Platform/VSCode/Type.js";
+import { ConvertUriToPathString } from "../Converter.js"; // Aggregator
 
-import type { PathProblem } from "../Errors.js";
+import type { PathProblem } from "../Error.js";
 import ResolveFallbackDefaultPath from "./FallbackDefaultPath.js";
 
 /**

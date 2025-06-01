@@ -4,7 +4,7 @@
 import type {
 	Uri,
 	WorkspaceOpenSpecification,
-} from "../../../Platform/VSCode/Types.js";
+} from "../../../Platform/VSCode/Type.js";
 
 /**
  * @module WorkspaceOpen (Definition)

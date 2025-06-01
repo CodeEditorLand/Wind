@@ -1,5 +1,3 @@
-
-
 // Integration/Tauri/Error/Path.ts
 // Purpose: Defines an error for Tauri path operations.
 import { Data } from "effect";
@@ -13,4 +11,11 @@ import { Data } from "effect";
 export default class Problem extends Data.TaggedError("PathProblem")<{
 	readonly cause: unknown;
 	readonly operation: "homeDir" | "documentDir";
-}> { constructor(props: { cause: unknown; operation: "homeDir" | "documentDir" }) { super(props); } }
+}> {
+	constructor(props: {
+		cause: unknown;
+		operation: "homeDir" | "documentDir";
+	}) {
+		super(props);
+	}
+}

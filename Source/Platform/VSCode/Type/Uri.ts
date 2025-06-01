@@ -1,5 +1,3 @@
-
-
 // Platform/VSCode/Type/Uri.ts
 // Purpose: VSCode URI definition.
 

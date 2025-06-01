@@ -3,8 +3,8 @@
 
 import { Option, pipe } from "effect";
 
-import type { FileFilter as VsCodeFilter } from "../../../Platform/VSCode/Types.js";
-import type { DialogFilter as TauriFilter } from "../Types.js"; // Tauri specific types
+import type { FileFilter as VsCodeFilter } from "../../../Platform/VSCode/Type.js";
+import type { DialogFilter as TauriFilter } from "../Type.js"; // Tauri specific types
 
 /**
  * @module FiltersToTauri

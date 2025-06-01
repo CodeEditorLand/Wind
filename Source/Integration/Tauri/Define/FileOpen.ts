@@ -4,7 +4,7 @@
 import type {
 	FileOpenSpecification,
 	Uri,
-} from "../../../Platform/VSCode/Types.js";
+} from "../../../Platform/VSCode/Type.js";
 
 /**
  * @module FileOpen (Definition)
