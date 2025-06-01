@@ -1,1 +1,1 @@
-import{pipe as i}from"../../../effect";function t(o){return i({forceNewWindow:o.forceNewWindow??!1},e=>typeof o.forceReuseWindow=="boolean"?{...e,forceReuseWindow:o.forceReuseWindow}:e,e=>o.remoteAuthority!==void 0?{...e,remoteAuthority:o.remoteAuthority}:e)}export{t as default};
+import{pipe as i}from"../../../effect";function n(e){return i({forceNewWindow:e.forceNewWindow??!1},o=>typeof e.forceReuseWindow=="boolean"?{...o,forceReuseWindow:e.forceReuseWindow}:o,o=>e.remoteAuthority!==void 0?{...o,remoteAuthority:e.remoteAuthority}:o)}export{n as default};
