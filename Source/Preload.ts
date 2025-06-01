@@ -29,7 +29,7 @@ import {
 	getCurrent as getCurrentProcess,
 	type ProcessInfo,
 } from "@tauri-apps/api/process";
-import { invoke } from "@tauri-apps/api/a";
+import { invoke } from "@tauri-apps/api/app";
 import { Window } from "@tauri-apps/api/window";
 // --- VSCode Type Imports (for type checking and clarity) ---
 // These paths need to be resolvable in your development environment for type checking.
