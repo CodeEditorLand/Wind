@@ -26,7 +26,5 @@ export default async (Current: BuildOptions): Promise<BuildOptions> =>
 			plugins: [],
 
 			allowOverwrite: true,
-
-			platform: "browser",
 		},
 	);
