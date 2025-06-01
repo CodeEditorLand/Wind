@@ -1,4 +1,4 @@
-// Application/Dialog/OptionFactories.ts
+// Application/Dialog/OptionFactory.ts
 // Purpose: Aggregates pure option builder functions.
 
 export { default as CreatePickOpenOption } from "./Factory/CreatePickOpenOption.js";

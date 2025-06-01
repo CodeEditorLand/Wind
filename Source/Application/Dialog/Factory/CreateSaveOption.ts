@@ -7,21 +7,21 @@ import type { ISaveDialogOptions as VsCodeSaveOptions } from "vs/platform/dialog
 
 import {
 	ConvertFiltersToTauri,
-	type TauriSaveOption,
+	// Use SaveOption
+	type SaveOption as TauriSaveOption,
 } from "../../../Integration/Tauri.js";
 
-/**
- * @module CreateSaveOption (Factory)
- * @description Purely constructs TauriSaveOption for "show save dialog" scenarios.
- */
 export default function Create(
 	options: VsCodeSaveOptions,
 
 	defaultPath: Option.Option<string>,
 ): TauriSaveOption {
+	// Use the imported SaveOption type
 	return pipe(
 		{
 			title: options.title || localize("saveAsTitle", "Save As"),
+
+			// Cast to ensure base properties
 		} as TauriSaveOption,
 
 		(current) =>

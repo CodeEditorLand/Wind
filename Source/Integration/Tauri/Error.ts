@@ -1,4 +1,4 @@
-// Integration/Tauri/Errors.ts
+// Integration/Tauri/Error.ts
 // Purpose: Aggregates custom error types for Tauri integrations with descriptive aliases.
 
 import DialogProblemSource from "./Error/Dialog.js";

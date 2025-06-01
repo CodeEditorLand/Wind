@@ -1,4 +1,4 @@
-// Integration/Tauri/Resolvers.ts
+// Integration/Tauri/Resolver.ts
 // Purpose: Aggregates composed path resolving Effects for Tauri integrations.
 
 export { default as ResolveFallbackDefaultPath } from "./Resolve/FallbackDefaultPath.js";

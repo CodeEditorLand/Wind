@@ -2,10 +2,11 @@
 // Purpose: Aggregates VSCode service tags and interfaces.
 
 export {
-	default as Host,
-	type PerformAction as HostAction,
+	// Exporting the Tag with a more specific name
+	default as HostServiceTag,
 
-	// Export Tag and Interface type
+	// Exporting the interface type with a clearer name
+	type PerformAction as HostService,
 } from "./Provide/Host.js";
 
 // ... Add other service tag exports here as they are defined.

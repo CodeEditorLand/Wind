@@ -1,4 +1,4 @@
-// Integration/Tauri/Definitions.ts
+// Integration/Tauri/Definition.ts
 // Purpose: Aggregates pure URI object factory functions.
 
 export { default as DefineFolderOpen } from "./Define/FolderOpen.js";

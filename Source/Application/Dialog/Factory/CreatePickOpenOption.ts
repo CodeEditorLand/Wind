@@ -3,7 +3,6 @@
 
 import { Option, pipe } from "effect";
 import { localize } from "vs/nls";
-// Import specific types from VSCode and Tauri integration modules
 import type {
 	IOpenDialogOptions as VsCodeOpenOptions,
 	IPickAndOpenOptions as VsCodePickOptions,
@@ -11,21 +10,14 @@ import type {
 
 import {
 	ConvertFiltersToTauri,
-	type TauriDialogFilter,
-	type TauriOpenOption,
+	// Use DialogFilter
+	type DialogFilter as TauriDialogFilter,
+	// Use OpenOption
+	type OpenOption as TauriOpenOption,
 } from "../../../Integration/Tauri.js";
 
-// Assuming VsCodePartialUtil is a utility type e.g. Partial<T>
-type CombinedVsCodePickOptions = VsCodePickOptions &
-	Partial<VsCodeOpenOptions>;
+type CombinedVsCodePickOptions = VsCodePickOptions & Partial<VsCodeOpenOptions>;
 
-/**
- * @module CreatePickOpenOption (Factory)
- * @description Purely constructs TauriOpenOption based on VSCode's IPickAndOpenOptions,
-
-
- * dialog configuration, and a resolved default path.
- */
 export default function Create(
 	options: CombinedVsCodePickOptions,
 
@@ -43,6 +35,7 @@ export default function Create(
 
 	defaultPath: Option.Option<string>,
 ): TauriOpenOption {
+	// Use the imported OpenOption type
 	return pipe(
 		{
 			title:
@@ -51,6 +44,8 @@ export default function Create(
 			multiple: false,
 
 			directory: config.tauriDirectory,
+
+			// Cast to ensure base properties
 		} as TauriOpenOption,
 
 		(current) =>
@@ -72,6 +67,8 @@ export default function Create(
 									name: "VS Code Workspace",
 
 									extensions: ["code-workspace"],
+
+									// Use DialogFilter type
 								} as TauriDialogFilter,
 							])
 						: Option.none(),

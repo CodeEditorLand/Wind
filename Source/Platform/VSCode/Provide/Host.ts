@@ -31,7 +31,7 @@ export interface PerformAction {
 /**
  * @description Tag for accessing the HostService.
  */
-// Tag ID remains for potential interop
+// Corrected: Tag identifier is a runtime argument.
 const Tag = Context.Tag<PerformAction>("vscode/HostService");
 
 export default Tag;

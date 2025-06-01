@@ -1,6 +1,6 @@
 // Effect/Produce/OptionalFromMethod.ts
 
-import { Context, Effect, Option, type Data } from "effect";
+import { Context, Effect, Option, type Cause, type Tag } from "effect";
 
 // Use type aggregator
 import type { ErrorProducer } from "./Type.js";
@@ -10,9 +10,9 @@ import type { ErrorProducer } from "./Type.js";
  * @description Creates an Effect<Option<Value>> from a service method that might return a nullable Promise.
  */
 export default function OptionalFromMethod<
-	Interface,
 	Identifier,
-	Tag extends Context.Tag<Identifier, Interface>,
+	Interface,
+	SourcedTag extends Context.Tag<Identifier, Interface>,
 	Method extends {
 		[Key in keyof Interface]: Interface[Key] extends (
 			...args: any[]
@@ -31,9 +31,13 @@ export default function OptionalFromMethod<
 		? NonNullable<Res>
 		: never,
 	ErrorData extends Record<string, any>,
-	ErrorType extends Data.TaggedError<string, { cause: unknown } & ErrorData>,
+	ErrorType extends Cause.YieldableError & {
+		readonly _tag: string;
+
+		readonly cause: unknown;
+	} & ErrorData,
 >(
-	ServiceTag: Tag,
+	ServiceTag: SourcedTag,
 
 	MethodName: Method,
 
@@ -42,7 +46,7 @@ export default function OptionalFromMethod<
 	StaticData: ErrorData,
 ): (
 	...args: Arguments
-) => Effect.Effect<Option.Option<Value>, ErrorType, Interface> {
+) => Effect.Effect<Option.Option<Value>, ErrorType, Tag.Service<SourcedTag>> {
 	return (...args: Arguments) =>
 		Effect.flatMap(ServiceTag, (ServiceInstance) => {
 			const Operation = ServiceInstance[MethodName] as (
@@ -54,7 +58,7 @@ export default function OptionalFromMethod<
 
 				catch: (cause) =>
 					CreateProblem({ ...StaticData, cause } as {
-						cause: unknown;
+						readonly cause: unknown;
 					} & ErrorData),
 			}).pipe(Effect.map(Option.fromNullable));
 		});

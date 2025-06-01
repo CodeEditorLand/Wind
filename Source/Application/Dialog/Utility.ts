@@ -1,4 +1,4 @@
-// Application/Dialog/Utilities.ts
+// Application/Dialog/Utility.ts
 export { default as WarnUnsupported } from "./Utility/WarnUnsupported.js";
 
 export { default as DecideSimplified } from "./Utility/DecideSimplified.js";

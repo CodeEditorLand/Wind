@@ -15,6 +15,7 @@ type ErrorProducer<
 	// ErrorType must be a yieldable error, tagged, include 'cause' and ErrorData
 	ErrorType extends Cause.YieldableError & {
 		readonly _tag: string;
+
 		readonly cause: unknown;
 	} & ErrorData,
 > = (
@@ -34,6 +35,7 @@ export default function FromAsync<
 	// ErrorType must be a yieldable error, tagged, include 'cause' and ErrorData
 	ErrorType extends Cause.YieldableError & {
 		readonly _tag: string;
+
 		readonly cause: unknown;
 	} & ErrorData,
 >(

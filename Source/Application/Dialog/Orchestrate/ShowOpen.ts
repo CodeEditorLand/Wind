@@ -5,24 +5,21 @@ import { Effect, Option, pipe } from "effect";
 import type { IOpenDialogOptions as VsCodeOpenOptions } from "vs/platform/dialogs/common/dialogs";
 
 import {
-	ProcessOpenResultToUriArray,
-	RequestTauriOpen,
+	// Corrected name
+	ConvertOpenResultToUriArray,
+	// Corrected name
+	RequestOpenDialog,
 	ResolveFinalDefaultPath,
-	// Renamed from DialogProblem for this context
-	type OperationProblem,
-	type UriType,
-	// ProvideHost might not be needed if RequestTauriOpen doesn't depend on it for just showing dialogs
+	// Corrected type import
+	type Uri as UriType,
 } from "../../../Integration/Tauri.js";
 import CreateShowOpenOption from "../Factory/CreateShowOpenOption.js";
+// Corrected import path
+import type { OperationProblem } from "../Type.js";
 
-/**
- * @module ShowOpen (Orchestration Logic)
- * @description Orchestrates the logic for showing an open dialog.
- */
 export default function Orchestrate(
 	options: VsCodeOpenOptions,
 ): Effect.Effect<Option.Option<UriType[]>, OperationProblem, never> {
-	// Context R is never if no services needed
 	return pipe(
 		ResolveFinalDefaultPath(options.defaultUri),
 
@@ -35,13 +32,15 @@ export default function Orchestrate(
 					: Effect.void,
 
 				Effect.andThen(() =>
-					RequestTauriOpen(
+					RequestOpenDialog(
+						// Corrected name
 						CreateShowOpenOption(options, defaultPath),
 					),
 				),
 			),
 		),
 
-		Effect.map(ProcessOpenResultToUriArray),
+		// Corrected name
+		Effect.map(ConvertOpenResultToUriArray),
 	);
 }

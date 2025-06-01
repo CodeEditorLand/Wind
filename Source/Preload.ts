@@ -1,23 +1,29 @@
+// Preload.ts
+
 // --- Tauri API Imports ---
 import {
 	getName as getTauriAppNameFromApi,
 	getVersion as getTauriAppVersionFromApi,
 } from "@tauri-apps/api/app";
+// Assuming this resolves
+
+import { invoke } from "@tauri-apps/api/core";
 import {
 	emit as tauriEmit,
 	listen as tauriListen,
 	once as tauriOnce,
 	type Event as TauriEvent,
 } from "@tauri-apps/api/event";
+// NOTE: For TS2307, ensure @tauri-apps/api is correctly installed and its types are discoverable.
 import {
 	arch as tauriOsArch,
 	platform as tauriOsPlatform,
 	type as tauriOsType,
 	version as tauriOsVersion,
 } from "@tauri-apps/api/os";
+// Assuming this resolves in your environment
 import {
 	appDataDir,
-	appDir,
 	appLogDir,
 	executableDir,
 	homeDir,
@@ -29,60 +35,119 @@ import {
 	getCurrent as getCurrentProcess,
 	type ProcessInfo,
 } from "@tauri-apps/api/process";
-import { invoke } from "@tauri-apps/api/app";
 import { Window } from "@tauri-apps/api/window";
 // --- VSCode Type Imports (for type checking and clarity) ---
-// These paths need to be resolvable in your development environment for type checking.
-// They are type-only imports and won't be bundled if `isolatedModules` is true and they are used correctly.
 import { URI } from "vs/base/common/uri";
 import type { ISandboxConfiguration } from "vs/base/parts/sandbox/common/sandboxTypes";
 import type {
 	IpcRenderer,
+	ProcessMemoryInfo,
 	WebFrame,
 	WebUtils,
 } from "vs/base/parts/sandbox/electron-sandbox/electronTypes";
 import type {
 	IMainWindowSandboxGlobals,
-	// Shimmed interface type
 	IpcMessagePort,
-	// This will be our shimmed interface type
 	ISandboxNodeProcess,
+	// This might be the unexported type. Let's define a local version if needed.
+	// IProcessEnvironment,
 } from "vs/base/parts/sandbox/electron-sandbox/globals";
-// For product.nameShort
 import product from "vs/platform/product/common/product.js";
-import type { INativeWindowConfiguration } from "vs/platform/window/common/window";
-// Ensure this is importable
-import { reviveIdentifier } from "vs/platform/workspace/common/workspace.js";
+// NOTE: For TS2305, ILoggerResource might not be exported from this path.
+// If it's not, you might need to find its actual export location or define a local version.
+// Same for UriDto if TS2459 persists.
+import type {
+	IUserDataProfile /* ILoggerResource, UriDto, */,
+	UseDefaultProfileFlags,
+} from "vs/platform/userDataProfile/common/userDataProfile";
+import type {
+	IColorScheme,
+	INativeWindowConfiguration,
+	// For nativeConfig.os
+	IOSConfiguration,
+	// For INativeWindowConfiguration
+	IPartsSplash,
+	// For partsSplash
+	IWindowConfiguration,
+} from "vs/platform/window/common/window";
+import {
+	reviveIdentifier,
+	type IAnyWorkspaceIdentifier,
+	type ISingleFolderWorkspaceIdentifier,
+	type IWorkspaceIdentifier,
+} from "vs/platform/workspace/common/workspace.js";
 
-// src/tauri-preload.ts
-// This script shims `window.vscode` for a Tauri environment,
+// Local type declaration for IProcessEnvironment if VSCode doesn't export it
+// This is a common structure for process environments.
+interface ILocalProcessEnvironment {
+	[key: string]: string | undefined;
+}
 
-// using a logging and define methodology similar to Policy.ts.
+// Local type declaration for UriDto if VSCode doesn't export it.
+// This is a common pattern for serializing URIs.
+interface ILocalUriDto<T> {
+	// Marker for URI DTO
+	$mid: 11;
 
-// --- Build-Time Define Declarations (esbuild or other bundler must replace these) ---
-// Should be true in development, false in production
+	scheme: string;
+
+	authority?: string;
+
+	path?: string;
+
+	query?: string;
+
+	fragment?: string;
+
+	external?: string;
+
+	_formatted?: string | null;
+
+	_fsPath?: string | null;
+
+	// If it wraps another type T
+	payload?: T;
+}
+
+// Local type for ILoggerResource if not exported
+interface ILocalLoggerResource {
+	// or ILocalUriDto<any> if URI itself isn't directly usable
+	resource: URI;
+
+	// Assuming LogLevel is a number type in VSCode
+	logLevel?: number;
+
+	// Add other properties if they exist
+	id: string;
+
+	// Usually a name for the logger
+	name: string;
+
+	hidden?: boolean;
+
+	// Context key expression
+	when?: string;
+
+	// if there's a logger group concept
+	// group?: string;
+
+	// extensionId?: string;
+}
+
 declare const __DEV__: boolean;
 
-// Example: a version string for VSCode part
 declare const __VSCODE_VERSION__: string;
 
-// Example: from tauri app itself
 declare const __TAURI_APP_VERSION__: string;
 
-// e.g., "development" or "production"
 declare const __NODE_ENV__: string;
 
 declare const __TAURI_ENV_DEBUG__: string;
 
-// --- Global Type Augmentation (should be in a central .d.ts file, repeated here for context) ---
-// This ensures TypeScript knows about window.vscode.
-// Ideally, this is in a shared `globals.d.ts` included in your tsconfig.
 declare global {
 	interface Window {
-		// Use the actual VSCode interface for the shim target
 		vscode: IMainWindowSandboxGlobals;
 
-		// Add other VSCode specific globals if your workbench.ts sets/expects them
 		_VSCODE_FILE_ROOT?: string;
 
 		_WORKER?: string;
@@ -95,40 +160,100 @@ declare global {
 	}
 }
 
-// --- Logging Utilities (Policy.ts style) ---
 const LOG_PREFIX = "[TauriPreload]";
 
 const Log = __DEV__
-	? (...messages: any[]) => {
-			console.log(LOG_PREFIX, ...messages);
-		}
+	? (...messages: any[]) => console.log(LOG_PREFIX, ...messages)
 	: () => {};
 
 const ErrorLog = __DEV__
-	? (...messages: any[]) => {
-			console.error(LOG_PREFIX, ...messages);
-		}
+	? (...messages: any[]) => console.error(LOG_PREFIX, ...messages)
 	: () => {};
 
 const WarnLog = __DEV__
-	? (...messages: any[]) => {
-			console.warn(LOG_PREFIX, ...messages);
-		}
+	? (...messages: any[]) => console.warn(LOG_PREFIX, ...messages)
 	: () => {};
 
 Log("Script executing. DEV mode:", __DEV__);
 
-// --- Main Shim Logic ---
+interface TauriProcessEnv extends ILocalProcessEnvironment {
+	// Use local definition
+	VSCODE_CWD: string;
+
+	VSCODE_NLS_CONFIG: string;
+
+	VSCODE_DEV?: "1";
+}
+
+function reviveProfileUrisRecursively(data: any): any {
+	if (!data || typeof data !== "object") {
+		return data;
+	}
+
+	if (Array.isArray(data)) {
+		return data.map((item) => reviveProfileUrisRecursively(item));
+	}
+
+	const GUEST_SCHEME_AUTHORITY_REGEXP =
+		/^([a-zA-Z][a-zA-Z0-9+.-]*):(\/\/([^\\/?#]*))?/;
+
+	// Check if it resembles UriComponents before trying to revive
+	if (
+		typeof data.scheme === "string" &&
+		(GUEST_SCHEME_AUTHORITY_REGEXP.test(data.scheme) ||
+			typeof data.path === "string" ||
+			typeof data.authority === "string" ||
+			data.$mid === 1) /* typical marker for URI.toJSON() */
+	) {
+		return URI.revive(data);
+	}
+
+	const result: any = {};
+
+	for (const key in data) {
+		if (Object.prototype.hasOwnProperty.call(data, key)) {
+			const value = data[key];
+
+			if (
+				key === "location" ||
+				key === "home" ||
+				key === "resource" ||
+				key.endsWith("Uri") ||
+				key.endsWith("Resource") ||
+				key.endsWith("Home")
+			) {
+				if (
+					value &&
+					typeof value === "object" &&
+					typeof value.scheme === "string"
+				) {
+					result[key] = URI.revive(value);
+				} else if (
+					typeof value === "string" &&
+					URI.isUri(URI.parse(value))
+				) {
+					result[key] = URI.parse(value);
+				} else {
+					result[key] = reviveProfileUrisRecursively(value);
+				}
+			} else {
+				result[key] = reviveProfileUrisRecursively(value);
+			}
+		}
+	}
+
+	return result;
+}
+
 (async () => {
 	try {
-		// --- Gather Tauri API Data Asynchronously ---
 		const currentProcessInfo: ProcessInfo = await getCurrentProcess();
 
 		const platform: string = await tauriOsPlatform();
 
 		const arch: string = await tauriOsArch();
 
-		const osTypeStr: string = await tauriOsType();
+		const osType: string = await tauriOsType();
 
 		const osRelease: string = await tauriOsVersion();
 
@@ -150,17 +275,19 @@ Log("Script executing. DEV mode:", __DEV__);
 
 		Log("Fetched initial Tauri API data.");
 
-		// --- Helper to parse configuration from meta tag ---
 		const getWorkbenchConstructionOptions =
 			(): Partial<INativeWindowConfiguration> => {
 				const metaElement = document.getElementById(
 					"vscode-workbench-web-configuration",
 				);
 
-				const settings = metaElement?.dataset["settings"];
+				// Use optional chaining for dataset
+				const settings = metaElement?.dataset?.["settings"];
 
 				try {
-					return settings ? JSON.parse(settings) : {};
+					const parsed = settings ? JSON.parse(settings) : {};
+
+					return reviveProfileUrisRecursively(parsed);
 				} catch (e) {
 					ErrorLog(
 						"Failed to parse workbench construction options from meta tag:",
@@ -176,7 +303,8 @@ Log("Script executing. DEV mode:", __DEV__);
 
 		Log("Parsed initial config from meta tag:", initialConfigFromMeta);
 
-		// --- Define Shimmed Globals ---
+		const vscodeCwd = await tauriResolve(".");
+
 		const sandboxNodeProcessShim: ISandboxNodeProcess = {
 			platform: platform,
 
@@ -191,22 +319,20 @@ Log("Script executing. DEV mode:", __DEV__);
 					navigator.userAgent.match(/Chrome\/([0-9.]+)/)?.[1] ||
 					"unknown",
 
-				// Clearly not Electron
 				electron: "0.0.0-tauri",
 
-				// App name and version from Tauri API
 				[appNameFromApi]: appVersionFromApi,
 
 				tauri:
 					typeof __TAURI_APP_VERSION__ !== "undefined"
 						? __TAURI_APP_VERSION__
-						: // Prefer build-time define if available
-							appVersionFromApi,
+						: appVersionFromApi,
 			},
 
+			// Correctly assign to TauriProcessEnv which satisfies ILocalProcessEnvironment
 			env: {
-				// Tauri might expose some limited env vars
-				...currentProcessInfo.env,
+				// Cast if currentProcessInfo.env is too generic
+				...(currentProcessInfo.env as ILocalProcessEnvironment),
 
 				VSCODE_DEV:
 					nodeEnvFromDefine === "development" ||
@@ -214,37 +340,36 @@ Log("Script executing. DEV mode:", __DEV__);
 						? "1"
 						: undefined,
 
-				// CWD of the main Tauri process
-				VSCODE_CWD: await tauriResolve("."),
+				VSCODE_CWD: vscodeCwd,
 
 				VSCODE_NLS_CONFIG: JSON.stringify({
-					// VSCode needs this for NLS init
 					locale:
 						initialConfigFromMeta.locale ||
 						navigator.language ||
 						"en",
 
-					// Can be populated if you have NLS data
 					availableLanguages: {},
 
 					pseudo: false,
 				}),
-			},
+
+				// Ensure this cast is valid by making TauriProcessEnv compatible
+			} as TauriProcessEnv,
 
 			execPath:
 				currentProcessInfo.execPath ||
 				(await tauriJoin(tauriAppExeDir, appNameFromApi)),
 
-			on: (eventType: string, callback: Function) => {
+			on: (eventType: string, _callback: Function) => {
 				WarnLog(
 					`process.on('${eventType}') called. Not fully implemented in Tauri shim.`,
 				);
 			},
 
-			// Use the resolved CWD
-			cwd: () => sandboxNodeProcessShim.env.VSCODE_CWD || ".",
+			// Use bracket notation and non-null assertion
+			cwd: () => sandboxNodeProcessShim.env["VSCODE_CWD"]!,
 
-			getProcessMemoryInfo: async () => {
+			getProcessMemoryInfo: async (): Promise<ProcessMemoryInfo> => {
 				WarnLog(
 					"getProcessMemoryInfo not available in Tauri. Returning mock data.",
 				);
@@ -252,16 +377,16 @@ Log("Script executing. DEV mode:", __DEV__);
 				return { private: 0, residentSet: 0, shared: 0 };
 			},
 
-			shellEnv: async () => {
+			shellEnv: async (): Promise<ILocalProcessEnvironment> => {
 				Log("shellEnv requested. Returning current env (Tauri shim).");
 
-				// For a more complete shell env, would need Rust-side `invoke`
-				return { ...sandboxNodeProcessShim.env };
+				return {
+					...sandboxNodeProcessShim.env,
+				} as ILocalProcessEnvironment;
 			},
 		};
 
 		const ipcRendererShimImpl: IpcRenderer = {
-			// Use VSCode's IpcRenderer type
 			send: (channel: string, ...args: any[]): void => {
 				if (channel.startsWith("vscode:")) {
 					tauriEmit(
@@ -288,16 +413,12 @@ Log("Script executing. DEV mode:", __DEV__);
 						};
 					}
 
-					// Add more specific channel handlers if VSCode relies on them
-					// Example: if INativeHostService methods were invoked over IPC
-					// if (channel === 'vscode:showOpenDialog') {
-
-					//   return invoke('plugin:dialog|open', args[0]);
-
-					// }
-
 					WarnLog(
-						`Unhandled ipcRenderer.invoke on channel: ${channel}. Returning undefined.`,
+						`Unhandled ipcRenderer.invoke on channel: ${channel}. Args:`,
+
+						args,
+
+						`. Returning undefined.`,
 					);
 
 					return undefined;
@@ -317,18 +438,15 @@ Log("Script executing. DEV mode:", __DEV__);
 			): IpcRenderer => {
 				if (channel.startsWith("vscode:")) {
 					tauriListen(channel, (event: TauriEvent<any>) => {
-						// Adapt TauriEvent to something like IpcRendererEvent if needed by listener
 						listener(
-							{
-								sender: ipcRendererShim /* mock sender */,
-							} as any,
+							{ sender: ipcRendererShimImpl } as any,
 
 							event.payload,
 						);
 					}).catch(console.error);
 				}
 
-				return ipcRendererShim;
+				return ipcRendererShimImpl;
 			},
 
 			once: (
@@ -339,40 +457,36 @@ Log("Script executing. DEV mode:", __DEV__);
 				if (channel.startsWith("vscode:")) {
 					tauriOnce(channel, (event: TauriEvent<any>) => {
 						listener(
-							{ sender: ipcRendererShim } as any,
+							{ sender: ipcRendererShimImpl } as any,
 
 							event.payload,
 						);
 					}).catch(console.error);
 				}
 
-				return ipcRendererShim;
+				return ipcRendererShimImpl;
 			},
 
 			removeListener: (
 				channel: string,
 
-				listener: (...args: any[]) => void,
+				_listener: (...args: any[]) => void,
 			): IpcRenderer => {
 				console.warn(
 					`[tauri-preload] ipcRenderer.removeListener for channel '${channel}' is not implemented in this shim.`,
 				);
 
-				// Tauri's listen() returns an UnlistenFn, which you'd need to store and call.
-				return ipcRendererShim;
+				return ipcRendererShimImpl;
 			},
 		};
 
 		const webFrameShimImpl: WebFrame = {
-			// Use VSCode's WebFrame type
 			setZoomLevel: async (level: number) => {
 				try {
-					const newFactor = Math.pow(1.2, level);
-
-					// await Window.getCurrent().scale;
+					const factor = Math.pow(1.2, level);
 
 					Log(
-						`webFrame.setZoomLevel(${level}) -> appWindow.setScaleFactor(${newFactor})`,
+						`webFrame.setZoomLevel(${level}) - factor ${factor}. Tauri might need CSS zoom or specific webview API.`,
 					);
 				} catch (e) {
 					ErrorLog(`Error setting zoom level:`, e);
@@ -381,9 +495,6 @@ Log("Script executing. DEV mode:", __DEV__);
 		};
 
 		const sandboxContextImpl = (() => {
-			const Label = Window.getCurrent().label;
-
-			// IIFE to manage closure for _configuration
 			let _resolvedConfiguration: ISandboxConfiguration | undefined =
 				undefined;
 
@@ -398,19 +509,141 @@ Log("Script executing. DEV mode:", __DEV__);
 
 				const tauriLogs = await appLogDir();
 
-				const currentWindowLabel =
-					Label ?? `main-${Math.random().toString(16).slice(2)}`;
+				const defaultProfileLocation = URI.file(
+					await tauriJoin(
+						tauriAppData,
 
-				// Basic structure for INativeWindowConfiguration
+						"User",
+
+						"profiles",
+
+						"defaultProfile",
+					),
+				);
+
+				const defaultGlobalStorageHome = URI.file(
+					await tauriJoin(
+						defaultProfileLocation.fsPath,
+
+						"globalStorage",
+					),
+				);
+
+				const commonProfileProps = {
+					globalStorageHome: defaultGlobalStorageHome,
+
+					settingsResource: URI.file(
+						await tauriJoin(
+							defaultProfileLocation.fsPath,
+
+							"settings.json",
+						),
+					),
+
+					keybindingsResource: URI.file(
+						await tauriJoin(
+							defaultProfileLocation.fsPath,
+
+							"keybindings.json",
+						),
+					),
+
+					tasksResource: URI.file(
+						await tauriJoin(
+							defaultProfileLocation.fsPath,
+
+							"tasks.json",
+						),
+					),
+
+					snippetsHome: URI.file(
+						await tauriJoin(
+							defaultProfileLocation.fsPath,
+
+							"snippets",
+						),
+					),
+
+					extensionsResource: URI.file(
+						await tauriJoin(
+							defaultProfileLocation.fsPath,
+
+							"extensions.json",
+						),
+					),
+				};
+
+				const defaultProfilesValue: {
+					home: URI;
+
+					all: readonly ILocalUriDto<IUserDataProfile>[];
+
+					profile: IUserDataProfile;
+				} = {
+					home: URI.file(
+						await tauriJoin(tauriAppData, "User", "profiles"),
+					),
+
+					all: [],
+
+					profile: {
+						id: "defaultProfile",
+
+						name: "Default",
+
+						isDefault: true,
+
+						useDefaultFlags: {} as UseDefaultProfileFlags,
+
+						location: defaultProfileLocation,
+
+						...commonProfileProps,
+
+						// Corrected from transient to isTransient
+						isTransient: false,
+					},
+				};
+
+				const defaultProfileValue: IUserDataProfile = {
+					isDefault: true,
+
+					name: "Default",
+
+					id: "defaultProfile",
+
+					useDefaultFlags: {} as UseDefaultProfileFlags,
+
+					location: defaultProfileLocation,
+
+					...commonProfileProps,
+
+					// Corrected from transient to isTransient
+					isTransient: false,
+				};
+
+				// Ensure URIs in initialConfigFromMeta.loggers are revived if they are plain objects
+				const revivedLoggers: ILocalLoggerResource[] = (
+					initialConfigFromMeta.loggers || []
+				).map(
+					(l) =>
+						({
+							...l,
+
+							resource:
+								l.resource instanceof URI
+									? l.resource
+									: URI.revive(l.resource),
+						}) as ILocalLoggerResource,
+				);
+
 				const nativeConfig: INativeWindowConfiguration = {
-					// Spread options from <meta> tag
 					...initialConfigFromMeta,
 
-					// Mandatory or critical fields
-					// Use Tauri window label or generate one
-					// windowId: currentWindowLabel,
-
-					windowId: 0,
+					windowId:
+						initialConfigFromMeta.windowId ??
+						Window.getCurrent().label ??
+						// Provide default if label is also undefined
+						0,
 
 					machineId: (await invoke("get_machine_id").catch(
 						() => "tauri-machine-id-placeholder",
@@ -422,13 +655,17 @@ Log("Script executing. DEV mode:", __DEV__);
 
 					sessionId: `tauri-session-${Date.now()}-${Math.random().toString(16).slice(2)}`,
 
-					// VSCode expects this to be where its 'out' is
-					appRoot: await tauriResolve(tauriResDir, "."),
+					appRoot:
+						initialConfigFromMeta.appRoot ||
+						(await tauriResolve(tauriResDir, ".")),
 
-					logsPath: tauriLogs,
+					logsPath: initialConfigFromMeta.logsPath || tauriLogs,
 
-					// Use the env we constructed
-					userEnv: sandboxNodeProcessShim.env,
+					userEnv: {
+						...(sandboxNodeProcessShim.env as ILocalProcessEnvironment),
+
+						...(initialConfigFromMeta.userEnv as ILocalProcessEnvironment),
+					} as ILocalProcessEnvironment,
 
 					os: {
 						arch: arch,
@@ -436,139 +673,118 @@ Log("Script executing. DEV mode:", __DEV__);
 						hostname: "tauri.localhost",
 
 						release: osRelease,
-					},
 
-					colorScheme: {
-						dark: window.matchMedia("(prefers-color-scheme: dark)")
-							.matches,
+						// Added for IOSConfiguration
+						platform: platform,
 
-						highContrast:
-							document.body.classList.contains("hc-dark") ||
-							document.body.classList.contains("hc-light"),
-					},
+						// Add other optional IOSConfiguration properties if needed and available
+						// if IOSConfiguration expects 'type'
+						// e.g. type: osType,
 
-					homeDir: tauriHome,
+						// Cast to IOSConfiguration
+					} as IOSConfiguration,
 
-					tmpDir:
-						osTypeStr === "Windows_NT"
+					colorScheme:
+						initialConfigFromMeta.colorScheme ||
+						({
+							dark: window.matchMedia(
+								"(prefers-color-scheme: dark)",
+							).matches,
+
+							highContrast:
+								document.body.classList.contains("hc-dark") ||
+								document.body.classList.contains("hc-light"),
+						} as IColorScheme),
+
+					homeDir: initialConfigFromMeta.homeDir
+						? typeof initialConfigFromMeta.homeDir === "string"
+							? initialConfigFromMeta.homeDir
+							: (initialConfigFromMeta.homeDir as URI).fsPath
+						: tauriHome,
+
+					tmpDir: initialConfigFromMeta.tmpDir
+						? typeof initialConfigFromMeta.tmpDir === "string"
+							? initialConfigFromMeta.tmpDir
+							: (initialConfigFromMeta.tmpDir as URI).fsPath
+						: osType === "Windows_NT"
 							? ((await invoke("get_env", { name: "TEMP" }).catch(
 									() => "C:\\Temp",
 								)) as string)
 							: "/tmp",
 
-					userDataDir: tauriAppData,
+					userDataDir: initialConfigFromMeta.userDataDir
+						? typeof initialConfigFromMeta.userDataDir === "string"
+							? initialConfigFromMeta.userDataDir
+							: (initialConfigFromMeta.userDataDir as URI).fsPath
+						: tauriAppData,
 
-					// Workspace related - ensure URIs are revived if they come as strings/UriComponents from meta
 					workspace: initialConfigFromMeta.workspace
-						? reviveIdentifier(
-								initialConfigFromMeta.workspace as any,
-							)
-						: undefined,
+						? reviveIdentifier(initialConfigFromMeta.workspace)
+						: (undefined as
+								| IWorkspaceIdentifier
+								| ISingleFolderWorkspaceIdentifier
+								// More specific type
+								| undefined),
 
-					// folderUri: initialConfigFromMeta["folder-uri"]
-					// 	? URI.revive(initialConfigFromMeta["folder-uri"])
-					// 	: undefined,
+					folderUri:
+						initialConfigFromMeta["folder-uri"] instanceof URI
+							? initialConfigFromMeta["folder-uri"]
+							: // Use 'folder-uri' from meta
+								undefined,
 
-					folderUri: "",
+					workspaceUri:
+						initialConfigFromMeta.workspace instanceof URI
+							? initialConfigFromMeta.workspace
+							: // Use 'workspace' which might be a URI
+								undefined,
 
-					// workspaceUri: initialConfigFromMeta.workspace
-					// 	? URI.revive(initialConfigFromMeta.workspace)
-					// 	: undefined,
+					profiles:
+						initialConfigFromMeta.profiles || defaultProfilesValue,
 
-					workspaceUri: "",
+					defaultProfile:
+						initialConfigFromMeta.defaultProfile ||
+						defaultProfileValue,
 
-					// Profiles - ensure paths are URIs
-					profiles: initialConfigFromMeta.profiles || {
-						home: URI.file(
-							await tauriJoin(tauriAppData, "User", "profiles"),
-						),
+					// Use revived loggers
+					loggers: revivedLoggers,
 
-						all: [],
-
-						profile: {
-							id: "defaultProfile",
-
-							name: "Default",
-
-							isDefault: true,
-
-							useDefaultFlags: {},
-
-							location: URI.file(
-								await tauriJoin(
-									tauriAppData,
-
-									"User",
-
-									"profiles",
-
-									"defaultProfile",
-								),
-							),
-						},
-					},
-
-					defaultProfile: initialConfigFromMeta.defaultProfile || {
-						isDefault: true,
-
-						name: "Default",
-
-						id: "defaultProfile",
-
-						useDefaultFlags: {},
-
-						location: URI.file(
-							await tauriJoin(
-								tauriAppData,
-
-								"User",
-
-								"profiles",
-
-								"defaultProfile",
-							),
-						),
-
-						settings: null,
-
-						extensions: null,
-
-						keybindings: null,
-
-						uiState: null,
-					},
-
-					loggers:
-						initialConfigFromMeta.loggers?.map((l) => ({
-							...l,
-
-							resource: URI.revive(l.resource),
-						})) || [],
-
-					// Booleans usually default well if not in meta
 					autoDetectHighContrast:
 						initialConfigFromMeta.autoDetectHighContrast ?? true,
 
 					autoDetectColorScheme:
 						initialConfigFromMeta.autoDetectColorScheme ?? true,
 
+					// TS2322: Ensure this is number
 					zoomLevel: initialConfigFromMeta.zoomLevel ?? 0,
 
 					isCustomZoomLevel:
 						initialConfigFromMeta.isCustomZoomLevel ?? false,
 
-					// Other fields might be needed from INativeWindowConfiguration
-					// Example: productConfiguration can be merged from initialConfigFromMeta and product.js
 					productConfiguration: {
 						...product,
 
-						...initialConfigFromMeta.productConfiguration,
+						...(initialConfigFromMeta.productConfiguration || {}),
+
+						// Ensure productConfiguration from meta is not undefined
 					},
 
-					// ... many more fields from INativeWindowConfiguration may need default values or Tauri equivalents
+					accessibilitySupport:
+						initialConfigFromMeta.accessibilitySupport === "on" ||
+						initialConfigFromMeta.accessibilitySupport === "off"
+							? initialConfigFromMeta.accessibilitySupport
+							: // Make it assignable
+								"unknown",
+
+					perfMarks: initialConfigFromMeta.perfMarks || [],
+
+					policiesData: initialConfigFromMeta.policiesData || {},
+
+					partsSplash:
+						initialConfigFromMeta.partsSplash ||
+						// Cast to IPartsSplash
+						({} as IPartsSplash),
 				};
 
-				// Cast, as INative is wider
 				_resolvedConfiguration = nativeConfig as ISandboxConfiguration;
 
 				Log("Configuration resolved:", _resolvedConfiguration);
@@ -584,19 +800,16 @@ Log("Script executing. DEV mode:", __DEV__);
 		})();
 
 		const webUtilsShimImpl: WebUtils = {
-			// Use VSCode's WebUtils type
 			getPathForFile: (file: File): string => {
 				WarnLog(
 					`webUtils.getPathForFile(${file.name}) - basic shim. Returning name.`,
 				);
 
-				// Electron File has .path, web File often not reliably
 				return (file as any).path || file.name;
 			},
 		};
 
 		const ipcMessagePortShimImpl: IpcMessagePort = {
-			// Use VSCode's IpcMessagePort type
 			acquire: (responseChannel: string, nonce: string) => {
 				WarnLog(
 					`ipcMessagePort.acquire called for ${responseChannel}, nonce ${nonce}. Not implemented.`,
@@ -618,8 +831,6 @@ Log("Script executing. DEV mode:", __DEV__);
 			ipcMessagePort: ipcMessagePortShimImpl,
 		};
 
-		// Expose the shimmed globals on the window object
-		// This assignment requires `window` to be augmented to accept `vscode` property
 		window.vscode = globals;
 
 		Log("window.vscode shimmed for Tauri.");
@@ -638,10 +849,16 @@ Log("Script executing. DEV mode:", __DEV__);
 
 		errDiv.style.whiteSpace = "pre-wrap";
 
-		document.body.prepend(errDiv);
+		if (document.body) {
+			// Ensure body exists before prepending
+			document.body.prepend(errDiv);
+		} else {
+			// Fallback if body is not ready, though unusual for preload scripts
+			window.addEventListener("DOMContentLoaded", () =>
+				document.body.prepend(errDiv),
+			);
+		}
 	}
 })();
 
-// Export something to make it a module, if this script is processed by a module system.
-// If it's a raw preload script injected by Tauri, this might not be necessary.
 export {};

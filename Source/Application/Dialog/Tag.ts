@@ -10,10 +10,10 @@ import type { IFileDialogService as VsCodeFileDialogServiceInterface } from "vs/
  * @description Effect Context Tag for IFileDialogService.
  * This allows IFileDialogService to be injected and used within Effect-managed contexts.
  */
-// It's good practice to also export the interface type this Tag represents if it's not easily accessible
 export type Interface = VsCodeFileDialogServiceInterface;
 
-// Using VSCode's internal service ID
+// Correct usage for effect@3.x:
+// The identifier string is passed to the Tag constructor.
 const Tag = Context.Tag<Interface>("vscode/FileDialogService");
 
 export default Tag;

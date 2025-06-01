@@ -1,4 +1,4 @@
-// Integration/Tauri/Converters.ts
+// Integration/Tauri/Converter.ts
 // Purpose: Aggregates pure conversion utility functions for Tauri integrations.
 
 export { default as ConvertUriToPathString } from "./Convert/UriToPathString.js";

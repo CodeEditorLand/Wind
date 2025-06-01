@@ -1,6 +1,7 @@
 // Effect/Produce/OptionalFromAsync.ts
 
-import { Effect, Option, type Data } from "effect";
+// Added Cause
+import { Effect, Option, type Cause } from "effect";
 
 // Use type aggregator
 import type { AsyncFunction, ErrorProducer } from "./Type.js";
@@ -13,7 +14,12 @@ export default function OptionalFromAsync<
 	Arguments extends any[],
 	Value,
 	ErrorData extends Record<string, any>,
-	ErrorType extends Data.TaggedError<string, { cause: unknown } & ErrorData>,
+	ErrorType extends Cause.YieldableError & {
+		// Updated constraint to match ErrorProducer
+		readonly _tag: string;
+
+		readonly cause: unknown;
+	} & ErrorData,
 >(
 	Source: AsyncFunction<Arguments, Value | null | undefined>,
 
@@ -27,7 +33,8 @@ export default function OptionalFromAsync<
 
 			catch: (cause) =>
 				CreateProblem({ ...StaticData, cause } as {
-					cause: unknown;
+					// Ensure 'as' matches ErrorProducer input
+					readonly cause: unknown;
 				} & ErrorData),
 		}).pipe(Effect.map(Option.fromNullable));
 }

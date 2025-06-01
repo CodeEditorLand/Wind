@@ -1,4 +1,4 @@
-// Integration/Tauri/Types.ts
+// Integration/Tauri/Type.ts
 // Purpose: Aggregates and exports Tauri-specific type definitions.
 
 export type { default as DialogFilter } from "./Type/DialogFilter.js";

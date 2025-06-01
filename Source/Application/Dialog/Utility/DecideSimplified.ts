@@ -1,5 +1,6 @@
 // Application/Dialog/Utility/DecideSimplified.ts
-import { VsCodeScheme } from "../../../Integration/Tauri.js";
+// Import Scheme and alias
+import { Scheme as VsCodeScheme } from "../../../Integration/Tauri.js";
 
 export default function Decide(scheme: string): boolean {
 	return ![

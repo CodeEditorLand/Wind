@@ -8,8 +8,6 @@ import { PathProblem, type PathProblem as PathProblemType } from "../Error.js";
 // Aggregator
 import { FetchDocumentDirectory, FetchHomeDirectory } from "../Wrapper.js";
 
-// Explicit type import
-
 /**
  * @module FallbackDefaultPath (Resolver)
  * @description Effect that attempts to get a fallback default path,
@@ -17,35 +15,51 @@ import { FetchDocumentDirectory, FetchHomeDirectory } from "../Wrapper.js";
 
  * trying home directory then document directory. Yields Option<string>.
  */
-const Resolve = pipe(
+const ResolveEffect: Effect.Effect<
+	Option.Option<string>,
+	PathProblemType,
+	never
+> = pipe(
+	// Effect<string, PathProblemType, never>
 	FetchHomeDirectory,
 
-	Effect.map(Option.some),
+	// Effect<Option<string>, PathProblemType, never>
+	Effect.map((path: string) => Option.some(path)),
 
 	Effect.catchTag(
-		"PathProblem",
+		"PathProblem" as const,
 
 		(
-			// Explicit type for clarity
+			// Use "PathProblem" as const
 			ErrorDetails: PathProblemType,
 		) =>
 			ErrorDetails.operation === "homeDir"
 				? pipe(
+						// Effect<string, PathProblemType, never>
 						FetchDocumentDirectory,
 
-						Effect.map(Option.some),
+						// Effect<Option<string>, PathProblemType, never>
+						Effect.map((docPath: string) => Option.some(docPath)),
 
 						Effect.catchTag(
-							"PathProblem",
+							// Use "PathProblem" as const
+							"PathProblem" as const,
 
 							(ErrorDetailsDoc: PathProblemType) =>
 								ErrorDetailsDoc.operation === "documentDir"
-									? Effect.succeed(Option.none<string>())
-									: Effect.fail(ErrorDetailsDoc),
+									? // Effect<Option<string>, never, never>
+										Effect.succeed(Option.none<string>())
+									: // Effect<never, PathProblemType, never>
+										Effect.fail(ErrorDetailsDoc),
 						),
+
+						// This inner pipe becomes Effect<Option<string>, PathProblemType, never>
 					)
-				: Effect.fail(ErrorDetails),
+				: // Effect<never, PathProblemType, never>
+					Effect.fail(ErrorDetails),
 	),
+
+	// Overall type should be Effect<Option<string>, PathProblemType, never>
 );
 
-export default Resolve;
+export default ResolveEffect;

@@ -1,6 +1,6 @@
 // Effect/Produce/FromMethod.ts
 
-import { Context, Effect, type Data } from "effect";
+import { Context, Effect, type Cause, type Tag } from "effect";
 
 // Use type aggregator
 import type { ErrorProducer } from "./Type.js";
@@ -10,9 +10,9 @@ import type { ErrorProducer } from "./Type.js";
  * @description Creates an Effect by calling a method on a service from Context.
  */
 export default function FromMethod<
-	Interface,
 	Identifier,
-	Tag extends Context.Tag<Identifier, Interface>,
+	Interface,
+	SourcedTag extends Context.Tag<Identifier, Interface>,
 	Method extends {
 		[Key in keyof Interface]: Interface[Key] extends (
 			...args: any[]
@@ -31,16 +31,22 @@ export default function FromMethod<
 		? Res
 		: never,
 	ErrorData extends Record<string, any>,
-	ErrorType extends Data.TaggedError<string, { cause: unknown } & ErrorData>,
+	ErrorType extends Cause.YieldableError & {
+		readonly _tag: string;
+
+		readonly cause: unknown;
+	} & ErrorData,
 >(
-	ServiceTag: Tag,
+	ServiceTag: SourcedTag,
 
 	MethodName: Method,
 
 	CreateProblem: ErrorProducer<ErrorData, ErrorType>,
 
 	StaticData: ErrorData,
-): (...args: Arguments) => Effect.Effect<Value, ErrorType, Interface> {
+): (
+	...args: Arguments
+) => Effect.Effect<Value, ErrorType, Tag.Service<SourcedTag>> {
 	return (...args: Arguments) =>
 		Effect.flatMap(ServiceTag, (ServiceInstance) => {
 			const Operation = ServiceInstance[MethodName] as (
@@ -51,9 +57,11 @@ export default function FromMethod<
 				try: () => Operation.apply(ServiceInstance, args),
 
 				catch: (cause) =>
-					CreateProblem({ ...StaticData, cause } as {
-						cause: unknown;
-					} & ErrorData),
+					CreateProblem({
+						...StaticData,
+
+						cause,
+					} as { readonly cause: unknown } & ErrorData),
 			});
 		});
 }

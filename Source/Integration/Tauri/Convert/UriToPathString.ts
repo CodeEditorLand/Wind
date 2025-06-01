@@ -6,7 +6,7 @@ import { Option, pipe } from "effect";
 // Use types from the Platform/VSCode type aggregator
 import {
 	Scheme,
-	UriConstructor,
+	// UriConstructor is not used here, remove if not needed elsewhere
 	type Uri,
 } from "../../../Platform/VSCode/Type.js";
 

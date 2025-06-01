@@ -12,6 +12,9 @@ import {
  * @description Union type for errors that can occur during basic dialog operations,
 
 
+
+
+
  * encompassing path resolution problems or Tauri dialog interaction problems.
  */
 export type Type = PathProblem | TauriDialogProblem;

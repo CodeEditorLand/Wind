@@ -7,18 +7,16 @@ import type { IOpenDialogOptions as VsCodeOpenOptions } from "vs/platform/dialog
 
 import {
 	ConvertFiltersToTauri,
-	type TauriOpenOption,
+	// Use OpenOption
+	type OpenOption as TauriOpenOption,
 } from "../../../Integration/Tauri.js";
 
-/**
- * @module CreateShowOpenOption (Factory)
- * @description Purely constructs TauriOpenOption for "show open dialog" scenarios.
- */
 export default function Create(
 	options: VsCodeOpenOptions,
 
 	defaultPath: Option.Option<string>,
 ): TauriOpenOption {
+	// Use the imported OpenOption type
 	return pipe(
 		{
 			title: options.title || localize("open", "Open"),
@@ -27,6 +25,8 @@ export default function Create(
 
 			// Prioritize folder if canSelectFolders is true
 			directory: !!options.canSelectFolders,
+
+			// Cast to ensure base properties
 		} as TauriOpenOption,
 
 		(current) =>

@@ -1,4 +1,4 @@
-// Application/Dialog/Types.ts
+// Application/Dialog/Type.ts
 // Purpose: Aggregates and exports service-specific error union types.
 
 export type { default as OperationProblem } from "./Type/OperationProblem.js";

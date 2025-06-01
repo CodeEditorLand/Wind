@@ -8,6 +8,9 @@ import type { DialogFilter as Definition } from "@tauri-apps/plugin-dialog";
  * @description Represents a filter for use in Tauri file dialogs,
 
 
+
+
+
  * defining a name and associated file extensions.
  */
 export type Type = Definition;
