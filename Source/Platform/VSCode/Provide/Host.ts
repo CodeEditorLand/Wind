@@ -15,7 +15,6 @@ import type {
  * @description Interface for host-level actions, like opening windows.
  */
 export interface PerformAction {
-	// Renamed IHostService to be more action-oriented
 	openWindow(
 		targets: ReadonlyArray<
 			| FolderOpenSpecification
@@ -23,7 +22,6 @@ export interface PerformAction {
 			| WorkspaceOpenSpecification
 		>,
 
-		// Renamed parameter
 		config?: WindowOpenOption,
 	): Promise<void>;
 }
@@ -31,7 +29,6 @@ export interface PerformAction {
 /**
  * @description Tag for accessing the HostService.
  */
-// Corrected: Tag identifier is a runtime argument.
 const Tag = Context.Tag<PerformAction>("vscode/HostService");
 
 export default Tag;

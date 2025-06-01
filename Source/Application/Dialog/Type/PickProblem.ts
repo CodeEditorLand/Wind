@@ -13,6 +13,7 @@ import type OperationProblem from "./OperationProblem.js";
 
 
 
+
  * including dialog operation problems and window opening problems.
  */
 export type Type = OperationProblem | WindowProblem;

@@ -15,6 +15,7 @@ import {
 
 
 
+
  * encompassing path resolution problems or Tauri dialog interaction problems.
  */
 export type Type = PathProblem | TauriDialogProblem;

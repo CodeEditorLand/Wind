@@ -10,6 +10,7 @@ import { Data } from "effect";
 
 
 
+
  * typically from AbstractFileDialogService.
  */
 export default class Problem extends Data.TaggedError("InheritanceProblem")<{

@@ -8,7 +8,7 @@ import type {
 } from "vs/platform/dialogs/common/dialogs";
 
 import {
-	// Import the actual Tag instance TS6133 if not used for typeof
+	// Aliased to avoid conflict, used for typeof
 	HostServiceTag as ActualHostServiceTag,
 	ConvertOpenResultToSingleUri,
 	DefineFileOpen,
@@ -40,7 +40,6 @@ export default function Orchestrate(
 		defaultWorkspaceFilter?: boolean;
 	},
 ): Effect.Effect<void, PickProblem, typeof ActualHostServiceTag.Type> {
-	// Use typeof Tag.Type for service
 	return pipe(
 		ResolveFinalDefaultPath(
 			(options as CombinedVsCodePickOptions).defaultUri,
@@ -62,7 +61,6 @@ export default function Orchestrate(
 
 		Effect.flatMap((maybeUri: Option.Option<UriType>) =>
 			Option.match(maybeUri, {
-				// This correctly returns Effect<void, never, never>
 				onNone: () => Effect.void,
 
 				onSome: (selectedUri: UriType) =>
@@ -76,8 +74,6 @@ export default function Orchestrate(
 						],
 
 						CreateWindowOption(options),
-
-						// This returns Effect<void, WindowProblem, HostService>
 					),
 			}),
 		),

@@ -1,6 +1,7 @@
 // Effect/Produce/OptionalFromMethod.ts
 
-import { Context, Effect, Option, type Cause, type Tag } from "effect";
+// Removed 'Tag'
+import { Context, Effect, Option, type Cause } from "effect";
 
 // Use type aggregator
 import type { ErrorProducer } from "./Type.js";
@@ -10,9 +11,10 @@ import type { ErrorProducer } from "./Type.js";
  * @description Creates an Effect<Option<Value>> from a service method that might return a nullable Promise.
  */
 export default function OptionalFromMethod<
-	Identifier,
+	// Identifier,
+
 	Interface,
-	SourcedTag extends Context.Tag<Identifier, Interface>,
+	SourcedTag extends Context.Tag<Interface, Interface>,
 	Method extends {
 		[Key in keyof Interface]: Interface[Key] extends (
 			...args: any[]
@@ -46,7 +48,11 @@ export default function OptionalFromMethod<
 	StaticData: ErrorData,
 ): (
 	...args: Arguments
-) => Effect.Effect<Option.Option<Value>, ErrorType, Tag.Service<SourcedTag>> {
+) => Effect.Effect<
+	Option.Option<Value>,
+	ErrorType,
+	Context.Tag.Service<SourcedTag>
+> {
 	return (...args: Arguments) =>
 		Effect.flatMap(ServiceTag, (ServiceInstance) => {
 			const Operation = ServiceInstance[MethodName] as (

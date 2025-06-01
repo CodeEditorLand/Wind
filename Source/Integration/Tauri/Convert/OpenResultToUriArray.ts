@@ -16,6 +16,7 @@ import {
 
 
 
+
  * handling single or multiple selected paths, and converts them to an optional array of URIs.
  */
 export default function Convert(

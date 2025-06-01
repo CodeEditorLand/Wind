@@ -1,12 +1,11 @@
 // Application/Dialog/Definition.ts
 // Purpose: Defines the concrete implementation object of the IFileDialogService.
 
-// Removed unused Context TS6133
-import { Effect, Layer, Option, pipe, Runtime } from "effect";
+// Added Scope, Context
+import { Context, Effect, Layer, Option, pipe, Runtime, Scope } from "effect";
 import { localize } from "vs/nls";
 import {
 	ConfirmResult,
-	// VSCode Interface
 	type IFileDialogService as FileDialog,
 	type IOpenDialogOptions as VsCodeOpenOptions,
 	type IPickAndOpenOptions as VsCodePickOptions,
@@ -14,43 +13,54 @@ import {
 } from "vs/platform/dialogs/common/dialogs";
 
 import {
-	// Use ActualHostServiceTag TS6133 for HostServiceTag
 	HostServiceTag as ActualHostServiceTag,
 	UriConstructor,
 	type Uri as UriType,
-	// Unused TS6133
-	// Scheme as VsCodeScheme,
-	// Unused TS6133
-	// ConvertOpenResultToSingleUri,
-	// Unused TS6133
-	// ConvertOpenResultToUriArray,
-	// Unused TS6133
-	// ConvertSaveResultToUri,
-	// Unused TS6133
-	// RequestOpenDialog,
-	// Unused TS6133
-	// RequestSaveDialog,
 } from "../../Integration/Tauri.js";
+// Removed unused imports for TS6133
+// import { Scheme as VsCodeScheme } from "../../Integration/Tauri.js";
+
+// import { ConvertOpenResultToSingleUri } from "../../Integration/Tauri.js";
+
+// import { ConvertOpenResultToUriArray } from "../../Integration/Tauri.js";
+
+// import { ConvertSaveResultToUri } from "../../Integration/Tauri.js";
+
+// import { RequestOpenDialog } from "../../Integration/Tauri.js";
+
+// import { RequestSaveDialog } from "../../Integration/Tauri.js";
+
 import { HostServiceLivePlaceholder } from "./_HostServicePlaceholder.js";
 import * as Orchestrate from "./Orchestration.js";
 import type { ServiceProblem } from "./Type.js";
 
-// Unused TS6133
+// Unused
 // import DialogServiceTag from "./Tag.js";
 
 // --- Runtime specific to this service module instance ---
-const ServiceRuntimeContext = Effect.runSync(
-	// Layer.build returns Effect<Context, E, R_Layer_Build>
-	Layer.build(HostServiceLivePlaceholder),
-);
+// Layer.build returns an Effect that, when run, produces the Context and a Scope finalizer.
+// We need to provide a Scope to run this effect.
+const ServiceRuntimeContextEffect: Effect.Effect<
+	// The context provided by the layer
+	Context.Context<typeof ActualHostServiceTag.Type>,
+	// Error type of Layer.build (should be never if placeholder is simple)
+	never,
+	// Layer.build requires a Scope
+	Scope.Scope
+> = Layer.build(HostServiceLivePlaceholder);
 
-// Runtime.make expects a Context, not an Effect that produces a Context.
-// So, ServiceRuntimeContext IS the context.
+// To get the Context for Runtime.make, we run the effect that builds the layer.
+// This is typically done at application startup. For this module, we can do it here.
+const ServiceRuntimeContext: Context.Context<typeof ActualHostServiceTag.Type> =
+	Effect.runSync(
+		// Provide a global scope for this build
+		Effect.provide(ServiceRuntimeContextEffect, Scope.globalScope),
+	);
+
 const ServiceRuntime = Runtime.make(ServiceRuntimeContext);
 
 const runEffect = Runtime.runPromise(ServiceRuntime);
 
-// Helper functions (not part of IFileDialogService interface but internal to this module)
 function _run<A, E extends ServiceProblem>(
 	eff: Effect.Effect<A, E, typeof ActualHostServiceTag.Type>,
 ) {
@@ -66,16 +76,13 @@ function _runOption<A, E extends ServiceProblem>(
 function _runVoid<E extends ServiceProblem>(
 	eff: Effect.Effect<void, E, typeof ActualHostServiceTag.Type>,
 ) {
-	// The effect should already be Effect<void,...>.
-	// Runtime.runPromise will handle the void.
+	// Effect.void() is not needed here, runEffect handles void promises
 	return runEffect(eff);
 }
 
-// Pure helper for options
 const _getAbstractPickFileToSaveOptions = (
 	path: UriType,
 
-	// prefixed unused
 	_fileSystems?: string[],
 ): VsCodeSaveOptions => ({
 	defaultUri: path,
@@ -86,11 +93,7 @@ const _getAbstractPickFileToSaveOptions = (
 const Definition: FileDialog = {
 	_serviceBrand: undefined,
 
-	pickFileFolderAndOpen: (
-		options: VsCodePickOptions,
-
-		// Explicit return type
-	): Promise<void> =>
+	pickFileFolderAndOpen: (options: VsCodePickOptions): Promise<void> =>
 		_runVoid(
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openFileOrFolderDefaultTitle",
@@ -103,11 +106,7 @@ const Definition: FileDialog = {
 			}),
 		),
 
-	pickFileAndOpen: (
-		options: VsCodePickOptions,
-
-		// Explicit return type
-	): Promise<void> =>
+	pickFileAndOpen: (options: VsCodePickOptions): Promise<void> =>
 		_runVoid(
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openFileDefaultTitle",
@@ -120,11 +119,7 @@ const Definition: FileDialog = {
 			}),
 		),
 
-	pickFolderAndOpen: (
-		options: VsCodePickOptions,
-
-		// Explicit return type
-	): Promise<void> =>
+	pickFolderAndOpen: (options: VsCodePickOptions): Promise<void> =>
 		_runVoid(
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openFolderDefaultTitle",
@@ -137,11 +132,7 @@ const Definition: FileDialog = {
 			}),
 		),
 
-	pickWorkspaceAndOpen: (
-		options: VsCodePickOptions,
-
-		// Explicit return type
-	): Promise<void> =>
+	pickWorkspaceAndOpen: (options: VsCodePickOptions): Promise<void> =>
 		_runVoid(
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openWorkspaceDefaultTitle",
@@ -209,10 +200,8 @@ const Definition: FileDialog = {
 			),
 		),
 
-	showSaveConfirm: (
-		// Prefixed unused TS6133
-		_filesOrResources: (string | UriType)[],
-	) => _run(Effect.succeed(ConfirmResult.SAVE)),
+	showSaveConfirm: (_filesOrResources: (string | UriType)[]) =>
+		_run(Effect.succeed(ConfirmResult.SAVE)),
 };
 
 export default Definition;

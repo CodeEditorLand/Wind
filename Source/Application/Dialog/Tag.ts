@@ -12,8 +12,9 @@ import type { IFileDialogService as VsCodeFileDialogServiceInterface } from "vs/
  */
 export type Interface = VsCodeFileDialogServiceInterface;
 
-// Correct usage for effect@3.x:
-// The identifier string is passed to the Tag constructor.
+// For effect@3.x, Context.Tag takes the service interface as a generic,
+
+// and the identifier as a runtime argument.
 const Tag = Context.Tag<Interface>("vscode/FileDialogService");
 
 export default Tag;

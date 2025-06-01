@@ -6,7 +6,6 @@ import { Layer } from "effect";
 // The service implementation object
 import Definition from "./Definition.js";
 // The Tag for IFileDialogService
-// Import the Tag instance directly
 import ActualDialogServiceTag from "./Tag.js";
 
 /**
@@ -15,13 +14,8 @@ import ActualDialogServiceTag from "./Tag.js";
  * This layer makes the DialogService (our Definition) available in the Effect context
  * via the FileDialogServiceTag.
  */
+// Access the service type via Tag.Type
 const Live: Layer.Layer<typeof ActualDialogServiceTag.Type, never, never> =
-	Layer.succeed(
-		// Pass the Tag instance
-		ActualDialogServiceTag,
-
-		// Definition must implement typeof ActualDialogServiceTag.Type
-		Definition,
-	);
+	Layer.succeed(ActualDialogServiceTag, Definition);
 
 export default Live;

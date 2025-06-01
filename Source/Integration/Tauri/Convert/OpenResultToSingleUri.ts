@@ -18,6 +18,7 @@ import {
 
 
 
+
  * expecting a single file path, and converts it to an optional URI.
  */
 export default function Convert(

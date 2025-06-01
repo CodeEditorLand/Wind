@@ -1,6 +1,7 @@
 // Effect/Produce/FromMethod.ts
 
-import { Context, Effect, type Cause, type Tag } from "effect";
+// Removed 'Tag' as it's not directly used from here
+import { Context, Effect, type Cause } from "effect";
 
 // Use type aggregator
 import type { ErrorProducer } from "./Type.js";
@@ -10,9 +11,13 @@ import type { ErrorProducer } from "./Type.js";
  * @description Creates an Effect by calling a method on a service from Context.
  */
 export default function FromMethod<
-	Identifier,
+	// Not strictly needed if SourcedTag is correctly typed
+	// Identifier,
+
+	// The service interface type
 	Interface,
-	SourcedTag extends Context.Tag<Identifier, Interface>,
+	// Tag for the service
+	SourcedTag extends Context.Tag<Interface, Interface>,
 	Method extends {
 		[Key in keyof Interface]: Interface[Key] extends (
 			...args: any[]
@@ -46,7 +51,7 @@ export default function FromMethod<
 	StaticData: ErrorData,
 ): (
 	...args: Arguments
-) => Effect.Effect<Value, ErrorType, Tag.Service<SourcedTag>> {
+) => Effect.Effect<Value, ErrorType, Context.Tag.Service<SourcedTag>> {
 	return (...args: Arguments) =>
 		Effect.flatMap(ServiceTag, (ServiceInstance) => {
 			const Operation = ServiceInstance[MethodName] as (

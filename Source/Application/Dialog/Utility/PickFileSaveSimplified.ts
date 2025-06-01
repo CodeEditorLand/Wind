@@ -4,7 +4,7 @@ import { localize } from "vs/nls";
 import type { ISaveDialogOptions as VsCodeSaveOptions } from "vs/platform/dialogs/common/dialogs";
 
 import {
-	// Import the actual Tag TS6133 if not used for typeof
+	// Aliased
 	HostServiceTag as ActualHostServiceTag,
 	InheritanceProblem,
 	type Uri as UriType,
@@ -22,7 +22,6 @@ export default function Pick(
 	ServiceProblem,
 	typeof ActualHostServiceTag.Type
 > {
-	// Use typeof Tag.Type
 	if (!DecideSimplified(schema)) {
 		return PerformShowSave({
 			...options,
