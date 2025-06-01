@@ -828,7 +828,6 @@ function reviveProfileUrisRecursively(data: any): any {
 
 		Log("window.vscode shimmed for Tauri.");
 	} catch (error) {
-		/* ... (error handling same) ... */
 		ErrorLog("Error during preload script execution:", error);
 
 		const errDiv = document.createElement("div");
