@@ -16,7 +16,8 @@ import {
 import {
 	arch as tauriOsArch,
 	platform as tauriOsPlatform,
-	type as tauriOsType,
+	// Renamed to avoid conflict
+	type as tauriOsTypeValue,
 	version as tauriOsVersion,
 } from "@tauri-apps/api/os";
 import {
@@ -51,21 +52,26 @@ import product from "vs/platform/product/common/product.js";
 import type {
 	IUserDataProfile,
 	UseDefaultProfileFlags,
-	// If VsCodeUriDto is problematic due to non-export or conflicts
+	// Using ILocalUriDto
 	// UriDto as VsCodeUriDto,
+	// Using ILocalLoggerResource
+	// ILoggerResource as VsCodeILoggerResource
 } from "vs/platform/userDataProfile/common/userDataProfile";
-// NOTE: IPartsSplash might not be exported. If TS2459 (declared locally but not exported) occurs for IPartsSplash,
+// Attempt to import, but provide local fallback if module or type is unexported
 
-// we must use the ILocalPartsSplash defined below.
+// For IPartsSplash, if VSCode doesn't export it:
 import type {
 	IColorScheme,
 	INativeWindowConfiguration,
 	IOSConfiguration,
-	// Attempt to use VSCode's, fallback to ILocalPartsSplash if needed
-	IPartsSplash,
+	IPartsSplash as VsCodeIPartsSplashOriginal,
+	// This causes TS2459, so we'll use ILocalPartsSplash
+	// IPartsSplash,
 } from "vs/platform/window/common/window";
 import {
 	reviveIdentifier,
+	// Added for workspace typing
+	type IEmptyWorkspaceIdentifier,
 	type ISingleFolderWorkspaceIdentifier,
 	type IWorkspaceIdentifier,
 } from "vs/platform/workspace/common/workspace.js";
@@ -76,7 +82,6 @@ interface ILocalProcessEnvironment {
 }
 
 interface ILocalUriDto<T = any> {
-	// Common marker for VSCode URI serialization
 	$mid: 11;
 
 	scheme: string;
@@ -101,7 +106,6 @@ interface ILocalUriDto<T = any> {
 interface ILocalLoggerResource {
 	resource: URI;
 
-	// Assuming VSCode's LogLevel is a number or enum assignable to number
 	logLevel?: number;
 
 	id: string;
@@ -114,24 +118,30 @@ interface ILocalLoggerResource {
 }
 
 // Define ILocalPartsSplash based on IPartsSplash if it's not exported or to ensure properties
-interface ILocalPartsSplash extends Partial<IPartsSplash> {
-	// Extend Partial<IPartsSplash> to catch most properties
-	// Often required if IPartsSplash makes it non-optional
+// For TS2322, ensure ILocalPartsSplash matches IPartsSplash from INativeWindowConfiguration
+interface ILocalPartsSplash extends Partial<VsCodeIPartsSplashOriginal> {
+	// Making it required as per error TS2322
 	zoomLevel: number;
 
-	// Add other MANDATORY properties of IPartsSplash if TS complains they are missing
-	// For example, if baseTheme is mandatory:
+	// If other properties are required by IPartsSplash, add them here.
+	// For example:
 	// baseTheme: string;
+
+	// colorInfo: object;
+
+	// layoutInfo: object;
 }
 
 declare const __DEV__: boolean;
 
+// Unused
 declare const __VSCODE_VERSION__: string;
 
 declare const __TAURI_APP_VERSION__: string;
 
 declare const __NODE_ENV__: string;
 
+// Unused
 declare const __TAURI_ENV_DEBUG__: string;
 
 declare global {
@@ -163,6 +173,7 @@ interface TauriProcessEnv extends ILocalProcessEnvironment {
 }
 
 function reviveProfileUrisRecursively(data: any): any {
+	// ... (reviveProfileUrisRecursively remains the same)
 	if (!data || typeof data !== "object") return data;
 
 	if (Array.isArray(data)) return data.map(reviveProfileUrisRecursively);
@@ -202,7 +213,6 @@ function reviveProfileUrisRecursively(data: any): any {
 				) {
 					result[key] = URI.revive(value);
 				} else if (typeof value === "string") {
-					// Attempt to parse if it's a string that might be a URI
 					try {
 						result[key] = URI.parse(value);
 					} catch {
@@ -228,8 +238,8 @@ function reviveProfileUrisRecursively(data: any): any {
 
 		const arch: string = await tauriOsArch();
 
-		// Renamed to avoid conflict
-		const osTypeValue: string = await tauriOsType();
+		// Renamed from osTypeValue
+		const osTypeValueImpl: string = await tauriOsTypeValue();
 
 		const osRelease: string = await tauriOsVersion();
 
@@ -244,10 +254,11 @@ function reviveProfileUrisRecursively(data: any): any {
 		const nodeEnvFromDefine: string =
 			typeof __NODE_ENV__ !== "undefined" ? __NODE_ENV__ : "production";
 
-		const tauriEnvDebugFromDefine: string =
+		const tauriEnvDebugFromDefineImpl: string =
 			typeof __TAURI_ENV_DEBUG__ !== "undefined"
 				? __TAURI_ENV_DEBUG__
-				: "false";
+				: // Renamed
+					"false";
 
 		const getWorkbenchConstructionOptions =
 			(): Partial<INativeWindowConfiguration> => {
@@ -290,7 +301,10 @@ function reviveProfileUrisRecursively(data: any): any {
 
 				[appNameFromApi]: appVersionFromApi,
 
-				tauri: __TAURI_APP_VERSION__ || appVersionFromApi,
+				tauri:
+					typeof __TAURI_APP_VERSION__ !== "undefined"
+						? __TAURI_APP_VERSION__
+						: appVersionFromApi,
 			},
 
 			env: {
@@ -298,7 +312,7 @@ function reviveProfileUrisRecursively(data: any): any {
 
 				VSCODE_DEV:
 					nodeEnvFromDefine === "development" ||
-					tauriEnvDebugFromDefine === "true"
+					tauriEnvDebugFromDefineImpl === "true"
 						? "1"
 						: undefined,
 
@@ -311,10 +325,8 @@ function reviveProfileUrisRecursively(data: any): any {
 						"en",
 
 					availableLanguages:
-						// Provide default for availableLanguages
 						initialConfigFromMeta.availableLanguages || {},
 
-					// Provide default for pseudo
 					pseudo: initialConfigFromMeta.pseudo || false,
 				}),
 			} as TauriProcessEnv,
@@ -341,7 +353,6 @@ function reviveProfileUrisRecursively(data: any): any {
 		};
 
 		const ipcRendererShimImpl: IpcRenderer = {
-			/* ... (same) ... */
 			send: (channel: string, ...args: any[]): void => {
 				if (channel.startsWith("vscode:")) {
 					tauriEmit(
@@ -424,7 +435,6 @@ function reviveProfileUrisRecursively(data: any): any {
 		};
 
 		const webFrameShimImpl: WebFrame = {
-			/* ... (same) ... */
 			setZoomLevel: async (level: number) => {
 				try {
 					const factor = Math.pow(1.2, level);
@@ -528,14 +538,10 @@ function reviveProfileUrisRecursively(data: any): any {
 
 							"prompts",
 						),
-
-						// Added
 					),
 
 					cacheHome: URI.file(
 						await tauriJoin(defaultProfileLocation.fsPath, "cache"),
-
-						// Added
 					),
 				};
 
@@ -550,6 +556,8 @@ function reviveProfileUrisRecursively(data: any): any {
 						await tauriJoin(tauriAppData, "User", "profiles"),
 					),
 
+					// Ensure 'all' elements are compatible with UriDto<IUserDataProfile>
+					// If ILocalUriDto is a simplified version, this might still cause issues if VSCode expects methods or specific instance types from UriDto.
 					all: [] as readonly ILocalUriDto<IUserDataProfile>[],
 
 					profile: {
@@ -608,8 +616,7 @@ function reviveProfileUrisRecursively(data: any): any {
 							logLevel:
 								typeof l.logLevel === "number"
 									? l.logLevel
-									: // Ensure logLevel is number or undefined
-										undefined,
+									: undefined,
 
 							hidden:
 								typeof l.hidden === "boolean"
@@ -660,9 +667,9 @@ function reviveProfileUrisRecursively(data: any): any {
 
 						platform,
 
-						type: osTypeValue,
+						type: osTypeValueImpl,
 
-						// Added 'type'
+						// use osTypeValueImpl
 					} as IOSConfiguration,
 
 					colorScheme:
@@ -685,7 +692,7 @@ function reviveProfileUrisRecursively(data: any): any {
 						? typeof initialConfigFromMeta.tmpDir === "string"
 							? initialConfigFromMeta.tmpDir
 							: (initialConfigFromMeta.tmpDir as URI).fsPath
-						: osTypeValue === "Windows_NT"
+						: osTypeValueImpl === "Windows_NT"
 							? ((await invoke("get_env", { name: "TEMP" }).catch(
 									() => "C:\\Temp",
 								)) as string)
@@ -702,6 +709,7 @@ function reviveProfileUrisRecursively(data: any): any {
 						: (undefined as
 								| IWorkspaceIdentifier
 								| ISingleFolderWorkspaceIdentifier
+								| IEmptyWorkspaceIdentifier
 								| undefined),
 
 					folderUri:
@@ -710,21 +718,21 @@ function reviveProfileUrisRecursively(data: any): any {
 							: undefined,
 
 					workspaceUri:
-						initialConfigFromMeta.workspace instanceof URI
-							? initialConfigFromMeta.workspace
+						initialConfigFromMeta["workspace"] instanceof URI
+							? (initialConfigFromMeta["workspace"] as URI)
 							: undefined,
 
-					// For profiles, ensure that if initialConfigFromMeta.profiles exists, it's fully revived
 					profiles: initialConfigFromMeta.profiles
 						? reviveProfileUrisRecursively(
 								initialConfigFromMeta.profiles,
 							)
 						: defaultProfilesValue,
 
+					// Ensure defaultProfile is correctly typed when coming from initialConfigFromMeta
 					defaultProfile: initialConfigFromMeta.defaultProfile
-						? reviveProfileUrisRecursively(
+						? (reviveProfileUrisRecursively(
 								initialConfigFromMeta.defaultProfile,
-							)
+							) as IUserDataProfile)
 						: defaultProfileValue,
 
 					loggers: revivedLoggers,
@@ -735,10 +743,11 @@ function reviveProfileUrisRecursively(data: any): any {
 					autoDetectColorScheme:
 						initialConfigFromMeta.autoDetectColorScheme ?? true,
 
-					zoomLevel:
-						typeof initialConfigFromMeta.zoomLevel === "number"
-							? initialConfigFromMeta.zoomLevel
-							: 0,
+					zoomLevel: (typeof initialConfigFromMeta.zoomLevel ===
+					"number"
+						? initialConfigFromMeta.zoomLevel
+						: // Ensure it's number
+							0) as number,
 
 					isCustomZoomLevel:
 						initialConfigFromMeta.isCustomZoomLevel ?? false,
@@ -760,13 +769,18 @@ function reviveProfileUrisRecursively(data: any): any {
 
 					policiesData: initialConfigFromMeta.policiesData || {},
 
-					// Ensuring ILocalPartsSplash satisfies what IPartsSplash might need
+					// Ensure the default object for partsSplash also meets ILocalPartsSplash (and thus IPartsSplash's requirements)
 					partsSplash: initialConfigFromMeta.partsSplash
 						? ({
-								// Default required by IPartsSplash
-								zoomLevel: 0,
+								zoomLevel:
+									typeof initialConfigFromMeta.partsSplash
+										.zoomLevel === "number"
+										? initialConfigFromMeta.partsSplash
+												.zoomLevel
+										: 0,
 
-								...initialConfigFromMeta.partsSplash,
+								// Spread other optional parts
+								...(initialConfigFromMeta.partsSplash as Partial<ILocalPartsSplash>),
 							} as ILocalPartsSplash)
 						: ({ zoomLevel: 0 } as ILocalPartsSplash),
 				};
@@ -784,7 +798,6 @@ function reviveProfileUrisRecursively(data: any): any {
 		})();
 
 		const webUtilsShimImpl: WebUtils = {
-			/* ... (same) ... */
 			getPathForFile: (file: File): string => {
 				WarnLog(`webUtils.getPathForFile(${file.name})`);
 
@@ -793,7 +806,6 @@ function reviveProfileUrisRecursively(data: any): any {
 		};
 
 		const ipcMessagePortShimImpl: IpcMessagePort = {
-			/* ... (same) ... */
 			acquire: (respCh: string, nonce: string) =>
 				WarnLog(`ipcMP.acquire ${respCh}, ${nonce}`),
 		};
@@ -816,7 +828,7 @@ function reviveProfileUrisRecursively(data: any): any {
 
 		Log("window.vscode shimmed for Tauri.");
 	} catch (error) {
-		/* ... (same) ... */
+		/* ... (error handling same) ... */
 		ErrorLog("Error during preload script execution:", error);
 
 		const errDiv = document.createElement("div");

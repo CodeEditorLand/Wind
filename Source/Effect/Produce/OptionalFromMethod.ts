@@ -6,7 +6,7 @@ import type { ErrorProducer } from "./Type.js";
 
 export default function OptionalFromMethod<
 	SourcedInterface,
-	SourcedTag extends Context.Tag<SourcedInterface, SourcedInterface>,
+	SourcedTag extends Context.Tag<SourcedInterface>,
 	Method extends {
 		[Key in keyof SourcedInterface]: SourcedInterface[Key] extends (
 			...args: any[]
@@ -46,9 +46,8 @@ export default function OptionalFromMethod<
 	Context.Tag.Service<SourcedTag>
 > {
 	return (...args: Arguments) =>
-		Effect.flatMap(ServiceTag, (ServiceInstance) => {
+		Effect.flatMap(ServiceTag, (ServiceInstance: SourcedInterface) => {
 			const Operation = (ServiceInstance as any)[MethodName] as (
-				// Cast ServiceInstance
 				...opArgs: Arguments
 			) => Promise<Value | null | undefined>;
 

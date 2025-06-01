@@ -12,6 +12,7 @@ import {
 } from "vs/platform/dialogs/common/dialogs";
 
 import {
+	// Renamed for clarity if HostServiceTag itself is an export
 	HostServiceTag as ActualHostServiceTag,
 	UriConstructor,
 	type Uri as UriType,
@@ -21,8 +22,11 @@ import * as Orchestrate from "./Orchestration.js";
 import type { ServiceProblem } from "./Type.js";
 
 // --- Runtime specific to this service module instance ---
+// Layer.build returns an Effect that, when run, produces the Context and a Scope finalizer.
+// We need to provide a Scope to run this effect.
 const ServiceRuntimeContextEffect: Effect.Effect<
 	Context.Context<Context.Tag.Service<typeof ActualHostServiceTag>>,
+	// Assuming HostServiceLivePlaceholder has no build errors
 	never,
 	Scope.Scope
 > = Layer.build(HostServiceLivePlaceholder);
@@ -30,9 +34,11 @@ const ServiceRuntimeContextEffect: Effect.Effect<
 // To get the Context for Runtime.make, we run the effect that builds the layer.
 // Scope.global is the global scope instance.
 const ServiceRuntimeContext = Effect.runSync(
+	// Use Scope.global
 	Effect.provide(ServiceRuntimeContextEffect, Scope.global),
 );
 
+// Runtime.make expects Context.Context<any>, and ServiceRuntimeContext is Context.Context<HostServiceType> which is compatible.
 const ServiceRuntime = Runtime.make(ServiceRuntimeContext);
 
 const runEffect = Runtime.runPromise(ServiceRuntime);

@@ -7,8 +7,8 @@ import type { ErrorProducer } from "./Type.js";
 export default function FromMethod<
 	// The service interface type
 	SourcedInterface,
-	// Tag for the service
-	SourcedTag extends Context.Tag<SourcedInterface, SourcedInterface>,
+	// Tag for the service (identifier is implicit)
+	SourcedTag extends Context.Tag<SourcedInterface>,
 	Method extends {
 		[Key in keyof SourcedInterface]: SourcedInterface[Key] extends (
 			...args: any[]
@@ -33,6 +33,7 @@ export default function FromMethod<
 		readonly cause: unknown;
 	} & ErrorData,
 >(
+	// This is Context.Tag<SourcedInterface>
 	ServiceTag: SourcedTag,
 
 	MethodName: Method,
@@ -43,12 +44,10 @@ export default function FromMethod<
 ): (
 	...args: Arguments
 ) => Effect.Effect<Value, ErrorType, Context.Tag.Service<SourcedTag>> {
-	// Service type from Tag
 	return (...args: Arguments) =>
-		Effect.flatMap(ServiceTag, (ServiceInstance) => {
-			// ServiceInstance here should be of type SourcedInterface
+		Effect.flatMap(ServiceTag, (ServiceInstance: SourcedInterface) => {
+			// ServiceInstance is correctly typed as SourcedInterface by Effect.flatMap
 			const Operation = (ServiceInstance as any)[MethodName] as (
-				// Cast ServiceInstance to any for method access
 				...opArgs: Arguments
 			) => Promise<Value>;
 

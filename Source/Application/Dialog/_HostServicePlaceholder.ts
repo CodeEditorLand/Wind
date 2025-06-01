@@ -1,5 +1,4 @@
 // Application/Dialog/_HostServicePlaceholder.ts
-// Context might be needed for Tag.Service
 import { Layer, type Context } from "effect";
 
 import { HostServiceTag } from "../../Platform/VSCode/Provide.js";
@@ -14,16 +13,18 @@ import type {
 type HostServiceImpl = Context.Tag.Service<typeof HostServiceTag>;
 
 export const HostServiceLivePlaceholder: Layer.Layer<
-	// Use the derived service type
+	// The service type this layer provides
 	HostServiceImpl,
+	// The error type of this layer's construction (never for succeed)
 	never,
+	// The context required by this layer to be built (never for succeed)
 	never
 > = Layer.succeed(
-	// Pass the Tag instance
+	// The Tag instance we are providing for
 	HostServiceTag,
 
 	HostServiceTag.of({
-		// Use Tag.of with an implementation matching HostServiceImpl
+		// Create an instance of the service interface
 		openWindow: (
 			targets: ReadonlyArray<
 				| FolderOpenSpecification

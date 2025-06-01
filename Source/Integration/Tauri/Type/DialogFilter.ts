@@ -13,6 +13,7 @@ import type { DialogFilter as Definition } from "@tauri-apps/plugin-dialog";
 
 
 
+
  * defining a name and associated file extensions.
  */
 export type Type = Definition;
