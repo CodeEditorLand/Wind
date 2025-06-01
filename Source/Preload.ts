@@ -37,17 +37,16 @@ import { Window } from "@tauri-apps/api/window";
 import { URI } from "vs/base/common/uri";
 import type { ISandboxConfiguration } from "vs/base/parts/sandbox/common/sandboxTypes";
 import type {
+	IpcRenderer,
+	WebFrame,
+	WebUtils,
+} from "vs/base/parts/sandbox/electron-sandbox/electronTypes";
+import type {
 	IMainWindowSandboxGlobals,
 	// Shimmed interface type
 	IpcMessagePort,
 	// This will be our shimmed interface type
-	IpcRenderer,
-	// This will be our shimmed interface type
 	ISandboxNodeProcess,
-	// Shimmed interface type
-	WebFrame,
-	// Shimmed interface type
-	WebUtils,
 } from "vs/base/parts/sandbox/electron-sandbox/globals";
 // For product.nameShort
 import product from "vs/platform/product/common/product.js";

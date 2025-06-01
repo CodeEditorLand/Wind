@@ -2,7 +2,7 @@
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"extends": "../../../tsconfig.json",
 	"compilerOptions": {
-		"baseUrl": "./",
+		"baseUrl": "../../../Target",
 		"outDir": "../../../Target",
 		"noCheck": true,
 		"noEmit": true,
@@ -10,7 +10,8 @@
 		"declarationMap": false,
 		"emitDeclarationOnly": false,
 		"allowJs": true,
-		"checkJs": false
+		"checkJs": false,
+		"rootDir": "../../../Target"
 	},
 	"include": ["../../../Target"],
 	"exclude": []

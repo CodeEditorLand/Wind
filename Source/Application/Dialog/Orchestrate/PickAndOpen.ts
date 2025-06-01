@@ -5,7 +5,6 @@ import { Effect, Option, pipe } from "effect";
 // Import specific types from VSCode dialogs
 import type {
 	IOpenDialogOptions as VsCodeOpenOptions,
-	Partial as VsCodePartialUtil,
 	IPickAndOpenOptions as VsCodePickOptions,
 } from "vs/platform/dialogs/common/dialogs";
 
@@ -30,7 +29,7 @@ import type { PickProblem } from "../Type.js";
 
 // Assuming VsCodePartialUtil is a utility type like Partial from TS
 type CombinedVsCodePickOptions = VsCodePickOptions &
-	VsCodePartialUtil<VsCodeOpenOptions>;
+	Partial<VsCodeOpenOptions>;
 
 /**
  * @module PickAndOpen (Orchestration Logic)

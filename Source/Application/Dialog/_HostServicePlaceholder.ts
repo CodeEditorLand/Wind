@@ -2,7 +2,7 @@
 import { Layer } from "effect";
 
 // Or Platform/VSCode/Provide.js
-import { ProvideHost } from "../../Integration/Tauri.js";
+import { ProvideHost } from "../../Platform/VSCode/Provide.js";
 
 // This is a placeholder. In a real application, you'd import the actual live layer for HostService.
 export const HostServiceLivePlaceholder = Layer.succeed(ProvideHost, {

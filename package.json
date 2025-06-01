@@ -22,12 +22,14 @@
 		"Run": "sh Source/Run.sh",
 		"prepublishOnly": "sh Source/prepublishOnly.sh"
 	},
-	"devDependencies": {
-		"@playform/build": "0.2.4",
-		"ulid": "3.0.0",
+	"dependencies": {
 		"@tauri-apps/api": "2.5.0",
 		"@tauri-apps/plugin-dialog": "2.2.2",
 		"effect": "3.16.2"
+	},
+	"devDependencies": {
+		"@playform/build": "0.2.4",
+		"ulid": "3.0.0"
 	},
 	"publishConfig": {
 		"access": "public",

@@ -6,7 +6,6 @@ import { localize } from "vs/nls";
 // Import specific types from VSCode and Tauri integration modules
 import type {
 	IOpenDialogOptions as VsCodeOpenOptions,
-	Partial as VsCodePartialUtil,
 	IPickAndOpenOptions as VsCodePickOptions,
 } from "vs/platform/dialogs/common/dialogs";
 
@@ -18,7 +17,7 @@ import {
 
 // Assuming VsCodePartialUtil is a utility type e.g. Partial<T>
 type CombinedVsCodePickOptions = VsCodePickOptions &
-	VsCodePartialUtil<VsCodeOpenOptions>;
+	Partial<VsCodeOpenOptions>;
 
 /**
  * @module CreatePickOpenOption (Factory)
