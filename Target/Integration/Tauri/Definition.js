@@ -1,1 +1,1 @@
-function r(e){return{folderUri:e}}function t(e){return{fileUri:e}}function a(e){return{workspaceUri:e}}export{t as DefineFileOpen,r as DefineFolderOpen,a as DefineWorkspaceOpen};
+import{default as o}from"./Define/FolderOpen.js";import{default as a}from"./Define/FileOpen.js";import{default as n}from"./Define/WorkspaceOpen.js";export{a as DefineFileOpen,o as DefineFolderOpen,n as DefineWorkspaceOpen};

@@ -1,1 +1,1 @@
-import{Context as e}from"../../effect";const o=e.Tag("vscode/FileDialogService");var a=o;export{a as default};
+import{Context as e}from"../../effect";const o=e.GenericTag("vscode/FileDialogService");var r=o;export{r as default};

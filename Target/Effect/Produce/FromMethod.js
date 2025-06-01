@@ -1,1 +1,1 @@
-import{Effect as r}from"../../effect";function u(t,o,a,n){return(...s)=>r.flatMap(t,e=>{const d=e[o];return r.tryPromise({try:()=>d.apply(e,s),catch:c=>a({...n,cause:c})})})}export{u as default};
+import{Effect as r}from"../../effect";function u(o,n,t,a){return(...s)=>r.flatMap(o,e=>{const d=e[n];return r.tryPromise({try:()=>d.apply(e,s),catch:c=>t({...a,cause:c})})})}export{u as default};

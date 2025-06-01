@@ -1,1 +1,1 @@
-function e(r){return{workspaceUri:r}}export{e as default};
+function i(e){return{workspaceUri:e}}export{i as default};

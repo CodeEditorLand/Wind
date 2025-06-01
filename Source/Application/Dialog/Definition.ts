@@ -1,73 +1,60 @@
 // Application/Dialog/Definition.ts
 // Purpose: Defines the concrete implementation object of the IFileDialogService.
 
-import { Context, Effect, Layer, Option, pipe, Runtime, Scope } from "effect";
-// VSCode's localization function
+import { Effect, Layer, Option, Runtime, Scope } from "effect"; // Added Scope
 import { localize } from "vs/nls";
 import {
 	ConfirmResult,
-	// VSCode's interface
 	type IFileDialogService as FileDialog,
 	type IOpenDialogOptions as VsCodeOpenOptions,
 	type IPickAndOpenOptions as VsCodePickOptions,
 	type ISaveDialogOptions as VsCodeSaveOptions,
 } from "vs/platform/dialogs/common/dialogs";
 
+// We don't need to import PerformAction here if HostServiceRequirement is typeof HostServiceTag
+
 import {
-	// The Tag for HostService dependency
-	HostServiceTag as ActualHostServiceTag,
 	UriConstructor,
 	type Uri as UriType,
 } from "../../Integration/Tauri.js";
-// Tauri integration utilities
-// Mock HostService layer
-import { HostServiceLivePlaceholder } from "./_HostServicePlaceholder.js";
-// Core dialog logic effects
-import * as Orchestrate from "./Orchestration.js";
-// Custom error types for this service
+// Import the Tag itself, not the service interface type alias from here
+import HostServiceTag from "../../Platform/VSCode/Provide/Host.js";
+import { HostServiceLivePlaceholder } from "./_HostServicePlaceholder.js"; // This provides Layer for HostServiceTag
+import * as Orchestrate from "./Orchestration.js"; // Orchestration effects
 import type { ServiceProblem } from "./Type.js";
 
 // --- Runtime specific to this service module instance ---
 
-// This layer provides the HostService needed by some orchestration effects.
-// In a real application, this would likely be part of a larger application layer.
-const fileDialogServiceDependenciesLayer: Layer.Layer<
-	// Provides HostService
-	Context.Tag.Service<typeof ActualHostServiceTag>,
-	// No error during layer construction
-	never,
-	// No requirements for this layer itself
-	never
-> = HostServiceLivePlaceholder;
+// HostServiceLivePlaceholder is a Layer that provides HostServiceTag
+const fileDialogServiceDependenciesLayer = HostServiceLivePlaceholder;
 
-/**
- * Creates a runtime environment specifically for the dialog service operations.
- * This runtime includes the necessary dependencies, like the HostService (currently mocked).
- * `Layer.toRuntime` converts a layer into an Effect that, when run, produces a Runtime.
- * `Effect.scoped` provides the necessary Scope for `toRuntime`.
- * `Effect.runSync` executes this Effect synchronously to get the Runtime instance.
- */
-const ServiceRuntime: Runtime.Runtime<
-	Context.Tag.Service<typeof ActualHostServiceTag>
-> = Effect.runSync(
-	Effect.scoped(Layer.toRuntime(fileDialogServiceDependenciesLayer)),
+// Layer.toRuntime creates an Effect that yields a Runtime.
+// The Runtime's context (R in Runtime<R>) will be the Tag itself (typeof HostServiceTag)
+// if the layer is defined as Layer<typeof HostServiceTag, ...>.
+const runtimeEffect: Effect.Effect<
+	Runtime.Runtime<typeof HostServiceTag>,
+	never,
+	Scope.Scope
+> = Layer.toRuntime(fileDialogServiceDependenciesLayer);
+
+// Execute the effect to get the Runtime instance.
+// Effect.scoped provides the Scope needed by Layer.toRuntime.
+const ServiceRuntime: Runtime.Runtime<typeof HostServiceTag> = Effect.runSync(
+	Effect.scoped(runtimeEffect),
 );
 
-// Type alias for the HostService, extracted from the Tag.
-type HostServiceType = Context.Tag.Service<typeof ActualHostServiceTag>;
+// The requirement for effects that depend on the host service is the Tag itself.
+type HostServiceRequirement = typeof HostServiceTag;
 
 /**
  * Helper function to run an Effect that yields a value, using the service-specific runtime.
- * This is used by the public methods of the FileDialog definition.
- * @param eff The Effect to run. It may require HostServiceType.
+ * @param eff The Effect to run. It may require HostServiceRequirement.
  * @returns A Promise resolving with the Effect's success value.
  */
 function _run<A, E extends ServiceProblem>(
-	// Effect requires HostServiceType
-	eff: Effect.Effect<A, E, HostServiceType>,
+	eff: Effect.Effect<A, E, HostServiceRequirement>, // Effect requires the Tag
 ): Promise<A> {
-	// The runtime provides HostServiceType
-	return ServiceRuntime.runPromise(eff);
+	return Runtime.runPromise(ServiceRuntime, eff);
 }
 
 /**
@@ -76,9 +63,10 @@ function _run<A, E extends ServiceProblem>(
  * @returns A Promise resolving to the Option's value or undefined.
  */
 function _runOption<A, E extends ServiceProblem>(
-	eff: Effect.Effect<Option.Option<A>, E, HostServiceType>,
+	eff: Effect.Effect<Option.Option<A>, E, HostServiceRequirement>,
 ): Promise<A | undefined> {
-	return ServiceRuntime.runPromise(
+	return Runtime.runPromise(
+		ServiceRuntime,
 		eff.pipe(Effect.map(Option.getOrUndefined)),
 	);
 }
@@ -89,51 +77,38 @@ function _runOption<A, E extends ServiceProblem>(
  * @returns A Promise resolving when the Effect completes.
  */
 function _runVoid<E extends ServiceProblem>(
-	eff: Effect.Effect<void, E, HostServiceType>,
+	eff: Effect.Effect<void, E, HostServiceRequirement>,
 ): Promise<void> {
-	return ServiceRuntime.runPromise(eff);
+	return Runtime.runPromise(ServiceRuntime, eff);
 }
 
 /**
- * Gets options for a "pick file to save" dialog. VSCode's abstract file dialog service
- * has this as a separate method, so we replicate its option generation.
+ * Gets options for a "pick file to save" dialog.
  * @param path The default URI for saving.
- * @param _fileSystems Optional array of file system schemes (unused in this basic shim).
+ * @param _fileSystems Optional array of file system schemes.
  * @returns VSCode save dialog options.
  */
 const _getAbstractPickFileToSaveOptions = (
 	path: UriType,
-
-	// This parameter is often for remote file systems
-	_fileSystems?: string[],
+	_fileSystems?: string[], // Often for remote file systems, unused in basic shim
 ): VsCodeSaveOptions => ({
 	defaultUri: path,
-
 	title: localize("saveAsTitle", "Save As"),
-
-	// other options like 'filters' could be added here if needed
 });
 
 /**
  * The concrete implementation of VSCode's IFileDialogService.
  */
 const Definition: FileDialog = {
-	// Required by VSCode service interfaces
-	_serviceBrand: undefined,
+	_serviceBrand: undefined, // Required by VSCode service interfaces
 
 	pickFileFolderAndOpen: (options: VsCodePickOptions): Promise<void> =>
 		_runVoid(
+			// Orchestrate.PerformPickAndOpen now returns Effect<..., ..., typeof HostServiceTag>
 			Orchestrate.PerformPickAndOpen(options, {
-				// Localization key
 				titleKey: "openFileOrFolderDefaultTitle",
-
-				// Fallback title
 				defaultTitle: "Open File or Folder",
-
-				// Tauri's 'directory' flag allows folder selection
 				tauriDirectory: true,
-
-				// Intended item type (though Tauri's dialog is less specific)
 				itemType: "folder",
 			}),
 		),
@@ -142,12 +117,8 @@ const Definition: FileDialog = {
 		_runVoid(
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openFileDefaultTitle",
-
 				defaultTitle: "Open File",
-
-				// False for file picking
 				tauriDirectory: false,
-
 				itemType: "file",
 			}),
 		),
@@ -156,11 +127,8 @@ const Definition: FileDialog = {
 		_runVoid(
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openFolderDefaultTitle",
-
 				defaultTitle: "Open Folder",
-
 				tauriDirectory: true,
-
 				itemType: "folder",
 			}),
 		),
@@ -169,35 +137,25 @@ const Definition: FileDialog = {
 		_runVoid(
 			Orchestrate.PerformPickAndOpen(options, {
 				titleKey: "openWorkspaceDefaultTitle",
-
 				defaultTitle: "Open Workspace",
-
-				// Workspaces are files
 				tauriDirectory: false,
-
 				itemType: "workspace",
-
-				// Apply .code-workspace filter
 				defaultWorkspaceFilter: true,
 			}),
 		),
 
 	pickFileToSave: (defaultUri: UriType, availableFileSystems?: string[]) =>
 		_run(
+			// Orchestrate.PerformShowSave has R = never, so this whole effect has R = never
 			Effect.succeed(
-				// Start with the options generation
 				_getAbstractPickFileToSaveOptions(
 					defaultUri,
-
 					availableFileSystems,
 				),
 			).pipe(
-				// Then, pass these options to the save dialog orchestration
 				Effect.flatMap((configOptions) =>
 					Orchestrate.PerformShowSave(configOptions),
 				),
-
-				// Unwrap the Option<UriType> to UriType | undefined
 				Effect.map(Option.getOrUndefined),
 			),
 		),
@@ -205,30 +163,23 @@ const Definition: FileDialog = {
 	showSaveDialog: (
 		options: VsCodeSaveOptions,
 	): Promise<UriType | undefined> =>
+		// Orchestrate.PerformShowSave has R = never
 		_runOption(Orchestrate.PerformShowSave(options)),
 
 	showOpenDialog: (
 		options: VsCodeOpenOptions,
 	): Promise<UriType[] | undefined> =>
+		// Orchestrate.PerformShowOpen has R = never
 		_run(
-			// showOpenDialog in VSCode returns Uri[] or undefined, not Option<Uri[]>
 			Orchestrate.PerformShowOpen(options).pipe(
-				// Convert Option<UriType[]> to UriType[] or undefined (empty array if None)
 				Effect.map(Option.getOrElse(() => [] as UriType[])),
-
-				// VSCode returns undefined if nothing selected
 				Effect.map((uris) => (uris.length > 0 ? uris : undefined)),
 			),
 		),
 
-	// These default path methods are often used by VSCode to pre-fill dialogs.
-	// Here, they return mock paths. A real implementation might use ResolveFinalDefaultPath
-	// or other Tauri path APIs.
-	defaultFilePath: (
-		// schemeFilter often 'user' or 'tmp'
-		schemeFilter?: string,
-	) =>
+	defaultFilePath: (schemeFilter?: string) =>
 		_run(
+			// R = never
 			Effect.succeed(
 				UriConstructor.file(
 					`/mock/default-file-path/${schemeFilter || "default"}.txt`,
@@ -238,6 +189,7 @@ const Definition: FileDialog = {
 
 	defaultFolderPath: (schemeFilter?: string) =>
 		_run(
+			// R = never
 			Effect.succeed(
 				UriConstructor.file(
 					`/mock/default-folder-path/${schemeFilter || "default"}`,
@@ -247,6 +199,7 @@ const Definition: FileDialog = {
 
 	defaultWorkspacePath: (schemeFilter?: string) =>
 		_run(
+			// R = never
 			Effect.succeed(
 				UriConstructor.file(
 					`/mock/default-workspace-path/${schemeFilter || "default"}.code-workspace`,
@@ -255,9 +208,8 @@ const Definition: FileDialog = {
 		),
 
 	preferredHome: (schemeFilter?: string) =>
-		// This should ideally resolve to the user's actual home directory or a preferred default.
-		// For now, it's a mock.
 		_run(
+			// R = never
 			Effect.succeed(
 				UriConstructor.file(
 					`/mock/preferred-home/${schemeFilter || "default"}`,
@@ -265,13 +217,9 @@ const Definition: FileDialog = {
 			),
 		),
 
-	// showSaveConfirm is used before overwriting files.
-	// This mock always confirms to save. A real implementation might show a Tauri message dialog.
 	showSaveConfirm: (
-		filesOrResources: (string | UriType)[],
-
-		// Other options: DONT_SAVE, CANCEL
-	): Promise<ConfirmResult> => _run(Effect.succeed(ConfirmResult.SAVE)),
+		_filesOrResources: (string | UriType)[],
+	): Promise<ConfirmResult> => _run(Effect.succeed(ConfirmResult.SAVE)), // R = never
 };
 
 export default Definition;

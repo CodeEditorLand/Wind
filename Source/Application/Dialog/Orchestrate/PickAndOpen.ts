@@ -1,71 +1,67 @@
 // Application/Dialog/Orchestrate/PickAndOpen.ts
 // Purpose: Core logic for pick...AndOpen methods as a piped Effect.
 
-import { Effect, Option, pipe, type Context } from "effect";
+import { Effect, Option } from "effect";
 import type {
 	IOpenDialogOptions as VsCodeOpenOptions,
 	IPickAndOpenOptions as VsCodePickOptions,
 } from "vs/platform/dialogs/common/dialogs";
 
 import {
-	HostServiceTag as ActualHostServiceTag,
 	ConvertOpenResultToSingleUri,
 	DefineFileOpen,
 	DefineFolderOpen,
 	DefineWorkspaceOpen,
-	RequestHostWindowOpen,
+	RequestHostWindowOpen, // This effect requires HostServiceTag
 	RequestOpenDialog,
 	ResolveFinalDefaultPath,
 	type Uri as UriType,
 } from "../../../Integration/Tauri.js";
+import HostServiceTag from "../../../Platform/VSCode/Provide/Host.js"; // Import the Tag itself
 import CreatePickOpenOption from "../Factory/CreatePickOpenOption.js";
 import CreateWindowOption from "../Factory/CreateWindowOption.js";
 import type { PickProblem } from "../Type.js";
 
 type CombinedVsCodePickOptions = VsCodePickOptions & Partial<VsCodeOpenOptions>;
 
-type HostServiceType = Context.Tag.Service<typeof ActualHostServiceTag>;
-
+/**
+ * Orchestrates the "pick and open" dialog flow.
+ * @param options VSCode pick and open options.
+ * @param config Configuration for the dialog behavior and item type.
+ * @returns An Effect that performs the operation.
+ *          The Effect requires `HostServiceTag` in its context if an item is selected to be opened.
+ */
 export default function Orchestrate(
 	options: VsCodePickOptions,
-
 	config: {
 		titleKey: string;
-
 		defaultTitle: string;
-
 		tauriDirectory: boolean;
-
 		itemType: "file" | "folder" | "workspace";
-
 		defaultWorkspaceFilter?: boolean;
 	},
-): Effect.Effect<void, PickProblem, HostServiceType> {
-	return pipe(
-		ResolveFinalDefaultPath(
-			(options as CombinedVsCodePickOptions).defaultUri,
-		),
-
+): Effect.Effect<void, PickProblem, typeof HostServiceTag> {
+	// R is HostServiceTag
+	return ResolveFinalDefaultPath(
+		(options as CombinedVsCodePickOptions).defaultUri,
+	).pipe(
 		Effect.map((defaultPath) =>
 			CreatePickOpenOption(
 				options as CombinedVsCodePickOptions,
-
 				config,
-
 				defaultPath,
 			),
 		),
-
 		Effect.flatMap((tauriOptions) => RequestOpenDialog(tauriOptions)),
-
 		Effect.map(ConvertOpenResultToSingleUri),
-
 		Effect.flatMap((maybeUri: Option.Option<UriType>) =>
 			Option.match(maybeUri, {
-				onNone: () => Effect.void,
-
+				onNone: () => Effect.void, // This branch has R = never
+				// RequestHostWindowOpen is Effect<void, WindowProblem, typeof HostServiceTag>
+				// This branch correctly introduces the HostServiceTag requirement.
 				onSome: (selectedUri: UriType) =>
 					RequestHostWindowOpen(
+						// Call the function that returns the Effect
 						[
 							config.itemType === "folder"
 								? DefineFolderOpen(selectedUri)
@@ -73,7 +69,6 @@ export default function Orchestrate(
 									? DefineFileOpen(selectedUri)
 									: DefineWorkspaceOpen(selectedUri),
 						],
-
 						CreateWindowOption(options),
 					),
 			}),

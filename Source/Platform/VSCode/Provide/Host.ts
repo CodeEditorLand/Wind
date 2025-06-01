@@ -10,40 +10,30 @@ import type {
 	WorkspaceOpenSpecification,
 } from "../Type.js";
 
-// Assuming these types are correctly defined in ../Type.js
-
 /**
  * @module Host (Service Interface: PerformAction)
- * @description Interface for host-level actions, such as opening new windows,
-
- * abstracting VSCode's native host capabilities.
- * This interface will be implemented by a service discoverable via its Tag.
+ * @description Interface for host-level actions, such as opening new windows.
  */
 export interface PerformAction {
-	/**
-	 * Opens new windows or focuses existing ones according to the targets and options.
-	 * @param targets An array of items (folders, files, workspaces) to open.
-	 * @param config Options for how the window(s) should be opened (e.g., force new window).
-	 * @returns A promise that resolves when the open action is initiated.
-	 */
 	openWindow(
 		targets: ReadonlyArray<
 			| FolderOpenSpecification
 			| FileOpenSpecification
 			| WorkspaceOpenSpecification
 		>,
-
 		config?: WindowOpenOption,
 	): Promise<void>;
-
-	// Potentially other host actions like clipboard access, shell operations, etc.
 }
 
 /**
- * @description The `effect-ts` `Context.Tag` for accessing the `PerformAction` service.
- * This tag is used to declare dependencies on the host service within `Effect` computations.
- * The identifier "vscode/HostService" helps in uniquely identifying this service in the context.
+ * @description The `effect-ts` `Context.Tag` for the `PerformAction` service.
+ * `Context.GenericTag<Identifier, Service>(key)` creates a Tag instance.
+ * Here, `PerformAction` serves as both the Identifier type in the Context map
+ * and the Service interface type. "vscode/HostService" is the runtime key.
  */
-const Tag = Context.Tag<"vscode/HostService", PerformAction>();
+const HostServiceTag = Context.GenericTag<PerformAction, PerformAction>(
+	"vscode/HostService",
+);
+// Type: Tag<PerformAction, PerformAction>
 
-export default Tag;
+export default HostServiceTag;

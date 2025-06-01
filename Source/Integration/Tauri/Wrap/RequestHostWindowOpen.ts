@@ -1,37 +1,22 @@
 // Integration/Tauri/Wrap/RequestHostWindowOpen.ts
 // Purpose: Effect wrapper for VSCode HostService's openWindow method.
 
-import type { Context } from "effect";
+// No need to import PerformAction interface if FromMethod correctly infers SourcedService
+import type { Context } from "effect"; // Used for Context.Tag.Service for type inference clarity
 
-// Utility to wrap service methods
 import { FromMethod } from "../../../Effect/Produce.js";
-import {
-	// The Tag for the HostService
-	HostServiceTag,
-	// PerformAction is HostServiceTag.Type essentially
-	// type PerformAction as HostService,
-} from "../../../Platform/VSCode/Provide.js";
-// HostService definition
+import HostServiceTag from "../../../Platform/VSCode/Provide/Host.js"; // This is Tag<PerformAction, PerformAction>
+
 import type {
 	FileOpenSpecification,
 	FolderOpenSpecification,
 	WindowOpenOption,
 	WorkspaceOpenSpecification,
 } from "../../../Platform/VSCode/Type.js";
-// VSCode specific types
-// Custom error type
 import { WindowProblem } from "../Error.js";
 
-/**
- * Factory function to create a `WindowProblem` error.
- * @param cause The underlying cause of the error.
- * @returns A `WindowProblem` instance.
- */
 const CreateProblem = (cause: unknown): WindowProblem =>
 	new WindowProblem({ cause, operation: "hostServiceOpenWindow" });
-
-// Infer the service interface type from the Tag
-type HostServiceImpl = Context.Tag.Service<typeof HostServiceTag>;
 
 // Define the argument structure for the 'openWindow' method
 type OpenWindowArgs = [
@@ -40,42 +25,29 @@ type OpenWindowArgs = [
 		| FileOpenSpecification
 		| WorkspaceOpenSpecification
 	>,
-
 	config?: WindowOpenOption,
 ];
 
 /**
  * @module RequestHostWindowOpen
  * @description An Effect that, when executed, calls the `openWindow` method
- * on the `HostService` (obtained via `HostServiceTag`).
- * This abstracts the direct service call into a managed effect.
- * - `HostServiceImpl`: The interface of the service.
- * - `typeof HostServiceTag`: The actual Tag object.
- * - `"openWindow"`: The name of the method on `HostServiceImpl` to call.
- * - `OpenWindowArgs`: The type of arguments for the `openWindow` method.
- * - `void`: The return type of the `openWindow` method's promise.
- * - `{ operation: "hostServiceOpenWindow" }`: Static data for error creation.
- * - `WindowProblem`: The error type if the operation fails.
+ * on the service identified by `HostServiceTag`.
+ * The resulting Effect will require `HostServiceTag` in its context.
  */
 const Request = FromMethod<
-	HostServiceImpl,
-	typeof HostServiceTag,
-	// This must be a key of HostServiceImpl that is an async function
-	"openWindow",
-	OpenWindowArgs,
-	void,
-	// Static data for CreateProblem
-	{ operation: "hostServiceOpenWindow" },
-	WindowProblem
+	typeof HostServiceTag, // SourcedTagInstance: The Tag object itself
+	Context.Tag.Service<typeof HostServiceTag>, // SourcedService: PerformAction, inferred explicitly
+	"openWindow", // Method name
+	OpenWindowArgs, // Arguments type
+	void, // Return type of the Promise
+	{ operation: "hostServiceOpenWindow" }, // Static error data
+	WindowProblem // Error type
 >(
-	HostServiceTag,
-
+	HostServiceTag, // Argument for ServiceTag parameter
 	"openWindow",
-
 	CreateProblem,
-
-	// Static data passed to CreateProblem
 	{ operation: "hostServiceOpenWindow" },
 );
+// Type of Request: (...args: OpenWindowArgs) => Effect.Effect<void, WindowProblem, typeof HostServiceTag>
 
 export default Request;

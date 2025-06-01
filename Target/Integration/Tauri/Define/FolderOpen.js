@@ -1,1 +1,1 @@
-function e(r){return{folderUri:r}}export{e as default};
+function i(e){return{folderUri:e}}export{i as default};
