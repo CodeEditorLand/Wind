@@ -11,13 +11,10 @@
 		"emitDeclarationOnly": false,
 		"allowJs": true,
 		"checkJs": false,
-		"rootDir": "../../../Target",
-		"paths": {
-			"@Source/*": ["../../../Source/*"],
-			"vs/*": [
-				"../../../../../Dependency/Microsoft/Dependency/Editor/src/vs/*"
-			]
-		}
+		"rootDirs": [
+			"../../../Target",
+			"../../../../../Dependency/Microsoft/Dependency/Editor/src/"
+		]
 	},
 	"include": ["../../../Target"],
 	"exclude": []
