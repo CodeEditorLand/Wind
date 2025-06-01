@@ -15,10 +15,7 @@
 			"vs/*": ["../../Dependency/Microsoft/Dependency/Editor/src/vs/*"]
 		},
 		"rootDirs": [".", "../../Dependency/Microsoft/Dependency/Editor/src/"],
-		"target": "ESNext",
-
-		"exactOptionalPropertyTypes": false,
-		"verbatimModuleSyntax": false
+		"target": "ESNext"
 	},
 	"exclude": ["Target"],
 	"extends": "@playform/build/tsconfig",

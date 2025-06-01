@@ -9,7 +9,10 @@ import { Window } from "@tauri-apps/api/window";
 import { URI, UriComponents, UriDto } from "vs/base/common/uri";
 import type { ISandboxConfiguration } from "vs/base/parts/sandbox/common/sandboxTypes";
 import type {
+	// Note: VSCode's IpcRendererEvent might be needed for full compatibility
 	IpcRenderer,
+	// Assuming VSCode exports this or a compatible type
+	IpcRendererEvent,
 	ProcessMemoryInfo as VsProcessMemoryInfo,
 	WebFrame,
 	WebUtils,
@@ -21,13 +24,15 @@ import type {
 } from "vs/base/parts/sandbox/electron-sandbox/globals";
 // Value import for LogLevel
 import { LogLevel, type ILoggerResource } from "vs/platform/log/common/log";
-import product from "vs/platform/product/common/product.js";
+import product from "vs/platform/product/common/product";
 import { ThemeTypeSelector as VsCodeThemeTypeSelector } from "vs/platform/theme/common/theme";
 import { IPartsSplash } from "vs/platform/theme/common/themeService";
-import type { IUserDataProfile } from "vs/platform/userDataProfile/common/userDataProfile";
+import type {
+	IUserDataProfile,
+	UseDefaultProfileFlags,
+} from "vs/platform/userDataProfile/common/userDataProfile";
 import type {
 	IColorScheme,
-	// Primary config interface from VSCode
 	INativeWindowConfiguration,
 	IOSConfiguration,
 } from "vs/platform/window/common/window";
@@ -35,7 +40,7 @@ import {
 	reviveIdentifier,
 	type ISingleFolderWorkspaceIdentifier,
 	type IWorkspaceIdentifier,
-} from "vs/platform/workspace/common/workspace.js";
+} from "vs/platform/workspace/common/workspace";
 
 // Preload.ts
 
@@ -71,7 +76,6 @@ const mockTauriApi = {
 	tauriResolve: async (...paths: string[]) => paths.join("/"),
 
 	getCurrentProcess: async (): Promise<any> => ({
-		// Use 'any' for ProcessInfo mock flexibility
 		arch: "x64",
 
 		execPath: "/mock/execPath",
@@ -99,45 +103,64 @@ interface ILocalProcessEnvironment {
 	[key: string]: string | undefined;
 }
 
+// This DTO is for data transfer, often what JSON.parse yields before URI.revive
+// It's a local version if VSCode's UriDto<T> is too complex for initial parsing.
+// However, INativeWindowConfiguration uses UriDto<T> directly.
+// We will aim to construct objects compatible with VSCode's UriDto<T>.
+
 // Configuration properties from the meta tag
 interface ICustomWorkbenchConfiguration {
 	availableLanguages?: Record<string, string>;
 
 	pseudo?: boolean;
 
+	// For profiles, INativeWindowConfiguration expects UriDto<IUserDataProfile>
+	// Data from meta could be already revived or raw DTO
 	defaultProfile?: IUserDataProfile | UriDto<IUserDataProfile>;
 
 	productConfiguration?: Partial<typeof product>;
 
+	// For loggers, INativeWindowConfiguration expects UriDto<ILoggerResource>[]
 	loggers?: Array<
 		Partial<ILoggerResource> & { resource: URI | UriDto<ILoggerResource> }
+
+		// Data from meta
 	>;
 
-	// For converting to INativeWindowConfiguration.accessibilitySupport
+	// To be converted to boolean for INativeWindowConfiguration
 	accessibilitySupportOverride?: "on" | "off" | "auto" | string;
 
-	// From NativeParsedArgs can be string[]
-	"folder-uri"?: string[] | UriDto<any>[];
+	// Allow UriComponents if revived early
+	"folder-uri"?: string[] | UriComponents[];
 
-	// From NativeParsedArgs can be string[]
-	"file-uri"?: string[] | UriDto<any>[];
+	"file-uri"?: string[] | UriComponents[];
 
-	// From NativeParsedArgs can be string[]
-	"workspace-uri"?: string[] | UriDto<any>[];
+	"workspace-uri"?: string[] | UriComponents[];
 
-	// Add other NativeParsedArgs fields if they come from meta tag
+	// Positional arguments from NativeParsedArgs
 	_?: string[];
 
 	diff?: boolean;
 
-	merge?: boolean;
-
 	add?: boolean;
 
+	merge?: boolean;
+
+	// NativeParsedArgs
 	goto?: boolean;
 
-	// From ISandboxConfiguration, not INativeWindowConfiguration
+	// From INativeWindowConfiguration
+	locale?: string;
+
+	// For ISandboxConfiguration
 	parentPid?: number;
+
+	// For INativeWindowConfiguration
+	backupPath?: string;
+
+	// Add other fields from INativeWindowConfiguration / NativeParsedArgs if they come via meta tag
+	// Allow other properties
+	[key: string]: any;
 }
 
 declare const __DEV__: boolean;
@@ -174,6 +197,19 @@ interface TauriProcessEnv extends ILocalProcessEnvironment {
 	VSCODE_DEV?: "1";
 }
 
+// Helper to create a mock IpcRendererEvent
+const createMockIpcEvent = (
+	sender: IpcRenderer,
+): Partial<IpcRendererEvent> => ({
+	// Use Partial if IpcRendererEvent is complex
+	sender,
+
+	preventDefault: () => WarnLog("IPC event preventDefault() called on shim"),
+
+	// Add if IpcRendererEvent has it
+	// defaultPrevented: false,
+});
+
 function reviveProfileUrisRecursively(data: any): any {
 	if (!data || typeof data !== "object") {
 		return data;
@@ -183,16 +219,13 @@ function reviveProfileUrisRecursively(data: any): any {
 		return data.map(reviveProfileUrisRecursively);
 	}
 
-	const GUEST_SCHEME_AUTHORITY_REGEXP =
-		/^vscode-remote-guest:(\/\/([^\\/?#]*))?/;
-
+	// Check for VSCode's $mid property or URI-like structure
 	if (
-		(typeof data.scheme === "string" &&
-			(data.scheme === "file" ||
-				data.scheme === "vscode-userdata" ||
-				GUEST_SCHEME_AUTHORITY_REGEXP.test(data.scheme))) ||
 		data.$mid === 1 ||
-		data.$mid === 11
+		data.$mid === 11 ||
+		(typeof data.scheme === "string" &&
+			(typeof data.path === "string" ||
+				typeof data.authority === "string"))
 	) {
 		return URI.revive(data as UriComponents);
 	}
@@ -203,6 +236,7 @@ function reviveProfileUrisRecursively(data: any): any {
 		if (Object.prototype.hasOwnProperty.call(data, key)) {
 			const value = data[key];
 
+			// Heuristic for properties that are likely URIs or contain URIs
 			if (
 				(key.endsWith("Uri") ||
 					key.endsWith("Resource") ||
@@ -250,7 +284,6 @@ function reviveProfileUrisRecursively(data: any): any {
 
 (async () => {
 	try {
-		// Using mock
 		const currentProcessInfo: any = await mockTauriApi.getCurrentProcess();
 
 		const platform: string = await mockTauriApi.tauriOsPlatform();
@@ -269,7 +302,7 @@ function reviveProfileUrisRecursively(data: any): any {
 
 		const tauriAppExeDir: string = await mockTauriApi.executableDir();
 
-		// TS6133: unused
+		// Used for appRoot
 		// const tauriResDir: string = await mockTauriApi.resourceDir();
 
 		const nodeEnvFromDefine: string =
@@ -296,7 +329,7 @@ function reviveProfileUrisRecursively(data: any): any {
 					INativeWindowConfiguration & ICustomWorkbenchConfiguration
 				>;
 			} catch (e) {
-				ErrorLog("Failed to parse workbench options from meta tag:", e);
+				ErrorLog("Failed to parse workbench options:", e);
 
 				return {};
 			}
@@ -382,47 +415,112 @@ function reviveProfileUrisRecursively(data: any): any {
 					tauriEmit(
 						channel,
 
-						args.length === 1 ? args[0] : args,
+						args.length === 1 && args[0] !== undefined
+							? args[0]
+							: args,
 					).catch(ErrorLog);
+				else
+					WarnLog(
+						`Denying IPC send on non-vscode channel: ${channel}`,
+					);
 			},
 
 			invoke: async (channel, ...args) => {
-				if (channel === "vscode:fetchShellEnv")
-					return {
-						...sandboxNodeProcessShim.env,
-
-						FROM_TAURI_SHELL_ENV_SHIM: "true",
-					};
-
 				if (channel.startsWith("vscode:")) {
-					WarnLog("Invoke unhandled:", channel, args);
+					if (channel === "vscode:fetchShellEnv") {
+						WarnLog(
+							"Shim: ipcRenderer.invoke('vscode:fetchShellEnv') returning current env.",
+						);
 
-					return undefined;
+						return {
+							...(sandboxNodeProcessShim.env as TauriProcessEnv),
+
+							FROM_TAURI_SHELL_ENV_SHIM: "true",
+						};
+					}
+
+					WarnLog(
+						`IPC Invoke: Unhandled vscode channel '${channel}'. Args:`,
+
+						args,
+					);
+
+					try {
+						return await mockTauriApi.invoke(
+							`vscode_ipc:${channel.substring(7)}`,
+
+							{ args },
+						);
+					} catch (e) {
+						ErrorLog(`Error invoking generic IPC '${channel}':`, e);
+
+						return undefined;
+					}
 				}
 
-				throw new Error("invoke denied");
+				WarnLog(`Denying IPC invoke on non-vscode channel: ${channel}`);
+
+				throw new Error(`Unsupported IPC invoke channel: ${channel}`);
 			},
 
-			on: (ch, l) => {
-				if (ch.startsWith("vscode:"))
-					tauriListen(ch, (e: TauriEvent<any>) =>
-						l({ sender: ipcRendererShimImpl }, e.payload),
-					).catch(ErrorLog);
+			on: (
+				channel: string,
+
+				listener: (event: IpcRendererEvent, ...args: any[]) => void,
+			): IpcRenderer => {
+				// Matched IpcRendererEvent
+				if (channel.startsWith("vscode:")) {
+					tauriListen(channel, (event: TauriEvent<any>) =>
+						listener(
+							createMockIpcEvent(
+								ipcRendererShimImpl,
+							) as IpcRendererEvent,
+
+							event.payload,
+						),
+					).catch((e) =>
+						ErrorLog(`Error listening to IPC '${channel}':`, e),
+					);
+				}
 
 				return ipcRendererShimImpl;
 			},
 
-			once: (ch, l) => {
-				if (ch.startsWith("vscode:"))
-					tauriOnce(ch, (e: TauriEvent<any>) =>
-						l({ sender: ipcRendererShimImpl }, e.payload),
-					).catch(ErrorLog);
+			once: (
+				channel: string,
+
+				listener: (event: IpcRendererEvent, ...args: any[]) => void,
+			): IpcRenderer => {
+				// Matched IpcRendererEvent
+				if (channel.startsWith("vscode:")) {
+					tauriOnce(channel, (event: TauriEvent<any>) =>
+						listener(
+							createMockIpcEvent(
+								ipcRendererShimImpl,
+							) as IpcRendererEvent,
+
+							event.payload,
+						),
+					).catch((e) =>
+						ErrorLog(
+							`Error listening once to IPC '${channel}':`,
+
+							e,
+						),
+					);
+				}
 
 				return ipcRendererShimImpl;
 			},
 
-			removeListener: (ch, _l) => {
-				WarnLog("removeListener not impl", ch);
+			removeListener: (
+				_channel: string,
+
+				_listener: (...args: any[]) => void,
+			): IpcRenderer => {
+				WarnLog(
+					`Shim: ipcRenderer.removeListener for '${_channel}' is not implemented.`,
+				);
 
 				return ipcRendererShimImpl;
 			},
@@ -445,8 +543,8 @@ function reviveProfileUrisRecursively(data: any): any {
 
 				const tauriAppData = await mockTauriApi.appDataDir();
 
-				// TS6133: tauriLogsPath -> tauriLogsDir
-				const tauriLogsDir = await mockTauriApi.appLogDir();
+				// Was tauriLogsPath, made consistent.
+				// const tauriLogsDir = await mockTauriApi.appLogDir();
 
 				const defaultProfileLocation = URI.file(
 					await mockTauriApi.tauriJoin(
@@ -538,67 +636,40 @@ function reviveProfileUrisRecursively(data: any): any {
 
 					...defaultProfileCommonProps,
 
-					useDefaultFlags: {},
+					useDefaultFlags: {} as UseDefaultProfileFlags,
 
 					isTransient: false,
 				};
 
+				// Creates an object that is compatible with UriDto<T> where T is IUserDataProfile
+				// by making sure all URI fields in IUserDataProfile become UriComponents.
 				const profileToUriDto = (
 					profile: IUserDataProfile,
 				): UriDto<IUserDataProfile> => {
-					// TS2353: UriDto<T> is UriComponents & { T?: T; }. No 'payload'.
-					// VSCode's INativeWindowConfiguration uses UriDto<IUserDataProfile> which implies the profile data itself
-					// might be expected under the 'T' (phantom) property, or simply that the URI points to a profile whose
-					// data is loaded separately. For `profiles.profile` and `profiles.all`, it's likely the DTO should contain the data.
-					// If `UriDto<T>` means the T is directly on the object, it should be:
-					// return { $mid: 11, ...profile.location.toJSON(), T: profile };
+					// VSCode DTO marker
+					const dto: any = { $mid: 11 };
 
-					// However, the type is T?: T, so it's optional. Most likely, URI.revive is used on the components
-					// and the context (like profiles.profile.payload if `payload` was a thing) is handled by higher logic.
-					// For now, let's assume UriDto for INativeWindowConfiguration just means the URI itself.
-					// If full profile data needs to be in the DTO for revival, the `UriDto` definition needs careful handling.
-					// The `reviveProfile` function from `userDataProfile.ts` shows it expects properties of IUserDataProfile on the DTO.
-					// So, it's not just UriComponents. It's likely a flat object.
-					const flatProfileDto: any = {
-						// Build an object matching IUserDataProfile but with URIs as UriComponents
-						// Common marker for VSCode DTOs
-						$mid: 11,
+					for (const key in profile) {
+						const propKey = key as keyof IUserDataProfile;
 
-						id: profile.id,
+						const value = profile[propKey];
 
-						isDefault: profile.isDefault,
+						if (value instanceof URI) {
+							// Convert URI to UriComponents
+							dto[propKey] = value.toJSON();
+						} else if (
+							Array.isArray(value) &&
+							value.every((item) => item instanceof URI)
+						) {
+							dto[propKey] = value.map((uri) =>
+								(uri as URI).toJSON(),
+							);
+						} else {
+							dto[propKey] = value;
+						}
+					}
 
-						name: profile.name,
-
-						icon: profile.icon,
-
-						location: profile.location.toJSON(),
-
-						globalStorageHome: profile.globalStorageHome.toJSON(),
-
-						settingsResource: profile.settingsResource.toJSON(),
-
-						keybindingsResource:
-							profile.keybindingsResource.toJSON(),
-
-						tasksResource: profile.tasksResource.toJSON(),
-
-						snippetsHome: profile.snippetsHome.toJSON(),
-
-						promptsHome: profile.promptsHome.toJSON(),
-
-						extensionsResource: profile.extensionsResource.toJSON(),
-
-						cacheHome: profile.cacheHome.toJSON(),
-
-						useDefaultFlags: profile.useDefaultFlags,
-
-						isTransient: profile.isTransient,
-
-						workspaces: profile.workspaces?.map((w) => w.toJSON()),
-					};
-
-					return flatProfileDto as UriDto<IUserDataProfile>;
+					return dto as UriDto<IUserDataProfile>;
 				};
 
 				const defaultProfilesValue = {
@@ -619,6 +690,38 @@ function reviveProfileUrisRecursively(data: any): any {
 					profile: profileToUriDto(defaultUserDataProfile),
 				};
 
+				// Creates an object compatible with UriDto<ILoggerResource>
+				const loggerToUriDto = (
+					loggerData: ILoggerResource,
+				): UriDto<ILoggerResource> => {
+					const dto: any = { $mid: 11 };
+
+					for (const key in loggerData) {
+						const propKey = key as keyof ILoggerResource;
+
+						const value = loggerData[propKey];
+
+						if (value instanceof URI) {
+							dto[propKey] = value.toJSON();
+						} else {
+							dto[propKey] = value;
+						}
+					}
+
+					// The UriDto's components should refer to the logger's primary resource (log file URI)
+					// This often means spreading the components of loggerData.resource
+					const resourceComponents = loggerData.resource.toJSON();
+
+					for (const compKey in resourceComponents) {
+						if (!(compKey in dto)) {
+							// Avoid overwriting id, name etc. if they match component keys
+							dto[compKey] = (resourceComponents as any)[compKey];
+						}
+					}
+
+					return dto as UriDto<ILoggerResource>;
+				};
+
 				const revivedLoggers: UriDto<ILoggerResource>[] = (
 					initialConfigFromMeta.loggers || []
 				).map((l): UriDto<ILoggerResource> => {
@@ -634,76 +737,20 @@ function reviveProfileUrisRecursively(data: any): any {
 								);
 
 					const loggerData: ILoggerResource = {
-						// This is the "payload" for UriDto<ILoggerResource>
 						id: l.id || "default",
 
 						name: l.name || "Default Logger",
 
 						resource: resourceUri,
 
-						// Use value imported LogLevel
-						logLevel: l.logLevel as LogLevel | undefined,
+						logLevel: l.logLevel as LogLevel,
 
-						hidden:
-							typeof l.hidden === "boolean"
-								? l.hidden
-								: undefined,
+						hidden: typeof l.hidden === "boolean" ? l.hidden : true,
 
-						when: typeof l.when === "string" ? l.when : undefined,
+						when: typeof l.when === "string" ? l.when : "",
 					};
 
-					// Constructing UriDto<ILoggerResource> as per VSCode's likely expectation for INativeWindowConfiguration
-					// It's usually the URI components plus the actual T payload flattened or as a property.
-					// Based on reviveProfile, it expects properties of T directly on the DTO.
-					const loggerDto: any = {
-						$mid: 11,
-
-						// URI components of the log file
-						...resourceUri.toJSON(),
-
-						// ...and properties of ILoggerResource (the payload)
-						id: loggerData.id,
-
-						name: loggerData.name,
-
-						// resource itself within payload is URI, not components
-						// logLevel, hidden, when are direct properties of ILoggerResource
-						logLevel: loggerData.logLevel,
-
-						hidden: loggerData.hidden,
-
-						when: loggerData.when,
-
-						// The 'resource' property in the DTO for ILoggerResource's 'resource' field is tricky.
-						// It could be another UriDto or just the URI string. Assuming URI components for now.
-						// For INativeWindowConfiguration.loggers, each element is UriDto<ILoggerResource>.
-						// The `resource` field *within* ILoggerResource is a URI.
-						// The UriDto itself represents the logger entity, often identified by its main resource URI.
-					};
-
-					// To be very precise for UriDto<ILoggerResource>, it would be:
-					// { ...uriOfTheLogFile.toJSON(), T: actualLoggerResourceObject }
-
-					// But reviveProfile indicates a flatter structure.
-					// Let's assume the $mid + UriComponents refers to the log file URI,
-
-					// and the payload T (ILoggerResource) is somewhat flattened or referenced.
-					// For simplicity, the above DTO might be what VSCode expects if it revives the full logger from this.
-					// The error TS2353 for 'payload' means `UriDto<T>` does not have 'payload'.
-					// If the intention is to make the DTO's components refer to the logger's primary resource
-					// and embed the logger data, it's usually:
-					// { ...loggerData.resource.toJSON(), ...loggerData (excluding resource if already spread) }
-
-					// This part is highly dependent on how VSCode's INativeWindowConfiguration revival logic handles UriDto<ILoggerResource>.
-					// For now, using a structure that `URI.revive(dto.payload)` might work on if `dto` itself is revived.
-					// Let's assume the DTO itself is the logger data, with its 'resource' field being a URI (or components).
-					return {
-						$mid: 11,
-
-						...loggerData.resource.toJSON(),
-
-						...loggerData,
-					} as UriDto<ILoggerResource>;
+					return loggerToUriDto(loggerData);
 				});
 
 				let workspaceToSet:
@@ -731,15 +778,17 @@ function reviveProfileUrisRecursively(data: any): any {
 					}
 				}
 
-				const mapUriDtoArrayToStringArray = (
-					arr?: UriDto<any>[] | string[],
+				const mapUriComponentsArrayToStringArray = (
+					arr?: UriComponents[] | string[],
 				): string[] | undefined => {
 					if (!arr) return undefined;
 
+					// TS2352: If 'item' is UriDto, it's not directly UriComponents for URI.revive.
+					// Assuming data from meta is string[] or already revived UriComponents[].
 					return arr.map((item) =>
 						typeof item === "string"
 							? item
-							: URI.revive(item as UriComponents).toString(),
+							: URI.revive(item).toString(),
 					);
 				};
 
@@ -773,45 +822,47 @@ function reviveProfileUrisRecursively(data: any): any {
 					userEnv: {},
 
 					// NativeParsedArgs fields:
-					"folder-uri": mapUriDtoArrayToStringArray(
-						initialConfigFromMeta["folder-uri"],
+					// "folder-uri": mapUriDtoArrayToStringArray(
+					// 	initialConfigFromMeta["folder-uri"],
+					// ),
+
+					"file-uri": mapUriComponentsArrayToStringArray(
+						initialConfigFromMeta["file-uri"] as
+							| UriComponents[]
+							| string[]
+							| undefined,
 					),
 
-					"file-uri": mapUriDtoArrayToStringArray(
-						initialConfigFromMeta["file-uri"],
-					),
-
-					// TS802/TS2551: Use string key for 'workspace-uri'
-					// "workspace-uri": mapUriDtoArrayToStringArray(
+					// "workspace-uri": mapUriComponentsArrayToStringArray(
 					// 	initialConfigFromMeta[
 					// 		"workspace-uri" as keyof ICustomWorkbenchConfiguration
-					// 	] as UriDto<any>[] | string[] | undefined,
-
+					// 	] as UriComponents[] | string[] | undefined,
 					// ),
 
 					_: initialConfigFromMeta._ || [],
 
-					diff: initialConfigFromMeta.diff,
+					// Default to false if undefined
+					diff: initialConfigFromMeta.diff ?? false,
 
-					merge: initialConfigFromMeta.merge,
+					merge: initialConfigFromMeta.merge ?? false,
 
-					add: initialConfigFromMeta.add,
+					add: initialConfigFromMeta.add ?? false,
 
-					goto: initialConfigFromMeta.goto,
+					goto: initialConfigFromMeta.goto ?? false,
 
-					// ISandboxConfiguration fields (some overlap with INativeWindowConfiguration)
+					// ISandboxConfiguration (which INativeWindowConfiguration extends)
 					windowId:
 						initialConfigFromMeta.windowId ??
 						Number(Window.getCurrent().label) ??
 						String(Date.now()),
 
-					// TS2339: parentPid - add if ISandboxConfiguration needs it and INative doesn't provide
 					// parentPid:
 					// 	initialConfigFromMeta.parentPid ||
 					// 	currentProcessInfo.pid ||
+					// 	// Added parentPid
 					// 	0,
 
-					// INativeWindowConfiguration fields:
+					// INativeWindowConfiguration specific fields:
 					mainPid: currentProcessInfo.pid || 0,
 
 					machineId: (await mockTauriApi
@@ -924,6 +975,7 @@ function reviveProfileUrisRecursively(data: any): any {
 
 					logLevel:
 						(initialConfigFromMeta.logLevel as LogLevel) ||
+						// Use LogLevel.Info as value
 						LogLevel.Info,
 
 					loggers: revivedLoggers,
@@ -953,7 +1005,8 @@ function reviveProfileUrisRecursively(data: any): any {
 							: initialConfigFromMeta.accessibilitySupportOverride ===
 								  "off"
 								? false
-								: undefined,
+								: // Corrected boolean conversion
+									undefined,
 
 					isCustomZoomLevel:
 						initialConfigFromMeta.isCustomZoomLevel ??

@@ -1,1 +1,1 @@
-import{ShowMessageDialog as o}from"../../../Integration/Tauri.js";function t(e){return o(`The requested file operation (${e}) might not be fully optimal in this environment.`,{title:"Notice",kind:"warning"})}export{t as default};
+import"../../../effect";import{ShowMessageDialog as o}from"../../../Integration/Tauri.js";function t(e){return o(`The requested file operation (${e}) might not be fully optimal in this environment.`,{title:"Notice",kind:"warning"})}export{t as default};

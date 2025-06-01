@@ -17,5 +17,5 @@
 		]
 	},
 	"include": ["../../../Target"],
-	"exclude": []
+	"exclude": ["../../Dependency/Microsoft/Dependency/Editor/src"]
 }
