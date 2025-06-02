@@ -437,43 +437,42 @@ The `Wind` repository is organized to clearly separate concerns:
 
 ```
 Wind/
-└── Source/
-    ├── Preload.ts				     # Core script for VSCode environment emulation in Tauri.
-    └── Application/
-        └── Dialog/				     # IFileDialogService implementation.
-    	    ├── Definition.ts		 # Concrete service logic.
-    	    ├── Live.ts			     # effect-ts Layer provider.
-    	    ├── Tag.ts			     # effect-ts Context Tag.
-    	    ├── Orchestration/	     # Effects for complex dialog flows (PickAndOpen, ShowOpen, ShowSave).
-    	    ├── Factory/			 # Pure functions to create VSCode/Tauri dialog options.
-    	    ├── Type/				 # Service-specific error types (OperationProblem, PickProblem, ServiceProblem).
-    	    ├── Utility/			 # Helper functions for the dialog service.
-    	    └── _HostServicePlaceholder.ts # Mock for backend HostService.
-    ├── Effect/
-    │   └── Produce/				 # Utilities for creating effect-ts Effects from async code.
-    │	   ├── FromAsync.ts		     # Wraps promise-returning functions.
-    │	   ├── OptionalFromAsync.ts  # Wraps promise-returning functions (nullable results).
-    │	   ├── FromMethod.ts		 # Wraps service methods returning promises.
-    │	   ├── OptionalFromMethod.ts # Wraps service methods (nullable results).
-    │	   └── Type/				 # Type definitions for Produce module (AsyncFunction, ErrorProducer).
-    ├── Integration/
-    │   └── Tauri/				    # Bridge to Tauri APIs using effect-ts.
-    │	   ├── Wrap/				# Effect wrappers for Tauri JS APIs & HostServiceTag methods.
-    │	   ├── Convert/			    # Pure data conversion functions (VSCode URI ↔ Tauri path, filters).
-    │	   ├── Define/			    # Pure factories for VSCode data structures (IFileToOpen, etc.).
-    │	   ├── Resolve/			    # Effects for resolving default dialog paths.
-    │	   ├── Error/			    # Custom Data.TaggedError types for Tauri integration issues.
-    │	   └── Type/				# Tauri-specific type definitions (DialogFilter, OpenOption, SaveOption).
-    ├── Platform/
-    │   └── VSCode/				    # Definitions/re-exports of core VSCode types and service Tags.
-    │	   ├── Type/				# VSCode's URI, Scheme, FileFilter, IOpenWindowOptions, etc.
-    │	   └── Provide/			    # effect-ts Tags for services (e.g., HostServiceTag for PerformAction).
-    ├── Source/
-    │   ├── Configuration/
-    │   │   ├── ESBuild/			 # ESBuild configurations (Wind.ts, Target.ts, Compile.ts).
-    │   │   └── tsconfig/			 # TypeScript configurations (e.g., Compile.json).
-    │   ├── Run.sh				     # Development build script.
-    │   └── prepublishOnly.sh		 # Publish preparation script.
+├── Source/
+│   ├── Preload.ts                   # Core script for VSCode environment emulation in Tauri.
+│   ├── Application/
+│   │   └── Dialog/                  # IFileDialogService implementation.
+│   │       ├── Definition.ts        # Concrete service logic.
+│   │       ├── Live.ts              # effect-ts Layer provider.
+│   │       ├── Tag.ts               # effect-ts Context Tag.
+│   │       ├── Orchestration/       # Effects for complex dialog flows (PickAndOpen, ShowOpen, ShowSave).
+│   │       ├── Factory/             # Pure functions to create VSCode/Tauri dialog options.
+│   │       ├── Type/                # Service-specific error types (OperationProblem, PickProblem, ServiceProblem).
+│   │       ├── Utility/             # Helper functions for the dialog service.
+│   │       └── _HostServicePlaceholder.ts # Mock for backend HostService.
+│   ├── Effect/
+│   │   └── Produce/                 # Utilities for creating effect-ts Effects from async code.
+│   │       ├── FromAsync.ts         # Wraps promise-returning functions.
+│   │       ├── OptionalFromAsync.ts # Wraps promise-returning functions (nullable results).
+│   │       ├── FromMethod.ts        # Wraps service methods returning promises.
+│   │       ├── OptionalFromMethod.ts# Wraps service methods (nullable results).
+│   │       └── Type/                # Type definitions for Produce module (AsyncFunction, ErrorProducer).
+│   ├── Integration/
+│   │   └── Tauri/                   # Bridge to Tauri APIs using effect-ts.
+│   │       ├── Wrap/                # Effect wrappers for Tauri JS APIs & HostServiceTag methods.
+│   │       ├── Convert/             # Pure data conversion functions (VSCode URI ↔ Tauri path, filters).
+│   │       ├── Define/              # Pure factories for VSCode data structures (IFileToOpen, etc.).
+│   │       ├── Resolve/             # Effects for resolving default dialog paths.
+│   │       ├── Error/               # Custom Data.TaggedError types for Tauri integration issues.
+│   │       └── Type/                # Tauri-specific type definitions (DialogFilter, OpenOption, SaveOption).
+│   ├── Platform/
+│   │   └── VSCode/                  # Definitions/re-exports of core VSCode types and service Tags.
+│   │       ├── Type/                # VSCode's URI, Scheme, FileFilter, IOpenWindowOptions, etc.
+│   │       └── Provide/             # effect-ts Tags for services (e.g., HostServiceTag for PerformAction).
+│   ├── Configuration/               # Build configurations and scripts.
+│   │   ├── ESBuild/                 # ESBuild configurations (Wind.ts, Target.ts, Compile.ts).
+│   │   └── tsconfig/                # TypeScript configurations (e.g., Compile.json).
+│   ├── Run.sh                       # Development build script.
+│   └── prepublishOnly.sh            # Publish preparation script.
 ├── package.json
 └── README.md
 ```
