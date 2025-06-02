@@ -1,5 +1,3 @@
-<a href="https://app.fossa.com/projects/git%2Bgithub.com%2FCodeEditorLand%2FWind?ref=badge_small"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FCodeEditorLand%2FWind.svg?type=small" alt="FOSSA Status"></a>
-
 <table><tr>
 <td colspan="1"> <h3 align="center"> <picture>
 <source media="(prefers-color-scheme: dark)" srcset="https://PlayForm.Cloud/Dark/Image/GitHub/Land.svg">
@@ -821,8 +819,6 @@ through [NGI0 Commons Fund](https://nlnet.nl/commonsfund), a fund established by
 	</td>
   </tr>
 </table>
-
-<a href="https://app.fossa.com/projects/git%2Bgithub.com%2FCodeEditorLand%2FWind?ref=badge_large&issueType=license"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FCodeEditorLand%2FWind.svg?type=large&issueType=license" alt="FOSSA Status"></a>
 
 ---
 
