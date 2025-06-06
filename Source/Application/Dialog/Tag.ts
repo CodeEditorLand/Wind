@@ -1,25 +1,26 @@
-// Application/Dialog/Tag.ts
-// Purpose: Defines the Effect Context Tag for IFileDialogService.
+// Source/Application/Dialog/Tag.ts
+import { Context, Effect } from "effect";
+import { Uri } from "vs/base/common/uri.js";
+import type { IFileDialogService } from "vs/platform/dialogs/common/dialogs.js";
 
-import { Context } from "effect";
-import type { IFileDialogService as VsCodeFileDialogServiceInterface } from "vs/platform/dialogs/common/dialogs";
+import type { DialogProblem } from "./Error/DialogProblem.js";
 
-/**
- * @module Tag (Service Tag for FileDialog)
- * @description Represents the `IFileDialogService` interface from VSCode.
- */
-export type Interface = VsCodeFileDialogServiceInterface;
+// We redefine the interface methods to return Effects.
+// This makes error types and dependencies explicit.
+export interface Interface {
+	readonly _serviceBrand: undefined;
 
-/**
- * @description The `effect-ts` `Context.Tag` for the `IFileDialogService`.
- * `Context.GenericTag<Identifier, Service>(key)` is used.
- * `Interface` (IFileDialogService) is used as both Identifier and Service type.
- * "vscode/FileDialogService" is the runtime key.
- */
-const DialogServiceTag = Context.GenericTag<Interface, Interface>(
-	"vscode/FileDialogService",
-);
+	readonly showSaveDialog: (
+		Options: VsCodeSaveOptions,
+	) => Effect.Effect<Option.Option<Uri>, DialogProblem>;
 
-// Type: Tag<Interface, Interface>
+	readonly showOpenDialog: (
+		Options: VsCodeOpenOptions,
+	) => Effect.Effect<Uri[] | undefined, DialogProblem>;
+
+	// ... other methods refactored similarly
+}
+
+const DialogServiceTag = Context.Tag<Interface>("vscode/FileDialogService");
 
 export default DialogServiceTag;

@@ -1,28 +1,17 @@
-// Integration/Tauri/Wrap/RequestOpenDialog.ts
-// Purpose: Effect wrapper for Tauri's open dialog.
+// Source/Integration/Tauri/Wrap/RequestOpenDialog.ts
+import { open, type OpenDialogOptions } from "@tauri-apps/plugin-dialog";
+import { Effect, Option } from "effect";
 
-import { open as SourceApi } from "@tauri-apps/plugin-dialog";
+import { TauriDialogProblem } from "../Error.js";
 
-import { OptionalFromAsync } from "../../../Effect/Produce.js";
-import { DialogProblem } from "../Error.js";
-// Tauri's OpenDialogOptions
-import type { OpenOption as TauriOpenOption } from "../Type.js";
+// Effect wrapper for Tauri's open dialog, returning an Option.
+// This isolates the impure Tauri call and gives it a typed error.
+const RequestOpenDialog = (
+	Options: OpenDialogOptions,
+): Effect.Effect<Option.Option<string | string[]>, TauriDialogProblem> =>
+	Effect.tryPromise({
+		try: () => open(Options),
+		catch: (Cause) => new TauriDialogProblem({ Cause, operation: "open" }),
+	}).pipe(Effect.map(Option.fromNullable));
 
-const CreateProblem = (cause: unknown): DialogProblem =>
-	new DialogProblem({ cause, operation: "open" });
-
-/**
- * @module RequestOpenDialog
- * @description Effect to request an open dialog from Tauri, yielding an Option.
- */
-const Request = OptionalFromAsync(
-	SourceApi as (
-		options: TauriOpenOption,
-	) => Promise<string | string[] | null>,
-
-	CreateProblem,
-
-	{ operation: "open" },
-);
-
-export default Request;
+export default RequestOpenDialog;

@@ -1,45 +1,18 @@
+// Source/Application/Instantiation/Layer.ts
 import { Layer } from "effect";
 
-import { LiveClipboardService } from "../Clipboard.js";
-import { LiveConfigurationService } from "../Configuration.js";
-import { LiveDialogService } from "../Dialog.js";
-import { LiveEditorService } from "../Editor.js";
-import { LiveEditorGroupsService } from "../EditorGroups.js";
-import { LiveEnvironmentService } from "../Environment.js";
-import { LiveFileService } from "../File.js";
-import { LiveFileSystemProvider } from "../FileSystem.js";
-import { LiveHistoryService } from "../History.js";
-import { LiveHostService, LiveNativeHostService } from "../Host.js";
-import { LiveLayoutService } from "../Layout.js";
-import { LiveLifecycleService } from "../Lifecycle.js";
+import { LiveNativeHostService } from "../Host.js";
 import { LiveLogService } from "../Log.js";
-import { LiveNotificationService } from "../Notification.js";
-import { LivePaneCompositeService } from "../PaneComposite.js";
-import { LiveStorageService } from "../Storage.js";
-import { LiveTextEditorService } from "../TextEditor.js";
-import { LiveViewDescriptorService } from "../Views.js";
-import { LiveWorkspacesService } from "../Workspaces.js";
+
+// ... we will add every other live service here
 
 // The master application layer that composes all our native services.
+// It defines the complete dependency graph of the application.
+// The final layer will have requirements of `never`, meaning it's self-contained.
 export const AppLayer = Layer.mergeAll(
-	LiveClipboardService,
-	LiveConfigurationService,
-	LiveDialogService,
-	LiveEditorService,
-	LiveEditorGroupsService,
-	LiveEnvironmentService,
-	LiveFileService,
-	LiveFileSystemProvider,
-	LiveHistoryService,
-	LiveHostService,
-	LiveNativeHostService,
-	LiveLayoutService,
-	LiveLifecycleService,
 	LiveLogService,
-	LiveNotificationService,
-	LivePaneCompositeService,
-	LiveStorageService,
-	LiveTextEditorService,
-	LiveViewDescriptorService,
-	LiveWorkspacesService,
+	LiveNativeHostService,
+	// LiveConfigurationService,
+	// LiveFileService,
+	// etc.
 );
