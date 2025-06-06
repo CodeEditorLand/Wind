@@ -1,1 +1,0 @@
-import{documentDir as r}from"@tauri-apps/api/path";import{FromAsync as t}from"../../../Effect/Produce.js";import{PathProblem as e}from"../Error.js";const m=o=>new e({cause:o,operation:"documentDir"}),n=t(r,m,{operation:"documentDir"});var p=n;export{p as default};

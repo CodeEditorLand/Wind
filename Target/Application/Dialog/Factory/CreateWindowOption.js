@@ -1,1 +1,0 @@
-import{pipe as i}from"../../../effect";function n(e){return i({forceNewWindow:e.forceNewWindow??!1},o=>typeof e.forceReuseWindow=="boolean"?{...o,forceReuseWindow:e.forceReuseWindow}:o,o=>e.remoteAuthority!==void 0?{...o,remoteAuthority:e.remoteAuthority}:o)}export{n as default};

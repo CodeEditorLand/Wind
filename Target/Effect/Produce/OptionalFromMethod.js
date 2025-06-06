@@ -1,1 +1,0 @@
-import{Effect as e,Option as i}from"../../effect";function c(n,o,t,a){return(...d)=>e.flatMap(n,r=>{const u=r[o];return e.tryPromise({try:()=>u.apply(r,d),catch:s=>t({...a,cause:s})}).pipe(e.map(i.fromNullable))})}export{c as default};

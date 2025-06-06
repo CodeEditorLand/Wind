@@ -1,1 +1,0 @@
-import{FromMethod as o}from"../../../Effect/Produce.js";import i from"../../../Platform/VSCode/Provide/Host.js";import{WindowProblem as n}from"../Error.js";const t=e=>new n({cause:e,operation:"hostServiceOpenWindow"}),p=o(i,"openWindow",t,{operation:"hostServiceOpenWindow"});var d=p;export{d as default};
