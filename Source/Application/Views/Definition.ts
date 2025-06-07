@@ -16,7 +16,7 @@ import {
 } from "../../Integration/Views.js";
 
 // This implementation is complex and stateful. We will use a class-based
-// approach that mirrors the original service but uses Effects for I/O.
+// approach that mirrors the original service but uses Effect for I/O.
 class TauriViewDescriptorService implements IViewDescriptorService {
 	readonly _serviceBrand: undefined;
 

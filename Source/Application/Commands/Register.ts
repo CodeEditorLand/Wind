@@ -2,17 +2,17 @@ import { Effect } from "effect";
 
 import { CommandRegistryRef } from "./Ref.js";
 
-export type CommandEffect<Args extends any[], R> = (
-	...args: Args
+export type CommandEffect<Argument extends any[], R> = (
+	...args: Argument
 ) => Effect.Effect<R, any, any>;
 
-interface ICommand<Args extends any[], R> {
+interface ICommand<Argument extends any[], R> {
 	Id: string;
-	Handler: CommandEffect<Args, R>;
+	Handler: CommandEffect<Argument, R>;
 }
 
-const RegisterCommand = <Args extends any[], R>(
-	Command: ICommand<Args, R>,
+const RegisterCommand = <Argument extends any[], R>(
+	Command: ICommand<Argument, R>,
 ): Effect.Effect<void, never, Ref.Ref<Map<string, CommandEffect<any, any>>>> =>
 	Effect.flatMap(CommandRegistryRef, (Registry) =>
 		Ref.update(Registry, (map) => map.set(Command.Id, Command.Handler)),

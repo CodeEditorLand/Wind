@@ -1,5 +1,5 @@
 // Effect/Produce.ts
-// Purpose: Aggregates and exports utilities for producing Effects.
+// Purpose: Aggregates and exports utilities for producing Effect.
 
 // Re-exports AsyncFunction, ErrorProducer types
 export * from "./Produce/Type.js";

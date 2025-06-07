@@ -32,7 +32,7 @@ class TauriInstantiationService implements IInstantiationService {
 		...args: any[]
 	): T {
 		const Constructor = ctorOrDescriptor.ctor ?? ctorOrDescriptor;
-		const StaticArguments = ctorOrDescriptor.staticArguments ?? [];
+		const StaticArgument = ctorOrDescriptor.staticArgument ?? [];
 
 		const ServiceLayer = LayerMap.get(Constructor);
 		if (!ServiceLayer) {
@@ -57,7 +57,7 @@ class TauriInstantiationService implements IInstantiationService {
 			InstanceContext.get(tag),
 		);
 
-		return new Constructor(...StaticArguments, ...args, ...Dependencies);
+		return new Constructor(...StaticArgument, ...args, ...Dependencies);
 	}
 
 	invokeFunction<R, TS extends any[] = []>(
@@ -139,7 +139,7 @@ class TauriInstantiationService implements IInstantiationService {
 		...args: any[]
 	): T {
 		const Constructor = ctorOrDescriptor.ctor ?? ctorOrDescriptor;
-		const StaticArguments = ctorOrDescriptor.staticArguments ?? [];
+		const StaticArgument = ctorOrDescriptor.staticArgument ?? [];
 
 		const ServiceLayer = LayerMap.get(Constructor);
 		if (ServiceLayer) {
@@ -155,7 +155,7 @@ class TauriInstantiationService implements IInstantiationService {
 				InstanceContext.get(tag),
 			);
 			return new Constructor(
-				...StaticArguments,
+				...StaticArgument,
 				...args,
 				...Dependencies,
 			);
@@ -166,7 +166,7 @@ class TauriInstantiationService implements IInstantiationService {
 			(Constructor[_util.DI_DEPENDENCIES] as any[] | undefined)
 				?.map((dep) => this.AppContext.get(dep.id))
 				.filter(Boolean) ?? [];
-		return new Constructor(...StaticArguments, ...args, ...Dependencies);
+		return new Constructor(...StaticArgument, ...args, ...Dependencies);
 	}
 
 	invokeFunction<R, TS extends any[] = []>(

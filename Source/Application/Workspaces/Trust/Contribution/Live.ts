@@ -48,7 +48,7 @@ const LiveWorkspaceTrustContribution = Layer.scopedDiscard(
 
 		const IsTrusted = TrustManagementService.IsTrusted; // A Ref<boolean>
 
-		// 2. Logic is broken down into small, composable Effects.
+		// 2. Logic is broken down into small, composable Effect.
 		const showTrustDialog = (options?: WorkspaceTrustRequestOptions) =>
 			DialogService.prompt({
 				type: Severity.Info,
@@ -117,7 +117,7 @@ const LiveWorkspaceTrustContribution = Layer.scopedDiscard(
 					Effect.all(
 						[
 							updateStatusbarEntry(isTrusted),
-							// BannerService.show/hide would also be Effects
+							// BannerService.show/hide would also be Effect
 						],
 						{ discard: true },
 					),

@@ -15,7 +15,7 @@ import {
 
 // This class implements the INativeWorkbenchEnvironmentService interface.
 // Instead of taking a giant config object, it fetches each piece of data
-// on demand from the backend via Effects, caching the results.
+// on demand from the backend via Effect, caching the results.
 class TauriWorkbenchEnvironmentService
 	implements INativeWorkbenchEnvironmentService
 {

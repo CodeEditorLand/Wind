@@ -15,7 +15,7 @@ export interface Interface {
 	readonly OnDidChangeTrust: Stream.Stream<boolean>;
 	readonly OnDidChangeTrustedFolders: Stream.Stream<void>;
 
-	// Promises are replaced with Effects that declare their errors
+	// Promises are replaced with Effect that declare their errors
 	readonly WorkspaceResolved: Effect.Effect<void, never>;
 	readonly WorkspaceTrustInitialized: Effect.Effect<void, never>;
 

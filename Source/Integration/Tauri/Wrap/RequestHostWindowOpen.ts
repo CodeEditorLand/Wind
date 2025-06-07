@@ -16,7 +16,7 @@ import { WindowProblem } from "../Error.js";
 const CreateProblem = (cause: unknown): WindowProblem =>
 	new WindowProblem({ cause, operation: "hostServiceOpenWindow" });
 
-type OpenWindowArgs = [
+type OpenWindowArgument = [
 	targets: ReadonlyArray<
 		| FolderOpenSpecification
 		| FileOpenSpecification
@@ -37,7 +37,7 @@ const Request = FromMethod<
 	Context.Tag.Service<typeof HostServiceTag>, // SourcedService (PerformAction)
 	Context.Tag.Identifier<typeof HostServiceTag>, // SourcedIdentifier (PerformAction)
 	"openWindow",
-	OpenWindowArgs,
+	OpenWindowArgument,
 	void,
 	{ operation: "hostServiceOpenWindow" },
 	WindowProblem

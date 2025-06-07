@@ -98,7 +98,7 @@ const LiveFileDialogService = Layer.effect(
 			showSaveDialog: (options) =>
 				showSaveDialog(options).pipe(Effect.map(Option.getOrUndefined)),
 
-			// ... other methods implemented as Effects ...
+			// ... other methods implemented as Effect ...
 			pickFileAndOpen: (options) => Effect.die("Not implemented"), // Example stub
 			pickFolderAndOpen: (options) => Effect.die("Not implemented"),
 			pickWorkspaceAndOpen: (options) => Effect.die("Not implemented"),

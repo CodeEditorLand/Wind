@@ -5,8 +5,8 @@ import { Cause, Effect } from "effect";
 
 // Use type aggregator
 // Assuming these are defined appropriately:
-type AsyncFunction<Arguments extends any[], Value> = (
-	...args: Arguments
+type AsyncFunction<Argument extends any[], Value> = (
+	...args: Argument
 ) => Promise<Value>;
 
 // ErrorProducer produces an ErrorType, which must include a cause
@@ -28,7 +28,7 @@ type ErrorProducer<
  * @description Creates an Effect-returning function from a Promise-returning one.
  */
 export default function FromAsync<
-	Arguments extends any[],
+	Argument extends any[],
 	Value,
 	// Static data, doesn't include 'cause' initially
 	ErrorData extends Record<string, any>,
@@ -39,14 +39,14 @@ export default function FromAsync<
 		readonly cause: unknown;
 	} & ErrorData,
 >(
-	Source: AsyncFunction<Arguments, Value>,
+	Source: AsyncFunction<Argument, Value>,
 
 	CreateProblem: ErrorProducer<ErrorData, ErrorType>,
 
 	// This is the data *without* the cause
 	StaticData: ErrorData,
-): (...args: Arguments) => Effect.Effect<Value, ErrorType> {
-	return (...args: Arguments) =>
+): (...args: Argument) => Effect.Effect<Value, ErrorType> {
+	return (...args: Argument) =>
 		Effect.tryPromise({
 			try: () => Source(...args),
 

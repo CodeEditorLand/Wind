@@ -11,7 +11,7 @@ import type { AsyncFunction, ErrorProducer } from "./Type.js";
  * @description Creates an Effect<Option<Value>> from a Promise that might resolve to null/undefined.
  */
 export default function OptionalFromAsync<
-	Arguments extends any[],
+	Argument extends any[],
 	Value,
 	ErrorData extends Record<string, any>,
 	ErrorType extends Cause.YieldableError & {
@@ -21,13 +21,13 @@ export default function OptionalFromAsync<
 		readonly cause: unknown;
 	} & ErrorData,
 >(
-	Source: AsyncFunction<Arguments, Value | null | undefined>,
+	Source: AsyncFunction<Argument, Value | null | undefined>,
 
 	CreateProblem: ErrorProducer<ErrorData, ErrorType>,
 
 	StaticData: ErrorData,
-): (...args: Arguments) => Effect.Effect<Option.Option<Value>, ErrorType> {
-	return (...args: Arguments) =>
+): (...args: Argument) => Effect.Effect<Option.Option<Value>, ErrorType> {
+	return (...args: Argument) =>
 		Effect.tryPromise({
 			try: () => Source(...args),
 

@@ -102,7 +102,7 @@ const LiveWorkspaceTrustManagementService = Layer.scoped(
 
 		yield* _(Effect.forkDaemon(listenForChangesEffect));
 
-		// 5. The Service Implementation: Methods return Effects.
+		// 5. The Service Implementation: Methods return Effect.
 		const service: WorkspaceTrustManagement = {
 			_serviceBrand: undefined,
 			IsTrusted: IsTrustedRef,

@@ -285,7 +285,7 @@ backend).
           (FolderOpenSpecification) object from a `URI`.
         - `WorkspaceOpen.ts`: Creates a VSCode `IWorkspaceToOpen`
           (WorkspaceOpenSpecification) object from a `URI`.
-    - **`Resolve/*` (Composed Path Resolving Effects):**
+    - **`Resolve/*` (Composed Path Resolving Effect):**
         - `FallbackDefaultPath.ts`: An `Effect` that tries to determine a
           fallback default path. It first attempts `FetchHomeDirectory`. If that
           fails with a `PathProblem` specific to `homeDir` operation, it then
@@ -442,13 +442,13 @@ Wind/
 │   │       ├── Definition.ts        # Concrete service logic.
 │   │       ├── Live.ts              # effect-ts Layer provider.
 │   │       ├── Tag.ts               # effect-ts Context Tag.
-│   │       ├── Orchestration/       # Effects for complex dialog flows (PickAndOpen, ShowOpen, ShowSave).
+│   │       ├── Orchestration/       # Effect for complex dialog flows (PickAndOpen, ShowOpen, ShowSave).
 │   │       ├── Factory/             # Pure functions to create VSCode/Tauri dialog options.
 │   │       ├── Type/                # Service-specific error types (OperationProblem, PickProblem, ServiceProblem).
 │   │       ├── Utility/             # Helper functions for the dialog service.
 │   │       └── _HostServicePlaceholder.ts # Mock for backend HostService.
 │   ├── Effect/
-│   │   └── Produce/                 # Utilities for creating effect-ts Effects from async code.
+│   │   └── Produce/                 # Utilities for creating effect-ts Effect from async code.
 │   │       ├── FromAsync.ts         # Wraps promise-returning functions.
 │   │       ├── OptionalFromAsync.ts # Wraps promise-returning functions (nullable results).
 │   │       ├── FromMethod.ts        # Wraps service methods returning promises.
@@ -459,7 +459,7 @@ Wind/
 │   │       ├── Wrap/                # Effect wrappers for Tauri JS APIs & HostServiceTag methods.
 │   │       ├── Convert/             # Pure data conversion functions (VSCode URI ↔ Tauri path, filters).
 │   │       ├── Define/              # Pure factories for VSCode data structures (IFileToOpen, etc.).
-│   │       ├── Resolve/             # Effects for resolving default dialog paths.
+│   │       ├── Resolve/             # Effect for resolving default dialog paths.
 │   │       ├── Error/               # Custom Data.TaggedError types for Tauri integration issues.
 │   │       └── Type/                # Tauri-specific type definitions (DialogFilter, OpenOption, SaveOption).
 │   ├── Platform/
@@ -467,7 +467,7 @@ Wind/
 │   │       ├── Type/                # VSCode's URI, Scheme, FileFilter, IOpenWindowOptions, etc.
 │   │       └── Provide/             # effect-ts Tags for services (e.g., HostServiceTag for PerformAction).
 │   ├── Configuration/               # Build configurations and scripts.
-│   │   ├── ESBuild/                 # ESBuild configurations (Wind.ts, Target.ts, Compile.ts).
+│   │   ├── ESBuild/                 # ESBuild configurations .
 │   │   └── tsconfig/                # TypeScript configurations (e.g., Compile.json).
 │   ├── Run.sh                       # Development build script.
 │   └── prepublishOnly.sh            # Publish preparation script.
@@ -693,11 +693,11 @@ graph LR
 
 	subgraph "Sky (Frontend UI - Tauri Webview)"
 		SkyApp["Sky Application Code (VSCode UI Components)"]:::sky
-		SkyEffects["Sky Effect-TS Logic (Optional)"]:::sky
+		SkyEffect["Sky Effect-TS Logic (Optional)"]:::sky
 	end
 
 	subgraph "Wind (VSCode Env & Services Layer - Runs in Webview)"
-		PreloadJS["Preload.js (from Wind/Preload.ts)"]:::wind
+		PreloadJS["Preload.js "]:::wind
 		WindowVSCodeGlobal["window.vscode (Globals & Shims for IPC, Process, Config)"]:::wind
 		WindServices["Wind Services (e.g., FileDialogService via Wind/Application/Dialog)"]:::wind
 		WindEffectTS["Wind Effect-TS Runtime & Service Layers"]:::effectts
@@ -718,7 +718,7 @@ graph LR
 
 		TauriIntegrations -- Uses --> VSCodePlatformAbstractions;
 
-		SkyEffects -- May leverage --> WindEffectTS;
+		SkyEffect -- May leverage --> WindEffectTS;
 
 		PreloadJS -- Reads Config from --> SkyAppMetaTag[HTML Meta Tag in Sky's index.html];
 

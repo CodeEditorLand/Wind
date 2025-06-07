@@ -71,13 +71,13 @@ export const RipgrepSearch = (
 	folderQuery: IFolderQuery,
 ): Stream.Stream<string, RipgrepError> => {
 	// ... logic from `spawnRipgrepCmd` to build args would go here ...
-	const { command, args, options } = buildRipgrepArgs(query, folderQuery); // Placeholder for arg building
+	const { command, args, options } = buildRipgrepArgument(query, folderQuery); // Placeholder for arg building
 
 	return streamFromCommand(command, args, { cwd: options.cwd });
 };
 
 // Placeholder for the complex argument building logic from the original file
-const buildRipgrepArgs = (query: IFileQuery, folderQuery: IFolderQuery) => {
+const buildRipgrepArgument = (query: IFileQuery, folderQuery: IFolderQuery) => {
 	// This would contain the logic from `spawnRipgrepCmd`
 	return {
 		command: "rg",

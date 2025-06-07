@@ -14,10 +14,10 @@ export default function FromMethod<
 			? Key
 			: never;
 	}[keyof SourcedService],
-	Arguments extends SourcedService[Method] extends (
-		...args: infer Args
+	Argument extends SourcedService[Method] extends (
+		...args: infer Argument
 	) => Promise<any>
-		? Args
+		? Argument
 		: never,
 	Value extends SourcedService[Method] extends (
 		...args: any[]
@@ -34,12 +34,12 @@ export default function FromMethod<
 	MethodName: Method,
 	CreateProblem: ErrorProducer<ErrorData, ErrorType>,
 	StaticData: ErrorData,
-): (...args: Arguments) => Effect.Effect<Value, ErrorType, SourcedIdentifier> {
+): (...args: Argument) => Effect.Effect<Value, ErrorType, SourcedIdentifier> {
 	// Effect requires the Identifier type of the Tag
-	return (...args: Arguments) =>
+	return (...args: Argument) =>
 		Effect.flatMap(ServiceTag, (ServiceInstance: SourcedService) => {
 			const Operation = (ServiceInstance as any)[MethodName] as (
-				...opArgs: Arguments
+				...opArgument: Argument
 			) => Promise<Value>;
 
 			return Effect.tryPromise({

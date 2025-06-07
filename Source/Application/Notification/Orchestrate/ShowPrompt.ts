@@ -11,7 +11,7 @@ import {
 } from "../../Integration/Dialog.js"; // Assuming these exist
 import { NotificationProblem } from "../Error.js";
 
-interface PromptArguments {
+interface PromptArgument {
 	readonly severity: Severity;
 	readonly message: string;
 	readonly choices: readonly IPromptChoice[];
@@ -32,13 +32,13 @@ const ConvertSeverityToTitle = (severity: Severity): string => {
 };
 
 const ShowPrompt = (
-	Args: PromptArguments,
+	Argument: PromptArgument,
 ): Effect.Effect<void, NotificationProblem, never> => {
-	const PrimaryChoices = Args.choices.filter((choice) => !choice.isSecondary);
-	const Title = ConvertSeverityToTitle(Args.severity);
+	const PrimaryChoices = Argument.choices.filter((choice) => !choice.isSecondary);
+	const Title = ConvertSeverityToTitle(Argument.severity);
 
 	if (PrimaryChoices.length === 0) {
-		return RequestMessageDialog(Args.message, {
+		return RequestMessageDialog(Argument.message, {
 			title: Title,
 			kind: "info",
 		});
@@ -47,20 +47,20 @@ const ShowPrompt = (
 	if (PrimaryChoices.length === 1) {
 		const OkChoice = PrimaryChoices[0];
 		return pipe(
-			RequestConfirmDialog(Args.message, {
+			RequestConfirmDialog(Argument.message, {
 				title: Title,
 				okLabel: OkChoice.label,
 			}),
 			Effect.if({
 				onTrue: Effect.sync(() => OkChoice.run()),
-				onFalse: Effect.sync(() => Args.options?.onCancel?.()),
+				onFalse: Effect.sync(() => Argument.options?.onCancel?.()),
 			}),
 		);
 	}
 
 	// For >1 primary choices, we use a message dialog and can't handle the actions natively.
 	// A custom HTML dialog would be required for full support.
-	return RequestMessageDialog(Args.message, { title: Title, kind: "info" });
+	return RequestMessageDialog(Argument.message, { title: Title, kind: "info" });
 };
 
 export default ShowPrompt;

@@ -137,7 +137,7 @@ interface ICustomWorkbenchConfiguration {
 
 	"workspace-uri"?: string[] | UriComponents[];
 
-	// Positional arguments from NativeParsedArgs
+	// Positional arguments from NativeParsedArgument
 	_?: string[];
 
 	diff?: boolean;
@@ -146,7 +146,7 @@ interface ICustomWorkbenchConfiguration {
 
 	merge?: boolean;
 
-	// NativeParsedArgs
+	// NativeParsedArgument
 	goto?: boolean;
 
 	// From INativeWindowConfiguration
@@ -158,7 +158,7 @@ interface ICustomWorkbenchConfiguration {
 	// For INativeWindowConfiguration
 	backupPath?: string;
 
-	// Add other fields from INativeWindowConfiguration / NativeParsedArgs if they come via meta tag
+	// Add other fields from INativeWindowConfiguration / NativeParsedArgument if they come via meta tag
 	// Allow other properties
 	[key: string]: any;
 }
@@ -440,7 +440,7 @@ function reviveProfileUrisRecursively(data: any): any {
 					}
 
 					WarnLog(
-						`IPC Invoke: Unhandled vscode channel '${channel}'. Args:`,
+						`IPC Invoke: Unhandled vscode channel '${channel}'. Argument:`,
 
 						args,
 					);
@@ -821,7 +821,7 @@ function reviveProfileUrisRecursively(data: any): any {
 
 					userEnv: {},
 
-					// NativeParsedArgs fields:
+					// NativeParsedArgument fields:
 					// "folder-uri": mapUriDtoArrayToStringArray(
 					// 	initialConfigFromMeta["folder-uri"],
 					// ),

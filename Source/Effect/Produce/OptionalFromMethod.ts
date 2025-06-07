@@ -16,7 +16,7 @@ export default function OptionalFromMethod<
 			? Key
 			: never;
 	}[keyof SourcedService],
-	Arguments extends SourcedService[Method] extends (
+	Argument extends SourcedService[Method] extends (
 		...args: infer A
 	) => Promise<any | null | undefined>
 		? A
@@ -37,15 +37,15 @@ export default function OptionalFromMethod<
 	MethodName: Method,
 	CreateProblem: ErrorProducer<ErrorData, ErrorType>,
 	StaticData: ErrorData,
-): (...args: Arguments) => Effect.Effect<
+): (...args: Argument) => Effect.Effect<
 	Option.Option<Value>,
 	ErrorType,
 	SourcedIdentifier // Effect requires the Identifier type of the Tag
 > {
-	return (...args: Arguments) =>
+	return (...args: Argument) =>
 		Effect.flatMap(ServiceTag, (ServiceInstance: SourcedService) => {
 			const Operation = (ServiceInstance as any)[MethodName] as (
-				...opArgs: Arguments
+				...opArgument: Argument
 			) => Promise<Value | null | undefined>;
 
 			return Effect.tryPromise({

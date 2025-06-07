@@ -9,7 +9,7 @@ import { Effect, Option } from "effect";
 
 // Ensure this is the TaggedError class/constructor
 import { PathProblem as PathProblemType } from "../Error.js";
-// These are functions returning Effects
+// These are functions returning Effect
 import { FetchDocumentDirectory, FetchHomeDirectory } from "../Wrapper.js";
 
 /**

@@ -5,7 +5,7 @@ import type { IFileDialogService } from "vs/platform/dialogs/common/dialogs.js";
 
 import type { DialogProblem } from "./Error/DialogProblem.js";
 
-// We redefine the interface methods to return Effects.
+// We redefine the interface methods to return Effect.
 // This makes error types and dependencies explicit.
 export interface Interface {
 	readonly _serviceBrand: undefined;
