@@ -7,12 +7,16 @@
 </h3> </td>
 </tr></table>
 
+---
+
 # **Wind** 🍃 Deep Dive & Architecture
 
 This document provides a detailed technical overview of the **Wind** project for
 developers. It explores the internal architecture, core components, and the
 design patterns used to create a robust, Effect-TS native service layer for the
 Land Code Editor.
+
+---
 
 ## Core Architecture Principles
 
