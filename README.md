@@ -11,7 +11,7 @@
 
 # **Wind** 🍃 The Breath of Land: VSCode Environment & Services for Tauri
 
-[![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://github.com/CodeEditorLand/Wind/blob/Current/LICENSE)
+[![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://github.com/CodeEditorLand/Wind/tree/Current/LICENSE)
 [![NPM Version](https://img.shields.io/npm/v/@codeeditorland/wind.svg)](https://www.npmjs.com/package/@codeeditorland/wind)
 [![Tauri API Version](https://img.shields.io/badge/Tauri_API-v2-blue.svg)](https://www.npmjs.com/package/@tauri-apps/api)
 [![Effect Version](https://img.shields.io/badge/Effect-v3-blueviolet.svg)](https://www.npmjs.com/package/effect)
