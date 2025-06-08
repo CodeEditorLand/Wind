@@ -1,5 +1,3 @@
-# **Wind** 🍃 Deep Dive & Architecture
-
 <table><tr>
 <td colspan="1"> <h3 align="center"> <picture>
 <source media="(prefers-color-scheme: dark)" srcset="https://PlayForm.Cloud/Dark/Image/GitHub/Land.svg">
@@ -8,6 +6,8 @@
 </picture> </h3> </td> <td colspan="3" valign="top"> <h3 align="center"> Wind 🍃
 </h3> </td>
 </tr></table>
+
+# **Wind** 🍃 Deep Dive & Architecture
 
 This document provides a detailed technical overview of the **Wind** project for
 developers. It explores the internal architecture, core components, and the
