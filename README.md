@@ -7,6 +7,8 @@
 </h3> </td>
 </tr></table>
 
+---
+
 # **Wind** 🍃 The Breath of Land: VSCode Environment & Services for Tauri
 
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://github.com/CodeEditorLand/Wind/blob/Current/LICENSE)
@@ -36,6 +38,8 @@ implementations with high-performance, OS-native equivalents, all underpinned by
     information, making them accessible in a type-safe way through Effect-based
     wrappers.
 
+---
+
 ## Key Features 🔐
 
 - **Native Dialog Experience:** Implements VSCode's `IFileDialogService` for
@@ -53,6 +57,8 @@ implementations with high-performance, OS-native equivalents, all underpinned by
 - **Clean Integration Layer:** Provides a clear abstraction layer over Tauri
   APIs, isolating platform specifics and simplifying their usage within the
   application.
+
+---
 
 ## Core Architecture Principles 🏗️
 
