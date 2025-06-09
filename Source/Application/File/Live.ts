@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/File/Live.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:40 UTC
+ * Dependency: ../FileSystem.js, ../Log.js, ./Tag.js, effect, vs/base/common/network.js, vs/platform/files/common/fileService.js
+ */
+
 import { Effect, Layer } from "effect";
 import { Schemas } from "vs/base/common/network.js";
 import { FileService } from "vs/platform/files/common/fileService.js";

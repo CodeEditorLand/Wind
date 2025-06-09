@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Dialog/_HostServicePlaceholder.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:03 UTC
+ * Dependency: effect
+ * Export: HostServiceLivePlaceholder
+ */
+
 // Application/Dialog/_HostServicePlaceholder.ts
 import { Layer } from "effect";
 

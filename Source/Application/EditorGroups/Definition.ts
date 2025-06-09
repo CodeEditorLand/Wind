@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/EditorGroups/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:42 UTC
+ * Dependency: ../Instantiation.js, ../Storage.js, ../Workspaces/Error.js, effect, vs/base/browser/dom.js, vs/base/common/event.js, vs/base/common/lifecycle.js, vs/platform/instantiation/common/instantiation.js
+ */
+
 import { Effect, Layer, Ref, Runtime } from "effect";
 import type { Dimension } from "vs/base/browser/dom.js";
 import { Emitter, Event } from "vs/base/common/event.js";

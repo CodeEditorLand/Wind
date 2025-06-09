@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Dialog/Utility/PickFileSaveSimplified.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:03 UTC
+ * Dependency: ../Orchestrate/ShowSave.js, ../Type.js, ./DecideSimplified.js, effect, vs/nls, vs/platform/dialogs/common/dialogs
+ * Export: Pick
+ */
+
 // Application/Dialog/Utility/PickFileSaveSimplified.ts
 import { Effect, Option, type Context } from "effect";
 import { localize } from "vs/nls";

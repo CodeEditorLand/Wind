@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Integration/Tauri/WorkspaceTrust.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: effect, vs/base/common/uri.js, vs/platform/remote/common/remoteAuthorityResolver.js
+ * Export: LoadTrustInfo, ResolveRemoteAuthority, SaveTrustInfo
+ */
+
 // Source/Integration/Tauri/WorkspaceTrust.ts
 import { Context, Effect } from "effect";
 import { URI } from "vs/base/common/uri.js";

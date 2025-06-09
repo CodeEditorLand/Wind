@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Dialog/Tag.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 23:03:39 UTC
+ * Dependency: ./Error/DialogProblem.js, effect, vs/base/common/uri.js, vs/platform/dialogs/common/dialogs.js
+ * Export: Interface
+ */
+
 // Source/Application/Dialog/Tag.ts
 import { Context, Effect } from "effect";
 import { Uri } from "vs/base/common/uri.js";

@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Clipboard/Convert/PathStringToResourceList.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:23 UTC
+ * Dependency: ../../../Platform/VSCode/Type.js, effect
+ */
+
 import { List } from "effect";
 import { Uri } from "../../../Platform/VSCode/Type.js";
 

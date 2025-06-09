@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Dialog/Utility/WarnUnsupported.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:03 UTC
+ * Dependency: effect
+ * Export: Warn
+ */
+
 // Application/Dialog/Utility/WarnUnsupported.ts
 import { Effect } from "effect";
 

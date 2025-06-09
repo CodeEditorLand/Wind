@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Dialog/Orchestrate/PickAndOpen.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:48:08 UTC
+ * Dependency: ../../../Platform/VSCode/Provide/Host.js, ../Factory/CreatePickOpenOption.js, ../Factory/CreateWindowOption.js, ../Type.js, effect
+ * Export: Orchestrate
+ */
+
 // Application/Dialog/Orchestrate/PickAndOpen.ts
 // Purpose: Core logic for pick...AndOpen methods as a piped Effect.
 

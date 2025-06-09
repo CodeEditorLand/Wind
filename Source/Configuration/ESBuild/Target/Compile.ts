@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Configuration/ESBuild/Target/Compile.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:03 UTC
+ * Dependency: esbuild
+ * Export: Bundle, Merge, On
+ */
+
 import type { BuildOptions } from "esbuild";
 
 export const On = (await import("../Wind.js")).On;

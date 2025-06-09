@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Wrap/FetchUntitledWorkspacesHome.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:13 UTC
+ * Dependency: ../../../Platform/VSCode/Type.js, ../Error.js, @tauri-apps/api/tauri, effect
+ */
+
 import { invoke } from "@tauri-apps/api/tauri";
 import { Effect } from "effect";
 

@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Instantiation/Live.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: ./Error.js, ./Layer.js, effect, vs/base/common/lifecycle.js, vs/platform/instantiation/common/serviceCollection.js
+ */
+
 // Source/Application/Instantiation/Live.ts
 import { Context, Effect, Layer, Runtime } from "effect";
 import type { DisposableStore } from "vs/base/common/lifecycle.js";

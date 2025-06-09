@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Dialog/Orchestration/SaveConfirm.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:44 UTC
+ * Dependency: effect, vs/nls
+ */
+
 import { Effect, pipe } from "effect";
 import { localize } from "vs/nls";
 import {

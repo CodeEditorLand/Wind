@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/FileSystem/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:40 UTC
+ * Dependency: effect, vs/base/common/event.js, vs/base/common/lifecycle.js, vs/base/common/uri.js
+ */
+
 import { Effect } from "effect";
 import { Emitter, Event } from "vs/base/common/event.js";
 import { type IDisposable } from "vs/base/common/lifecycle.js";

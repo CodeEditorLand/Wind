@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Convert/UriToPathString.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:00 UTC
+ * Dependency: effect
+ * Export: Convert
+ */
+
 // Integration/Tauri/Convert/UriToPathString.ts
 // Purpose: Purely converts a VSCode URI to an optional Tauri-compatible file system path string.
 

@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Wrap/RequestHostWindowOpen.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 23:30:31 UTC
+ * Dependency: ../../../Effect/Produce.js, ../../../Platform/VSCode/Provide/Host.js, ../Error.js, effect
+ */
+
 // Integration/Tauri/Wrap/RequestHostWindowOpen.ts
 
 // Needed for SourcedIdentifier

@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Effect/Produce/Type/ErrorProducer.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:01 UTC
+ * Dependency: effect
+ * Export: ErrorProducer
+ */
+
 // Effect/Produce/Type/ErrorProducer.ts
 // Purpose: Aggregates types for the Produce module.
 

@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/EditorGroups/Live.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:42 UTC
+ * Dependency: ../Storage.js, ./Definition.js, ./Tag.js, effect
+ */
+
 import { Layer } from "effect";
 
 import {

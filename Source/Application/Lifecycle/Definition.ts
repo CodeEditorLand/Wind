@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Lifecycle/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:34 UTC
+ * Dependency: ../../Integration/Host/Error.js, ../../Integration/Host/Wrap/Lifecycle.js, ./Error.js, @tauri-apps/api/window, effect, vs/workbench/services/lifecycle/common/lifecycleService.js
+ */
+
 import { appWindow, type Event as TauriEvent } from "@tauri-apps/api/window";
 import { Cause, Effect, Exit, Fiber, Option, Unify } from "effect";
 import {

@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Effect/Produce/Type/AsyncFunction.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 23:31:43 UTC
+ * Export: AsyncFunction
+ */
+
 // Effect/Produce/Type/AsyncFunction.ts
 
 /**

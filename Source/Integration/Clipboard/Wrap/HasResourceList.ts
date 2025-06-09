@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Clipboard/Wrap/HasResourceList.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:22 UTC
+ * Dependency: ../../../Platform/VSCode/Type.js, ./ReadText.js, effect
+ */
+
 import { Effect, pipe } from "effect";
 import ReadText from "./ReadText.js";
 import { Uri } from "../../../Platform/VSCode/Type.js";

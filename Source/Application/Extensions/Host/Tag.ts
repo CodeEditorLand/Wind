@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Extensions/Host/Tag.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: ./Error/HostProblem.js, effect, vs/platform/extensions/common/extensionHostStarter.js
+ * Export: Interface, RunningHost
+ */
+
 // Source/Application/Extensions/Host/Tag.ts
 import { Context, Effect, Scope, Stream } from "effect";
 import type { IExtensionHostProcessOptions } from "vs/platform/extensions/common/extensionHostStarter.js";

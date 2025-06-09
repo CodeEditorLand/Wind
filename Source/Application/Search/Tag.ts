@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Search/Tag.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: ./Error/SearchProblem.js, effect, vs/base/common/uri.js
+ * Export: Interface
+ */
+
 // Source/Application/Search/Tag.ts
 import { Context, Stream } from "effect";
 import { URI } from "vs/base/common/uri.js";

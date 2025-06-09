@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/DesktopMain.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: ./Instantiation/Layer.js, ./Workbench/Live.js, effect, vs/base/browser/dom.js
+ */
+
 // Source/Application/DesktopMain.ts
 import { Effect, Layer } from "effect";
 import { domContentLoaded } from "vs/base/browser/dom.js";

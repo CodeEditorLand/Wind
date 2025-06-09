@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Workbench/Live.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: ./Layout.js, effect, vs/platform/configuration/common/configuration.js, vs/platform/instantiation/common/extensions.js, vs/platform/instantiation/common/instantiationService.js, vs/platform/instantiation/common/serviceCollection.js, vs/platform/storage/common/storage.js, vs/workbench/services/host/browser/host.js
+ */
+
 // Source/Application/Workbench/Live.ts
 import { Context, Effect, Layer, Stream } from "effect";
 import {

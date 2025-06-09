@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Error.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:28:58 UTC
+ * Dependency: ./Error/Dialog.js, ./Error/Inheritance.js, ./Error/Path.js, ./Error/Window.js
+ * Export: DialogProblem, InheritanceProblem, PathProblem, WindowProblem
+ */
+
 // Integration/Tauri/Error.ts
 // Purpose: Aggregates custom error types for Tauri integrations with descriptive aliases.
 

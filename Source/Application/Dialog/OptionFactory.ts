@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Dialog/OptionFactory.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:05 UTC
+ * Export: default
+ */
+
 // Application/Dialog/OptionFactory.ts
 // Purpose: Aggregates pure option builder functions.
 

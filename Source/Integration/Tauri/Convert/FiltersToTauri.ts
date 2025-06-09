@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Convert/FiltersToTauri.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:01 UTC
+ * Dependency: ../../../Platform/VSCode/Type.js, ../Type.js, effect
+ * Export: Convert
+ */
+
 // Integration/Tauri/Convert/FiltersToTauri.ts
 // Purpose: Purely converts VSCode FileFilter array to TauriDialogFilter array.
 

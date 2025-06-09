@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Host/NativeDefinition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:38 UTC
+ * Dependency: ./Error.js, effect, vs/platform/native/common/native.js
+ */
+
 import { Effect, Runtime } from "effect";
 import type { INativeHostService } from "vs/platform/native/common/native.js";
 

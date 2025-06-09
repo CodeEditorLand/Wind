@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Workspaces/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:25 UTC
+ * Dependency: ../File.js, ../Host.js, ../Storage.js, ./Error.js, ./Orchestrate.js, effect, vs/base/common/event.js, vs/base/common/uri.js, vs/platform/workspace/common/workspace.js
+ */
+
 import { Effect, Runtime } from "effect";
 import type {
 	IWorkspacesService,

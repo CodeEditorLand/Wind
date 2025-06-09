@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/TextEditor/Live.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:27 UTC
+ * Dependency: ../File.js, ./Tag.js, effect, vs/workbench/services/textfile/common/textEditorService.js
+ */
+
 import { Layer } from "effect";
 import { TextEditorService } from "vs/workbench/services/textfile/common/textEditorService.js";
 

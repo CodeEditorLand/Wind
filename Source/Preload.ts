@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Preload.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 23:30:31 UTC
+ * Dependency: @tauri-apps/api/window, vs/base/common/uri, vs/base/parts/sandbox/common/sandboxTypes, vs/platform/log/common/log, vs/platform/product/common/product, vs/platform/theme/common/theme, vs/platform/theme/common/themeService
+ */
+
 import {
 	emit as tauriEmit,
 	listen as tauriListen,

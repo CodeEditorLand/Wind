@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Wrap/FetchHomeDirectory.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:28:57 UTC
+ * Dependency: ../../../Effect/Produce.js, ../Error.js, @tauri-apps/api/path
+ */
+
 // Integration/Tauri/Wrap/FetchHomeDirectory.ts
 // Purpose: Effect wrapper for fetching the Tauri home directory.
 

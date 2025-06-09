@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Effect/Produce/OptionalFromMethod.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 23:31:43 UTC
+ * Dependency: ./Type.js, effect
+ * Export: OptionalFromMethod
+ */
+
 // Effect/Produce/OptionalFromMethod.ts
 import { Context, Effect, Option, type Cause } from "effect";
 

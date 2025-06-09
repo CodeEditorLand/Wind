@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Extensions/Host/Error/HostProblem.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: effect
+ * Export: HostProblem, HostShutdownProblem, HostStartProblem, UnknownHostProblem
+ */
+
 // Source/Application/Extensions/Host/Error/HostProblem.ts
 import { Data } from "effect";
 

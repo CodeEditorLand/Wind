@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Notification/Wrap/ShowNotification.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:15 UTC
+ * Dependency: ../Error.js, effect, vs/platform/notification/common/notification.js
+ */
+
 import {
 	sendNotification,
 	type Options as TauriNotificationOptions,

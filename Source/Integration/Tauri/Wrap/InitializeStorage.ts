@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Wrap/InitializeStorage.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:12 UTC
+ * Dependency: ../../../Effect/Produce.js, ../Error.js, @tauri-apps/api/tauri, vs/platform/storage/common/storage
+ */
+
 import { invoke } from "@tauri-apps/api/tauri";
 import { StorageScope } from "vs/platform/storage/common/storage";
 

@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Wrapper.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:28:56 UTC
+ * Export: default
+ */
+
 // Integration/Tauri/Wrapper.ts
 // Purpose: Aggregates Effect wrappers for Tauri and related HostService APIs.
 

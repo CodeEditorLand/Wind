@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Configuration/Orchestrate/ResolveConfiguration.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:46 UTC
+ * Dependency: effect, vs/base/common/resources.js
+ */
+
 import { Effect, pipe } from "effect";
 import { joinPath } from "vs/base/common/resources.js";
 

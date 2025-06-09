@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Dialog/Factory/CreateShowOpenOption.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:06 UTC
+ * Dependency: effect, vs/nls, vs/platform/dialogs/common/dialogs
+ * Export: Create
+ */
+
 // Application/Dialog/Factory/CreateShowOpenOption.ts
 // Purpose: Purely constructs TauriOpenDialogOptions for "show open" scenarios.
 

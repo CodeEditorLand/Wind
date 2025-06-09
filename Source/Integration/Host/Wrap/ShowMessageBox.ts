@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Host/Wrap/ShowMessageBox.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:17 UTC
+ * Dependency: ../Error.js, @tauri-apps/api/dialog, effect
+ */
+
 import { ask, confirm, message } from "@tauri-apps/api/dialog";
 import { Effect, pipe } from "effect";
 

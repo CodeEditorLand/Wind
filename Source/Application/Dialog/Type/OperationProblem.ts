@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Dialog/Type/OperationProblem.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:04 UTC
+ * Export: Type
+ */
+
 // Application/Dialog/Type/OperationProblem.ts
 // Purpose: Defines an error union for basic dialog operations.
 

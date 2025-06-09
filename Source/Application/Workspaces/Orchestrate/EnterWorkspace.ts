@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Workspaces/Orchestrate/EnterWorkspace.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:24 UTC
+ * Dependency: ../../../Integration/Host.js, ./GetWorkspaceIdentifier.js, effect, vs/base/common/uri.js, vs/platform/workspaces/common/workspaces.js
+ */
+
 import { Effect } from "effect";
 import type { Uri } from "vs/base/common/uri.js";
 import type { IEnterWorkspaceResult } from "vs/platform/workspaces/common/workspaces.js";

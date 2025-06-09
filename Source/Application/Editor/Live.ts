@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Editor/Live.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:43 UTC
+ * Dependency: ../EditorGroups.js, ../Instantiation.js, ../TextEditor.js, ./Definition.js, ./Tag.js, effect
+ */
+
 import { Layer } from "effect";
 
 import { LiveEditorGroupsService } from "../EditorGroups.js";

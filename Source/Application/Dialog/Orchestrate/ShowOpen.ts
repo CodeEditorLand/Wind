@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Dialog/Orchestrate/ShowOpen.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:05 UTC
+ * Dependency: ../Factory/CreateShowOpenOption.js, ../Type.js, effect, vs/platform/dialogs/common/dialogs
+ * Export: Orchestrate
+ */
+
 // Application/Dialog/Orchestrate/ShowOpen.ts
 // Purpose: Core logic for showOpenDialog as a piped Effect.
 

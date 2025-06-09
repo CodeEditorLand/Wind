@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Wrap/FetchMachineId.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:13 UTC
+ * Dependency: ../../../Effect/Produce.js, ../Error.js, @tauri-apps/api/tauri
+ */
+
 import { invoke } from "@tauri-apps/api/tauri";
 
 import { FromAsync } from "../../../Effect/Produce.js";

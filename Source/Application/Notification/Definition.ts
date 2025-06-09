@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Notification/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:32 UTC
+ * Dependency: ../../Integration/Notification.js, ./Orchestrate.js, effect, vs/base/common/event.js
+ */
+
 import { Effect } from "effect";
 import { Event } from "vs/base/common/event.js";
 import {

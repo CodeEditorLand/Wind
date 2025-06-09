@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Workspaces/Trust/Contribution/Live.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 23:03:39 UTC
+ * Dependency: ../Error/TrustProblem.js, ../Tag.js, effect, vs/base/common/codicons.js, vs/base/common/htmlContent.js, vs/nls.js, vs/platform/notification/common/notification.js, vs/platform/workspace/common/workspaceTrust.js, vs/workbench/contrib/workspace/common/workspace.js
+ */
+
 // Source/Application/Workspaces/Trust/Contribution/Live.ts
 import { Effect, Layer, Option, Schedule, Stream } from "effect";
 import { Codicon } from "vs/base/common/codicons.js";

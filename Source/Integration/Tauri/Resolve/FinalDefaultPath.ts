@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Resolve/FinalDefaultPath.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:28:58 UTC
+ * Dependency: ../../../Platform/VSCode/Type.js, ../Converter.js, ../Error.js, ./FallbackDefaultPath.js, effect
+ * Export: Resolve
+ */
+
 // Integration/Tauri/Resolve/FinalDefaultPath.ts
 // Purpose: Composed Effect for determining the final default path for dialogs.
 

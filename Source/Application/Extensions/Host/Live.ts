@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Extensions/Host/Live.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: ./Error/HostProblem.js, effect, vs/platform/extensions/common/extensionHostStarter.js, vs/platform/utilityProcess/electron-main/utilityProcess.js
+ */
+
 // Source/Application/Extensions/Host/Live.ts
 import { Duration, Effect, Fiber, Layer, Queue, Scope, Stream } from "effect";
 import type { IExtensionHostProcessOptions } from "vs/platform/extensions/common/extensionHostStarter.js";

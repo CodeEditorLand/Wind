@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Convert/OpenResultToSingleUri.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:00 UTC
+ * Dependency: effect
+ * Export: Convert
+ */
+
 // Integration/Tauri/Convert/OpenResultToSingleUri.ts
 // Purpose: Purely processes Tauri's open dialog result (Option<string | string[]>) to Option<Uri>.
 

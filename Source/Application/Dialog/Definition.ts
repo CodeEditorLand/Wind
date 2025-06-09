@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Dialog/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 23:37:50 UTC
+ * Dependency: ../../Platform/VSCode/Provide/Host.js, ./Orchestration.js, ./Type.js, ./_HostServicePlaceholder.js, effect, vs/nls
+ */
+
 // Application/Dialog/Definition.ts
 // Purpose: Defines the concrete implementation object of the IFileDialogService.
 

@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Instantiation/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 23:31:43 UTC
+ * Dependency: ./Error.js, ./Register.js, effect, vs/base/common/lifecycle.js, vs/platform/instantiation/common/descriptors.js, vs/platform/instantiation/common/serviceCollection.js
+ */
+
 import { Effect, Layer, Context, Runtime } from "effect";
 import type {
 	IInstantiationService,

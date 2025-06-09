@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Dialog/Definition (2).ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:45 UTC
+ * Dependency: ../../Integration/Tauri.js, ./Orchestration.js, ./Type.js, ./Utility.js, effect, vs/nls, vs/platform/configuration/common/configuration.js
+ */
+
 // THIS FILE IS NOW DEPRECATED AND REPLACED BY `Source/workbench/services/dialogs/browser/fileDialogService.ts`
 // You may remove this file from your source tree. It's provided here for historical context of the refactoring.
 import { Effect, Layer, Option, Runtime, Scope } from "effect";

@@ -1,3 +1,9 @@
+/*
+ * File: Wind/Source/Application/Host/Factory/CreateWindowUrl.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:39 UTC
+ */
+
 import type {
 	FileOpenSpecification,
 	FolderOpenSpecification,

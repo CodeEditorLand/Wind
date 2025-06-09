@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Views/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 23:03:39 UTC
+ * Dependency: effect, vs/base/common/event.js, vs/platform/registry/common/platform.js
+ */
+
 import { Cache, Effect, Fiber, Layer, Ref } from "effect";
 import { Emitter, Event } from "vs/base/common/event.js";
 import { Registry } from "vs/platform/registry/common/platform.js";

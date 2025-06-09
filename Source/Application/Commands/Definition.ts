@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Commands/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:47 UTC
+ * Dependency: ./Register.js, effect, vs/base/common/event.js
+ */
+
 import { Effect, pipe, Runtime } from "effect";
 import { Emitter, Event } from "vs/base/common/event.js";
 import type {

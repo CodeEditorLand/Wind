@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Configuration/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:46 UTC
+ * Dependency: ./Orchestrate.js, ./Tag.js, effect, vs/platform/configuration/common/configuration.js
+ */
+
 import { Effect, Layer } from "effect";
 import type { IConfigurationService } from "vs/platform/configuration/common/configuration.js";
 

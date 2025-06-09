@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/workbench/electron-sandbox/desktop.main.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:09 UTC
+ * Dependency: ../browser/workbench.js, effect, vs/base/browser/dom.js, vs/base/browser/window.js, vs/base/common/errors.js, vs/platform/instantiation/common/serviceCollection.js, vs/platform/log/common/log.js, vs/platform/product/common/product.js, vs/platform/product/common/productService.js
+ */
+
 import { Effect, Layer, Runtime } from "effect";
 import { domContentLoaded } from "vs/base/browser/dom.js";
 import { mainWindow } from "vs/base/browser/window.js";

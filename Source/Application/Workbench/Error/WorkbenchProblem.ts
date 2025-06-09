@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Workbench/Error/WorkbenchProblem.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: effect
+ * Export: Problem
+ */
+
 // Source/Application/Workbench/Error/WorkbenchProblem.ts
 import { Data } from "effect";
 

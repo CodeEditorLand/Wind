@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Wrap/RequestOpenDialog.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: ../Error.js, @tauri-apps/plugin-dialog, effect
+ */
+
 // Source/Integration/Tauri/Wrap/RequestOpenDialog.ts
 import { open, type OpenDialogOptions } from "@tauri-apps/plugin-dialog";
 import { Effect, Option } from "effect";

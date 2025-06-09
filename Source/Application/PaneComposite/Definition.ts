@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/PaneComposite/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:30 UTC
+ * Dependency: ../Layout.js, ../Storage.js, ../Views.js, effect, vs/base/common/event.js, vs/base/common/lifecycle.js, vs/platform/progress/common/progress.js, vs/platform/storage/common/storage.js, vs/workbench/browser/panecomposite.js, vs/workbench/common/panecomposite.js, vs/workbench/services/panecomposite/browser/panecomposite.js
+ */
+
 import { Effect, Layer, Ref, Runtime } from "effect";
 import { Emitter, Event } from "vs/base/common/event.js";
 import type { IDisposable } from "vs/base/common/lifecycle.js";

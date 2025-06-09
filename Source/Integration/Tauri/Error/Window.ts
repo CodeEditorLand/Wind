@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Error/Window.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:28:58 UTC
+ * Dependency: effect
+ * Export: Problem
+ */
+
 // Integration/Tauri/Error/Window.ts
 // Purpose: Defines an error for VSCode HostService window operations.
 import { Data } from "effect";

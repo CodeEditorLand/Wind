@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Instantiation/Tag.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: effect, vs/platform/instantiation/common/instantiation.js
+ * Export: Interface
+ */
+
 // Source/Application/Instantiation/Tag.ts
 import { Context } from "effect";
 import type { IInstantiationService as VsCodeInstantiationService } from "vs/platform/instantiation/common/instantiation.js";

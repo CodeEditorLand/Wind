@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Wrapper (2).ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:11 UTC
+ * Export: default
+ */
+
 export { default as InitializeStorage } from "./Wrap/InitializeStorage.js";
 export { default as SetStorageValue } from "./Wrap/SetStorageValue.js";
 export { default as RemoveStorageValue } from "./Wrap/RemoveStorageValue.js";

@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Dialog/Orchestration/PickAndOpen.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:44 UTC
+ * Dependency: ../../../Application/Host.js, ../Factory.js, ../Type.js, effect, vs/platform/dialogs/common/dialogs
+ */
+
 import { Effect, Option, pipe } from "effect";
 import type { IPickAndOpenOptions as VsCodePickOptions } from "vs/platform/dialogs/common/dialogs";
 

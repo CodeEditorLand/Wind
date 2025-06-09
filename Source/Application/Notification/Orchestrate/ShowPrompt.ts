@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Notification/Orchestrate/ShowPrompt.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 23:31:43 UTC
+ * Dependency: ../Error.js, effect
+ */
+
 import { Effect, pipe } from "effect";
 import type {
 	IPromptChoice,

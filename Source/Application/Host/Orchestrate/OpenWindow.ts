@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Host/Orchestrate/OpenWindow.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:37 UTC
+ * Dependency: ../../../Integration/Tauri.js, ../Factory/CreateWindowUrl.js, ../Type.js, @tauri-apps/api/window, effect
+ */
+
 import { WebviewWindow } from "@tauri-apps/api/window";
 import { Effect, pipe } from "effect";
 

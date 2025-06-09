@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Dialog/Type/PickProblem.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:04 UTC
+ * Dependency: ../../../Integration/Tauri/Error.js, ./OperationProblem.js
+ * Export: Type
+ */
+
 // Application/Dialog/Type/PickProblem.ts
 // Purpose: Defines an error union for "pick and open" operations.
 

@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Editor/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:43 UTC
+ * Dependency: ../EditorGroups.js, ../Instantiation.js, ../TextEditor.js, ./Error.js, effect, vs/base/common/event.js, vs/workbench/common/editor.js, vs/workbench/common/editor/editorInput.js, vs/workbench/services/editor/common/editorGroupFinder.js
+ */
+
 import { Effect, Runtime, pipe } from "effect";
 import type {
 	IEditorService,

@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Converter.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:00 UTC
+ * Export: default
+ */
+
 // Integration/Tauri/Converter.ts
 // Purpose: Aggregates pure conversion utility functions for Tauri integrations.
 

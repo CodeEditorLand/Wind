@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Wrap/ShowMessageDialog.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:28:56 UTC
+ * Dependency: ../../../Effect/Produce.js, ../Error.js, @tauri-apps/plugin-dialog
+ */
+
 // Integration/Tauri/Wrap/ShowMessageDialog.ts
 // Purpose: Effect wrapper for Tauri's message dialog.
 

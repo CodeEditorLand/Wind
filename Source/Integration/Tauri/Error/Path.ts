@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Error/Path.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:28:59 UTC
+ * Dependency: effect
+ * Export: Problem
+ */
+
 // Integration/Tauri/Error/Path.ts
 // Purpose: Defines an error for Tauri path operations.
 import { Data } from "effect";

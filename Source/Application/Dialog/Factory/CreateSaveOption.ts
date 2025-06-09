@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Dialog/Factory/CreateSaveOption.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:06 UTC
+ * Dependency: effect, vs/nls, vs/platform/dialogs/common/dialogs
+ * Export: Create
+ */
+
 // Application/Dialog/Factory/CreateSaveOption.ts
 // Purpose: Purely constructs TauriSaveDialogOptions.
 

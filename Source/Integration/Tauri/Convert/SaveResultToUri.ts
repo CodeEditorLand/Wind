@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Convert/SaveResultToUri.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:00 UTC
+ * Dependency: effect
+ * Export: Convert
+ */
+
 // Integration/Tauri/Convert/SaveResultToUri.ts
 // Purpose: Purely processes Tauri's save dialog result (Option<string>) to Option<Uri>.
 

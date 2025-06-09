@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Storage/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:27 UTC
+ * Dependency: effect, vs/base/parts/storage/common/storage.js
+ */
+
 import { Cache, Effect, Fiber, Layer, Ref } from "effect";
 import { InMemoryStorageDatabase } from "vs/base/parts/storage/common/storage.js";
 import {

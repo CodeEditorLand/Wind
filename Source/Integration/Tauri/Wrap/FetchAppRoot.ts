@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Wrap/FetchAppRoot.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:13 UTC
+ * Dependency: ../../../Effect/Produce.js, ../../../Platform/VSCode/Type.js, ../Error.js, @tauri-apps/api/tauri
+ */
+
 import { invoke } from "@tauri-apps/api/tauri";
 
 import { FromAsync } from "../../../Effect/Produce.js";

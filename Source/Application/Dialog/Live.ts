@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Dialog/Live.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 23:03:39 UTC
+ * Dependency: ./Error/DialogProblem.js, ./Factory/CreateSaveOption.js, ./Factory/CreateShowOpenOption.js, ./Tag.js, effect, vs/base/common/uri.js, vs/nls, vs/platform/configuration/common/configuration
+ */
+
 // Source/Application/Dialog/Live.ts
 import { Effect, Layer, Option } from "effect";
 import { URI } from "vs/base/common/uri.js";

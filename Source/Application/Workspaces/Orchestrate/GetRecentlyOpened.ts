@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Workspaces/Orchestrate/GetRecentlyOpened.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:24 UTC
+ * Dependency: ../../Log.js, ../../Storage.js, effect, vs/platform/storage/common/storage.js, vs/platform/workspaces/common/workspaces.js
+ */
+
 import { Effect } from "effect";
 import { StorageScope } from "vs/platform/storage/common/storage.js";
 import { restoreRecentlyOpened } from "vs/platform/workspaces/common/workspaces.js";

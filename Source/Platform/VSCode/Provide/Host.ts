@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Platform/VSCode/Provide/Host.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:28:56 UTC
+ * Dependency: effect
+ * Export: PerformAction
+ */
+
 // Platform/VSCode/Provide/Host.ts
 // Purpose: Defines Tag and Interface for VSCode's IHostService, adapted for effect-ts.
 

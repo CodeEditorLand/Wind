@@ -1,3 +1,9 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Type.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:28:57 UTC
+ */
+
 // Integration/Tauri/Type.ts
 // Purpose: Aggregates and exports Tauri-specific type definitions.
 

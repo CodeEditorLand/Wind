@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/workbench/services/dialogs/browser/simpleFileDialog.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:09 UTC
+ * Dependency: ../../Integration/Tauri.js, ./Orchestration.js, ./Type.js, ./Utility.js, effect, vs/nls, vs/platform/configuration/common/configuration.js
+ */
+
 import { Effect, Layer, Option, Runtime, Scope } from "effect";
 import { localize } from "vs/nls";
 import { IConfigurationService } from "vs/platform/configuration/common/configuration.js";

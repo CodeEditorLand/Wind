@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Host/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:39 UTC
+ * Dependency: ../../Platform/VSCode/Provide/Host.js, ./Orchestration.js, ./Type.js, effect
+ */
+
 import { Effect, Layer, Runtime, Scope } from "effect";
 
 import { type PerformAction as HostService } from "../../Platform/VSCode/Provide/Host.js";

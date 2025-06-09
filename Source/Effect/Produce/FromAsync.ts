@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Effect/Produce/FromAsync.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 23:31:43 UTC
+ * Dependency: effect
+ * Export: FromAsync
+ */
+
 // Effect/Produce/FromAsync.ts
 
 // Import Cause

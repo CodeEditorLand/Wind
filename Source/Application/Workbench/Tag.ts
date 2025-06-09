@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Workbench/Tag.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: effect, vs/workbench/services/layout/browser/layoutService.js
+ * Export: Interface, LayoutServiceTag
+ */
+
 // Source/Application/Workbench/Tag.ts
 import { Context } from "effect";
 import type { IWorkbenchLayoutService } from "vs/workbench/services/layout/browser/layoutService.js";

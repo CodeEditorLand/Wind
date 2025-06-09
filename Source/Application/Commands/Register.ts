@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Commands/Register.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 23:30:31 UTC
+ * Dependency: ./Ref.js, effect
+ * Export: CommandEffect
+ */
+
 import { Effect } from "effect";
 
 import { CommandRegistryRef } from "./Ref.js";

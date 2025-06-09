@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Clipboard/Wrap/WriteText.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:21 UTC
+ * Dependency: ../Error.js, @tauri-apps/api/clipboard, effect
+ */
+
 import { Effect } from "effect";
 import { writeText } from "@tauri-apps/api/clipboard";
 import { ClipboardProblem } from "../Error.js";

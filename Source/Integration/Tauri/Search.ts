@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Search.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 23:30:31 UTC
+ * Dependency: ../../Application/Search/Error/SearchProblem.js, child_process, effect
+ * Export: RipgrepSearch
+ */
+
 // Source/Integration/Tauri/Search.ts
 import { spawn } from "child_process";
 import { Effect, Queue, Stream } from "effect";

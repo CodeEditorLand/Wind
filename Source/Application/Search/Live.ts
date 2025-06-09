@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Search/Live.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: ../../../Integration/Tauri/Search.js, ./Tag.js, effect, vs/base/common/uri.js, vs/workbench/services/search/common/search.js
+ */
+
 
 
 // Source/Application/Search/Live.ts

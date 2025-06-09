@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Workspaces/Orchestrate.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:23 UTC
+ * Export: default
+ */
+
 export { default as AddRecentlyOpened } from "./Orchestrate/AddRecentlyOpened.js";
 export { default as ClearRecentlyOpened } from "./Orchestrate/ClearRecentlyOpened.js";
 export { default as CreateUntitledWorkspace } from "./Orchestrate/CreateUntitledWorkspace.js";

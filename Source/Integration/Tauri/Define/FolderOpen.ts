@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Tauri/Define/FolderOpen.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:28:59 UTC
+ * Export: Define
+ */
+
 // Integration/Tauri/Define/FolderOpen.ts
 // Purpose: Pure factory for creating VSCode IFolderToOpen (FolderOpenSpecification) objects.
 

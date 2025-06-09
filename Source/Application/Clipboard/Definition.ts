@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Clipboard/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:49 UTC
+ * Dependency: ./Error.js, effect, vs/platform/clipboard/common/clipboardService.js, vs/platform/uri/common/uri.js
+ */
+
 import { Effect, Runtime } from "effect";
 import type { IClipboardService } from "vs/platform/clipboard/common/clipboardService.js";
 import type { Uri } from "vs/platform/uri/common/uri.js";

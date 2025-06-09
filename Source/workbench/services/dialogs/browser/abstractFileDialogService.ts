@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/workbench/services/dialogs/browser/abstractFileDialogService.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:09 UTC
+ * Dependency: ../../../Integration/Tauri.js
+ */
+
 import { Scheme as VsCodeScheme } from "../../../Integration/Tauri.js";
 
 const Decide = (Scheme: string, UseSimpleDialogSetting: boolean): boolean => {

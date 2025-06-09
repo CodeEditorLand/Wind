@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Effect/Produce/OptionalFromAsync.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 23:31:43 UTC
+ * Dependency: ./Type.js, effect
+ * Export: OptionalFromAsync
+ */
+
 // Effect/Produce/OptionalFromAsync.ts
 
 // Added Cause

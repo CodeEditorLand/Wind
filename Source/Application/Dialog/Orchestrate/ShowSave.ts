@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Dialog/Orchestrate/ShowSave.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:05 UTC
+ * Dependency: ../Factory/CreateSaveOption.js, ../Type.js, effect, vs/platform/dialogs/common/dialogs
+ * Export: Orchestrate
+ */
+
 // Application/Dialog/Orchestrate/ShowSave.ts
 // Purpose: Core logic for showSaveDialog as a piped Effect.
 

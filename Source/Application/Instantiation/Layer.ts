@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Instantiation/Layer.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: ../Host.js, ../Log.js, effect
+ * Export: AppLayer
+ */
+
 // Source/Application/Instantiation/Layer.ts
 import { Layer } from "effect";
 

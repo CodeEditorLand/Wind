@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Workspaces/Trust/RequestTag.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: ./Error/TrustProblem.js, effect, vs/base/common/uri.js, vs/platform/workspace/common/workspaceTrust.js
+ * Export: Interface, WorkspaceTrustRequestOptions
+ */
+
 // Source/Application/Workspaces/Trust/RequestTag.ts
 import { Context, Effect, Sink } from "effect";
 import { URI } from "vs/base/common/uri.js";

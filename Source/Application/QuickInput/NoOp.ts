@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/QuickInput/NoOp.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:28 UTC
+ * Dependency: vs/base/common/event.js
+ * Export: NoOpQuickInput
+ */
+
 import { Emitter, Event } from "vs/base/common/event.js";
 import type {
 	IQuickPick,

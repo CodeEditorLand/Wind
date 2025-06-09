@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Host/Wrap/FocusWindow.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:18 UTC
+ * Dependency: ../Error.js, @tauri-apps/api/window, effect
+ */
+
 import { appWindow } from "@tauri-apps/api/window";
 import { Effect } from "effect";
 

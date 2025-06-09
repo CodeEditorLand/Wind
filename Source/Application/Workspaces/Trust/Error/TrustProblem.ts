@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Workspaces/Trust/Error/TrustProblem.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: effect
+ * Export: FileSystemProblem, RemoteResolverProblem, StorageProblem, TrustProblem
+ */
+
 // Source/Application/Workspaces/Trust/Error/TrustProblem.ts
 import { Data } from "effect";
 

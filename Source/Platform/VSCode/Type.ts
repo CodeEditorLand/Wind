@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Platform/VSCode/Type.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:28:55 UTC
+ * Export: default, type Type
+ */
+
 // Platform/VSCode/Type.ts
 // Purpose: Aggregates core VSCode type definitions.
 

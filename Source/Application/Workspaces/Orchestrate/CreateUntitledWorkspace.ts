@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Workspaces/Orchestrate/CreateUntitledWorkspace.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:24 UTC
+ * Dependency: ./GetWorkspaceIdentifier.js, effect, vs/base/common/resources.js, vs/base/common/uri.js
+ */
+
 import { Effect, pipe } from "effect";
 import { joinPath } from "vs/base/common/resources.js";
 import { Uri } from "vs/base/common/uri.js"; // Assuming direct access for now

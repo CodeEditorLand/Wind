@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Dialog/Factory/CreateWindowOption.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:06 UTC
+ * Dependency: ../../../Platform/VSCode/Type.js, effect, vs/platform/dialogs/common/dialogs
+ * Export: Create
+ */
+
 // Application/Dialog/Factory/CreateWindowOption.ts
 // Purpose: Purely constructs VSCode IOpenWindowOptions.
 

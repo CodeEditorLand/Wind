@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/QuickInput/Definition.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:29 UTC
+ * Dependency: ../../Integration/QuickInput.js, ../Commands.js, ../Instantiation.js, ../Layout.js, ./Error.js, ./NoOp.js, effect, vs/base/common/cancellation.js, vs/platform/quickinput/browser/quickAccess.js, vs/workbench/browser/parts/quickinput/quickInputController.js, vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.js
+ */
+
 import { Effect, Runtime } from "effect";
 import type {
 	IQuickInputService,

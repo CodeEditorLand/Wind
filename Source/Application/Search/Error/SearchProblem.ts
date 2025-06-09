@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Search/Error/SearchProblem.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 08:56:51 UTC
+ * Dependency: effect
+ * Export: GlobParseProblem, RipgrepError, SearchProblem
+ */
+
 // Source/Application/Search/Error/SearchProblem.ts
 import { Data } from "effect";
 

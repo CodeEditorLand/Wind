@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Integration/Configuration/Wrap/ReadRawFile.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:19 UTC
+ * Dependency: ../../../Platform/VSCode/Type.js, ../Error.js, @tauri-apps/api/fs, effect
+ */
+
 import { readTextFile } from "@tauri-apps/api/fs";
 import { Effect } from "effect";
 

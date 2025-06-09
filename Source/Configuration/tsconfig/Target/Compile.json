@@ -1,3 +1,9 @@
+/*
+ * File: Wind/Source/Configuration/tsconfig/Target/Compile.json
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 23:21:11 UTC
+ */
+
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"extends": "../../../tsconfig.json",

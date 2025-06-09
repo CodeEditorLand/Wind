@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Commands/Live.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:47 UTC
+ * Dependency: ./Definition.js, ./Ref.js, ./Register.js, ./Tag.js, effect
+ */
+
 import { Layer } from "effect";
 
 import Definition from "./Definition.js";

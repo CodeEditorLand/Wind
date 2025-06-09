@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Workspaces/Orchestrate/AddRecentlyOpened.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 02:37:24 UTC
+ * Dependency: ../../Storage.js, ./GetRecentlyOpened.js, effect
+ */
+
 import { Effect, pipe } from "effect";
 import {
 	StorageScope,

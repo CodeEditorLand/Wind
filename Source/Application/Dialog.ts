@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Dialog.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:03 UTC
+ * Export: // Export Tag & Interface, default, type Interface
+ */
+
 // Application/Dialog.ts
 // Purpose: Main aggregator for the Dialog Service module.
 

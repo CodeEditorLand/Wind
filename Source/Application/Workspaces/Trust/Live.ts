@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Workspaces/Trust/Live.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-06 23:03:39 UTC
+ * Dependency: effect
+ */
+
 // Source/Application/Workspaces/Trust/Live.ts
 import { Effect, Layer, Ref, PubSub, Stream, Schedule } from "effect";
 import {

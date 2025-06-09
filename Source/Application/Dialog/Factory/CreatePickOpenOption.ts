@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Dialog/Factory/CreatePickOpenOption.ts
+ * Responsibility: Responsibility could not be determined.
+ * Modified: 2025-06-01 22:29:06 UTC
+ * Dependency: effect, vs/nls
+ * Export: Create
+ */
+
 // Application/Dialog/Factory/CreatePickOpenOption.ts
 // Purpose: Purely constructs TauriOpenDialogOptions for pick and open scenarios.
 
