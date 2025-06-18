@@ -7,5 +7,5 @@
 Build "Source/Configuration/**/*.{ts,json}" \
 	--ESBuild Source/Configuration/ESBuild/Wind.ts
 
-Build Build 'Source/**/*.ts' \
+Build "Source/**/*.ts" \
 	--ESBuild Configuration/ESBuild/Target.js
