@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Instantiation/Layer.ts
+ * Responsibility: Composes the master dependency injection layer (`Live`) for the Wind frontend application by merging core service implementations and conditionally including feature-specific services (like SCM or Testing) based on configuration flags, ensuring a dynamic and configurable service graph.
+ * Modified: 2025-06-18 14:33:14 UTC
+ * Dependency: ../Clipboard/mod.js, ../Dialog/mod.js, ../Editor/mod.js, ../EditorGroups/mod.js, ../Environment/mod.js, ../File/mod.js, ../Host/mod.js, ../Lifecycle/mod.js, ../Log/mod.js, ../Notification/mod.js, ../PaneComposite/mod.js, ../QuickInput/mod.js, ../Scm/mod.js, ../Storage/mod.js, ../Testing/mod.js, ../TextEditor/mod.js, ../Views/mod.js, ../Workspaces/Trust/mod.js, ../Workspaces/mod.js, effect
+ * Export: Live
+ */
+
 /**
  * @module Layer (Instantiation)
  * @description Defines the master application layer (`Live`).

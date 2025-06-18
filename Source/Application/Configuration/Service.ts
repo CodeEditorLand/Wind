@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Configuration/Service.ts
+ * Responsibility:
+ * Modified: 2025-06-09 15:50:44 UTC
+ * Dependency: effect, vs/platform/configuration/common/configuration.js
+ * Export: Interface, Tag
+ */
+
 /**
  * @module Service (Configuration/Application)
  * @description Defines the service interface and Context.Tag for the application-level

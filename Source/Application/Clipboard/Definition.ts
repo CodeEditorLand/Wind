@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Clipboard/Definition.ts
+ * Responsibility: Implements the VS Code clipboard service interface for the Mountain backend by wrapping Tauri clipboard operations with Effect workflows, enabling clipboard access (text, resources, images) and mapping errors to application-specific problems.
+ * Modified: 2025-06-18 14:33:14 UTC
+ * Dependency: ../../../Platform/VSCode/Type.js, ./Error.js, effect, vs/platform/clipboard/common/clipboardService.js
+ */
+
 /**
  * @module Definition (Clipboard)
  * @description The concrete implementation of the IClipboardService interface.

@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Platform/VSCode/Provide/mod.ts
+ * Responsibility: Aggregates and re-exports Wind dependency injection tags and service interfaces for all VS Code platform services (Clipboard, Configuration, Dialog, Editor, File, Host) to provide a single source of truth for dependency declaration in the Land application.
+ * Modified: 2025-06-09 15:50:35 UTC
+ * Export: Clipboard, Configuration, Dialog, Editor, File, Host
+ */
+
 /**
  * @module Provide (Platform/VSCode)
  * @description This module aggregates and exports the `Context.Tag` and service

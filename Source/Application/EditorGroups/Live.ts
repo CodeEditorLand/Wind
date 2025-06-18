@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/EditorGroups/Live.ts
+ * Responsibility: Implements the live dependency injection layer for the EditorGroups service in the Mountain backend using Effect, enabling editor group management in the Sky frontend by wiring together the service definition with required dependencies InstantiationService and StorageService.
+ * Modified: 2025-06-09 15:50:42 UTC
+ * Dependency: ../Instantiation/mod.js, ../Storage/mod.js, ./Definition.js, ./Error.js, ./Service.js, effect
+ */
+
 /**
  * @module Live (EditorGroups/Application)
  * @description Provides the "live" implementation of the IEditorGroupsService as a Layer.

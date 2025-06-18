@@ -1,7 +1,7 @@
 /*
  * File: Wind/Source/Configuration/ESBuild/Wind.ts
- * Responsibility: Responsibility could not be determined.
- * Modified: 2025-06-01 22:29:02 UTC
+ * Responsibility:
+ * Modified: 2025-06-18 14:33:14 UTC
  * Dependency: esbuild
  * Export: Bundle, Clean, Compile, On
  */

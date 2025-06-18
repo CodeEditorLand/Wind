@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Effect/Produce/mod.ts
+ * Responsibility:
+ * Modified: 2025-06-09 15:50:37 UTC
+ * Export: FromAsync, FromMethod, OptionalFromAsync, OptionalFromMethod
+ */
+
 /**
  * @module Produce (Effect)
  * @description This module provides a set of powerful higher-order functions for

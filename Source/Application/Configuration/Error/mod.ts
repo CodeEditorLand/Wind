@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Configuration/Error/mod.ts
+ * Responsibility: Implements the core `Track` command dispatcher in the Mountain backend, routing requests from the Sky frontend and sidecar processes to registered service handlers via asynchronous channels.
+ * Modified: 2025-06-09 15:50:45 UTC
+ * Dependency: ./Problem.js
+ * Export: ConfigurationProblem
+ */
+
 /**
  * @module Error (Configuration/Application)
  * @description This module serves as the public entry point for all errors

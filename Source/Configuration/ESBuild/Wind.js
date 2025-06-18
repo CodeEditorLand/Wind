@@ -1,6 +1,6 @@
 /*
  * File: Wind/Source/Configuration/ESBuild/Wind.js
- * Responsibility: Responsibility could not be determined.
+ * Responsibility:
  * Modified: 2025-06-06 09:16:02 UTC
  * Export: Bundle, Clean, Compile, On
  */

@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Platform/VSCode/Type/Uri.ts
+ * Responsibility:
+ * Modified: 2025-06-18 14:33:14 UTC
+ * Dependency: vs/base/common/uri.js
+ * Export: Uri
+ */
+
 /**
  * @module Uri (Platform/VSCode/Type)
  * @description Re-exports the canonical `URI` class from VS Code's base library.

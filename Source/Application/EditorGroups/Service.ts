@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/EditorGroups/Service.ts
+ * Responsibility: Defines the Effect Context Tag and type alias for the VS Code EditorGroups service to enable dependency injection of the service within the Land project's Effect-based architecture, used by the Cocoon sidecar for hosting VS Code extensions.
+ * Modified: 2025-06-18 14:33:14 UTC
+ * Dependency: effect, vs/workbench/services/editor/common/editorGroupsService.js
+ * Export: Interface, Tag
+ */
+
 /**
  * @module Service (EditorGroups/Application)
  * @description Defines the service interface and Context.Tag for the application-level

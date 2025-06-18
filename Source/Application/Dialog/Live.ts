@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Dialog/Live.ts
+ * Responsibility:
+ * Modified: 2025-06-09 15:50:43 UTC
+ * Dependency: ../Configuration/mod.js, ./Definition.js, ./Error/mod.js, ./Service.js, effect
+ */
+
 /**
  * @module Live (Dialog/Application)
  * @description Provides the "live" implementation of the IFileDialogService as a Layer.

@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/UI/Component/FileExplorer/FileExplorerComponent.ts
+ * Responsibility: Implements the reactive file explorer UI component in the Sky frontend using Signia signals and the FileService to fetch and display directory contents from the Mountain backend via the Echo API.
+ * Modified: 2025-06-09 15:50:34 UTC
+ * Dependency: ../../../Application/File/mod.js, ../../../Platform/VSCode/Type.js, @signia/core, effect
+ * Export: FileExplorerComponent
+ */
+
 /**
  * @module FileExplorerComponent
  * @description A reactive UI component for displaying the contents of a directory,

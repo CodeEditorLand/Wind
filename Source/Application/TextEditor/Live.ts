@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/TextEditor/Live.ts
+ * Responsibility:
+ * Modified: 2025-06-18 14:33:14 UTC
+ * Dependency: ../File/mod.js, ../Instantiation/mod.js, ./Definition.js, ./Service.js, effect
+ */
+
 /**
  * @module Live (TextEditor/Application)
  * @description Provides the "live" implementation of the ITextEditorService as a Layer.

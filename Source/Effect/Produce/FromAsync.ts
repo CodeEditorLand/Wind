@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Effect/Produce/FromAsync.ts
+ * Responsibility:
+ * Modified: 2025-06-18 14:33:14 UTC
+ * Dependency: ./Type.js, effect
+ * Export: FromAsync
+ */
+
 /**
  * @module FromAsync (Effect/Produce)
  * @description A higher-order function that creates a robust, Effect-returning

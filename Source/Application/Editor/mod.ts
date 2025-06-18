@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Editor/mod.ts
+ * Responsibility: Serves as the public entry point for the Editor service in the Cocoon (Node.js sidecar), aggregating and exporting its interface, live implementation, error types, and context tag for consumption by other modules.
+ * Modified: 2025-06-18 14:33:14 UTC
+ * Dependency: ./Error/mod.js, ./Live.js
+ * Export: Interface, Live, Problem, Tag
+ */
+
 /**
  * @module Editor (Application)
  * @description This module provides the complete public API for the Editor service.

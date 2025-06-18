@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Integration/Mock/Clipboard/Wrap/WriteText.ts
+ * Responsibility:
+ * Modified: 2025-06-09 15:50:37 UTC
+ * Dependency: effect
+ * Export: MockWriteText
+ */
+
 /**
  * @module MockWriteText (Clipboard Wrapper)
  * @description A mock Effect for writing text to the system clipboard.

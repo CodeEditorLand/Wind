@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Platform/VSCode/Type/mod.ts
+ * Responsibility: Aggregates and re-exports core VS Code data types, interfaces, and enums to provide a clean, stable API boundary for the Wind frontend (Sky) and ensure type consistency when interacting with the Cocoon sidecar.
+ * Modified: 2025-06-18 14:33:14 UTC
+ * Export: Codicon, Schemas, URI
+ */
+
 /**
  * @module Type (Platform/VSCode)
  * @description This module serves as the single source of truth for all core

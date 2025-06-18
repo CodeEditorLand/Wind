@@ -1,5 +1,5 @@
 # File: Wind/Source/Run.sh
-# Responsibility: Responsibility could not be determined.
+# Responsibility:
 # Modified: 2025-06-01 22:28:54 UTC
 
 #!/usr/bin/env bash

@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Clipboard/Error/Problem.ts
+ * Responsibility:
+ * Modified: 2025-06-18 14:32:30 UTC
+ * Dependency: ../../../Integration/Tauri/Clipboard/Error.js, effect
+ * Export: Problem
+ */
+
 /**
  * @module Problem (Clipboard/Error)
  * @description Defines a domain-specific, tagged error for clipboard operations

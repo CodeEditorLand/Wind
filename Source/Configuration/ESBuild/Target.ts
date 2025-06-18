@@ -1,7 +1,7 @@
 /*
  * File: Wind/Source/Configuration/ESBuild/Target.ts
- * Responsibility: Responsibility could not be determined.
- * Modified: 2025-06-01 23:22:16 UTC
+ * Responsibility: Configures the esbuild bundler for the Land project's build system (Maintain), setting output to 'Target', conditionally removing debug code, defining build constants, and optionally adding a compilation plugin to process JavaScript outputs for the Sky frontend.
+ * Modified: 2025-06-18 14:33:14 UTC
  * Dependency: esbuild
  * Export: Bundle, Compile, Merge, On
  */

@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/Instantiation/Definition.ts
+ * Responsibility: Implements the live IInstantiationService for the Wind module in the Cocoon sidecar, bridging VS Code's class-based dependency injection with Effect-TS's context and layer system to enable service/extension instantiation.
+ * Modified: 2025-06-18 14:33:14 UTC
+ * Dependency: ./Register.js, effect, vs/platform/instantiation/common/serviceCollection.js
+ */
+
 /**
  * @module Definition (Instantiation)
  * @description The live implementation of the IInstantiationService. This service is

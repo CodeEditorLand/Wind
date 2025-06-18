@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/File/Live.ts
+ * Responsibility:
+ * Modified: 2025-06-09 15:50:41 UTC
+ * Dependency: ../FileSystem/mod.js, ../Log.js, ./Definition.js, ./Service.js, effect
+ */
+
 /**
  * @module Live (File/Application)
  * @description Provides the live implementation of the IFileService as a Layer.

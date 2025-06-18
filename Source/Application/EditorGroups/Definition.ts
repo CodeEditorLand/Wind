@@ -1,3 +1,10 @@
+/*
+ * File: Wind/Source/Application/EditorGroups/Definition.ts
+ * Responsibility:
+ * Modified: 2025-06-18 14:33:14 UTC
+ * Dependency: ../Instantiation/mod.js, ../Storage/mod.js, effect, vs/base/common/event.js, vs/platform/instantiation/common/instantiation.js
+ */
+
 /**
  * @module Definition (EditorGroups)
  * @description A stateful implementation of IEditorGroupsService that manages the

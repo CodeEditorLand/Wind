@@ -1,3 +1,11 @@
+/*
+ * File: Wind/Source/Application/Configuration/Orchestrate/ResolveConfiguration.ts
+ * Responsibility: Orchestrates the resolution of merged configuration settings for the Cocoon sidecar by concurrently loading and deep-merging user-global and workspace-specific settings.json files, providing a unified configuration object for the VS Code extension host.
+ * Modified: 2025-06-18 14:33:14 UTC
+ * Dependency: ../Error/mod.js, deepmerge-ts, effect, vs/base/common/resources.js
+ * Export: ResolveConfiguration
+ */
+
 /**
  * @module ResolveConfiguration (Orchestrate)
  * @description A composed Effect for finding, loading, and merging all relevant
