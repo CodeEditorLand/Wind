@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Application/File/Service.ts
- * Responsibility: Defines the TypeScript interface and Effect Context tag for the VS Code File service (IFileService) to enable dependency injection of file system operations within the Cocoon sidecar.
- * Modified: 2025-06-09 15:50:41 UTC
- * Dependency: effect, vs/platform/files/common/files.js
- * Export: Interface, Tag
- */
+
 
 /**
  * @module Service (File)

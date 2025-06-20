@@ -1,8 +1,4 @@
-/*
- * File: Wind/Source/Integration/Tauri/mod.ts
- * Responsibility: Aggregates and re-exports all sub-modules of the Tauri integration layer to provide the Sky frontend with a safe, purely functional API for interacting with the Mountain backend via Tauri.
- * Modified: 2025-06-09 15:50:35 UTC
- */
+
 
 /**
  * @module Tauri (Integration)

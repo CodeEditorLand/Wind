@@ -1,9 +1,4 @@
-/*
- * File: Wind/Source/Application/File/Definition.ts
- * Responsibility:
- * Modified: 2025-06-09 15:50:41 UTC
- * Dependency: ../FileSystem/mod.js, ../Log.js, ./Service.js, effect, vs/base/common/network.js, vs/platform/files/common/fileService.js
- */
+
 
 /**
  * @module Definition (File)

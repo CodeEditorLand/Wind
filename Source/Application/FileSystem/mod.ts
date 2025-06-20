@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Application/FileSystem/mod.ts
- * Responsibility:
- * Modified: 2025-06-18 14:33:14 UTC
- * Dependency: ./Error.js, ./Live.js
- * Export: Interface, Live, Problem, Tag
- */
+
 
 /**
  * @module FileSystem (Application)

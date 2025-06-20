@@ -1,9 +1,4 @@
-/*
- * File: Wind/Source/Preload.ts
- * Responsibility: Provides shims for the Node.js process and Electron IPC renderer globals in the Tauri webview environment, enabling the VS Code workbench to run by bridging calls to the Mountain backend via the Echo API.
- * Modified: 2025-06-18 14:33:14 UTC
- * Dependency: @tauri-apps/api/tauri, @tauri-apps/api/window, vs/base/common/uri.js, vs/base/parts/sandbox/common/sandboxTypes.js
- */
+
 
 /**
  * @module Preload (Wind)

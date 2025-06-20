@@ -1,9 +1,4 @@
-/*
- * File: Wind/Source/Application/Clipboard/Live.ts
- * Responsibility: Provides the live implementation of the clipboard service as an Effect Layer for the Sky frontend, enabling interaction with the system clipboard via Tauri's JavaScript bindings.
- * Modified: 2025-06-18 14:32:33 UTC
- * Dependency: ../../../Integration/Tauri/Clipboard/Error.js, ./Definition.js, ./Error.js, ./Tag.js, effect
- */
+
 
 /**
  * @module Live (Clipboard/Application)

@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Application/TextEditor/Service.ts
- * Responsibility: Defines the service interface and Effect Context.Tag for the TextEditor service, aligning with VS Code's ITextEditorService contract to enable dependency injection of text editing functionality within the Cocoon sidecar.
- * Modified: 2025-06-09 15:50:38 UTC
- * Dependency: effect, vs/workbench/services/textfile/common/textEditorService.js
- * Export: Interface, Tag
- */
+
 
 /**
  * @module Service (TextEditor/Application)

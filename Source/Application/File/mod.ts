@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Application/File/mod.ts
- * Responsibility:
- * Modified: 2025-06-18 14:33:14 UTC
- * Dependency: ../FileSystem/mod.js, ../Log.js, ./Definition.js, ./Type.js, effect
- * Export: FileEntry, Interface, Live, Tag
- */
+
 
 /**
  * @module File

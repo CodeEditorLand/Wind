@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Configuration/ESBuild/Wind.ts
- * Responsibility:
- * Modified: 2025-06-18 14:33:14 UTC
- * Dependency: esbuild
- * Export: Bundle, Clean, Compile, On
- */
+
 
 import type { BuildOptions } from "esbuild";
 

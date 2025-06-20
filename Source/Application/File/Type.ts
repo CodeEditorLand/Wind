@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Application/File/Type.ts
- * Responsibility:
- * Modified: 2025-06-09 15:50:40 UTC
- * Dependency: ../../../Platform/VSCode/Type.js
- * Export: FileEntry
- */
+
 
 /**
  * @module Type (File)

@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Integration/Mock/Clipboard/mod.ts
- * Responsibility: Implements Tauri command handlers for clipboard operations (text, resources, and images) to enable the Sky frontend to interact with the system clipboard via the Mountain backend.
- * Modified: 2025-06-09 15:50:37 UTC
- * Dependency: ./Wrap/HasResourceList.js, ./Wrap/ReadImage.js, ./Wrap/ReadResourceList.js, ./Wrap/ReadText.js, ./Wrap/WriteResourceList.js, ./Wrap/WriteText.js
- * Export: MockClipboard
- */
+
 
 /**
  * @module Clipboard (Mock Integration)

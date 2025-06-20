@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Integration/Tauri/Clipboard/Error/Problem.ts
- * Responsibility:
- * Modified: 2025-06-18 14:33:14 UTC
- * Dependency: effect
- * Export: Problem
- */
+
 
 /**
  * @module Problem (Clipboard/Error/Integration)

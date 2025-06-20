@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Integration/Tauri/Clipboard/Wrap/ReadText.ts
- * Responsibility: Provides a declarative Effect wrapper for Tauri's clipboard.readText API to safely retrieve system clipboard text in the Sky frontend, converting potential errors into structured IntegrationClipboardProblem instances for robust error handling.
- * Modified: 2025-06-18 14:33:14 UTC
- * Dependency: ../../../../Effect/Produce.js, ../Error/mod.js, @tauri-apps/api/clipboard
- * Export: ReadText
- */
+
 
 /**
  * @module ReadText (Clipboard/Wrap/Integration)

@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Application/TextEditor/mod.ts
- * Responsibility: Exports the TextEditor service's dependency injection Tag, Interface, and Live implementation for the Sky frontend, enabling the resolution of untyped editor inputs into concrete EditorInput instances for the workbench.
- * Modified: 2025-06-18 14:33:14 UTC
- * Dependency: ./Live.js
- * Export: Interface, Live, Tag
- */
+
 
 /**
  * @module TextEditor (Application)

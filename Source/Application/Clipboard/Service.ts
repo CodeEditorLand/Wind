@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Application/Clipboard/Service.ts
- * Responsibility: Defines the clipboard service interface and its Effect Context Tag for the Wind compatibility layer, ensuring the clipboard service conforms to VS Code's `IClipboardService` for consistent extension behavior.
- * Modified: 2025-06-18 14:33:14 UTC
- * Dependency: effect, vs/platform/clipboard/common/clipboardService.js
- * Export: Interface, Tag
- */
+
 
 /**
  * @module Service (Clipboard/Application)

@@ -1,9 +1,4 @@
-/*
- * File: Wind/Source/Application/Configuration/Live.ts
- * Responsibility: Provides the live implementation Layer for the Configuration service in the Sky frontend, resolving application settings at startup and handling errors from configuration logic, Tauri integration, and path resolution.
- * Modified: 2025-06-09 15:50:45 UTC
- * Dependency: ../../../Integration/Tauri/Configuration/Error.js, ../../../Integration/Tauri/Path/Error.js, ./Definition.js, ./Error/mod.js, ./Service.js, effect
- */
+
 
 /**
  * @module Live (Configuration/Application)

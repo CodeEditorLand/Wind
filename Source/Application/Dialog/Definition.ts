@@ -1,9 +1,4 @@
-/*
- * File: Wind/Source/Application/Dialog/Definition.ts
- * Responsibility: Defines the TypeScript interfaces for the dialog services (IFileDialogService and IDialogService) and their configuration options, providing the contract for the Sky frontend to request native file and message dialogs from the Mountain backend via the Echo IPC mechanism.
- * Modified: 2025-06-09 15:50:44 UTC
- * Dependency: ../../../Platform/VSCode/Type.js, ../Configuration/mod.js, ./Error/mod.js, ./Orchestrate/mod.js, ./Utility/mod.js, effect, vs/nls, vs/platform/configuration/common/configuration.js
- */
+
 
 /**
  * @module Definition (Dialog)

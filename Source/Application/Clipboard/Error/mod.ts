@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Application/Clipboard/Error/mod.ts
- * Responsibility:
- * Modified: 2025-06-18 14:33:14 UTC
- * Dependency: ./Problem.js
- * Export: ClipboardProblem
- */
+
 
 /**
  * @module Error (Clipboard/Application)

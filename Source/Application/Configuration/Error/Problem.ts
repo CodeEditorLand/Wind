@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Application/Configuration/Error/Problem.ts
- * Responsibility:
- * Modified: 2025-06-09 15:50:45 UTC
- * Dependency: ../../../Integration/Tauri/Configuration/Error.js, effect
- * Export: Problem
- */
+
 
 /**
  * @module Problem (Configuration/Error)

@@ -1,10 +1,3 @@
-/*
- * File: Wind/Source/Configuration/ESBuild/Wind.js
- * Responsibility:
- * Modified: 2025-06-06 09:16:02 UTC
- * Export: Bundle, Clean, Compile, On
- */
-
 export const On = process.env["NODE_ENV"] === "development" ||
     process.env["TAURI_ENV_DEBUG"] === "true";
 export const Clean = process.env["Clean"] === "true";

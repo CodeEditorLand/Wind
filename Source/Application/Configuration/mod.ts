@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Application/Configuration/mod.ts
- * Responsibility: Provides the Configuration service definition (interface, live implementation, errors, and DI tag) for the Sky frontend to manage application settings and communicate with the Mountain backend via the Echo API.
- * Modified: 2025-06-18 14:33:14 UTC
- * Dependency: ./Error/mod.js, ./Live.js
- * Export: Interface, Live, Problem, Tag
- */
+
 
 /**
  * @module Configuration (Application)

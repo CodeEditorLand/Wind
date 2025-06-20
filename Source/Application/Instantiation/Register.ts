@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Application/Instantiation/Register.ts
- * Responsibility:
- * Modified: 2025-06-18 14:33:14 UTC
- * Dependency: effect
- * Export: LayerMap, RegisterService
- */
+
 
 /**
  * @module Register (Instantiation)

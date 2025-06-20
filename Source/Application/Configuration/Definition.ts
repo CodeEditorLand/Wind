@@ -1,9 +1,4 @@
-/*
- * File: Wind/Source/Application/Configuration/Definition.ts
- * Responsibility: Provides a read-only implementation of the VS Code configuration service (IConfigurationService) for the Cocoon sidecar, initializing its state by resolving configuration data via an Effect.
- * Modified: 2025-06-18 14:33:14 UTC
- * Dependency: ./Orchestrate/ResolveConfiguration.js, effect, vs/base/common/event.js
- */
+
 
 /**
  * @module Definition (Configuration)

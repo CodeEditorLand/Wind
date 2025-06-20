@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Application/EditorGroups/mod.ts
- * Responsibility:
- * Modified: 2025-06-09 15:50:42 UTC
- * Dependency: ./Error/mod.js, ./Live.js
- * Export: Interface, Live, Problem, Tag
- */
+
 
 /**
  * @module EditorGroups (Application)

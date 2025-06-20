@@ -1,9 +1,4 @@
-/*
- * File: Wind/Source/Application/Editor/Definition.ts
- * Responsibility: Implements the IEditorService interface for the Land editor's Sky frontend, orchestrating editor operations (such as opening and grouping) by composing effects that interact with the TextEditorService, InstantiationService, and EditorGroupsService.
- * Modified: 2025-06-18 14:33:14 UTC
- * Dependency: ../EditorGroups/mod.js, ../Instantiation/mod.js, ../TextEditor/mod.js, effect, vs/base/common/event.js, vs/workbench/common/editor.js, vs/workbench/common/editor/editorInput.js
- */
+
 
 /**
  * @module Definition (Editor)

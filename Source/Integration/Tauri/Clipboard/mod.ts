@@ -1,8 +1,4 @@
-/*
- * File: Wind/Source/Integration/Tauri/Clipboard/mod.ts
- * Responsibility: Serves as the public entry point for clipboard operations in the Tauri Integration Layer, aggregating and exporting error types, native API wrappers, and format converters to provide a unified interface for the Sky frontend to interact with the native clipboard via the Mountain backend.
- * Modified: 2025-06-09 15:50:36 UTC
- */
+
 
 /**
  * @module Clipboard (Integration/Tauri)

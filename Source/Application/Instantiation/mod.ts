@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Application/Instantiation/mod.ts
- * Responsibility: Aggregates and exports the public API for the Instantiation service, which bridges VS Code's legacy class-based dependency injection and Effect-TS's context-based dependency management to enable the Cocoon sidecar to instantiate and manage VS Code extensions.
- * Modified: 2025-06-18 14:33:14 UTC
- * Dependency: ./Error/mod.js, ./Live.js
- * Export: Interface, LayerMap, Live, Problem, RegisterService, Tag
- */
+
 
 /**
  * @module Instantiation

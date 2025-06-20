@@ -1,9 +1,4 @@
-/*
- * File: Wind/Source/Application/FileSystem/Definition.ts
- * Responsibility:
- * Modified: 2025-06-09 15:50:40 UTC
- * Dependency: ../../../Platform/VSCode/Type.js, effect, vs/base/common/event.js, vs/base/common/lifecycle.js
- */
+
 
 /**
  * @module Definition (FileSystem/Application)

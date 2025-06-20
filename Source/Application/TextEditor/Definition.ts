@@ -1,9 +1,4 @@
-/*
- * File: Wind/Source/Application/TextEditor/Definition.ts
- * Responsibility:
- * Modified: 2025-06-09 15:50:38 UTC
- * Dependency: ../File/mod.js, ../Instantiation/mod.js, ../UntitledTextEditor/mod.js, effect, vs/platform/files/common/files.js, vs/platform/instantiation/common/instantiation.js, vs/workbench/services/textfile/common/textEditorService.js, vs/workbench/services/untitled/common/untitledTextEditorService.js
- */
+
 
 /**
  * @module Definition (TextEditor/Application)

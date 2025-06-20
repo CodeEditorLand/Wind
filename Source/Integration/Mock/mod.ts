@@ -1,10 +1,4 @@
-/*
- * File: Wind/Source/Integration/Mock/mod.ts
- * Responsibility: Aggregates mock implementations of Tauri integration services (replacing the Mountain backend) into a single Effect layer for isolated testing of the Sky frontend.
- * Modified: 2025-06-09 15:50:36 UTC
- * Dependency: ../Tauri/Definition.js, ./Clipboard/mod.js, ./Dialog/mod.js, effect
- * Export: MockIntegrationLayer
- */
+
 
 /**
  * @module Mock (Integration)

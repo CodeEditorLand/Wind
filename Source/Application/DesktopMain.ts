@@ -1,9 +1,4 @@
-/*
- * File: Wind/Source/Application/DesktopMain.ts
- * Responsibility: Orchestrates the Sky frontend startup sequence by initializing the Effect runtime, composing application services, launching the Workbench UI, and signaling readiness to the Mountain backend via NativeHostService.
- * Modified: 2025-06-18 14:33:14 UTC
- * Dependency: ../../workbench/browser/workbench.js, ./Host/NativeTag.js, ./Instantiation/Layer.js, ./Instantiation/mod.js, effect, vs/base/browser/dom.js, vs/base/browser/window.js, vs/base/common/errors.js, vs/platform/instantiation/common/serviceCollection.js, vs/platform/log/common/log.js, vs/platform/product/common/product.js
- */
+
 
 /**
  * @module DesktopMain (Application)
