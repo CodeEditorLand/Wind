@@ -4,9 +4,7 @@
  */
 import { Layer } from "effect";
 
-import { ConfigurationService } from "../Configuration/mod.js";
 import { Definition } from "./Definition.js";
-import type { DialogProblem } from "./Error/mod.js";
 import { Tag } from "./Service.js";
 
 /**

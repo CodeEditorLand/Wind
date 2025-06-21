@@ -7,7 +7,6 @@ import { Layer } from "effect";
 import type { IntegrationConfigurationProblem } from "../../../Integration/Tauri/Configuration/Error.js";
 import type { IntegrationPathProblem } from "../../../Integration/Tauri/Path/Error.js";
 import { Definition } from "./Definition.js";
-import type { ConfigurationProblem } from "./Error/mod.js";
 import { Tag } from "./Service.js";
 
 type LiveConfigurationError =

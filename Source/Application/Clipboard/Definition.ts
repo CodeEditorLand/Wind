@@ -8,18 +8,6 @@
 import { Effect, pipe, Runtime } from "effect";
 import type { IClipboardService } from "vs/platform/clipboard/common/clipboardService.js";
 
-import {
-	HasResourceList,
-	ReadImage,
-	ReadResourceList,
-	ReadText,
-	WriteResourceList,
-	WriteText,
-	type IntegrationClipboardProblem,
-} from "../../../Integration/Tauri/Clipboard/mod.js";
-import type { Uri } from "../../../Platform/VSCode/Type.js";
-import { ApplicationClipboardProblem } from "./Error.js";
-
 /**
  * A helper function to execute an Effect from the Integration layer and return
  * its result as a Promise, bridging the declarative Effect world with the

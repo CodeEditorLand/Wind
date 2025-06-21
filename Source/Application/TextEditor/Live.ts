@@ -4,8 +4,6 @@
  */
 import { Layer } from "effect";
 
-import { File } from "../File/mod.js";
-import { Instantiation } from "../Instantiation/mod.js";
 import { Definition } from "./Definition.js";
 import { Tag } from "./Service.js";
 

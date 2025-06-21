@@ -4,9 +4,6 @@
  */
 import { Layer } from "effect";
 
-import { EditorGroupsService } from "../EditorGroups/mod.js";
-import { InstantiationService } from "../Instantiation/mod.js";
-import { TextEditorService } from "../TextEditor/mod.js";
 import { Definition } from "./Definition.js";
 import type { EditorProblem } from "./Error.js";
 import { Tag } from "./Service.js";

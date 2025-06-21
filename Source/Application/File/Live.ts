@@ -4,7 +4,6 @@
  */
 import { Layer } from "effect";
 
-import { FileSystemProvider } from "../FileSystem/mod.js";
 import { Log } from "../Log.js";
 import { Definition } from "./Definition.js";
 import { Tag } from "./Service.js";

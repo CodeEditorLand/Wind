@@ -8,19 +8,6 @@ import { deepmerge } from "deepmerge-ts";
 import { Effect, pipe } from "effect";
 import { joinPath } from "vs/base/common/resources.js";
 
-import {
-	ParseJson,
-	ReadRawFile,
-	type IntegrationConfigurationProblem,
-} from "../../../Integration/Tauri/Configuration/mod.js";
-import {
-	ResolveFinalDefaultPath,
-	ResolveWorkspacePath,
-	type IntegrationPathProblem,
-	type Uri,
-} from "../../../Integration/Tauri/Path/mod.js";
-import { Problem as ApplicationConfigurationProblem } from "../Error/mod.js";
-
 type ConfigurationError =
 	| ApplicationConfigurationProblem
 	| IntegrationConfigurationProblem

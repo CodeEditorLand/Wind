@@ -20,10 +20,6 @@ import type {
 	PreferredGroup,
 } from "vs/workbench/services/editor/common/editorService.js";
 
-import { EditorGroupsService } from "../EditorGroups/mod.js";
-import { InstantiationService } from "../Instantiation/mod.js";
-import { TextEditorService } from "../TextEditor/mod.js";
-
 /**
  * An Effect that builds the live implementation of the Editor service.
  */

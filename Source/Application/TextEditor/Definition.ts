@@ -9,12 +9,6 @@ import { IInstantiationService } from "vs/platform/instantiation/common/instanti
 import { TextEditorService } from "vs/workbench/services/textfile/common/textEditorService.js";
 import { IUntitledTextEditorService } from "vs/workbench/services/untitled/common/untitledTextEditorService.js";
 
-import { File } from "../File/mod.js";
-import { Instantiation } from "../Instantiation/mod.js";
-
-// Assuming a stubbed or real UntitledTextEditorService exists
-// import { UntitledTextEditorService } from "../UntitledTextEditor/mod.js";
-
 /**
  * An Effect that builds the live implementation of the TextEditor service.
  *

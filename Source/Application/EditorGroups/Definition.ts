@@ -24,9 +24,6 @@ import {
 	type IEditorIdentifier,
 } from "vs/workbench/services/editor/common/editorGroupsService.js";
 
-import { Instantiation } from "../Instantiation/mod.js";
-import { Storage } from "../Storage/mod.js";
-
 const EDITOR_PART_UI_STATE_STORAGE_KEY = "editorpart.state";
 
 interface IEditorPartUIState {

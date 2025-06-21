@@ -7,7 +7,6 @@
 import { computed, effect, signal, type TlVn } from "@signia/core";
 import { Effect, Stream } from "effect";
 
-import { FileService, type FileEntry } from "../../../Application/File/mod.js";
 import type { Uri } from "../../../Platform/VSCode/Type.js";
 
 // A type alias for the disposer function returned by a Signia effect.

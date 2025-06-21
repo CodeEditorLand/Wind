@@ -17,7 +17,6 @@ import { IProductService } from "vs/platform/product/common/product.js";
 import { Workbench } from "../../workbench/browser/workbench.js";
 import { NativeHostServiceTag } from "./Host/NativeTag.js";
 import { AppLayer } from "./Instantiation/Layer.js";
-import { InstantiationServiceTag } from "./Instantiation/mod.js";
 
 /**
  * The main application startup workflow, described as a single, declarative `Effect`.

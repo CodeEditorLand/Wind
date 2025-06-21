@@ -7,7 +7,6 @@
 import { readText as ReadTextFromTauri } from "@tauri-apps/api/clipboard";
 
 import { FromAsync } from "../../../../Effect/Produce.js";
-import { IntegrationClipboardProblem } from "../Error/mod.js";
 
 /**
  * An error constructor specific to the `ReadText` operation.

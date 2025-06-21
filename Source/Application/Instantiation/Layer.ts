@@ -11,32 +11,9 @@
 
 import { Effect, Layer } from "effect";
 
-// --- Import all available live service layers ---
-import { Live as LiveClipboardService } from "../Clipboard/mod.js";
-import {
-	Configuration,
-	Live as LiveConfigurationService,
-} from "../Configuration/mod.js";
-import { Live as LiveDialogService } from "../Dialog/mod.js";
-import { Live as LiveEditorService } from "../Editor/mod.js";
-import { Live as LiveEditorGroupService } from "../EditorGroups/mod.js";
-import { Live as LiveEnvironmentService } from "../Environment/mod.js";
-import { Live as LiveFileService } from "../File/mod.js";
-import { Live as LiveHostService } from "../Host/mod.js";
-import { Live as LiveLifecycleService } from "../Lifecycle/mod.js";
-import { Live as LiveLogService } from "../Log/mod.js";
-import { Live as LiveNotificationService } from "../Notification/mod.js";
-import { Live as LivePaneCompositeService } from "../PaneComposite/mod.js";
-import { Live as LiveQuickInputService } from "../QuickInput/mod.js";
-import { Live as LiveStorageService } from "../Storage/mod.js";
-import { Live as LiveTextEditorService } from "../TextEditor/mod.js";
-import { Live as LiveViewService } from "../Views/mod.js";
-import { Live as LiveWorkspaceService } from "../Workspaces/mod.js";
-import { Live as LiveWorkspaceTrustService } from "../Workspaces/Trust/mod.js";
+// TODO: Import all available live service layers
 
-// --- Placeholders for future, feature-flagged services ---
-// import { Live as LiveScmService } from "../Scm/mod.js";
-// import { Live as LiveTestService } from "../Testing/mod.js";
+// TODO: Placeholders for future, feature-flagged services
 
 /**
  * An `Effect` that dynamically constructs the master application `Layer`.

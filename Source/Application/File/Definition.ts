@@ -7,7 +7,6 @@ import { Effect } from "effect";
 import { Schemas } from "vs/base/common/network.js";
 import { FileService } from "vs/platform/files/common/fileService.js";
 
-import { FileSystemProvider } from "../FileSystem/mod.js";
 import { Log } from "../Log.js";
 import type { Interface } from "./Service.js";
 

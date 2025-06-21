@@ -14,10 +14,6 @@ import {
 } from "vs/platform/dialogs/common/dialogs.js";
 
 import { Uri } from "../../../Platform/VSCode/Type.js";
-import { ConfigurationService } from "../Configuration/mod.js";
-import type { ServiceProblem } from "./Error/mod.js";
-import * as Orchestrate from "./Orchestrate/mod.js";
-import { DecideUseSimplified } from "./Utility/mod.js";
 
 // --- Internal Effect Constructors ---
 
