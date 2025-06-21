@@ -1,5 +1,3 @@
-
-
 /**
  * @module Live (Editor/Application)
  * @description Provides the "live" implementation of the IEditorService as a Layer.

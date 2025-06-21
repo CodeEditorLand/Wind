@@ -1,5 +1,3 @@
-
-
 /**
  * @module Definition (File)
  * @description The live implementation of the IFileService.

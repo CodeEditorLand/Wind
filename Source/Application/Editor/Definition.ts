@@ -1,5 +1,3 @@
-
-
 /**
  * @module Definition (Editor)
  * @description An implementation of IEditorService that orchestrates editor

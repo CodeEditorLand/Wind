@@ -1,5 +1,3 @@
-
-
 /**
  * @module Problem (Clipboard/Error)
  * @description Defines a domain-specific, tagged error for clipboard operations

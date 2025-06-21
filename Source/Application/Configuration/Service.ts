@@ -1,5 +1,3 @@
-
-
 /**
  * @module Service (Configuration/Application)
  * @description Defines the service interface and Context.Tag for the application-level
@@ -20,4 +18,7 @@ export type Interface = IConfigurationService;
  * This tag is used to specify a dependency on the configuration service in the Effect
  * ecosystem, and is identified by the string "vscode/ConfigurationService".
  */
-export const Tag = Context.Tag<Interface>("vscode/ConfigurationService");
+export class Tag extends Context.Tag("vscode/ConfigurationService")<
+	Interface,
+	{}
+>() {}

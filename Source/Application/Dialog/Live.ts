@@ -1,5 +1,3 @@
-
-
 /**
  * @module Live (Dialog/Application)
  * @description Provides the "live" implementation of the IFileDialogService as a Layer.

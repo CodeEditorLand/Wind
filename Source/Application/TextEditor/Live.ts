@@ -1,5 +1,3 @@
-
-
 /**
  * @module Live (TextEditor/Application)
  * @description Provides the "live" implementation of the ITextEditorService as a Layer.

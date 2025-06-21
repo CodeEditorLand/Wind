@@ -1,5 +1,3 @@
-
-
 /**
  * @module Live (Clipboard/Application)
  * @description Provides the "live" implementation of the IClipboardService as a Layer.

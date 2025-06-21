@@ -1,5 +1,3 @@
-
-
 /**
  * @module Service (Clipboard/Application)
  * @description Defines the service interface and Context.Tag for the application-level
@@ -20,4 +18,7 @@ export type Interface = IClipboardService;
  * This tag is used to specify a dependency on the clipboard service in the Effect
  * ecosystem, and is identified by the string "vscode/ClipboardService".
  */
-export const Tag = Context.Tag<Interface>("vscode/ClipboardService");
+export class Tag extends Context.Tag("vscode/ClipboardService")<
+	Interface,
+	{}
+>() {}

@@ -1,5 +1,3 @@
-
-
 /**
  * @module Definition (Instantiation)
  * @description The live implementation of the IInstantiationService. This service is

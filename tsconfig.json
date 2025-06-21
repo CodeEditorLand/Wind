@@ -10,8 +10,6 @@
 
 		"experimentalDecorators": true,
 
-		"lib": ["DOM", "ESNext"],
-
 		"module": "ESNext",
 
 		"moduleResolution": "Bundler",
@@ -26,12 +24,52 @@
 
 		"rootDirs": [".", "../../Dependency/Microsoft/Dependency/Editor/src/"],
 
-		"target": "ESNext"
+		"target": "ESNext",
+
+		// vs/compatbile
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"verbatimModuleSyntax": false,
+		"strict": false,
+		"exactOptionalPropertyTypes": false,
+		"noUncheckedIndexedAccess": false,
+		"skipLibCheck": true,
+		"isolatedModules": false,
+
+		"plugins": [
+			{
+				"name": "@effect/language-service",
+				"transform": "@effect/language-service/transform",
+				"diagnostics": true,
+				"diagnosticSeverity": {
+					"duplicatePackage": "error",
+					"floatingEffect": "error",
+					"leakingRequirements": "error",
+					"missingEffectContext": "error",
+					"missingEffectError": "error",
+					"missingReturnYieldStar": "error",
+					"missingStarInYieldEffectGen": "error",
+					"unnecessaryEffectGen": "error",
+					"unnecessaryPipe": "error"
+				},
+				"quickinfo": true,
+				"completions": true,
+				"allowedDuplicatedPackages": []
+			}
+		]
 	},
 
 	"exclude": ["Target"],
 
 	"extends": "@playform/build/tsconfig",
 
-	"include": ["Source"]
+	"include": [
+		"Source",
+		"@types/node",
+
+		"../../Dependency/Microsoft/Dependency/Editor/src/*.ts",
+		"../../Dependency/Microsoft/Dependency/Editor/src/typings",
+		"../../Dependency/Microsoft/Dependency/Editor/src/vs/**/*.ts",
+		"../../Dependency/Microsoft/Dependency/Editor/src/vscode-dts/vscode.proposed.*.d.ts",
+		"../../Dependency/Microsoft/Dependency/Editor/src/vscode-dts/vscode.d.ts"
+	]
 }

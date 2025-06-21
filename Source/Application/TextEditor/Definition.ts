@@ -1,5 +1,3 @@
-
-
 /**
  * @module Definition (TextEditor/Application)
  * @description The live implementation of the ITextEditorService.

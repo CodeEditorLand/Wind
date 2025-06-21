@@ -1,5 +1,3 @@
-
-
 /**
  * @module ReadText (Clipboard/Wrap/Integration)
  * @description Provides a declarative Effect for reading text from the system

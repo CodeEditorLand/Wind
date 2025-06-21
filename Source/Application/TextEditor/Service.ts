@@ -1,5 +1,3 @@
-
-
 /**
  * @module Service (TextEditor/Application)
  * @description Defines the service interface and Context.Tag for the TextEditor service.
@@ -17,4 +15,7 @@ export type Interface = ITextEditorService;
 /**
  * The Context.Tag for the TextEditor service.
  */
-export const Tag = Context.Tag<Interface>("vscode/TextEditorService");
+export class Tag extends Context.Tag("vscode/TextEditorService")<
+	Interface,
+	{}
+>() {}

@@ -1,7 +1,3 @@
-# File: Wind/Source/Run.sh
-# Responsibility:
-# Modified: 2025-06-01 22:28:54 UTC
-
 #!/usr/bin/env bash
 
 Build "Source/Configuration/**/*.{ts,json}" \

@@ -1,5 +1,3 @@
-
-
 /**
  * @module Problem (Clipboard/Error/Integration)
  * @description Defines a structured, tagged error for failures that occur when

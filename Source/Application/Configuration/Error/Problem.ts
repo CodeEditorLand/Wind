@@ -1,5 +1,3 @@
-
-
 /**
  * @module Problem (Configuration/Error)
  * @description Defines a domain-specific, tagged error for configuration operations

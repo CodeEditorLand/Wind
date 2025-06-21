@@ -1,5 +1,3 @@
-
-
 /**
  * @module Layer (Instantiation)
  * @description Defines the master application layer (`Live`).

@@ -1,5 +1,3 @@
-
-
 /**
  * @module Type (File)
  * @description Defines custom types for the File service.

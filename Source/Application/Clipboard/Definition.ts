@@ -1,5 +1,3 @@
-
-
 /**
  * @module Definition (Clipboard)
  * @description The concrete implementation of the IClipboardService interface.

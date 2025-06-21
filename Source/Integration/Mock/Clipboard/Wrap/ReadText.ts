@@ -1,5 +1,3 @@
-
-
 /**
  * @module MockReadText (Clipboard Wrapper)
  * @description A mock Effect for reading text from the clipboard.

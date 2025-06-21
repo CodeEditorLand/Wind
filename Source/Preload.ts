@@ -1,5 +1,3 @@
-
-
 /**
  * @module Preload (Wind)
  * @description This preload script runs in the webview environment before any other

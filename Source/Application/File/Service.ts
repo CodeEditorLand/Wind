@@ -1,5 +1,3 @@
-
-
 /**
  * @module Service (File)
  * @description Defines the interface and Context.Tag for the File service.
@@ -17,4 +15,4 @@ export type Interface = IFileService;
 /**
  * The Context.Tag for the File service.
  */
-export const Tag = Context.Tag<Interface>("vscode/FileService");
+export class Tag extends Context.Tag("vscode/FileService")<Interface, {}>() {}

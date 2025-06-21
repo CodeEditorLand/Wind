@@ -1,5 +1,3 @@
-
-
 /**
  * @module Service (EditorGroups/Application)
  * @description Defines the service interface and Context.Tag for the application-level
@@ -20,4 +18,7 @@ export type Interface = IEditorGroupsService;
  * This tag is used to specify a dependency on the editor groups service in the Effect
  * ecosystem, and is identified by the string "vscode/EditorGroupsService".
  */
-export const Tag = Context.Tag<Interface>("vscode/EditorGroupsService");
+export class Tag extends Context.Tag("vscode/EditorGroupsService")<
+	Interface,
+	{}
+>() {}

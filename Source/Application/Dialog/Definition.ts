@@ -1,5 +1,3 @@
-
-
 /**
  * @module Definition (Dialog)
  * @description An implementation of IFileDialogService that orchestrates dialog

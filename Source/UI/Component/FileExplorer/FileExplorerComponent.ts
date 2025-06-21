@@ -1,5 +1,3 @@
-
-
 /**
  * @module FileExplorerComponent
  * @description A reactive UI component for displaying the contents of a directory,

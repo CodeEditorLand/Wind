@@ -1,5 +1,3 @@
-
-
 /**
  * @module Definition (EditorGroups)
  * @description A stateful implementation of IEditorGroupsService that manages the

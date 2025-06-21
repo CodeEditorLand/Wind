@@ -1,5 +1,3 @@
-
-
 /**
  * @module DesktopMain (Application)
  * @description The main entry point for the Wind Workbench UI. This script orchestrates

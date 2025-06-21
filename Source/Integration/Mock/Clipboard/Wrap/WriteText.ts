@@ -1,5 +1,3 @@
-
-
 /**
  * @module MockWriteText (Clipboard Wrapper)
  * @description A mock Effect for writing text to the system clipboard.

@@ -1,5 +1,3 @@
-
-
 /**
  * @module Uri (Platform/VSCode/Type)
  * @description Re-exports the canonical `URI` class from VS Code's base library.

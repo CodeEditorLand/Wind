@@ -1,5 +1,3 @@
-
-
 /**
  * @module Definition (Configuration)
  * @description A read-only implementation of IConfigurationService that fetches its

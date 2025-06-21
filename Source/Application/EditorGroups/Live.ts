@@ -1,5 +1,3 @@
-
-
 /**
  * @module Live (EditorGroups/Application)
  * @description Provides the "live" implementation of the IEditorGroupsService as a Layer.

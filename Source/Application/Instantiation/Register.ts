@@ -1,5 +1,3 @@
-
-
 /**
  * @module Register (Instantiation)
  * @description Provides the mechanism for mapping legacy VS Code service constructors

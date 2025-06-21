@@ -1,5 +1,3 @@
-
-
 /**
  * @module Definition (FileSystem/Application)
  * @description The concrete implementation of the IFileSystemProvider interface, which
