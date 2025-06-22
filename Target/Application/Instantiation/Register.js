@@ -1,1 +1,11 @@
-import"../../effect";const y=new Map,o=(a,e)=>{y.set(a,e)};export{y as LayerMap,o as RegisterService};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+const LayerMap = /* @__PURE__ */ new Map();
+const RegisterService = /* @__PURE__ */ __name((Constructor, Layer) => {
+  LayerMap.set(Constructor, Layer);
+}, "RegisterService");
+export {
+  LayerMap,
+  RegisterService
+};
+//# sourceMappingURL=Register.js.map
