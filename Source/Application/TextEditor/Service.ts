@@ -1,21 +1,27 @@
-/**
- * @module Service (TextEditor/Application)
- * @description Defines the service interface and Context.Tag for the TextEditor service.
+/*
+ * File: Wind/Source/Application/TextEditor/Service.ts
+ * Role: Defines the service interface and Context.Tag for the ITextFileService.
+ * Responsibilities:
+ *   - Provide a `Context.Tag` that can be used to request the `ITextFileService`
+ *     from the dependency injection container.
+ *
+ * NOTE: The service was renamed from `ITextEditorService` to `ITextFileService`
+ * to more accurately reflect the VS Code service being implemented (`textFileService.ts`).
  */
 
 import { Context } from "effect";
-import type { ITextEditorService } from "vs/workbench/services/textfile/common/textEditorService.js";
+import type { ITextFileService } from "vs/workbench/services/textfile/common/textfiles.js";
 
 /**
- * The service interface for the TextEditor service.
- * This is an alias for VS Code's `ITextEditorService`.
+ * The service interface for the TextFile service.
+ * This is an alias for VS Code's `ITextFileService`.
  */
-export type Interface = ITextEditorService;
+export type Interface = ITextFileService;
 
 /**
- * The Context.Tag for the TextEditor service.
+ * The Context.Tag for the TextFile service, using the canonical
+ * VS Code identifier for service lookups.
  */
-export class Tag extends Context.Tag("vscode/TextEditorService")<
-	Interface,
-	{}
->() {}
+export const Tag = Context.Tag<Interface>(
+	"textFileService",
+) as Context.Tag<ITextFileService>;
