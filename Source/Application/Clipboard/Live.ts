@@ -13,6 +13,7 @@ import { Tag } from "./Tag.js";
  * The live implementation Layer for the Clipboard service.
  *
  * It uses `Layer.effect` to construct the service instance from its definition,
+
  * which is an `Effect`. This layer has no external dependencies as the Definition
  * it uses is self-contained.
  */

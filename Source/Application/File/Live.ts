@@ -19,7 +19,8 @@ import { Tag } from "./Service.js";
  */
 const Live: Layer.Layer<
 	import("./Service.js").Interface,
-	never, // This layer itself introduces no new errors.
+	// This layer itself introduces no new errors.
+	never,
 	Log.Interface | FileSystemProvider.Interface
 > = Layer.effect(Tag, Definition);
 

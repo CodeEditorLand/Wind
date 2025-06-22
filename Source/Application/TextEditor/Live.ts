@@ -15,7 +15,8 @@ import { Tag } from "./Service.js";
 const Live: Layer.Layer<
 	import("./Service.js").Interface,
 	never,
-	Instantiation.Interface | File.Interface // | UntitledTextEditorService.Interface
+	// | UntitledTextEditorService.Interface
+	Instantiation.Interface | File.Interface
 > = Layer.effect(Tag, Definition);
 
 export default Live;

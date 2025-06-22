@@ -19,6 +19,7 @@ export const LayerMap = new Map<any, Layer.Layer<any, any, any>>();
 /**
  * A helper function to associate a legacy VS Code class constructor with its
  * corresponding `Effect.Layer`. This is the primary way to register new,
+
  * Effect-TS native services so that they can be instantiated by legacy parts
  * of the workbench.
  *
@@ -28,6 +29,7 @@ export const LayerMap = new Map<any, Layer.Layer<any, any, any>>();
  */
 export const RegisterService = (
 	Constructor: any,
+
 	Layer: Layer.Layer<any, any, any>,
 ): void => {
 	LayerMap.set(Constructor, Layer);

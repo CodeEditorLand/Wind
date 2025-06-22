@@ -4,7 +4,8 @@
  */
 
 import { Effect, Layer, Runtime } from "effect";
-import { describe, expect, it } from "vitest"; // Using vitest as an example test runner
+// Using vitest as an example test runner
+import { describe, expect, it } from "vitest";
 
 import { URI } from "vs/base/common/uri.js";
 

@@ -10,6 +10,8 @@ import type { Uri } from "../../../Platform/VSCode/Type.js";
  */
 export interface FileEntry {
 	readonly Uri: Uri;
+
 	readonly Name: string;
+
 	readonly IsDirectory: boolean;
 }

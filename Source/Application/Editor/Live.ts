@@ -14,6 +14,7 @@ import { Tag } from "./Service.js";
  * It uses `Layer.effect` to construct the service instance from its definition.
  *
  * This Layer has context requirements: it needs the `InstantiationService`,
+
  * `EditorGroupsService`, and `TextEditorService` to be available in the layer
  * provided to it. The master `AppLayer` is responsible for providing these
  * dependencies.

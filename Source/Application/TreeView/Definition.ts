@@ -24,12 +24,19 @@ import type { Interface as TreeViewServiceInterface } from "./Service.js";
 // It must be kept in sync.
 interface TreeItemDTO {
 	readonly handle: string;
+
 	readonly label: { readonly label: string };
-	readonly collapsibleState: 0 | 1 | 2; // None | Collapsed | Expanded
+
+	// None | Collapsed | Expanded
+	readonly collapsibleState: 0 | 1 | 2;
+
 	readonly resourceUri?: string;
+
 	readonly command?: {
 		readonly id: string;
+
 		readonly title: string;
+
 		readonly arguments?: readonly any[];
 	};
 }
@@ -44,12 +51,14 @@ export class NativeTreeViewDataProvider
 	private _onDidChangeTreeData = new Emitter<
 		TreeItemDTO | TreeItemDTO[] | undefined | null | void
 	>();
+
 	readonly onDidChangeTreeData: Event<
 		TreeItemDTO | TreeItemDTO[] | undefined | null | void
 	> = this._onDidChangeTreeData.event;
 
 	constructor(
 		private readonly ViewID: string,
+
 		private readonly LogService: ILogService,
 	) {}
 
@@ -69,22 +78,29 @@ export class NativeTreeViewDataProvider
 	): Promise<TreeItemDTO[] | undefined> {
 		this.LogService.trace(
 			`[NativeTreeViewDataProvider] Getting children for view '${this.ViewID}'`,
+
 			element,
 		);
+
 		try {
 			const children = await invoke<TreeItemDTO[]>(
 				"GetTreeViewChildren",
+
 				{
 					ViewID: this.ViewID,
+
 					ElementHandle: element?.handle,
 				},
 			);
+
 			return children;
 		} catch (error) {
 			this.LogService.error(
 				`[NativeTreeViewDataProvider] Failed to get children for ${this.ViewID}:`,
+
 				error,
 			);
+
 			return [];
 		}
 	}
@@ -95,20 +111,24 @@ export class NativeTreeViewDataProvider
  */
 const Definition = Effect.gen(function* (_) {
 	const ViewsService = yield* _(Views.Tag);
+
 	const LogService = yield* _(ILogService);
 
 	const Service: TreeViewServiceInterface = {
 		registerTreeDataProvider<T>(
 			viewId: string,
+
 			provider: TreeDataProvider<T>,
 		): TreeView<T> {
 			LogService.info(
 				`[TreeViewService] Registering tree data provider for view: ${viewId}`,
 			);
+
 			// VS Code's workbench consumes the provider via the viewsService.
 			// It returns a TreeView object that we can then return to the caller.
 			return ViewsService.registerTreeDataProvider(
 				viewId,
+
 				provider,
 			) as TreeView<T>;
 		},

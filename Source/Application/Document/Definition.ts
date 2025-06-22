@@ -20,16 +20,23 @@ import type { Interface as DocumentManagementService } from "./Service.js";
 // The structure of the event payload from Mountain's DocumentProvider
 interface DocumentOpenPayload {
 	URI: string;
+
 	LanguageIdentifier: string;
+
 	VersionIdentifier: number;
+
 	Lines: string[];
+
 	EOL: string;
+
 	IsDirty: boolean;
+
 	Encoding: string;
 }
 
 interface DocumentRenamePayload {
 	oldUri: string;
+
 	newUri: string;
 }
 
@@ -38,8 +45,11 @@ interface DocumentRenamePayload {
  */
 const Definition = Effect.gen(function* (_) {
 	const EditorService = yield* _(IEditorService);
+
 	const TextFileService = yield* _(ITextFileService);
+
 	const EditorGroupsService = yield* _(IEditorGroupsService);
+
 	const LogService = yield* _(ILogService);
 
 	const initialize = (): Effect.Effect<void, never> =>
@@ -54,8 +64,10 @@ const Definition = Effect.gen(function* (_) {
 					try: () =>
 						listen<DocumentOpenPayload>(
 							"sky://documents/open",
+
 							(event) => {
 								const Payload = event.payload;
+
 								LogService.info(
 									`[DocumentManagementService] Received open event for URI: ${Payload.URI}`,
 								);
@@ -67,8 +79,12 @@ const Definition = Effect.gen(function* (_) {
 								// handles creating the model from the content we received.
 								TextFileService.files.createOrGet(
 									Resource,
-									undefined, // encoding
+
+									// encoding
+									undefined,
+
 									Payload.LanguageIdentifier,
+
 									Payload.Lines.join(Payload.EOL),
 								);
 
@@ -76,15 +92,19 @@ const Definition = Effect.gen(function* (_) {
 								// The service will find the existing model we just created.
 								EditorService.openEditor({
 									resource: Resource,
+
 									options: {
-										pinned: true, // Keep the editor tab open
+										// Keep the editor tab open
+										pinned: true,
 									},
 								});
 							},
 						),
+
 					catch: (err) =>
 						new Error(`Setup failed for 'open' listener: ${err}`),
 				}),
+
 				Effect.catchAll((err) =>
 					Effect.sync(() => LogService.error(err.message)),
 				),
@@ -96,18 +116,23 @@ const Definition = Effect.gen(function* (_) {
 					try: () =>
 						listen<{ uri: string }>(
 							"sky://documents/saved",
+
 							(event) => {
 								const Resource = URI.parse(event.payload.uri);
+
 								LogService.info(
 									`[DocumentManagementService] Received saved event for URI: ${Resource.toString()}`,
 								);
+
 								// Reverting the model to its saved state effectively removes the dirty indicator.
 								TextFileService.revert(Resource);
 							},
 						),
+
 					catch: (err) =>
 						new Error(`Setup failed for 'saved' listener: ${err}`),
 				}),
+
 				Effect.catchAll((err) =>
 					Effect.sync(() => LogService.error(err.message)),
 				),
@@ -119,13 +144,16 @@ const Definition = Effect.gen(function* (_) {
 					try: () =>
 						listen<DocumentRenamePayload>(
 							"sky://documents/renamed",
+
 							async (event) => {
 								const OldResource = URI.parse(
 									event.payload.oldUri,
 								);
+
 								const NewResource = URI.parse(
 									event.payload.newUri,
 								);
+
 								LogService.info(
 									`[DocumentManagementService] Received renamed event: ${OldResource.toString()} -> ${NewResource.toString()}`,
 								);
@@ -138,30 +166,40 @@ const Definition = Effect.gen(function* (_) {
 											e.resource?.toString() ===
 											OldResource.toString(),
 									);
+
 									if (EditorInput) {
 										const NewEditorInput =
 											await TextFileService.create(
 												NewResource,
+
 												undefined,
+
 												undefined,
 											);
+
 										group.replaceEditors([
 											{
 												editor: EditorInput,
+
 												replacement: NewEditorInput,
+
 												options: { pinned: true },
 											},
 										]);
-										break; // Assume it's only open in one group
+
+										// Assume it's only open in one group
+										break;
 									}
 								}
 							},
 						),
+
 					catch: (err) =>
 						new Error(
 							`Setup failed for 'renamed' listener: ${err}`,
 						),
 				}),
+
 				Effect.catchAll((err) =>
 					Effect.sync(() => LogService.error(err.message)),
 				),

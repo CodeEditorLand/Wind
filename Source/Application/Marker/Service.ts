@@ -20,11 +20,17 @@ import { ILogService } from "vs/platform/log/common/log.js";
 // The DTO for a single marker from Mountain
 interface MarkerDataDTO {
 	readonly Severity: number;
+
 	readonly Message: string;
+
 	readonly Source?: string;
+
 	readonly StartLineNumber: number;
+
 	readonly StartColumn: number;
+
 	readonly EndLineNumber: number;
+
 	readonly EndColumn: number;
 }
 
@@ -48,6 +54,7 @@ export class MarkerService extends Context.Tag("Wind/MarkerService")<
  */
 export const Live = Layer.effect(
 	MarkerService,
+
 	Effect.gen(function* (_) {
 		const LogService = yield* _(ILogService);
 
@@ -60,13 +67,16 @@ export const Live = Layer.effect(
 				LogService.trace(
 					`[MarkerService] Fetching diagnostics for ${URIs.length} URIs.`,
 				);
+
 				const DiagnosticsByURI = yield* _(
 					Effect.tryPromise({
 						try: () =>
 							invoke<[string, MarkerDataDTO[]][]>(
 								"GetAllDiagnosticsForURIs",
+
 								{ URIs },
 							),
+
 						catch: (UnknownError) =>
 							new Error(
 								`Tauri invocation for 'GetAllDiagnosticsForURIs' failed: ${UnknownError}`,
@@ -76,22 +86,32 @@ export const Live = Layer.effect(
 
 				for (const [URIString, Markers] of DiagnosticsByURI) {
 					const Model = Monaco.editor.getModel(URI.parse(URIString));
+
 					if (Model) {
 						const MonacoMarkers = Markers.map(
 							(MarkerDTO): Monaco.editor.IMarkerData => ({
 								severity: MarkerDTO.Severity,
+
 								message: MarkerDTO.Message,
+
 								source: MarkerDTO.Source,
+
 								startLineNumber: MarkerDTO.StartLineNumber,
+
 								startColumn: MarkerDTO.StartColumn,
+
 								endLineNumber: MarkerDTO.EndLineNumber,
+
 								endColumn: MarkerDTO.EndColumn,
 							}),
 						);
+
 						// The owner 'wind-diagnostics' is a general owner for this client.
 						Monaco.editor.setModelMarkers(
 							Model,
+
 							"wind-diagnostics",
+
 							MonacoMarkers,
 						);
 					}
@@ -101,6 +121,7 @@ export const Live = Layer.effect(
 					Effect.sync(() =>
 						LogService.error(
 							"[MarkerService] Failed to update markers:",
+
 							Error,
 						),
 					),
@@ -112,16 +133,19 @@ export const Live = Layer.effect(
 				try: () =>
 					listen<{ Owner: string; Uris: string[] }>(
 						"sky://diagnostics/changed",
+
 						(Event) => {
 							LogService.info(
 								`[MarkerService] Received diagnostic change from owner '${Event.payload.Owner}'. Updating markers for ${Event.payload.Uris.length} URIs.`,
 							);
+
 							// Fork the update effect so it doesn't block the listener thread.
 							Effect.runFork(
 								UpdateMarkersForURIs(Event.payload.Uris),
 							);
 						},
 					),
+
 				catch: (Error) =>
 					new Error(
 						`Failed to set up listener for diagnostic changes: ${Error}`,
@@ -130,7 +154,9 @@ export const Live = Layer.effect(
 				Effect.tapError((Error) =>
 					Effect.sync(() => LogService.error(Error.message)),
 				),
-				Effect.ignore, // Ignore failure to listen, as it's a startup operation.
+
+				// Ignore failure to listen, as it's a startup operation.
+				Effect.ignore,
 			);
 
 		return MarkerService.of({

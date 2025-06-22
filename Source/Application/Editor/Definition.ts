@@ -39,16 +39,21 @@ import type { ServiceProblem } from "./Error/mod.js";
  */
 const Definition = Effect.gen(function* (_) {
 	const InstantiationServiceTag = yield* _(InstantiationService.Tag);
+
 	const TextEditorServiceTag = yield* _(TextEditor.Tag);
+
 	const Host = yield* _(HostService.Tag);
 
 	const AppRuntime = yield* _(Effect.runtime<never>());
+
 	const RunPromise = Runtime.runPromise(AppRuntime);
 
 	// --- Internal Effect Constructor ---
 	const CreateOpenEditorEffect = (
 		Editor: EditorInput | IUntypedEditorInput,
+
 		Options?: IEditorOptions,
+
 		_Group?: PreferredGroup,
 	): Effect.Effect<IEditorPane | undefined, ServiceProblem> =>
 		Effect.gen(function* (_) {
@@ -63,10 +68,12 @@ const Definition = Effect.gen(function* (_) {
 
 			// 2. We now have a typed editor input. Its resource URI is the key.
 			const ResourceURI = TypedEditor.resource;
+
 			if (!ResourceURI) {
 				return yield* _(
 					Effect.fail({
 						_tag: "EditorError",
+
 						message: "Cannot open editor without a resource URI.",
 					}),
 				);
@@ -91,9 +98,11 @@ const Definition = Effect.gen(function* (_) {
 			const options = !isPreferredGroup(optionsOrGroup)
 				? optionsOrGroup
 				: undefined;
+
 			const targetGroup = isPreferredGroup(optionsOrGroup)
 				? optionsOrGroup
 				: group;
+
 			return RunPromise(
 				CreateOpenEditorEffect(editor, options, targetGroup),
 			);
@@ -102,25 +111,38 @@ const Definition = Effect.gen(function* (_) {
 		// --- Stubs for other methods and events ---
 		// A full implementation would involve more complex orchestration Effects.
 		openEditors: () => Promise.resolve([]),
+
 		replaceEditors: (_editors, _group) => Promise.resolve(),
+
 		save: (_editors, _options) =>
 			Promise.resolve({ success: true, editors: [] }),
+
 		saveAll: (_options) => Promise.resolve({ success: true, editors: [] }),
+
 		revert: (_editors, _options) =>
 			Promise.resolve({ success: true, editors: [] }),
+
 		revertAll: (_options) =>
 			Promise.resolve({ success: true, editors: [] }),
 
 		activeEditorPane: undefined,
+
 		activeEditor: undefined,
+
 		count: 0,
+
 		visibleEditorPanes: [],
+
 		visibleEditors: [],
 
 		onDidActiveEditorChange: new Emitter<IActiveEditorChangeEvent>().event,
+
 		onDidVisibleEditorsChange: new Emitter<void>().event,
+
 		onDidCloseEditor: new Emitter<IEditorIdentifier>().event,
+
 		onDidOpenEditorFail: new Emitter<IEditorIdentifier>().event,
+
 		onDidMostRecentlyActiveEditorsChange: new Emitter<void>().event,
 	};
 

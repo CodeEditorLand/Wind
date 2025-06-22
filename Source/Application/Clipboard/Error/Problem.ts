@@ -13,6 +13,7 @@ import type { IntegrationClipboardProblem } from "../../../Integration/Tauri/Cli
  *
  * This error acts as a wrapper around a more specific problem from the
  * Integration layer. This allows higher-level code to catch a single,
+
  * well-defined error type for this domain, while still preserving the
  * original cause for detailed logging and debugging.
  */

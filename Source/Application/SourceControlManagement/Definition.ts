@@ -23,22 +23,31 @@ import { SourceControlManagementService as VscSourceControlManagementService } f
 // Mirroring DTOs from Mountain/Source/ApplicationState/DTO/
 interface SourceControlManagementProviderDTO {
 	Handle: number;
+
 	Label: string;
+
 	RootUri?: string;
+
 	// ... other properties like CommitTemplate, Count, etc.
 }
+
 interface SourceControlManagementGroupDTO {
 	Id: string;
+
 	Label: string;
+
 	// ... other properties
 }
+
 interface SourceControlManagementResourceDTO {
 	ResourceUri: string;
+
 	// ... other properties
 }
 
 interface FullSourceControlManagementState {
 	providers: Record<number, SourceControlManagementProviderDTO>;
+
 	groups: Record<number, Record<string, SourceControlManagementGroupDTO>>;
 }
 
@@ -47,37 +56,52 @@ interface FullSourceControlManagementState {
  */
 const Definition = Effect.gen(function* (_) {
 	const LogService = yield* _(ILogService);
+
 	const ContextKeyService = yield* _(IContextKeyService);
+
 	const WorkspaceContextService = yield* _(IWorkspaceContextService);
+
 	const StorageService = yield* _(IStorageService);
+
 	const InstantiationService = yield* _(IInstantiationService);
 
 	// Instantiate the real VS Code SourceControlManagement service.
-	const ServiceInstance = InstantiationService.createInstance(VscSourceControlManagementService);
+	const ServiceInstance = InstantiationService.createInstance(
+		VscSourceControlManagementService,
+	);
 
 	const initialize = async () => {
 		LogService.info(
 			"[SourceControlManagementService] Initializing and fetching full SourceControlManagement state...",
 		);
+
 		try {
-			const fullState = await invoke<FullSourceControlManagementState>("GetAllSourceControlManagementState");
+			const fullState = await invoke<FullSourceControlManagementState>(
+				"GetAllSourceControlManagementState",
+			);
+
 			LogService.trace(
 				"[SourceControlManagementService] Received initial SourceControlManagement state:",
+
 				fullState,
 			);
 
 			// Populate the service with the initial state.
 			for (const providerDTO of Object.values(fullState.providers)) {
-				const provider = ServiceInstance.registerSourceControlManagementProvider({
-					id: String(providerDTO.Handle),
-					label: providerDTO.Label,
-					rootUri: providerDTO.RootUri
-						? URI.parse(providerDTO.RootUri)
-						: undefined,
-				});
+				const provider =
+					ServiceInstance.registerSourceControlManagementProvider({
+						id: String(providerDTO.Handle),
+
+						label: providerDTO.Label,
+
+						rootUri: providerDTO.RootUri
+							? URI.parse(providerDTO.RootUri)
+							: undefined,
+					});
 
 				const providerGroups =
 					fullState.groups[providerDTO.Handle] ?? {};
+
 				for (const groupDTO of Object.values(providerGroups)) {
 					provider.createGroup(groupDTO.Id, groupDTO.Label);
 				}
@@ -86,18 +110,26 @@ const Definition = Effect.gen(function* (_) {
 			// Listen for real-time updates from Mountain.
 			await listen("sky://scm/provider/added", (event) => {
 				const DTO = event.payload as SourceControlManagementProviderDTO;
+
 				LogService.info(
 					`[SourceControlManagementService] SourceControlManagement Provider added: ${DTO.Label}`,
 				);
+
 				ServiceInstance.registerSourceControlManagementProvider({
 					id: String(DTO.Handle),
+
 					label: DTO.Label,
+
 					rootUri: DTO.RootUri ? URI.parse(DTO.RootUri) : undefined,
 				});
 			});
+
 			// ... other listeners for group changes, resource changes, etc.
 		} catch (e) {
-			LogService.error("[SourceControlManagementService] Failed to initialize SourceControlManagement state:", e);
+			LogService.error(
+				"[SourceControlManagementService] Failed to initialize SourceControlManagement state:",
+				e,
+			);
 		}
 	};
 

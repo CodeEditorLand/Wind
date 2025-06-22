@@ -24,7 +24,9 @@ const RunIntegrationEffect = <A>(
 ): Promise<A> => {
 	return pipe(
 		effect,
+
 		Effect.mapError((cause) => new ApplicationClipboardProblem({ cause })),
+
 		(finalEffect) =>
 			Runtime.runPromise(Runtime.defaultRuntime, finalEffect),
 	);

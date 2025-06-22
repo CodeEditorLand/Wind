@@ -20,6 +20,7 @@ import type { Interface as TauriIntegrationServiceInterface } from "./Service.js
 /**
  * An Effect that builds the live implementation of the TauriIntegrationService.
  * This service directly wraps the functions from the `@tauri-apps/api` package,
+
  * making them safe and composable within the Effect-TS ecosystem.
  */
 const Definition = Effect.sync(
@@ -27,21 +28,25 @@ const Definition = Effect.sync(
 		Invoke: <T>(Command: string, Arguments?: any) =>
 			Effect.tryPromise({
 				try: () => TauriInvoke<T>(Command, Arguments),
+
 				catch: (Error: unknown) => Error as Error,
 			}),
 
 		Listen: <T>(
 			EventName: string,
+
 			Handler: (Event: TauriEvent<T>) => void,
 		) =>
 			Effect.tryPromise({
 				try: () => TauriListen<T>(EventName, Handler),
+
 				catch: (Error: unknown) => Error as Error,
 			}),
 
 		Emit: (EventName: string, Payload?: any) =>
 			Effect.tryPromise({
 				try: () => TauriEmit(EventName, Payload),
+
 				catch: (Error: unknown) => Error as Error,
 			}),
 	}),

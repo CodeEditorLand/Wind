@@ -59,9 +59,14 @@ const DynamicLiveLayerEffect = Effect.gen(function* (_) {
 
 	// Example: Define which features are enabled based on configuration values.
 	const Feature = {
-		SourceControlManagement: ConfigurationService.getValue<boolean>("feature.scm.enable", true),
+		SourceControlManagement: ConfigurationService.getValue<boolean>(
+			"feature.scm.enable",
+			true,
+		),
+
 		Test: ConfigurationService.getValue<boolean>(
 			"feature.test.enable",
+
 			true,
 		),
 	};
@@ -69,24 +74,43 @@ const DynamicLiveLayerEffect = Effect.gen(function* (_) {
 	// Start with a list of core services that are always included.
 	const CoreLayers = [
 		LiveClipboardService,
+
 		LiveDialogService,
+
 		LiveDocumentManagementService,
+
 		LiveEditorService,
+
 		LiveEditorGroupService,
+
 		LiveEnvironmentService,
+
 		LiveFileService,
+
 		LiveHostService,
+
 		LiveLanguageFeaturesService,
+
 		LiveLifecycleService,
+
 		LiveLogService,
+
 		LiveNotificationService,
+
 		LivePaneCompositeService,
+
 		LiveQuickInputService,
+
 		LiveStorageService,
+
 		LiveTextEditorService,
+
 		LiveTreeViewService,
+
 		LiveViewsService,
+
 		LiveWorkspaceService,
+
 		LiveWorkspaceTrustService,
 	];
 
@@ -96,18 +120,25 @@ const DynamicLiveLayerEffect = Effect.gen(function* (_) {
 		const SourceControlManagementDependencies = Layer.mergeAll(
 			Layer.succeed(
 				IContextKeyService,
+
 				new ContextKeyService(yield* _(Configuration.Tag)),
 			),
+
 			Layer.succeed(
 				IWorkspaceContextService,
+
 				new WorkspaceContextService({ id: "" }),
 			),
 		);
-		const SourceControlManagementFeatureLayer = LiveSourceControlManagementService.pipe(
-			Layer.provide(SourceControlManagementDependencies),
-		);
+
+		const SourceControlManagementFeatureLayer =
+			LiveSourceControlManagementService.pipe(
+				Layer.provide(SourceControlManagementDependencies),
+			);
+
 		CoreLayers.push(SourceControlManagementFeatureLayer);
 	}
+
 	if (Feature.Test) {
 		// Future: CoreLayers.push(LiveTestService);
 	}
@@ -126,6 +157,7 @@ const DynamicLiveLayerEffect = Effect.gen(function* (_) {
  */
 export const AppLayer = Layer.unwrapEffect(
 	// The `DynamicLiveLayerEffect` itself needs the `ConfigurationService`,
+
 	// so we provide its live layer to the effect.
 	Effect.provide(DynamicLiveLayerEffect, LiveConfigurationService),
 ).pipe(
@@ -135,8 +167,10 @@ export const AppLayer = Layer.unwrapEffect(
 		Effect.all(
 			[
 				context.get(DocumentManagementService.Tag).Initialize(),
+
 				context.get(LanguageFeaturesService.Tag).Initialize(),
 			],
+
 			{ discard: true },
 		),
 	),

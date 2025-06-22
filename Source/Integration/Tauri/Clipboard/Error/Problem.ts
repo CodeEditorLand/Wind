@@ -16,6 +16,7 @@ import { Data } from "effect";
 export class Problem extends Data.TaggedError("IntegrationClipboardProblem")<{
 	/** The original, unknown error thrown by the Tauri API. */
 	readonly cause: unknown;
+
 	/** The specific clipboard operation that was being attempted. */
 	readonly operation:
 		| "ReadText"

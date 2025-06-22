@@ -18,6 +18,7 @@ type LiveConfigurationError =
  * The live implementation Layer for the Configuration service.
  *
  * It uses `Layer.effect` to construct the service instance from its definition,
+
  * which is an `Effect` that resolves the application's settings on startup.
  * The Layer's error channel includes all possible errors from the underlying
  * integration services (like file system or path resolution errors).

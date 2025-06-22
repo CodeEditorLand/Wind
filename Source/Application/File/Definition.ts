@@ -14,12 +14,14 @@ import type { Interface } from "./Service.js";
  * An Effect that builds the live implementation of the File service.
  *
  * This implementation uses the `FileService` class from VS Code's platform code,
+
  * which provides a rich set of features like eventing and capabilities management.
  * We provide it with our own `TauriDiskFileSystemProvider` (from the FileSystem
  * module) to connect it to our native backend.
  */
 const Definition = Effect.gen(function* (_) {
 	const LogService = yield* _(Log.Tag);
+
 	const FileSystemProviderInstance = yield* _(FileSystemProvider.Tag);
 
 	// The FileService class is the canonical implementation.

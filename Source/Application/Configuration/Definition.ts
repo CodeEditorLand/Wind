@@ -28,8 +28,10 @@ const GetValueFromObject = (ConfigurationObject: any, Key: string): any => {
 	) {
 		return undefined;
 	}
+
 	return Key.split(".").reduce(
 		(current, part) => (current ? current[part] : undefined),
+
 		ConfigurationObject,
 	);
 };
@@ -51,6 +53,7 @@ const Definition = Effect.gen(function* (_) {
 			if (!section) {
 				return ConfigurationData as T;
 			}
+
 			// Use our robust helper to find the nested value.
 			return GetValueFromObject(ConfigurationData, section) as T;
 		},
@@ -59,24 +62,41 @@ const Definition = Effect.gen(function* (_) {
 		// A full implementation would require RPC calls to Mountain.
 
 		updateValue: () => Promise.resolve(),
+
 		inspect: <T>(key: string, overrides?: any): IConfigurationValue<T> => {
 			const value = Service.getValue(key, overrides);
+
 			return {
 				key,
+
 				value,
-				defaultValue: value, // Stub
-				userValue: value, // Stub
-				workspaceValue: value, // Stub
-				workspaceFolderValue: value, // Stub
+
+				// Stub
+				defaultValue: value,
+
+				// Stub
+				userValue: value,
+
+				// Stub
+				workspaceValue: value,
+
+				// Stub
+				workspaceFolderValue: value,
 			};
 		},
+
 		keys: () => ({
 			default: [],
+
 			user: [],
+
 			workspace: [],
+
 			workspaceFolder: [],
 		}),
+
 		reloadConfiguration: () => Promise.resolve(),
+
 		onDidChangeConfiguration: new Emitter<any>().event,
 	};
 

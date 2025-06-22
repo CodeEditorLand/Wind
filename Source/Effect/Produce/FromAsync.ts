@@ -33,16 +33,20 @@ export function FromAsync<
 	ErrorData extends Record<string, any>,
 	ErrorType extends Cause.YieldableError & {
 		readonly _tag: string;
+
 		readonly cause: unknown;
 	} & ErrorData,
 >(
 	Source: AsyncFunction<Argument, Value>,
+
 	CreateProblem: ErrorProducer<ErrorData, ErrorType>,
+
 	StaticData: ErrorData,
 ): (...args: Argument) => Effect.Effect<Value, ErrorType> {
 	return (...args: Argument) =>
 		Effect.tryPromise({
 			try: () => Source(...args),
+
 			catch: (cause) =>
 				CreateProblem({ ...StaticData, cause } as {
 					readonly cause: unknown;

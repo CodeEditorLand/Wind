@@ -38,48 +38,65 @@ import { TreeView } from "./TreeView/mod.js";
 const MainEffect = Effect.gen(function* (_) {
 	// 1. Ensure the DOM is fully loaded and ready for manipulation.
 	yield* _(Effect.promise(() => domContentLoaded(mainWindow)));
+
 	yield* _(Effect.logInfo("DOM content loaded. Initializing services..."));
 
 	// 2. Build the entire application dependency graph.
 	const AppRuntime = yield* _(Layer.toRuntime(AppLayer));
+
 	const AppContext = Runtime.context(AppRuntime);
 
 	// 3. Get the HostService and execute its side-effect to provide the global shims.
 	// This is a critical step that must happen before the workbench is instantiated.
 	const Host = AppContext.get(HostService.Tag);
+
 	yield* _(Host.provideGlobals());
+
 	yield* _(Effect.logInfo("Host bridge globals provided."));
 
 	// 4. Resolve essential services needed for bootstrapping.
 	const InstantiationService = AppContext.get(IInstantiationService);
+
 	const LogService = AppContext.get(ILogService);
+
 	const ProductService = AppContext.get(IProductService);
+
 	const TreeViewService = AppContext.get(TreeView.Tag);
+
 	yield* _(Effect.logInfo("Core services resolved."));
 
 	// 5. Register statically known UI providers.
 	const QuickAccessRegistry = Registry.as<IQuickAccessRegistry>(
 		QuickAccessExtensions.Quickaccess,
 	);
+
 	const CommandsProvider = InstantiationService.createInstance(
 		CommandsQuickAccessProvider,
-		{}, // Empty options
+
+		// Empty options
+		{},
 	);
+
 	QuickAccessRegistry.registerQuickAccessProvider(CommandsProvider);
+
 	yield* _(Effect.logInfo("Command QuickAccess Provider registered."));
 
 	const ExplorerProvider = new NativeTreeViewDataProvider(
 		"workbench.view.explorer",
 	);
+
 	TreeViewService.registerTreeDataProvider(
 		"workbench.view.explorer",
+
 		ExplorerProvider,
 	);
+
 	yield* _(Effect.logInfo("File Explorer data provider registered."));
 
 	// 6. Create a `ServiceCollection` as a compatibility bridge for legacy parts of the `Workbench`.
 	const ServiceCollectionBridge = new ServiceCollection(
 		[IProductService, ProductService],
+
 		[ILogService, LogService],
 	);
 
@@ -87,8 +104,12 @@ const MainEffect = Effect.gen(function* (_) {
 		// 7. Instantiate the main `Workbench` class from VS Code's source.
 		const WorkbenchInstance = InstantiationService.createInstance(
 			Workbench,
+
 			mainWindow.document.body,
-			{}, // Empty options
+
+			// Empty options
+			{},
+
 			ServiceCollectionBridge,
 		);
 
@@ -105,6 +126,7 @@ const MainEffect = Effect.gen(function* (_) {
 		);
 	} catch (error) {
 		onUnexpectedError(error as Error);
+
 		yield* _(Effect.die(error));
 	}
 });

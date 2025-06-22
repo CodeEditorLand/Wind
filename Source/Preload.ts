@@ -50,21 +50,26 @@ const IpcRendererShim: IpcRenderer = {
 		if (Channel.startsWith("vscode:")) {
 			// The `track` module in Mountain will listen for commands in this format.
 			const Command = `vscode_ipc:${Channel.substring(7)}`;
+
 			try {
 				return await TauriInvoke(Command, { Args });
 			} catch (error) {
 				console.error(
 					`[Preload] Error invoking command '${Command}':`,
+
 					error,
 				);
+
 				throw error;
 			}
 		}
+
 		throw new Error(`[Preload] Unsupported IPC invoke channel: ${Channel}`);
 	},
 
 	on: (
 		Channel: string,
+
 		Listener: (event: IpcRendererEvent, ...args: any[]) => void,
 	): IpcRenderer => {
 		if (Channel.startsWith("vscode:")) {
@@ -72,11 +77,13 @@ const IpcRendererShim: IpcRenderer = {
 				Listener({} as IpcRendererEvent, Event.payload),
 			).catch(console.error);
 		}
+
 		return IpcRendererShim;
 	},
 
 	once: (
 		Channel: string,
+
 		Listener: (event: IpcRendererEvent, ...args: any[]) => void,
 	): IpcRenderer => {
 		if (Channel.startsWith("vscode:")) {
@@ -84,16 +91,19 @@ const IpcRendererShim: IpcRenderer = {
 				Listener({} as IpcRendererEvent, Event.payload),
 			).catch(console.error);
 		}
+
 		return IpcRendererShim;
 	},
 
 	removeListener: (
 		_Channel: string,
+
 		_Listener: (...args: any[]) => void,
 	): IpcRenderer => {
 		console.warn(
 			`[Preload] ipcRenderer.removeListener for '${_Channel}' is a no-op in the Tauri shim.`,
 		);
+
 		return IpcRendererShim;
 	},
 };
@@ -104,25 +114,42 @@ const IpcRendererShim: IpcRenderer = {
 		// Create a shim for the `process` object by fetching data from the host.
 		const ProcessShim: ISandboxNodeProcess = {
 			platform: await TauriInvoke("process_get_platform"),
+
 			arch: await TauriInvoke("process_get_arch"),
+
 			type: "renderer",
+
 			versions: {
-				node: "18.18.2", // A representative Node.js version
+				// A representative Node.js version
+				node: "18.18.2",
+
 				chrome:
 					navigator.userAgent.match(/Chrome\/([0-9.]+)/)?.[1] ??
 					"unknown",
-				electron: "0.0.0-tauri", // Explicitly signal we are not in Electron
+
+				// Explicitly signal we are not in Electron
+				electron: "0.0.0-tauri",
 			},
+
 			env: await TauriInvoke("process_get_env"),
+
 			pid: await TauriInvoke("process_get_pid"),
+
 			cwd: () => ProcessShim.env.VSCODE_CWD || "/",
-			on: (_event, _callback) => ProcessShim, // Return self for chaining, as expected by some VS Code code
+
+			// Return self for chaining, as expected by some VS Code code
+			on: (_event, _callback) => ProcessShim,
+
 			getProcessMemoryInfo: async () => ({
 				private: 0,
+
 				residentSet: 0,
+
 				shared: 0,
 			}),
+
 			shellEnv: async () => await TauriInvoke("process_get_shell_env"),
+
 			execPath: await TauriInvoke("process_get_exec_path"),
 		};
 
@@ -131,6 +158,7 @@ const IpcRendererShim: IpcRenderer = {
 			const ConfigElement = document.getElementById(
 				"vscode-workbench-web-configuration",
 			);
+
 			if (!ConfigElement)
 				throw new Error(
 					"Could not find workbench configuration element in index.html.",
@@ -143,14 +171,18 @@ const IpcRendererShim: IpcRenderer = {
 			// Recursively revive all URI-like objects in the configuration payload.
 			const ReviveUris = (data: any): any => {
 				if (!data || typeof data !== "object") return data;
+
 				if (Array.isArray(data)) return data.map(ReviveUris);
+
 				// This check identifies objects that were serialized from VS Code URIs.
 				if (data.scheme && data.path) return URI.revive(data);
+
 				for (const key in data) {
 					if (Object.prototype.hasOwnProperty.call(data, key)) {
 						data[key] = ReviveUris(data[key]);
 					}
 				}
+
 				return data;
 			};
 
@@ -160,10 +192,16 @@ const IpcRendererShim: IpcRenderer = {
 		// Assemble the final `window.vscode` global object.
 		const Globals: IMainWindowSandboxGlobals = {
 			process: ProcessShim,
+
 			ipcRenderer: IpcRendererShim,
+
 			webFrame: { setZoomLevel: (level) => appWindow.setZoom(level) },
+
 			context: { resolveConfiguration: ResolveConfiguration },
-			webUtils: { getPathForFile: (file) => (file as any).path }, // Simplified for web compatibility
+
+			// Simplified for web compatibility
+			webUtils: { getPathForFile: (file) => (file as any).path },
+
 			ipcMessagePort: {
 				acquire: () =>
 					console.warn("ipcMessagePort.acquire is not implemented."),
@@ -179,14 +217,20 @@ const IpcRendererShim: IpcRenderer = {
 	} catch (error) {
 		console.error(
 			"[Wind Preload] FATAL: Failed to initialize preload script.",
+
 			error,
 		);
+
 		const ErrorDiv = document.createElement("div");
+
 		ErrorDiv.textContent = `Preload Error: ${error instanceof Error ? error.message : String(error)}. Check developer console for details.`;
+
 		ErrorDiv.setAttribute(
 			"style",
+
 			"color:red;padding:20px;font-family:sans-serif;white-space:pre-wrap;z-index:9999;position:fixed;top:0;left:0;width:100%;background:pink;border-bottom:2px solid darkred;",
 		);
+
 		document.addEventListener("DOMContentLoaded", () =>
 			document.body.prepend(ErrorDiv),
 		);

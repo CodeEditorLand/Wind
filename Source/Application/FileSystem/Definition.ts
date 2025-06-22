@@ -34,6 +34,7 @@ import { type Uri } from "../../../Platform/VSCode/Type.js";
 
 class FileSystemProviderImpl implements IFileSystemProvider {
 	private WatchCorrelationId = 0;
+
 	private readonly _onDidChangeFile = new Emitter<readonly IFileChange[]>();
 
 	// --- IFileSystemProvider Implementation ---
@@ -43,6 +44,7 @@ class FileSystemProviderImpl implements IFileSystemProvider {
 		FileSystemProviderCapabilities.PathCaseSensitive;
 
 	readonly onDidChangeCapabilities: Event<void> = Event.None;
+
 	readonly onDidChangeFile: Event<readonly IFileChange[]> =
 		this._onDidChangeFile.event;
 
@@ -51,28 +53,38 @@ class FileSystemProviderImpl implements IFileSystemProvider {
 	) => Runtime.runPromise(Runtime.defaultRuntime, effect);
 
 	stat = (resource: Uri): Promise<IStat> => this.run(Stat(resource));
+
 	readdir = (
 		resource: Uri,
 	): Promise<
 		[string, import("vs/platform/files/common/files.js").FileType][]
 	> => this.run(Readdir(resource));
+
 	mkdir = (resource: Uri): Promise<void> => this.run(Mkdir(resource));
+
 	readFile = (resource: Uri): Promise<Uint8Array> =>
 		this.run(ReadFile(resource));
+
 	writeFile = (
 		resource: Uri,
+
 		content: Uint8Array,
+
 		opts: IFileWriteOptions,
 	): Promise<void> => this.run(WriteFile(resource, content, opts));
+
 	delete = (resource: Uri, opts: IFileDeleteOptions): Promise<void> =>
 		this.run(Delete(resource, opts));
+
 	rename = (from: Uri, to: Uri, opts: IFileOverwriteOptions): Promise<void> =>
 		this.run(Rename(from, to, opts));
 
 	watch = (resource: Uri, opts: IWatchOptions): IDisposable => {
 		const CorrelationId = this.WatchCorrelationId++;
+
 		// The watch effect is a long-running process, so we fork it.
 		Effect.runFork(Watch(resource, { ...opts, correlationId }));
+
 		// Return a disposable that will stop the watch.
 		return {
 			dispose: () => Effect.runFork(Unwatch(CorrelationId)),

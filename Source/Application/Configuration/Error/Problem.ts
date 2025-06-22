@@ -21,6 +21,7 @@ export class Problem extends Data.TaggedError(
 )<{
 	/** The underlying problem from the Integration layer that caused this failure. */
 	readonly cause: IntegrationConfigurationProblem;
+
 	/** A string describing the context of the operation (e.g., 'FailedToResolveDefaultSettings'). */
 	readonly context: string;
 }> {}

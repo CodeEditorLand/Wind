@@ -30,19 +30,25 @@ class MountainHoverProvider implements languages.HoverProvider {
 
 	async provideHover(
 		model: monaco.editor.ITextModel,
+
 		position: monaco.Position,
+
 		token: CancellationToken,
 	): Promise<languages.Hover | undefined> {
 		this.logService.trace(
 			`[MountainHoverProvider] Requesting hover for ${model.uri.toString()} at L${position.lineNumber}, C${position.column}`,
 		);
+
 		try {
 			const result = await invoke<HoverDTO | null>(
 				"mountain_provide_hover",
+
 				{
 					uri: model.uri.toString(),
+
 					position: {
 						LineNumber: position.lineNumber,
+
 						Column: position.column,
 					},
 				},
@@ -55,15 +61,19 @@ class MountainHoverProvider implements languages.HoverProvider {
 			return {
 				contents: result.Contents.map((c) => ({
 					value: c.Value,
+
 					isTrusted: c.IsTrusted,
 				})),
+
 				range: result.Range,
 			};
 		} catch (error) {
 			this.logService.error(
 				"[MountainHoverProvider] Failed to provide hover:",
+
 				error,
 			);
+
 			return undefined;
 		}
 	}
@@ -77,8 +87,11 @@ class MountainCompletionProvider implements languages.CompletionItemProvider {
 
 	async provideCompletionItems(
 		model: monaco.editor.ITextModel,
+
 		position: monaco.Position,
+
 		context: languages.CompletionContext,
+
 		token: CancellationToken,
 	): Promise<languages.CompletionList | undefined> {
 		this.logService.trace(
@@ -88,17 +101,22 @@ class MountainCompletionProvider implements languages.CompletionItemProvider {
 		try {
 			const contextDTO: CompletionContextDTO = {
 				TriggerKind: context.triggerKind,
+
 				TriggerCharacter: context.triggerCharacter,
 			};
 
 			const result = await invoke<CompletionListDTO | null>(
 				"mountain_provide_completions",
+
 				{
 					uri: model.uri.toString(),
+
 					position: {
 						LineNumber: position.lineNumber,
+
 						Column: position.column,
 					},
+
 					context: contextDTO,
 				},
 			);
@@ -109,19 +127,24 @@ class MountainCompletionProvider implements languages.CompletionItemProvider {
 
 			const suggestions: languages.CompletionItem[] =
 				result.Suggestions.map((itemDTO: CompletionItemDTO) => ({
-					...itemDTO, // A simplified mapping for now
+					// A simplified mapping for now
+					...itemDTO,
+
 					range: itemDTO.Range,
 				}));
 
 			return {
 				suggestions,
+
 				incomplete: result.Incomplete,
 			};
 		} catch (error) {
 			this.logService.error(
 				"[MountainCompletionProvider] Failed to provide completions:",
+
 				error,
 			);
+
 			return undefined;
 		}
 	}
@@ -133,19 +156,25 @@ class MountainDefinitionProvider implements languages.DefinitionProvider {
 
 	async provideDefinition(
 		model: monaco.editor.ITextModel,
+
 		position: monaco.Position,
+
 		token: CancellationToken,
 	): Promise<languages.Definition | undefined> {
 		this.logService.trace(
 			`[MountainDefinitionProvider] Requesting definition for ${model.uri.toString()} at L${position.lineNumber}, C${position.column}`,
 		);
+
 		try {
 			const result = await invoke<LocationDTO[] | null>(
 				"mountain_provide_definition",
+
 				{
 					uri: model.uri.toString(),
+
 					position: {
 						LineNumber: position.lineNumber,
+
 						Column: position.column,
 					},
 				},
@@ -157,13 +186,16 @@ class MountainDefinitionProvider implements languages.DefinitionProvider {
 
 			return result.map((loc) => ({
 				uri: monaco.Uri.parse(loc.Uri),
+
 				range: loc.Range,
 			}));
 		} catch (error) {
 			this.logService.error(
 				"[MountainDefinitionProvider] Failed to provide definition:",
+
 				error,
 			);
+
 			return undefined;
 		}
 	}
@@ -175,22 +207,30 @@ class MountainReferenceProvider implements languages.ReferenceProvider {
 
 	async provideReferences(
 		model: monaco.editor.ITextModel,
+
 		position: monaco.Position,
+
 		context: languages.ReferenceContext,
+
 		token: CancellationToken,
 	): Promise<languages.Location[] | undefined> {
 		this.logService.trace(
 			`[MountainReferenceProvider] Requesting references for ${model.uri.toString()} at L${position.lineNumber}, C${position.column}`,
 		);
+
 		try {
 			const result = await invoke<LocationDTO[] | null>(
 				"mountain_provide_references",
+
 				{
 					uri: model.uri.toString(),
+
 					position: {
 						LineNumber: position.lineNumber,
+
 						Column: position.column,
 					},
+
 					context: { includeDeclaration: context.includeDeclaration },
 				},
 			);
@@ -201,13 +241,16 @@ class MountainReferenceProvider implements languages.ReferenceProvider {
 
 			return result.map((loc) => ({
 				uri: monaco.Uri.parse(loc.Uri),
+
 				range: loc.Range,
 			}));
 		} catch (error) {
 			this.logService.error(
 				"[MountainReferenceProvider] Failed to provide references:",
+
 				error,
 			);
+
 			return undefined;
 		}
 	}
@@ -224,22 +267,30 @@ const Definition = Effect.gen(function* (_) {
 			logService.info(
 				"[LanguageFeaturesService] Registering Monaco language providers.",
 			);
+
 			// Register for ALL languages ('*'). Mountain will handle the filtering based on
 			// extension registrations and document selectors.
 			monaco.languages.registerHoverProvider(
 				"*",
+
 				new MountainHoverProvider(logService),
 			);
+
 			monaco.languages.registerCompletionItemProvider(
 				"*",
+
 				new MountainCompletionProvider(logService),
 			);
+
 			monaco.languages.registerDefinitionProvider(
 				"*",
+
 				new MountainDefinitionProvider(logService),
 			);
+
 			monaco.languages.registerReferenceProvider(
 				"*",
+
 				new MountainReferenceProvider(logService),
 			);
 		});

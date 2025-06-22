@@ -50,7 +50,9 @@ class WindQuickInputService implements IQuickInputService {
 	constructor(
 		@InstantiationService.Tag
 		private readonly instantiationService: IInstantiationService,
+
 		@HostService.Tag private readonly hostService: HostService["Type"],
+
 		@INotificationService
 		private readonly notificationService: INotificationService,
 	) {}
@@ -58,20 +60,29 @@ class WindQuickInputService implements IQuickInputService {
 	// The `pick` method for dropdown-style selection lists.
 	public async pick<T extends IQuickPickItem>(
 		picks: Promise<Array<T>> | Array<T>,
+
 		options: IPickOptions<T> & { canPickMany: true },
+
 		token: CancellationToken,
 	): Promise<T[] | undefined>;
+
 	public async pick<T extends IQuickPickItem>(
 		picks: Promise<Array<T>> | Array<T>,
+
 		options?: IPickOptions<T>,
+
 		token?: CancellationToken,
 	): Promise<T | undefined>;
+
 	public async pick<T extends IQuickPickItem>(
 		picks: Promise<Array<T>> | Array<T>,
+
 		options: IPickOptions<T> = {},
+
 		token: CancellationToken = CancellationToken.None,
 	): Promise<T | T[] | undefined> {
 		const resolvedPicks = await Promise.resolve(picks);
+
 		if (token.isCancellationRequested) {
 			return undefined;
 		}
@@ -79,17 +90,25 @@ class WindQuickInputService implements IQuickInputService {
 		// Convert VS Code QuickPickItems to our DTOs for IPC.
 		const itemsDTO: QuickPickItemDTO[] = resolvedPicks.map((p) => ({
 			label: p.label,
+
 			description: p.description,
+
 			detail: p.detail,
+
 			picked: p.picked,
+
 			alwaysShow: p.alwaysShow,
 		}));
 
 		const optionsDTO: QuickPickOptionsDTO = {
 			canPickMany: options.canPickMany,
+
 			placeHolder: options.placeHolder,
+
 			matchOnDescription: options.matchOnDescription,
+
 			matchOnDetail: options.matchOnDetail,
+
 			title: options.title,
 		};
 
@@ -105,22 +124,27 @@ class WindQuickInputService implements IQuickInputService {
 		// Map the returned labels back to the original QuickPickItem objects.
 		if (options.canPickMany) {
 			const selectedLabels = new Set(resultLabels);
+
 			return resolvedPicks.filter((p) => selectedLabels.has(p.label));
 		}
+
 		return resolvedPicks.find((p) => p.label === resultLabels[0]);
 	}
 
 	// The `input` method for free-text input boxes.
 	public async input(
 		options?: IInputOptions,
+
 		token: CancellationToken = CancellationToken.None,
 	): Promise<string | undefined> {
 		const result = await Effect.runPromise(
 			this.hostService.showInputBox(options as InputBoxOptionsDTO),
 		);
+
 		if (token.isCancellationRequested) {
 			return undefined;
 		}
+
 		return result ?? undefined;
 	}
 
@@ -128,20 +152,25 @@ class WindQuickInputService implements IQuickInputService {
 	// A full implementation would require a more complex controller that
 	// manages the state of a custom quick input UI component.
 	public readonly quickAccess: IQuickInput = {} as IQuickInput;
+
 	public get onDidAccept(): Event<IQuickPickDidAcceptEvent> {
 		return new Emitter<IQuickPickDidAcceptEvent>().event;
 	}
+
 	public get onDidChangeValue(): Event<string> {
 		return new Emitter<string>().event;
 	}
+
 	public get onDidTriggerButton(): Event<IQuickInputButton> {
 		return new Emitter<IQuickInputButton>().event;
 	}
+
 	public get onDidTriggerItemButton(): Event<
 		IQuickPickItemButtonEvent<IQuickPickItem>
 	> {
 		return new Emitter<IQuickPickItemButtonEvent<IQuickPickItem>>().event;
 	}
+
 	public get onWillAccept(): Event<IQuickPickWillAcceptEvent> {
 		return new Emitter<IQuickPickWillAcceptEvent>().event;
 	}
@@ -149,17 +178,25 @@ class WindQuickInputService implements IQuickInputService {
 	public createQuickPick<T extends IQuickPickItem>(): IQuickPick<T> {
 		throw new Error("Method not implemented: createQuickPick.");
 	}
+
 	public createInputBox(): IInputBox {
 		throw new Error("Method not implemented: createInputBox.");
 	}
+
 	public navigate(
 		next: boolean,
+
 		quickNavigate?: IQuickNavigateConfiguration,
 	): void {}
+
 	public focus(): void {}
+
 	public toggle(): void {}
+
 	public layout(): void {}
+
 	public show(): void {}
+
 	public hide(): void {}
 }
 
@@ -170,6 +207,7 @@ class WindQuickInputService implements IQuickInputService {
  */
 const Definition = Effect.gen(function* (_) {
 	const InstantiationService = yield* _(IInstantiationService);
+
 	return InstantiationService.createInstance(WindQuickInputService);
 });
 

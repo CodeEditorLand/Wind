@@ -32,29 +32,46 @@ const createIpcRendererShim = (
 		Effect.runPromise(
 			Tauri.invoke("DispatchFrontendCommand", {
 				command: channel,
+
 				argument: args,
 			}),
 		),
+
 	on: (channel: string, listener: any) => Tauri.listen(channel, listener),
+
 	send: (channel: string, ...args: any[]) =>
 		Effect.runFork(Tauri.emit(channel, args)),
 });
 
 const createProcessShim = (Configuration: ISandboxConfiguration): IProcess => ({
 	...Configuration.userEnv,
-	pid: -1, // Not applicable
+
+	// Not applicable
+	pid: -1,
+
 	arch: Configuration.arch,
+
 	platform: Configuration.platform,
+
 	type: "renderer",
+
 	cwd: () => Configuration.VSCODE_CWD,
+
 	env: { ...Configuration.userEnv },
+
 	versions: Configuration.versions,
+
 	getProcessMemoryInfo: () =>
 		Promise.resolve({ total: 0, residentSet: 0, private: 0 }),
+
 	sandboxed: true,
+
 	mas: false,
+
 	windows: Configuration.platform === "win32",
+
 	linux: Configuration.platform === "linux",
+
 	darwin: Configuration.platform === "darwin",
 });
 
@@ -78,6 +95,7 @@ const Definition = Effect.gen(function* (_) {
 			Effect.sync(() => {
 				(window as any).vscode = {
 					ipcRenderer: createIpcRendererShim(Tauri),
+
 					process: createProcessShim(configuration),
 				};
 			}),
@@ -87,23 +105,28 @@ const Definition = Effect.gen(function* (_) {
 		showOpenDialog: (options: INativeOpenDialogOptions) =>
 			Tauri.invoke<UriComponents[] | null>(
 				"UserInterface.ShowOpenDialog",
+
 				options,
 			).pipe(
 				Effect.map(Option.fromNullable),
+
 				Effect.map(Option.map((uris) => uris.map(URI.revive))),
 			),
 
 		showSaveDialog: (options: INativeSaveDialogOptions) =>
 			Tauri.invoke<UriComponents | null>(
 				"UserInterface.ShowSaveDialog",
+
 				options,
 			).pipe(
 				Effect.map(Option.fromNullable),
+
 				Effect.map(Option.map(URI.revive)),
 			),
 
 		showSaveConfirm: (files) =>
-			Effect.succeed({ confirmed: false, acks: [] }), // Stub
+			// Stub
+			Effect.succeed({ confirmed: false, acks: [] }),
 
 		openFile: (uri) => Tauri.invoke("WorkSpace.OpenFile", uri.fsPath),
 	};

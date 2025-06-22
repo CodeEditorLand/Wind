@@ -21,6 +21,7 @@ class InstantiationServiceImpl implements IInstantiationService {
 
 	constructor(
 		private readonly AppRuntime: Runtime.Runtime<any>,
+
 		private readonly AppContext: Context.Context<any>,
 	) {}
 
@@ -30,7 +31,9 @@ class InstantiationServiceImpl implements IInstantiationService {
 	 */
 	createInstance = <T>(ctorOrDescriptor: any, ...args: any[]): T => {
 		const Constructor = ctorOrDescriptor.ctor ?? ctorOrDescriptor;
+
 		const StaticArgument = ctorOrDescriptor.staticArgument ?? [];
+
 		const ServiceLayer = LayerMap.get(Constructor);
 
 		// --- Modern, Effect-TS Layer Path ---
@@ -39,15 +42,20 @@ class InstantiationServiceImpl implements IInstantiationService {
 		if (ServiceLayer) {
 			const InstanceLayer = Layer.provide(
 				ServiceLayer,
+
 				this.AppContext as any,
 			);
+
 			const InstanceRuntime = Runtime.runSync(
 				Effect.scoped(Layer.toRuntime(InstanceLayer)),
 			);
+
 			const InstanceContext = Runtime.context(InstanceRuntime);
+
 			const Dependencies = Array.from(InstanceContext.tags).map((tag) =>
 				InstanceContext.get(tag),
 			);
+
 			return new Constructor(...StaticArgument, ...args, ...Dependencies);
 		}
 
@@ -68,12 +76,14 @@ class InstantiationServiceImpl implements IInstantiationService {
 	 */
 	invokeFunction = <R, TS extends any[] = []>(
 		fn: (accessor: ServicesAccessor, ...args: TS) => R,
+
 		...args: TS
 	): R => {
 		const accessor: ServicesAccessor = {
 			get: <T>(id: ServiceIdentifier<T>) =>
 				this.AppContext.get(id as unknown as Context.Tag<T, T>),
 		};
+
 		return fn(accessor, ...args);
 	};
 
@@ -82,14 +92,19 @@ class InstantiationServiceImpl implements IInstantiationService {
 	 */
 	createChild = (services: ServiceCollection): IInstantiationService => {
 		let ChildContext = this.AppContext;
+
 		for (const [id, service] of services) {
 			ChildContext = Context.add(
 				ChildContext,
+
 				id as unknown as Context.Tag<any, any>,
+
 				service,
 			);
 		}
+
 		const ChildRuntime = Runtime.make(ChildContext);
+
 		return new InstantiationServiceImpl(ChildRuntime, ChildContext);
 	};
 
@@ -110,6 +125,7 @@ const Definition = (AppRuntime: Runtime.Runtime<any>) =>
 		() =>
 			new InstantiationServiceImpl(
 				AppRuntime,
+
 				Runtime.context(AppRuntime),
 			),
 	);
