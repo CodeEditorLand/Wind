@@ -1,26 +1,29 @@
-/**
- * @module Live (Clipboard/Application)
- * @description Provides the "live" implementation of the IClipboardService as a Layer.
+/*
+ * File: Wind/Source/Application/Clipboard/Live.ts
+ * Role: Provides the "live" implementation Layer for the Clipboard service.
+ * Responsibilities:
+ *   - Defines the `Layer` that constructs the live `Clipboard` service instance
+ *     from its `Definition`.
  */
-import { Layer } from "effect";
 
-import type { IntegrationClipboardProblem } from "../../../Integration/Tauri/Clipboard/Error.js";
+import { Layer } from "effect";
 import { Definition } from "./Definition.js";
-import type { ClipboardProblem } from "./Error.js";
-import { Tag } from "./Tag.js";
+import { Clipboard } from "./Service.js";
+import type { IntegrationClipboardProblem } from "Source/Integration/Tauri/Clipboard/Error.js";
+import type { ApplicationClipboardProblem } from "./Error.js";
 
 /**
- * The live implementation Layer for the Clipboard service.
+ * The live implementation `Layer` for the `Clipboard` service.
  *
- * It uses `Layer.effect` to construct the service instance from its definition,
-
- * which is an `Effect`. This layer has no external dependencies as the Definition
- * it uses is self-contained.
+ * This layer is self-contained and has no external service dependencies, as its
+ * `Definition` creates a class instance that encapsulates all necessary logic.
+ * The error channel reflects potential problems from both the application and
+ * integration layers.
  */
 const Live: Layer.Layer<
-	import("./Service.js").Interface,
-	ClipboardProblem | IntegrationClipboardProblem,
+	Clipboard,
+	ApplicationClipboardProblem | IntegrationClipboardProblem,
 	never
-> = Layer.effect(Tag, Definition);
+> = Layer.effect(Clipboard, Definition);
 
 export default Live;

@@ -1,84 +1,108 @@
-/**
- * @module Definition (Clipboard)
- * @description The concrete implementation of the IClipboardService interface.
- * It translates the promise-based VS Code API into declarative Effect workflows
- * by wrapping the effects from the Integration layer.
+/*
+ * File: Wind/Source/Application/Clipboard/Definition.ts
+ * Role: Provides the concrete implementation of the IClipboardService interface for Wind.
+ * Responsibilities:
+ *   - Translates the promise-based VS Code API into declarative Effect workflows.
+ *   - Wraps clipboard-related effects from the Integration layer (`Tauri` service).
  */
 
-import { Effect, pipe, Runtime } from "effect";
+import { Effect, Runtime } from "effect";
 import type { IClipboardService } from "vs/platform/clipboard/common/clipboardService.js";
+import type { Uri } from "Source/Platform/VSCode/Type.js";
+import {
+	ReadImage,
+	ReadResourceList,
+	ReadText,
+	WriteResourceList,
+	WriteText,
+	HasResourceList,
+} from "Source/Integration/Tauri/Clipboard/Wrapper.js";
+import { ApplicationClipboardProblem } from "./Error.js";
+import type { IntegrationClipboardProblem } from "Source/Integration/Tauri/Clipboard/Error.js";
 
 /**
- * A helper function to execute an Effect from the Integration layer and return
- * its result as a Promise, bridging the declarative Effect world with the
- * imperative, promise-based VS Code interface.
+ * Higher-order function to execute an `Effect` from the Integration layer and
+ * return its result as a `Promise`. This bridges the declarative Effect world
+ * with the imperative, promise-based VS Code service interface.
  *
- * It also maps the low-level Integration error into a domain-specific
- * Application error for better error tracking.
- *
- * @param effect - The Effect to run, which may fail with an IntegrationClipboardProblem.
- * @returns A Promise that resolves with the success value of the Effect.
+ * @param AppRuntime - The application's `Runtime` to execute the effect.
+ * @param IntegrationEffect - The `Effect` to run.
+ * @returns A `Promise` that resolves with the success value of the `Effect`.
  */
-const RunIntegrationEffect = <A>(
-	effect: Effect.Effect<A, IntegrationClipboardProblem>,
-): Promise<A> => {
-	return pipe(
-		effect,
-
-		Effect.mapError((cause) => new ApplicationClipboardProblem({ cause })),
-
-		(finalEffect) =>
-			Runtime.runPromise(Runtime.defaultRuntime, finalEffect),
+const RunIntegrationEffect = <SuccessType>(
+	AppRuntime: Runtime.Runtime<never>,
+	IntegrationEffect: Effect.Effect<SuccessType, IntegrationClipboardProblem>,
+): Promise<SuccessType> => {
+	const MappedEffect = Effect.mapError(
+		IntegrationEffect,
+		(Cause) => new ApplicationClipboardProblem({ Cause }),
 	);
+	return Runtime.runPromise(AppRuntime, MappedEffect);
 };
 
+/**
+ * The concrete class implementing the `IClipboardService` for the Wind UI.
+ */
 class ClipboardServiceImpl implements IClipboardService {
-	readonly _serviceBrand: undefined;
+	public readonly _serviceBrand: undefined;
+	private readonly RunEffect: <A>(
+		E: Effect.Effect<A, IntegrationClipboardProblem>,
+	) => Promise<A>;
 
-	triggerPaste(_targetWindowId: number): Promise<void> | undefined {
+	constructor(AppRuntime: Runtime.Runtime<never>) {
+		this.RunEffect = <A>(
+			IntegrationEffect: Effect.Effect<A, IntegrationClipboardProblem>,
+		) => RunIntegrationEffect(AppRuntime, IntegrationEffect);
+	}
+
+	public triggerPaste(_TargetWindowId: number): Promise<void> | undefined {
 		// This is a complex UI interaction that doesn't map well to a simple
 		// Tauri invoke call. Stubbing is appropriate for now.
+		console.warn("IClipboardService.triggerPaste is not implemented.");
 		return undefined;
 	}
 
-	writeText(Text: string): Promise<void> {
-		return RunIntegrationEffect(WriteText(Text));
+	public writeText(Text: string): Promise<void> {
+		return this.RunEffect(WriteText(Text));
 	}
 
-	readText(): Promise<string> {
-		return RunIntegrationEffect(ReadText);
+	public readText(): Promise<string> {
+		return this.RunEffect(ReadText);
 	}
 
-	readFindText(): Promise<string> {
+	public readFindText(): Promise<string> {
 		// VS Code's find widget has a separate clipboard. We can fallback to the main one.
 		return this.readText();
 	}
 
-	writeFindText(Text: string): Promise<void> {
+	public writeFindText(Text: string): Promise<void> {
 		return this.writeText(Text);
 	}
 
-	writeResources(ResourceList: Uri[]): Promise<void> {
-		return RunIntegrationEffect(WriteResourceList(ResourceList));
+	public writeResources(ResourceList: Uri[]): Promise<void> {
+		return this.RunEffect(WriteResourceList(ResourceList));
 	}
 
-	readResources(): Promise<Uri[]> {
-		return RunIntegrationEffect(ReadResourceList);
+	public readResources(): Promise<Uri[]> {
+		return this.RunEffect(ReadResourceList);
 	}
 
-	hasResources(): Promise<boolean> {
-		return RunIntegrationEffect(HasResourceList);
+	public hasResources(): Promise<boolean> {
+		return this.RunEffect(HasResourceList);
 	}
 
-	readImage(): Promise<Uint8Array> {
-		return RunIntegrationEffect(ReadImage);
+	public readImage(): Promise<Uint8Array> {
+		return this.RunEffect(ReadImage);
 	}
 }
 
 /**
- * An Effect that creates an instance of the ClipboardService.
- * This pattern allows for dependency injection if needed in the future.
+ * An `Effect` that builds the live implementation of the `Clipboard` service.
+ * It depends on the application `Runtime` to execute the integration effects.
  */
-const Definition = Effect.sync(() => new ClipboardServiceImpl());
+const Definition = Effect.gen(function* (Generator) {
+	const AppRuntime = yield* Generator(Effect.runtime<never>());
+	return new ClipboardServiceImpl(AppRuntime);
+});
 
 export default Definition;
