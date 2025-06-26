@@ -23,7 +23,7 @@
 		"prepublishOnly": "sh Source/prepublishOnly.sh"
 	},
 	"dependencies": {
-		"@effect/platform": "0.87.0",
+		"@effect/platform": "0.87.1",
 		"@tauri-apps/api": "2.6.0",
 		"@tauri-apps/plugin-dialog": "2.3.0",
 		"effect": "3.16.9"
