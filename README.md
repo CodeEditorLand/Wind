@@ -173,22 +173,23 @@ layers.
     you can provide and use `Wind`'s services in your application's main entry
     point.
 
-    ```typescript
-// In your main UI startup file (e.g., DesktopMain.ts)
-   
-    import { DialogServiceTag } from "@codeeditorland/wind/Application/Dialog";
-    import { AppLayer } from "@codeeditorland/wind/Application/Instantiation/Layer";
-    import { Effect, Layer, Runtime } from "effect";
+        ```typescript
+
+    // In your main UI startup file (e.g., DesktopMain.ts)
+
+        import { DialogServiceTag } from "@codeeditorland/wind/Application/Dialog";
+        import { AppLayer } from "@codeeditorland/wind/Application/Instantiation/Layer";
+        import { Effect, Layer, Runtime } from "effect";
 
 // Build the full application runtime from Wind's master AppLayer.
-   
+
     const AppRuntime = Layer.toRuntime(AppLayer).pipe(
     	Effect.scoped,
     	Effect.runSync,
     );
 
 // Example of using the dialog service within an Effect
-   
+
     const openFileEffect = Effect.gen(function* (_) {
     	const dialogService = yield* _(DialogServiceTag);
 
@@ -209,7 +210,7 @@ layers.
     });
 
 // Run the effect using the configured runtime
-   
+
     Runtime.runPromise(AppRuntime, openFileEffect);
     ```
 
