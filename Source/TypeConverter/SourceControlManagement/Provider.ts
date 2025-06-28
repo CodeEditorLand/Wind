@@ -1,0 +1,27 @@
+/**
+ * @module Provider (TypeConverter/SourceControlManagement)
+ * @description Implements the type converter for SCM Provider DTOs.
+ */
+
+import { URI } from "vs/base/common/uri.js";
+import type { ISCMProvider } from "vs/workbench/contrib/scm/common/scm.js";
+
+/**
+ * The Data Transfer Object for an SCM Provider.
+ * This should be kept in sync with the DTO from Mountain.
+ */
+interface ScmProviderDTO {
+	readonly Handle: number;
+	readonly Label: string;
+	readonly RootUri?: string;
+}
+
+/**
+ * Converts a provider DTO from the host into the `ISCMProvider` interface
+ * expected by the workbench.
+ */
+export const FromDTO = (DTO: ScmProviderDTO): ISCMProvider => ({
+	id: String(DTO.Handle),
+	label: DTO.Label,
+	rootUri: DTO.RootUri ? URI.parse(DTO.RootUri) : undefined,
+});
