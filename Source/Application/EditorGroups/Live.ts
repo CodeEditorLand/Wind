@@ -1,29 +1,23 @@
 /**
- * @module Live (EditorGroups/Application)
- * @description Provides the "live" implementation of the IEditorGroupsService as a Layer.
+ * @module Live (Application/EditorGroups)
+ * @description Provides the "live" implementation `Layer` for the EditorGroups service.
  */
+
 import { Layer } from "effect";
-
-import { Definition } from "./Definition.js";
-import { Tag } from "./Service.js";
-
-// Assuming an Error module exists for this service
-// import type { EditorGroupsProblem } from "./Error.js";
+import { IInstantiationService } from "vs/platform/instantiation/common/instantiation.js";
+import { IStorageService } from "vs/platform/storage/common/storage.js";
+import { EditorGroupsService } from "./Service.js";
 
 /**
- * The live implementation Layer for the EditorGroups service.
+ * The live implementation `Layer` for the `EditorGroupsService`.
  *
- * It uses `Layer.effect` to construct the service instance from its definition.
- *
- * This Layer has context requirements: it needs the `InstantiationService` and
- * `StorageService` to be available in the layer provided to it. The master
- * `AppLayer` is responsible for providing these dependencies.
+ * This layer is derived directly from the default implementation provided
+ * in the `EditorGroupsService` service definition. It automatically includes the
+ * dependencies required by its `effect` constructor, which are the
+ * `IInstantiationService` and `IStorageService`.
  */
-const Live: Layer.Layer<
-	import("./Service.js").Interface,
-	// This layer itself introduces no new errors
+export const EditorGroupsLive: Layer.Layer<
+	EditorGroupsService,
 	never,
-	InstantiationService.Interface | StorageService.Interface
-> = Layer.effect(Tag, Definition);
-
-export default Live;
+	IInstantiationService | IStorageService
+> = EditorGroupsService.Default;
