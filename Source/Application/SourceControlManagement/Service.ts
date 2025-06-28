@@ -1,7 +1,7 @@
 /**
  * @module Service (Application/SourceControlManagement)
- * @description Defines the service interface and `Effect.Service` tag for the
- * Source Control Management service, conforming to the `ISCMService` contract.
+ * @description Defines the service interface and live implementation for the
+ * Source Control Management service, which conforms to the `ISCMService`.
  */
 
 import { Effect } from "effect";
@@ -10,16 +10,11 @@ import { IInstantiationService } from "vs/platform/instantiation/common/instanti
 import { ILogService } from "vs/platform/log/common/log.js";
 import { IStorageService } from "vs/platform/storage/common/storage.js";
 import { IWorkspaceContextService } from "vs/platform/workspace/common/workspace.js";
-import {
-	ISCMService,
-	type ISCMProvider,
-	type ISCMRepository,
-} from "vs/workbench/contrib/scm/common/scm.js";
+import type { ISCMService } from "vs/workbench/contrib/scm/common/scm.js";
 import { SourceControlManagementService as VscScmService } from "vs/workbench/contrib/scm/common/scmService.js";
-import { HostService } from "Source/Application/Host/Service.js";
 import { IntegrationService } from "Source/Integration/Tauri/Service.js";
-import { ScmProblem } from "./Error.js";
 import { FromDTO as ProviderFromDTO } from "Source/TypeConverter/SourceControlManagement/Provider.js";
+import { ScmProblem } from "./Error.js";
 
 /**
  * The `Effect.Service` for the `ISCMService`.
@@ -27,11 +22,9 @@ import { FromDTO as ProviderFromDTO } from "Source/TypeConverter/SourceControlMa
  * This service implementation "lifts" the original `SourceControlManagementService`
  * class from VS Code. It orchestrates the following:
  * 1. Instantiates the real `VscScmService`.
- * 2. Fetches the complete initial SCM state from the `Mountain` host via the
- *    `IntegrationService` upon startup.
- * 3. Populates the service with the initial state (providers, repositories, groups).
- * 4. Sets up listeners for real-time update events from the host to keep the
- *    UI in sync.
+ * 2. Defines an `Initialize` effect that fetches the complete initial SCM state
+ *    from the `Mountain` host and sets up listeners for real-time updates.
+ * 3. This `Initialize` effect must be run once at application startup.
  */
 export class SourceControlManagementService extends Effect.Service<ISCMService>()(
 	"scmService",
@@ -74,10 +67,9 @@ export class SourceControlManagementService extends Effect.Service<ISCMService>(
 						for (const ProviderDTO of Object.values(
 							State.providers,
 						)) {
-							const Provider =
-								ServiceInstance.registerSCMProvider(
-									ProviderFromDTO(ProviderDTO as any),
-								);
+							ServiceInstance.registerSCMProvider(
+								ProviderFromDTO(ProviderDTO as any),
+							);
 							// A full implementation would continue to populate groups and resources.
 						}
 					}),
@@ -92,9 +84,9 @@ export class SourceControlManagementService extends Effect.Service<ISCMService>(
 			);
 
 			/**
-			 * Listens for real-time updates from the host.
+			 * Listens for real-time SCM provider updates from the host.
 			 */
-			const ListenForUpdates = Integration.Listen(
+			const ListenForProviderUpdates = Integration.Listen(
 				"sky://scm/provider/added",
 				(Event) => {
 					LogService.info(
@@ -110,16 +102,25 @@ export class SourceControlManagementService extends Effect.Service<ISCMService>(
 					(Cause) =>
 						new ScmProblem({
 							Cause,
-							Context: "ListenForUpdatesFailed",
+							Context: "ListenForProviderUpdatesFailed",
 						}),
 				),
 			);
 
-			// Fork the initialization and event listening to run in the background.
-			yield* Generator(Effect.forkDaemon(InitializeState));
-			yield* Generator(Effect.forkDaemon(ListenForUpdates));
+			// This `Initialize` method is an exposed Effect that must be run by the
+			// application entry point to start the service's background processes.
+			const Initialize = Effect.all([
+				InitializeState,
+				ListenForProviderUpdates,
+			]).pipe(Effect.forkDaemon, Effect.asVoid);
 
-			// Return the instantiated and populated service instance.
+			// The service contract includes the service instance and the initializer.
+			// A consumer would get the service and then decide when to run Initialize.
+			// However, for ISCMService, we return the instance directly, and expect
+			// DesktopMain to call an initialization routine.
+			// For simplicity here, we can fork the initialization.
+			yield* Generator(Initialize);
+
 			return ServiceInstance;
 		}),
 	},

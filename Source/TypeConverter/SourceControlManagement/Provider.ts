@@ -19,6 +19,9 @@ interface ScmProviderDTO {
 /**
  * Converts a provider DTO from the host into the `ISCMProvider` interface
  * expected by the workbench.
+ *
+ * @param DTO - The SCM Provider DTO received from the host.
+ * @returns An object conforming to the `ISCMProvider` interface.
  */
 export const FromDTO = (DTO: ScmProviderDTO): ISCMProvider => ({
 	id: String(DTO.Handle),
