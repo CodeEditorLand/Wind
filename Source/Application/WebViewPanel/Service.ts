@@ -1,0 +1,186 @@
+/**
+ * @module Service (Application/WebViewPanel)
+ * @description Defines the service for creating and managing `vscode.WebviewPanel` instances.
+ */
+
+import { Effect, Ref } from "effect";
+import { generateUuid } from "vs/base/common/uuid.js";
+import type { IExtensionDescription } from "vs/platform/extensions/common/extensions.js";
+import {
+	Disposable,
+	type ViewColumn,
+	type WebviewOptions,
+	type WebviewPanel as VSCodeWebviewPanel,
+	type WebviewPanelOptions,
+	type WebviewPanelSerializer,
+} from "vscode";
+import { IPCService } from "Source/Application/IPC/Service.js";
+import {
+	ConvertContentOptionsToDTO,
+	ConvertPanelOptionsToDTO,
+	ConvertShowOptionsToDTO,
+} from "Source/TypeConverter/WebView.js";
+import { WebViewPanelImplementation } from "./WebViewPanelImplementation.js";
+import { WebViewPanelProblem } from "./Error.js";
+
+/**
+ * The contract for the WebViewPanel service.
+ */
+interface WebViewPanel {
+	readonly CreateWebviewPanel: (
+		Extension: IExtensionDescription,
+		ViewType: string,
+		Title: string,
+		ShowOptions:
+			| ViewColumn
+			| { viewColumn: ViewColumn; preserveFocus?: boolean },
+		Options?: WebviewPanelOptions & WebviewOptions,
+	) => Effect.Effect<VSCodeWebviewPanel, WebViewPanelProblem>;
+	readonly RegisterWebviewPanelSerializer: (
+		Extension: IExtensionDescription,
+		ViewType: string,
+		Serializer: WebviewPanelSerializer,
+	) => Effect.Effect<Disposable, WebViewPanelProblem>;
+}
+
+/**
+ * The `Effect.Service` for managing webview panels.
+ */
+export class WebViewPanelService extends Effect.Service<WebViewPanel>()(
+	"Service/WebViewPanel",
+	{
+		effect: Effect.gen(function* (Generator) {
+			const IPC = yield* Generator(IPCService);
+			const ActivePanels = yield* Generator(
+				Ref.make(new Map<string, WebViewPanelImplementation>()),
+			);
+
+			// Register RPC handlers to receive updates from the host.
+			IPC.RegisterInvokeHandler("$onDidDisposeWebview", ([Handle]) =>
+				Effect.runPromise(
+					Ref.get(ActivePanels).pipe(
+						Effect.map((Map) => Map.get(Handle)?.dispose()),
+					),
+				),
+			);
+			IPC.RegisterInvokeHandler(
+				"$onDidReceiveMessage",
+				([Handle, Message]) =>
+					Effect.runPromise(
+						Ref.get(ActivePanels).pipe(
+							Effect.map((Map) =>
+								Map.get(Handle)?.fireDidReceiveMessage(Message),
+							),
+						),
+					),
+			);
+			IPC.RegisterInvokeHandler(
+				"$onDidChangeWebviewPanelViewState",
+				([Handle, NewState]) =>
+					Effect.runPromise(
+						Ref.get(ActivePanels).pipe(
+							Effect.map((Map) =>
+								Map.get(Handle)?.updateViewState(NewState),
+							),
+						),
+					),
+			);
+
+			const CreateWebviewPanel = (
+				Extension: IExtensionDescription,
+				ViewType: string,
+				Title: string,
+				ShowOptions:
+					| ViewColumn
+					| { viewColumn: ViewColumn; preserveFocus?: boolean },
+				Options: WebviewPanelOptions & WebviewOptions = {},
+			) =>
+				Effect.gen(function* (Generator) {
+					const Handle = generateUuid();
+					const ViewColumnValue =
+						typeof ShowOptions === "object"
+							? ShowOptions.viewColumn
+							: ShowOptions;
+					const PreserveFocus =
+						typeof ShowOptions === "object"
+							? !!ShowOptions.preserveFocus
+							: false;
+
+					yield* Generator(
+						IPC.SendRequest<string>("$createWebviewPanel", [
+							Handle,
+							ViewType,
+							Title,
+							ConvertShowOptionsToDTO(
+								ViewColumnValue,
+								PreserveFocus,
+							),
+							ConvertPanelOptionsToDTO(Options),
+							ConvertContentOptionsToDTO(Extension, Options),
+						]),
+					);
+
+					const Panel = new WebViewPanelImplementation(
+						Handle,
+						IPC, // This should be HostService in a future refactor
+						Extension,
+						() =>
+							Effect.runSync(
+								Ref.update(ActivePanels, (Map) => {
+									Map.delete(Handle);
+									return Map;
+								}),
+							),
+						ViewType,
+						Title,
+						Options,
+						ViewColumnValue,
+					);
+
+					yield* Generator(
+						Ref.update(ActivePanels, (Map) =>
+							Map.set(Handle, Panel),
+						),
+					);
+					return Panel;
+				}).pipe(
+					Effect.mapError(
+						(Cause) =>
+							new WebViewPanelProblem({
+								Cause,
+								Context: "CreateWebviewPanelFailed",
+							}),
+					),
+				);
+
+			return {
+				CreateWebviewPanel,
+				RegisterWebviewPanelSerializer: (
+					_Extension: IExtensionDescription,
+					ViewType: string,
+					_Serializer: WebviewPanelSerializer,
+				) =>
+					Effect.sync(() => {
+						IPC.SendNotification(
+							"$registerWebviewPanelSerializer",
+							[ViewType, {}],
+						);
+						return new Disposable(() => {
+							IPC.SendNotification(
+								"$unregisterWebviewPanelSerializer",
+								[ViewType],
+							);
+						});
+					}).pipe(
+						Effect.mapError(
+							(Cause) =>
+								new WebViewPanelProblem({
+									Cause,
+									Context: "RegisterSerializerFailed",
+								}),
+						),
+					),
+			};
+		}),
+	},
+) {}
