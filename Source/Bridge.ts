@@ -1,9 +1,10 @@
 /**
  * @module Bridge (Wind)
- * @description This script runs in the webview at a very early stage. Its
- * primary purpose is to create and expose a global `window.vscode` object.
- * This object shims the essential APIs that VS Code's sandboxed workbench code
- * expects from an Electron environment, redirecting them to use Tauri's IPC.
+ * @description This script runs in the webview environment at a very early
+ * stage. Its primary purpose is to create and expose a global `window.vscode`
+ * object. This object shims the essential APIs that VS Code's sandboxed
+ * workbench code expects from an Electron environment, redirecting them to use
+ * Tauri's IPC mechanism.
  */
 
 import {
@@ -17,10 +18,15 @@ import type {
 	IpcRenderer,
 	IpcRendererEvent,
 } from "vs/base/parts/sandbox/electron-sandbox/electronTypes.js";
-import type { IMainWindowSandboxGlobals } from "vs/base/parts/sandbox/electron-sandbox/globals.js";
+import type {
+	IMainWindowSandboxGlobals,
+	ISandboxNodeProcess,
+} from "vs/base/parts/sandbox/electron-sandbox/globals.js";
 
 /**
  * A shim for the `ipcRenderer` object, adapting it to use Tauri's IPC.
+ * This function creates a proxy that translates VS Code's IPC calls into
+ * Tauri commands and events.
  */
 const CreateIpcRendererShim = (): IpcRenderer => ({
 	send: (Channel: string, ...Arguments: any[]): void => {
@@ -55,15 +61,19 @@ const CreateIpcRendererShim = (): IpcRenderer => ({
 		TauriListen(Channel, (Event: TauriEvent<any>) =>
 			Listener({} as IpcRendererEvent, Event.payload),
 		).catch(console.error);
-		return CreateIpcRendererShim(); // Return self for chaining
+		// Return self for chaining, as expected by the IpcRenderer interface.
+		return CreateIpcRendererShim();
 	},
-	// Stubs for other methods
+	// Stubs for other Emitter methods to fulfill the interface.
 	once: () => CreateIpcRendererShim(),
 	removeListener: () => CreateIpcRendererShim(),
 });
 
 /**
- * Asynchronously fetches and prepares the workbench configuration.
+ * Asynchronously fetches and prepares the workbench configuration from the
+ * native host (`Mountain`). It also revives any URI-like objects within the
+ * configuration into proper `URI` instances.
+ * @returns A promise that resolves to the `ISandboxConfiguration`.
  */
 const ResolveConfiguration = async (): Promise<ISandboxConfiguration> => {
 	try {
@@ -71,7 +81,6 @@ const ResolveConfiguration = async (): Promise<ISandboxConfiguration> => {
 			"mountain_get_workbench_configuration",
 		)) as any;
 
-		// Recursively revive all URI-like objects in the configuration payload.
 		const ReviveUris = (Data: any): any => {
 			if (!Data || typeof Data !== "object") {
 				return Data;
@@ -96,14 +105,35 @@ const ResolveConfiguration = async (): Promise<ISandboxConfiguration> => {
 			"[Bridge] FATAL: Could not fetch workbench configuration from host.",
 			Error,
 		);
-		// In a real scenario, we might have a fallback configuration.
-		// For now, we throw to halt execution as the workbench cannot start.
 		throw new Error("Failed to resolve initial workbench configuration.");
 	}
 };
 
 /**
- * Main IIFE to set up the global `window.vscode` bridge.
+ * Creates a shim for the `process` object using static configuration data
+ * fetched from the host.
+ * @param Configuration The sandbox configuration from the host.
+ * @returns An object that shims the `ISandboxNodeProcess` interface.
+ */
+const CreateProcessShim = (
+	Configuration: ISandboxConfiguration,
+): ISandboxNodeProcess => ({
+	...Configuration.userEnv,
+	pid: -1,
+	arch: Configuration.arch,
+	platform: Configuration.platform,
+	type: "renderer",
+	cwd: () => Configuration.VSCODE_CWD,
+	env: { ...Configuration.userEnv },
+	versions: Configuration.versions,
+	getProcessMemoryInfo: () =>
+		Promise.resolve({ total: 0, residentSet: 0, private: 0 }),
+	sandboxed: true,
+});
+
+/**
+ * Main IIFE (Immediately Invoked Function Expression) to set up the global
+ * `window.vscode` bridge. This runs as soon as the script is loaded.
  */
 (async () => {
 	try {
@@ -115,13 +145,13 @@ const ResolveConfiguration = async (): Promise<ISandboxConfiguration> => {
 			context: {
 				configuration: () => Configuration,
 			},
-			// Stubs for other expected properties
+			// Stubs for other expected globals.
 			webFrame: { setZoomLevel: () => {} },
 			webUtils: { getPathForFile: (file: File) => (file as any).path },
 			ipcMessagePort: { acquire: () => {} },
 		};
 
-		// Attach the globals to the window object for the workbench script to find.
+		// Attach the complete shim to the window object.
 		(window as any).vscode = Globals;
 
 		console.log(
@@ -131,7 +161,6 @@ const ResolveConfiguration = async (): Promise<ISandboxConfiguration> => {
 		const ErrorMessage =
 			Error instanceof Error ? Error.message : String(Error);
 		console.error("[Wind Bridge] FATAL: Failed to initialize.", Error);
-		// Display an error overlay if initialization fails.
 		const ErrorDiv = document.createElement("div");
 		ErrorDiv.textContent = `Bridge Error: ${ErrorMessage}`;
 		ErrorDiv.setAttribute(
