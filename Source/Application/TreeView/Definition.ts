@@ -17,7 +17,6 @@ import { ILogService } from "vs/platform/log/common/log.js";
 import { IViewsService } from "vs/workbench/common/views.js";
 import type { TreeDataProvider, TreeItem, TreeView } from "vscode";
 
-import { Views } from "../Views/mod.js";
 import type { Interface as TreeViewServiceInterface } from "./Service.js";
 
 // This is the DTO structure defined in Mountain's FileExplorerViewProvider.

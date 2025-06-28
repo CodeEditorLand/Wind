@@ -20,9 +20,6 @@ import { TextFileService as VscTextFileService } from "vs/workbench/services/tex
 import { IUntitledTextEditorService } from "vs/workbench/services/untitled/common/untitledTextEditorService.js";
 import { IWorkingCopyFileService } from "vs/workbench/services/workingCopy/common/workingCopyFileService.js";
 
-import { FileService } from "../File/mod.js";
-import { HostService } from "../Host/mod.js";
-import { InstantiationService } from "../Instantiation/mod.js";
 import type { Interface as TextEditorServiceInterface } from "./Service.js";
 
 /**

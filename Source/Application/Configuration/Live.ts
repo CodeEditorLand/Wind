@@ -1,32 +1,19 @@
 /**
- * @module Live (Configuration/Application)
- * @description Provides the "live" implementation of the IConfigurationService as a Layer.
+ * @module Live (Application/Configuration)
+ * @description Provides the "live" implementation `Layer` for the Configuration service.
  */
+
 import { Layer } from "effect";
-
-import type { IntegrationConfigurationProblem } from "../../../Integration/Tauri/Configuration/Error.js";
-import type { IntegrationPathProblem } from "../../../Integration/Tauri/Path/Error.js";
-import { Definition } from "./Definition.js";
-import { Tag } from "./Service.js";
-
-type LiveConfigurationError =
-	| ConfigurationProblem
-	| IntegrationPathProblem
-	| IntegrationConfigurationProblem;
+import { Configuration } from "./Service.js";
 
 /**
- * The live implementation Layer for the Configuration service.
+ * The live implementation `Layer` for the `Configuration` service.
  *
- * It uses `Layer.effect` to construct the service instance from its definition,
-
- * which is an `Effect` that resolves the application's settings on startup.
- * The Layer's error channel includes all possible errors from the underlying
- * integration services (like file system or path resolution errors).
+ * This layer is derived directly from the default implementation provided
+ * in the `Configuration` service definition (`Configuration.Default`).
+ * All dependencies required by the service's `effect` constructor (such as
+ * integration services for path resolution and file reading) are automatically
+ * inferred and added to this layer's context requirements.
  */
-const Live: Layer.Layer<
-	import("./Service.js").Interface,
-	LiveConfigurationError,
-	never
-> = Layer.effect(Tag, Definition);
-
-export default Live;
+export const ConfigurationLive: Layer.Layer<Configuration> =
+	Configuration.Default;

@@ -1,25 +1,16 @@
 /**
- * @module Live (Dialog/Application)
- * @description Provides the "live" implementation of the IFileDialogService as a Layer.
+ * @module Live (Application/Dialog)
+ * @description Provides the "live" implementation `Layer` for the Dialog service.
  */
-import { Layer } from "effect";
 
-import { Definition } from "./Definition.js";
-import { Tag } from "./Service.js";
+import { Layer } from "effect";
+import { DialogService } from "./Service.js";
 
 /**
- * The live implementation Layer for the Dialog service.
+ * The live implementation `Layer` for the `DialogService`.
  *
- * It uses `Layer.effect` to construct the service instance from its definition.
- *
- * This Layer has a context requirement: it needs a `ConfigurationService` to be
- * available in the layer provided to it. The master `AppLayer` is responsible
- * for providing this dependency.
+ * This layer is derived directly from the default implementation provided
+ * in the `DialogService` service definition. It automatically includes the
+ * dependencies required by its `effect` constructor, such as the `HostService`.
  */
-const Live: Layer.Layer<
-	import("./Service.js").Interface,
-	DialogProblem,
-	ConfigurationService.Interface
-> = Layer.effect(Tag, Definition);
-
-export default Live;
+export const DialogLive: Layer.Layer<DialogService> = DialogService.Default;

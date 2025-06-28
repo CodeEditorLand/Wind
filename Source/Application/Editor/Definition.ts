@@ -29,11 +29,6 @@ import type {
 	PreferredGroup,
 } from "vs/workbench/services/editor/common/editorService.js";
 
-import { HostService } from "../Host/mod.js";
-import { InstantiationService } from "../Instantiation/mod.js";
-import { TextEditorService } from "../TextEditor/mod.js";
-import type { ServiceProblem } from "./Error/mod.js";
-
 /**
  * An Effect that builds the live implementation of the Editor service.
  */

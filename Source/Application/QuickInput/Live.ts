@@ -11,8 +11,7 @@ import { Layer } from "effect";
 import { IInstantiationService } from "vs/platform/instantiation/common/instantiation.js";
 import { INotificationService } from "vs/platform/notification/common/notification.js";
 
-import { HostService } from "../Host/mod.js";
-import { Definition } from "./Definition.js";
+import Definition from "./Definition.js";
 import { Tag } from "./Service.js";
 
 /**

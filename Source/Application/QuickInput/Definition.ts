@@ -36,8 +36,6 @@ import type {
 } from "vs/platform/quickinput/common/quickInput.js";
 
 // Fictional, but correct path.
-import { HostService } from "../Host/mod.js";
-import { InstantiationService } from "../Instantiation/mod.js";
 
 /**
  * A custom implementation of `IQuickInputService` that proxies UI requests

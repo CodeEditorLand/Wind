@@ -9,13 +9,6 @@
  */
 
 import { invoke } from "@tauri-apps/api/tauri";
-import type {
-	CompletionContextDTO,
-	CompletionItemDTO,
-	CompletionListDTO,
-	HoverDTO,
-	LocationDTO,
-} from "Common/Source/LanguageFeature/DTO/mod.js";
 import { Effect } from "effect";
 import * as monaco from "monaco-editor";
 import type { languages } from "monaco-editor";
