@@ -30,7 +30,10 @@ export class HostLogger extends AbstractMessageLogger implements ILogger {
 			Effect.catchAll((Error) =>
 				// If logging to host fails, fallback to console to not lose the message.
 				Effect.sync(() =>
-					console.error("[HostLogger] Failed to forward log to host:", Error),
+					console.error(
+						"[HostLogger] Failed to forward log to host:",
+						Error,
+					),
 				),
 			),
 		);
