@@ -6,60 +6,18 @@
  */
 
 import { Effect, Option } from "effect";
-import { URI, type UriComponents } from "vs/base/common/uri.js";
-import type {
-	IProcess,
-	ISandboxConfiguration,
-} from "vs/base/parts/sandbox/common/sandboxTypes.js";
+import type { ISandboxConfiguration } from "vs/base/parts/sandbox/common/sandboxTypes.js";
 import type { IpcRenderer } from "vs/base/parts/sandbox/electron-sandbox/electronTypes.js";
-import type { LogLevel } from "vs/platform/log/common/log.js";
+import type { IProcess } from "vs/base/parts/sandbox/common/sandboxTypes.js";
 import type {
 	INativeOpenDialogOptions,
 	INativeSaveDialogOptions,
 	ISaveDialogResult,
 } from "vs/platform/dialogs/common/dialogs.js";
+import type { LogLevel } from "vs/platform/log/common/log.js";
+import { URI, type UriComponents } from "Source/Platform/VSCode/Type.js";
 import { IntegrationService } from "Source/Integration/Tauri/Service.js";
 import { HostServiceProblem } from "./Error.js";
-
-/**
- * The `HostService` is the primary bridge between the Wind application and the
- * native `Mountain` host. It encapsulates all direct communication (IPC) and
- * provides a clean, Effect-native interface for other services to use.
- */
-interface Host {
-	/** The resolved sandbox configuration received from the host upon startup. */
-	readonly Configuration: ISandboxConfiguration;
-
-	/** An Effect that performs the side-effect of attaching the `window.vscode` global object. */
-	readonly ProvideGlobals: () => Effect.Effect<void, HostServiceProblem>;
-
-	/** Notifies the native host that the workbench is ready and operational. */
-	readonly NotifyReady: () => Effect.Effect<void, HostServiceProblem>;
-
-	/** Shows a native dialog for opening files or folders. */
-	readonly ShowOpenDialog: (
-		Options: INativeOpenDialogOptions,
-	) => Effect.Effect<Option.Option<readonly URI[]>, HostServiceProblem>;
-
-	/** Shows a native dialog for saving a file. */
-	readonly ShowSaveDialog: (
-		Options: INativeSaveDialogOptions,
-	) => Effect.Effect<Option.Option<URI>, HostServiceProblem>;
-
-	/** Shows a native confirmation dialog for saving dirty files. */
-	readonly ShowSaveConfirm: (
-		Files: UriComponents[],
-	) => Effect.Effect<ISaveDialogResult, HostServiceProblem>;
-
-	/** Requests that the host open a file. */
-	readonly OpenFile: (Uri: URI) => Effect.Effect<void, HostServiceProblem>;
-
-	/** Forwards a log message to the native host to be processed. */
-	readonly Log: (
-		Level: LogLevel,
-		Message: string,
-	) => Effect.Effect<void, HostServiceProblem>;
-}
 
 /**
  * A factory function that creates a shim for the `ipcRenderer` object,
@@ -102,6 +60,31 @@ const CreateProcessShim = (Configuration: ISandboxConfiguration): IProcess => ({
 	linux: Configuration.platform === "linux",
 	darwin: Configuration.platform === "darwin",
 });
+
+/**
+ * The `HostService` is the primary bridge between the Wind application and the
+ * native `Mountain` host. It encapsulates all direct communication (IPC) and
+ * provides a clean, Effect-native interface for other services to use.
+ */
+interface Host {
+	readonly Configuration: ISandboxConfiguration;
+	readonly ProvideGlobals: () => Effect.Effect<void, HostServiceProblem>;
+	readonly NotifyReady: () => Effect.Effect<void, HostServiceProblem>;
+	readonly ShowOpenDialog: (
+		Options: INativeOpenDialogOptions,
+	) => Effect.Effect<Option.Option<readonly URI[]>, HostServiceProblem>;
+	readonly ShowSaveDialog: (
+		Options: INativeSaveDialogOptions,
+	) => Effect.Effect<Option.Option<URI>, HostServiceProblem>;
+	readonly ShowSaveConfirm: (
+		Files: UriComponents[],
+	) => Effect.Effect<ISaveDialogResult, HostServiceProblem>;
+	readonly OpenFile: (Uri: URI) => Effect.Effect<void, HostServiceProblem>;
+	readonly Log: (
+		Level: LogLevel,
+		Message: string,
+	) => Effect.Effect<void, HostServiceProblem>;
+}
 
 /**
  * The `Effect.Service` for the Host service.
@@ -227,7 +210,7 @@ export class HostService extends Effect.Service<Host>()("wind/HostService", {
 			ShowSaveDialog,
 			ShowSaveConfirm,
 			OpenFile,
-			Log, // <-- Added method
+			Log,
 		};
 	}),
 }) {}
