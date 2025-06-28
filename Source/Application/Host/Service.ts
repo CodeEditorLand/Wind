@@ -12,6 +12,7 @@ import type {
 	ISandboxConfiguration,
 } from "vs/base/parts/sandbox/common/sandboxTypes.js";
 import type { IpcRenderer } from "vs/base/parts/sandbox/electron-sandbox/electronTypes.js";
+import type { LogLevel } from "vs/platform/log/common/log.js";
 import type {
 	INativeOpenDialogOptions,
 	INativeSaveDialogOptions,
@@ -52,6 +53,12 @@ interface Host {
 
 	/** Requests that the host open a file. */
 	readonly OpenFile: (Uri: URI) => Effect.Effect<void, HostServiceProblem>;
+
+	/** Forwards a log message to the native host to be processed. */
+	readonly Log: (
+		Level: LogLevel,
+		Message: string,
+	) => Effect.Effect<void, HostServiceProblem>;
 }
 
 /**
@@ -201,6 +208,17 @@ export class HostService extends Effect.Service<Host>()("wind/HostService", {
 				),
 			);
 
+		const Log = (Level: LogLevel, Message: string) =>
+			Integration.Emit("sky://log", { Level, Message }).pipe(
+				Effect.mapError(
+					(Cause) =>
+						new HostServiceProblem({
+							Cause,
+							Context: "LogForwardingFailed",
+						}),
+				),
+			);
+
 		return {
 			Configuration,
 			ProvideGlobals,
@@ -209,6 +227,7 @@ export class HostService extends Effect.Service<Host>()("wind/HostService", {
 			ShowSaveDialog,
 			ShowSaveConfirm,
 			OpenFile,
+			Log, // <-- Added method
 		};
 	}),
 }) {}
