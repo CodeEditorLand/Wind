@@ -18,7 +18,7 @@ import { EditorGroupsLive } from "./EditorGroups/Live.js";
 import { FileLive } from "./File/Live.js";
 import { FileSystemProviderLive } from "./FileSystem/Live.js";
 import { HostLive } from "./Host/Live.js";
-import { LanguageFeaturesLive } from "./LanguageFeatures/Live.js";
+import { LanguageFeatureLive } from "./LanguageFeature/Live.js";
 import { LogLive } from "./Log/Live.js";
 import { MarkerLive } from "./Marker/Live.js";
 import { QuickInputLive } from "./QuickInput/Live.js";
@@ -49,7 +49,7 @@ export const AppLayer = Layer.mergeAll(
 	FileLive,
 	FileSystemProviderLive,
 	HostLive,
-	LanguageFeaturesLive,
+	LanguageFeatureLive,
 	LogLive,
 	MarkerLive,
 	QuickInputLive,

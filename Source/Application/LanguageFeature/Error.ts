@@ -1,5 +1,5 @@
 /**
- * @module Error (Application/LanguageFeatures)
+ * @module Error (Application/LanguageFeature)
  * @description Defines domain-specific, tagged errors for language feature
  * provider registration.
  */

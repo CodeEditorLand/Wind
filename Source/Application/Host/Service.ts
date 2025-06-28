@@ -1,8 +1,7 @@
 /**
  * @module Service (Application/Host)
  * @description Defines the service interface and live implementation for the HostService.
- * This service is the primary bridge between the webview UI and the native host,
- * responsible for providing essential shims and proxying native UI calls.
+ * This service is the primary bridge between the webview UI and the native host.
  */
 
 import { Effect, Option } from "effect";
@@ -16,6 +15,14 @@ import type {
 } from "vs/platform/dialogs/common/dialogs.js";
 import type { LogLevel } from "vs/platform/log/common/log.js";
 import { URI, type UriComponents } from "Source/Platform/VSCode/Type.js";
+import type {
+	INotification,
+	IPromptChoice,
+	IPromptOptions,
+	IStatusMessageOptions,
+	NotificationMessage,
+	Severity,
+} from "vs/platform/notification/common/notification.js";
 import { IntegrationService } from "Source/Integration/Tauri/Service.js";
 import { HostServiceProblem } from "./Error.js";
 
@@ -63,8 +70,7 @@ const CreateProcessShim = (Configuration: ISandboxConfiguration): IProcess => ({
 
 /**
  * The `HostService` is the primary bridge between the Wind application and the
- * native `Mountain` host. It encapsulates all direct communication (IPC) and
- * provides a clean, Effect-native interface for other services to use.
+ * native `Mountain` host.
  */
 interface Host {
 	readonly Configuration: ISandboxConfiguration;
@@ -83,6 +89,23 @@ interface Host {
 	readonly Log: (
 		Level: LogLevel,
 		Message: string,
+	) => Effect.Effect<void, HostServiceProblem>;
+
+	/** Shows a standard notification message. */
+	readonly ShowNotification: (
+		Notification: INotification,
+	) => Effect.Effect<void, HostServiceProblem>;
+	/** Shows a notification prompt with choices. */
+	readonly ShowPrompt: (
+		Severity: Severity,
+		Message: string,
+		Choices: IPromptChoice[],
+		Options?: IPromptOptions,
+	) => Effect.Effect<void, HostServiceProblem>;
+	/** Shows a message in the status bar. */
+	readonly ShowStatusMessage: (
+		Message: NotificationMessage,
+		Options?: IStatusMessageOptions,
 	) => Effect.Effect<void, HostServiceProblem>;
 }
 
@@ -202,6 +225,57 @@ export class HostService extends Effect.Service<Host>()("wind/HostService", {
 				),
 			);
 
+		const ShowNotification = (Notification: INotification) =>
+			Integration.Invoke<void>("UserInterface.ShowNotification", {
+				Notification,
+			}).pipe(
+				Effect.mapError(
+					(Cause) =>
+						new HostServiceProblem({
+							Cause,
+							Context: "ShowNotificationFailed",
+						}),
+				),
+			);
+
+		const ShowPrompt = (
+			Severity: Severity,
+			Message: string,
+			Choices: IPromptChoice[],
+			Options?: IPromptOptions,
+		) =>
+			Integration.Invoke<void>("UserInterface.ShowPrompt", {
+				Severity,
+				Message,
+				Choices,
+				Options,
+			}).pipe(
+				Effect.mapError(
+					(Cause) =>
+						new HostServiceProblem({
+							Cause,
+							Context: "ShowPromptFailed",
+						}),
+				),
+			);
+
+		const ShowStatusMessage = (
+			Message: NotificationMessage,
+			Options?: IStatusMessageOptions,
+		) =>
+			Integration.Invoke<void>("UserInterface.ShowStatusMessage", {
+				Message: Message.toString(), // Ensure message is a string for IPC
+				Options,
+			}).pipe(
+				Effect.mapError(
+					(Cause) =>
+						new HostServiceProblem({
+							Cause,
+							Context: "ShowStatusMessageFailed",
+						}),
+				),
+			);
+
 		return {
 			Configuration,
 			ProvideGlobals,
@@ -211,6 +285,9 @@ export class HostService extends Effect.Service<Host>()("wind/HostService", {
 			ShowSaveConfirm,
 			OpenFile,
 			Log,
+			ShowNotification,
+			ShowPrompt,
+			ShowStatusMessage,
 		};
 	}),
 }) {}

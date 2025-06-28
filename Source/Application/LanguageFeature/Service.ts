@@ -1,5 +1,5 @@
 /**
- * @module Service (Application/LanguageFeatures)
+ * @module Service (Application/LanguageFeature)
  * @description Defines the service for registering language feature providers
  * such as for hovers, completions, and definitions. It conforms to the
  * `vscode.languages` API surface.
@@ -61,7 +61,7 @@ interface LanguageFeature {
  * return a no-op `Disposable`. A full implementation would proxy these
 - * registrations to the `Mountain` host process via an IPC channel.
  */
-export class LanguageFeaturesService extends Effect.Service<LanguageFeature>()(
+export class LanguageFeatureService extends Effect.Service<LanguageFeature>()(
 	"Service/LanguageFeature",
 	{
 		sync: () => ({

@@ -15,31 +15,25 @@
 import { Effect, Layer, Runtime } from "effect";
 import { domContentLoaded } from "vs/base/browser/dom.js";
 import { onUnexpectedError } from "vs/base/common/errors.js";
+import { IInstantiationService } from "vs/platform/instantiation/common/instantiation.js";
+import { ServiceCollection } from "vs/platform/instantiation/common/serviceCollection.js";
 import { ILogService } from "vs/platform/log/common/log.js";
 import { IProductService } from "vs/platform/product/common/product.js";
 import {
-	IQuickAccessRegistry,
 	Extensions as QuickAccessExtensions,
+	IQuickAccessRegistry,
 } from "vs/platform/quickinput/common/quickAccess.js";
 import { Registry } from "vs/platform/registry/common/platform.js";
+import { Workbench } from "vs/workbench/browser/workbench.js";
 import { CommandsQuickAccessProvider } from "vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.js";
 
-// Import the master application layer.
+// Import the master application layer and core services.
 import { AppLayer } from "./Layer.js";
-
-// Import core services needed for the startup sequence.
 import { HostService } from "./Host/Service.js";
+import { MarkerService } from "./Marker/Service.js";
 import { TreeViewService } from "./TreeView/Service.js";
 import { NativeTreeViewDataProvider } from "./TreeView/Definition.js";
-
-// This is a placeholder for the real Workbench class from VS Code's sources.
-// In a real scenario, this would be imported.
-class Workbench {
-	constructor(_target: HTMLElement, _options: any, _serviceCollection: any) {}
-	startup(): void {
-		console.log("[Workbench] Startup called.");
-	}
-}
+import { IntegrationService } from "Source/Integration/Tauri/Service.js";
 
 /**
  * The main application startup workflow, described as a single, declarative `Effect`.
@@ -47,8 +41,7 @@ class Workbench {
  * DOM to be ready to launching the main workbench UI.
  */
 const Main = Effect.gen(function* (Generator) {
-	// 1. Ensure the DOM is fully loaded and ready for manipulation before
-	//    attempting to create any UI components.
+	// 1. Ensure the DOM is fully loaded and ready for manipulation.
 	yield* Generator(Effect.promise(() => domContentLoaded(window)));
 	yield* Generator(
 		Effect.logInfo("DOM content loaded. Initializing services..."),
@@ -57,16 +50,19 @@ const Main = Effect.gen(function* (Generator) {
 	// 2. Resolve essential services from the context provided by AppLayer.
 	const Host = yield* Generator(HostService);
 	const LogService = yield* Generator(ILogService);
-	const ProductService = yield* Generator(IProductService);
+	const Marker = yield* Generator(MarkerService);
 	const TreeView = yield* Generator(TreeViewService);
-	// NOTE: In a full implementation, we would resolve a real InstantiationService
-	// that is itself a service provided in the AppLayer. For now, we mock it.
+	const Integration = yield* Generator(IntegrationService);
+
+	// This is a placeholder for a real InstantiationService bridge. For now, it's
+	// a mock that allows us to instantiate legacy VS Code classes.
 	const MockInstantiationService = {
 		createInstance: <T>(
 			ctor: new (...args: any[]) => T,
 			...args: any[]
 		): T => new ctor(...args),
 	};
+	const InstantiationService = MockInstantiationService; // Alias for clarity
 
 	yield* Generator(Effect.logInfo("Core services resolved."));
 
@@ -75,14 +71,22 @@ const Main = Effect.gen(function* (Generator) {
 	yield* Generator(Host.ProvideGlobals());
 	yield* Generator(Effect.logInfo("Host bridge globals have been provided."));
 
-	// 4. Register statically known UI components and providers. This is equivalent
-	//    to the registration phase in the original `desktop.main.ts`.
+	// 4. Initialize reactive services that listen for host events. These are
+	//    forked as daemons to run in the background throughout the application's lifecycle.
+	yield* Generator(Effect.forkDaemon(Marker.Initialize()));
+	yield* Generator(
+		Effect.logInfo(
+			"MarkerService initialized and listening for diagnostics.",
+		),
+	);
+
+	// 5. Register statically known UI providers.
 	const QuickAccessRegistry = Registry.as<IQuickAccessRegistry>(
 		QuickAccessExtensions.Quickaccess,
 	);
-	const CommandsProvider = MockInstantiationService.createInstance(
+	const CommandsProvider = InstantiationService.createInstance(
 		CommandsQuickAccessProvider,
-		{}, // Empty options
+		{},
 	);
 	QuickAccessRegistry.registerQuickAccessProvider(CommandsProvider);
 	yield* Generator(
@@ -92,6 +96,8 @@ const Main = Effect.gen(function* (Generator) {
 	// Register the native TreeView provider for the file explorer.
 	const ExplorerProvider = new NativeTreeViewDataProvider(
 		"workbench.view.explorer",
+		Integration,
+		LogService,
 	);
 	TreeView.registerTreeDataProvider(
 		"workbench.view.explorer",
@@ -101,30 +107,35 @@ const Main = Effect.gen(function* (Generator) {
 		Effect.logInfo("File Explorer native data provider registered."),
 	);
 
-	// 5. Instantiate and launch the main `Workbench` UI.
-	//    This is the primary side-effect that renders the application.
+	// 6. Instantiate and launch the main `Workbench` UI.
 	yield* Generator(
 		Effect.try({
 			try: () => {
+				const ProductService = {
+					_serviceBrand: undefined,
+					...(yield * Generator(IProductService)),
+				};
+				// A real implementation would lift more services into this collection.
+				const ServiceCollectionBridge = new ServiceCollection(
+					[IProductService, ProductService],
+					[ILogService, LogService],
+				);
+
 				const WorkbenchInstance = new Workbench(
 					document.body,
 					{}, // Empty workbench options
-					// The legacy ServiceCollection is no longer the source of truth.
-					// We pass a dummy collection for compatibility.
-					[],
+					ServiceCollectionBridge,
 				);
 				WorkbenchInstance.startup();
 			},
 			catch: (error) => {
-				// Use the VS Code-provided error handler for UI-related exceptions.
 				onUnexpectedError(error as Error);
-				// We still want to fail the main Effect so it can be logged.
 				return error as Error;
 			},
 		}),
 	);
 
-	// 6. Notify the native host (`Mountain`) that the UI is ready and operational.
+	// 7. Notify the native host (`Mountain`) that the UI is ready and operational.
 	yield* Generator(Host.NotifyReady());
 	yield* Generator(
 		Effect.logInfo(
@@ -132,10 +143,9 @@ const Main = Effect.gen(function* (Generator) {
 		),
 	);
 
-	// 7. The application now runs indefinitely until an exit signal is received.
+	// 8. The application now runs indefinitely.
 	yield* Generator(Effect.never);
 }).pipe(
-	// Wrap the entire application logic in a single top-level error boundary.
 	Effect.catchAllCause((Cause) =>
 		Effect.logFatal(
 			"A critical error occurred in the main application.",
@@ -154,7 +164,4 @@ const Main = Effect.gen(function* (Generator) {
 const Executable = Main.pipe(Effect.provide(AppLayer), Effect.scoped);
 
 // --- Application Execution ---
-
-// Run the main application effect using the default Effect runtime.
-// This is the one and only `run` call in the entire application.
 Runtime.runMain(Executable);
