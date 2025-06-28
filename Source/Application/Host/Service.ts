@@ -1,9 +1,15 @@
 /**
  * @module Service (Application/Host)
  * @description Defines the service interface and live implementation for the HostService.
- * This service is the primary bridge between the webview UI and the native host.
  */
 
+import type {
+	FileStat,
+	FileType,
+	IFileDeleteOptions,
+	IFileOverwriteOptions,
+	IFileWriteOptions,
+} from "vscode";
 import { Effect, Option } from "effect";
 import type { ISandboxConfiguration } from "vs/base/parts/sandbox/common/sandboxTypes.js";
 import type { IpcRenderer } from "vs/base/parts/sandbox/electron-sandbox/electronTypes.js";
@@ -107,11 +113,39 @@ interface Host {
 		Message: NotificationMessage,
 		Options?: IStatusMessageOptions,
 	) => Effect.Effect<void, HostServiceProblem>;
+
+	// --- FileSystem Proxied Methods ---
+	readonly Stat: (Uri: URI) => Effect.Effect<FileStat, HostServiceProblem>;
+	readonly ReadDirectory: (
+		Uri: URI,
+	) => Effect.Effect<[string, FileType][], HostServiceProblem>;
+	readonly CreateDirectory: (
+		Uri: URI,
+	) => Effect.Effect<void, HostServiceProblem>;
+	readonly ReadFile: (
+		Uri: URI,
+	) => Effect.Effect<Uint8Array, HostServiceProblem>;
+	readonly WriteFile: (
+		Uri: URI,
+		Content: Uint8Array,
+		Options: IFileWriteOptions,
+	) => Effect.Effect<void, HostServiceProblem>;
+	readonly Delete: (
+		Uri: URI,
+		Options: IFileDeleteOptions,
+	) => Effect.Effect<void, HostServiceProblem>;
+	readonly Rename: (
+		Source: URI,
+		Target: URI,
+		Options: IFileOverwriteOptions,
+	) => Effect.Effect<void, HostServiceProblem>;
+	readonly Copy: (
+		Source: URI,
+		Target: URI,
+		Options: IFileOverwriteOptions,
+	) => Effect.Effect<void, HostServiceProblem>;
 }
 
-/**
- * The `Effect.Service` for the Host service.
- */
 export class HostService extends Effect.Service<Host>()("wind/HostService", {
 	effect: Effect.gen(function* (Generator) {
 		const Integration = yield* Generator(IntegrationService);
@@ -276,6 +310,128 @@ export class HostService extends Effect.Service<Host>()("wind/HostService", {
 				),
 			);
 
+		const Stat = (Uri: URI) =>
+			Integration.Invoke<FileStat>("FileSystem.Stat", { Uri }).pipe(
+				Effect.mapError(
+					(Cause) =>
+						new HostServiceProblem({
+							Cause,
+							Context: "StatFailed",
+						}),
+				),
+			);
+
+		const ReadDirectory = (Uri: URI) =>
+			Integration.Invoke<[string, FileType][]>(
+				"FileSystem.ReadDirectory",
+				{ Uri },
+			).pipe(
+				Effect.mapError(
+					(Cause) =>
+						new HostServiceProblem({
+							Cause,
+							Context: "ReadDirectoryFailed",
+						}),
+				),
+			);
+
+		const CreateDirectory = (Uri: URI) =>
+			Integration.Invoke<void>("FileSystem.CreateDirectory", {
+				Uri,
+			}).pipe(
+				Effect.mapError(
+					(Cause) =>
+						new HostServiceProblem({
+							Cause,
+							Context: "CreateDirectoryFailed",
+						}),
+				),
+			);
+
+		const ReadFile = (Uri: URI) =>
+			Integration.Invoke<Uint8Array>("FileSystem.ReadFile", {
+				Uri,
+			}).pipe(
+				Effect.mapError(
+					(Cause) =>
+						new HostServiceProblem({
+							Cause,
+							Context: "ReadFileFailed",
+						}),
+				),
+			);
+
+		const WriteFile = (
+			Uri: URI,
+			Content: Uint8Array,
+			Options: IFileWriteOptions,
+		) =>
+			Integration.Invoke<void>("FileSystem.WriteFile", {
+				Uri,
+				Content,
+				Options,
+			}).pipe(
+				Effect.mapError(
+					(Cause) =>
+						new HostServiceProblem({
+							Cause,
+							Context: "WriteFileFailed",
+						}),
+				),
+			);
+
+		const Delete = (Uri: URI, Options: IFileDeleteOptions) =>
+			Integration.Invoke<void>("FileSystem.Delete", {
+				Uri,
+				Options,
+			}).pipe(
+				Effect.mapError(
+					(Cause) =>
+						new HostServiceProblem({
+							Cause,
+							Context: "DeleteFailed",
+						}),
+				),
+			);
+
+		const Rename = (
+			Source: URI,
+			Target: URI,
+			Options: IFileOverwriteOptions,
+		) =>
+			Integration.Invoke<void>("FileSystem.Rename", {
+				Source,
+				Target,
+				Options,
+			}).pipe(
+				Effect.mapError(
+					(Cause) =>
+						new HostServiceProblem({
+							Cause,
+							Context: "RenameFailed",
+						}),
+				),
+			);
+
+		const Copy = (
+			Source: URI,
+			Target: URI,
+			Options: IFileOverwriteOptions,
+		) =>
+			Integration.Invoke<void>("FileSystem.Copy", {
+				Source,
+				Target,
+				Options,
+			}).pipe(
+				Effect.mapError(
+					(Cause) =>
+						new HostServiceProblem({
+							Cause,
+							Context: "CopyFailed",
+						}),
+				),
+			);
+
 		return {
 			Configuration,
 			ProvideGlobals,
@@ -288,6 +444,14 @@ export class HostService extends Effect.Service<Host>()("wind/HostService", {
 			ShowNotification,
 			ShowPrompt,
 			ShowStatusMessage,
+			Stat,
+			ReadDirectory,
+			CreateDirectory,
+			ReadFile,
+			WriteFile,
+			Delete,
+			Rename,
+			Copy,
 		};
 	}),
 }) {}

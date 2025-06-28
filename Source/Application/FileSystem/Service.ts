@@ -1,121 +1,109 @@
 /**
  * @module Service (Application/FileSystem)
- * @description Defines the service that implements the `IFileSystemProvider`
- * interface. This service adapts our Tauri integration Effects to the API
- * expected by the `IFileService`.
+ * @description Defines the service that implements the `vscode.workspace.fs` API,
+ * proxying filesystem operations to the host process.
  */
 
-import { Effect, Runtime } from "effect";
-import { Emitter, Event } from "vs/base/common/event.js";
-import { type IDisposable } from "vs/base/common/lifecycle.js";
+import { Effect } from "effect";
 import {
-	FileSystemProviderCapabilities,
+	type Event,
+	type FileChangeEvent,
+	type FileStat,
+	type FileSystem as VSCodeFileSystem,
+	type FileSystemProvider,
+	type FileSystemProviderCapabilitiesChangeEvent,
 	type FileSystemProviderError,
-	type IFileChange,
-	type IFileDeleteOptions,
-	type IFileOverwriteOptions,
-	type IFileSystemProvider,
-	type IFileWriteOptions,
-	type IStat,
-	type IWatchOptions,
-} from "vs/platform/files/common/files.js";
-
-import { IntegrationService } from "Source/Integration/Tauri/Service.js";
-import {
-	Delete,
-	MakeDirectory,
-	ReadDirectory,
-	ReadFile,
-	Rename,
-	Stat,
-	Unwatch,
-	Watch,
-	WriteFile,
-} from "Source/Integration/Tauri/Wrapper.js";
-import type { Uri } from "Source/Platform/VSCode/Type.js";
+	type FileSystemProviderWithFileReadWriteCapability,
+	type FileSystemProviderWithOpenReadWriteCloseCapability,
+	type TextSearchComplete,
+	type TextSearchOptions,
+	type TextSearchQuery,
+	type Uri,
+} from "vscode";
+import { HostService } from "Source/Application/Host/Service.js";
+import { FileSystemProblem } from "./Error.js";
 
 /**
- * The `Effect.Service` for the `IFileSystemProvider`.
+ * The `Effect.Service` for the `vscode.workspace.fs` API.
  *
- * This service provides a concrete implementation that bridges VS Code's file
- * service architecture to our Tauri backend. Each method (`stat`, `readFile`, etc.)
- * wraps a specific integration `Effect` and executes it, returning a `Promise`
- * to satisfy the `IFileSystemProvider` interface.
+ * This service implementation proxies all filesystem operations to the native
+ * host (`Mountain`) via the `HostService`. This ensures that all file I/O is
+ * handled by the backend, respecting the application's sandboxing model.
  */
-export class FileSystemProviderService extends Effect.Service<IFileSystemProvider>()(
-	"wind/FileSystemProviderService",
+export class FileSystemService extends Effect.Service<VSCodeFileSystem>()(
+	"vscode/FileSystem",
 	{
 		effect: Effect.gen(function* (Generator) {
-			const AppRuntime = yield* Generator(Effect.runtime<never>());
+			const Host = yield* Generator(HostService);
 
-			const RunEffect = <A, E extends FileSystemProviderError>(
-				EffectToRun: Effect.Effect<A, E>,
-			): Promise<A> => Runtime.runPromise(AppRuntime, EffectToRun);
+			// --- Helper to create a proxied Effect for a given operation ---
+			const CreateProxyEffect = <T, Args extends any[]>(
+				Method: keyof HostService,
+				Context: string,
+			) => {
+				return (
+					...Arguments: Args
+				): Effect.Effect<T, FileSystemProblem> =>
+					(Host[Method] as any)(...Arguments).pipe(
+						Effect.mapError(
+							(Cause) =>
+								new FileSystemProblem({
+									Cause,
+									Context,
+								}),
+						),
+					) as Effect.Effect<T, FileSystemProblem>;
+			};
 
-			const WatchCorrelationId = { current: 0 };
-			const OnDidChangeFileEmitter = new Emitter<
-				readonly IFileChange[]
-			>();
+			const StatEffect = CreateProxyEffect<FileStat, [Uri]>(
+				"Stat",
+				"StatFailed",
+			);
+			const ReadDirectoryEffect = CreateProxyEffect<
+				[string, any][],
+				[Uri]
+			>("ReadDirectory", "ReadDirectoryFailed");
+			const CreateDirectoryEffect = CreateProxyEffect<void, [Uri]>(
+				"CreateDirectory",
+				"CreateDirectoryFailed",
+			);
+			const ReadFileEffect = CreateProxyEffect<Uint8Array, [Uri]>(
+				"ReadFile",
+				"ReadFileFailed",
+			);
+			const WriteFileEffect = CreateProxyEffect<void, [Uri, Uint8Array]>(
+				"WriteFile",
+				"WriteFileFailed",
+			);
+			const DeleteEffect = CreateProxyEffect<void, [Uri, any]>(
+				"Delete",
+				"DeleteFailed",
+			);
+			const RenameEffect = CreateProxyEffect<void, [Uri, Uri, any]>(
+				"Rename",
+				"RenameFailed",
+			);
+			const CopyEffect = CreateProxyEffect<void, [Uri, Uri, any]>(
+				"Copy",
+				"CopyFailed",
+			);
 
-			const ServiceImplementation: IFileSystemProvider = {
-				capabilities:
-					FileSystemProviderCapabilities.FileReadWrite |
-					FileSystemProviderCapabilities.PathCaseSensitive,
-
-				onDidChangeCapabilities: Event.None,
-				onDidChangeFile: OnDidChangeFileEmitter.event,
-
-				stat: (Resource: Uri): Promise<IStat> =>
-					RunEffect(Stat(Resource)),
-				readdir: (
-					Resource: Uri,
-				): Promise<
-					[
-						string,
-						import("vs/platform/files/common/files.js").FileType,
-					][]
-				> => RunEffect(ReadDirectory(Resource)),
-
-				mkdir: (Resource: Uri): Promise<void> =>
-					RunEffect(MakeDirectory(Resource)),
-
-				readFile: (Resource: Uri): Promise<Uint8Array> =>
-					RunEffect(ReadFile(Resource)),
-
-				writeFile: (
-					Resource: Uri,
-					Content: Uint8Array,
-					Options: IFileWriteOptions,
-				): Promise<void> =>
-					RunEffect(WriteFile(Resource, Content, Options)),
-
-				delete: (
-					Resource: Uri,
-					Options: IFileDeleteOptions,
-				): Promise<void> => RunEffect(Delete(Resource, Options)),
-
-				rename: (
-					From: Uri,
-					To: Uri,
-					Options: IFileOverwriteOptions,
-				): Promise<void> => RunEffect(Rename(From, To, Options)),
-
-				watch: (Resource: Uri, Options: IWatchOptions): IDisposable => {
-					const CorrelationId = WatchCorrelationId.current++;
-
-					// The watch effect is a long-running process, so we fork it.
-					Effect.runFork(
-						Watch(Resource, {
-							...Options,
-							correlationId: CorrelationId,
-						}),
-					);
-
-					// Return a disposable that will stop the watch.
-					return {
-						dispose: () => Effect.runFork(Unwatch(CorrelationId)),
-					};
-				},
+			const ServiceImplementation: VSCodeFileSystem = {
+				stat: (Uri) => Effect.runPromise(StatEffect(Uri)),
+				readDirectory: (Uri) =>
+					Effect.runPromise(ReadDirectoryEffect(Uri)),
+				createDirectory: (Uri) =>
+					Effect.runPromise(CreateDirectoryEffect(Uri)),
+				readFile: (Uri) => Effect.runPromise(ReadFileEffect(Uri)),
+				writeFile: (Uri, Content) =>
+					Effect.runPromise(WriteFileEffect(Uri, Content)),
+				delete: (Uri, Options) =>
+					Effect.runPromise(DeleteEffect(Uri, Options)),
+				rename: (Source, Target, Options) =>
+					Effect.runPromise(RenameEffect(Source, Target, Options)),
+				copy: (Source, Target, Options) =>
+					Effect.runPromise(CopyEffect(Source, Target, Options)),
+				isWritableFileSystem: (_Scheme) => true, // Assume all proxied are writable.
 			};
 
 			return ServiceImplementation;
