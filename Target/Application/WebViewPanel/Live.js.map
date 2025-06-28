@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/WebViewPanel/Live.ts"],
+  "sourcesContent": ["/**\n * @module Live (Application/WebViewPanel)\n * @description Provides the \"live\" implementation `Layer` for the WebViewPanel service.\n */\n\nimport { Layer } from \"effect\";\nimport { WebViewPanelService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `WebViewPanelService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the service definition. It automatically includes any dependencies\n * required by its `effect` constructor.\n */\nexport const WebViewPanelLive: Layer.Layer<WebViewPanelService> =\n\tWebViewPanelService.Default;\n"],
+  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,2BAA2B;AAS7B,MAAM,mBACZ,oBAAoB;",
+  "names": []
+}

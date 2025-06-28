@@ -1,0 +1,31 @@
+/**
+ * @module Service (Application/Command)
+ * @description Defines the service for managing and executing commands,
+ * implementing the core logic of `vscode.commands`.
+ */
+import { Effect } from "effect";
+import type { IDisposable } from "vs/base/common/lifecycle.js";
+import type { TextEditor, TextEditorEdit } from "vscode";
+/**
+ * The contract for the Command service, mirroring the public `vscode.commands` API.
+ */
+interface Command {
+    readonly registerCommand: (Global: boolean, Id: string, Callback: <T>(...Arguments: any[]) => T | Promise<T>, ThisArgument?: any) => IDisposable;
+    readonly registerTextEditorCommand: (Id: string, Callback: (TextEditor: TextEditor, Edit: TextEditorEdit, ...Arguments: any[]) => void, ThisArgument?: any) => IDisposable;
+    readonly executeCommand: <T>(Id: string, ...Arguments: any[]) => Promise<T | undefined>;
+    readonly getCommands: (FilterInternal?: boolean) => Promise<string[]>;
+}
+declare const CommandService_base: Effect.Service.Class<Command, "Service/Command", {
+    readonly effect: Effect.Effect<{
+        registerCommand: (Global: boolean, Id: string, Callback: <T>(...Arguments: any[]) => T | Promise<T>, ThisArgument?: any) => IDisposable;
+        registerTextEditorCommand: (Id: string, Callback: (textEditor: TextEditor, edit: TextEditorEdit, ...args: any[]) => void, ThisArg?: any) => IDisposable;
+        executeCommand: <T>(Id: string, ...Arguments: any[]) => Promise<T | undefined>;
+        getCommands: (FilterInternal?: boolean) => Promise<string[]>;
+    }, unknown, unknown>;
+}>;
+/**
+ * The `Effect.Service` for the Command service.
+ */
+export declare class CommandService extends CommandService_base {
+}
+export {};

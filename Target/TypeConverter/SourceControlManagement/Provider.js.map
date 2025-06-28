@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/TypeConverter/SourceControlManagement/Provider.ts"],
+  "sourcesContent": ["/**\n * @module Provider (TypeConverter/SourceControlManagement)\n * @description Implements the type converter for SCM Provider DTOs.\n */\n\nimport { URI } from \"vs/base/common/uri.js\";\nimport type { ISCMProvider } from \"vs/workbench/contrib/scm/common/scm.js\";\n\n/**\n * The Data Transfer Object for an SCM Provider.\n * This should be kept in sync with the DTO from Mountain.\n */\ninterface ScmProviderDTO {\n\treadonly Handle: number;\n\treadonly Label: string;\n\treadonly RootUri?: string;\n}\n\n/**\n * Converts a provider DTO from the host into the `ISCMProvider` interface\n * expected by the workbench.\n *\n * @param DTO - The SCM Provider DTO received from the host.\n * @returns An object conforming to the `ISCMProvider` interface.\n */\nexport const FromDTO = (DTO: ScmProviderDTO): ISCMProvider => ({\n\tid: String(DTO.Handle),\n\tlabel: DTO.Label,\n\trootUri: DTO.RootUri ? URI.parse(DTO.RootUri) : undefined,\n});\n"],
+  "mappings": ";;AAKA,SAAS,WAAW;AAoBb,MAAM,UAAU,wBAAC,SAAuC;AAAA,EAC9D,IAAI,OAAO,IAAI,MAAM;AAAA,EACrB,OAAO,IAAI;AAAA,EACX,SAAS,IAAI,UAAU,IAAI,MAAM,IAAI,OAAO,IAAI;AACjD,IAJuB;",
+  "names": []
+}

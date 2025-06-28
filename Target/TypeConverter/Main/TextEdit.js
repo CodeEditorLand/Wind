@@ -1,0 +1,29 @@
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import {
+  Range as ExtHostRange,
+  TextEdit as ExtHostTextEdit
+} from "Source/Platform/VSCode/Type.js";
+import { FromAPI as RangeFromAPI, ToAPI as RangeToAPI } from "./Range.js";
+const ToExtHostRange = /* @__PURE__ */ __name((range) => {
+  return new ExtHostRange(
+    range.start.line,
+    range.start.character,
+    range.end.line,
+    range.end.character
+  );
+}, "ToExtHostRange");
+const FromAPI = /* @__PURE__ */ __name((TextEditInstance) => ({
+  text: TextEditInstance.newText,
+  range: RangeFromAPI(TextEditInstance.range),
+  forceMoveMarkers: false
+}), "FromAPI");
+const ToAPI = /* @__PURE__ */ __name((TextEditDTO) => new ExtHostTextEdit(
+  ToExtHostRange(RangeToAPI(TextEditDTO.range)),
+  TextEditDTO.text ?? ""
+), "ToAPI");
+export {
+  FromAPI,
+  ToAPI
+};
+//# sourceMappingURL=TextEdit.js.map

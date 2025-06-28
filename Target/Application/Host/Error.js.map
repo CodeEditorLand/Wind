@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/Host/Error.ts"],
+  "sourcesContent": ["/**\n * @module Error (Application/Host)\n * @description Defines a domain-specific, tagged error for host-level operations\n * at the application layer.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure within the `HostService`.\n *\n * This error is used to wrap failures that occur during critical startup\n * operations, such as fetching initial configuration from the native host, or\n * during interactions like showing native dialogs.\n */\nexport class HostServiceProblem extends Data.TaggedError(\"HostServiceProblem\")<{\n\t/** The underlying error or reason for the failure. */\n\treadonly Cause: unknown;\n\t/** A string describing the context of the operation. */\n\treadonly Context: string;\n}> {}\n"],
+  "mappings": ";;AAMA,SAAS,YAAY;AASd,MAAM,2BAA2B,KAAK,YAAY,oBAAoB,EAK1E;AAAA,EApBH,OAoBG;AAAA;AAAA;AAAC;",
+  "names": []
+}

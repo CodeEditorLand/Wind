@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/TreeView/Error.ts"],
+  "sourcesContent": ["/**\n * @module Error (Application/TreeView)\n * @description Defines domain-specific, tagged errors for TreeView operations\n * at the application layer.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure that occurs when a TreeView operation fails, such as\n * failing to fetch children for a tree item from the native host.\n */\nexport class TreeViewProblem extends Data.TaggedError(\"TreeViewProblem\")<{\n\treadonly Cause: unknown;\n\treadonly Context: string;\n}> {}\n"],
+  "mappings": ";;AAMA,SAAS,YAAY;AAMd,MAAM,wBAAwB,KAAK,YAAY,iBAAiB,EAGpE;AAAA,EAfH,OAeG;AAAA;AAAA;AAAC;",
+  "names": []
+}

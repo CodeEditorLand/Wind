@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/WorkSpace/Error.ts"],
+  "sourcesContent": ["/**\n * @module Error (Application/WorkSpace)\n * @description Defines domain-specific, tagged errors for workspace operations.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure that occurs within the `WorkspaceService`, for example,\n * an error during the initialization of the workspace context.\n */\nexport class WorkSpaceProblem extends Data.TaggedError(\"WorkSpaceProblem\")<{\n\treadonly Cause: unknown;\n\treadonly Context: string;\n}> {}\n"],
+  "mappings": ";;AAKA,SAAS,YAAY;AAMd,MAAM,yBAAyB,KAAK,YAAY,kBAAkB,EAGtE;AAAA,EAdH,OAcG;AAAA;AAAA;AAAC;",
+  "names": []
+}

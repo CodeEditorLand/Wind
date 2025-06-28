@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/Dialog/Live.ts"],
+  "sourcesContent": ["/**\n * @module Live (Application/Dialog)\n * @description Provides the \"live\" implementation `Layer` for the Dialog service.\n */\n\nimport { Layer } from \"effect\";\nimport { DialogService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `DialogService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the `DialogService` service definition. It automatically includes the\n * dependencies required by its `effect` constructor, such as the `HostService`.\n */\nexport const DialogLive: Layer.Layer<DialogService> = DialogService.Default;\n"],
+  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,qBAAqB;AASvB,MAAM,aAAyC,cAAc;",
+  "names": []
+}

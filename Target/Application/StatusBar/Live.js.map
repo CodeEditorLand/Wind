@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/StatusBar/Live.ts"],
+  "sourcesContent": ["/**\n * @module Live (Application/StatusBar)\n * @description Provides the \"live\" implementation `Layer` for the StatusBar service.\n */\n\nimport { Layer } from \"effect\";\nimport { StatusBarService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `StatusBarService`.\n *\n * It automatically includes dependencies required by its `effect` constructor,\n * such as the `HostService` and `CommandService`.\n */\nexport const StatusBarLive: Layer.Layer<StatusBarService> =\n\tStatusBarService.Default;\n"],
+  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,wBAAwB;AAQ1B,MAAM,gBACZ,iBAAiB;",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/StatusBar/Error.ts"],
+  "sourcesContent": ["/**\n * @module Error (Application/StatusBar)\n * @description Defines domain-specific, tagged errors for status bar operations.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure that occurs during a status bar operation, such as\n * failing to create or update a status bar item via the host.\n */\nexport class StatusBarProblem extends Data.TaggedError(\"StatusBarProblem\")<{\n\treadonly Cause: unknown;\n\treadonly Context: string;\n}> {}\n"],
+  "mappings": ";;AAKA,SAAS,YAAY;AAMd,MAAM,yBAAyB,KAAK,YAAY,kBAAkB,EAGtE;AAAA,EAdH,OAcG;AAAA;AAAA;AAAC;",
+  "names": []
+}

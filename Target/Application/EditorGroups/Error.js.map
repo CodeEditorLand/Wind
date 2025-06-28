@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/EditorGroups/Error.ts"],
+  "sourcesContent": ["/**\n * @module Error (Application/EditorGroups)\n * @description Defines a domain-specific, tagged error for editor group\n * operations at the application layer.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure within the `EditorGroups` application service.\n * This can be used to wrap errors from underlying services or to represent\n * invalid state transitions, such as attempting to remove the last editor group.\n */\nexport class EditorGroupsProblem extends Data.TaggedError(\n\t\"EditorGroupsProblem\",\n)<{\n\treadonly Cause?: unknown;\n\treadonly Context: string;\n}> {}\n"],
+  "mappings": ";;AAMA,SAAS,YAAY;AAOd,MAAM,4BAA4B,KAAK;AAAA,EAC7C;AACD,EAGG;AAAA,EAlBH,OAkBG;AAAA;AAAA;AAAC;",
+  "names": []
+}

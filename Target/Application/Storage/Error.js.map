@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/Storage/Error.ts"],
+  "sourcesContent": ["/**\n * @module Error (Application/Storage)\n * @description Defines domain-specific, tagged errors for storage\n * operations at the application layer.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure that occurs during a storage operation, such as failing\n * to initialize a database or write a value. It wraps lower-level errors.\n */\nexport class StorageProblem extends Data.TaggedError(\"StorageProblem\")<{\n\treadonly Cause: unknown;\n\treadonly Context: string;\n}> {}\n"],
+  "mappings": ";;AAMA,SAAS,YAAY;AAMd,MAAM,uBAAuB,KAAK,YAAY,gBAAgB,EAGlE;AAAA,EAfH,OAeG;AAAA;AAAA;AAAC;",
+  "names": []
+}

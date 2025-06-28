@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/Notification/Error.ts"],
+  "sourcesContent": ["/**\n * @module Error (Application/Notification)\n * @description Defines domain-specific, tagged errors for notification service operations.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure that occurs within the `NotificationService`, for example,\n * when a request to the host to show a notification fails.\n */\nexport class NotificationProblem extends Data.TaggedError(\n\t\"NotificationProblem\",\n)<{\n\treadonly Cause: unknown;\n\treadonly Context: string;\n}> {}\n"],
+  "mappings": ";;AAKA,SAAS,YAAY;AAMd,MAAM,4BAA4B,KAAK;AAAA,EAC7C;AACD,EAGG;AAAA,EAhBH,OAgBG;AAAA;AAAA;AAAC;",
+  "names": []
+}

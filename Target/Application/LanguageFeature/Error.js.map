@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/LanguageFeature/Error.ts"],
+  "sourcesContent": ["/**\n * @module Error (Application/LanguageFeature)\n * @description Defines domain-specific, tagged errors for language feature\n * provider registration.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure that occurs during the registration of a language\n * feature provider.\n */\nexport class ProviderRegistrationProblem extends Data.TaggedError(\n\t\"ProviderRegistrationProblem\",\n)<{\n\treadonly Cause: unknown;\n\treadonly Context: string;\n}> {}\n"],
+  "mappings": ";;AAMA,SAAS,YAAY;AAMd,MAAM,oCAAoC,KAAK;AAAA,EACrD;AACD,EAGG;AAAA,EAjBH,OAiBG;AAAA;AAAA;AAAC;",
+  "names": []
+}

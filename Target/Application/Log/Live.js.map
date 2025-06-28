@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/Log/Live.ts"],
+  "sourcesContent": ["/**\n * @module Live (Application/Log)\n * @description Provides the \"live\" implementation `Layer` for the Log service.\n */\n\nimport { Layer } from \"effect\";\nimport { LogService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `LogService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the `LogService` service definition. It automatically includes the\n * dependencies required by its `effect` constructor, such as the `HostService`.\n */\nexport const LogLive: Layer.Layer<LogService> = LogService.Default;\n"],
+  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,kBAAkB;AASpB,MAAM,UAAmC,WAAW;",
+  "names": []
+}

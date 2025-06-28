@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/Command/Error.ts"],
+  "sourcesContent": ["/**\n * @module Error (Application/Command)\n * @description Defines domain-specific, tagged errors for command operations.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure that occurs when executing or registering a command.\n * This can wrap errors from the IPC layer or represent issues like an\n * unknown command being invoked.\n */\nexport class CommandProblem extends Data.TaggedError(\"CommandProblem\")<{\n\treadonly Cause: unknown;\n\treadonly Context: string;\n}> {}\n"],
+  "mappings": ";;AAKA,SAAS,YAAY;AAOd,MAAM,uBAAuB,KAAK,YAAY,gBAAgB,EAGlE;AAAA,EAfH,OAeG;AAAA;AAAA;AAAC;",
+  "names": []
+}

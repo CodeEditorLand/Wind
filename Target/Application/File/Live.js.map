@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/File/Live.ts"],
+  "sourcesContent": ["/**\n * @module Live (Application/File)\n * @description Provides the \"live\" implementation `Layer` for the File service.\n */\n\nimport { Layer } from \"effect\";\nimport { FileService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `FileService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the `FileService` service definition. It automatically includes the\n * dependencies required by its `effect` constructor, such as `ILogService` and\n * `FileSystemProviderService`.\n */\nexport const FileLive: Layer.Layer<FileService> = FileService.Default;\n"],
+  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,mBAAmB;AAUrB,MAAM,WAAqC,YAAY;",
+  "names": []
+}

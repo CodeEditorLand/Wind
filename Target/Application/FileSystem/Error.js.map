@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/FileSystem/Error.ts"],
+  "sourcesContent": ["/**\n * @module Error (Application/FileSystem)\n * @description Defines domain-specific, tagged errors for filesystem provider\n * operations at the application layer.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure that occurs within the `FileSystemProviderService`.\n * This typically wraps an error from the underlying `IntegrationService` call,\n * providing a clear, domain-specific error type.\n */\nexport class FileSystemProblem extends Data.TaggedError(\"FileSystemProblem\")<{\n\treadonly Cause: unknown;\n\treadonly Context: string;\n}> {}\n"],
+  "mappings": ";;AAMA,SAAS,YAAY;AAOd,MAAM,0BAA0B,KAAK,YAAY,mBAAmB,EAGxE;AAAA,EAhBH,OAgBG;AAAA;AAAA;AAAC;",
+  "names": []
+}

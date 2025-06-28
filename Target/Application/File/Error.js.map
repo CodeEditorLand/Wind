@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/File/Error.ts"],
+  "sourcesContent": ["/**\n * @module Error (Application/File)\n * @description Defines domain-specific, tagged errors for file operations\n * at the application layer.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a generic failure within the `FileService`.\n * This can be used to wrap lower-level errors (e.g., from a file system provider)\n * to provide a consistent error type for the application to handle.\n */\nexport class FileProblem extends Data.TaggedError(\"FileProblem\")<{\n\treadonly Cause: unknown;\n\treadonly Context: string;\n}> {}\n"],
+  "mappings": ";;AAMA,SAAS,YAAY;AAOd,MAAM,oBAAoB,KAAK,YAAY,aAAa,EAG5D;AAAA,EAhBH,OAgBG;AAAA;AAAA;AAAC;",
+  "names": []
+}

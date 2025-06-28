@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/Document/Live.ts"],
+  "sourcesContent": ["/**\n * @module Live (Application/Document)\n * @description Provides the \"live\" implementation `Layer` for the Document service.\n */\n\nimport { Layer } from \"effect\";\nimport { DocumentService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `DocumentService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the `DocumentService` service definition. It automatically includes the\n * dependencies required by its `effect` constructor, such as `IPCService` and `LoggerService`.\n */\nexport const DocumentLive: Layer.Layer<DocumentService> =\n\tDocumentService.Default;\n"],
+  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,uBAAuB;AASzB,MAAM,eACZ,gBAAgB;",
+  "names": []
+}

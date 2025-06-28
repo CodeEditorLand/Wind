@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/QuickInput/Error.ts"],
+  "sourcesContent": ["/**\n * @module Error (Application/QuickInput)\n * @description Defines a domain-specific, tagged error for Quick Input\n * operations at the application layer.\n */\n\nimport { Data } from \"effect\";\nimport type { HostServiceProblem } from \"Source/Application/Host/Error.js\";\n\n/**\n * Represents a failure that occurs during a Quick Input operation, such as\n * showing a Quick Pick or an Input Box. It wraps lower-level errors.\n */\nexport class QuickInputProblem extends Data.TaggedError(\"QuickInputProblem\")<{\n\treadonly Cause: HostServiceProblem | Error;\n\treadonly Context: string;\n}> {}\n"],
+  "mappings": ";;AAMA,SAAS,YAAY;AAOd,MAAM,0BAA0B,KAAK,YAAY,mBAAmB,EAGxE;AAAA,EAhBH,OAgBG;AAAA;AAAA;AAAC;",
+  "names": []
+}

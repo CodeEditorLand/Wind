@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/Notification/Live.ts"],
+  "sourcesContent": ["/**\n * @module Live (Application/Notification)\n * @description Provides the \"live\" implementation `Layer` for the Notification service.\n */\n\nimport { Layer } from \"effect\";\nimport { IDialogService } from \"vs/platform/dialogs/common/dialogs.js\";\nimport { ICommandService } from \"vs/platform/commands/common/commands.js\";\nimport { IStorageService } from \"vs/platform/storage/common/storage.js\";\nimport { HostService } from \"Source/Application/Host/Service.js\";\nimport { NotificationService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `NotificationService`.\n *\n * It automatically includes the dependencies required by its `effect` constructor.\n */\nexport const NotificationLive: Layer.Layer<\n\tNotificationService,\n\tnever,\n\tIStorageService | IDialogService | ICommandService | HostService\n> = NotificationService.Default;\n"],
+  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,sBAAsB;AAC/B,SAAS,uBAAuB;AAChC,SAAS,uBAAuB;AAChC,SAAS,mBAAmB;AAC5B,SAAS,2BAA2B;AAO7B,MAAM,mBAIT,oBAAoB;",
+  "names": []
+}
