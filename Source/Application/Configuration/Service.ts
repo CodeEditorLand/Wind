@@ -1,7 +1,7 @@
 /**
  * @module Service (Application/Configuration)
  * @description Defines the service interface and live implementation for the
- * application-level configuration service, which conforming to the `IConfigurationService`
+ * application-level configuration service, which conforms to the `IConfigurationService`
  * contract from VS Code.
  */
 
@@ -129,23 +129,12 @@ export class Configuration extends Effect.Service<IConfigurationService>()(
 				_serviceBrand: undefined,
 
 				getValue<T>(...args: any[]): T {
-					let section: string | undefined = undefined;
-					let overrides: IConfigurationOverrides | undefined =
-						undefined;
-
-					if (args.length > 0) {
-						if (typeof args[0] === "string") {
-							section = args[0];
-							if (typeof args[1] === "object") {
-								overrides = args[1];
-							}
-						} else if (typeof args[0] === "object") {
-							overrides = args[0];
-						}
+					let section: string | undefined;
+					if (typeof args[0] === "string") {
+						section = args[0];
+					} else if (typeof args[0] === "object") {
+						// overrides = args[0];
 					}
-
-					// We are ignoring overrides for this implementation stub
-					const _ = overrides;
 
 					if (!section) {
 						return ConfigurationData as T;
@@ -162,13 +151,22 @@ export class Configuration extends Effect.Service<IConfigurationService>()(
 
 				inspect: <T>(
 					key: string,
-					overrides?: IConfigurationOverrides,
+					_overrides?: IConfigurationOverrides,
 				): IConfigurationValue<T> => {
-					const value = ServiceImplementation.getValue<T>(
+					const value = ServiceImplementation.getValue<T | undefined>(
 						key,
-						overrides,
 					);
-					const result: IConfigurationValue<T> = { value };
+					const result: IConfigurationValue<T> = {
+						value: value,
+						defaultValue: value,
+						userValue: value,
+						userLocalValue: value,
+						userRemoteValue: value,
+						workspaceValue: value,
+						workspaceFolderValue: value,
+						memoryValue: value,
+						policyValue: value,
+					};
 					return result;
 				},
 

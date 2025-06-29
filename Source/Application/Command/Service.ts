@@ -97,9 +97,11 @@ export class CommandService extends Effect.Service<Command>()(
 							ExecuteLocalCommand(Command, Arguments),
 						),
 						Effect.catchAll((error) =>
-							Logger.error(
-								`Failed to execute local command '${Id}'`,
-								error,
+							Effect.sync(() =>
+								Logger.error(
+									`Failed to execute local command '${Id}'`,
+									error,
+								),
 							).pipe(Effect.as(undefined)),
 						),
 					);
@@ -118,7 +120,9 @@ export class CommandService extends Effect.Service<Command>()(
 						Map.set(Id, { Id, Callback, ThisArgument }),
 					).pipe(
 						Effect.tap(() =>
-							Logger.trace(`Command '${Id}' registered.`),
+							Effect.sync(() =>
+								Logger.trace(`Command '${Id}' registered.`),
+							),
 						),
 					);
 					Effect.runSync(RegistrationEffect);
@@ -158,8 +162,10 @@ export class CommandService extends Effect.Service<Command>()(
 						const ActiveEditor = Window.activeTextEditor;
 						if (!ActiveEditor) {
 							Effect.runSync(
-								Logger.warn(
-									`Cannot execute text editor command '${Id}' because there is no active text editor.`,
+								Effect.sync(() =>
+									Logger.warn(
+										`Cannot execute text editor command '${Id}' because there is no active text editor.`,
+									),
 								),
 							);
 							return Promise.resolve(undefined);

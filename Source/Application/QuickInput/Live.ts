@@ -5,6 +5,7 @@
 
 import { Layer } from "effect";
 
+import { HostService } from "../Host/Service.js";
 import { QuickInputService } from "./Service.js";
 
 /**
@@ -14,5 +15,8 @@ import { QuickInputService } from "./Service.js";
  * in the `QuickInputService` service definition. It automatically includes the
  * dependencies required by its `effect` constructor, such as the `HostService`.
  */
-export const QuickInputLive: Layer.Layer<QuickInputService> =
-	QuickInputService.Default;
+export const QuickInputLive: Layer.Layer<
+	QuickInputService,
+	never,
+	HostService
+> = QuickInputService.Default;

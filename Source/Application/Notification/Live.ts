@@ -19,5 +19,5 @@ import { NotificationService } from "./Service.js";
 export const NotificationLive: Layer.Layer<
 	NotificationService,
 	never,
-	IStorageService | IDialogService | ICommandService | HostService
+	IStorageService | ICommandService | HostService
 > = NotificationService.Default;

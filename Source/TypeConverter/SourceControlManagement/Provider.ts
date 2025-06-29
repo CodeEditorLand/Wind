@@ -3,8 +3,19 @@
  * @description Implements the type converter for SCM Provider DTOs.
  */
 
+import { Emitter } from "vs/base/common/event";
+import { observableValue, type IObservable } from "vs/base/common/observable";
 import { URI } from "vs/base/common/uri.js";
-import type { ISCMProvider } from "vs/workbench/contrib/scm/common/scm.js";
+import type { ITextModel } from "vs/editor/common/model";
+import type {
+	ISCMProvider,
+	ISCMRepository,
+} from "vs/workbench/contrib/scm/common/scm.js";
+import type {
+	Command,
+	ISCMActionButtonDescriptor,
+	ISCMHistoryProvider,
+} from "vscode";
 
 /**
  * The Data Transfer Object for an SCM Provider.
@@ -29,4 +40,27 @@ export const FromDTO = (
 	id: String(DTO.Handle),
 	label: DTO.Label,
 	rootUri: DTO.RootUri ? URI.parse(DTO.RootUri) : undefined,
+	contextValue: "",
+	name: DTO.Label,
+	groups: [],
+	historyProvider: observableValue(
+		"historyProvider",
+		undefined as ISCMHistoryProvider | undefined,
+	),
+	acceptInputCommand: undefined,
+	actionButton: observableValue(
+		"actionButton",
+		undefined as ISCMActionButtonDescriptor | undefined,
+	),
+	count: observableValue("count", undefined as number | undefined),
+	commitTemplate: observableValue("commitTemplate", ""),
+	statusBarCommands: observableValue(
+		"statusBarCommands",
+		undefined as Command[] | undefined,
+	),
+	onDidChangeResources: new Emitter().event,
+	onDidChangeResourceGroups: new Emitter().event,
+	inputBoxTextModel: {} as ITextModel,
+	getOriginalResource: () => Promise.resolve(null),
+	dispose: () => {},
 });

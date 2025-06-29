@@ -4,8 +4,8 @@
  */
 
 import { Layer } from "effect";
-import type { IntegrationService } from "Source/Integration/Tauri/Service.js";
 
+import { IntegrationService } from "../../Integration/Tauri/Service.js";
 import { HostService } from "./Service.js";
 
 /**

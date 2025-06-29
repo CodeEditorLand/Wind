@@ -6,14 +6,16 @@
 
 import { Effect, Ref } from "effect";
 import type { IExtensionDescription } from "vs/platform/extensions/common/extensions.js";
-import type { MainThreadDebugShape } from "vs/workbench/api/common/extHost.protocol.js";
+import type { MainThreadDebugServiceShape } from "vs/workbench/api/common/extHost.protocol.js";
 import {
 	Disposable,
 	type Breakpoint,
+	type BreakpointsChangeEvent,
 	type DebugAdapterDescriptorFactory,
 	type DebugAdapterTrackerFactory,
 	type DebugConfiguration,
 	type DebugConfigurationProvider,
+	type DebugConfigurationProviderTriggerKind,
 	type DebugConsole,
 	type DebugSession,
 	type DebugSessionCustomEvent,
@@ -64,11 +66,11 @@ export interface Debug {
 	readonly onDidStartDebugSession: Event<DebugSession>;
 	readonly onDidReceiveDebugSessionCustomEvent: Event<DebugSessionCustomEvent>;
 	readonly onDidTerminateDebugSession: Event<DebugSession>;
-	readonly onDidChangeBreakpoints: Event<any>;
+	readonly onDidChangeBreakpoints: Event<BreakpointsChangeEvent>;
 	readonly registerDebugConfigurationProvider: (
 		type: string,
 		provider: DebugConfigurationProvider,
-		trigger: number,
+		trigger: DebugConfigurationProviderTriggerKind,
 		extension: IExtensionDescription,
 	) => Effect.Effect<Disposable, DebugProviderRegistrationProblem>;
 	readonly registerDebugAdapterDescriptorFactory: (
@@ -101,48 +103,44 @@ export interface Debug {
  * The `Effect.Service` for the Debug service.
  */
 export class DebugService extends Effect.Service<Debug>()("Service/Debug", {
-	effect: Effect.gen(function* (Generator) {
-		const IPC = yield* Generator(IPCService);
+	effect: Effect.gen(function* () {
+		const IPC = yield* IPCService;
 		const HandleCounter = { current: 0 };
 
-		const State = yield* Generator(
-			Ref.make<DebuggerState>({
-				ActiveDebugSession: undefined,
-				ActiveDebugConsole: { append: () => {}, appendLine: () => {} },
-				Breakpoints: [],
-				DebugConfigurationProviders: new Map(),
-				DebugAdapterDescriptorFactories: new Map(),
-				DebugAdapterTrackerFactories: new Map(),
-			}),
-		);
+		const State = yield* Ref.make<DebuggerState>({
+			ActiveDebugSession: undefined,
+			ActiveDebugConsole: { append: () => {}, appendLine: () => {} },
+			Breakpoints: [],
+			DebugConfigurationProviders: new Map(),
+			DebugAdapterDescriptorFactories: new Map(),
+			DebugAdapterTrackerFactories: new Map(),
+		});
 
-		const MainThreadProxy = IPC.CreateProxy<MainThreadDebugShape>(
+		const MainThreadProxy = IPC.CreateProxy<MainThreadDebugServiceShape>(
 			"$rpc:mainThreadDebug",
 		);
 
-		const { event: OnDidChangeActiveDebugSession } = CreateEventStream<
-			DebugSession | undefined
-		>();
-		const { event: OnDidStartDebugSession } =
-			CreateEventStream<DebugSession>();
-		const { event: OnDidReceiveDebugSessionCustomEvent } =
-			CreateEventStream<any>();
-		const { event: OnDidTerminateDebugSession } =
-			CreateEventStream<DebugSession>();
-		const { event: OnDidChangeBreakpoints } = CreateEventStream<any>();
+		const { event: onDidChangeActiveDebugSession } =
+			yield* CreateEventStream<DebugSession | undefined>();
+		const { event: onDidStartDebugSession } =
+			yield* CreateEventStream<DebugSession>();
+		const { event: onDidReceiveDebugSessionCustomEvent } =
+			yield* CreateEventStream<DebugSessionCustomEvent>();
+		const { event: onDidTerminateDebugSession } =
+			yield* CreateEventStream<DebugSession>();
+		const { event: onDidChangeBreakpoints } =
+			yield* CreateEventStream<BreakpointsChangeEvent>();
 
 		const RegisterProvider = <T extends ProviderEntry["Provider"]>(
 			Registry: Ref.Ref<Map<number, ProviderEntry>>,
 			Data: Omit<ProviderEntry, "Provider"> & { Provider: T },
 		) =>
-			Effect.gen(function* (Generator) {
+			Effect.gen(function* () {
 				const Handle = ++HandleCounter.current;
-				yield* Generator(
-					Ref.update(Registry, (Map) => Map.set(Handle, Data as any)),
+				yield* Ref.update(Registry, (Map) =>
+					Map.set(Handle, Data as any),
 				);
-				yield* Generator(
-					IPC.SendNotification("$registerDebugTypes", [Data.Type]),
-				);
+				yield* IPC.SendNotification("$registerDebugTypes", [Data.Type]);
 				const CleanupEffect = Ref.update(
 					Registry,
 					(Map) => (Map.delete(Handle), Map),
@@ -166,7 +164,7 @@ export class DebugService extends Effect.Service<Debug>()("Service/Debug", {
 
 		const GetState = () => Effect.runSync(Ref.get(State));
 
-		return {
+		const self: Debug = {
 			get activeDebugSession() {
 				return GetState().ActiveDebugSession;
 			},
@@ -182,67 +180,72 @@ export class DebugService extends Effect.Service<Debug>()("Service/Debug", {
 			onDidTerminateDebugSession,
 			onDidChangeBreakpoints,
 			registerDebugConfigurationProvider: (
-				Type,
-				Provider,
-				_Trigger,
-				Extension,
+				type,
+				provider,
+				_trigger,
+				extension,
 			) =>
 				RegisterProvider(
 					GetState().DebugConfigurationProviders as any,
-					{ Type, Provider, Extension },
+					{ Type: type, Provider: provider, Extension: extension },
 				),
-			registerDebugAdapterDescriptorFactory: (Type, Factory, Extension) =>
+			registerDebugAdapterDescriptorFactory: (type, factory, extension) =>
 				RegisterProvider(
 					GetState().DebugAdapterDescriptorFactories as any,
-					{ Type, Provider: Factory, Extension },
+					{ Type: type, Provider: factory, Extension: extension },
 				),
-			registerDebugAdapterTrackerFactory: (Type, Factory, Extension) =>
+			registerDebugAdapterTrackerFactory: (type, factory, extension) =>
 				RegisterProvider(
 					GetState().DebugAdapterTrackerFactories as any,
-					{ Type, Provider: Factory, Extension },
+					{ Type: type, Provider: factory, Extension: extension },
 				),
-			startDebugging: (Folder, NameOrConfiguration, Options) =>
-				Effect.gen(function* (Generator) {
+			startDebugging: (
+				folder,
+				nameOrConfig,
+				options,
+			): Effect.Effect<boolean, StartDebuggingProblem> =>
+				Effect.gen(function* () {
 					const ConfigurationDTO =
-						typeof NameOrConfiguration === "string"
-							? { name: NameOrConfiguration }
-							: NameOrConfiguration;
+						typeof nameOrConfig === "string"
+							? { name: nameOrConfig }
+							: nameOrConfig;
 					const OptionsDTO = {
-						parentSession: Options?.parentSession?.id,
+						parentSession: options?.parentSession?.id,
 						lifecycleManagedByParent:
-							Options?.lifecycleManagedByParent,
+							options?.lifecycleManagedByParent,
 					};
-					return yield* Generator(
-						MainThreadProxy.$startDebugging(
-							Folder?.uri,
-							ConfigurationDTO,
-							OptionsDTO,
-						),
+					return yield* MainThreadProxy.$startDebugging(
+						folder?.uri,
+						ConfigurationDTO,
+						OptionsDTO,
 					);
 				}).pipe(
 					Effect.mapError(
 						(Cause) => new StartDebuggingProblem({ Cause }),
 					),
 				),
-			stopDebugging: (Session) =>
-				Effect.gen(function* (Generator) {
+			stopDebugging: (session?: DebugSession) =>
+				Effect.gen(function* () {
 					const ActiveSession = GetState().ActiveDebugSession;
-					const SessionToStop = Session ?? ActiveSession;
+					const SessionToStop = session ?? ActiveSession;
 					if (!SessionToStop) {
 						return;
 					}
-					yield* Generator(
-						MainThreadProxy.$stopDebugging(SessionToStop.id),
-					);
+					yield* MainThreadProxy.$stopDebugging(SessionToStop.id);
 				}),
-			addBreakpoints: (Breakpoints) =>
+			addBreakpoints: (breakpoints: readonly Breakpoint[]) =>
 				Effect.sync(() =>
-					MainThreadProxy.$addBreakpoints(Breakpoints as any),
+					MainThreadProxy.$registerBreakpoints(breakpoints as any),
 				),
-			removeBreakpoints: (Breakpoints) =>
+			removeBreakpoints: (breakpoints: readonly Breakpoint[]) =>
 				Effect.sync(() =>
-					MainThreadProxy.$removeBreakpoints(Breakpoints as any),
+					MainThreadProxy.$unregisterBreakpoints(
+						breakpoints.filter((bp) => bp.id).map((bp) => bp.id),
+						[],
+						[],
+					),
 				),
 		};
+		return self;
 	}),
 }) {}

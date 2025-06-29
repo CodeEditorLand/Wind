@@ -5,10 +5,11 @@
  */
 
 import { Effect } from "effect";
+import { Emitter } from "vs/base/common/event";
 import { ICommandService } from "vs/platform/commands/common/commands.js";
-import { IDialogService } from "vs/platform/dialogs/common/dialogs.js";
 import type {
 	INotification,
+	INotificationHandle,
 	INotificationService,
 	IPromptChoice,
 	IPromptOptions,
@@ -38,7 +39,6 @@ export class NotificationService extends Effect.Service<INotificationService>()(
 		effect: Effect.gen(function* () {
 			// Resolve legacy and modern service dependencies.
 			const StorageService = yield* IStorageService;
-			const DialogService = yield* IDialogService;
 			const CommandService = yield* ICommandService;
 			const Host = yield* HostService;
 
@@ -55,8 +55,8 @@ export class NotificationService extends Effect.Service<INotificationService>()(
 				Effect.runFork(EffectToRun);
 				// A real implementation would return a handle to manage the notification.
 				return {
-					onDidClose: new AbortController().signal as any,
-					onDidChangeVisibility: new AbortController().signal as any,
+					onDidClose: new Emitter<void>().event,
+					onDidChangeVisibility: new Emitter<boolean>().event,
 					progress: {
 						infinite: () => {},
 						done: () => {},
@@ -75,7 +75,7 @@ export class NotificationService extends Effect.Service<INotificationService>()(
 				Message: string,
 				Choices: IPromptChoice[],
 				Options?: IPromptOptions,
-			) => {
+			): INotificationHandle => {
 				const EffectToRun = Host.ShowPrompt(
 					Severity,
 					Message,
@@ -85,7 +85,8 @@ export class NotificationService extends Effect.Service<INotificationService>()(
 				Effect.runFork(EffectToRun);
 				// A real implementation would return a handle.
 				return {
-					onDidClose: new AbortController().signal as any,
+					onDidClose: new Emitter<void>().event,
+					onDidChangeVisibility: new Emitter<boolean>().event,
 					progress: {
 						infinite: () => {},
 						done: () => {},

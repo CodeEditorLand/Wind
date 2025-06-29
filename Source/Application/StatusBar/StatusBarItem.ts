@@ -16,7 +16,11 @@ import type {
 	StatusBarItem as VSCodeStatusBarItem,
 } from "vscode";
 
-import { MarkdownString, ThemeColor } from "../../Platform/VSCode/Type.js";
+import {
+	MarkdownString,
+	ThemeColor,
+	type IMarkdownString,
+} from "../../Platform/VSCode/Type.js";
 import { CommandConverter } from "../../TypeConverter/Command.js";
 import { FromAPI as StatusBarItemToDTO } from "../../TypeConverter/StatusBar.js";
 import { CommandService } from "../Command/Service.js";
@@ -33,9 +37,9 @@ export class StatusBarItemImplementation implements VSCodeStatusBarItem {
 	private _alignment: StatusBarAlignment;
 	private _priority: number | undefined;
 	private _text = "";
-	private _tooltip: string | MarkdownString | undefined;
-	private _color: string | ThemeColor | undefined;
-	private _backgroundColor: ThemeColor | undefined;
+	private _tooltip: string | IMarkdownString | undefined;
+	private _color: string | typeof ThemeColor | undefined;
+	private _backgroundColor: typeof ThemeColor | undefined;
 	private _command: string | VSCodeCommand | undefined;
 	private _accessibilityInformation: AccessibilityInformation | undefined;
 
@@ -53,13 +57,6 @@ export class StatusBarItemImplementation implements VSCodeStatusBarItem {
 		this._alignment = InitialAlignment;
 		this._priority = InitialPriority;
 	}
-	tooltip2:
-		| string
-		| MarkdownString
-		| ((
-				token: CancellationToken,
-		  ) => ProviderResult<string | MarkdownString | undefined>)
-		| undefined;
 
 	// Getters
 	get id(): string {
@@ -77,13 +74,13 @@ export class StatusBarItemImplementation implements VSCodeStatusBarItem {
 	get text(): string {
 		return this._text;
 	}
-	get tooltip(): string | MarkdownString | undefined {
+	get tooltip(): string | IMarkdownString | undefined {
 		return this._tooltip;
 	}
-	get color(): string | ThemeColor | undefined {
+	get color(): string | typeof ThemeColor | undefined {
 		return this._color;
 	}
-	get backgroundColor(): ThemeColor | undefined {
+	get backgroundColor(): typeof ThemeColor | undefined {
 		return this._backgroundColor;
 	}
 	get command(): string | VSCodeCommand | undefined {
@@ -106,19 +103,19 @@ export class StatusBarItemImplementation implements VSCodeStatusBarItem {
 			this.Update();
 		}
 	}
-	set tooltip(Value: string | MarkdownString | undefined) {
+	set tooltip(Value: string | IMarkdownString | undefined) {
 		if (this._tooltip !== Value) {
 			this._tooltip = Value;
 			this.Update();
 		}
 	}
-	set color(Value: string | ThemeColor | undefined) {
+	set color(Value: string | typeof ThemeColor | undefined) {
 		if (this._color !== Value) {
 			this._color = Value;
 			this.Update();
 		}
 	}
-	set backgroundColor(Value: ThemeColor | undefined) {
+	set backgroundColor(Value: typeof ThemeColor | undefined) {
 		if (this._backgroundColor !== Value) {
 			this._backgroundColor = Value;
 			this.Update();

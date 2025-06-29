@@ -7,7 +7,8 @@
 import { Effect } from "effect";
 import {
 	LogLevel,
-	ILoggerService as VSCodeLoggerService,
+	LoggerService as VSCodeLoggerService,
+	type ILogService as VSCodeLogService,
 } from "vs/platform/log/common/log.js";
 
 import { HostService } from "../Host/Service.js";
@@ -22,7 +23,7 @@ import { HostLogger } from "./HostLogger.js";
  * `Mountain` host via the `HostService`. This ensures that all workbench logs
  * are centrally managed by the native backend.
  */
-export class LoggerService extends Effect.Service<VSCodeLoggerService>()(
+export class LoggerService extends Effect.Service<VSCodeLogService>()(
 	"loggerService",
 	{
 		effect: Effect.gen(function* () {
