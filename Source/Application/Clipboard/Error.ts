@@ -6,7 +6,8 @@
  */
 
 import { Data } from "effect";
-import type { IntegrationClipboardProblem } from "Source/Integration/Tauri/Clipboard/Error.js";
+
+import type { IntegrationClipboardProblem } from "../../Integration/Tauri/Clipboard/Error.js";
 
 /**
  * Represents a failure within the `Clipboard` application service.

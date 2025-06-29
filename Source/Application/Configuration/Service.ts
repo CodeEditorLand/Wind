@@ -14,13 +14,13 @@ import type {
 	IConfigurationValue,
 } from "vs/platform/configuration/common/configuration.js";
 
-import type { IntegrationConfigurationProblem } from "Source/Integration/Tauri/Configuration/Error.js";
-import { ParseJson } from "Source/Integration/Tauri/File/ParseJson.js";
-import { ReadRawFile } from "Source/Integration/Tauri/File/ReadRawFile.js";
-import { ResolveFinalDefaultPath } from "Source/Integration/Tauri/Path/Default.js";
-import type { IntegrationPathProblem } from "Source/Integration/Tauri/Path/Error.js";
-import { ResolveWorkSpacePath } from "Source/Integration/Tauri/Path/WorkSpace.js";
-import type { Uri } from "Source/Platform/VSCode/Type.js";
+import type { IntegrationConfigurationProblem } from "../../Integration/Tauri/Configuration/Error.js";
+import { ParseJSON } from "../../Integration/Tauri/File/ParseJSON.js";
+import { ReadRawFile } from "../../Integration/Tauri/File/ReadRawFile.js";
+import { ResolveFinalDefaultPath } from "../../Integration/Tauri/Path/Default.js";
+import type { IntegrationPathProblem } from "../../Integration/Tauri/Path/Error.js";
+import { ResolveWorkSpacePath } from "../../Integration/Tauri/Path/WorkSpace.js";
+import type { Uri } from "../../Platform/VSCode/Type.js";
 import { ApplicationConfigurationProblem } from "./Error.js";
 
 /**
@@ -75,7 +75,7 @@ export class Configuration extends Effect.Service<IConfigurationService>()(
 			> =>
 				Effect.flatMap(ConfigDirectoryEffect, (ConfigDirectory) =>
 					ReadRawFile(joinPath(ConfigDirectory, FileName)).pipe(
-						Effect.flatMap(ParseJson),
+						Effect.flatMap(ParseJSON),
 						// If the file doesn't exist or is invalid, treat it as an empty object.
 						Effect.catchAll(() => Effect.succeed({})),
 					),

@@ -3,9 +3,10 @@
  * @description Provides declarative `Effect` wrappers for Tauri's clipboard plugin.
  */
 
-import { Effect } from "effect";
 import { readText, writeText } from "@tauri-apps/plugin-clipboard-manager";
-import type { Uri } from "Source/Platform/VSCode/Type.js";
+import { Effect } from "effect";
+
+import type { Uri } from "../../../Platform/VSCode/Type.js";
 import { IntegrationClipboardProblem } from "./Error.js";
 
 /** An Effect that reads text from the system clipboard. */

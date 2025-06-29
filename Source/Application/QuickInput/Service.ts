@@ -14,12 +14,13 @@ import type {
 	IInputOptions as VSCodeInputOptions,
 	IPickOptions as VSCodePickOptions,
 } from "vs/platform/quickinput/common/quickInput.js";
-import { HostService } from "Source/Application/Host/Service.js";
-import { QuickInputProblem } from "./Error.js";
+
 import {
-	ToDTO as QuickPickOptionsToDTO,
 	ToDTO as InputBoxOptionsToDTO,
-} from "Source/TypeConverter/QuickInput.js";
+	ToDTO as QuickPickOptionsToDTO,
+} from "../../TypeConverter/QuickInput.js";
+import { HostService } from "../Host/Service.js";
+import { QuickInputProblem } from "./Error.js";
 
 /**
  * The `Effect.Service` for the `IQuickInputService`.

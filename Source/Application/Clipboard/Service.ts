@@ -12,6 +12,8 @@
 
 import { Effect, Runtime } from "effect";
 import type { IClipboardService } from "vs/platform/clipboard/common/clipboardService.js";
+
+import type { IntegrationClipboardProblem } from "../../Integration/Tauri/Clipboard/Error.js";
 import {
 	HasResourceList,
 	ReadImage,
@@ -19,10 +21,9 @@ import {
 	ReadText,
 	WriteResourceList,
 	WriteText,
-} from "Source/Integration/Tauri/Clipboard/Wrapper.js";
-import type { Uri } from "Source/Platform/VSCode/Type.js";
+} from "../../Integration/Tauri/Clipboard/Wrapper.js";
+import type { Uri } from "../../Platform/VSCode/Type.js";
 import { ApplicationClipboardProblem } from "./Error.js";
-import type { IntegrationClipboardProblem } from "Source/Integration/Tauri/Clipboard/Error.js";
 
 /**
  * The `Effect.Service` for the `IClipboardService`.

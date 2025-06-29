@@ -4,7 +4,8 @@
  */
 
 import { Effect } from "effect";
-import { IntegrationConfigurationProblem } from "Source/Integration/Tauri/Configuration/Error.js";
+
+import { IntegrationConfigurationProblem } from "../Configuration/Error.js";
 
 /**
  * An Effect that safely parses a JSON string into an object.

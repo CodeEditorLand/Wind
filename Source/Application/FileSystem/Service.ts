@@ -9,7 +9,6 @@ import {
 	type Event,
 	type FileChangeEvent,
 	type FileStat,
-	type FileSystem as VSCodeFileSystem,
 	type FileSystemProvider,
 	type FileSystemProviderCapabilitiesChangeEvent,
 	type FileSystemProviderError,
@@ -19,8 +18,10 @@ import {
 	type TextSearchOptions,
 	type TextSearchQuery,
 	type Uri,
+	type FileSystem as VSCodeFileSystem,
 } from "vscode";
-import { HostService } from "Source/Application/Host/Service.js";
+
+import { HostService } from "../Host/Service.js";
 import { FileSystemProblem } from "./Error.js";
 
 /**

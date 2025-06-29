@@ -4,6 +4,7 @@
  */
 
 import { Layer } from "effect";
+
 import { TextEditorService } from "./Service.js";
 
 /**

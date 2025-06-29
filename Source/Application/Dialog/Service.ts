@@ -6,14 +6,15 @@
 
 import { Effect } from "effect";
 import type { OpenDialogOptions, SaveDialogOptions, Uri } from "vscode";
-import { HostService } from "Source/Application/Host/Service.js";
+
+import { HostService } from "../Host/Service.js";
 import { DialogProblem } from "./Error.js";
 
 /**
  * The contract for the Dialog service, providing methods to show native
  * file open and save dialogs.
  */
-interface Dialog {
+export interface Dialog {
 	readonly ShowOpenDialog: (
 		Options?: OpenDialogOptions,
 	) => Effect.Effect<readonly Uri[] | undefined, DialogProblem>;

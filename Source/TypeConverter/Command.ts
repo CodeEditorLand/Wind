@@ -24,7 +24,7 @@ export class APICommand {
 /**
  * Represents the serializable DTO for a command sent over IPC.
  */
-interface InternalCommand {
+export interface InternalCommand {
 	id: string;
 	title: string;
 	tooltip?: string;

@@ -3,10 +3,11 @@
  * @description Defines an Effect for reading a raw text file using Tauri's FS plugin.
  */
 
-import { Effect } from "effect";
 import { readTextFile } from "@tauri-apps/plugin-fs";
-import type { Uri } from "Source/Platform/VSCode/Type.js";
-import { IntegrationConfigurationProblem } from "Source/Integration/Tauri/Configuration/Error.js";
+import { Effect } from "effect";
+
+import type { Uri } from "../../../Platform/VSCode/Type.js";
+import { IntegrationConfigurationProblem } from "../Configuration/Error.js";
 
 /**
  * An Effect that reads the content of a file at a given URI as a string.

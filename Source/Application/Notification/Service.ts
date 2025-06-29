@@ -5,12 +5,13 @@
  */
 
 import { Effect } from "effect";
-import { NotificationService as VscNotificationService } from "vs/workbench/services/notification/common/notificationService.js";
+import { ICommandService } from "vs/platform/commands/common/commands.js";
+import { IDialogService } from "vs/platform/dialogs/common/dialogs.js";
 import type { INotificationService } from "vs/platform/notification/common/notification.js";
 import { IStorageService } from "vs/platform/storage/common/storage.js";
-import { IDialogService } from "vs/platform/dialogs/common/dialogs.js";
-import { ICommandService } from "vs/platform/commands/common/commands.js";
-import { HostService } from "Source/Application/Host/Service.js";
+import { NotificationService as VSCodeNotificationService } from "vs/workbench/services/notification/common/notificationService.js";
+
+import { HostService } from "../Host/Service.js";
 
 /**
  * The `Effect.Service` for the `INotificationService`.
@@ -34,7 +35,7 @@ export class NotificationService extends Effect.Service<INotificationService>()(
 			const Host = yield* Generator(HostService);
 
 			// Instantiate the real VS Code NotificationService to manage state.
-			const ServiceInstance = new VscNotificationService(
+			const ServiceInstance = new VSCodeNotificationService(
 				StorageService,
 				DialogService,
 				CommandService,

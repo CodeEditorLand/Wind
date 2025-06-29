@@ -7,7 +7,7 @@
 import { Data } from "effect";
 
 /**
- * Represents a failure that occurs within the `FileSystemProviderService`.
+ * Represents a failure that occurs within the `FileSystemService`.
  * This typically wraps an error from the underlying `IntegrationService` call,
  * providing a clear, domain-specific error type.
  */

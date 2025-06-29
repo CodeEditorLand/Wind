@@ -4,7 +4,8 @@
  */
 
 import type { IExtensionDescription } from "vs/platform/extensions/common/extensions.js";
-import type { WebviewOptions, WebviewPanelOptions, ViewColumn } from "vscode";
+import type { ViewColumn, WebviewOptions, WebviewPanelOptions } from "vscode";
+
 import { FromAPI as ViewColumnFromAPI } from "./Main/ViewColumn.js";
 
 interface IEditorOptions {

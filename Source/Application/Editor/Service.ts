@@ -18,8 +18,9 @@ import type {
 	IUntypedEditorInput,
 	PreferredGroup,
 } from "vs/workbench/services/editor/common/editorService.js";
-import { HostService } from "Source/Application/Host/Service.js";
-import { TextEditorService } from "Source/Application/TextEditor/Service.js";
+
+import { HostService } from "../Host/Service.js";
+import { TextEditorService } from "../TextEditor/Service.js";
 import { EditorProblem } from "./Error.js";
 
 /**

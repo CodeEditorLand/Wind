@@ -3,8 +3,9 @@
  * @description Defines the data structures for identifying storage databases.
  */
 
-import type { Uri } from "Source/Platform/VSCode/Type.js";
 import type { StorageScope } from "vs/platform/storage/common/storage.js";
+
+import type { Uri } from "../../Platform/VSCode/Type.js";
 
 /**
  * Represents the identity of a storage database, used to communicate with

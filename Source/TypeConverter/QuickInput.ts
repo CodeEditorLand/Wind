@@ -12,7 +12,7 @@ import type {
 /**
  * The Data Transfer Object for a `IQuickPickItem`.
  */
-interface QuickPickItemDTO {
+export interface QuickPickItemDTO {
 	readonly label: string;
 	readonly description?: string;
 	readonly detail?: string;
@@ -23,7 +23,7 @@ interface QuickPickItemDTO {
 /**
  * The Data Transfer Object for `IPickOptions`.
  */
-interface QuickPickOptionsDTO {
+export interface QuickPickOptionsDTO {
 	readonly canPickMany?: boolean;
 	readonly placeHolder?: string;
 	readonly matchOnDescription?: boolean;
@@ -34,7 +34,7 @@ interface QuickPickOptionsDTO {
 /**
  * The Data Transfer Object for `IInputOptions`.
  */
-interface InputBoxOptionsDTO {
+export interface InputBoxOptionsDTO {
 	readonly placeHolder?: string;
 	readonly prompt?: string;
 	readonly value?: string;

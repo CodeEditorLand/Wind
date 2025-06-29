@@ -7,10 +7,11 @@
 
 import { Effect } from "effect";
 import { Schemas } from "vs/base/common/network.js";
-import { FileService as VSCodeFileService } from "vs/platform/files/common/fileService.js";
 import type { IFileService } from "vs/platform/files/common/files.js";
+import { FileService as VSCodeFileService } from "vs/platform/files/common/fileService.js";
 import { ILogService } from "vs/platform/log/common/log.js";
-import { FileSystemProviderService } from "Source/Application/FileSystem/Service.js";
+
+import { FileSystemService } from "../FileSystem/Service.js";
 
 /**
  * The `Effect.Service` for the `IFileService`.
@@ -18,20 +19,18 @@ import { FileSystemProviderService } from "Source/Application/FileSystem/Service
  * This service is the main entry point for file-related operations in the
  * workbench. The implementation "lifts" the original `FileService` class from
  * VS Code, providing it with our Effect-native services (`ILogService` and
- * `FileSystemProviderService`) that it depends on. This allows us to use the
+ * `FileSystemService`) that it depends on. This allows us to use the
  * battle-tested VS Code implementation while managing its dependencies via Effect.
  */
 export class FileService extends Effect.Service<IFileService>()(
 	"vscode/FileService",
 	{
 		effect: Effect.gen(function* (Generator) {
-			const LogService = yield* Generator(ILogService);
-			const FileSystemProvider = yield* Generator(
-				FileSystemProviderService,
-			);
+			const LoggerService = yield* Generator(ILogService);
+			const FileSystemProvider = yield* Generator(FileSystemService);
 
 			// Instantiate the real VS Code FileService.
-			const ServiceInstance = new VSCodeFileService(LogService);
+			const ServiceInstance = new VSCodeFileService(LoggerService);
 
 			// Register our custom provider for the 'file' scheme, which bridges
 			// to the Tauri backend. This is a critical integration point.

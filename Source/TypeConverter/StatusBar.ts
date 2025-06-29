@@ -4,14 +4,15 @@
  */
 
 import type { Command, StatusBarItem as VSCodeStatusBarItem } from "vscode";
-import { MarkdownString, ThemeColor } from "Source/Platform/VSCode/Type.js";
+
+import { MarkdownString, ThemeColor } from "../Platform/VSCode/Type.js";
 import type { CommandConverter } from "./Command.js";
 import { FromAPI as MarkdownStringFromAPI } from "./Main/MarkdownString.js";
 
 /**
  * The DTO for a status bar entry sent over IPC.
  */
-interface StatusBarEntryDTO {
+export interface StatusBarEntryDTO {
 	readonly id: string;
 	readonly name: string | undefined;
 	readonly text: string;

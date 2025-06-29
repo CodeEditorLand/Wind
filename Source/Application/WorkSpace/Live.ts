@@ -11,6 +11,7 @@ import { IUriIdentityService } from "vs/platform/uriIdentity/common/uriIdentity.
 import { IBrowserWorkbenchEnvironmentService } from "vs/workbench/services/environment/browser/environmentService.js";
 import { IRemoteAgentService } from "vs/workbench/services/remote/common/remoteAgentService.js";
 import { IUserDataProfileService } from "vs/workbench/services/userDataProfile/common/userDataProfile.js";
+
 import { WorkSpaceService } from "./Service.js";
 
 /**

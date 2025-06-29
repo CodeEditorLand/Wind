@@ -8,6 +8,8 @@
 
 import { Layer } from "effect";
 
+// Import integration layers
+import { IntegrationLive } from "../Integration/Tauri/Live.js";
 // Import all live service layers that will be part of the application.
 import { ClipboardLive } from "./Clipboard/Live.js";
 import { ConfigurationLive } from "./Configuration/Live.js";
@@ -16,19 +18,16 @@ import { DocumentLive } from "./Document/Live.js";
 import { EditorLive } from "./Editor/Live.js";
 import { EditorGroupLive } from "./EditorGroup/Live.js";
 import { FileLive } from "./File/Live.js";
-import { FileSystemProviderLive } from "./FileSystem/Live.js";
+import { FileSystemLive } from "./FileSystem/Live.js";
 import { HostLive } from "./Host/Live.js";
 import { LanguageFeatureLive } from "./LanguageFeature/Live.js";
-import { LogLive } from "./Log/Live.js";
+import { LogLive } from "./Logger/Live.js";
 import { MarkerLive } from "./Marker/Live.js";
 import { QuickInputLive } from "./QuickInput/Live.js";
 import { SourceControlManagementLive } from "./SourceControlManagement/Live.js";
 import { StorageLive } from "./Storage/Live.js";
 import { TextEditorLive } from "./TextEditor/Live.js";
 import { TreeViewLive } from "./TreeView/Live.js";
-
-// Import integration layers
-import { IntegrationLive } from "Source/Integration/Tauri/Live.js";
 
 /**
  * The master `AppLayer` for the Wind application.
@@ -47,7 +46,7 @@ export const AppLayer = Layer.mergeAll(
 	EditorLive,
 	EditorGroupLive,
 	FileLive,
-	FileSystemProviderLive,
+	FileSystemLive,
 	HostLive,
 	LanguageFeatureLive,
 	LogLive,

@@ -1,5 +1,5 @@
 /**
- * @module HostLogger (Application/Log)
+ * @module HostLogger (Application/Logger)
  * @description Defines a custom `ILogger` implementation that forwards all
  * log messages to the native host via the `HostService`.
  */
@@ -7,10 +7,11 @@
 import { Effect } from "effect";
 import {
 	AbstractMessageLogger,
-	type ILogger,
 	LogLevel,
+	type ILogger,
 } from "vs/platform/log/common/log.js";
-import { HostService } from "Source/Application/Host/Service.js";
+
+import { HostService } from "../Host/Service.js";
 
 /**
  * An `ILogger` implementation that sends log messages to the host process.
@@ -26,7 +27,7 @@ export class HostLogger extends AbstractMessageLogger implements ILogger {
 	}
 
 	protected log(level: LogLevel, message: string): void {
-		const LogEffect = this.Host.Log(level, message).pipe(
+		const LogEffect = this.Host.Logger(level, message).pipe(
 			Effect.catchAll((Error) =>
 				// If logging to host fails, fallback to console to not lose the message.
 				Effect.sync(() =>

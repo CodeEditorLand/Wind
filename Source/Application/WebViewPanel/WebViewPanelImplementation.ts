@@ -17,10 +17,11 @@ import type {
 	WebviewPanelOnDidChangeViewStateEvent,
 	WebviewPanelOptions,
 } from "vscode";
-import { FromAPI as UriFromAPI } from "Source/TypeConverter/Main/URI.js";
-import { ConvertShowOptionsToDTO } from "Source/TypeConverter/WebView.js";
-import { CreateEventStream } from "Source/Utility/CreateEventStream.js";
-import type { HostService } from "Source/Application/Host/Service.js";
+
+import type { HostService } from "../../Application/Host/Service.js";
+import { FromAPI as UriFromAPI } from "../../TypeConverter/Main/URI.js";
+import { ConvertShowOptionsToDTO } from "../../TypeConverter/WebView.js";
+import { CreateEventStream } from "../../Utility/EventStream.js";
 import { WebViewImplementation } from "./WebViewImplementation.js";
 
 /**

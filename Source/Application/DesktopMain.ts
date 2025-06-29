@@ -31,9 +31,11 @@ import { CommandsQuickAccessProvider } from "vs/workbench/contrib/quickaccess/br
 import { AppLayer } from "./Layer.js";
 import { HostService } from "./Host/Service.js";
 import { MarkerService } from "./Marker/Service.js";
-import { TreeViewService } from "./TreeView/Service.js";
-import { NativeTreeViewDataProvider } from "./TreeView/Definition.js";
-import { IntegrationService } from "Source/Integration/Tauri/Service.js";
+import {
+	TreeViewService,
+	NativeTreeViewDataProvider,
+} from "./TreeView/Service.js";
+import { IntegrationService } from "../Integration/Tauri/Service.js";
 
 /**
  * The main application startup workflow, described as a single, declarative `Effect`.
@@ -49,7 +51,7 @@ const Main = Effect.gen(function* (Generator) {
 
 	// 2. Resolve essential services from the context provided by AppLayer.
 	const Host = yield* Generator(HostService);
-	const LogService = yield* Generator(ILogService);
+	const LoggerService = yield* Generator(ILogService);
 	const Marker = yield* Generator(MarkerService);
 	const TreeView = yield* Generator(TreeViewService);
 	const Integration = yield* Generator(IntegrationService);
@@ -97,7 +99,7 @@ const Main = Effect.gen(function* (Generator) {
 	const ExplorerProvider = new NativeTreeViewDataProvider(
 		"workbench.view.explorer",
 		Integration,
-		LogService,
+		LoggerService,
 	);
 	TreeView.registerTreeDataProvider(
 		"workbench.view.explorer",
@@ -118,7 +120,7 @@ const Main = Effect.gen(function* (Generator) {
 				// A real implementation would lift more services into this collection.
 				const ServiceCollectionBridge = new ServiceCollection(
 					[IProductService, ProductService],
-					[ILogService, LogService],
+					[ILogService, LoggerService],
 				);
 
 				const WorkbenchInstance = new Workbench(

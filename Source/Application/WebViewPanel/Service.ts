@@ -9,24 +9,25 @@ import type { IExtensionDescription } from "vs/platform/extensions/common/extens
 import {
 	Disposable,
 	type ViewColumn,
-	type WebviewOptions,
 	type WebviewPanel as VSCodeWebviewPanel,
+	type WebviewOptions,
 	type WebviewPanelOptions,
 	type WebviewPanelSerializer,
 } from "vscode";
-import { IPCService } from "Source/Application/IPC/Service.js";
+
 import {
 	ConvertContentOptionsToDTO,
 	ConvertPanelOptionsToDTO,
 	ConvertShowOptionsToDTO,
-} from "Source/TypeConverter/WebView.js";
-import { WebViewPanelImplementation } from "./WebViewPanelImplementation.js";
+} from "../../TypeConverter/WebView.js";
+import { IPCService } from "../IPC/Service.js";
 import { WebViewPanelProblem } from "./Error.js";
+import { WebViewPanelImplementation } from "./WebViewPanelImplementation.js";
 
 /**
  * The contract for the WebViewPanel service.
  */
-interface WebViewPanel {
+export interface WebViewPanel {
 	readonly CreateWebviewPanel: (
 		Extension: IExtensionDescription,
 		ViewType: string,

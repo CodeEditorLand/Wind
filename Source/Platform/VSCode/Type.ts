@@ -13,10 +13,12 @@
 import { CancellationTokenSource as VSCodeCancellationTokenSource } from "vs/base/common/cancellation.js";
 import { CancellationError as VSCodeCancellationError } from "vs/base/common/errors.js";
 import { Emitter } from "vs/base/common/event.js";
-import { URI as VSCodeURI } from "vs/base/common/uri.js";
+import {
+	URI as VSCodeURI,
+	type UriComponents as VSCodeUriComponents,
+} from "vs/base/common/uri.js";
 import { FileType as VSCodeFileType } from "vs/platform/files/common/files.js";
 import type * as VSCode from "vscode";
-
 // --- Direct Re-exports of VS Code Enums and Simple Classes ---
 import {
 	CompletionItemKind,
@@ -84,9 +86,10 @@ export const CancellationError = VSCodeCancellationError;
 /** The canonical `EventEmitter` class. */
 export const EventEmitter = Emitter;
 
-/** The canonical `URI` class. */
+/** The canonical `URI` class and its associated types. */
 export const URI = VSCodeURI;
 export type Uri = VSCodeURI;
+export type UriComponents = VSCodeUriComponents;
 
 /** The canonical `ThemeIcon` class. */
 export const ThemeIcon = VSCodeThemeIcon;
@@ -245,7 +248,7 @@ export class Range implements VSCode.Range {
 			start = startLineOrPosition;
 			end = startCharacterOrPosition;
 		} else {
-			throw new Error("Invalid arguments");
+			throw new Error("Invalid arguments for Range constructor");
 		}
 		if (start.isAfter(end)) {
 			this.start = end;
@@ -254,6 +257,67 @@ export class Range implements VSCode.Range {
 			this.start = start;
 			this.end = end;
 		}
+	}
+	get isEmpty(): boolean {
+		return this.start.isEqual(this.end);
+	}
+	get isSingleLine(): boolean {
+		return this.start.line === this.end.line;
+	}
+	contains(positionOrRange: Position | Range): boolean {
+		if (positionOrRange instanceof Range) {
+			return (
+				this.contains(positionOrRange.start) &&
+				this.contains(positionOrRange.end)
+			);
+		}
+		return (
+			positionOrRange.isAfterOrEqual(this.start) &&
+			positionOrRange.isBeforeOrEqual(this.end)
+		);
+	}
+	isEqual(other: Range): boolean {
+		return this.start.isEqual(other.start) && this.end.isEqual(other.end);
+	}
+	intersection(other: Range): Range | undefined {
+		const start = this.start.isAfter(other.start)
+			? this.start
+			: other.start;
+		const end = this.end.isBefore(other.end) ? this.end : other.end;
+		if (start.isAfter(end)) {
+			return undefined;
+		}
+		return new Range(start, end);
+	}
+	union(other: Range): Range {
+		const start = this.start.isBefore(other.start)
+			? this.start
+			: other.start;
+		const end = this.end.isAfter(other.end) ? this.end : other.end;
+		return new Range(start, end);
+	}
+	with(start?: Position, end?: Position): Range;
+	with(change: { start?: Position; end?: Position }): Range;
+	with(
+		startOrChange:
+			| Position
+			| { start?: Position; end?: Position }
+			| undefined,
+		end: Position = this.end,
+	): Range {
+		if (startOrChange === null || startOrChange === undefined) {
+			return this;
+		}
+		if (startOrChange instanceof Position) {
+			return new Range(startOrChange, end);
+		}
+		return new Range(
+			startOrChange.start ?? this.start,
+			startOrChange.end ?? this.end,
+		);
+	}
+	toJSON(): any {
+		return [this.start.toJSON(), this.end.toJSON()];
 	}
 }
 
@@ -291,10 +355,21 @@ export class Selection extends Range implements VSCode.Selection {
 			anchorPos = anchor;
 			activePos = active;
 		} else {
-			throw new Error("Invalid arguments");
+			throw new Error("Invalid arguments for Selection constructor");
 		}
 		super(anchorPos, activePos);
 		this.anchor = anchorPos;
 		this.active = activePos;
+	}
+	get isReversed(): boolean {
+		return this.active.isBefore(this.anchor);
+	}
+	override toJSON(): any {
+		return {
+			start: this.start.toJSON(),
+			end: this.end.toJSON(),
+			active: this.active.toJSON(),
+			anchor: this.anchor.toJSON(),
+		};
 	}
 }

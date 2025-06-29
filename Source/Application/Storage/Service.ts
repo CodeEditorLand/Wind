@@ -4,22 +4,21 @@
  * storage (`Memento`) for extensions, conforming to `IStorageService`.
  */
 
-import { Effect, Ref } from "effect";
-import { AbstractStorageService } from "vs/platform/storage/common/storageService.js";
-import type {
-	IStorage,
-	IStorageService,
-	StorageScope,
-} from "vs/platform/storage/common/storage.js";
-import type { IAnyWorkspaceIdentifier } from "vs/platform/workspace/common/workspace.js";
-import { IntegrationService } from "Source/Integration/Tauri/Service.js";
-import type { StorageDatabase } from "./Database.js";
-import { EffectStorage } from "./Storage.js";
-import {
-	IUserDataProfile,
-	isUserDataProfile,
-} from "vs/platform/userDataProfile/common/userDataProfile";
+import { Effect } from "effect";
+import type { IStorage } from "vs/base/parts/storage/common/storage.js";
 import { ILogService } from "vs/platform/log/common/log.js";
+import {
+	AbstractStorageService,
+	type IStorageService,
+	type StorageScope,
+} from "vs/platform/storage/common/storage.js";
+import {
+	isUserDataProfile,
+	type IUserDataProfile,
+} from "vs/platform/userDataProfile/common/userDataProfile";
+import type { IAnyWorkspaceIdentifier } from "vs/platform/workspace/common/workspace.js";
+
+import { IntegrationService } from "../../Integration/Tauri/Service.js";
 
 /**
  * An implementation of `AbstractStorageService` that uses `EffectStorage` as its
@@ -27,15 +26,17 @@ import { ILogService } from "vs/platform/log/common/log.js";
  * storage scopes (Application, Profile, Workspace) by creating distinct
  * `EffectStorage` instances for each.
  */
-class EffectStorageService extends AbstractStorageService {
+export class EffectStorageService extends AbstractStorageService {
 	constructor(
 		private readonly Integration: IntegrationService,
-		private readonly LogService: ILogService,
+		private readonly LoggerService: ILogService,
 	) {
-		super({});
+		super({
+			flushInterval: 0,
+		});
 	}
 
-	protected override getStorage(scope: StorageScope): IStorage | undefined {
+	protected override getStorage(_scope: StorageScope): IStorage | undefined {
 		// This would be implemented to return the correct storage instance
 		// based on the current profile and workspace state.
 		return undefined;
@@ -53,18 +54,18 @@ class EffectStorageService extends AbstractStorageService {
 
 	protected override switchToProfile(
 		toProfile: IUserDataProfile,
-		preserveData: boolean,
+		_preserveData: boolean,
 	): Promise<void> {
-		this.LogService.info(`Switching to profile: ${toProfile.id}`);
+		this.LoggerService.info(`Switching to profile: ${toProfile.id}`);
 		// Logic to tear down old profile storage and set up new one.
 		return Promise.resolve();
 	}
 
 	protected override switchToWorkspace(
 		toWorkspace: IAnyWorkspaceIdentifier,
-		preserveData: boolean,
+		_preserveData: boolean,
 	): Promise<void> {
-		this.LogService.info(`Switching to workspace: ${toWorkspace.id}`);
+		this.LoggerService.info(`Switching to workspace: ${toWorkspace.id}`);
 		// Logic to tear down old workspace storage and set up new one.
 		return Promise.resolve();
 	}
@@ -94,14 +95,14 @@ export class StorageService extends Effect.Service<IStorageService>()(
 	{
 		effect: Effect.gen(function* (Generator) {
 			const Integration = yield* Generator(IntegrationService);
-			const LogService = yield* Generator(ILogService);
+			const LoggerService = yield* Generator(ILogService);
 
 			// This is a simplified implementation. The original `NativeWorkbenchStorageService`
 			// is highly complex. We lift the abstract base class and provide our own
 			// `IStorage` implementation.
 			const ServiceInstance = new EffectStorageService(
 				Integration,
-				LogService,
+				LoggerService,
 			);
 
 			yield* Generator(

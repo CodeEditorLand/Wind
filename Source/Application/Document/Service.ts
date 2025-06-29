@@ -18,21 +18,22 @@ import type {
 	TextDocumentContentProvider,
 	Uri,
 } from "vscode";
+
 import {
 	CancellationTokenSource,
 	Disposable as VSCodeDisposable,
-} from "Source/Platform/VSCode/Type.js";
-import { FromDTO as RangeFromDTO } from "Source/TypeConverter/Main/Range.js";
-import { FromDTO as UriFromDTO } from "Source/TypeConverter/Main/URI.js";
-import { IPCService } from "Source/Application/IPC/Service.js";
-import { LoggerService } from "Source/Application/Logger/Service.js";
+} from "../../Platform/VSCode/Type.js";
+import { FromDTO as RangeFromDTO } from "../../TypeConverter/Main/Range.js";
+import { FromDTO as UriFromDTO } from "../../TypeConverter/Main/URI.js";
+import { IPCService } from "../IPC/Service.js";
+import { LoggerService } from "../Logger/Service.js";
 import { ContentProviderProblem } from "./Error.js";
 
 /**
  * The contract for the Document service. It manages all open text documents,
  * their content, and lifecycle events.
  */
-interface Document {
+export interface Document {
 	readonly TextDocuments: Effect.Effect<readonly TextDocument[]>;
 	readonly OnDidOpenTextDocument: Event<TextDocument>;
 	readonly OnDidCloseTextDocument: Event<TextDocument>;
@@ -143,6 +144,7 @@ export class DocumentService extends Effect.Service<Document>()(
 								}),
 							),
 							reason: ChangeEventDTO.reason,
+							detailedReason: undefined,
 						});
 					}
 				});

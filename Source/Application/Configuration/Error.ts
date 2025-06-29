@@ -5,8 +5,9 @@
  */
 
 import { Data } from "effect";
-import type { IntegrationConfigurationProblem } from "Source/Integration/Tauri/Configuration/Error.js";
-import type { IntegrationPathProblem } from "Source/Integration/Tauri/Path/Error.js";
+
+import type { IntegrationConfigurationProblem } from "../../Integration/Tauri/Configuration/Error.js";
+import type { IntegrationPathProblem } from "../../Integration/Tauri/Path/Error.js";
 
 /**
  * Represents a failure within the `Configuration` application service.

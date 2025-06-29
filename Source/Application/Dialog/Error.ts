@@ -5,7 +5,8 @@
  */
 
 import { Data } from "effect";
-import type { HostServiceProblem } from "Source/Application/Host/Error.js";
+
+import type { HostServiceProblem } from "../Host/Error.js";
 
 /**
  * Represents a failure within the Dialog application service.

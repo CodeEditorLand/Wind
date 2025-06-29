@@ -21,8 +21,9 @@ import {
 	type Event,
 	type WorkspaceFolder,
 } from "vscode";
-import { IPCService } from "Source/Application/IPC/Service.js";
-import { CreateEventStream } from "Source/Utility/CreateEventStream.js";
+
+import { CreateEventStream } from "../../Utility/EventStream.js";
+import { IPCService } from "../IPC/Service.js";
 import {
 	DebugProviderRegistrationProblem,
 	StartDebuggingProblem,
@@ -31,7 +32,7 @@ import {
 /**
  * Represents a registered debug provider.
  */
-interface ProviderEntry {
+export interface ProviderEntry {
 	readonly Type: string;
 	readonly Provider:
 		| DebugConfigurationProvider
@@ -43,7 +44,7 @@ interface ProviderEntry {
 /**
  * Represents the internal state managed by the Debug service.
  */
-interface DebuggerState {
+export interface DebuggerState {
 	readonly ActiveDebugSession: DebugSession | undefined;
 	readonly ActiveDebugConsole: DebugConsole;
 	readonly Breakpoints: readonly Breakpoint[];
@@ -55,7 +56,7 @@ interface DebuggerState {
 /**
  * The contract for the Debug service, mirroring `vscode.debug`.
  */
-interface Debug {
+export interface Debug {
 	readonly activeDebugSession: DebugSession | undefined;
 	readonly activeDebugConsole: DebugConsole;
 	readonly breakpoints: readonly Breakpoint[];

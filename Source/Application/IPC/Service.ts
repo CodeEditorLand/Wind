@@ -13,26 +13,27 @@ import { Emitter } from "vs/base/common/event.js";
 import type { IMessagePassingProtocol } from "vs/base/parts/ipc/common/ipc.js";
 import { RPCProtocol } from "vs/workbench/services/extensions/common/rpcProtocol.js";
 import type { Disposable } from "vscode";
-import { CancellationService } from "Source/Application/Cancellation/Service.js";
-import { IPCConfigurationService } from "Source/Application/IPCConfiguration/Service.js";
-import {
-	GenericNotification,
-	GenericRequest,
-	type GenericResponse,
-	RPCDataPayload,
-} from "./Generated.js";
-import type { MountainService } from "./Generated.js";
+
+import { CancellationService } from "../Cancellation/Service.js";
+import { IPCConfigurationService } from "../IPCConfiguration/Service.js";
 import {
 	GrpcConnectionProblem,
 	IpcProblem,
 	ProtoSerializationProblem,
 } from "./Error.js";
+import {
+	GenericNotification,
+	GenericRequest,
+	RPCDataPayload,
+	type GenericResponse,
+	type MountainService,
+} from "./Generated.js";
 import { DecodeValue, EncodeValue } from "./ProtoConverter.js";
 
 /**
  * The contract for the IPC service.
  */
-interface IPC {
+export interface IPC {
 	readonly SendRequest: <T = unknown>(
 		Method: string,
 		Parameters: readonly unknown[],

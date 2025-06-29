@@ -7,9 +7,10 @@ import type {
 	IMarkdownString,
 	MarkdownStringTrustedOptions,
 } from "vs/base/common/htmlContent.js";
-import type { Uri as VSCodeUri } from "vscode";
-import { MarkdownString } from "Source/Platform/VSCode/Type.js";
 import { URI } from "vs/base/common/uri.js";
+import type { Uri as VSCodeUri } from "vscode";
+
+import { MarkdownString } from "../../Platform/VSCode/Type.js";
 
 /**
  * Converts a `vscode.MarkdownString` object into a plain DTO for IPC.

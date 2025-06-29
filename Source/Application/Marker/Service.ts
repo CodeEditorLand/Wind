@@ -8,13 +8,14 @@ import { Effect } from "effect";
 import * as Monaco from "monaco-editor";
 import { URI } from "vs/base/common/uri.js";
 import { ILogService } from "vs/platform/log/common/log.js";
-import { IntegrationService } from "Source/Integration/Tauri/Service.js";
+
+import { IntegrationService } from "../../Integration/Tauri/Service.js";
 import { MarkerProblem } from "./Error.js";
 
 /**
  * The DTO for a single marker received from the Mountain host.
  */
-interface MarkerDataDTO {
+export interface MarkerDataDTO {
 	readonly Severity: number;
 	readonly Message: string;
 	readonly Source?: string;
@@ -28,7 +29,7 @@ interface MarkerDataDTO {
  * The contract for the MarkerService. Its primary job is to listen for
  * backend events and orchestrate updates to the editor UI.
  */
-interface Marker {
+export interface Marker {
 	/**
 	 * Initializes the service, registering all necessary event listeners to react
 	 * to changes from the backend. This is an Effect that runs once at startup.
@@ -43,7 +44,7 @@ export class MarkerService extends Effect.Service<Marker>()(
 	"Wind/MarkerService",
 	{
 		effect: Effect.gen(function* (Generator) {
-			const LogService = yield* Generator(ILogService);
+			const LoggerService = yield* Generator(ILogService);
 			const Integration = yield* Generator(IntegrationService);
 
 			/**
@@ -52,7 +53,7 @@ export class MarkerService extends Effect.Service<Marker>()(
 			 */
 			const UpdateMarkersForURIs = (URIs: readonly string[]) =>
 				Effect.gen(function* (Generator) {
-					LogService.trace(
+					LoggerService.trace(
 						`[MarkerService] Fetching diagnostics for ${URIs.length} URIs.`,
 					);
 
@@ -92,7 +93,7 @@ export class MarkerService extends Effect.Service<Marker>()(
 				}).pipe(
 					Effect.catchAll((Cause) =>
 						Effect.sync(() =>
-							LogService.error(
+							LoggerService.error(
 								"[MarkerService] Failed to update markers:",
 								Cause,
 							),
@@ -104,7 +105,7 @@ export class MarkerService extends Effect.Service<Marker>()(
 				Integration.Listen<{ Owner: string; Uris: string[] }>(
 					"sky://diagnostics/changed",
 					(Event) => {
-						LogService.info(
+						LoggerService.info(
 							`[MarkerService] Received diagnostic change from owner '${Event.payload.Owner}'. Updating markers for ${Event.payload.Uris.length} URIs.`,
 						);
 

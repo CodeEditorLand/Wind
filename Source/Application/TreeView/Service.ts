@@ -10,12 +10,13 @@ import { Emitter, type Event } from "vs/base/common/event.js";
 import { ILogService } from "vs/platform/log/common/log.js";
 import { IViewsService } from "vs/workbench/common/views.js";
 import type { TreeDataProvider, TreeItem, TreeView } from "vscode";
-import { IntegrationService } from "Source/Integration/Tauri/Service.js";
+
+import { IntegrationService } from "../../Integration/Tauri/Service.js";
 
 /**
  * The DTO for a tree item received from the Mountain backend.
  */
-interface TreeItemDTO {
+export interface TreeItemDTO {
 	readonly handle: string;
 	readonly label: { readonly label: string };
 	readonly collapsibleState: 0 | 1 | 2; // None | Collapsed | Expanded
@@ -46,7 +47,7 @@ export class NativeTreeViewDataProvider
 	constructor(
 		private readonly ViewId: string,
 		private readonly Integration: IntegrationService,
-		private readonly LogService: ILogService,
+		private readonly LoggerService: ILogService,
 	) {}
 
 	public getTreeItem(Element: TreeItemDTO): TreeItem | Thenable<TreeItem> {
@@ -54,7 +55,7 @@ export class NativeTreeViewDataProvider
 	}
 
 	public getChildren(Element?: TreeItemDTO): ProviderResult<TreeItemDTO[]> {
-		this.LogService.trace(
+		this.LoggerService.trace(
 			`[NativeTreeViewDataProvider] Getting children for view '${this.ViewID}'`,
 			Element,
 		);
@@ -67,7 +68,7 @@ export class NativeTreeViewDataProvider
 			},
 		).pipe(
 			Effect.catchAll((Cause) => {
-				this.LogService.error(
+				this.LoggerService.error(
 					`[NativeTreeViewDataProvider] Failed to get children for ${this.ViewId}:`,
 					Cause,
 				);
@@ -83,7 +84,7 @@ export class NativeTreeViewDataProvider
  * The contract for the TreeView service. It wraps VS Code's `IViewsService`
  * for the specific purpose of registering tree data providers.
  */
-interface TreeViewServiceMethods {
+export interface TreeViewServiceMethods {
 	readonly registerTreeDataProvider: <T>(
 		viewId: string,
 		provider: TreeDataProvider<T>,
@@ -99,13 +100,13 @@ export class TreeViewService extends Effect.Service<TreeViewServiceMethods>()(
 	{
 		effect: Effect.gen(function* (Generator) {
 			const ViewsService = yield* Generator(IViewsService);
-			const LogService = yield* Generator(ILogService);
+			const LoggerService = yield* Generator(ILogService);
 
 			const registerTreeDataProvider = <T>(
 				viewId: string,
 				provider: TreeDataProvider<T>,
 			): TreeView<T> => {
-				LogService.info(
+				LoggerService.info(
 					`[TreeViewService] Registering tree data provider for view: ${viewId}`,
 				);
 

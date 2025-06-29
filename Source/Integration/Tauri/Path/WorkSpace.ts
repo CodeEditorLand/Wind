@@ -3,9 +3,10 @@
  * @description Resolves the workspace path using Tauri's API.
  */
 
+import { BaseDirectory, resolve } from "@tauri-apps/api/path";
 import { Effect } from "effect";
-import { resolve, BaseDirectory } from "@tauri-apps/api/path";
-import { URI, type Uri } from "Source/Platform/VSCode/Type.js";
+
+import { URI, type Uri } from "../../../Platform/VSCode/Type.js";
 import { IntegrationPathProblem } from "./Error.js";
 
 /**

@@ -10,9 +10,9 @@ import {
 	type IStorage,
 	type IStorageChangeEvent,
 	type IUpdateRequest,
-	StorageHint,
 } from "vs/base/parts/storage/common/storage.js";
-import { IntegrationService } from "Source/Integration/Tauri/Service.js";
+
+import { IntegrationService } from "../../Integration/Tauri/Service.js";
 import type { StorageDatabase } from "./Database.js";
 import { StorageProblem } from "./Error.js";
 

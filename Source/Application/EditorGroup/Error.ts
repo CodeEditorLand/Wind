@@ -11,9 +11,7 @@ import { Data } from "effect";
  * This can be used to wrap errors from underlying services or to represent
  * invalid state transitions, such as attempting to remove the last editor group.
  */
-export class EditorGroupProblem extends Data.TaggedError(
-	"EditorGroupProblem",
-)<{
+export class EditorGroupProblem extends Data.TaggedError("EditorGroupProblem")<{
 	readonly Cause?: unknown;
 	readonly Context: string;
 }> {}

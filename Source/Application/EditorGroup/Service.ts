@@ -23,6 +23,7 @@ import {
 	type IEditorGroup,
 	type IEditorGroupService,
 } from "vs/workbench/services/editor/common/editorGroupsService.js";
+
 import { EditorGroupProblem } from "./Error.js";
 
 const EDITOR_PART_UI_STATE_STORAGE_KEY = "editorpart.state";
@@ -30,7 +31,7 @@ const EDITOR_PART_UI_STATE_STORAGE_KEY = "editorpart.state";
 /**
  * Represents the serializable state of the editor grid UI.
  */
-interface IEditorPartUIState {
+export interface IEditorPartUIState {
 	readonly SerializedGrid: any;
 	readonly ActiveGroup: number;
 	readonly MostRecentActiveGroups: number[];

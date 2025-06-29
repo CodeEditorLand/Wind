@@ -10,15 +10,17 @@ import type { IExtensionDescription } from "vs/platform/extensions/common/extens
 import type {
 	AccessibilityInformation,
 	CancellationToken,
+	MarkdownString,
 	ProviderResult,
 	StatusBarAlignment,
 	ThemeColor,
 	Command as VSCodeCommand,
 	StatusBarItem as VSCodeStatusBarItem,
 } from "vscode";
-import { CommandService } from "Source/Application/Command/Service.js";
-import type { HostService } from "Source/Application/Host/Service.js";
-import { FromAPI as StatusBarItemToDTO } from "Source/TypeConverter/StatusBar.js";
+
+import { FromAPI as StatusBarItemToDTO } from "../../TypeConverter/StatusBar.js";
+import { CommandService } from "../Command/Service.js";
+import type { HostService } from "../Host/Service.js";
 
 /**
  * A concrete implementation of the `vscode.StatusBarItem` interface.
@@ -51,6 +53,13 @@ export class StatusBarItemImplementation implements VSCodeStatusBarItem {
 		this._alignment = InitialAlignment;
 		this._priority = InitialPriority;
 	}
+	tooltip2:
+		| string
+		| MarkdownString
+		| ((
+				token: CancellationToken,
+		  ) => ProviderResult<string | MarkdownString | undefined>)
+		| undefined;
 
 	// Getters
 	get id(): string {

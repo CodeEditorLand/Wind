@@ -9,17 +9,18 @@ import type { IIdentifiedSingleEditOperation } from "vs/editor/common/model.js";
 import type {
 	TextEdit as VSCodeTextEdit,
 	WorkspaceEdit as VSCodeWorkspaceEdit,
+	WorkspaceEditEntryMetadata,
 } from "vscode";
+
 import {
 	TextEdit as ExtHostTextEdit,
 	WorkspaceEdit as ExtHostWorkspaceEdit,
-} from "Source/Platform/VSCode/Type.js";
+} from "../Platform/VSCode/Type.js";
 import {
 	FromAPI as TextEditFromAPI,
 	ToAPI as TextEditToAPI,
 } from "./Main/TextEdit.js";
 import { FromAPI as UriFromAPI, ToAPI as UriToAPI } from "./Main/URI.js";
-import type { WorkspaceEditEntryMetadata } from "vscode";
 
 // --- DTO Interfaces for IPC ---
 

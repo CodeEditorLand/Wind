@@ -11,17 +11,18 @@ import { ILogService } from "vs/platform/log/common/log.js";
 import { IStorageService } from "vs/platform/storage/common/storage.js";
 import { IWorkspaceContextService } from "vs/platform/workspace/common/workspace.js";
 import type { ISCMService } from "vs/workbench/contrib/scm/common/scm.js";
-import { SourceControlManagementService as VscScmService } from "vs/workbench/contrib/scm/common/scmService.js";
-import { IntegrationService } from "Source/Integration/Tauri/Service.js";
-import { FromDTO as ProviderFromDTO } from "Source/TypeConverter/SourceControlManagement/Provider.js";
-import { ScmProblem } from "./Error.js";
+import { SCMService as VSCodeSCMService } from "vs/workbench/contrib/scm/common/scmService.js";
+
+import { IntegrationService } from "../../Integration/Tauri/Service.js";
+import { FromDTO as ProviderFromDTO } from "../../TypeConverter/SourceControlManagement/Provider.js";
+import { SourceControlManagementProblem } from "./Error.js";
 
 /**
  * The `Effect.Service` for the `ISCMService`.
  *
  * This service implementation "lifts" the original `SourceControlManagementService`
  * class from VS Code. It orchestrates the following:
- * 1. Instantiates the real `VscScmService`.
+ * 1. Instantiates the real `VSCodeSCMService`.
  * 2. Defines an `Initialize` effect that fetches the complete initial SCM state
  *    from the `Mountain` host and sets up listeners for real-time updates.
  * 3. This `Initialize` effect must be run once at application startup.
@@ -34,7 +35,7 @@ export class SourceControlManagementService extends Effect.Service<ISCMService>(
 			const InstantiationService = yield* Generator(
 				IInstantiationService,
 			);
-			const LogService = yield* Generator(ILogService);
+			const LoggerService = yield* Generator(ILogService);
 			const ContextKeyService = yield* Generator(IContextKeyService);
 			const WorkspaceContextService = yield* Generator(
 				IWorkspaceContextService,
@@ -44,7 +45,7 @@ export class SourceControlManagementService extends Effect.Service<ISCMService>(
 
 			// Instantiate the real VS Code SCM service.
 			const ServiceInstance = InstantiationService.createInstance(
-				VscScmService,
+				VSCodeSCMService,
 				ContextKeyService,
 				WorkspaceContextService,
 				StorageService,
@@ -57,8 +58,8 @@ export class SourceControlManagementService extends Effect.Service<ISCMService>(
 				"GetAllSourceControlManagementState",
 			).pipe(
 				Effect.tap((State) =>
-					LogService.trace(
-						"[ScmService] Received initial SCM state:",
+					LoggerService.trace(
+						"[SourceControlManagementService] Received initial SCM state:",
 						State,
 					),
 				),
@@ -76,7 +77,7 @@ export class SourceControlManagementService extends Effect.Service<ISCMService>(
 				),
 				Effect.mapError(
 					(Cause) =>
-						new ScmProblem({
+						new SourceControlManagementProblem({
 							Cause,
 							Context: "InitializeStateFailed",
 						}),
@@ -89,8 +90,8 @@ export class SourceControlManagementService extends Effect.Service<ISCMService>(
 			const ListenForProviderUpdates = Integration.Listen(
 				"sky://scm/provider/added",
 				(Event) => {
-					LogService.info(
-						`[ScmService] SCM Provider added:`,
+					LoggerService.info(
+						`[SourceControlManagementService] SCM Provider added:`,
 						Event.payload,
 					);
 					ServiceInstance.registerSCMProvider(
@@ -100,7 +101,7 @@ export class SourceControlManagementService extends Effect.Service<ISCMService>(
 			).pipe(
 				Effect.mapError(
 					(Cause) =>
-						new ScmProblem({
+						new SourceControlManagementProblem({
 							Cause,
 							Context: "ListenForProviderUpdatesFailed",
 						}),

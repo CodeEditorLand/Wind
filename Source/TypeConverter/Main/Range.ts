@@ -5,7 +5,8 @@
 
 import type { IRange } from "vs/editor/common/core/range.js";
 import type { Range as VSCodeRange } from "vscode";
-import { Position, Range } from "Source/Platform/VSCode/Type.js";
+
+import { Position, Range } from "../../Platform/VSCode/Type.js";
 
 /**
  * Converts a `vscode.Range` object into a plain DTO.

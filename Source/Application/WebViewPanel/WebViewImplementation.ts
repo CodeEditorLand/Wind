@@ -9,9 +9,10 @@ import { Effect } from "effect";
 import { Schemas } from "vs/base/common/network.js";
 import type { IExtensionDescription } from "vs/platform/extensions/common/extensions.js";
 import type { Event, Uri, Webview, WebviewOptions } from "vscode";
-import type { HostService } from "Source/Application/Host/Service.js";
-import { CreateEventStream } from "Source/Utility/CreateEventStream.js";
-import { ConvertContentOptionsToDTO } from "Source/TypeConverter/WebView.js";
+
+import type { HostService } from "../../Application/Host/Service.js";
+import { ConvertContentOptionsToDTO } from "../../TypeConverter/WebView.js";
+import { CreateEventStream } from "../../Utility/EventStream.js";
 
 /**
  * A concrete implementation of the `vscode.Webview` interface.

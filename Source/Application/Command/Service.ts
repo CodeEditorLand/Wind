@@ -7,20 +7,17 @@
 import { Effect, Ref } from "effect";
 import type { IDisposable } from "vs/base/common/lifecycle.js";
 import type { MainThreadCommandsShape } from "vs/workbench/api/common/extHost.protocol.js";
-import type {
-	Command as VSCodeCommand,
-	TextEditor,
-	TextEditorEdit,
-} from "vscode";
-import { IPCService } from "Source/Application/IPC/Service.js";
-import { LoggerService } from "Source/Application/Logger/Service.js";
-import { WindowService } from "Source/Application/Window/Service.js";
+import type { TextEditor, TextEditorEdit } from "vscode";
+
+import { IPCService } from "../IPC/Service.js";
+import { LoggerService } from "../Logger/Service.js";
+import { WindowService } from "../Window/Service.js";
 import { CommandProblem } from "./Error.js";
 
 /**
  * Represents the internal structure of a registered command.
  */
-interface InternalCommand {
+export interface InternalCommand {
 	readonly Id: string;
 	readonly Callback: (...Arguments: any[]) => any;
 	readonly ThisArgument: any;
@@ -29,7 +26,7 @@ interface InternalCommand {
 /**
  * The contract for the Command service, mirroring the public `vscode.commands` API.
  */
-interface Command {
+export interface Command {
 	readonly registerCommand: (
 		Global: boolean,
 		Id: string,

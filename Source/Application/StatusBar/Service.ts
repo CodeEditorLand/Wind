@@ -7,16 +7,17 @@
 import { Effect, Ref } from "effect";
 import { generateUuid } from "vs/base/common/uuid.js";
 import type { IExtensionDescription } from "vs/platform/extensions/common/extensions.js";
+import type { IStatusbarService } from "vs/workbench/services/statusbar/browser/statusbar.js";
 import {
 	Disposable,
 	StatusBarAlignment,
-	type IStatusbarService,
-	type StatusBarItem as VSCodeStatusBarItem,
+	type Command,
+	type MarkdownString,
 } from "vscode";
-import { CommandService } from "Source/Application/Command/Service.js";
-import { HostService } from "Source/Application/Host/Service.js";
+
+import { CommandService } from "../Command/Service.js";
+import { HostService } from "../Host/Service.js";
 import { StatusBarItemImplementation } from "./StatusBarItem.js";
-import { StatusBarProblem } from "./Error.js";
 
 /**
  * The `Effect.Service` for the `IStatusbarService`.
@@ -97,7 +98,17 @@ export class StatusBarService extends Effect.Service<IStatusbarService>()(
 			// Note: The VS Code IStatusbarService interface is much larger.
 			// This implementation provides the core functionality needed by extensions.
 			const ServiceImplementation = {
-				addEntry: (Properties, Id, Alignment, Priority) => {
+				addEntry: (
+					Properties: {
+						name: any;
+						text: string;
+						tooltip: string | MarkdownString | undefined;
+						command: string | Command | undefined;
+					},
+					Id: string | undefined,
+					Alignment: StatusBarAlignment | undefined,
+					Priority: number | undefined,
+				) => {
 					// This is the declarative way to add an entry, which we can map
 					// to our factory method.
 					const Item = Effect.runSync(
@@ -113,7 +124,7 @@ export class StatusBarService extends Effect.Service<IStatusbarService>()(
 					Item.command = Properties.command;
 					Item.show();
 					return {
-						update: (p) => Object.assign(Item, p),
+						update: (p: any) => Object.assign(Item, p),
 						dispose: () => Item.dispose(),
 					};
 				},

@@ -8,8 +8,8 @@
  *   - Act as the sole entry point for all native backend communication.
  */
 
-import { Effect } from "effect";
 import type { Event as TauriEvent } from "@tauri-apps/api/event";
+import { Effect } from "effect";
 
 /**
  * The interface for the Tauri Integration service. It provides an Effect-native
