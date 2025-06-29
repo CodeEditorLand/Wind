@@ -35,17 +35,23 @@ export interface Integration {
  * A live implementation would wrap the `@tauri-apps/api` functions. This
  * placeholder allows dependent services to be implemented correctly.
  */
-export class IntegrationService extends Effect.Service<IntegrationService>()(
+export class IntegrationService extends Effect.Service<Integration>()(
 	"Integration/Tauri",
 	{
 		// This is a placeholder implementation. The real implementation will be
 		// built out later and will wrap the actual Tauri APIs.
 		sync: () => ({
-			Invoke: (Command: string, _Arguments?: object) =>
+			Invoke: <T>(
+				Command: string,
+				_Arguments?: object,
+			): Effect.Effect<T, Error> =>
 				Effect.dieMessage(
 					`IntegrationService.Invoke not implemented for command: ${Command}`,
 				),
-			Listen: (_EventName: string, _Handler) =>
+			Listen: <T>(
+				_EventName: string,
+				_Handler: (Event: TauriEvent<T>) => void,
+			): Effect.Effect<() => void, Error> =>
 				Effect.dieMessage(`IntegrationService.Listen not implemented`),
 			Emit: (_EventName: string, _Payload?: object) =>
 				Effect.dieMessage(`IntegrationService.Emit not implemented`),

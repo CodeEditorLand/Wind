@@ -7,21 +7,22 @@
  * Tauri's IPC mechanism.
  */
 
+import { invoke as TauriInvoke } from "@tauri-apps/api/core";
 import {
+	emit as TauriEmit,
 	listen as TauriListen,
 	type Event as TauriEvent,
 } from "@tauri-apps/api/event";
-import { invoke as TauriInvoke } from "@tauri-apps/api/tauri";
 import { URI } from "vs/base/common/uri.js";
 import type { ISandboxConfiguration } from "vs/base/parts/sandbox/common/sandboxTypes.js";
 import type {
 	IpcRenderer,
 	IpcRendererEvent,
-} from "vs/base/parts/sandbox/electron-sandbox/electronTypes.js";
+} from "vs/base/parts/sandbox/electron-browser/electronTypes";
 import type {
 	IMainWindowSandboxGlobals,
 	ISandboxNodeProcess,
-} from "vs/base/parts/sandbox/electron-sandbox/globals.js";
+} from "vs/base/parts/sandbox/electron-browser/globals";
 
 /**
  * A shim for the `ipcRenderer` object, adapting it to use Tauri's IPC.
@@ -56,8 +57,8 @@ const CreateIpcRendererShim = (): IpcRenderer => ({
 	},
 	on: (
 		Channel: string,
-		Listener: (Event: IpcRendererEvent, ...Arguments: any[]) => void,
-	): IpcRenderer => {
+		Listener: (event: IpcRendererEvent, ...args: any[]) => void,
+	) => {
 		TauriListen(Channel, (Event: TauriEvent<any>) =>
 			Listener({} as IpcRendererEvent, Event.payload),
 		).catch(console.error);
@@ -67,6 +68,10 @@ const CreateIpcRendererShim = (): IpcRenderer => ({
 	// Stubs for other Emitter methods to fulfill the interface.
 	once: () => CreateIpcRendererShim(),
 	removeListener: () => CreateIpcRendererShim(),
+	emit: (channel: string, ...args: any[]) => {
+		TauriEmit(channel, ...args).catch(console.error);
+		return true;
+	},
 });
 
 /**
@@ -120,14 +125,18 @@ const CreateProcessShim = (
 ): ISandboxNodeProcess => ({
 	...Configuration.userEnv,
 	pid: -1,
-	arch: Configuration.arch,
-	platform: Configuration.platform,
+	arch: Configuration.arch as string,
+	platform: Configuration.platform as NodeJS.Platform,
 	type: "renderer",
-	cwd: () => Configuration.VSCODE_CWD,
+	cwd: () => Configuration.cwd,
 	env: { ...Configuration.userEnv },
-	versions: Configuration.versions,
+	versions: Configuration.versions as NodeJS.ProcessVersions,
 	getProcessMemoryInfo: () =>
-		Promise.resolve({ total: 0, residentSet: 0, private: 0 }),
+		Promise.resolve({
+			residentSet: 0,
+			private: 0,
+			shared: 0,
+		}),
 	sandboxed: true,
 });
 
@@ -144,11 +153,15 @@ const CreateProcessShim = (
 			process: CreateProcessShim(Configuration),
 			context: {
 				configuration: () => Configuration,
+				resolveConfiguration:
+					function (): Promise<ISandboxConfiguration> {
+						throw new Error("Function not implemented.");
+					},
 			},
 			// Stubs for other expected globals.
 			webFrame: { setZoomLevel: () => {} },
 			webUtils: { getPathForFile: (file: File) => (file as any).path },
-			ipcMessagePort: { acquire: () => {} },
+			ipcMessagePort: { acquire: () => {} } as any,
 		};
 
 		// Attach the complete shim to the window object.
@@ -157,10 +170,10 @@ const CreateProcessShim = (
 		console.log(
 			"[Wind Bridge] Successfully attached vscode shims to the window object.",
 		);
-	} catch (Error) {
+	} catch (error: unknown) {
 		const ErrorMessage =
-			Error instanceof Error ? Error.message : String(Error);
-		console.error("[Wind Bridge] FATAL: Failed to initialize.", Error);
+			error instanceof Error ? error.message : String(error);
+		console.error("[Wind Bridge] FATAL: Failed to initialize.", error);
 		const ErrorDiv = document.createElement("div");
 		ErrorDiv.textContent = `Bridge Error: ${ErrorMessage}`;
 		ErrorDiv.setAttribute(

@@ -55,13 +55,13 @@ export interface Command {
 export class CommandService extends Effect.Service<Command>()(
 	"Service/Command",
 	{
-		effect: Effect.gen(function* (Generator) {
-			const IPC = yield* Generator(IPCService);
-			const Logger = yield* Generator(LoggerService);
-			const Window = yield* Generator(WindowService);
+		effect: Effect.gen(function* () {
+			const IPC = yield* IPCService;
+			const Logger = yield* LoggerService;
+			const Window = yield* WindowService;
 
-			const Commands = yield* Generator(
-				Ref.make(new Map<string, InternalCommand>()),
+			const Commands = yield* Ref.make(
+				new Map<string, InternalCommand>(),
 			);
 			const MainThreadProxy = IPC.CreateProxy<MainThreadCommandsShape>(
 				"$rpc:mainThreadCommands",
@@ -88,7 +88,7 @@ export class CommandService extends Effect.Service<Command>()(
 
 			IPC.RegisterInvokeHandler(
 				"$executeContributedCommand",
-				([Id, ...Arguments]) =>
+				([Id, ...Arguments]: [string, ...any[]]) =>
 					Effect.runPromise(
 						Ref.get(Commands).pipe(
 							Effect.flatMap((Map) =>
@@ -97,10 +97,10 @@ export class CommandService extends Effect.Service<Command>()(
 							Effect.flatMap((Command) =>
 								ExecuteLocalCommand(Command, Arguments),
 							),
-							Effect.catchAll((Error) =>
-								Logger.Error(
+							Effect.catchAll((error) =>
+								Logger.error(
 									`Failed to execute local command '${Id}'`,
-									Error,
+									error,
 								).pipe(Effect.as(undefined)),
 							),
 						),
@@ -117,7 +117,7 @@ export class CommandService extends Effect.Service<Command>()(
 					Map.set(Id, { Id, Callback, ThisArgument }),
 				).pipe(
 					Effect.tap(() =>
-						Logger.Trace(`Command '${Id}' registered.`),
+						Logger.trace(`Command '${Id}' registered.`),
 					),
 				);
 				Effect.runSync(RegistrationEffect);
@@ -143,7 +143,7 @@ export class CommandService extends Effect.Service<Command>()(
 				};
 			};
 
-			return {
+			const self: Command = {
 				registerCommand,
 				registerTextEditorCommand: (
 					Id: string,
@@ -158,11 +158,11 @@ export class CommandService extends Effect.Service<Command>()(
 						const ActiveEditor = Window.activeTextEditor;
 						if (!ActiveEditor) {
 							Effect.runSync(
-								Logger.Warn(
+								Logger.warn(
 									`Cannot execute text editor command '${Id}' because there is no active text editor.`,
 								),
 							);
-							return undefined;
+							return Promise.resolve(undefined);
 						}
 						return ActiveEditor.edit((Builder) => {
 							Callback.apply(ThisArg, [
@@ -172,7 +172,7 @@ export class CommandService extends Effect.Service<Command>()(
 							]);
 						});
 					};
-					return registerCommand(true, Id, AdaptedCallback);
+					return self.registerCommand(true, Id, AdaptedCallback);
 				},
 				executeCommand: async <T>(
 					Id: string,
@@ -198,6 +198,8 @@ export class CommandService extends Effect.Service<Command>()(
 				getCommands: (FilterInternal = false): Promise<string[]> =>
 					MainThreadProxy.$getCommands(FilterInternal),
 			};
+
+			return self;
 		}),
 	},
 ) {}

@@ -7,7 +7,7 @@
 
 import * as Grpc from "@grpc/grpc-js";
 import * as ProtoLoader from "@grpc/proto-loader";
-import { Effect, Layer, Ref } from "effect";
+import { Effect, Ref } from "effect";
 import { VSBuffer } from "vs/base/common/buffer.js";
 import { Emitter } from "vs/base/common/event.js";
 import type { IMessagePassingProtocol } from "vs/base/parts/ipc/common/ipc.js";
@@ -16,6 +16,7 @@ import type { Disposable } from "vscode";
 
 import { CancellationService } from "../Cancellation/Service.js";
 import { IPCConfigurationService } from "../IPCConfiguration/Service.js";
+import { LoggerService } from "../Logger/Service.js";
 import {
 	GrpcConnectionProblem,
 	IpcProblem,
@@ -59,73 +60,65 @@ export interface IPC {
  * acquired and released.
  */
 export class IPCService extends Effect.Service<IPC>()("Service/IPC", {
-	scoped: Effect.gen(function* (Generator) {
-		const Config = yield* Generator(IPCConfigurationService);
-		const Cancellation = yield* Generator(CancellationService);
-		const Logger = yield* Generator(LoggerService);
+	scoped: Effect.gen(function* () {
+		const Config = yield* IPCConfigurationService;
+		const Cancellation = yield* CancellationService;
+		const Logger = yield* LoggerService;
 
-		const GrpcClient = yield* Generator(
-			Effect.acquireRelease(
-				Effect.gen(function* (Generator) {
-					// NOTE: In a real environment, this path might be configured differently.
-					const ProtoPath = "proto/vine.ipc.proto";
-					const Definition = yield* Generator(
-						Effect.tryPromise({
-							try: () => ProtoLoader.load(ProtoPath, {}),
-							catch: (Cause) =>
-								new GrpcConnectionProblem({
-									Cause,
-									Context: "ProtoLoadFailed",
-								}),
+		const GrpcClient = yield* Effect.acquireRelease(
+			Effect.gen(function* () {
+				// NOTE: In a real environment, this path might be configured differently.
+				const ProtoPath = "proto/vine.ipc.proto";
+				const Definition = yield* Effect.tryPromise({
+					try: () => ProtoLoader.load(ProtoPath, {}),
+					catch: (Cause) =>
+						new GrpcConnectionProblem({
+							Cause,
+							Context: "ProtoLoadFailed",
 						}),
-					);
+				});
 
-					const GrpcObject = Grpc.loadPackageDefinition(Definition);
-					const ClientConstructor = (
-						GrpcObject["vine_ipc"] as Grpc.GrpcObject
-					)["MountainService"] as Grpc.ServiceClientConstructor;
+				const GrpcObject = Grpc.loadPackageDefinition(Definition);
+				const ClientConstructor = (
+					GrpcObject["vine_ipc"] as Grpc.GrpcObject
+				)["MountainService"] as Grpc.ServiceClientConstructor;
 
-					const Client = new ClientConstructor(
-						Config.MountainAddress,
-						Grpc.credentials.createInsecure(),
-					) as unknown as MountainService & Grpc.Client;
+				const Client = new ClientConstructor(
+					Config.MountainAddress,
+					Grpc.credentials.createInsecure(),
+				) as unknown as MountainService & Grpc.Client;
 
-					yield* Generator(
-						Effect.async<void, GrpcConnectionProblem>((Resume) => {
-							Client.waitForReady(Date.now() + 10_000, (Error) =>
-								Error
-									? Resume(
-											Effect.fail(
-												new GrpcConnectionProblem({
-													Cause: Error,
-													Context: "ClientNotReady",
-												}),
-											),
-										)
-									: Resume(Effect.void),
-							);
-						}),
+				yield* Effect.async<void, GrpcConnectionProblem>((Resume) => {
+					Client.waitForReady(Date.now() + 10_000, (Error) =>
+						Error
+							? Resume(
+									Effect.fail(
+										new GrpcConnectionProblem({
+											Cause: Error,
+											Context: "ClientNotReady",
+										}),
+									),
+								)
+							: Resume(Effect.void),
 					);
-					yield* Generator(
-						Logger.Info(
-							`gRPC client connected to Mountain at ${Config.MountainAddress}.`,
-						),
-					);
-					return Client;
-				}),
-				(Client) =>
-					Effect.sync(() => Client.close()).pipe(
-						Effect.tap(() =>
-							Logger.Info("gRPC client connection closed."),
-						),
+				});
+				yield* Logger.info(
+					`gRPC client connected to Mountain at ${Config.MountainAddress}.`,
+				);
+				return Client;
+			}),
+			(Client) =>
+				Effect.sync(() => Client.close()).pipe(
+					Effect.tap(() =>
+						Logger.info("gRPC client connection closed."),
 					),
-			),
+				),
 		);
 
-		const RequestIdCounter = yield* Generator(Ref.make(1));
+		const RequestIdCounter = yield* Ref.make(1);
 		const OnMessageEmitter = new Emitter<VSBuffer>();
-		const InvokeHandlers = yield* Generator(
-			Ref.make(new Map<string, (...Arguments: any[]) => Promise<any>>()),
+		const InvokeHandlers = yield* Ref.make(
+			new Map<string, (...Arguments: any[]) => Promise<any>>(),
 		);
 
 		const SendRPCData = (Buffer: VSBuffer) =>
@@ -149,36 +142,31 @@ export class IPCService extends Effect.Service<IPC>()("Service/IPC", {
 
 		const RPCProtocolInstance = new RPCProtocol(ProtocolAdapter);
 
-		return {
+		const self: IPC = {
 			SendRequest: <T>(Method: string, Parameters: readonly unknown[]) =>
-				Effect.gen(function* (Generator) {
-					const RequestId = yield* Generator(
-						Ref.getAndUpdate(RequestIdCounter, (n) => n + 1),
+				Effect.gen(function* () {
+					const RequestId = yield* Ref.getAndUpdate(
+						RequestIdCounter,
+						(n) => n + 1,
 					);
-					const EncodedParameter = yield* Generator(
-						EncodeValue(Parameters),
-					);
+					const EncodedParameter = yield* EncodeValue(Parameters);
 
 					const RequestMessage = new GenericRequest();
 					RequestMessage.setRequestid(RequestId);
 					RequestMessage.setMethod(Method);
 					RequestMessage.setParams(EncodedParameter);
 
-					const ResponseMessage = (yield* Generator(
-						Effect.tryPromise({
-							try: () =>
-								GrpcClient.processCocoonRequest(RequestMessage),
-							catch: (Cause) =>
-								new IpcProblem({
-									Cause,
-									Context: `gRPC request '${Method}' failed.`,
-								}),
-						}),
-					)) as typeof GenericResponse.prototype;
+					const ResponseMessage = (yield* Effect.tryPromise({
+						try: () =>
+							GrpcClient.processCocoonRequest(RequestMessage),
+						catch: (Cause) =>
+							new IpcProblem({
+								Cause,
+								Context: `gRPC request '${Method}' failed.`,
+							}),
+					})) as typeof GenericResponse.prototype;
 
-					return yield* Generator(
-						DecodeValue(ResponseMessage.getResult()),
-					);
+					return yield* DecodeValue(ResponseMessage.getResult());
 				}).pipe(
 					Effect.mapError((Error) =>
 						Error instanceof ProtoSerializationProblem
@@ -192,26 +180,22 @@ export class IPCService extends Effect.Service<IPC>()("Service/IPC", {
 				) as Effect.Effect<T, IpcProblem>,
 
 			SendNotification: (Method, Parameters) =>
-				Effect.gen(function* (Generator) {
-					const EncodedParameter = yield* Generator(
-						EncodeValue(Parameters),
-					);
+				Effect.gen(function* () {
+					const EncodedParameter = yield* EncodeValue(Parameters);
 					const NotificationMessage = new GenericNotification();
 					NotificationMessage.setMethod(Method);
 					NotificationMessage.setParams(EncodedParameter);
-					yield* Generator(
-						Effect.tryPromise({
-							try: () =>
-								GrpcClient.sendCocoonNotification(
-									NotificationMessage,
-								),
-							catch: (Cause) =>
-								new IpcProblem({
-									Cause,
-									Context: `gRPC notification '${Method}' failed.`,
-								}),
-						}),
-					);
+					yield* Effect.tryPromise({
+						try: () =>
+							GrpcClient.sendCocoonNotification(
+								NotificationMessage,
+							),
+						catch: (Cause) =>
+							new IpcProblem({
+								Cause,
+								Context: `gRPC notification '${Method}' failed.`,
+							}),
+					});
 				}).pipe(
 					Effect.mapError((Error) =>
 						Error instanceof ProtoSerializationProblem
@@ -246,7 +230,7 @@ export class IPCService extends Effect.Service<IPC>()("Service/IPC", {
 							return (...Arguments: any[]) => {
 								const Method = `${Channel}/${Property}`;
 								return Effect.runPromise(
-									this.SendRequest(Method, Arguments),
+									self.SendRequest(Method, Arguments),
 								);
 							};
 						}
@@ -254,7 +238,10 @@ export class IPCService extends Effect.Service<IPC>()("Service/IPC", {
 					},
 				}),
 
-			RegisterInvokeHandler: (Channel, Handler) => {
+			RegisterInvokeHandler: (
+				Channel: string,
+				Handler: (...args: any[]) => Promise<any>,
+			) => {
 				Effect.runSync(
 					Ref.update(InvokeHandlers, (Map) =>
 						Map.set(Channel, Handler),
@@ -272,5 +259,6 @@ export class IPCService extends Effect.Service<IPC>()("Service/IPC", {
 				};
 			},
 		};
+		return self;
 	}),
 }) {}

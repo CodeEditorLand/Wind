@@ -4,6 +4,7 @@
  */
 
 import { Layer } from "effect";
+import type { IntegrationService } from "Source/Integration/Tauri/Service.js";
 
 import { HostService } from "./Service.js";
 
@@ -15,4 +16,5 @@ import { HostService } from "./Service.js";
  * dependencies required by its `effect` constructor, such as the
  * `IntegrationService`.
  */
-export const HostLive: Layer.Layer<HostService> = HostService.Default;
+export const HostLive: Layer.Layer<HostService, never, IntegrationService> =
+	HostService.Default;

@@ -5,44 +5,41 @@
  * responsible for providing essential shims and proxying native UI calls.
  */
 
+import { type Event as TauriEvent } from "@tauri-apps/api/event";
 import { Effect, Option } from "effect";
 import { Emitter, type Event } from "vs/base/common/event.js";
 import type { IMarkdownString } from "vs/base/common/htmlContent.js";
-import type {
-	IProcess,
-	ISandboxConfiguration,
-} from "vs/base/parts/sandbox/common/sandboxTypes.js";
+import type { ISandboxConfiguration } from "vs/base/parts/sandbox/common/sandboxTypes.js";
 import type {
 	IpcRenderer,
 	IpcRendererEvent,
-} from "vs/base/parts/sandbox/electron-sandbox/electronTypes.js";
+} from "vs/base/parts/sandbox/electron-browser/electronTypes.js";
+import type { INativeOpenDialogOptions } from "vs/platform/dialogs/common/dialogs.js";
 import type {
-	INativeOpenDialogOptions,
-	INativeSaveDialogOptions,
-	ISaveDialogResult,
-} from "vs/platform/dialogs/common/dialogs.js";
-import type { IResolvedTextEditorOptions } from "vs/platform/editor/common/editor.js";
-import type { LogLevel } from "vs/platform/log/common/log.js";
-import type {
-	AccessibilityInformation,
-	Command,
-	FileStat,
-	FileType,
 	IFileDeleteOptions,
 	IFileOverwriteOptions,
 	IFileWriteOptions,
+} from "vs/platform/files/common/files.js";
+import type { LogLevel } from "vs/platform/log/common/log.js";
+import type {
 	INotification,
 	IPromptChoice,
 	IPromptOptions,
 	IStatusMessageOptions,
 	NotificationMessage,
 	Severity,
-	ThemeColor,
+} from "vs/platform/notification/common/notification.js";
+import type { URI } from "vs/workbench/workbench.web.main.internal.js";
+import type {
+	AccessibilityInformation,
+	Command,
+	FileStat,
+	FileType,
 	WebviewOptions,
 } from "vscode";
 
 import { IntegrationService } from "../../Integration/Tauri/Service.js";
-import { URI, type UriComponents } from "../../Platform/VSCode/Type.js";
+import { type Uri, type UriComponents } from "../../Platform/VSCode/Type.js";
 import { HostServiceProblem } from "./Error.js";
 
 // --- DTO Interfaces (for IPC between Wind and Mountain) ---
@@ -89,9 +86,11 @@ const CreateIpcRendererShim = (
 				argument: Arguments,
 			}),
 		),
-	on: (Channel, Listener) =>
-		Effect.runFork(Integration.Listen(Channel, Listener as any)),
-	send: (Channel, ...Arguments: any[]) =>
+	on: (
+		Channel: string,
+		Listener: (event: IpcRendererEvent, ...args: any[]) => void,
+	) => Effect.runFork(Integration.Listen(Channel, Listener as any)),
+	send: (Channel: string, ...Arguments: any[]) =>
 		Effect.runFork(Integration.Emit(Channel, Arguments)),
 });
 
@@ -99,25 +98,44 @@ const CreateIpcRendererShim = (
  * A factory function that creates a shim for the `process` object using
  * static configuration data fetched from the host.
  * @param Configuration The sandbox configuration from the host.
- * @returns An object that shims the `IProcess` interface.
+ * @returns An object that shims the `NodeJS.Process` interface.
  */
-const CreateProcessShim = (Configuration: ISandboxConfiguration): IProcess => ({
-	...Configuration.userEnv,
-	pid: -1,
-	arch: Configuration.arch,
-	platform: Configuration.platform,
-	type: "renderer",
-	cwd: () => Configuration.VSCODE_CWD,
-	env: { ...Configuration.userEnv },
-	versions: Configuration.versions,
-	getProcessMemoryInfo: () =>
-		Promise.resolve({ total: 0, residentSet: 0, private: 0 }),
-	sandboxed: true,
-	mas: false,
-	windows: Configuration.platform === "win32",
-	linux: Configuration.platform === "linux",
-	darwin: Configuration.platform === "darwin",
-});
+const CreateProcessShim = (
+	Configuration: ISandboxConfiguration,
+): NodeJS.Process =>
+	({
+		...Configuration.userEnv,
+		pid: -1,
+		arch: Configuration.arch as string,
+		platform: Configuration.platform as NodeJS.Platform,
+		type: "renderer",
+		cwd: () => Configuration.cwd,
+		env: { ...Configuration.userEnv },
+		versions: Configuration.versions as NodeJS.ProcessVersions,
+		getProcessMemoryInfo: () =>
+			Promise.resolve({
+				residentSet: 0,
+				private: 0,
+				shared: 0,
+			}),
+		sandboxed: true,
+		mas: false,
+		windows: Configuration.platform === "win32",
+		linux: Configuration.platform === "linux",
+		darwin: Configuration.platform === "darwin",
+		// --- Stubs for other NodeJS.Process properties ---
+		title: "wind",
+		version: "1.0.0",
+		config: {},
+		argv: [],
+		execArgv: [],
+		mainModule: undefined,
+		exit: (_code?: number): never => {
+			throw new Error(
+				"process.exit is not supported in this environment.",
+			);
+		},
+	}) as unknown as NodeJS.Process;
 
 /**
  * The contract for the HostService, defining all methods that bridge to the native host.
@@ -138,41 +156,41 @@ export interface Host {
 	) => Effect.Effect<string, HostServiceProblem>;
 	readonly ShowOpenDialog: (
 		Options: INativeOpenDialogOptions,
-	) => Effect.Effect<Option.Option<readonly URI[]>, HostServiceProblem>;
+	) => Effect.Effect<Option.Option<readonly Uri[]>, HostServiceProblem>;
 	readonly ShowSaveDialog: (
 		Options: INativeSaveDialogOptions,
-	) => Effect.Effect<Option.Option<URI>, HostServiceProblem>;
+	) => Effect.Effect<Option.Option<Uri>, HostServiceProblem>;
 	readonly ShowSaveConfirm: (
 		Files: UriComponents[],
 	) => Effect.Effect<ISaveDialogResult, HostServiceProblem>;
-	readonly OpenFile: (Uri: URI) => Effect.Effect<void, HostServiceProblem>;
-	readonly Stat: (Uri: URI) => Effect.Effect<FileStat, HostServiceProblem>;
+	readonly OpenFile: (Uri: Uri) => Effect.Effect<void, HostServiceProblem>;
+	readonly Stat: (Uri: Uri) => Effect.Effect<FileStat, HostServiceProblem>;
 	readonly ReadDirectory: (
-		Uri: URI,
+		Uri: Uri,
 	) => Effect.Effect<[string, FileType][], HostServiceProblem>;
 	readonly CreateDirectory: (
-		Uri: URI,
+		Uri: Uri,
 	) => Effect.Effect<void, HostServiceProblem>;
 	readonly ReadFile: (
-		Uri: URI,
+		Uri: Uri,
 	) => Effect.Effect<Uint8Array, HostServiceProblem>;
 	readonly WriteFile: (
-		Uri: URI,
+		Uri: Uri,
 		Content: Uint8Array,
 		Options: IFileWriteOptions,
 	) => Effect.Effect<void, HostServiceProblem>;
 	readonly Delete: (
-		Uri: URI,
+		Uri: Uri,
 		Options: IFileDeleteOptions,
 	) => Effect.Effect<void, HostServiceProblem>;
 	readonly Rename: (
-		Source: URI,
-		Target: URI,
+		Source: Uri,
+		Target: Uri,
 		Options: IFileOverwriteOptions,
 	) => Effect.Effect<void, HostServiceProblem>;
 	readonly Copy: (
-		Source: URI,
-		Target: URI,
+		Source: Uri,
+		Target: Uri,
 		Options: IFileOverwriteOptions,
 	) => Effect.Effect<void, HostServiceProblem>;
 	readonly ShowNotification: (
@@ -234,8 +252,8 @@ export interface Host {
  * The `Effect.Service` for the Host service.
  */
 export class HostService extends Effect.Service<Host>()("wind/HostService", {
-	effect: Effect.gen(function* (Generator) {
-		const Integration = yield* Generator(IntegrationService);
+	effect: Effect.gen(function* () {
+		const Integration = yield* IntegrationService;
 
 		/** A factory for creating proxied effects that call the integration layer. */
 		const CreateProxyEffect = <T, Args extends any[]>(
@@ -250,20 +268,22 @@ export class HostService extends Effect.Service<Host>()("wind/HostService", {
 					) as Effect.Effect<T, Error>
 				).pipe(
 					Effect.mapError(
-						(Cause) => new HostServiceProblem({ Cause, Context }),
+						(cause) =>
+							new HostServiceProblem({ Cause: cause, Context }),
 					),
 				);
 		};
 
-		const Configuration = yield* Generator(
-			CreateProxyEffect<ISandboxConfiguration, []>(
-				"MountainGetWorkbenchConfiguration",
-				"FailedToFetchInitialConfiguration",
-			)(),
-		);
+		const Configuration = yield* CreateProxyEffect<
+			ISandboxConfiguration,
+			[]
+		>(
+			"MountainGetWorkbenchConfiguration",
+			"FailedToFetchInitialConfiguration",
+		)();
 
 		const OnDidChangeWindowStateEmitter = new Emitter<boolean>();
-		Integration.Listen<boolean>(
+		yield* Integration.Listen<boolean>(
 			"sky://window/did-change-focus",
 			(Event: TauriEvent<boolean>) => {
 				if (Event.payload !== undefined) {
@@ -298,53 +318,53 @@ export class HostService extends Effect.Service<Host>()("wind/HostService", {
 			OnDidChangeWindowState: OnDidChangeWindowStateEmitter.event,
 			ShowTextDocument: CreateProxyEffect<
 				string,
-				[URI, number | undefined, IResolvedTextEditorOptions]
+				[Uri, number | undefined, IResolvedTextEditorOptions]
 			>("WorkSpace.ShowTextDocument", "ShowTextDocumentFailed"),
 			ShowOpenDialog: CreateProxyEffect<
-				Option.Option<readonly URI[]>,
+				Option.Option<readonly Uri[]>,
 				[INativeOpenDialogOptions]
 			>("UserInterface.ShowOpenDialog", "ShowOpenDialogFailed"),
 			ShowSaveDialog: CreateProxyEffect<
-				Option.Option<URI>,
+				Option.Option<Uri>,
 				[INativeSaveDialogOptions]
 			>("UserInterface.ShowSaveDialog", "ShowSaveDialogFailed"),
 			ShowSaveConfirm: CreateProxyEffect<
 				ISaveDialogResult,
 				[UriComponents[]]
 			>("UserInterface.ShowSaveConfirm", "ShowSaveConfirmFailed"),
-			OpenFile: CreateProxyEffect<void, [URI]>(
+			OpenFile: CreateProxyEffect<void, [Uri]>(
 				"WorkSpace.OpenFile",
 				"OpenFileFailed",
 			),
-			Stat: CreateProxyEffect<FileStat, [URI]>(
+			Stat: CreateProxyEffect<FileStat, [Uri]>(
 				"FileSystem.Stat",
 				"StatFailed",
 			),
-			ReadDirectory: CreateProxyEffect<[string, FileType][], [URI]>(
+			ReadDirectory: CreateProxyEffect<[string, FileType][], [Uri]>(
 				"FileSystem.ReadDirectory",
 				"ReadDirectoryFailed",
 			),
-			CreateDirectory: CreateProxyEffect<void, [URI]>(
+			CreateDirectory: CreateProxyEffect<void, [Uri]>(
 				"FileSystem.CreateDirectory",
 				"CreateDirectoryFailed",
 			),
-			ReadFile: CreateProxyEffect<Uint8Array, [URI]>(
+			ReadFile: CreateProxyEffect<Uint8Array, [Uri]>(
 				"FileSystem.ReadFile",
 				"ReadFileFailed",
 			),
 			WriteFile: CreateProxyEffect<
 				void,
-				[URI, Uint8Array, IFileWriteOptions]
+				[Uri, Uint8Array, IFileWriteOptions]
 			>("FileSystem.WriteFile", "WriteFileFailed"),
-			Delete: CreateProxyEffect<void, [URI, IFileDeleteOptions]>(
+			Delete: CreateProxyEffect<void, [Uri, IFileDeleteOptions]>(
 				"FileSystem.Delete",
 				"DeleteFailed",
 			),
-			Rename: CreateProxyEffect<void, [URI, URI, IFileOverwriteOptions]>(
+			Rename: CreateProxyEffect<void, [Uri, Uri, IFileOverwriteOptions]>(
 				"FileSystem.Rename",
 				"RenameFailed",
 			),
-			Copy: CreateProxyEffect<void, [URI, URI, IFileOverwriteOptions]>(
+			Copy: CreateProxyEffect<void, [Uri, Uri, IFileOverwriteOptions]>(
 				"FileSystem.Copy",
 				"CopyFailed",
 			),
