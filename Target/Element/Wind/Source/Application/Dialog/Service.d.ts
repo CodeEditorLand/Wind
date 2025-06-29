@@ -16,8 +16,8 @@ export interface Dialog {
 }
 declare const DialogService_base: Effect.Service.Class<Dialog, "Service/Dialog", {
     readonly effect: Effect.Effect<{
-        ShowOpenDialog: (Options?: OpenDialogOptions) => Effect.Effect<import("effect/Option").Option<readonly URI[]>, DialogProblem, never>;
-        ShowSaveDialog: (Options?: SaveDialogOptions) => Effect.Effect<import("effect/Option").Option<URI>, DialogProblem, never>;
+        ShowOpenDialog: (Options?: OpenDialogOptions) => Effect.Effect<import("effect/Option").Option<readonly import("vs/workbench/workbench.web.main.internal.js").URI[]>, DialogProblem, never>;
+        ShowSaveDialog: (Options?: SaveDialogOptions) => Effect.Effect<import("effect/Option").Option<import("vs/workbench/workbench.web.main.internal.js").URI>, DialogProblem, never>;
     }, never, import("../Host/Service.js").Host>;
 }>;
 /**

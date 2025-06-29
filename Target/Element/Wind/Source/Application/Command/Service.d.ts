@@ -24,12 +24,7 @@ export interface Command {
     readonly getCommands: (FilterInternal?: boolean) => Promise<string[]>;
 }
 declare const CommandService_base: Effect.Service.Class<Command, "Service/Command", {
-    readonly effect: Effect.Effect<{
-        registerCommand: (Global: boolean, Id: string, Callback: <T>(...Arguments: any[]) => T | Promise<T>, ThisArgument?: any) => IDisposable;
-        registerTextEditorCommand: (Id: string, Callback: (textEditor: TextEditor, edit: TextEditorEdit, ...args: any[]) => void, ThisArg?: any) => IDisposable;
-        executeCommand: <T>(Id: string, ...Arguments: any[]) => Promise<T | undefined>;
-        getCommands: (FilterInternal?: boolean) => Promise<string[]>;
-    }, unknown, unknown>;
+    readonly effect: Effect.Effect<Command, never, import("vs/platform/log/common/log.js").ILogService | import("../IPC/Service.js").IPC | import("../Window/Service.js").Window>;
 }>;
 /**
  * The `Effect.Service` for the Command service.

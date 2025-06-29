@@ -3,6 +3,7 @@
  * @description Provides the "live" implementation `Layer` for the Host service.
  */
 import { Layer } from "effect";
+import type { IntegrationService } from "Source/Integration/Tauri/Service.js";
 import { HostService } from "./Service.js";
 /**
  * The live implementation `Layer` for the `HostService`.
@@ -12,4 +13,4 @@ import { HostService } from "./Service.js";
  * dependencies required by its `effect` constructor, such as the
  * `IntegrationService`.
  */
-export declare const HostLive: Layer.Layer<HostService>;
+export declare const HostLive: Layer.Layer<HostService, never, IntegrationService>;

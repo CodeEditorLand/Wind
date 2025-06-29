@@ -18,10 +18,10 @@ export interface Integration {
     readonly Listen: <T>(EventName: string, Handler: (Event: TauriEvent<T>) => void) => Effect.Effect<() => void, Error>;
     readonly Emit: (EventName: string, Payload?: object) => Effect.Effect<void, Error>;
 }
-declare const IntegrationService_base: Effect.Service.Class<IntegrationService, "Integration/Tauri", {
+declare const IntegrationService_base: Effect.Service.Class<Integration, "Integration/Tauri", {
     readonly sync: () => {
-        Invoke: (Command: string, _Arguments?: object) => Effect.Effect<never, never, never>;
-        Listen: (_EventName: string, _Handler: any) => Effect.Effect<never, never, never>;
+        Invoke: <T>(Command: string, _Arguments?: object) => Effect.Effect<T, Error>;
+        Listen: <T>(_EventName: string, _Handler: (Event: TauriEvent<T>) => void) => Effect.Effect<() => void, Error>;
         Emit: (_EventName: string, _Payload?: object) => Effect.Effect<never, never, never>;
     };
 }>;

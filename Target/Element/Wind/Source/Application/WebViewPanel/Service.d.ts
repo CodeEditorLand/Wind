@@ -22,9 +22,9 @@ declare const WebViewPanelService_base: Effect.Service.Class<WebViewPanel, "Serv
         CreateWebviewPanel: (Extension: IExtensionDescription, ViewType: string, Title: string, ShowOptions: ViewColumn | {
             viewColumn: ViewColumn;
             preserveFocus?: boolean;
-        }, Options?: WebviewPanelOptions & WebviewOptions) => Effect.Effect<WebViewPanelImplementation, WebViewPanelProblem, unknown>;
+        }, Options?: WebviewPanelOptions & WebviewOptions) => Effect.Effect<WebViewPanelImplementation, WebViewPanelProblem, never>;
         RegisterWebviewPanelSerializer: (_Extension: IExtensionDescription, ViewType: string, _Serializer: WebviewPanelSerializer) => Effect.Effect<Disposable, WebViewPanelProblem, never>;
-    }, unknown, unknown>;
+    }, never, import("../IPC/Service.js").IPC>;
 }>;
 /**
  * The `Effect.Service` for managing webview panels.

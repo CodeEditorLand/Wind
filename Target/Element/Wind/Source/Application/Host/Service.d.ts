@@ -8,12 +8,13 @@ import { Effect, Option } from "effect";
 import { type Event } from "vs/base/common/event.js";
 import type { IMarkdownString } from "vs/base/common/htmlContent.js";
 import type { ISandboxConfiguration } from "vs/base/parts/sandbox/common/sandboxTypes.js";
-import type { INativeOpenDialogOptions, INativeSaveDialogOptions, ISaveDialogResult } from "vs/platform/dialogs/common/dialogs.js";
-import type { IResolvedTextEditorOptions } from "vs/platform/editor/common/editor.js";
+import type { INativeOpenDialogOptions } from "vs/platform/dialogs/common/dialogs.js";
+import type { IFileDeleteOptions, IFileOverwriteOptions, IFileWriteOptions } from "vs/platform/files/common/files.js";
 import type { LogLevel } from "vs/platform/log/common/log.js";
-import type { AccessibilityInformation, Command, FileStat, FileType, IFileDeleteOptions, IFileOverwriteOptions, IFileWriteOptions, INotification, IPromptChoice, IPromptOptions, IStatusMessageOptions, NotificationMessage, Severity, WebviewOptions } from "vscode";
-import { IntegrationService } from "../../Integration/Tauri/Service.js";
-import { type UriComponents } from "../../Platform/VSCode/Type.js";
+import type { INotification, IPromptChoice, IPromptOptions, IStatusMessageOptions, NotificationMessage, Severity } from "vs/platform/notification/common/notification.js";
+import type { URI } from "vs/workbench/workbench.web.main.internal.js";
+import type { AccessibilityInformation, Command, FileStat, FileType, WebviewOptions } from "vscode";
+import { type Uri, type UriComponents } from "../../Platform/VSCode/Type.js";
 import { HostServiceProblem } from "./Error.js";
 /** Data Transfer Object for a `vscode.StatusBarItem`. */
 interface StatusBarEntryDTO {
@@ -48,18 +49,18 @@ export interface Host {
     readonly Logger: (Level: LogLevel, Message: string) => Effect.Effect<void, HostServiceProblem>;
     readonly OnDidChangeWindowState: Event<boolean>;
     readonly ShowTextDocument: (Uri: URI, ViewColumn: number | undefined, Options: IResolvedTextEditorOptions) => Effect.Effect<string, HostServiceProblem>;
-    readonly ShowOpenDialog: (Options: INativeOpenDialogOptions) => Effect.Effect<Option.Option<readonly URI[]>, HostServiceProblem>;
-    readonly ShowSaveDialog: (Options: INativeSaveDialogOptions) => Effect.Effect<Option.Option<URI>, HostServiceProblem>;
+    readonly ShowOpenDialog: (Options: INativeOpenDialogOptions) => Effect.Effect<Option.Option<readonly Uri[]>, HostServiceProblem>;
+    readonly ShowSaveDialog: (Options: INativeSaveDialogOptions) => Effect.Effect<Option.Option<Uri>, HostServiceProblem>;
     readonly ShowSaveConfirm: (Files: UriComponents[]) => Effect.Effect<ISaveDialogResult, HostServiceProblem>;
-    readonly OpenFile: (Uri: URI) => Effect.Effect<void, HostServiceProblem>;
-    readonly Stat: (Uri: URI) => Effect.Effect<FileStat, HostServiceProblem>;
-    readonly ReadDirectory: (Uri: URI) => Effect.Effect<[string, FileType][], HostServiceProblem>;
-    readonly CreateDirectory: (Uri: URI) => Effect.Effect<void, HostServiceProblem>;
-    readonly ReadFile: (Uri: URI) => Effect.Effect<Uint8Array, HostServiceProblem>;
-    readonly WriteFile: (Uri: URI, Content: Uint8Array, Options: IFileWriteOptions) => Effect.Effect<void, HostServiceProblem>;
-    readonly Delete: (Uri: URI, Options: IFileDeleteOptions) => Effect.Effect<void, HostServiceProblem>;
-    readonly Rename: (Source: URI, Target: URI, Options: IFileOverwriteOptions) => Effect.Effect<void, HostServiceProblem>;
-    readonly Copy: (Source: URI, Target: URI, Options: IFileOverwriteOptions) => Effect.Effect<void, HostServiceProblem>;
+    readonly OpenFile: (Uri: Uri) => Effect.Effect<void, HostServiceProblem>;
+    readonly Stat: (Uri: Uri) => Effect.Effect<FileStat, HostServiceProblem>;
+    readonly ReadDirectory: (Uri: Uri) => Effect.Effect<[string, FileType][], HostServiceProblem>;
+    readonly CreateDirectory: (Uri: Uri) => Effect.Effect<void, HostServiceProblem>;
+    readonly ReadFile: (Uri: Uri) => Effect.Effect<Uint8Array, HostServiceProblem>;
+    readonly WriteFile: (Uri: Uri, Content: Uint8Array, Options: IFileWriteOptions) => Effect.Effect<void, HostServiceProblem>;
+    readonly Delete: (Uri: Uri, Options: IFileDeleteOptions) => Effect.Effect<void, HostServiceProblem>;
+    readonly Rename: (Source: Uri, Target: Uri, Options: IFileOverwriteOptions) => Effect.Effect<void, HostServiceProblem>;
+    readonly Copy: (Source: Uri, Target: Uri, Options: IFileOverwriteOptions) => Effect.Effect<void, HostServiceProblem>;
     readonly ShowNotification: (Notification: INotification) => Effect.Effect<void, HostServiceProblem>;
     readonly ShowPrompt: (Severity: Severity, Message: string, Choices: IPromptChoice[], Options?: IPromptOptions) => Effect.Effect<void, HostServiceProblem>;
     readonly ShowStatusMessage: (Message: NotificationMessage, Options?: IStatusMessageOptions) => Effect.Effect<void, HostServiceProblem>;
@@ -79,7 +80,7 @@ declare const HostService_base: Effect.Service.Class<Host, "wind/HostService", {
     readonly effect: Effect.Effect<{
         Configuration: ISandboxConfiguration;
         ProvideGlobals: () => Effect.Effect<void, never, never>;
-        NotifyReady: () => Effect.Effect<never, HostServiceProblem, never>;
+        NotifyReady: () => Effect.Effect<void, HostServiceProblem, never>;
         Logger: (Arguments_0: LogLevel, Arguments_1: string) => Effect.Effect<void, HostServiceProblem, never>;
         OnDidChangeWindowState: Event<boolean>;
         ShowTextDocument: (Arguments_0: URI, Arguments_1: number | undefined, Arguments_2: IResolvedTextEditorOptions) => Effect.Effect<string, HostServiceProblem, never>;
@@ -96,8 +97,8 @@ declare const HostService_base: Effect.Service.Class<Host, "wind/HostService", {
         Rename: (Arguments_0: URI, Arguments_1: URI, Arguments_2: IFileOverwriteOptions) => Effect.Effect<void, HostServiceProblem, never>;
         Copy: (Arguments_0: URI, Arguments_1: URI, Arguments_2: IFileOverwriteOptions) => Effect.Effect<void, HostServiceProblem, never>;
         ShowNotification: (Arguments_0: INotification) => Effect.Effect<void, HostServiceProblem, never>;
-        ShowPrompt: (Arguments_0: Severity, Arguments_1: string, Arguments_2: IPromptChoice[], Arguments_3: any) => Effect.Effect<void, HostServiceProblem, never>;
-        ShowStatusMessage: (Arguments_0: NotificationMessage, Arguments_1: any) => Effect.Effect<void, HostServiceProblem, never>;
+        ShowPrompt: (Arguments_0: Severity, Arguments_1: string, Arguments_2: IPromptChoice[], Arguments_3: IPromptOptions | undefined) => Effect.Effect<void, HostServiceProblem, never>;
+        ShowStatusMessage: (Arguments_0: NotificationMessage, Arguments_1: IStatusMessageOptions | undefined) => Effect.Effect<void, HostServiceProblem, never>;
         SetStatusBarItem: (Arguments_0: StatusBarEntryDTO) => Effect.Effect<void, HostServiceProblem, never>;
         DisposeStatusBarItem: (Arguments_0: string) => Effect.Effect<void, HostServiceProblem, never>;
         SetStatusBarMessage: (Arguments_0: string, Arguments_1: string) => Effect.Effect<void, HostServiceProblem, never>;
@@ -109,7 +110,7 @@ declare const HostService_base: Effect.Service.Class<Host, "wind/HostService", {
         SetWebviewIconPath: (Arguments_0: string, Arguments_1: IconPathDTO | undefined) => Effect.Effect<void, HostServiceProblem, never>;
         RevealWebviewPanel: (Arguments_0: string, Arguments_1: ShowOptionsDTO) => Effect.Effect<void, HostServiceProblem, never>;
         DisposeWebview: (Arguments_0: string) => Effect.Effect<void, HostServiceProblem, never>;
-    }, HostServiceProblem, IntegrationService>;
+    }, Error, import("../../Integration/Tauri/Service.js").Integration>;
 }>;
 /**
  * The `Effect.Service` for the Host service.
