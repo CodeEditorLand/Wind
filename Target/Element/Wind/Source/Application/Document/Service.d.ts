@@ -5,13 +5,13 @@
  */
 import { Effect, Option } from "effect";
 import type { Disposable, Event, TextDocument, TextDocumentChangeEvent, TextDocumentContentProvider, Uri } from "vscode";
-import { Disposable as VSCodeDisposable } from "Source/Platform/VSCode/Type.js";
+import { Disposable as VSCodeDisposable } from "../../Platform/VSCode/Type.js";
 import { ContentProviderProblem } from "./Error.js";
 /**
  * The contract for the Document service. It manages all open text documents,
  * their content, and lifecycle events.
  */
-interface Document {
+export interface Document {
     readonly TextDocuments: Effect.Effect<readonly TextDocument[]>;
     readonly OnDidOpenTextDocument: Event<TextDocument>;
     readonly OnDidCloseTextDocument: Event<TextDocument>;

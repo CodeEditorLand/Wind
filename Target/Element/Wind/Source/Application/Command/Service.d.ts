@@ -7,9 +7,17 @@ import { Effect } from "effect";
 import type { IDisposable } from "vs/base/common/lifecycle.js";
 import type { TextEditor, TextEditorEdit } from "vscode";
 /**
+ * Represents the internal structure of a registered command.
+ */
+export interface InternalCommand {
+    readonly Id: string;
+    readonly Callback: (...Arguments: any[]) => any;
+    readonly ThisArgument: any;
+}
+/**
  * The contract for the Command service, mirroring the public `vscode.commands` API.
  */
-interface Command {
+export interface Command {
     readonly registerCommand: (Global: boolean, Id: string, Callback: <T>(...Arguments: any[]) => T | Promise<T>, ThisArgument?: any) => IDisposable;
     readonly registerTextEditorCommand: (Id: string, Callback: (TextEditor: TextEditor, Edit: TextEditorEdit, ...Arguments: any[]) => void, ThisArgument?: any) => IDisposable;
     readonly executeCommand: <T>(Id: string, ...Arguments: any[]) => Promise<T | undefined>;

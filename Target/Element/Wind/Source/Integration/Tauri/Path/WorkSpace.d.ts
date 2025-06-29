@@ -3,7 +3,7 @@
  * @description Resolves the workspace path using Tauri's API.
  */
 import { Effect } from "effect";
-import { type Uri } from "Source/Platform/VSCode/Type.js";
+import { type Uri } from "../../../Platform/VSCode/Type.js";
 import { IntegrationPathProblem } from "./Error.js";
 /**
  * An Effect that resolves the path for workspace-specific settings.

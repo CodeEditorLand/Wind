@@ -6,14 +6,14 @@
  */
 import { Effect } from "effect";
 import type { IExtensionDescription } from "vs/platform/extensions/common/extensions.js";
-import { Disposable } from "Source/Platform/VSCode/Type.js";
 import type { CodeActionProvider, CodeActionProviderMetadata, CompletionItemProvider, DefinitionProvider, DocumentSelector, HoverProvider, ReferenceProvider } from "vscode";
+import { Disposable } from "../../Platform/VSCode/Type.js";
 import { ProviderRegistrationProblem } from "./Error.js";
 /**
  * The contract for the LanguageFeature service. This interface mirrors a subset
  * of the `vscode.languages` API, focusing on provider registration.
  */
-interface LanguageFeature {
+export interface LanguageFeature {
     readonly RegisterHoverProvider: (Selector: DocumentSelector, Provider: HoverProvider, Extension: IExtensionDescription) => Effect.Effect<Disposable, ProviderRegistrationProblem>;
     readonly RegisterCompletionItemProvider: (Selector: DocumentSelector, Provider: CompletionItemProvider, TriggerCharacters: string[], Extension: IExtensionDescription) => Effect.Effect<Disposable, ProviderRegistrationProblem>;
     readonly RegisterDefinitionProvider: (Selector: DocumentSelector, Provider: DefinitionProvider, Extension: IExtensionDescription) => Effect.Effect<Disposable, ProviderRegistrationProblem>;

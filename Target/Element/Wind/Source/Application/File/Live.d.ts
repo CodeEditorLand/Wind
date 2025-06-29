@@ -10,6 +10,6 @@ import { FileService } from "./Service.js";
  * This layer is derived directly from the default implementation provided
  * in the `FileService` service definition. It automatically includes the
  * dependencies required by its `effect` constructor, such as `ILogService` and
- * `FileSystemProviderService`.
+ * `FileSystemService`.
  */
 export declare const FileLive: Layer.Layer<FileService>;

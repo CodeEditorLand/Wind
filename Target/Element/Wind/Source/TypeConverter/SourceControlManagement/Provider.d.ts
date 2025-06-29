@@ -7,7 +7,7 @@ import type { ISCMProvider } from "vs/workbench/contrib/scm/common/scm.js";
  * The Data Transfer Object for an SCM Provider.
  * This should be kept in sync with the DTO from Mountain.
  */
-interface ScmProviderDTO {
+export interface SourceControlManagementProviderDTO {
     readonly Handle: number;
     readonly Label: string;
     readonly RootUri?: string;
@@ -19,5 +19,4 @@ interface ScmProviderDTO {
  * @param DTO - The SCM Provider DTO received from the host.
  * @returns An object conforming to the `ISCMProvider` interface.
  */
-export declare const FromDTO: (DTO: ScmProviderDTO) => ISCMProvider;
-export {};
+export declare const FromDTO: (DTO: SourceControlManagementProviderDTO) => ISCMProvider;

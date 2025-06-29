@@ -13,7 +13,7 @@ declare const SourceControlManagementService_base: Effect.Service.Class<ISCMServ
  *
  * This service implementation "lifts" the original `SourceControlManagementService`
  * class from VS Code. It orchestrates the following:
- * 1. Instantiates the real `VscScmService`.
+ * 1. Instantiates the real `VSCodeSCMService`.
  * 2. Defines an `Initialize` effect that fetches the complete initial SCM state
  *    from the `Mountain` host and sets up listeners for real-time updates.
  * 3. This `Initialize` effect must be run once at application startup.

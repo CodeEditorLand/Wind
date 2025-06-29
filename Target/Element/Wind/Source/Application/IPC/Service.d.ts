@@ -11,7 +11,7 @@ import { IpcProblem } from "./Error.js";
 /**
  * The contract for the IPC service.
  */
-interface IPC {
+export interface IPC {
     readonly SendRequest: <T = unknown>(Method: string, Parameters: readonly unknown[]) => Effect.Effect<T, IpcProblem>;
     readonly SendNotification: (Method: string, Parameters: readonly unknown[]) => Effect.Effect<void, IpcProblem>;
     readonly SendCancel: (TokenId: number) => Effect.Effect<void, never>;

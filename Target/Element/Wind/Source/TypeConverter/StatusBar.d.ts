@@ -7,7 +7,7 @@ import type { CommandConverter } from "./Command.js";
 /**
  * The DTO for a status bar entry sent over IPC.
  */
-interface StatusBarEntryDTO {
+export interface StatusBarEntryDTO {
     readonly id: string;
     readonly name: string | undefined;
     readonly text: string;
@@ -23,4 +23,3 @@ interface StatusBarEntryDTO {
  * Converts a `vscode.StatusBarItem` object into a plain DTO for IPC.
  */
 export declare const FromAPI: (From: VSCodeStatusBarItem, EntryId: string, CommandConverterInstance: CommandConverter) => StatusBarEntryDTO;
-export {};

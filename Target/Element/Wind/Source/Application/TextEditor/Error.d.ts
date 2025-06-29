@@ -3,7 +3,7 @@
  * @description Defines domain-specific, tagged errors for text editor (file model)
  * operations at the application layer.
  */
-import type { HostServiceProblem } from "Source/Application/Host/Error.js";
+import type { HostServiceProblem } from "../Host/Error.js";
 declare const TextEditorProblem_base: new <A extends Record<string, any> = {}>(args: import("effect/Types").Equals<A, {}> extends true ? void : { readonly [P in keyof A as P extends "_tag" ? never : P]: A[P]; }) => import("effect/Cause").YieldableError & {
     readonly _tag: "TextEditorProblem";
 } & Readonly<A>;

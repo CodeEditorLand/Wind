@@ -5,6 +5,14 @@
  * contract from VS Code.
  */
 import { Effect } from "effect";
+/**
+ * Represents the serializable state of the editor grid UI.
+ */
+export interface IEditorPartUIState {
+    readonly SerializedGrid: any;
+    readonly ActiveGroup: number;
+    readonly MostRecentActiveGroups: number[];
+}
 declare const EditorGroupService_base: Effect.Service.Class<IEditorGroupService, "vscode/EditorGroupService", {
     readonly effect: Effect.Effect<IEditorGroupService, unknown, unknown>;
 }>;

@@ -3,7 +3,7 @@
  * @description Defines a safe Effect for parsing a JSON string.
  */
 import { Effect } from "effect";
-import { IntegrationConfigurationProblem } from "Source/Integration/Tauri/Configuration/Error.js";
+import { IntegrationConfigurationProblem } from "../Configuration/Error.js";
 /**
  * An Effect that safely parses a JSON string into an object.
  * This is a standard library operation wrapped in an Effect for type-safe

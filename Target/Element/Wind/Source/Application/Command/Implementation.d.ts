@@ -10,7 +10,7 @@ import { type CommandService } from "./Service.js";
 /**
  * Represents the serializable DTO for a command sent over IPC.
  */
-interface InternalCommand {
+export interface InternalCommand {
     id: string;
     title: string;
     tooltip?: string;
@@ -30,4 +30,3 @@ export declare class CommandImplementation {
     private ExecuteDelegatedCommand;
     ToInternal(Command: VSCodeCommand, DisposableArray: IDisposable[]): InternalCommand | undefined;
 }
-export {};

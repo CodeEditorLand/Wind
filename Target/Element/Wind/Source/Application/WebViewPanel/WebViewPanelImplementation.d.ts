@@ -6,7 +6,7 @@
  */
 import type { IExtensionDescription } from "vs/platform/extensions/common/extensions.js";
 import type { Event, Uri, ViewColumn, Webview, WebviewOptions, WebviewPanel, WebviewPanelOnDidChangeViewStateEvent, WebviewPanelOptions } from "vscode";
-import type { HostService } from "Source/Application/Host/Service.js";
+import type { HostService } from "../../Application/Host/Service.js";
 /**
  * A concrete implementation of the `vscode.WebviewPanel` interface.
  */

@@ -4,13 +4,13 @@
  */
 import { Effect } from "effect";
 import type { IExtensionDescription } from "vs/platform/extensions/common/extensions.js";
-import { Disposable, type ViewColumn, type WebviewOptions, type WebviewPanel as VSCodeWebviewPanel, type WebviewPanelOptions, type WebviewPanelSerializer } from "vscode";
-import { WebViewPanelImplementation } from "./WebViewPanelImplementation.js";
+import { Disposable, type ViewColumn, type WebviewPanel as VSCodeWebviewPanel, type WebviewOptions, type WebviewPanelOptions, type WebviewPanelSerializer } from "vscode";
 import { WebViewPanelProblem } from "./Error.js";
+import { WebViewPanelImplementation } from "./WebViewPanelImplementation.js";
 /**
  * The contract for the WebViewPanel service.
  */
-interface WebViewPanel {
+export interface WebViewPanel {
     readonly CreateWebviewPanel: (Extension: IExtensionDescription, ViewType: string, Title: string, ShowOptions: ViewColumn | {
         viewColumn: ViewColumn;
         preserveFocus?: boolean;

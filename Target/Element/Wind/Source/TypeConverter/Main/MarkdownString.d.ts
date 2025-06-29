@@ -3,7 +3,7 @@
  * @description Converts between `vscode.MarkdownString` and its DTO representation.
  */
 import type { IMarkdownString } from "vs/base/common/htmlContent.js";
-import { MarkdownString } from "Source/Platform/VSCode/Type.js";
+import { MarkdownString } from "../../Platform/VSCode/Type.js";
 /**
  * Converts a `vscode.MarkdownString` object into a plain DTO for IPC.
  * @param MarkdownStringInstance - The `vscode.MarkdownString` instance to convert.

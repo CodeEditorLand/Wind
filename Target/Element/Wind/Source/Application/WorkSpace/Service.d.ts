@@ -4,10 +4,10 @@
  * It manages workspace-level state (folders, configuration) and editor state.
  */
 import { Effect } from "effect";
-import { WorkspaceService as VscWorkspaceService } from "vs/workbench/services/configuration/browser/configurationService.js";
 import type { IWorkspaceContextService } from "vs/platform/workspace/common/workspace.js";
+import { WorkspaceService as VSCodeWorkspaceService } from "vs/workbench/services/configuration/browser/configurationService.js";
 declare const WorkSpaceService_base: Effect.Service.Class<IWorkspaceContextService, "workspaceContextService", {
-    readonly effect: Effect.Effect<VscWorkspaceService, unknown, unknown>;
+    readonly effect: Effect.Effect<VSCodeWorkspaceService, unknown, unknown>;
 }>;
 /**
  * The `Effect.Service` for the `IWorkspaceContextService`.

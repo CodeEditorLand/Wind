@@ -8,9 +8,28 @@ import type { IExtensionDescription } from "vs/platform/extensions/common/extens
 import { Disposable, type Breakpoint, type DebugAdapterDescriptorFactory, type DebugAdapterTrackerFactory, type DebugConfiguration, type DebugConfigurationProvider, type DebugConsole, type DebugSession, type DebugSessionCustomEvent, type DebugSessionOptions, type Event, type WorkspaceFolder } from "vscode";
 import { DebugProviderRegistrationProblem, StartDebuggingProblem } from "./Error.js";
 /**
+ * Represents a registered debug provider.
+ */
+export interface ProviderEntry {
+    readonly Type: string;
+    readonly Provider: DebugConfigurationProvider | DebugAdapterDescriptorFactory | DebugAdapterTrackerFactory;
+    readonly Extension: IExtensionDescription;
+}
+/**
+ * Represents the internal state managed by the Debug service.
+ */
+export interface DebuggerState {
+    readonly ActiveDebugSession: DebugSession | undefined;
+    readonly ActiveDebugConsole: DebugConsole;
+    readonly Breakpoints: readonly Breakpoint[];
+    readonly DebugConfigurationProviders: Map<number, ProviderEntry>;
+    readonly DebugAdapterDescriptorFactories: Map<number, ProviderEntry>;
+    readonly DebugAdapterTrackerFactories: Map<number, ProviderEntry>;
+}
+/**
  * The contract for the Debug service, mirroring `vscode.debug`.
  */
-interface Debug {
+export interface Debug {
     readonly activeDebugSession: DebugSession | undefined;
     readonly activeDebugConsole: DebugConsole;
     readonly breakpoints: readonly Breakpoint[];

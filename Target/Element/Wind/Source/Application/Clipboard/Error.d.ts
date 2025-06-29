@@ -4,7 +4,7 @@
  * at the application layer. This provides a structured way to handle failures
  * specific to the clipboard domain.
  */
-import type { IntegrationClipboardProblem } from "Source/Integration/Tauri/Clipboard/Error.js";
+import type { IntegrationClipboardProblem } from "../../Integration/Tauri/Clipboard/Error.js";
 declare const ApplicationClipboardProblem_base: new <A extends Record<string, any> = {}>(args: import("effect/Types").Equals<A, {}> extends true ? void : { readonly [P in keyof A as P extends "_tag" ? never : P]: A[P]; }) => import("effect/Cause").YieldableError & {
     readonly _tag: "ApplicationClipboardProblem";
 } & Readonly<A>;

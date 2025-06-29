@@ -7,8 +7,8 @@
  *   - Wrap raw Tauri `invoke`, `listen`, and `emit` calls in declarative Effects.
  *   - Act as the sole entry point for all native backend communication.
  */
-import { Effect } from "effect";
 import type { Event as TauriEvent } from "@tauri-apps/api/event";
+import { Effect } from "effect";
 /**
  * The interface for the Tauri Integration service. It provides an Effect-native
  * API for interacting with the Tauri backend.

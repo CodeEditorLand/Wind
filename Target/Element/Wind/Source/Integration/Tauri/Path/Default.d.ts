@@ -3,7 +3,7 @@
  * @description Resolves the default application configuration path using Tauri's API.
  */
 import { Effect } from "effect";
-import { type Uri } from "Source/Platform/VSCode/Type.js";
+import { type Uri } from "../../../Platform/VSCode/Type.js";
 import { IntegrationPathProblem } from "./Error.js";
 /**
  * An Effect that resolves the path to the application's configuration directory.

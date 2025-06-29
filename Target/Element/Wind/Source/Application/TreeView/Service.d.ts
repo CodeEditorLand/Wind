@@ -8,11 +8,11 @@ import { Effect } from "effect";
 import { type Event } from "vs/base/common/event.js";
 import { ILogService } from "vs/platform/log/common/log.js";
 import type { TreeDataProvider, TreeItem, TreeView } from "vscode";
-import { IntegrationService } from "Source/Integration/Tauri/Service.js";
+import { IntegrationService } from "../../Integration/Tauri/Service.js";
 /**
  * The DTO for a tree item received from the Mountain backend.
  */
-interface TreeItemDTO {
+export interface TreeItemDTO {
     readonly handle: string;
     readonly label: {
         readonly label: string;
@@ -33,10 +33,10 @@ interface TreeItemDTO {
 export declare class NativeTreeViewDataProvider implements TreeDataProvider<TreeItemDTO> {
     private readonly ViewId;
     private readonly Integration;
-    private readonly LogService;
+    private readonly LoggerService;
     private readonly OnDidChangeTreeDataEmitter;
     readonly onDidChangeTreeData: Event<TreeItemDTO | TreeItemDTO[] | undefined | null | void>;
-    constructor(ViewId: string, Integration: IntegrationService, LogService: ILogService);
+    constructor(ViewId: string, Integration: IntegrationService, LoggerService: ILogService);
     getTreeItem(Element: TreeItemDTO): TreeItem | Thenable<TreeItem>;
     getChildren(Element?: TreeItemDTO): ProviderResult<TreeItemDTO[]>;
 }
@@ -44,7 +44,7 @@ export declare class NativeTreeViewDataProvider implements TreeDataProvider<Tree
  * The contract for the TreeView service. It wraps VS Code's `IViewsService`
  * for the specific purpose of registering tree data providers.
  */
-interface TreeViewServiceMethods {
+export interface TreeViewServiceMethods {
     readonly registerTreeDataProvider: <T>(viewId: string, provider: TreeDataProvider<T>) => TreeView<T>;
 }
 declare const TreeViewService_base: Effect.Service.Class<TreeViewServiceMethods, "viewsService", {

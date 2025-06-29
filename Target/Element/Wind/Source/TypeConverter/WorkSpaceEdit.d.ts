@@ -5,8 +5,7 @@
  */
 import type { UriComponents } from "vs/base/common/uri.js";
 import type { IIdentifiedSingleEditOperation } from "vs/editor/common/model.js";
-import type { WorkspaceEdit as VSCodeWorkspaceEdit } from "vscode";
-import type { WorkspaceEditEntryMetadata } from "vscode";
+import type { WorkspaceEdit as VSCodeWorkspaceEdit, WorkspaceEditEntryMetadata } from "vscode";
 interface IWorkspaceTextEditDTO {
     readonly _type: "text";
     readonly resource: UriComponents;

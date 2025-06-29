@@ -3,7 +3,7 @@
  * @description Type converters for the `vscode.Webview` and `vscode.WebviewPanel` APIs.
  */
 import type { IExtensionDescription } from "vs/platform/extensions/common/extensions.js";
-import type { WebviewOptions, WebviewPanelOptions, ViewColumn } from "vscode";
+import type { ViewColumn, WebviewOptions, WebviewPanelOptions } from "vscode";
 interface IEditorOptions {
     preserveFocus?: boolean;
 }

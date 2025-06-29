@@ -37,6 +37,7 @@ export type LoggerGroup = {
     readonly name: string;
 };
 export interface ILogService extends ILogger {
+    Error(Error: never): unknown;
     readonly _serviceBrand: undefined;
 }
 export interface ILoggerOptions {

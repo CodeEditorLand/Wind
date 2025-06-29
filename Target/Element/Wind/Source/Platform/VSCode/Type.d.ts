@@ -11,7 +11,7 @@
 import { CancellationTokenSource as VSCodeCancellationTokenSource } from "vs/base/common/cancellation.js";
 import { CancellationError as VSCodeCancellationError } from "vs/base/common/errors.js";
 import { Emitter } from "vs/base/common/event.js";
-import { URI as VSCodeURI } from "vs/base/common/uri.js";
+import { URI as VSCodeURI, type UriComponents as VSCodeUriComponents } from "vs/base/common/uri.js";
 import { FileType as VSCodeFileType } from "vs/platform/files/common/files.js";
 import type * as VSCode from "vscode";
 import { CompletionItemKind, CompletionItemTag, ConfigurationTarget, DiagnosticSeverity, DiagnosticTag, EndOfLine, ProgressLocation, QuickPickItemKind, SnippetString, StatusBarAlignment, TextEditorCursorStyle, TreeItemCollapsibleState, ViewColumn } from "vscode";
@@ -31,9 +31,10 @@ export declare const CancellationTokenSource: typeof VSCodeCancellationTokenSour
 export declare const CancellationError: typeof VSCodeCancellationError;
 /** The canonical `EventEmitter` class. */
 export declare const EventEmitter: typeof Emitter;
-/** The canonical `URI` class. */
+/** The canonical `URI` class and its associated types. */
 export declare const URI: typeof VSCodeURI;
 export type Uri = VSCodeURI;
+export type UriComponents = VSCodeUriComponents;
 /** The canonical `ThemeIcon` class. */
 export declare const ThemeIcon: typeof VSCode.ThemeIcon;
 /** The canonical `ProcessExecution` class for Tasks. */
@@ -79,6 +80,18 @@ export declare class Range implements VSCode.Range {
     readonly end: Position;
     constructor(start: Position, end: Position);
     constructor(startLine: number, startCharacter: number, endLine: number, endCharacter: number);
+    get isEmpty(): boolean;
+    get isSingleLine(): boolean;
+    contains(positionOrRange: Position | Range): boolean;
+    isEqual(other: Range): boolean;
+    intersection(other: Range): Range | undefined;
+    union(other: Range): Range;
+    with(start?: Position, end?: Position): Range;
+    with(change: {
+        start?: Position;
+        end?: Position;
+    }): Range;
+    toJSON(): any;
 }
 /**
  * The canonical `Selection` class, representing a range with an active cursor position.
@@ -88,4 +101,6 @@ export declare class Selection extends Range implements VSCode.Selection {
     readonly active: Position;
     constructor(anchor: Position, active: Position);
     constructor(anchorLine: number, anchorCharacter: number, activeLine: number, activeCharacter: number);
+    get isReversed(): boolean;
+    toJSON(): any;
 }

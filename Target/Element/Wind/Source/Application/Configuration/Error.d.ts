@@ -3,8 +3,8 @@
  * @description Defines a domain-specific, tagged error for configuration
  * operations at the application layer.
  */
-import type { IntegrationConfigurationProblem } from "Source/Integration/Tauri/Configuration/Error.js";
-import type { IntegrationPathProblem } from "Source/Integration/Tauri/Path/Error.js";
+import type { IntegrationConfigurationProblem } from "../../Integration/Tauri/Configuration/Error.js";
+import type { IntegrationPathProblem } from "../../Integration/Tauri/Path/Error.js";
 declare const ApplicationConfigurationProblem_base: new <A extends Record<string, any> = {}>(args: import("effect/Types").Equals<A, {}> extends true ? void : { readonly [P in keyof A as P extends "_tag" ? never : P]: A[P]; }) => import("effect/Cause").YieldableError & {
     readonly _tag: "ApplicationConfigurationProblem";
 } & Readonly<A>;

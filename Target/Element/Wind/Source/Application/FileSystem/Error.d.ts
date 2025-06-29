@@ -7,7 +7,7 @@ declare const FileSystemProblem_base: new <A extends Record<string, any> = {}>(a
     readonly _tag: "FileSystemProblem";
 } & Readonly<A>;
 /**
- * Represents a failure that occurs within the `FileSystemProviderService`.
+ * Represents a failure that occurs within the `FileSystemService`.
  * This typically wraps an error from the underlying `IntegrationService` call,
  * providing a clear, domain-specific error type.
  */

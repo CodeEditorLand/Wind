@@ -5,7 +5,7 @@
  */
 import { type Event } from "vs/base/common/event.js";
 import { type IStorage, type IStorageChangeEvent, type IUpdateRequest } from "vs/base/parts/storage/common/storage.js";
-import { IntegrationService } from "Source/Integration/Tauri/Service.js";
+import { IntegrationService } from "../../Integration/Tauri/Service.js";
 import type { StorageDatabase } from "./Database.js";
 /**
  * An `IStorage` implementation that delegates all operations to a remote

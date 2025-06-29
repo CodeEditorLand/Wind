@@ -19,7 +19,7 @@ export declare class APICommand {
 /**
  * Represents the serializable DTO for a command sent over IPC.
  */
-interface InternalCommand {
+export interface InternalCommand {
     id: string;
     title: string;
     tooltip?: string;
@@ -42,4 +42,3 @@ export declare class CommandConverter {
     ToInternal(Command: VSCodeCommand, DisposableArray: IDisposable[]): InternalCommand | undefined;
     FromInternal(CommandDTO: InternalCommand): VSCodeCommand | undefined;
 }
-export {};
