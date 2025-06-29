@@ -4,7 +4,7 @@
  * and 'Save' dialogs. This service proxies requests to the host process.
  */
 
-import { Effect } from "effect";
+import { Effect, Option } from "effect";
 import type { OpenDialogOptions, SaveDialogOptions, Uri } from "vscode";
 
 import { HostService } from "../Host/Service.js";
@@ -31,11 +31,12 @@ export interface Dialog {
  * potential `HostServiceProblem` into a domain-specific `DialogProblem`.
  */
 export class DialogService extends Effect.Service<Dialog>()("Service/Dialog", {
-	effect: Effect.gen(function* (Generator) {
-		const Host = yield* Generator(HostService);
+	effect: Effect.gen(function* () {
+		const Host = yield* HostService;
 
 		const ShowOpenDialog = (Options: OpenDialogOptions = {}) =>
 			Host.ShowOpenDialog(Options).pipe(
+				Effect.map(Option.getOrUndefined),
 				Effect.mapError(
 					(Cause) =>
 						new DialogProblem({
@@ -47,6 +48,7 @@ export class DialogService extends Effect.Service<Dialog>()("Service/Dialog", {
 
 		const ShowSaveDialog = (Options: SaveDialogOptions = {}) =>
 			Host.ShowSaveDialog(Options).pipe(
+				Effect.map(Option.getOrUndefined),
 				Effect.mapError(
 					(Cause) =>
 						new DialogProblem({

@@ -12,4 +12,4 @@ import { Effect } from "effect";
  * @param Text - The text that would have been written to the clipboard.
  */
 export const MockWriteText = (Text: string) =>
-	Effect.logInfo(`MockWriteText received: "${Text}"`).pipe(Effect.asUnit);
+	Effect.logInfo(`MockWriteText received: "${Text}"`).pipe(Effect.asVoid);

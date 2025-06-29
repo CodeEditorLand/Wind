@@ -41,8 +41,8 @@ import { ApplicationClipboardProblem } from "./Error.js";
 export class Clipboard extends Effect.Service<IClipboardService>()(
 	"vscode/ClipboardService",
 	{
-		effect: Effect.gen(function* (Generator) {
-			const AppRuntime = yield* Generator(Effect.runtime<never>());
+		effect: Effect.gen(function* () {
+			const AppRuntime = yield* Effect.runtime<never>();
 
 			/**
 			 * Higher-order function to execute an `Effect` from the Integration layer and
@@ -54,9 +54,10 @@ export class Clipboard extends Effect.Service<IClipboardService>()(
 					IntegrationClipboardProblem
 				>,
 			): Promise<SuccessType> => {
-				const MappedEffect = Effect.mapError(
-					IntegrationEffect,
-					(Cause) => new ApplicationClipboardProblem({ Cause }),
+				const MappedEffect = IntegrationEffect.pipe(
+					Effect.mapError(
+						(Cause) => new ApplicationClipboardProblem({ Cause }),
+					),
 				);
 				return Runtime.runPromise(AppRuntime, MappedEffect);
 			};
@@ -68,11 +69,10 @@ export class Clipboard extends Effect.Service<IClipboardService>()(
 				writeText: (Text: string): Promise<void> =>
 					RunIntegrationEffect(WriteText(Text)),
 
-				readText: (): Promise<string> =>
-					RunIntegrationEffect(ReadText()),
+				readText: (): Promise<string> => RunIntegrationEffect(ReadText),
 
 				readFindText: (): Promise<string> =>
-					RunIntegrationEffect(ReadText()),
+					RunIntegrationEffect(ReadText),
 
 				writeFindText: (Text: string): Promise<void> =>
 					RunIntegrationEffect(WriteText(Text)),
@@ -81,13 +81,13 @@ export class Clipboard extends Effect.Service<IClipboardService>()(
 					RunIntegrationEffect(WriteResourceList(ResourceList)),
 
 				readResources: (): Promise<Uri[]> =>
-					RunIntegrationEffect(ReadResourceList()),
+					RunIntegrationEffect(ReadResourceList),
 
 				hasResources: (): Promise<boolean> =>
-					RunIntegrationEffect(HasResourceList()),
+					RunIntegrationEffect(HasResourceList),
 
 				readImage: (): Promise<Uint8Array> =>
-					RunIntegrationEffect(ReadImage()),
+					RunIntegrationEffect(ReadImage),
 
 				triggerPaste: (
 					_TargetWindowId: number,

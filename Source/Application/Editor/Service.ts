@@ -5,16 +5,22 @@
  */
 
 import { Effect } from "effect";
-import { Emitter, type Event } from "vs/base/common/event.js";
+import { Emitter } from "vs/base/common/event.js";
 import { isEditorInput } from "vs/workbench/common/editor.js";
 import type { EditorInput } from "vs/workbench/common/editor/editorInput.js";
 import { isPreferredGroup } from "vs/workbench/services/editor/common/editorGroupFinder.js";
 import type {
 	IActiveEditorChangeEvent,
+	IEditorGroup,
 	IEditorIdentifier,
 	IEditorOptions,
 	IEditorPane,
 	IEditorService,
+	IResourceDiffEditorInput,
+	IResourceEditorInput,
+	ITextResourceDiffEditorInput,
+	ITextResourceEditorInput,
+	IUntitledTextResourceEditorInput,
 	IUntypedEditorInput,
 	PreferredGroup,
 } from "vs/workbench/services/editor/common/editorService.js";
@@ -33,9 +39,9 @@ import { EditorProblem } from "./Error.js";
 export class EditorService extends Effect.Service<IEditorService>()(
 	"vscode/EditorService",
 	{
-		effect: Effect.gen(function* (Generator) {
-			const Host = yield* Generator(HostService);
-			const TextFileService = yield* Generator(TextEditorService);
+		effect: Effect.gen(function* () {
+			const Host = yield* HostService;
+			const TextFileService = yield* TextEditorService;
 
 			/**
 			 * Creates an Effect that orchestrates the opening of an editor.
@@ -46,36 +52,33 @@ export class EditorService extends Effect.Service<IEditorService>()(
 				_Options?: IEditorOptions,
 				_Group?: PreferredGroup,
 			): Effect.Effect<IEditorPane | undefined, EditorProblem> =>
-				Effect.gen(function* (Generator) {
+				Effect.gen(function* () {
 					// 1. If the input is untyped, resolve it to a concrete EditorInput first.
 					const TypedEditor = isEditorInput(Editor)
 						? Editor
-						: yield* Generator(
-								Effect.tryPromise({
-									try: () => TextFileService.resolve(Editor),
-									catch: (Cause) =>
-										new EditorProblem({
-											Cause: Cause as Error,
-											Context: "ResolveEditorInputFailed",
-										}),
-								}),
-							);
+						: yield* Effect.tryPromise({
+								try: () =>
+									(TextFileService as any).resolve(Editor),
+								catch: (Cause) =>
+									new EditorProblem({
+										Cause: Cause as Error,
+										Context: "ResolveEditorInputFailed",
+									}),
+							});
 
 					// 2. We now have a typed editor input. Its resource URI is the key.
-					const ResourceURI = TypedEditor.resource;
+					const ResourceURI = (TypedEditor as EditorInput).resource;
 					if (!ResourceURI) {
-						return yield* Generator(
-							new EditorProblem({
-								Cause: new Error(
-									"Editor input lacks a resource URI.",
-								),
-								Context: "MissingResourceURI",
-							}),
-						);
+						return yield* new EditorProblem({
+							Cause: new Error(
+								"Editor input lacks a resource URI.",
+							),
+							Context: "MissingResourceURI",
+						});
 					}
 
 					// 3. Delegate the "open" command to the host service.
-					yield* Generator(Host.OpenFile(ResourceURI));
+					yield* Host.OpenFile(ResourceURI);
 
 					// 4. The VS Code API allows for an undefined return here. The actual
 					//    editor pane is created asynchronously by the UI in response to
@@ -86,16 +89,31 @@ export class EditorService extends Effect.Service<IEditorService>()(
 			const ServiceImplementation: IEditorService = {
 				_serviceBrand: undefined,
 
-				openEditor: (Editor, OptionsOrGroup, Group) => {
+				openEditor: (
+					Editor:
+						| EditorInput
+						| IUntypedEditorInput
+						| IResourceEditorInput
+						| ITextResourceEditorInput
+						| IUntitledTextResourceEditorInput
+						| IResourceDiffEditorInput
+						| ITextResourceDiffEditorInput,
+					OptionsOrGroup?: IEditorOptions | number | PreferredGroup,
+					Group?: number | IEditorGroup,
+				): Promise<IEditorPane | undefined> => {
 					const Options = !isPreferredGroup(OptionsOrGroup)
-						? OptionsOrGroup
+						? (OptionsOrGroup as IEditorOptions)
 						: undefined;
 					const TargetGroup = isPreferredGroup(OptionsOrGroup)
 						? OptionsOrGroup
 						: Group;
 
 					return Effect.runPromise(
-						CreateOpenEditorEffect(Editor, Options, TargetGroup),
+						CreateOpenEditorEffect(
+							Editor as EditorInput | IUntypedEditorInput,
+							Options,
+							TargetGroup as PreferredGroup,
+						),
 					);
 				},
 

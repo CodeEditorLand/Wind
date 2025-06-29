@@ -88,63 +88,65 @@ export class CommandService extends Effect.Service<Command>()(
 
 			IPC.RegisterInvokeHandler(
 				"$executeContributedCommand",
-				([Id, ...Arguments]: [string, ...any[]]) =>
-					Effect.runPromise(
-						Ref.get(Commands).pipe(
-							Effect.flatMap((Map) =>
-								Effect.fromNullable(Map.get(Id)),
-							),
-							Effect.flatMap((Command) =>
-								ExecuteLocalCommand(Command, Arguments),
-							),
-							Effect.catchAll((error) =>
+				([Id, ...Arguments]: [string, ...any[]]) => {
+					const handlerEffect = Ref.get(Commands).pipe(
+						Effect.flatMap((Map) =>
+							Effect.fromNullable(Map.get(Id)),
+						),
+						Effect.flatMap((Command) =>
+							ExecuteLocalCommand(Command, Arguments),
+						),
+						Effect.catchAll((error) =>
+							Effect.sync(() =>
 								Logger.error(
 									`Failed to execute local command '${Id}'`,
 									error,
-								).pipe(Effect.as(undefined)),
-							),
+								),
+							).pipe(Effect.as(undefined)),
 						),
-					),
+					);
+					return Effect.runPromise(handlerEffect);
+				},
 			);
 
-			const registerCommand = (
-				Global: boolean,
-				Id: string,
-				Callback: <T>(...Arguments: any[]) => T | Promise<T>,
-				ThisArgument?: any,
-			): IDisposable => {
-				const RegistrationEffect = Ref.update(Commands, (Map) =>
-					Map.set(Id, { Id, Callback, ThisArgument }),
-				).pipe(
-					Effect.tap(() =>
-						Logger.trace(`Command '${Id}' registered.`),
-					),
-				);
-				Effect.runSync(RegistrationEffect);
-
-				if (Global) {
-					MainThreadProxy.$registerCommand(Id);
-				}
-
-				return {
-					dispose: () => {
-						const CleanupEffect = Ref.update(
-							Commands,
-							(Map) => (Map.delete(Id), Map),
-						).pipe(
-							Effect.tap(() => {
-								if (Global) {
-									MainThreadProxy.$unregisterCommand(Id);
-								}
-							}),
-						);
-						Effect.runFork(CleanupEffect);
-					},
-				};
-			};
-
 			const self: Command = {
-				registerCommand,
+				registerCommand: (
+					Global: boolean,
+					Id: string,
+					Callback: <T>(...Arguments: any[]) => T | Promise<T>,
+					ThisArgument?: any,
+				): IDisposable => {
+					const RegistrationEffect = Ref.update(Commands, (Map) =>
+						Map.set(Id, { Id, Callback, ThisArgument }),
+					).pipe(
+						Effect.tap(() =>
+							Effect.sync(() =>
+								Logger.trace(`Command '${Id}' registered.`),
+							),
+						),
+					);
+					Effect.runSync(RegistrationEffect);
+
+					if (Global) {
+						MainThreadProxy.$registerCommand(Id);
+					}
+
+					return {
+						dispose: () => {
+							const CleanupEffect = Ref.update(
+								Commands,
+								(Map) => (Map.delete(Id), Map),
+							).pipe(
+								Effect.tap(() => {
+									if (Global) {
+										MainThreadProxy.$unregisterCommand(Id);
+									}
+								}),
+							);
+							Effect.runFork(CleanupEffect);
+						},
+					};
+				},
 				registerTextEditorCommand: (
 					Id: string,
 					Callback: (
@@ -154,12 +156,16 @@ export class CommandService extends Effect.Service<Command>()(
 					) => void,
 					ThisArg?: any,
 				): IDisposable => {
-					const AdaptedCallback = (...Arguments: any[]) => {
+					const AdaptedCallback = (
+						...Arguments: any[]
+					): Promise<boolean | undefined> => {
 						const ActiveEditor = Window.activeTextEditor;
 						if (!ActiveEditor) {
 							Effect.runSync(
-								Logger.warn(
-									`Cannot execute text editor command '${Id}' because there is no active text editor.`,
+								Effect.sync(() =>
+									Logger.warn(
+										`Cannot execute text editor command '${Id}' because there is no active text editor.`,
+									),
 								),
 							);
 							return Promise.resolve(undefined);

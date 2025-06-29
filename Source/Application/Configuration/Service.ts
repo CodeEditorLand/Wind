@@ -10,6 +10,7 @@ import { Effect } from "effect";
 import { Emitter } from "vs/base/common/event.js";
 import { joinPath } from "vs/base/common/resources.js";
 import type {
+	IConfigurationOverrides,
 	IConfigurationService,
 	IConfigurationValue,
 } from "vs/platform/configuration/common/configuration.js";
@@ -58,7 +59,7 @@ const GetValueFromObject = (
 export class Configuration extends Effect.Service<IConfigurationService>()(
 	"vscode/ConfigurationService",
 	{
-		effect: Effect.gen(function* (Generator) {
+		effect: Effect.gen(function* () {
 			/**
 			 * An `Effect` that resolves a specific configuration file (e.g., 'settings.json')
 			 * from a given base directory Effect. It safely handles file reading and JSON parsing.
@@ -73,11 +74,13 @@ export class Configuration extends Effect.Service<IConfigurationService>()(
 				object,
 				IntegrationConfigurationProblem | IntegrationPathProblem
 			> =>
-				Effect.flatMap(ConfigDirectoryEffect, (ConfigDirectory) =>
-					ReadRawFile(joinPath(ConfigDirectory, FileName)).pipe(
-						Effect.flatMap(ParseJSON),
-						// If the file doesn't exist or is invalid, treat it as an empty object.
-						Effect.catchAll(() => Effect.succeed({})),
+				ConfigDirectoryEffect.pipe(
+					Effect.flatMap((ConfigDirectory) =>
+						ReadRawFile(joinPath(ConfigDirectory, FileName)).pipe(
+							Effect.flatMap(ParseJSON),
+							// If the file doesn't exist or is invalid, treat it as an empty object.
+							Effect.catchAll(() => Effect.succeed({})),
+						),
 					),
 				);
 
@@ -107,13 +110,41 @@ export class Configuration extends Effect.Service<IConfigurationService>()(
 				),
 			);
 
-			const ConfigurationData = yield* Generator(ResolveConfiguration);
+			const ConfigurationData = yield* ResolveConfiguration.pipe(
+				Effect.catchAll((error) =>
+					Effect.sync(() => {
+						console.error(
+							"Failed to load configuration, using empty default.",
+							error,
+						);
+						return {};
+					}),
+				),
+			);
 
 			// The concrete implementation of the IConfigurationService interface.
 			const ServiceImplementation: IConfigurationService = {
 				_serviceBrand: undefined,
 
-				getValue<T>(section?: string, _overrides?: object): T {
+				getValue<T>(...args: any[]): T {
+					let section: string | undefined = undefined;
+					let overrides: IConfigurationOverrides | undefined =
+						undefined;
+
+					if (args.length > 0) {
+						if (typeof args[0] === "string") {
+							section = args[0];
+							if (typeof args[1] === "object") {
+								overrides = args[1];
+							}
+						} else if (typeof args[0] === "object") {
+							overrides = args[0];
+						}
+					}
+
+					// We are ignoring overrides for this implementation stub
+					const _ = overrides;
+
 					if (!section) {
 						return ConfigurationData as T;
 					}
@@ -129,19 +160,24 @@ export class Configuration extends Effect.Service<IConfigurationService>()(
 
 				inspect: <T>(
 					key: string,
-					_overrides?: object,
+					overrides?: IConfigurationOverrides,
 				): IConfigurationValue<T> => {
 					const value = ServiceImplementation.getValue(
 						key,
-						_overrides,
+						overrides,
 					) as T | undefined;
 					return {
-						key,
 						value,
 						defaultValue: value,
 						userValue: value,
 						workspaceValue: value,
 						workspaceFolderValue: value,
+						default: undefined,
+						user: undefined,
+						workspace: undefined,
+						workspaceFolder: undefined,
+						memory: undefined,
+						policy: undefined,
 					};
 				},
 

@@ -5,6 +5,8 @@
 
 import { Layer } from "effect";
 
+import { IPCService } from "../IPC/Service.js";
+import { LoggerService } from "../Logger/Service.js";
 import { DocumentService } from "./Service.js";
 
 /**
@@ -14,5 +16,8 @@ import { DocumentService } from "./Service.js";
  * in the `DocumentService` service definition. It automatically includes the
  * dependencies required by its `effect` constructor, such as `IPCService` and `LoggerService`.
  */
-export const DocumentLive: Layer.Layer<DocumentService> =
-	DocumentService.Default;
+export const DocumentLive: Layer.Layer<
+	DocumentService,
+	never,
+	IPCService | LoggerService
+> = DocumentService.Default;

@@ -23,8 +23,8 @@ import {
 	CancellationTokenSource,
 	Disposable as VSCodeDisposable,
 } from "../../Platform/VSCode/Type.js";
-import { FromDTO as RangeFromDTO } from "../../TypeConverter/Main/Range.js";
-import { FromDTO as UriFromDTO } from "../../TypeConverter/Main/URI.js";
+import { ToAPI as RangeToAPI } from "../../TypeConverter/Main/Range.js";
+import { ToAPI as UriToAPI } from "../../TypeConverter/Main/URI.js";
 import { IPCService } from "../IPC/Service.js";
 import { LoggerService } from "../Logger/Service.js";
 import { ContentProviderProblem } from "./Error.js";
@@ -54,15 +54,15 @@ export interface Document {
 export class DocumentService extends Effect.Service<Document>()(
 	"Service/Document",
 	{
-		effect: Effect.gen(function* (Generator) {
-			const IPC = yield* Generator(IPCService);
-			const Logger = yield* Generator(LoggerService);
+		effect: Effect.gen(function* () {
+			const IPC = yield* IPCService;
+			const Logger = yield* LoggerService;
 
-			const DocumentMap = yield* Generator(
-				Ref.make(HashMap.empty<string, ExtHostDocumentData>()),
+			const DocumentMap = yield* Ref.make(
+				HashMap.empty<string, ExtHostDocumentData>(),
 			);
-			const ContentProviders = yield* Generator(
-				Ref.make(HashMap.empty<string, TextDocumentContentProvider>()),
+			const ContentProviders = yield* Ref.make(
+				HashMap.empty<string, TextDocumentContentProvider>(),
 			);
 			const MainThreadProxy = IPC.CreateProxy<MainThreadDocumentsShape>(
 				"$rpc:mainThreadDocuments",
@@ -75,8 +75,8 @@ export class DocumentService extends Effect.Service<Document>()(
 			const OnDidSaveTextDocumentEmitter = new Emitter<TextDocument>();
 
 			const AcceptModelAdded = (Data: any) =>
-				Effect.gen(function* (Generator) {
-					const RevivedUri = UriFromDTO(Data.uri);
+				Effect.gen(function* () {
+					const RevivedUri = UriToAPI(Data.uri);
 					const DocumentData = new ExtHostDocumentData(
 						MainThreadProxy,
 						RevivedUri,
@@ -87,28 +87,24 @@ export class DocumentService extends Effect.Service<Document>()(
 						Data.isDirty,
 						Data.encoding,
 					);
-					yield* Generator(
-						Ref.update(DocumentMap, (Map) =>
-							HashMap.set(
-								Map,
-								DocumentData.document.uri.toString(),
-								DocumentData,
-							),
+					yield* Ref.update(DocumentMap, (Map) =>
+						HashMap.set(
+							Map,
+							DocumentData.document.uri.toString(),
+							DocumentData,
 						),
 					);
 					OnDidOpenTextDocumentEmitter.fire(DocumentData.document);
 				});
 
 			const AcceptModelRemoved = (UriDTO: any) =>
-				Effect.gen(function* (Generator) {
-					const UriString = UriFromDTO(UriDTO).toString();
-					const Map = yield* Generator(Ref.get(DocumentMap));
+				Effect.gen(function* () {
+					const UriString = UriToAPI(UriDTO).toString();
+					const Map = yield* Ref.get(DocumentMap);
 					const DocumentData = HashMap.get(Map, UriString);
 					if (Option.isSome(DocumentData)) {
-						yield* Generator(
-							Ref.update(DocumentMap, (Map) =>
-								HashMap.remove(Map, UriString),
-							),
+						yield* Ref.update(DocumentMap, (Map) =>
+							HashMap.remove(Map, UriString),
 						);
 						OnDidCloseTextDocumentEmitter.fire(
 							DocumentData.value.document,
@@ -117,12 +113,10 @@ export class DocumentService extends Effect.Service<Document>()(
 				});
 
 			const AcceptModelChanged = (UriDTO: any, ChangeEventDTO: any) =>
-				Effect.gen(function* (Generator) {
-					const UriString = UriFromDTO(UriDTO).toString();
-					const DocumentData = yield* Generator(
-						Ref.get(DocumentMap).pipe(
-							Effect.map(HashMap.get(UriString)),
-						),
+				Effect.gen(function* () {
+					const UriString = UriToAPI(UriDTO).toString();
+					const DocumentData = yield* Ref.get(DocumentMap).pipe(
+						Effect.map(HashMap.get(UriString)),
 					);
 					if (Option.isSome(DocumentData)) {
 						const ModelChangedEvent: IModelChangedEvent = {
@@ -137,25 +131,22 @@ export class DocumentService extends Effect.Service<Document>()(
 							document: DocumentData.value.document,
 							contentChanges: ChangeEventDTO.changes.map(
 								(Change: any) => ({
-									range: RangeFromDTO(Change.range),
+									range: RangeToAPI(Change.range),
 									rangeOffset: Change.rangeOffset,
 									rangeLength: Change.rangeLength,
 									text: Change.text,
 								}),
 							),
 							reason: ChangeEventDTO.reason,
-							detailedReason: undefined,
 						});
 					}
 				});
 
 			const ProvideTextDocumentContent = (UriComponents: any) =>
-				Effect.gen(function* (Generator) {
-					const Uri = UriFromDTO(UriComponents);
-					const MaybeProvider = yield* Generator(
-						Ref.get(ContentProviders).pipe(
-							Effect.map(HashMap.get(Uri.scheme)),
-						),
+				Effect.gen(function* () {
+					const Uri = UriToAPI(UriComponents);
+					const MaybeProvider = yield* Ref.get(ContentProviders).pipe(
+						Effect.map(HashMap.get(Uri.scheme)),
 					);
 					if (
 						Option.isNone(MaybeProvider) ||
@@ -164,38 +155,38 @@ export class DocumentService extends Effect.Service<Document>()(
 						return Option.none<string>();
 					}
 					const Token = new CancellationTokenSource().token;
-					const Content = yield* Generator(
-						Effect.promise(() =>
-							Promise.resolve(
-								MaybeProvider.value.provideTextDocumentContent(
-									Uri,
-									Token,
-								) as ProviderResult<string>,
-							),
+					const Content = yield* Effect.promise(() =>
+						Promise.resolve(
+							MaybeProvider.value.provideTextDocumentContent(
+								Uri,
+								Token,
+							) as ProviderResult<string>,
 						),
 					);
 					return Option.fromNullable(Content);
 				}).pipe(
-					Effect.catchAll((Error) =>
-						Logger.Error(Error).pipe(
+					Effect.catchAll((error) =>
+						Logger.error(error).pipe(
 							Effect.as(Option.none<string>()),
 						),
 					),
 					Effect.map(Option.getOrElse(() => null)),
 				);
 
-			IPC.RegisterInvokeHandler("$acceptModelAdded", ([Data]) =>
+			IPC.RegisterInvokeHandler("$acceptModelAdded", ([Data]: [any]) =>
 				Effect.runPromise(AcceptModelAdded(Data)),
 			);
-			IPC.RegisterInvokeHandler("$acceptModelRemoved", ([Uri]) =>
+			IPC.RegisterInvokeHandler("$acceptModelRemoved", ([Uri]: [any]) =>
 				Effect.runPromise(AcceptModelRemoved(Uri)),
 			);
-			IPC.RegisterInvokeHandler("$acceptModelChanged", ([Uri, Changes]) =>
-				Effect.runPromise(AcceptModelChanged(Uri, Changes)),
+			IPC.RegisterInvokeHandler(
+				"$acceptModelChanged",
+				([Uri, Changes]: [any, any]) =>
+					Effect.runPromise(AcceptModelChanged(Uri, Changes)),
 			);
 			IPC.RegisterInvokeHandler(
 				"$provideTextDocumentContent",
-				([UriComponents]) =>
+				([UriComponents]: [any]) =>
 					Effect.runPromise(
 						ProvideTextDocumentContent(UriComponents),
 					),
@@ -222,17 +213,13 @@ export class DocumentService extends Effect.Service<Document>()(
 					Scheme: string,
 					Provider: TextDocumentContentProvider,
 				) =>
-					Effect.gen(function* (Generator) {
-						yield* Generator(
-							IPC.SendNotification(
-								"$registerTextDocumentContentProvider",
-								[Scheme],
-							),
+					Effect.gen(function* () {
+						yield* IPC.SendNotification(
+							"$registerTextDocumentContentProvider",
+							[Scheme],
 						);
-						yield* Generator(
-							Ref.update(ContentProviders, (Map) =>
-								HashMap.set(Map, Scheme, Provider),
-							),
+						yield* Ref.update(ContentProviders, (Map) =>
+							HashMap.set(Map, Scheme, Provider),
 						);
 						return new VSCodeDisposable(() => {
 							const Unregister = Ref.update(

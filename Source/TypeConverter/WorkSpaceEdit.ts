@@ -4,10 +4,9 @@
  * handling complex transformations involving text edits and file operations.
  */
 
-import type { UriComponents } from "vs/base/common/uri.js";
+import type { URI, UriComponents } from "vs/base/common/uri.js";
 import type { IIdentifiedSingleEditOperation } from "vs/editor/common/model.js";
 import type {
-	TextEdit as VSCodeTextEdit,
 	WorkspaceEdit as VSCodeWorkspaceEdit,
 	WorkspaceEditEntryMetadata,
 } from "vscode";

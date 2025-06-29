@@ -8,7 +8,7 @@ import type {
 	MarkdownStringTrustedOptions,
 } from "vs/base/common/htmlContent.js";
 import { URI } from "vs/base/common/uri.js";
-import type { Uri as VSCodeUri } from "vscode";
+import type { MarkdownString as VSCodeMarkdownString } from "vscode";
 
 import { MarkdownString } from "../../Platform/VSCode/Type.js";
 
@@ -18,11 +18,12 @@ import { MarkdownString } from "../../Platform/VSCode/Type.js";
  * @returns The `IMarkdownString` DTO.
  */
 export const FromAPI = (
-	MarkdownStringInstance: MarkdownString,
+	MarkdownStringInstance: VSCodeMarkdownString,
 ): IMarkdownString => ({
 	value: MarkdownStringInstance.value,
 	isTrusted: MarkdownStringInstance.isTrusted,
-	baseUri: MarkdownStringInstance.baseUri as URI | undefined,
+	baseUri: MarkdownStringInstance.baseUri as unknown as URI | undefined,
+	supportThemeIcons: MarkdownStringInstance.supportThemeIcons,
 	supportHtml: MarkdownStringInstance.supportHtml,
 });
 
@@ -31,7 +32,9 @@ export const FromAPI = (
  * @param MarkdownStringDTO - The `IMarkdownString` DTO to revive.
  * @returns A new `vscode.MarkdownString` instance.
  */
-export const ToAPI = (MarkdownStringDTO: IMarkdownString): MarkdownString => {
+export const ToAPI = (
+	MarkdownStringDTO: IMarkdownString,
+): VSCodeMarkdownString => {
 	const Result = new MarkdownString(
 		MarkdownStringDTO.value,
 		typeof MarkdownStringDTO.isTrusted === "boolean"
@@ -40,7 +43,7 @@ export const ToAPI = (MarkdownStringDTO: IMarkdownString): MarkdownString => {
 	);
 
 	if (MarkdownStringDTO.baseUri) {
-		Result.baseUri = MarkdownStringDTO.baseUri as unknown as VSCodeUri;
+		Result.baseUri = MarkdownStringDTO.baseUri as unknown as VSCodeURI;
 	}
 	if (MarkdownStringDTO.supportHtml) {
 		Result.supportHtml = MarkdownStringDTO.supportHtml;
