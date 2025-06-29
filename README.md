@@ -127,19 +127,19 @@ graph LR
 
 The `Wind` repository is organized to clearly separate concerns:
 
-```
+```sh
 Wind/
 └── Source/
-    ├── Preload.ts                   # Core script for VSCode environment emulation in Tauri.
-    ├── Application/                 # Core frontend service implementations (e.g., Dialog, Editor).
-    ├── Integration/
-    │   └── Tauri/                   # Bridge to Tauri APIs, wrapped in Effect-TS.
-    ├── Platform/
-    │   └── VSCode/                  # Definitions of core VSCode types and service Tags.
-    ├── Effect/
-    │   └── Produce/                 # Utilities for creating Effects from async code.
-    └── Configuration/
-        └── ESBuild/                 # ESBuild configurations for bundling the project.
+├── Preload.ts   # Core script for VSCode environment emulation in Tauri.
+├── Application/ # Core frontend service implementations (e.g., Dialog, Editor).
+├── Integration/
+│ └── Tauri/ # Bridge to Tauri APIs, wrapped in Effect-TS.
+├── Platform/
+│ └── VSCode/ # Definitions of core VSCode types and service Tags.
+├── Effect/
+│ └── Produce/ # Utilities for creating Effects from async code.
+└── Configuration/
+└── ESBuild/ # ESBuild configurations for bundling the project.
 ```
 
 ---
@@ -173,46 +173,45 @@ layers.
     you can provide and use `Wind`'s services in your application's main entry
     point.
 
-        ```typescript
+```ts
+// In your main UI startup file (e.g., DesktopMain.ts)
 
-    // In your main UI startup file (e.g., DesktopMain.ts)
-
-        import { DialogServiceTag } from "@codeeditorland/wind/Application/Dialog";
-        import { AppLayer } from "@codeeditorland/wind/Application/Instantiation/Layer";
-        import { Effect, Layer, Runtime } from "effect";
+import { DialogServiceTag } from "@codeeditorland/wind/Application/Dialog";
+import { AppLayer } from "@codeeditorland/wind/Application/Instantiation/Layer";
+import { Effect, Layer, Runtime } from "effect";
 
 // Build the full application runtime from Wind's master AppLayer.
 
-    const AppRuntime = Layer.toRuntime(AppLayer).pipe(
-    	Effect.scoped,
-    	Effect.runSync,
-    );
+const AppRuntime = Layer.toRuntime(AppLayer).pipe(
+	Effect.scoped,
+	Effect.runSync,
+);
 
 // Example of using the dialog service within an Effect
 
-    const openFileEffect = Effect.gen(function* (_) {
-    	const dialogService = yield* _(DialogServiceTag);
+const openFileEffect = Effect.gen(function* (_) {
+	const dialogService = yield* _(DialogServiceTag);
 
-    	const uris = yield* _(
-    		Effect.tryPromise(() =>
-    			dialogService.showOpenDialog({
-    				canSelectFiles: true,
-    				title: "Open a File",
-    			}),
-    		),
-    	);
+	const uris = yield* _(
+		Effect.tryPromise(() =>
+			dialogService.showOpenDialog({
+				canSelectFiles: true,
+				title: "Open a File",
+			}),
+		),
+	);
 
-    	if (uris && uris.length > 0) {
-    		yield* _(Effect.log(`Selected file: ${uris[0].toString()}`));
-    	} else {
-    		yield* _(Effect.log("Dialog was cancelled."));
-    	}
-    });
+	if (uris && uris.length > 0) {
+		yield* _(Effect.log(`Selected file: ${uris[0].toString()}`));
+	} else {
+		yield* _(Effect.log("Dialog was cancelled."));
+	}
+});
 
 // Run the effect using the configured runtime
 
-    Runtime.runPromise(AppRuntime, openFileEffect);
-    ```
+Runtime.runPromise(AppRuntime, openFileEffect);
+```
 
 ---
 
