@@ -5,7 +5,7 @@
  * application's perspective, proxying all state changes to the `Mountain` host.
  */
 import type { IExtensionDescription } from "vs/platform/extensions/common/extensions.js";
-import type { AccessibilityInformation, CancellationToken, MarkdownString, ProviderResult, StatusBarAlignment, ThemeColor, Command as VSCodeCommand, StatusBarItem as VSCodeStatusBarItem } from "vscode";
+import type { AccessibilityInformation, CancellationToken, ProviderResult, StatusBarAlignment, Command as VSCodeCommand, StatusBarItem as VSCodeStatusBarItem } from "vscode";
 import { CommandService } from "../Command/Service.js";
 import type { HostService } from "../Host/Service.js";
 /**

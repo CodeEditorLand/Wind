@@ -1,7 +1,7 @@
 /**
  * @module Service (Application/Configuration)
  * @description Defines the service interface and live implementation for the
- * application-level configuration service, which conforms to the `IConfigurationService`
+ * application-level configuration service, which conforming to the `IConfigurationService`
  * contract from VS Code.
  */
 import { Effect } from "effect";

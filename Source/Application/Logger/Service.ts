@@ -7,7 +7,7 @@
 import { Effect } from "effect";
 import {
 	LogLevel,
-	ILogService as VSCodeLogService,
+	ILoggerService as VSCodeLoggerService,
 } from "vs/platform/log/common/log.js";
 
 import { HostService } from "../Host/Service.js";
@@ -22,20 +22,19 @@ import { HostLogger } from "./HostLogger.js";
  * `Mountain` host via the `HostService`. This ensures that all workbench logs
  * are centrally managed by the native backend.
  */
-export class LoggerService extends Effect.Service<VSCodeLogService>()(
+export class LoggerService extends Effect.Service<VSCodeLoggerService>()(
 	"loggerService",
 	{
-		effect: Effect.gen(function* (Generator) {
-			const Host = yield* Generator(HostService);
+		effect: Effect.gen(function* () {
+			const Host = yield* HostService;
 
 			// The log level is sourced from the initial configuration provided by the host.
 			const InitialLogLevel =
-				Host.Configuration.logLevel ?? LogLevel.Info;
+				(Host.Configuration as any).logLevel ?? LogLevel.Info;
 			const PrimaryLogger = new HostLogger(Host, InitialLogLevel);
 
 			// Instantiate the real VS Code LoggerService with our custom logger.
-			// The second argument is for additional loggers, which we don't need here.
-			const ServiceInstance = new VSCodeLogService(PrimaryLogger, []);
+			const ServiceInstance = new VSCodeLoggerService(PrimaryLogger);
 
 			// TODO: A full implementation would also need to listen for log level changes
 			// from the host and update the logger's level accordingly.

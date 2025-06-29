@@ -7,7 +7,15 @@
 import { Effect } from "effect";
 import { ICommandService } from "vs/platform/commands/common/commands.js";
 import { IDialogService } from "vs/platform/dialogs/common/dialogs.js";
-import type { INotificationService } from "vs/platform/notification/common/notification.js";
+import type {
+	INotification,
+	INotificationService,
+	IPromptChoice,
+	IPromptOptions,
+	IStatusMessageOptions,
+	NotificationMessage,
+	Severity,
+} from "vs/platform/notification/common/notification.js";
 import { IStorageService } from "vs/platform/storage/common/storage.js";
 import { NotificationService as VSCodeNotificationService } from "vs/workbench/services/notification/common/notificationService.js";
 
@@ -27,23 +35,23 @@ import { HostService } from "../Host/Service.js";
 export class NotificationService extends Effect.Service<INotificationService>()(
 	"notificationService",
 	{
-		effect: Effect.gen(function* (Generator) {
+		effect: Effect.gen(function* () {
 			// Resolve legacy and modern service dependencies.
-			const StorageService = yield* Generator(IStorageService);
-			const DialogService = yield* Generator(IDialogService);
-			const CommandService = yield* Generator(ICommandService);
-			const Host = yield* Generator(HostService);
+			const StorageService = yield* IStorageService;
+			const DialogService = yield* IDialogService;
+			const CommandService = yield* ICommandService;
+			const Host = yield* HostService;
 
 			// Instantiate the real VS Code NotificationService to manage state.
 			const ServiceInstance = new VSCodeNotificationService(
 				StorageService,
-				DialogService,
-				CommandService,
 			);
 
 			// Override the UI-displaying methods.
 			ServiceInstance.notify = (Notification) => {
-				const EffectToRun = Host.ShowNotification(Notification);
+				const EffectToRun = Host.ShowNotification(
+					Notification as INotification,
+				);
 				Effect.runFork(EffectToRun);
 				// A real implementation would return a handle to manage the notification.
 				return {
@@ -52,17 +60,22 @@ export class NotificationService extends Effect.Service<INotificationService>()(
 					progress: {
 						infinite: () => {},
 						done: () => {},
-						total: () => {},
-						worked: () => {},
+						total: (_value: number) => {},
+						worked: (_value: number) => {},
 					},
-					updateSeverity: () => {},
-					updateMessage: () => {},
+					updateSeverity: (_severity: Severity) => {},
+					updateMessage: (_message: NotificationMessage) => {},
 					updateActions: () => {},
 					close: () => {},
 				};
 			};
 
-			ServiceInstance.prompt = (Severity, Message, Choices, Options) => {
+			ServiceInstance.prompt = (
+				Severity: Severity,
+				Message: string,
+				Choices: IPromptChoice[],
+				Options?: IPromptOptions,
+			) => {
 				const EffectToRun = Host.ShowPrompt(
 					Severity,
 					Message,
@@ -73,21 +86,23 @@ export class NotificationService extends Effect.Service<INotificationService>()(
 				// A real implementation would return a handle.
 				return {
 					onDidClose: new AbortController().signal as any,
-					onDidChangeVisibility: new AbortController().signal as any,
 					progress: {
 						infinite: () => {},
 						done: () => {},
-						total: () => {},
-						worked: () => {},
+						total: (_value: number) => {},
+						worked: (_value: number) => {},
 					},
-					updateSeverity: () => {},
-					updateMessage: () => {},
+					updateSeverity: (_severity: Severity) => {},
+					updateMessage: (_message: NotificationMessage) => {},
 					updateActions: () => {},
 					close: () => {},
 				};
 			};
 
-			ServiceInstance.status = (Message, Options) => {
+			ServiceInstance.status = (
+				Message: NotificationMessage,
+				Options?: IStatusMessageOptions,
+			) => {
 				const EffectToRun = Host.ShowStatusMessage(Message, Options);
 				Effect.runFork(EffectToRun);
 				// A real implementation would return a handle.

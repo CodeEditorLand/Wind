@@ -29,7 +29,7 @@ declare const DocumentService_base: Effect.Service.Class<Document, "Service/Docu
         OnDidSaveTextDocument: import("vs/workbench/workbench.web.main.internal.js").Event<TextDocument>;
         GetDocument: (Uri: Uri) => Effect.Effect<Option.Option<TextDocument>, never, never>;
         RegisterTextDocumentContentProvider: (Scheme: string, Provider: TextDocumentContentProvider) => Effect.Effect<VSCodeDisposable, ContentProviderProblem, never>;
-    }, never, import("vs/platform/log/common/log.js").ILogService | import("../IPC/Service.js").IPC>;
+    }, never, import("vs/platform/log/common/log.js").ILoggerService | import("../IPC/Service.js").IPC>;
 }>;
 /**
  * The `Effect.Service` for managing text documents.

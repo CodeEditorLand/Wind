@@ -43,7 +43,7 @@ export class HostLogger extends AbstractMessageLogger implements ILogger {
 		Effect.runFork(LogEffect);
 	}
 
-	flush(): void {
+	override flush(): void {
 		// Flush is a host-side concept in this architecture.
 	}
 }

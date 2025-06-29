@@ -5,21 +5,7 @@
  */
 
 import { Effect } from "effect";
-import {
-	type Event,
-	type FileChangeEvent,
-	type FileStat,
-	type FileSystemProvider,
-	type FileSystemProviderCapabilitiesChangeEvent,
-	type FileSystemProviderError,
-	type FileSystemProviderWithFileReadWriteCapability,
-	type FileSystemProviderWithOpenReadWriteCloseCapability,
-	type TextSearchComplete,
-	type TextSearchOptions,
-	type TextSearchQuery,
-	type Uri,
-	type FileSystem as VSCodeFileSystem,
-} from "vscode";
+import type { FileStat, Uri, FileSystem as VSCodeFileSystem } from "vscode";
 
 import { HostService } from "../Host/Service.js";
 import { FileSystemProblem } from "./Error.js";
@@ -34,12 +20,12 @@ import { FileSystemProblem } from "./Error.js";
 export class FileSystemService extends Effect.Service<VSCodeFileSystem>()(
 	"vscode/FileSystem",
 	{
-		effect: Effect.gen(function* (Generator) {
-			const Host = yield* Generator(HostService);
+		effect: Effect.gen(function* () {
+			const Host = yield* HostService;
 
 			// --- Helper to create a proxied Effect for a given operation ---
 			const CreateProxyEffect = <T, Args extends any[]>(
-				Method: keyof HostService,
+				Method: keyof typeof Host,
 				Context: string,
 			) => {
 				return (
@@ -47,7 +33,7 @@ export class FileSystemService extends Effect.Service<VSCodeFileSystem>()(
 				): Effect.Effect<T, FileSystemProblem> =>
 					(Host[Method] as any)(...Arguments).pipe(
 						Effect.mapError(
-							(Cause) =>
+							(Cause: any) =>
 								new FileSystemProblem({
 									Cause,
 									Context,

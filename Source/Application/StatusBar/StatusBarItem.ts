@@ -10,14 +10,14 @@ import type { IExtensionDescription } from "vs/platform/extensions/common/extens
 import type {
 	AccessibilityInformation,
 	CancellationToken,
-	MarkdownString,
 	ProviderResult,
 	StatusBarAlignment,
-	ThemeColor,
 	Command as VSCodeCommand,
 	StatusBarItem as VSCodeStatusBarItem,
 } from "vscode";
 
+import { MarkdownString, ThemeColor } from "../../Platform/VSCode/Type.js";
+import { CommandConverter } from "../../TypeConverter/Command.js";
 import { FromAPI as StatusBarItemToDTO } from "../../TypeConverter/StatusBar.js";
 import { CommandService } from "../Command/Service.js";
 import type { HostService } from "../Host/Service.js";
@@ -166,9 +166,9 @@ export class StatusBarItemImplementation implements VSCodeStatusBarItem {
 
 		// The CommandConverter needs to be created on-the-fly as it may
 		// register temporary commands.
-		const CommandConverter = new CommandConverter(
-			this.Command.registerCommand,
-			this.Command.executeCommand as any,
+		const CommandConverterInstance = new CommandConverter(
+			this.Command.registerCommand.bind(this.Command),
+			this.Command.executeCommand.bind(this.Command),
 			() => undefined, // lookupAPICommand is stubbed
 		);
 
@@ -176,7 +176,7 @@ export class StatusBarItemImplementation implements VSCodeStatusBarItem {
 			this,
 			this.EntryId,
 			this.Extension,
-			CommandConverter,
+			CommandConverterInstance,
 		);
 		Effect.runFork(this.Host.SetStatusBarItem(DTO));
 	}

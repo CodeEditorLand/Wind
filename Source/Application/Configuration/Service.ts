@@ -1,7 +1,7 @@
 /**
  * @module Service (Application/Configuration)
  * @description Defines the service interface and live implementation for the
- * application-level configuration service, which conforms to the `IConfigurationService`
+ * application-level configuration service, which conforming to the `IConfigurationService`
  * contract from VS Code.
  */
 
@@ -11,6 +11,7 @@ import { Emitter } from "vs/base/common/event.js";
 import { joinPath } from "vs/base/common/resources.js";
 import type {
 	IConfigurationChangeEvent,
+	IConfigurationData,
 	IConfigurationOverrides,
 	IConfigurationService,
 	IConfigurationValue,
@@ -167,13 +168,8 @@ export class Configuration extends Effect.Service<IConfigurationService>()(
 						key,
 						overrides,
 					);
-					return {
-						value,
-						defaultValue: value,
-						userValue: value,
-						workspaceValue: value,
-						workspaceFolderValue: value,
-					};
+					const result: IConfigurationValue<T> = { value };
+					return result;
 				},
 
 				keys: () => ({
@@ -181,12 +177,14 @@ export class Configuration extends Effect.Service<IConfigurationService>()(
 					user: [],
 					workspace: [],
 					workspaceFolder: [],
+					memory: [],
 				}),
 
 				reloadConfiguration: () => Promise.resolve(),
 
 				onDidChangeConfiguration:
 					new Emitter<IConfigurationChangeEvent>().event,
+
 				getConfigurationData: () => null,
 			};
 

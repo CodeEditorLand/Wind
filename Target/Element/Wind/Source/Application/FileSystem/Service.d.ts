@@ -4,7 +4,7 @@
  * proxying filesystem operations to the host process.
  */
 import { Effect } from "effect";
-import { type FileSystem as VSCodeFileSystem } from "vscode";
+import type { FileSystem as VSCodeFileSystem } from "vscode";
 declare const FileSystemService_base: Effect.Service.Class<VSCodeFileSystem, "vscode/FileSystem", {
     readonly effect: Effect.Effect<VSCodeFileSystem, never, import("../Host/Service.js").Host>;
 }>;

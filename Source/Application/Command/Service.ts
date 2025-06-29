@@ -164,19 +164,22 @@ export class CommandService extends Effect.Service<Command>()(
 							);
 							return Promise.resolve(undefined);
 						}
-						return ActiveEditor.edit((Builder) => {
-							Callback.apply(ThisArg, [
-								ActiveEditor,
-								Builder,
-								...Arguments,
-							]);
-						});
+						// `edit` returns a `Thenable<boolean>`, which we convert to a full Promise
+						return Promise.resolve(
+							ActiveEditor.edit((Builder) => {
+								Callback.apply(ThisArg, [
+									ActiveEditor,
+									Builder,
+									...Arguments,
+								]);
+							}),
+						);
 					};
 					return self.registerCommand(
 						true,
 						Id,
 						AdaptedCallback as <T>(
-							...Arguments: any[]
+							...args: any[]
 						) => T | Promise<T>,
 					);
 				},
@@ -202,7 +205,11 @@ export class CommandService extends Effect.Service<Command>()(
 					) as Promise<T | undefined>;
 				},
 				getCommands: (FilterInternal = false): Promise<string[]> =>
-					MainThreadProxy.$getCommands(FilterInternal),
+					MainThreadProxy.$getCommands().then((cmds) =>
+						FilterInternal
+							? cmds.filter((c) => !c.startsWith("_"))
+							: cmds,
+					),
 			};
 
 			return self;

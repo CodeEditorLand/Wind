@@ -11,13 +11,16 @@ import type { EditorInput } from "vs/workbench/common/editor/editorInput.js";
 import { isPreferredGroup } from "vs/workbench/services/editor/common/editorGroupFinder.js";
 import type {
 	IActiveEditorChangeEvent,
+	IEditorCloseEvent,
 	IEditorGroup,
 	IEditorIdentifier,
 	IEditorOptions,
 	IEditorPane,
 	IEditorService,
+	IEditorWillOpenEvent,
 	IResourceDiffEditorInput,
 	IResourceEditorInput,
+	ITextDiffEditorPane,
 	ITextResourceDiffEditorInput,
 	ITextResourceEditorInput,
 	IUntitledTextResourceEditorInput,
@@ -69,12 +72,14 @@ export class EditorService extends Effect.Service<IEditorService>()(
 					// 2. We now have a typed editor input. Its resource URI is the key.
 					const ResourceURI = (TypedEditor as EditorInput).resource;
 					if (!ResourceURI) {
-						return yield* new EditorProblem({
-							Cause: new Error(
-								"Editor input lacks a resource URI.",
-							),
-							Context: "MissingResourceURI",
-						});
+						return yield* Effect.fail(
+							new EditorProblem({
+								Cause: new Error(
+									"Editor input lacks a resource URI.",
+								),
+								Context: "MissingResourceURI",
+							}),
+						);
 					}
 
 					// 3. Delegate the "open" command to the host service.
@@ -132,11 +137,10 @@ export class EditorService extends Effect.Service<IEditorService>()(
 				count: 0,
 				visibleEditorPanes: [],
 				visibleEditors: [],
-				onDidActiveEditorChange: new Emitter<IActiveEditorChangeEvent>()
-					.event,
+				onDidActiveEditorChange: new Emitter<void>().event,
 				onDidVisibleEditorsChange: new Emitter<void>().event,
-				onDidCloseEditor: new Emitter<IEditorIdentifier>().event,
-				onDidOpenEditorFail: new Emitter<IEditorIdentifier>().event,
+				onDidCloseEditor: new Emitter<IEditorCloseEvent>().event,
+				onWillOpenEditor: new Emitter<IEditorWillOpenEvent>().event,
 				onDidMostRecentlyActiveEditorsChange: new Emitter<void>().event,
 			};
 

@@ -8,6 +8,7 @@ import { Effect } from "effect";
 import * as Monaco from "monaco-editor";
 import { URI } from "vs/base/common/uri.js";
 import { ILogService } from "vs/platform/log/common/log.js";
+import type { IMarkerData } from "vs/platform/markers/common/markers.js";
 
 import { IntegrationService } from "../../Integration/Tauri/Service.js";
 import { MarkerProblem } from "./Error.js";
@@ -43,26 +44,23 @@ export interface Marker {
 export class MarkerService extends Effect.Service<Marker>()(
 	"Wind/MarkerService",
 	{
-		effect: Effect.gen(function* (Generator) {
-			const LoggerService = yield* Generator(ILogService);
-			const Integration = yield* Generator(IntegrationService);
+		effect: Effect.gen(function* () {
+			const LoggerService = yield* ILogService;
+			const Integration = yield* IntegrationService;
 
 			/**
 			 * An `Effect` that fetches all diagnostics for a given set of URIs from
 			 * the host and updates the corresponding Monaco editor models.
 			 */
 			const UpdateMarkersForURIs = (URIs: readonly string[]) =>
-				Effect.gen(function* (Generator) {
+				Effect.gen(function* () {
 					LoggerService.trace(
 						`[MarkerService] Fetching diagnostics for ${URIs.length} URIs.`,
 					);
 
-					const DiagnosticsByURI = yield* Generator(
-						Integration.Invoke<[string, MarkerDataDTO[]][]>(
-							"GetAllDiagnosticsForURIs",
-							{ URIs },
-						),
-					);
+					const DiagnosticsByURI = yield* Integration.Invoke<
+						[string, MarkerDataDTO[]][]
+					>("GetAllDiagnosticsForURIs", { URIs });
 
 					for (const [URIString, Markers] of DiagnosticsByURI) {
 						const Model = Monaco.editor.getModel(
@@ -70,8 +68,8 @@ export class MarkerService extends Effect.Service<Marker>()(
 						);
 
 						if (Model) {
-							const MonacoMarkers = Markers.map(
-								(MarkerDTO): Monaco.editor.IMarkerData => ({
+							const MonacoMarkers: IMarkerData[] = Markers.map(
+								(MarkerDTO) => ({
 									severity: MarkerDTO.Severity,
 									message: MarkerDTO.Message,
 									source: MarkerDTO.Source,

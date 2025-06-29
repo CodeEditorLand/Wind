@@ -4,8 +4,8 @@
  * `ILogService`, which provides logging capabilities to the application.
  */
 import { Effect } from "effect";
-import { ILogService as VSCodeLogService } from "vs/platform/log/common/log.js";
-declare const LoggerService_base: Effect.Service.Class<VSCodeLogService, "loggerService", {
+import { ILoggerService as VSCodeLoggerService } from "vs/platform/log/common/log.js";
+declare const LoggerService_base: Effect.Service.Class<VSCodeLoggerService, "loggerService", {
     readonly effect: Effect.Effect<any, never, import("../Host/Service.js").Host>;
 }>;
 /**

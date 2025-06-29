@@ -5,6 +5,10 @@
  */
 
 import { Effect, Option } from "effect";
+import type {
+	INativeOpenDialogOptions,
+	ISaveDialogOptions,
+} from "vs/platform/dialogs/common/dialogs.js";
 import type { OpenDialogOptions, SaveDialogOptions, Uri } from "vscode";
 
 import { HostService } from "../Host/Service.js";
@@ -35,7 +39,7 @@ export class DialogService extends Effect.Service<Dialog>()("Service/Dialog", {
 		const Host = yield* HostService;
 
 		const ShowOpenDialog = (Options: OpenDialogOptions = {}) =>
-			Host.ShowOpenDialog(Options).pipe(
+			Host.ShowOpenDialog(Options as INativeOpenDialogOptions).pipe(
 				Effect.map(Option.getOrUndefined),
 				Effect.mapError(
 					(Cause) =>
@@ -47,7 +51,7 @@ export class DialogService extends Effect.Service<Dialog>()("Service/Dialog", {
 			);
 
 		const ShowSaveDialog = (Options: SaveDialogOptions = {}) =>
-			Host.ShowSaveDialog(Options).pipe(
+			Host.ShowSaveDialog(Options as ISaveDialogOptions).pipe(
 				Effect.map(Option.getOrUndefined),
 				Effect.mapError(
 					(Cause) =>
