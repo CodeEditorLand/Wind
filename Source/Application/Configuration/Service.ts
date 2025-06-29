@@ -10,6 +10,7 @@ import { Effect } from "effect";
 import { Emitter } from "vs/base/common/event.js";
 import { joinPath } from "vs/base/common/resources.js";
 import type {
+	IConfigurationChangeEvent,
 	IConfigurationOverrides,
 	IConfigurationService,
 	IConfigurationValue,
@@ -162,22 +163,16 @@ export class Configuration extends Effect.Service<IConfigurationService>()(
 					key: string,
 					overrides?: IConfigurationOverrides,
 				): IConfigurationValue<T> => {
-					const value = ServiceImplementation.getValue(
+					const value = ServiceImplementation.getValue<T>(
 						key,
 						overrides,
-					) as T | undefined;
+					);
 					return {
 						value,
 						defaultValue: value,
 						userValue: value,
 						workspaceValue: value,
 						workspaceFolderValue: value,
-						default: undefined,
-						user: undefined,
-						workspace: undefined,
-						workspaceFolder: undefined,
-						memory: undefined,
-						policy: undefined,
 					};
 				},
 
@@ -190,7 +185,9 @@ export class Configuration extends Effect.Service<IConfigurationService>()(
 
 				reloadConfiguration: () => Promise.resolve(),
 
-				onDidChangeConfiguration: new Emitter<any>().event,
+				onDidChangeConfiguration:
+					new Emitter<IConfigurationChangeEvent>().event,
+				getConfigurationData: () => null,
 			};
 
 			return ServiceImplementation;

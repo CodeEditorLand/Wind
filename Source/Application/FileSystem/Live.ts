@@ -5,6 +5,7 @@
 
 import { Layer } from "effect";
 
+import { HostService } from "../Host/Service.js";
 import { FileSystemService } from "./Service.js";
 
 /**
@@ -14,5 +15,8 @@ import { FileSystemService } from "./Service.js";
  * in the service definition. It automatically includes any dependencies
  * required by its `effect` constructor, such as the `HostService`.
  */
-export const FileSystemLive: Layer.Layer<FileSystemService> =
-	FileSystemService.Default;
+export const FileSystemLive: Layer.Layer<
+	FileSystemService,
+	never,
+	HostService
+> = FileSystemService.Default;

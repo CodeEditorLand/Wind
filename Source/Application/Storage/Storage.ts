@@ -10,6 +10,7 @@ import {
 	type IStorage,
 	type IStorageChangeEvent,
 	type IUpdateRequest,
+	type StorageValue,
 } from "vs/base/parts/storage/common/storage.js";
 
 import { IntegrationService } from "../../Integration/Tauri/Service.js";
@@ -26,14 +27,14 @@ export class EffectStorage implements IStorage {
 	private readonly OnDidChangeStorageEmitter =
 		new Emitter<IStorageChangeEvent>();
 	public readonly onDidChangeStorage: Event<IStorageChangeEvent> =
-		this.onDidChangeStorageEmitter.event;
+		this.OnDidChangeStorageEmitter.event;
 
 	constructor(
 		private readonly Database: StorageDatabase,
 		private readonly Integration: IntegrationService,
 	) {
 		// Listen for external changes from the host
-		const ListenEffect = Integration.Listen<IStorageChangeEvent>(
+		const ListenEffect = this.Integration.Listen<IStorageChangeEvent>(
 			`storage://did-change/${Database.Name}`,
 			(Event) => {
 				if (Event.payload) {
@@ -42,6 +43,27 @@ export class EffectStorage implements IStorage {
 			},
 		);
 		Effect.runFork(ListenEffect);
+	}
+	getBoolean(key: string, fallbackValue: boolean): boolean;
+	getBoolean(key: string, fallbackValue?: boolean): boolean | undefined;
+	getBoolean(key: unknown, fallbackValue?: unknown): boolean | undefined {
+		throw new Error("Method not implemented.");
+	}
+	getNumber(key: string, fallbackValue: number): number;
+	getNumber(key: string, fallbackValue?: number): number | undefined;
+	getNumber(key: unknown, fallbackValue?: unknown): number | undefined {
+		throw new Error("Method not implemented.");
+	}
+	getObject<T extends object>(key: string, fallbackValue: T): T;
+	getObject<T extends object>(key: string, fallbackValue?: T): T | undefined;
+	getObject(key: unknown, fallbackValue?: unknown): T | T | undefined {
+		throw new Error("Method not implemented.");
+	}
+	whenFlushed(): Promise<void> {
+		throw new Error("Method not implemented.");
+	}
+	dispose(): void {
+		throw new Error("Method not implemented.");
 	}
 
 	get items(): Map<string, string> {
@@ -64,19 +86,25 @@ export class EffectStorage implements IStorage {
 		return value ?? fallbackValue;
 	}
 
-	set(key: string, value: string | undefined): void {
+	set(key: string, value: StorageValue, _external?: boolean): Promise<void> {
 		const request: IUpdateRequest =
 			value === undefined
-				? { delete: [key] }
-				: { insert: new Map([[key, value]]) };
-		this.update(request);
+				? { deleted: new Set([key]), inserted: new Map() }
+				: {
+						deleted: new Set(),
+						inserted: new Map([[key, value as string]]),
+					};
+		return this.update(request);
 	}
 
-	delete(key: string): void {
-		this.update({ delete: [key] });
+	delete(key: string, _external?: boolean): Promise<void> {
+		return this.update({
+			deleted: new Set([key]),
+			inserted: new Map(),
+		});
 	}
 
-	update(request: IUpdateRequest): void {
+	update(request: IUpdateRequest): Promise<void> {
 		const UpdateEffect = this.Integration.Invoke<void>(
 			"Storage.UpdateItems",
 			{ DatabaseName: this.Database.Name, Request: request },
@@ -87,10 +115,10 @@ export class EffectStorage implements IStorage {
 			),
 		);
 		// Fire-and-forget the update operation.
-		Effect.runFork(UpdateEffect);
+		return Effect.runPromise(UpdateEffect);
 	}
 
-	async init(): Promise<void> {
+	init(): Promise<void> {
 		const InitEffect = this.Integration.Invoke<void>("Storage.Init", {
 			DatabaseName: this.Database.Name,
 			Path: this.Database.Path,
@@ -102,13 +130,14 @@ export class EffectStorage implements IStorage {
 		return Effect.runPromise(InitEffect);
 	}
 
-	async close(): Promise<void> {
+	close(): Promise<void> {
 		// Close logic would be handled by the host.
 		// We just dispose the emitter.
 		this.OnDidChangeStorageEmitter.dispose();
+		return Promise.resolve();
 	}
 
-	async flush(): Promise<void> {
+	flush(): Promise<void> {
 		// Flush is a host-side concept in this architecture.
 		return Promise.resolve();
 	}

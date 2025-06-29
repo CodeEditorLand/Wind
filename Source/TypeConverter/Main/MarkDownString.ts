@@ -3,14 +3,12 @@
  * @description Converts between `vscode.MarkdownString` and its DTO representation.
  */
 
-import type {
-	IMarkdownString,
-	MarkdownStringTrustedOptions,
+import {
+	MarkdownString as VSCodeMarkdownString,
+	type IMarkdownString as VSCodeIMarkdownString,
 } from "vs/base/common/htmlContent.js";
 import { URI } from "vs/base/common/uri.js";
-import type { MarkdownString as VSCodeMarkdownString } from "vscode";
-
-import { MarkdownString } from "../../Platform/VSCode/Type.js";
+import type { Uri as VSCodeURI } from "vscode";
 
 /**
  * Converts a `vscode.MarkdownString` object into a plain DTO for IPC.
@@ -19,7 +17,7 @@ import { MarkdownString } from "../../Platform/VSCode/Type.js";
  */
 export const FromAPI = (
 	MarkdownStringInstance: VSCodeMarkdownString,
-): IMarkdownString => ({
+): VSCodeIMarkdownString => ({
 	value: MarkdownStringInstance.value,
 	isTrusted: MarkdownStringInstance.isTrusted,
 	baseUri: MarkdownStringInstance.baseUri as unknown as URI | undefined,
@@ -33,13 +31,19 @@ export const FromAPI = (
  * @returns A new `vscode.MarkdownString` instance.
  */
 export const ToAPI = (
-	MarkdownStringDTO: IMarkdownString,
+	MarkdownStringDTO: VSCodeIMarkdownString,
 ): VSCodeMarkdownString => {
-	const Result = new MarkdownString(
+	const Result = new VSCodeMarkdownString(
 		MarkdownStringDTO.value,
-		typeof MarkdownStringDTO.isTrusted === "boolean"
-			? MarkdownStringDTO.isTrusted
-			: (MarkdownStringDTO.isTrusted as MarkdownStringTrustedOptions),
+		MarkdownStringDTO.isTrusted
+			? {
+					enabledCommands: Array.isArray(
+						(MarkdownStringDTO.isTrusted as any).enabledCommands,
+					)
+						? (MarkdownStringDTO.isTrusted as any).enabledCommands
+						: undefined,
+				}
+			: false,
 	);
 
 	if (MarkdownStringDTO.baseUri) {

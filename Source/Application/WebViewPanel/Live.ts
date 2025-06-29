@@ -5,6 +5,7 @@
 
 import { Layer } from "effect";
 
+import { IPCService } from "../IPC/Service.js";
 import { WebViewPanelService } from "./Service.js";
 
 /**
@@ -14,5 +15,8 @@ import { WebViewPanelService } from "./Service.js";
  * in the service definition. It automatically includes any dependencies
  * required by its `effect` constructor.
  */
-export const WebViewPanelLive: Layer.Layer<WebViewPanelService> =
-	WebViewPanelService.Default;
+export const WebViewPanelLive: Layer.Layer<
+	WebViewPanelService,
+	never,
+	IPCService
+> = WebViewPanelService.Default;

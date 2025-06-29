@@ -113,13 +113,10 @@ export class CommandConverter {
 		const Result: InternalCommand = {
 			id: Command.command,
 			title: Command.title,
+			tooltip: Command.tooltip,
+			arguments: Command.arguments,
 		};
-		if (Command.tooltip) {
-			Result.tooltip = Command.tooltip;
-		}
-		if (Command.arguments) {
-			Result.arguments = Command.arguments;
-		}
+
 		return Result;
 	}
 

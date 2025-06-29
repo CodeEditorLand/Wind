@@ -10,7 +10,10 @@ import { IInstantiationService } from "vs/platform/instantiation/common/instanti
 import { ILogService } from "vs/platform/log/common/log.js";
 import { IStorageService } from "vs/platform/storage/common/storage.js";
 import { IWorkspaceContextService } from "vs/platform/workspace/common/workspace.js";
-import type { ISCMService } from "vs/workbench/contrib/scm/common/scm.js";
+import {
+	ISCMService,
+	type ISCMProvider,
+} from "vs/workbench/contrib/scm/common/scm.js";
 import { SCMService as VSCodeSCMService } from "vs/workbench/contrib/scm/common/scmService.js";
 
 import { IntegrationService } from "../../Integration/Tauri/Service.js";
@@ -30,18 +33,14 @@ import { SourceControlManagementProblem } from "./Error.js";
 export class SourceControlManagementService extends Effect.Service<ISCMService>()(
 	"scmService",
 	{
-		effect: Effect.gen(function* (Generator) {
+		effect: Effect.gen(function* () {
 			// Resolve legacy and modern service dependencies.
-			const InstantiationService = yield* Generator(
-				IInstantiationService,
-			);
-			const LoggerService = yield* Generator(ILogService);
-			const ContextKeyService = yield* Generator(IContextKeyService);
-			const WorkspaceContextService = yield* Generator(
-				IWorkspaceContextService,
-			);
-			const StorageService = yield* Generator(IStorageService);
-			const Integration = yield* Generator(IntegrationService);
+			const InstantiationService = yield* IInstantiationService;
+			const LoggerService = yield* ILogService;
+			const ContextKeyService = yield* IContextKeyService;
+			const WorkspaceContextService = yield* IWorkspaceContextService;
+			const StorageService = yield* IStorageService;
+			const Integration = yield* IntegrationService;
 
 			// Instantiate the real VS Code SCM service.
 			const ServiceInstance = InstantiationService.createInstance(
@@ -95,7 +94,7 @@ export class SourceControlManagementService extends Effect.Service<ISCMService>(
 						Event.payload,
 					);
 					ServiceInstance.registerSCMProvider(
-						ProviderFromDTO(Event.payload as any),
+						ProviderFromDTO(Event.payload as any) as ISCMProvider,
 					);
 				},
 			).pipe(
@@ -120,7 +119,7 @@ export class SourceControlManagementService extends Effect.Service<ISCMService>(
 			// However, for ISCMService, we return the instance directly, and expect
 			// DesktopMain to call an initialization routine.
 			// For simplicity here, we can fork the initialization.
-			yield* Generator(Initialize);
+			yield* Initialize;
 
 			return ServiceInstance;
 		}),

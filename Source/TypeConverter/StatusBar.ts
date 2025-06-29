@@ -5,9 +5,12 @@
 
 import type { Command, StatusBarItem as VSCodeStatusBarItem } from "vscode";
 
-import { MarkdownString, ThemeColor } from "../Platform/VSCode/Type.js";
+import {
+	MarkdownString,
+	type IMarkdownString,
+} from "../Platform/VSCode/Type.js";
 import type { CommandConverter } from "./Command.js";
-import { FromAPI as MarkdownStringFromAPI } from "./Main/MarkdownString.js";
+import { FromAPI as MarkdownStringFromAPI } from "./Main/MarkDownString.js";
 
 /**
  * The DTO for a status bar entry sent over IPC.
@@ -16,7 +19,7 @@ export interface StatusBarEntryDTO {
 	readonly id: string;
 	readonly name: string | undefined;
 	readonly text: string;
-	readonly tooltip: string | any | undefined;
+	readonly tooltip: string | IMarkdownString | undefined;
 	readonly command: any | undefined;
 	readonly priority: number | undefined;
 	readonly alignment: number; // 0 for Left, 1 for Right
@@ -47,15 +50,14 @@ export const FromAPI = (
 		: undefined,
 	priority: From.priority,
 	alignment: From.alignment === 1 /* Left */ ? 0 : 1,
-	backgroundColor:
-		From.backgroundColor instanceof ThemeColor
-			? From.backgroundColor.id
-			: undefined,
+	backgroundColor: From.backgroundColor
+		? From?.backgroundColor?.id
+		: undefined,
 	color:
 		typeof From.color === "string"
 			? From.color
-			: From.color instanceof ThemeColor
-				? From.color.id
+			: From.color
+				? From?.color?.id
 				: undefined,
 	accessibilityInformation: From.accessibilityInformation,
 });

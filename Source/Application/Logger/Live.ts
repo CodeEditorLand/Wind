@@ -5,6 +5,7 @@
 
 import { Layer } from "effect";
 
+import { HostService } from "../Host/Service.js";
 import { LoggerService } from "./Service.js";
 
 /**
@@ -14,4 +15,5 @@ import { LoggerService } from "./Service.js";
  * in the `LoggerService` service definition. It automatically includes the
  * dependencies required by its `effect` constructor, such as the `HostService`.
  */
-export const LoggerLive: Layer.Layer<LoggerService> = LoggerService.Default;
+export const LoggerLive: Layer.Layer<LoggerService, never, HostService> =
+	LoggerService.Default;

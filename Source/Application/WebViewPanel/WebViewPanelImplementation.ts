@@ -6,6 +6,7 @@
  */
 
 import { Effect } from "effect";
+import { Emitter } from "vs/base/common/event.js";
 import type { IExtensionDescription } from "vs/platform/extensions/common/extensions.js";
 import type {
 	Event,
@@ -21,7 +22,6 @@ import type {
 import type { HostService } from "../../Application/Host/Service.js";
 import { FromAPI as UriFromAPI } from "../../TypeConverter/Main/URI.js";
 import { ConvertShowOptionsToDTO } from "../../TypeConverter/WebView.js";
-import { CreateEventStream } from "../../Utility/EventStream.js";
 import { WebViewImplementation } from "./WebViewImplementation.js";
 
 /**
@@ -38,10 +38,10 @@ export class WebViewPanelImplementation implements WebviewPanel {
 	private _visible: boolean;
 	private _viewColumn: ViewColumn;
 
-	private readonly OnDidDisposeEmitter = CreateEventStream<void>();
+	private readonly OnDidDisposeEmitter = new Emitter<void>();
 	public readonly onDidDispose: Event<void>;
 	private readonly OnDidChangeViewStateEmitter =
-		CreateEventStream<WebviewPanelOnDidChangeViewStateEvent>();
+		new Emitter<WebviewPanelOnDidChangeViewStateEvent>();
 	public readonly onDidChangeViewState: Event<WebviewPanelOnDidChangeViewStateEvent>;
 	public readonly webview: Webview;
 	public readonly viewType: string;
@@ -133,7 +133,7 @@ export class WebViewPanelImplementation implements WebviewPanel {
 			return;
 		}
 		this.IsDisposed = true;
-		this.OnDidDisposeEmitter.Fire();
+		this.OnDidDisposeEmitter.fire();
 		this.OnDidDisposeCallback();
 		(this.webview as WebViewImplementation).dispose();
 		Effect.runFork(this.Host.DisposeWebview(this.Handle));
@@ -161,7 +161,7 @@ export class WebViewPanelImplementation implements WebviewPanel {
 		this._viewColumn = NewState.viewColumn;
 
 		if (Changed) {
-			this.OnDidChangeViewStateEmitter.Fire({ webviewPanel: this });
+			this.OnDidChangeViewStateEmitter.fire({ webviewPanel: this });
 		}
 	}
 }

@@ -5,14 +5,14 @@
  */
 
 import { Effect, Ref } from "effect";
-import {
-	type Event,
-	type TextDocument,
-	type TextDocumentShowOptions,
-	type TextEditor,
-	type Uri,
-	type ViewColumn,
-	type WindowState,
+import type {
+	Event,
+	TextDocument,
+	TextDocumentShowOptions,
+	TextEditor,
+	Uri,
+	ViewColumn,
+	WindowState,
 } from "vscode";
 
 import { FromAPI as RangeFromAPI } from "../../TypeConverter/Main/Range.js";
@@ -41,23 +41,26 @@ export interface Window {
  * The `Effect.Service` for the Window service.
  */
 export class WindowService extends Effect.Service<Window>()("Service/Window", {
-	effect: Effect.gen(function* (Generator) {
-		const Host = yield* Generator(HostService);
-		const WorkSpace = yield* Generator(WorkSpaceService);
+	effect: Effect.gen(function* () {
+		const Host = yield* HostService;
+		const WorkSpace = yield* WorkSpaceService;
 
-		const WindowState = yield* Generator(
-			Ref.make<WindowState>({ focused: true, active: true }),
-		);
-		const { Event: OnDidChangeWindowState, Fire: FireWindowState } =
-			yield* Generator(CreateEventStream<WindowState>());
+		const WindowState = yield* Ref.make<WindowState>({
+			focused: true,
+			active: true,
+		});
+		const { event: OnDidChangeWindowState, Fire: FireWindowState } =
+			yield* CreateEventStream<WindowState>();
 
 		// Set up a listener for window state changes from the host.
-		yield* Generator(
-			Effect.forkDaemon(
+		yield* Effect.forkDaemon(
+			Effect.sync(() =>
 				Host.OnDidChangeWindowState((IsFocused) => {
 					const NewState = { focused: IsFocused, active: IsFocused };
-					return Ref.set(WindowState, NewState).pipe(
-						Effect.andThen(FireWindowState(NewState)),
+					Effect.runFork(
+						Ref.set(WindowState, NewState).pipe(
+							Effect.andThen(FireWindowState(NewState)),
+						),
 					);
 				}),
 			),
@@ -68,7 +71,7 @@ export class WindowService extends Effect.Service<Window>()("Service/Window", {
 			columnOrOptions?: ViewColumn | TextDocumentShowOptions,
 			preserveFocus?: boolean,
 		): Effect.Effect<TextEditor, WindowProblem> =>
-			Effect.gen(function* (Generator) {
+			Effect.gen(function* () {
 				const TheUri: Uri =
 					"uri" in documentOrUri ? documentOrUri.uri : documentOrUri;
 				const Options =
@@ -86,23 +89,23 @@ export class WindowService extends Effect.Service<Window>()("Service/Window", {
 						? ViewColumnFromAPI(columnOrOptions)
 						: undefined;
 
-				const EditorId = yield* Generator(
-					Host.ShowTextDocument(TheUri, ViewColumnDTO, OptionsDTO),
+				const EditorId = yield* Host.ShowTextDocument(
+					TheUri,
+					ViewColumnDTO,
+					OptionsDTO,
 				);
 
 				// After the host confirms opening, we find the corresponding editor
 				// in our local state, which should have been updated via events.
-				const Editor = WorkSpace.visibleTextEditors.find(
-					(e) => (e as any).id === EditorId,
+				const Editor = (WorkSpace as any).visibleTextEditors.find(
+					(e: TextEditor) => (e as any).id === EditorId,
 				);
 
 				if (!Editor) {
-					return yield* Generator(
-						new WindowProblem({
-							Cause: `Editor with ID ${EditorId} not found after host confirmation.`,
-							Context: "ShowTextDocumentFailed",
-						}),
-					);
+					return yield* new WindowProblem({
+						Cause: `Editor with ID ${EditorId} not found after host confirmation.`,
+						Context: "ShowTextDocumentFailed",
+					});
 				}
 				return Editor;
 			});
@@ -114,10 +117,10 @@ export class WindowService extends Effect.Service<Window>()("Service/Window", {
 			onDidChangeWindowState: OnDidChangeWindowState,
 			get activeTextEditor() {
 				// Delegate directly to WorkSpaceService for editor state.
-				return WorkSpace.activeTextEditor;
+				return (WorkSpace as any).activeTextEditor;
 			},
 			get visibleTextEditors() {
-				return WorkSpace.visibleTextEditors;
+				return (WorkSpace as any).visibleTextEditors;
 			},
 			ShowTextDocument,
 		};

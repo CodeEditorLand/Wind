@@ -5,6 +5,8 @@
 
 import { Layer } from "effect";
 
+import { CommandService } from "../Command/Service.js";
+import { HostService } from "../Host/Service.js";
 import { StatusBarService } from "./Service.js";
 
 /**
@@ -13,5 +15,8 @@ import { StatusBarService } from "./Service.js";
  * It automatically includes dependencies required by its `effect` constructor,
  * such as the `HostService` and `CommandService`.
  */
-export const StatusBarLive: Layer.Layer<StatusBarService> =
-	StatusBarService.Default;
+export const StatusBarLive: Layer.Layer<
+	StatusBarService,
+	never,
+	HostService | CommandService
+> = StatusBarService.Default;

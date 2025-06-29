@@ -12,6 +12,7 @@ import { Layer } from "effect";
 import { IntegrationLive } from "../Integration/Tauri/Live.js";
 // Import all live service layers that will be part of the application.
 import { ClipboardLive } from "./Clipboard/Live.js";
+import { CommandLive } from "./Command/Live.js";
 import { ConfigurationLive } from "./Configuration/Live.js";
 import { DialogLive } from "./Dialog/Live.js";
 import { DocumentLive } from "./Document/Live.js";
@@ -21,13 +22,18 @@ import { FileLive } from "./File/Live.js";
 import { FileSystemLive } from "./FileSystem/Live.js";
 import { HostLive } from "./Host/Live.js";
 import { LanguageFeatureLive } from "./LanguageFeature/Live.js";
-import { LogLive } from "./Logger/Live.js";
+import { LoggerLive } from "./Logger/Live.js";
 import { MarkerLive } from "./Marker/Live.js";
+import { NotificationLive } from "./Notification/Live.js";
 import { QuickInputLive } from "./QuickInput/Live.js";
 import { SourceControlManagementLive } from "./SourceControlManagement/Live.js";
+import { StatusBarLive } from "./StatusBar/Live.js";
 import { StorageLive } from "./Storage/Live.js";
 import { TextEditorLive } from "./TextEditor/Live.js";
 import { TreeViewLive } from "./TreeView/Live.js";
+import { WebViewPanelLive } from "./WebViewPanel/Live.js";
+import { WindowLive } from "./Window/Live.js";
+import { WorkSpaceLive } from "./WorkSpace/Live.js";
 
 /**
  * The master `AppLayer` for the Wind application.
@@ -40,6 +46,7 @@ import { TreeViewLive } from "./TreeView/Live.js";
  */
 export const AppLayer = Layer.mergeAll(
 	ClipboardLive,
+	CommandLive,
 	ConfigurationLive,
 	DialogLive,
 	DocumentLive,
@@ -49,13 +56,18 @@ export const AppLayer = Layer.mergeAll(
 	FileSystemLive,
 	HostLive,
 	LanguageFeatureLive,
-	LogLive,
+	LoggerLive,
 	MarkerLive,
+	NotificationLive,
 	QuickInputLive,
 	SourceControlManagementLive,
+	StatusBarLive,
 	StorageLive,
 	TextEditorLive,
 	TreeViewLive,
+	WebViewPanelLive,
+	WindowLive,
+	WorkSpaceLive,
 ).pipe(Layer.provide(IntegrationLive)); // Provide the integration layer to all services that need it.
 
 /**

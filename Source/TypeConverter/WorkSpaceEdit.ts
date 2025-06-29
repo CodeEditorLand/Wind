@@ -4,7 +4,7 @@
  * handling complex transformations involving text edits and file operations.
  */
 
-import type { URI, UriComponents } from "vs/base/common/uri.js";
+import type { UriComponents } from "vs/base/common/uri.js";
 import type { IIdentifiedSingleEditOperation } from "vs/editor/common/model.js";
 import type {
 	WorkspaceEdit as VSCodeWorkspaceEdit,
@@ -14,6 +14,7 @@ import type {
 import {
 	TextEdit as ExtHostTextEdit,
 	WorkspaceEdit as ExtHostWorkspaceEdit,
+	type Uri,
 } from "../Platform/VSCode/Type.js";
 import {
 	FromAPI as TextEditFromAPI,
@@ -47,7 +48,7 @@ type IWorkspaceEditDTO = {
 // --- Conversion Logic ---
 
 export interface IVersionInformationProvider {
-	GetTextDocumentVersion(Uri: URI): number | undefined;
+	GetTextDocumentVersion(Uri: Uri): number | undefined;
 }
 
 export const FromAPI = (
@@ -56,11 +57,11 @@ export const FromAPI = (
 ): IWorkspaceEditDTO => {
 	const Result: IWorkspaceEditDTO = { edits: [] };
 
-	for (const [URI, URIEditArray] of Edit.entries()) {
-		const Resource = UriFromAPI(URI);
-		const VersionId = VersionProvider?.GetTextDocumentVersion(URI);
+	for (const [uri, uriEditArray] of Edit.entries()) {
+		const Resource = UriFromAPI(uri);
+		const VersionId = VersionProvider?.GetTextDocumentVersion(uri);
 
-		for (const SingleEdit of URIEditArray) {
+		for (const SingleEdit of uriEditArray) {
 			if (SingleEdit instanceof ExtHostTextEdit) {
 				const TextEditDTO: IWorkspaceTextEditDTO = {
 					_type: "text",
@@ -83,9 +84,9 @@ export const ToAPI = (DTO: IWorkspaceEditDTO): VSCodeWorkspaceEdit => {
 
 	for (const Edit of DTO.edits) {
 		if (Edit._type === "text") {
-			const URI = UriToAPI(Edit.resource);
+			const uri = UriToAPI(Edit.resource);
 			const TextEditArray = [TextEditToAPI(Edit.edit)];
-			Result.set(URI, TextEditArray);
+			Result.set(uri, TextEditArray);
 		} else if (Edit._type === "file") {
 			if (Edit.oldResource && Edit.newResource) {
 				Result.renameFile(

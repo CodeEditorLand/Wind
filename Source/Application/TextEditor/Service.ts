@@ -13,11 +13,16 @@ import { ILogService } from "vs/platform/log/common/log.js";
 import { IUriIdentityService } from "vs/platform/uriIdentity/common/uriIdentity.js";
 import { IFilesConfigurationService } from "vs/workbench/services/filesConfiguration/common/filesConfigurationService.js";
 import { ILifecycleService } from "vs/workbench/services/lifecycle/common/lifecycle.js";
-import { ITextFileService as VSCodeTextFileService } from "vs/workbench/services/textfile/common/textfiles.js";
+import {
+	ITextFileService,
+	type ITextFileSaveOptions,
+} from "vs/workbench/services/textfile/common/textfiles.js";
+import { TextFileService as VSCodeTextFileService } from "vs/workbench/services/textfile/common/textFileService.js";
 import { IUntitledTextEditorService } from "vs/workbench/services/untitled/common/untitledTextEditorService.js";
 import { IWorkingCopyFileService } from "vs/workbench/services/workingCopy/common/workingCopyFileService.js";
 
-import { HostService } from "../../Application/Host/Service.js";
+import { type Uri } from "../../Platform/VSCode/Type.js";
+import { HostService } from "../Host/Service.js";
 import { TextEditorProblem } from "./Error.js";
 
 /**
@@ -29,33 +34,39 @@ import { TextEditorProblem } from "./Error.js";
  * native `Mountain` backend. All other dependencies are resolved from the DI
  * container, showcasing the hybrid DI model.
  */
-export class TextEditorService extends Effect.Service<VSCodeTextFileService>()(
+export class TextEditorService extends Effect.Service<ITextFileService>()(
 	"textFileService",
 	{
-		effect: Effect.gen(function* (Generator) {
+		effect: Effect.gen(function* () {
 			// Resolve dependencies from the Effect context.
-			const InstantiationService = yield* Generator(
-				IInstantiationService,
-			);
-			const Host = yield* Generator(HostService);
-			const LoggerService = yield* Generator(ILogService);
+			const InstantiationService = yield* IInstantiationService;
+			const Host = yield* HostService;
+			const LoggerService = yield* ILogService;
+			const FileService = yield* IFileService;
+			const UntitledTextEditorService = yield* IUntitledTextEditorService;
+			const LifecycleService = yield* ILifecycleService;
+			const FilesConfigurationService = yield* IFilesConfigurationService;
+			const WorkingCopyFileService = yield* IWorkingCopyFileService;
+			const UriIdentityService = yield* IUriIdentityService;
 
 			// Instantiate the real VS Code TextFileService.
-			// Most dependencies are stubbed as they are not critical for the 'save' logic.
 			const ServiceInstance = InstantiationService.createInstance(
 				VSCodeTextFileService,
-				{} as IFileService,
-				{} as IUntitledTextEditorService,
-				{} as ILifecycleService,
+				FileService,
+				UntitledTextEditorService,
+				LifecycleService,
 				InstantiationService,
-				{} as IFilesConfigurationService,
-				{} as IWorkingCopyFileService,
-				{} as IUriIdentityService,
+				FilesConfigurationService,
+				WorkingCopyFileService,
+				UriIdentityService,
 				LoggerService,
-			) as VSCodeTextFileService;
+			) as ITextFileService;
 
 			// Override the `save` method to delegate to our host.
-			ServiceInstance.save = async (Resource, Options) => {
+			ServiceInstance.save = async (
+				Resource: Uri,
+				Options?: ITextFileSaveOptions,
+			): Promise<Uri | undefined> => {
 				const TargetResource =
 					"resource" in Resource ? Resource.resource : Resource;
 
@@ -70,7 +81,9 @@ export class TextEditorService extends Effect.Service<VSCodeTextFileService>()(
 					`[TextFileService] Invoking 'Host.SaveFile' for URI: ${TargetResource.toString()}`,
 				);
 
-				const SaveEffect = Host.SaveFile(TargetResource, Options).pipe(
+				const SaveEffect = Effect.promise(() =>
+					Host.SaveFile(TargetResource, Options),
+				).pipe(
 					Effect.mapError(
 						(Cause) =>
 							new TextEditorProblem({
@@ -81,7 +94,8 @@ export class TextEditorService extends Effect.Service<VSCodeTextFileService>()(
 				);
 
 				// Bridge back to Promise-based API required by the interface.
-				return Effect.runPromise(SaveEffect).then(() => true);
+				await Effect.runPromise(SaveEffect);
+				return TargetResource;
 			};
 
 			return ServiceInstance;

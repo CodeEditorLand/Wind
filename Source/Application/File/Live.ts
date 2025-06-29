@@ -4,7 +4,9 @@
  */
 
 import { Layer } from "effect";
+import { ILogService } from "vs/platform/log/common/log.js";
 
+import { FileSystemService } from "../FileSystem/Service.js";
 import { FileService } from "./Service.js";
 
 /**
@@ -15,4 +17,8 @@ import { FileService } from "./Service.js";
  * dependencies required by its `effect` constructor, such as `ILogService` and
  * `FileSystemService`.
  */
-export const FileLive: Layer.Layer<FileService> = FileService.Default;
+export const FileLive: Layer.Layer<
+	FileService,
+	never,
+	ILogService | FileSystemService
+> = FileService.Default;

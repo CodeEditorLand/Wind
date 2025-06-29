@@ -22,7 +22,7 @@ export class WebViewImplementation implements Webview {
 	private _html = "";
 	private _options: WebviewOptions;
 
-	private readonly OnDidReceiveMessageEmitter = CreateEventStream<any>();
+	private readonly OnDidReceiveMessageEmitter: Emitter<any>;
 	public readonly onDidReceiveMessage: Event<any>;
 
 	constructor(
@@ -32,6 +32,7 @@ export class WebViewImplementation implements Webview {
 		InitialOptions: WebviewOptions,
 	) {
 		this._options = InitialOptions;
+		this.OnDidReceiveMessageEmitter = new Emitter<any>();
 		this.onDidReceiveMessage = this.OnDidReceiveMessageEmitter.event;
 	}
 
@@ -88,14 +89,14 @@ export class WebViewImplementation implements Webview {
 
 	public fireDidReceiveMessage(Message: any): void {
 		if (!this.IsDisposed) {
-			Effect.runFork(this.OnDidReceiveMessageEmitter.Fire(Message));
+			this.OnDidReceiveMessageEmitter.fire(Message);
 		}
 	}
 
 	public dispose(): void {
 		if (!this.IsDisposed) {
 			this.IsDisposed = true;
-			Effect.runFork(this.OnDidReceiveMessageEmitter.Shutdown());
+			this.OnDidReceiveMessageEmitter.dispose();
 		}
 	}
 }

@@ -9,16 +9,17 @@ import type { IStorage } from "vs/base/parts/storage/common/storage.js";
 import { ILogService } from "vs/platform/log/common/log.js";
 import {
 	AbstractStorageService,
+	StorageScope,
 	type IStorageService,
-	type StorageScope,
 } from "vs/platform/storage/common/storage.js";
 import {
 	isUserDataProfile,
 	type IUserDataProfile,
-} from "vs/platform/userDataProfile/common/userDataProfile";
+} from "vs/platform/userDataProfile/common/userDataProfile.js";
 import type { IAnyWorkspaceIdentifier } from "vs/platform/workspace/common/workspace.js";
 
 import { IntegrationService } from "../../Integration/Tauri/Service.js";
+import { EffectStorage } from "./Storage.js";
 
 /**
  * An implementation of `AbstractStorageService` that uses `EffectStorage` as its
@@ -36,9 +37,15 @@ export class EffectStorageService extends AbstractStorageService {
 		});
 	}
 
-	protected override getStorage(_scope: StorageScope): IStorage | undefined {
+	protected override getStorage(scope: StorageScope): IStorage | undefined {
 		// This would be implemented to return the correct storage instance
 		// based on the current profile and workspace state.
+		if (scope === StorageScope.APPLICATION) {
+			return new EffectStorage(
+				{ Scope: scope, Name: "application" },
+				this.Integration,
+			);
+		}
 		return undefined;
 	}
 
@@ -93,9 +100,9 @@ export class EffectStorageService extends AbstractStorageService {
 export class StorageService extends Effect.Service<IStorageService>()(
 	"storageService",
 	{
-		effect: Effect.gen(function* (Generator) {
-			const Integration = yield* Generator(IntegrationService);
-			const LoggerService = yield* Generator(ILogService);
+		effect: Effect.gen(function* () {
+			const Integration = yield* IntegrationService;
+			const LoggerService = yield* ILogService;
 
 			// This is a simplified implementation. The original `NativeWorkbenchStorageService`
 			// is highly complex. We lift the abstract base class and provide our own
@@ -105,15 +112,13 @@ export class StorageService extends Effect.Service<IStorageService>()(
 				LoggerService,
 			);
 
-			yield* Generator(
-				Effect.tryPromise({
-					try: () => ServiceInstance.initialize(),
-					catch: (Cause) =>
-						new Error("StorageService initialization failed", {
-							Cause,
-						}),
-				}),
-			);
+			yield* Effect.tryPromise({
+				try: () => ServiceInstance.initialize(),
+				catch: (cause) =>
+					new Error("StorageService initialization failed", {
+						cause,
+					}),
+			});
 
 			return ServiceInstance;
 		}),

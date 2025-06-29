@@ -9,10 +9,10 @@ import { IFileService } from "vs/platform/files/common/files.js";
 import { ILogService } from "vs/platform/log/common/log.js";
 import { IPolicyService } from "vs/platform/policy/common/policy.js";
 import { IUriIdentityService } from "vs/platform/uriIdentity/common/uriIdentity.js";
+import { IUserDataProfilesService } from "vs/platform/userDataProfile/common/userDataProfile.js";
 import type { IWorkspaceContextService } from "vs/platform/workspace/common/workspace.js";
 import { WorkspaceService as VSCodeWorkspaceService } from "vs/workbench/services/configuration/browser/configurationService.js";
-import { IConfigurationCache } from "vs/workbench/services/configuration/common/configuration.js";
-import { IJSONEditingService } from "vs/workbench/services/configuration/common/jsonEditing.js";
+import { type IConfigurationCache } from "vs/workbench/services/configuration/common/configuration.js";
 import { IBrowserWorkbenchEnvironmentService } from "vs/workbench/services/environment/browser/environmentService.js";
 import { IRemoteAgentService } from "vs/workbench/services/remote/common/remoteAgentService.js";
 import { IUserDataProfileService } from "vs/workbench/services/userDataProfile/common/userDataProfile.js";
@@ -30,20 +30,17 @@ import { IUserDataProfileService } from "vs/workbench/services/userDataProfile/c
 export class WorkSpaceService extends Effect.Service<IWorkspaceContextService>()(
 	"workspaceContextService",
 	{
-		effect: Effect.gen(function* (Generator) {
+		effect: Effect.gen(function* () {
 			// This service has many dependencies. We will need to provide live layers
 			// for all of them. For now, we can use stubs for some of them.
-			const EnvironmentService = yield* Generator(
-				IBrowserWorkbenchEnvironmentService,
-			);
-			const UserDataProfileService = yield* Generator(
-				IUserDataProfileService,
-			);
-			const FileService = yield* Generator(IFileService);
-			const RemoteAgentService = yield* Generator(IRemoteAgentService);
-			const UriIdentityService = yield* Generator(IUriIdentityService);
-			const LoggerService = yield* Generator(ILogService);
-			const PolicyService = yield* Generator(IPolicyService);
+			const EnvironmentService =
+				yield* IBrowserWorkbenchEnvironmentService;
+			const UserDataProfileService = yield* IUserDataProfileService;
+			const FileService = yield* IFileService;
+			const RemoteAgentService = yield* IRemoteAgentService;
+			const UriIdentityService = yield* IUriIdentityService;
+			const LoggerService = yield* ILogService;
+			const PolicyService = yield* IPolicyService;
 
 			// Placeholder for the configuration cache. A real implementation would
 			// likely use the StorageService.
@@ -61,7 +58,7 @@ export class WorkSpaceService extends Effect.Service<IWorkspaceContextService>()
 				},
 				EnvironmentService,
 				UserDataProfileService,
-				{} as any, // UserDataProfilesService
+				{} as IUserDataProfilesService, // UserDataProfilesService
 				FileService,
 				RemoteAgentService,
 				UriIdentityService,

@@ -7,7 +7,10 @@
 
 import { Effect } from "effect";
 import { Schemas } from "vs/base/common/network.js";
-import type { IFileService } from "vs/platform/files/common/files.js";
+import type {
+	IFileService,
+	IFileSystemProvider,
+} from "vs/platform/files/common/files.js";
 import { FileService as VSCodeFileService } from "vs/platform/files/common/fileService.js";
 import { ILogService } from "vs/platform/log/common/log.js";
 
@@ -25,16 +28,19 @@ import { FileSystemService } from "../FileSystem/Service.js";
 export class FileService extends Effect.Service<IFileService>()(
 	"vscode/FileService",
 	{
-		effect: Effect.gen(function* (Generator) {
-			const LoggerService = yield* Generator(ILogService);
-			const FileSystemProvider = yield* Generator(FileSystemService);
+		effect: Effect.gen(function* () {
+			const LoggerService = yield* ILogService;
+			const FileSystemProvider = yield* FileSystemService;
 
 			// Instantiate the real VS Code FileService.
 			const ServiceInstance = new VSCodeFileService(LoggerService);
 
 			// Register our custom provider for the 'file' scheme, which bridges
 			// to the Tauri backend. This is a critical integration point.
-			ServiceInstance.registerProvider(Schemas.file, FileSystemProvider);
+			ServiceInstance.registerProvider(
+				Schemas.file,
+				FileSystemProvider as IFileSystemProvider,
+			);
 
 			// A full implementation would also register providers for other schemes
 			// like 'vscode-remote', 'untitled', etc., as needed.

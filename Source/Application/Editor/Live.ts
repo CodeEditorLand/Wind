@@ -5,6 +5,8 @@
 
 import { Layer } from "effect";
 
+import { HostService } from "../Host/Service.js";
+import { TextEditorService } from "../TextEditor/Service.js";
 import { EditorService } from "./Service.js";
 
 /**
@@ -15,4 +17,8 @@ import { EditorService } from "./Service.js";
  * dependencies required by its `effect` constructor, such as `HostService`
  * and `TextEditorService`.
  */
-export const EditorLive: Layer.Layer<EditorService> = EditorService.Default;
+export const EditorLive: Layer.Layer<
+	EditorService,
+	never,
+	HostService | TextEditorService
+> = EditorService.Default;
