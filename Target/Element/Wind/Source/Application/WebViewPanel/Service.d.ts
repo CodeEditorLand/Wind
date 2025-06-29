@@ -6,7 +6,6 @@ import { Effect } from "effect";
 import type { IExtensionDescription } from "vs/platform/extensions/common/extensions.js";
 import { Disposable, type ViewColumn, type WebviewPanel as VSCodeWebviewPanel, type WebviewOptions, type WebviewPanelOptions, type WebviewPanelSerializer } from "vscode";
 import { WebViewPanelProblem } from "./Error.js";
-import { WebViewPanelImplementation } from "./WebViewPanelImplementation.js";
 /**
  * The contract for the WebViewPanel service.
  */
@@ -22,9 +21,9 @@ declare const WebViewPanelService_base: Effect.Service.Class<WebViewPanel, "Serv
         CreateWebviewPanel: (Extension: IExtensionDescription, ViewType: string, Title: string, ShowOptions: ViewColumn | {
             viewColumn: ViewColumn;
             preserveFocus?: boolean;
-        }, Options?: WebviewPanelOptions & WebviewOptions) => Effect.Effect<WebViewPanelImplementation, WebViewPanelProblem, never>;
+        }, Options?: WebviewPanelOptions & WebviewOptions) => Effect.Effect<VSCodeWebviewPanel, WebViewPanelProblem, never>;
         RegisterWebviewPanelSerializer: (_Extension: IExtensionDescription, ViewType: string, _Serializer: WebviewPanelSerializer) => Effect.Effect<Disposable, WebViewPanelProblem, never>;
-    }, never, import("../IPC/Service.js").IPC>;
+    }, never, import("../Host/Service.js").Host | import("../IPC/Service.js").IPC>;
 }>;
 /**
  * The `Effect.Service` for managing webview panels.

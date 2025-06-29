@@ -11,6 +11,8 @@
 import { CancellationTokenSource as VSCodeCancellationTokenSource } from "vs/base/common/cancellation.js";
 import { CancellationError as VSCodeCancellationError } from "vs/base/common/errors.js";
 import { Emitter } from "vs/base/common/event.js";
+import { MarkdownString as VSCodeMarkdownString, type IMarkdownString as VSCodeIMarkdownString } from "vs/base/common/htmlContent.js";
+import { ThemeColor as VSCodeThemeColor, ThemeIcon as VSCodeThemeIcon } from "vs/base/common/themables.js";
 import { URI as VSCodeURI, type UriComponents as VSCodeUriComponents } from "vs/base/common/uri.js";
 import { FileType as VSCodeFileType } from "vs/platform/files/common/files.js";
 import type * as VSCode from "vscode";
@@ -35,8 +37,13 @@ export declare const EventEmitter: typeof Emitter;
 export declare const URI: typeof VSCodeURI;
 export type Uri = VSCodeURI;
 export type UriComponents = VSCodeUriComponents;
+/** The canonical `ThemeColor` class. */
+export declare const ThemeColor: typeof VSCodeThemeColor;
 /** The canonical `ThemeIcon` class. */
-export declare const ThemeIcon: typeof VSCode.ThemeIcon;
+export declare const ThemeIcon: typeof VSCodeThemeIcon;
+/** The canonical `MarkdownString` class. */
+export declare const MarkdownString: typeof VSCodeMarkdownString;
+export type IMarkdownString = VSCodeIMarkdownString;
 /** The canonical `ProcessExecution` class for Tasks. */
 export declare const ProcessExecution: typeof VSCode.ProcessExecution;
 /** The canonical `Task` class. */

@@ -6,8 +6,8 @@
 import { Effect } from "effect";
 import type { IStorage } from "vs/base/parts/storage/common/storage.js";
 import { ILogService } from "vs/platform/log/common/log.js";
-import { AbstractStorageService, type IStorageService, type StorageScope } from "vs/platform/storage/common/storage.js";
-import { type IUserDataProfile } from "vs/platform/userDataProfile/common/userDataProfile";
+import { AbstractStorageService, StorageScope, type IStorageService } from "vs/platform/storage/common/storage.js";
+import { type IUserDataProfile } from "vs/platform/userDataProfile/common/userDataProfile.js";
 import type { IAnyWorkspaceIdentifier } from "vs/platform/workspace/common/workspace.js";
 import { IntegrationService } from "../../Integration/Tauri/Service.js";
 /**
@@ -20,7 +20,7 @@ export declare class EffectStorageService extends AbstractStorageService {
     private readonly Integration;
     private readonly LoggerService;
     constructor(Integration: IntegrationService, LoggerService: ILogService);
-    protected getStorage(_scope: StorageScope): IStorage | undefined;
+    protected getStorage(scope: StorageScope): IStorage | undefined;
     protected getLogDetails(scope: StorageScope): string | undefined;
     protected doInitialize(): Promise<void>;
     protected switchToProfile(toProfile: IUserDataProfile, _preserveData: boolean): Promise<void>;

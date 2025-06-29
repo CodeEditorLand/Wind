@@ -3,6 +3,7 @@
  * @description Type converter for the `vscode.StatusBarItem` API.
  */
 import type { StatusBarItem as VSCodeStatusBarItem } from "vscode";
+import { type IMarkdownString } from "../Platform/VSCode/Type.js";
 import type { CommandConverter } from "./Command.js";
 /**
  * The DTO for a status bar entry sent over IPC.
@@ -11,7 +12,7 @@ export interface StatusBarEntryDTO {
     readonly id: string;
     readonly name: string | undefined;
     readonly text: string;
-    readonly tooltip: string | any | undefined;
+    readonly tooltip: string | IMarkdownString | undefined;
     readonly command: any | undefined;
     readonly priority: number | undefined;
     readonly alignment: number;

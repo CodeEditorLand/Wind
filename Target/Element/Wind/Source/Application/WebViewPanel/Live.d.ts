@@ -3,6 +3,7 @@
  * @description Provides the "live" implementation `Layer` for the WebViewPanel service.
  */
 import { Layer } from "effect";
+import { IPCService } from "../IPC/Service.js";
 import { WebViewPanelService } from "./Service.js";
 /**
  * The live implementation `Layer` for the `WebViewPanelService`.
@@ -11,4 +12,4 @@ import { WebViewPanelService } from "./Service.js";
  * in the service definition. It automatically includes any dependencies
  * required by its `effect` constructor.
  */
-export declare const WebViewPanelLive: Layer.Layer<WebViewPanelService>;
+export declare const WebViewPanelLive: Layer.Layer<WebViewPanelService, never, IPCService>;
