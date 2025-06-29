@@ -15,7 +15,7 @@ import { Layer } from "effect";
  *
  * It starts with the lowest-level integration layer and builds upon it.
  */
-export declare const AppLayer: Layer.Layer<unknown, any, any>;
+export declare const AppLayer: Layer.Layer<unknown, unknown, any>;
 /**
  * A type alias representing the fully-resolved context provided by the `AppLayer`.
  * This can be useful for functions or tests that need to know the complete set

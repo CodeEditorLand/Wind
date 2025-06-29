@@ -14,7 +14,7 @@ import { ConfigurationLive } from "./Configuration/Live.js";
 import { DialogLive } from "./Dialog/Live.js";
 import { DocumentLive } from "./Document/Live.js";
 import { EditorLive } from "./Editor/Live.js";
-import { EditorGroupsLive } from "./EditorGroups/Live.js";
+import { EditorGroupLive } from "./EditorGroup/Live.js";
 import { FileLive } from "./File/Live.js";
 import { FileSystemProviderLive } from "./FileSystem/Live.js";
 import { HostLive } from "./Host/Live.js";
@@ -45,7 +45,7 @@ export const AppLayer = Layer.mergeAll(
 	DialogLive,
 	DocumentLive,
 	EditorLive,
-	EditorGroupsLive,
+	EditorGroupLive,
 	FileLive,
 	FileSystemProviderLive,
 	HostLive,

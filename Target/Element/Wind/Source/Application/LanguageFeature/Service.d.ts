@@ -22,11 +22,11 @@ interface LanguageFeature {
 }
 declare const LanguageFeatureService_base: Effect.Service.Class<LanguageFeature, "Service/LanguageFeature", {
     readonly sync: () => {
-        RegisterHoverProvider: () => Effect.Effect<any, never, never>;
-        RegisterCompletionItemProvider: () => Effect.Effect<any, never, never>;
-        RegisterDefinitionProvider: () => Effect.Effect<any, never, never>;
-        RegisterReferenceProvider: () => Effect.Effect<any, never, never>;
-        RegisterCodeActionsProvider: () => Effect.Effect<any, never, never>;
+        RegisterHoverProvider: () => Effect.Effect<Disposable, never, never>;
+        RegisterCompletionItemProvider: () => Effect.Effect<Disposable, never, never>;
+        RegisterDefinitionProvider: () => Effect.Effect<Disposable, never, never>;
+        RegisterReferenceProvider: () => Effect.Effect<Disposable, never, never>;
+        RegisterCodeActionsProvider: () => Effect.Effect<Disposable, never, never>;
     };
 }>;
 /**

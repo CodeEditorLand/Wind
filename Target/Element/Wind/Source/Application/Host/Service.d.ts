@@ -7,7 +7,7 @@ import { Effect, Option } from "effect";
 import type { ISandboxConfiguration } from "vs/base/parts/sandbox/common/sandboxTypes.js";
 import type { INativeOpenDialogOptions, INativeSaveDialogOptions, ISaveDialogResult } from "vs/platform/dialogs/common/dialogs.js";
 import type { LogLevel } from "vs/platform/log/common/log.js";
-import { URI, type UriComponents } from "Source/Platform/VSCode/Type.js";
+import { type UriComponents } from "Source/Platform/VSCode/Type.js";
 import type { INotification, IPromptChoice, IPromptOptions, IStatusMessageOptions, NotificationMessage, Severity } from "vs/platform/notification/common/notification.js";
 import { IntegrationService } from "Source/Integration/Tauri/Service.js";
 import { HostServiceProblem } from "./Error.js";
@@ -45,7 +45,7 @@ declare const HostService_base: Effect.Service.Class<Host, "wind/HostService", {
         ProvideGlobals: () => Effect.Effect<void, HostServiceProblem, never>;
         NotifyReady: () => Effect.Effect<never, HostServiceProblem, never>;
         ShowOpenDialog: (Options: INativeOpenDialogOptions) => Effect.Effect<Option.Option<any>, HostServiceProblem, never>;
-        ShowSaveDialog: (Options: INativeSaveDialogOptions) => Effect.Effect<Option.Option<unknown>, HostServiceProblem, never>;
+        ShowSaveDialog: (Options: INativeSaveDialogOptions) => Effect.Effect<Option.Option<import("vs/workbench/workbench.web.main.internal.js").URI | null | undefined>, HostServiceProblem, never>;
         ShowSaveConfirm: (Files: UriComponents[]) => Effect.Effect<never, HostServiceProblem, never>;
         OpenFile: (Uri: URI) => Effect.Effect<never, HostServiceProblem, never>;
         Log: (Level: LogLevel, Message: string) => Effect.Effect<never, HostServiceProblem, never>;

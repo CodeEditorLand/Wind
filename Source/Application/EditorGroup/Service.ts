@@ -1,7 +1,7 @@
 /**
- * @module Service (Application/EditorGroups)
+ * @module Service (Application/EditorGroup)
  * @description Defines the service interface and live implementation for the
- * application-level editor groups service, which conforms to the `IEditorGroupsService`
+ * application-level editor groups service, which conforms to the `IEditorGroupService`
  * contract from VS Code.
  */
 
@@ -21,9 +21,9 @@ import {
 	GroupDirection,
 	GroupsOrder,
 	type IEditorGroup,
-	type IEditorGroupsService,
+	type IEditorGroupService,
 } from "vs/workbench/services/editor/common/editorGroupsService.js";
-import { EditorGroupsProblem } from "./Error.js";
+import { EditorGroupProblem } from "./Error.js";
 
 const EDITOR_PART_UI_STATE_STORAGE_KEY = "editorpart.state";
 
@@ -37,13 +37,13 @@ interface IEditorPartUIState {
 }
 
 /**
- * The `Effect.Service` for the `IEditorGroupsService`.
+ * The `Effect.Service` for the `IEditorGroupService`.
  *
  * This service manages the editor grid layout, including the creation, removal,
  * and state management of editor groups. It persists its state to the `IStorageService`.
  */
-export class EditorGroupsService extends Effect.Service<IEditorGroupsService>()(
-	"vscode/EditorGroupsService",
+export class EditorGroupService extends Effect.Service<IEditorGroupService>()(
+	"vscode/EditorGroupService",
 	{
 		effect: Effect.gen(function* (Generator) {
 			const InstantiationService = yield* Generator(
@@ -154,7 +154,7 @@ export class EditorGroupsService extends Effect.Service<IEditorGroupsService>()(
 
 			const GetCurrentState = () => Effect.runSync(Ref.get(State));
 
-			const ServiceImplementation: IEditorGroupsService = {
+			const ServiceImplementation: IEditorGroupService = {
 				_serviceBrand: undefined,
 				onDidAddGroup: OnDidAddGroupEmitter.event,
 				// Stubs for other events
@@ -209,7 +209,7 @@ export class EditorGroupsService extends Effect.Service<IEditorGroupsService>()(
 						Effect.flatMap((S) => {
 							if (S.Groups.size <= 1) {
 								return Effect.fail(
-									new EditorGroupsProblem({
+									new EditorGroupProblem({
 										Context: "CannotRemoveLastGroup",
 									}),
 								);

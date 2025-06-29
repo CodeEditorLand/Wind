@@ -5,6 +5,7 @@
  */
 import { Effect, Option } from "effect";
 import type { Disposable, Event, TextDocument, TextDocumentChangeEvent, TextDocumentContentProvider, Uri } from "vscode";
+import { Disposable as VSCodeDisposable } from "Source/Platform/VSCode/Type.js";
 import { ContentProviderProblem } from "./Error.js";
 /**
  * The contract for the Document service. It manages all open text documents,
@@ -27,7 +28,7 @@ declare const DocumentService_base: Effect.Service.Class<Document, "Service/Docu
         OnDidChangeTextDocument: import("vs/workbench/workbench.web.main.internal.js").Event<TextDocumentChangeEvent>;
         OnDidSaveTextDocument: import("vs/workbench/workbench.web.main.internal.js").Event<TextDocument>;
         GetDocument: (Uri: Uri) => Effect.Effect<Option.Option<TextDocument>, never, never>;
-        RegisterTextDocumentContentProvider: (Scheme: string, Provider: TextDocumentContentProvider) => Effect.Effect<any, ContentProviderProblem, unknown>;
+        RegisterTextDocumentContentProvider: (Scheme: string, Provider: TextDocumentContentProvider) => Effect.Effect<VSCodeDisposable, ContentProviderProblem, unknown>;
     }, unknown, unknown>;
 }>;
 /**
