@@ -11,6 +11,7 @@ import { LineDecoration } from '../../../../../common/viewLayout/lineDecorations
 import { GhostText, GhostTextReplacement } from '../../model/ghostText.js';
 import './ghostTextView.css';
 import { IMouseEvent } from '../../../../../../base/browser/mouseEvent.js';
+import { InlineCompletionViewData } from '../inlineEdits/inlineEditsViewInterface.js';
 export interface IGhostTextWidgetModel {
     readonly targetTextModel: IObservable<ITextModel | undefined>;
     readonly ghostText: IObservable<GhostText | GhostTextReplacement | undefined>;
@@ -18,6 +19,7 @@ export interface IGhostTextWidgetModel {
         icon: IconPath | undefined;
     } | undefined>;
     readonly minReservedLineCount: IObservable<number>;
+    readonly handleInlineCompletionShown: IObservable<(viewData: InlineCompletionViewData) => void>;
 }
 export declare class GhostTextView extends Disposable {
     private readonly _editor;

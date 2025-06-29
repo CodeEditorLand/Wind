@@ -15,6 +15,7 @@ import { IProductService } from '../../../../platform/product/common/productServ
 import { INotificationService } from '../../../../platform/notification/common/notification.js';
 import { IEditorResolverService } from '../../../services/editor/common/editorResolverService.js';
 import { ILogService } from '../../../../platform/log/common/log.js';
+import { IContextKeyService } from '../../../../platform/contextkey/common/contextkey.js';
 export declare const restoreWalkthroughsConfigurationKey = "workbench.welcomePage.restorableWalkthroughs";
 export type RestoreWalkthroughsConfigurationValue = {
     folder: string;
@@ -40,8 +41,9 @@ export declare class StartupPageRunnerContribution extends Disposable implements
     private readonly storageService;
     private readonly logService;
     private readonly notificationService;
+    private readonly contextKeyService;
     static readonly ID = "workbench.contrib.startupPageRunner";
-    constructor(configurationService: IConfigurationService, editorService: IEditorService, workingCopyBackupService: IWorkingCopyBackupService, fileService: IFileService, contextService: IWorkspaceContextService, lifecycleService: ILifecycleService, layoutService: IWorkbenchLayoutService, productService: IProductService, commandService: ICommandService, environmentService: IWorkbenchEnvironmentService, storageService: IStorageService, logService: ILogService, notificationService: INotificationService);
+    constructor(configurationService: IConfigurationService, editorService: IEditorService, workingCopyBackupService: IWorkingCopyBackupService, fileService: IFileService, contextService: IWorkspaceContextService, lifecycleService: ILifecycleService, layoutService: IWorkbenchLayoutService, productService: IProductService, commandService: ICommandService, environmentService: IWorkbenchEnvironmentService, storageService: IStorageService, logService: ILogService, notificationService: INotificationService, contextKeyService: IContextKeyService);
     private run;
     private tryOpenWalkthroughForFolder;
     private openReadme;

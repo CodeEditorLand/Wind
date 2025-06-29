@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../Source/Application/FileSystem/Live.ts"],
-  "sourcesContent": ["/**\n * @module Live (Application/FileSystem)\n * @description Provides the \"live\" implementation `Layer` for the FileSystem service.\n */\n\nimport { Layer } from \"effect\";\nimport { FileSystemService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `FileSystemService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the service definition. It automatically includes any dependencies\n * required by its `effect` constructor, such as the `HostService`.\n */\nexport const FileSystemLive: Layer.Layer<FileSystemService> =\n\tFileSystemService.Default;\n"],
-  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,yBAAyB;AAS3B,MAAM,iBACZ,kBAAkB;",
+  "sourcesContent": ["/**\n * @module Live (Application/FileSystem)\n * @description Provides the \"live\" implementation `Layer` for the FileSystem service.\n */\n\nimport { Layer } from \"effect\";\n\nimport { FileSystemService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `FileSystemService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the service definition. It automatically includes any dependencies\n * required by its `effect` constructor, such as the `HostService`.\n */\nexport const FileSystemLive: Layer.Layer<FileSystemService> =\n\tFileSystemService.Default;\n"],
+  "mappings": "AAKA,SAAS,aAAa;AAEtB,SAAS,yBAAyB;AAS3B,MAAM,iBACZ,kBAAkB;",
   "names": []
 }

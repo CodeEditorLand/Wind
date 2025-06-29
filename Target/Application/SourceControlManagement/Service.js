@@ -6,10 +6,10 @@ import { IInstantiationService } from "vs/platform/instantiation/common/instanti
 import { ILogService } from "vs/platform/log/common/log.js";
 import { IStorageService } from "vs/platform/storage/common/storage.js";
 import { IWorkspaceContextService } from "vs/platform/workspace/common/workspace.js";
-import { SourceControlManagementService as VscScmService } from "vs/workbench/contrib/scm/common/scmService.js";
-import { IntegrationService } from "Source/Integration/Tauri/Service.js";
-import { FromDTO as ProviderFromDTO } from "Source/TypeConverter/SourceControlManagement/Provider.js";
-import { ScmProblem } from "./Error.js";
+import { SCMService as VSCodeSCMService } from "vs/workbench/contrib/scm/common/scmService.js";
+import { IntegrationService } from "../../Integration/Tauri/Service.js";
+import { FromDTO as ProviderFromDTO } from "../../TypeConverter/SourceControlManagement/Provider.js";
+import { SourceControlManagementProblem } from "./Error.js";
 class SourceControlManagementService extends Effect.Service()(
   "scmService",
   {
@@ -17,7 +17,7 @@ class SourceControlManagementService extends Effect.Service()(
       const InstantiationService = yield* Generator(
         IInstantiationService
       );
-      const LogService = yield* Generator(ILogService);
+      const LoggerService = yield* Generator(ILogService);
       const ContextKeyService = yield* Generator(IContextKeyService);
       const WorkspaceContextService = yield* Generator(
         IWorkspaceContextService
@@ -25,7 +25,7 @@ class SourceControlManagementService extends Effect.Service()(
       const StorageService = yield* Generator(IStorageService);
       const Integration = yield* Generator(IntegrationService);
       const ServiceInstance = InstantiationService.createInstance(
-        VscScmService,
+        VSCodeSCMService,
         ContextKeyService,
         WorkspaceContextService,
         StorageService
@@ -34,8 +34,8 @@ class SourceControlManagementService extends Effect.Service()(
         "GetAllSourceControlManagementState"
       ).pipe(
         Effect.tap(
-          (State) => LogService.trace(
-            "[ScmService] Received initial SCM state:",
+          (State) => LoggerService.trace(
+            "[SourceControlManagementService] Received initial SCM state:",
             State
           )
         ),
@@ -51,7 +51,7 @@ class SourceControlManagementService extends Effect.Service()(
           })
         ),
         Effect.mapError(
-          (Cause) => new ScmProblem({
+          (Cause) => new SourceControlManagementProblem({
             Cause,
             Context: "InitializeStateFailed"
           })
@@ -60,8 +60,8 @@ class SourceControlManagementService extends Effect.Service()(
       const ListenForProviderUpdates = Integration.Listen(
         "sky://scm/provider/added",
         (Event) => {
-          LogService.info(
-            `[ScmService] SCM Provider added:`,
+          LoggerService.info(
+            `[SourceControlManagementService] SCM Provider added:`,
             Event.payload
           );
           ServiceInstance.registerSCMProvider(
@@ -70,7 +70,7 @@ class SourceControlManagementService extends Effect.Service()(
         }
       ).pipe(
         Effect.mapError(
-          (Cause) => new ScmProblem({
+          (Cause) => new SourceControlManagementProblem({
             Cause,
             Context: "ListenForProviderUpdatesFailed"
           })

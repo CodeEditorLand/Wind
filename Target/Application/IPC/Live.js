@@ -1,8 +1,8 @@
 import { Layer } from "../../effect";
+import { CancellationService } from "../Cancellation/Service.js";
+import { IPCConfigurationService } from "../IPCConfiguration/Service.js";
+import { LoggerService } from "../Logger/Service.js";
 import { IPCService } from "./Service.js";
-import { IPCConfigurationService } from "Source/Application/IPCConfiguration/Service.js";
-import { CancellationService } from "Source/Application/Cancellation/Service.js";
-import { LoggerService } from "Source/Application/Logger/Service.js";
 const IPCLive = IPCService.Default;
 export {
   IPCLive

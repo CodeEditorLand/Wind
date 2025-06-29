@@ -15,11 +15,11 @@ export interface IPromptContentsProviderOptions {
      * file extension to be treated as a prompt file.
      */
     readonly allowNonPromptFiles: boolean;
+    /**
+     * Language ID to use for the prompt contents. If not set, the language ID will be inferred from the file.
+     */
+    readonly languageId: string | undefined;
 }
-/**
- * Default {@link IPromptContentsProviderOptions} options.
- */
-export declare const DEFAULT_OPTIONS: IPromptContentsProviderOptions;
 /**
  * Base class for prompt contents providers. Classes that extend this one are responsible to:
  *
@@ -38,7 +38,7 @@ export declare abstract class PromptContentsProviderBase<TChangeEvent extends No
     abstract readonly uri: URI;
     abstract createNew(promptContentsSource: {
         uri: URI;
-    }): IPromptContentsProvider;
+    }, options: IPromptContentsProviderOptions): IPromptContentsProvider;
     abstract toString(): string;
     abstract get languageId(): string;
     abstract get sourceName(): string;
@@ -66,11 +66,10 @@ export declare abstract class PromptContentsProviderBase<TChangeEvent extends No
      */
     protected readonly onChangeEmitter: Emitter<"full" | TChangeEvent>;
     /**
-     * Options passed to the constructor, extended with
-     * value defaults from {@link DEFAULT_OPTIONS}.
+     * Options passed to the constructor
      */
     protected readonly options: IPromptContentsProviderOptions;
-    constructor(options: Partial<IPromptContentsProviderOptions>);
+    constructor(options: IPromptContentsProviderOptions);
     /**
      * Event emitter for the prompt contents change event.
      * See {@link onContentChanged} for more details.

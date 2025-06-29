@@ -9,7 +9,7 @@ import { TextReplacement } from '../../../../common/core/edits/textEdit.js';
 import { InlineCompletion, Command, InlineCompletionWarning, PartialAcceptInfo, InlineCompletionEndOfLifeReason } from '../../../../common/languages.js';
 import { ITextModel } from '../../../../common/model.js';
 import { IDisplayLocation, InlineSuggestData, InlineSuggestionList, SnippetInfo } from './provideInlineCompletions.js';
-import { InlineCompletionViewKind } from '../view/inlineEdits/inlineEditsViewInterface.js';
+import { InlineCompletionViewData, InlineCompletionViewKind } from '../view/inlineEdits/inlineEditsViewInterface.js';
 export type InlineSuggestionItem = InlineEditItem | InlineCompletionItem;
 export declare namespace InlineSuggestionItem {
     function create(data: InlineSuggestData, textModel: ITextModel): InlineSuggestionItem;
@@ -49,7 +49,7 @@ declare abstract class InlineSuggestionItemBase {
     abstract canBeReused(model: ITextModel, position: Position): boolean;
     addRef(): void;
     removeRef(): void;
-    reportInlineEditShown(commandService: ICommandService, viewKind: InlineCompletionViewKind): void;
+    reportInlineEditShown(commandService: ICommandService, viewKind: InlineCompletionViewKind, viewData: InlineCompletionViewData): void;
     reportPartialAccept(acceptedCharacters: number, info: PartialAcceptInfo): void;
     reportEndOfLife(reason: InlineCompletionEndOfLifeReason): void;
     setEndOfLifeReason(reason: InlineCompletionEndOfLifeReason): void;

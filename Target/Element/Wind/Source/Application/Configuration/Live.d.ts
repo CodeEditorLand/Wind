@@ -13,4 +13,4 @@ import { Configuration } from "./Service.js";
  * integration services for path resolution and file reading) are automatically
  * inferred and added to this layer's context requirements.
  */
-export declare const ConfigurationLive: Layer.Layer<Configuration>;
+export declare const ConfigurationLive: Layer.Layer<Configuration, never, any>;

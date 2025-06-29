@@ -10,7 +10,6 @@ export interface IQueuedSender {
     send: (msg: any) => void;
 }
 export declare function createQueuedSender(childProcess: cp.ChildProcess): IQueuedSender;
-export declare function getWindowPathExtensions(env?: Platform.IProcessEnvironment): string[];
 export declare function findExecutable(command: string, cwd?: string, paths?: string[], env?: Platform.IProcessEnvironment, fileExists?: (path: string) => Promise<boolean>): Promise<string | undefined>;
 /**
  * Kills a process and all its children.

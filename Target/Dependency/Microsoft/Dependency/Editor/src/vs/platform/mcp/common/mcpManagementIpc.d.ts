@@ -9,6 +9,7 @@ export declare class McpManagementChannel implements IServerChannel {
     private getUriTransformer;
     readonly onInstallMcpServer: Event<InstallMcpServerEvent>;
     readonly onDidInstallMcpServers: Event<readonly InstallMcpServerResult[]>;
+    readonly onDidUpdateMcpServers: Event<readonly InstallMcpServerResult[]>;
     readonly onUninstallMcpServer: Event<UninstallMcpServerEvent>;
     readonly onDidUninstallMcpServer: Event<DidUninstallMcpServerEvent>;
     constructor(service: IMcpManagementService, getUriTransformer: (requestContext: any) => IURITransformer | null);
@@ -26,6 +27,8 @@ export declare class McpManagementChannelClient extends Disposable implements IM
     get onUninstallMcpServer(): Event<UninstallMcpServerEvent>;
     private readonly _onDidUninstallMcpServer;
     get onDidUninstallMcpServer(): Event<DidUninstallMcpServerEvent>;
+    private readonly _onDidUpdateMcpServers;
+    get onDidUpdateMcpServers(): Event<InstallMcpServerResult[]>;
     constructor(channel: IChannel);
     install(server: IInstallableMcpServer, options?: InstallOptions): Promise<ILocalMcpServer>;
     installFromGallery(extension: IGalleryMcpServer, installOptions?: InstallOptions): Promise<ILocalMcpServer>;

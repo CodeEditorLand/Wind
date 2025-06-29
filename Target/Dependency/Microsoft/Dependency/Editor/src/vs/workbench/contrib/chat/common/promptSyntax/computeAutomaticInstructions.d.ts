@@ -20,7 +20,7 @@ export declare class ComputeAutomaticInstructions {
     private _autoAddedInstructions;
     constructor(_readFileTool: IToolData | undefined, _promptsService: IPromptsService, _logService: ILogService, _labelService: ILabelService, _configurationService: IConfigurationService, _workspaceService: IWorkspaceContextService, _fileService: IFileService);
     get autoAddedInstructions(): readonly IPromptFileVariableEntry[];
-    private _parsePromptFile;
+    private _parseInstructionsFile;
     collect(variables: ChatRequestVariableSet, token: CancellationToken): Promise<void>;
     /** public for testing */
     findInstructionFilesFor(instructionFiles: readonly IPromptPath[], context: {

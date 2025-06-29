@@ -3,9 +3,8 @@ var __name = (target, value) => __defProp(target, "name", { value, configurable:
 import { Effect } from "../../effect";
 import { Emitter } from "vs/base/common/event.js";
 import {
-  StorageHint
 } from "vs/base/parts/storage/common/storage.js";
-import { IntegrationService } from "Source/Integration/Tauri/Service.js";
+import { IntegrationService } from "../../Integration/Tauri/Service.js";
 import { StorageProblem } from "./Error.js";
 class EffectStorage {
   constructor(Database, Integration) {

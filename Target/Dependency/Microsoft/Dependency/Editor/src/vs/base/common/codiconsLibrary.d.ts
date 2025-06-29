@@ -595,4 +595,7 @@ export declare const codiconsLibrary: {
     readonly copilotInProgress: import("./themables.js").ThemeIcon;
     readonly copilotError: import("./themables.js").ThemeIcon;
     readonly copilotSuccess: import("./themables.js").ThemeIcon;
+    readonly chatSparkle: import("./themables.js").ThemeIcon;
+    readonly searchSparkle: import("./themables.js").ThemeIcon;
+    readonly editSparkle: import("./themables.js").ThemeIcon;
 };

@@ -2,7 +2,7 @@ import { IPosition } from './core/position.js';
 import { IRange } from './core/range.js';
 import { Selection } from './core/selection.js';
 import { IModelDecoration, InjectedTextOptions } from './model.js';
-import { ITextModelEditReasonMetadata, TextModelEditReason } from './textModelEditReason.js';
+import { TextModelEditReason } from './textModelEditReason.js';
 /**
  * An event describing that the current language associated with a model has changed.
  */
@@ -121,7 +121,7 @@ export interface ISerializedModelContentChangedEvent {
      * Detailed reason information for the change
      * @internal
      */
-    readonly detailedReason: ITextModelEditReasonMetadata | undefined;
+    readonly detailedReason: Record<string, unknown> | undefined;
 }
 /**
  * An event describing that model decorations have changed.

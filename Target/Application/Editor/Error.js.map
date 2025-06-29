@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../Source/Application/Editor/Error.ts"],
-  "sourcesContent": ["/**\n * @module Error (Application/Editor)\n * @description Defines a domain-specific, tagged error for editor operations\n * at the application layer.\n */\n\nimport { Data } from \"effect\";\nimport type { HostServiceProblem } from \"Source/Application/Host/Error.js\";\n\n/**\n * Represents a failure within the `EditorService`.\n * This error is used to wrap failures that occur during editor operations,\n * such as failing to resolve an editor input or an error from the host service\n * when trying to open a file.\n */\nexport class EditorProblem extends Data.TaggedError(\"EditorProblem\")<{\n\treadonly Cause: HostServiceProblem | Error;\n\treadonly Context: string;\n}> {}\n"],
-  "mappings": ";;AAMA,SAAS,YAAY;AASd,MAAM,sBAAsB,KAAK,YAAY,eAAe,EAGhE;AAAA,EAlBH,OAkBG;AAAA;AAAA;AAAC;",
+  "sourcesContent": ["/**\n * @module Error (Application/Editor)\n * @description Defines a domain-specific, tagged error for editor operations\n * at the application layer.\n */\n\nimport { Data } from \"effect\";\n\nimport type { HostServiceProblem } from \"../Host/Error.js\";\n\n/**\n * Represents a failure within the `EditorService`.\n * This error is used to wrap failures that occur during editor operations,\n * such as failing to resolve an editor input or an error from the host service\n * when trying to open a file.\n */\nexport class EditorProblem extends Data.TaggedError(\"EditorProblem\")<{\n\treadonly Cause: HostServiceProblem | Error;\n\treadonly Context: string;\n}> {}\n"],
+  "mappings": ";;AAMA,SAAS,YAAY;AAUd,MAAM,sBAAsB,KAAK,YAAY,eAAe,EAGhE;AAAA,EAnBH,OAmBG;AAAA;AAAA;AAAC;",
   "names": []
 }

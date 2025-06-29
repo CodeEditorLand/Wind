@@ -20,6 +20,7 @@ export interface IWorkbenchMcpManagementService extends IMcpManagementService {
     readonly onDidInstallMcpServers: Event<readonly IWorkbenchMcpServerInstallResult[]>;
     readonly onInstallMcpServerInCurrentProfile: Event<InstallMcpServerEvent>;
     readonly onDidInstallMcpServersInCurrentProfile: Event<readonly IWorkbenchMcpServerInstallResult[]>;
+    readonly onDidUpdateMcpServersInCurrentProfile: Event<readonly IWorkbenchMcpServerInstallResult[]>;
     readonly onUninstallMcpServerInCurrentProfile: Event<UninstallMcpServerEvent>;
     readonly onDidUninstallMcpServerInCurrentProfile: Event<DidUninstallMcpServerEvent>;
     getInstalled(): Promise<IWorkbenchLocalMcpServer[]>;

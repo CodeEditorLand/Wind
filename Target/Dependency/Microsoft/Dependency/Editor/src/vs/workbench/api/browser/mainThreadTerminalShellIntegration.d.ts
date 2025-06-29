@@ -8,6 +8,5 @@ export declare class MainThreadTerminalShellIntegration extends Disposable imple
     private readonly _proxy;
     constructor(extHostContext: IExtHostContext, _terminalService: ITerminalService, workbenchEnvironmentService: IWorkbenchEnvironmentService);
     $executeCommand(terminalId: number, commandLine: string): void;
-    private _convertCwdToUri;
     private _enableShellIntegration;
 }

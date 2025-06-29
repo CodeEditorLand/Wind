@@ -10,7 +10,7 @@ import { IModelService } from '../../../../../../editor/common/services/model.js
 import { CancellationToken } from '../../../../../../base/common/cancellation.js';
 import { IInstantiationService } from '../../../../../../platform/instantiation/common/instantiation.js';
 import { IUserDataProfileService } from '../../../../../services/userDataProfile/common/userDataProfile.js';
-import type { IChatPromptSlashCommand, ICustomChatMode, IMetadata, IPromptParserResult, IPromptPath, IPromptsService } from './promptsService.js';
+import type { IChatPromptSlashCommand, ICustomChatMode, IPromptParserResult, IPromptPath, IPromptsService } from './promptsService.js';
 import { ILanguageService } from '../../../../../../editor/common/languages/language.js';
 import { IConfigurationService } from '../../../../../../platform/configuration/common/configuration.js';
 /**
@@ -64,7 +64,6 @@ export declare class PromptsService extends Disposable implements IPromptsServic
     findPromptSlashCommands(): Promise<IChatPromptSlashCommand[]>;
     getCustomChatModes(token: CancellationToken): Promise<readonly ICustomChatMode[]>;
     private computeCustomChatModes;
-    parse(uri: URI, token: CancellationToken): Promise<IPromptParserResult>;
-    getAllMetadata(promptUris: readonly URI[]): Promise<IMetadata[]>;
+    parse(uri: URI, type: PromptsType, token: CancellationToken): Promise<IPromptParserResult>;
 }
 export declare function getPromptCommandName(path: string): string;

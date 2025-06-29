@@ -37,7 +37,7 @@ import { IWorkbenchEnvironmentService } from '../../../services/environment/comm
 import { IHistoryService } from '../../../services/history/common/history.js';
 import { IPathService } from '../../../services/path/common/pathService.js';
 import { IPreferencesService } from '../../../services/preferences/common/preferences.js';
-import type { IMarker } from '@xterm/xterm';
+import type { IMarker, Terminal as XTermTerminal } from '@xterm/xterm';
 import type { IMenu } from '../../../../platform/actions/common/actions.js';
 import { IContextMenuService } from '../../../../platform/contextview/browser/contextView.js';
 import type { IProgressState } from '@xterm/addon-progress';
@@ -49,6 +49,7 @@ export declare class TerminalInstance extends Disposable implements ITerminalIns
     private readonly _terminalConfigurationService;
     private readonly _terminalProfileResolverService;
     private readonly _pathService;
+    private readonly _fileService;
     private readonly _keybindingService;
     private readonly _notificationService;
     private readonly _preferencesService;
@@ -246,7 +247,7 @@ export declare class TerminalInstance extends Disposable implements ITerminalIns
     private readonly _onLineData;
     readonly onLineData: Event<string>;
     readonly sessionId: string;
-    constructor(_terminalShellTypeContextKey: IContextKey<string>, _shellLaunchConfig: IShellLaunchConfig, _contextKeyService: IContextKeyService, _contextMenuService: IContextMenuService, instantiationService: IInstantiationService, _terminalConfigurationService: ITerminalConfigurationService, _terminalProfileResolverService: ITerminalProfileResolverService, _pathService: IPathService, _keybindingService: IKeybindingService, _notificationService: INotificationService, _preferencesService: IPreferencesService, _viewsService: IViewsService, _themeService: IThemeService, _configurationService: IConfigurationService, _logService: ITerminalLogService, _storageService: IStorageService, _accessibilityService: IAccessibilityService, _productService: IProductService, _quickInputService: IQuickInputService, workbenchEnvironmentService: IWorkbenchEnvironmentService, _workspaceContextService: IWorkspaceContextService, _editorService: IEditorService, _workspaceTrustRequestService: IWorkspaceTrustRequestService, _historyService: IHistoryService, _telemetryService: ITelemetryService, _openerService: IOpenerService, _commandService: ICommandService, _accessibilitySignalService: IAccessibilitySignalService, _viewDescriptorService: IViewDescriptorService);
+    constructor(_terminalShellTypeContextKey: IContextKey<string>, _shellLaunchConfig: IShellLaunchConfig, _contextKeyService: IContextKeyService, _contextMenuService: IContextMenuService, instantiationService: IInstantiationService, _terminalConfigurationService: ITerminalConfigurationService, _terminalProfileResolverService: ITerminalProfileResolverService, _pathService: IPathService, _fileService: IFileService, _keybindingService: IKeybindingService, _notificationService: INotificationService, _preferencesService: IPreferencesService, _viewsService: IViewsService, _themeService: IThemeService, _configurationService: IConfigurationService, _logService: ITerminalLogService, _storageService: IStorageService, _accessibilityService: IAccessibilityService, _productService: IProductService, _quickInputService: IQuickInputService, workbenchEnvironmentService: IWorkbenchEnvironmentService, _workspaceContextService: IWorkspaceContextService, _editorService: IEditorService, _workspaceTrustRequestService: IWorkspaceTrustRequestService, _historyService: IHistoryService, _telemetryService: ITelemetryService, _openerService: IOpenerService, _commandService: ICommandService, _accessibilitySignalService: IAccessibilitySignalService, _viewDescriptorService: IViewDescriptorService);
     getContribution<T extends ITerminalContribution>(id: string): T | null;
     private _getIcon;
     private _getColor;
@@ -263,7 +264,7 @@ export declare class TerminalInstance extends Disposable implements ITerminalIns
     private _getDimension;
     get persistentProcessId(): number | undefined;
     get shouldPersist(): boolean;
-    static getXtermConstructor(keybindingService: IKeybindingService, contextKeyService: IContextKeyService): Promise<any>;
+    static getXtermConstructor(keybindingService: IKeybindingService, contextKeyService: IContextKeyService): Promise<typeof XTermTerminal>;
     /**
      * Create xterm.js instance and attach data listeners.
      */
@@ -350,7 +351,8 @@ export declare class TerminalInstance extends Disposable implements ITerminalIns
     private _onEnvironmentVariableInfoChanged;
     private _refreshEnvironmentVariableInfoWidgetState;
     getInitialCwd(): Promise<string>;
-    getCwd(): Promise<string>;
+    getSpeculativeCwd(): Promise<string>;
+    getCwdResource(): Promise<URI | undefined>;
     private _refreshProperty;
     private _updateProperty;
     rename(title?: string): Promise<void>;

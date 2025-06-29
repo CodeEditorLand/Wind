@@ -1,8 +1,8 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 import { Effect } from "../../effect";
-import { CommandService } from "Source/Application/Command/Service.js";
-import { FromAPI as StatusBarItemToDTO } from "Source/TypeConverter/StatusBar.js";
+import { FromAPI as StatusBarItemToDTO } from "../../TypeConverter/StatusBar.js";
+import { CommandService } from "../Command/Service.js";
 class StatusBarItemImplementation {
   constructor(EntryId, Extension, Host, Command, OnDidDispose, InitialId, InitialAlignment, InitialPriority) {
     this.EntryId = EntryId;
@@ -29,6 +29,7 @@ class StatusBarItemImplementation {
   _backgroundColor;
   _command;
   _accessibilityInformation;
+  tooltip2;
   // Getters
   get id() {
     return this._id;

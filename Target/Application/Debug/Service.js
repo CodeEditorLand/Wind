@@ -4,8 +4,8 @@ import { Effect, Ref } from "../../effect";
 import {
   Disposable
 } from "vscode";
-import { IPCService } from "Source/Application/IPC/Service.js";
-import { CreateEventStream } from "Source/Utility/CreateEventStream.js";
+import { CreateEventStream } from "../../Utility/EventStream.js";
+import { IPCService } from "../IPC/Service.js";
 import {
   DebugProviderRegistrationProblem,
   StartDebuggingProblem

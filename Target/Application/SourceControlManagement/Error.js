@@ -1,12 +1,14 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 import { Data } from "../../effect";
-class ScmProblem extends Data.TaggedError("ScmProblem") {
+class SourceControlManagementProblem extends Data.TaggedError(
+  "SourceControlManagementProblem"
+) {
   static {
-    __name(this, "ScmProblem");
+    __name(this, "SourceControlManagementProblem");
   }
 }
 export {
-  ScmProblem
+  SourceControlManagementProblem
 };
 //# sourceMappingURL=Error.js.map

@@ -171,7 +171,6 @@ export declare abstract class Layout extends Disposable implements IWorkbenchLay
     isAuxiliaryBarMaximized(): boolean;
     toggleMaximizedAuxiliaryBar(): void;
     setAuxiliaryBarMaximized(maximized: boolean, fromInit?: boolean): boolean;
-    private auxiliaryBarOpensMaximized;
     isPanelMaximized(): boolean;
     toggleMaximizedPanel(): void;
     private panelOpensMaximized;

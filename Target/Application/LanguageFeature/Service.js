@@ -1,7 +1,7 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 import { Effect } from "../../effect";
-import { Disposable } from "Source/Platform/VSCode/Type.js";
+import { Disposable } from "../../Platform/VSCode/Type.js";
 import { ProviderRegistrationProblem } from "./Error.js";
 class LanguageFeatureService extends Effect.Service()(
   "Service/LanguageFeature",

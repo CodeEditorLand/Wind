@@ -17,7 +17,7 @@ export declare class FilePromptContentProvider extends PromptContentsProviderBas
     private readonly languageService;
     get sourceName(): string;
     get languageId(): string;
-    constructor(uri: URI, options: Partial<IPromptContentsProviderOptions>, fileService: IFileService, modelService: IModelService, languageService: ILanguageService);
+    constructor(uri: URI, options: IPromptContentsProviderOptions, fileService: IFileService, modelService: IModelService, languageService: ILanguageService);
     /**
      * Creates a stream of lines from the file based on the changes listed in
      * the provided event.
@@ -29,7 +29,7 @@ export declare class FilePromptContentProvider extends PromptContentsProviderBas
     protected getContentsStream(_event: FileChangesEvent | 'full', cancellationToken?: CancellationToken): Promise<VSBufferReadableStream>;
     createNew(promptContentsSource: {
         uri: URI;
-    }, options?: Partial<IPromptContentsProviderOptions>): IPromptContentsProvider;
+    }, options: IPromptContentsProviderOptions): IPromptContentsProvider;
     /**
      * String representation of this object.
      */

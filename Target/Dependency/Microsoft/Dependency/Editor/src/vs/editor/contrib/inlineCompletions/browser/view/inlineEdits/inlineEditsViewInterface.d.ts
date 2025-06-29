@@ -25,7 +25,7 @@ export interface IInlineEditModel {
     tabAction: IObservable<InlineEditTabAction>;
     showCollapsed: IObservable<boolean>;
     displayLocation: InlineCompletionDisplayLocation | undefined;
-    handleInlineEditShown(viewKind: string): void;
+    handleInlineEditShown(viewKind: string, viewData?: InlineCompletionViewData): void;
     accept(): void;
     jump(): void;
     abort(reason: string): void;
@@ -41,3 +41,13 @@ export declare enum InlineCompletionViewKind {
     LineReplacement = "lineReplacement",
     Collapsed = "collapsed"
 }
+export type InlineCompletionViewData = {
+    cursorColumnDistance: number;
+    cursorLineDistance: number;
+    lineCountOriginal: number;
+    lineCountModified: number;
+    characterCountOriginal: number;
+    characterCountModified: number;
+    disjointReplacements: number;
+    sameShapeReplacements?: boolean;
+};

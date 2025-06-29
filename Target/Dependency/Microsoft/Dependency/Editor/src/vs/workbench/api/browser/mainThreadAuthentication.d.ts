@@ -71,6 +71,12 @@ export declare class MainThreadAuthentication extends Disposable implements Main
     $setSessionsForDynamicAuthProvider(authProviderId: string, clientId: string, sessions: (IAuthorizationTokenResponse & {
         created_at: number;
     })[]): Promise<void>;
+    $sendDidChangeDynamicProviderInfo({ providerId, clientId, authorizationServer, label }: Partial<{
+        providerId: string;
+        clientId: string;
+        authorizationServer: UriComponents;
+        label: string;
+    }>): Promise<void>;
     private loginPrompt;
     private continueWithIncorrectAccountPrompt;
     private doGetSession;

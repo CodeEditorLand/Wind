@@ -96,7 +96,7 @@ export declare function defaultBrowserWindowOptions(accessor: ServicesAccessor, 
 export declare function getLastFocused(windows: ICodeWindow[]): ICodeWindow | undefined;
 export declare function getLastFocused(windows: IAuxiliaryWindow[]): IAuxiliaryWindow | undefined;
 export declare namespace WindowStateValidator {
-    function validateWindowState(logService: ILogService, state: IWindowState, displays?: any): IWindowState | undefined;
+    function validateWindowState(logService: ILogService, state: IWindowState, displays?: Electron.Display[]): IWindowState | undefined;
     function validateWindowStateOnDisplay(state: IWindowState, display: Display): state is Rectangle;
 }
 /**
@@ -106,4 +106,4 @@ export declare namespace WindowStateValidator {
  * windows from the list of all windows.
  * @returns An array of all BrowserWindow instances that are not offscreen.
  */
-export declare function getAllWindowsExcludingOffscreen(): any;
+export declare function getAllWindowsExcludingOffscreen(): Electron.BrowserWindow[];

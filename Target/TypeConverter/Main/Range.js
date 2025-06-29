@@ -1,6 +1,6 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-import { Position, Range } from "Source/Platform/VSCode/Type.js";
+import { Position, Range } from "../../Platform/VSCode/Type.js";
 const FromAPI = /* @__PURE__ */ __name((RangeInstance) => ({
   startLineNumber: RangeInstance.start.line + 1,
   startColumn: RangeInstance.start.character + 1,

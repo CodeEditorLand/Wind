@@ -15,7 +15,7 @@ export declare abstract class BaseAssignmentService implements IAssignmentServic
     private networkInitialized;
     private overrideInitDelay;
     protected get experimentsEnabled(): boolean;
-    constructor(machineId: string, configurationService: IConfigurationService, productService: IProductService, environmentService: IEnvironmentService, telemetry: IExperimentationTelemetry, keyValueStorage?: IKeyValueStorage);
+    constructor(machineId: string, configurationService: IConfigurationService, productService: IProductService, environmentService: IEnvironmentService, telemetry: IExperimentationTelemetry, keyValueStorage?: IKeyValueStorage | undefined);
     getTreatment<T extends string | number | boolean>(name: string): Promise<T | undefined>;
     private setupTASClient;
 }

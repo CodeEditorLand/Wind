@@ -9,9 +9,9 @@ import { TextReplacement } from '../../../../common/core/edits/textEdit.js';
 import { InlineCompletionEndOfLifeReason, InlineCompletion, InlineCompletionContext, InlineCompletions, InlineCompletionsProvider, PartialAcceptInfo, InlineCompletionsDisposeReason } from '../../../../common/languages.js';
 import { ILanguageConfigurationService } from '../../../../common/languages/languageConfigurationRegistry.js';
 import { ITextModel } from '../../../../common/model.js';
-import { InlineCompletionViewKind } from '../view/inlineEdits/inlineEditsViewInterface.js';
+import { InlineCompletionViewData, InlineCompletionViewKind } from '../view/inlineEdits/inlineEditsViewInterface.js';
 export type InlineCompletionContextWithoutUuid = Omit<InlineCompletionContext, 'requestUuid'>;
-export declare function provideInlineCompletions(providers: InlineCompletionsProvider[], position: Position, model: ITextModel, context: InlineCompletionContextWithoutUuid, editorType: InlineCompletionEditorType, languageConfigurationService?: ILanguageConfigurationService): IInlineCompletionProviderResult;
+export declare function provideInlineCompletions(providers: InlineCompletionsProvider[], position: Position, model: ITextModel, context: InlineCompletionContextWithoutUuid, requestInfo: InlineSuggestRequestInfo, languageConfigurationService?: ILanguageConfigurationService): IInlineCompletionProviderResult;
 /** If the token is eventually cancelled, this will not leak either. */
 export declare function runWhenCancelled(token: CancellationToken, callback: () => void): IDisposable;
 export interface IInlineCompletionProviderResult {
@@ -19,8 +19,15 @@ export interface IInlineCompletionProviderResult {
     cancelAndDispose(reason: InlineCompletionsDisposeReason): void;
     lists: AsyncIterableObject<InlineSuggestionList>;
 }
+export type InlineSuggestRequestInfo = {
+    startTime: number;
+    editorType: InlineCompletionEditorType;
+    languageId: string;
+    reason: string;
+};
 export type InlineSuggestViewData = {
     editorType: InlineCompletionEditorType;
+    renderData?: InlineCompletionViewData;
     viewKind?: InlineCompletionViewKind;
     error?: string;
 };
@@ -34,7 +41,9 @@ export declare class InlineSuggestData {
     readonly source: InlineSuggestionList;
     readonly context: InlineCompletionContext;
     readonly isInlineEdit: boolean;
+    private readonly _requestInfo;
     private _didShow;
+    private _timeUntilShown;
     private _showStartTime;
     private _shownDuration;
     private _showUncollapsedStartTime;
@@ -42,10 +51,11 @@ export declare class InlineSuggestData {
     private _viewData;
     private _didReportEndOfLife;
     private _lastSetEndOfLifeReason;
-    constructor(range: Range, insertText: string, snippetInfo: SnippetInfo | undefined, displayLocation: IDisplayLocation | undefined, additionalTextEdits: readonly ISingleEditOperation[], sourceInlineCompletion: InlineCompletion, source: InlineSuggestionList, context: InlineCompletionContext, isInlineEdit: boolean, editorType: InlineCompletionEditorType);
+    private _partiallyAcceptedCount;
+    constructor(range: Range, insertText: string, snippetInfo: SnippetInfo | undefined, displayLocation: IDisplayLocation | undefined, additionalTextEdits: readonly ISingleEditOperation[], sourceInlineCompletion: InlineCompletion, source: InlineSuggestionList, context: InlineCompletionContext, isInlineEdit: boolean, _requestInfo: InlineSuggestRequestInfo);
     get showInlineEditMenu(): boolean;
     getSingleTextEdit(): TextReplacement;
-    reportInlineEditShown(commandService: ICommandService, updatedInsertText: string, viewKind: InlineCompletionViewKind): Promise<void>;
+    reportInlineEditShown(commandService: ICommandService, updatedInsertText: string, viewKind: InlineCompletionViewKind, viewData: InlineCompletionViewData): Promise<void>;
     reportPartialAccept(acceptedCharacters: number, info: PartialAcceptInfo): void;
     /**
      * Sends the end of life event to the provider.

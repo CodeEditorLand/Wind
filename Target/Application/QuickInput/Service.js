@@ -2,12 +2,12 @@ var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 import { Effect, Option } from "../../effect";
 import { CancellationToken } from "vs/base/common/cancellation.js";
-import { HostService } from "Source/Application/Host/Service.js";
-import { QuickInputProblem } from "./Error.js";
 import {
-  ToDTO as QuickPickOptionsToDTO,
-  ToDTO as InputBoxOptionsToDTO
-} from "Source/TypeConverter/QuickInput.js";
+  ToDTO as InputBoxOptionsToDTO,
+  ToDTO as QuickPickOptionsToDTO
+} from "../../TypeConverter/QuickInput.js";
+import { HostService } from "../Host/Service.js";
+import { QuickInputProblem } from "./Error.js";
 class QuickInputService extends Effect.Service()(
   "quickInputService",
   {

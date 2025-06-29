@@ -1,16 +1,16 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 import { Effect } from "../../effect";
-import { WorkspaceService as VscWorkspaceService } from "vs/workbench/services/configuration/browser/configurationService.js";
-import { IJSONEditingService } from "vs/workbench/services/configuration/common/jsonEditing.js";
-import { IUserDataProfileService } from "vs/workbench/services/userDataProfile/common/userDataProfile.js";
-import { IBrowserWorkbenchEnvironmentService } from "vs/workbench/services/environment/browser/environmentService.js";
-import { IRemoteAgentService } from "vs/workbench/services/remote/common/remoteAgentService.js";
-import { IUriIdentityService } from "vs/platform/uriIdentity/common/uriIdentity.js";
 import { IFileService } from "vs/platform/files/common/files.js";
 import { ILogService } from "vs/platform/log/common/log.js";
 import { IPolicyService } from "vs/platform/policy/common/policy.js";
+import { IUriIdentityService } from "vs/platform/uriIdentity/common/uriIdentity.js";
+import { WorkspaceService as VSCodeWorkspaceService } from "vs/workbench/services/configuration/browser/configurationService.js";
 import { IConfigurationCache } from "vs/workbench/services/configuration/common/configuration.js";
+import { IJSONEditingService } from "vs/workbench/services/configuration/common/jsonEditing.js";
+import { IBrowserWorkbenchEnvironmentService } from "vs/workbench/services/environment/browser/environmentService.js";
+import { IRemoteAgentService } from "vs/workbench/services/remote/common/remoteAgentService.js";
+import { IUserDataProfileService } from "vs/workbench/services/userDataProfile/common/userDataProfile.js";
 class WorkSpaceService extends Effect.Service()(
   "workspaceContextService",
   {
@@ -24,7 +24,7 @@ class WorkSpaceService extends Effect.Service()(
       const FileService = yield* Generator(IFileService);
       const RemoteAgentService = yield* Generator(IRemoteAgentService);
       const UriIdentityService = yield* Generator(IUriIdentityService);
-      const LogService = yield* Generator(ILogService);
+      const LoggerService = yield* Generator(ILogService);
       const PolicyService = yield* Generator(IPolicyService);
       const ConfigurationCache = {
         read: /* @__PURE__ */ __name(() => Promise.resolve(""), "read"),
@@ -32,7 +32,7 @@ class WorkSpaceService extends Effect.Service()(
         remove: /* @__PURE__ */ __name(() => Promise.resolve(), "remove"),
         needsCaching: /* @__PURE__ */ __name(() => false, "needsCaching")
       };
-      const ServiceInstance = new VscWorkspaceService(
+      const ServiceInstance = new VSCodeWorkspaceService(
         {
           remoteAuthority: EnvironmentService.remoteAuthority,
           configurationCache: ConfigurationCache
@@ -44,7 +44,7 @@ class WorkSpaceService extends Effect.Service()(
         FileService,
         RemoteAgentService,
         UriIdentityService,
-        LogService,
+        LoggerService,
         PolicyService
       );
       return ServiceInstance;

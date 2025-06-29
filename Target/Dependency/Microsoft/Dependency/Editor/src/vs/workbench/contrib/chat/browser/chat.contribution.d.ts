@@ -1,4 +1,5 @@
 import './promptSyntax/promptToolsCodeLensProvider.js';
+import './promptSyntax/promptCodingAgentActionContribution.js';
 import '../common/chatColors.js';
 import './chatAttachmentModel.js';
 import './contrib/chatInputCompletions.js';

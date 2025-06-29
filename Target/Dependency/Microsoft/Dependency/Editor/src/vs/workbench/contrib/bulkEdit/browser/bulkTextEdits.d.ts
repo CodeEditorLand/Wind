@@ -7,6 +7,7 @@ import { IUndoRedoService, UndoRedoGroup, UndoRedoSource } from '../../../../pla
 import { IModelService } from '../../../../editor/common/services/model.js';
 import { ResourceTextEdit } from '../../../../editor/browser/services/bulkEditService.js';
 import { CancellationToken } from '../../../../base/common/cancellation.js';
+import { TextModelEditReason } from '../../../../editor/common/textModelEditReason.js';
 export declare class BulkTextEdits {
     private readonly _label;
     private readonly _code;
@@ -24,5 +25,5 @@ export declare class BulkTextEdits {
     private _validateBeforePrepare;
     private _createEditsTasks;
     private _validateTasks;
-    apply(): Promise<readonly URI[]>;
+    apply(reason?: TextModelEditReason): Promise<readonly URI[]>;
 }

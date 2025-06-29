@@ -14,6 +14,7 @@ import { ChatAgentVoteDirection, ChatAgentVoteDownReason, IChatCodeCitation, ICh
 import { CodeBlockModelCollection } from './codeBlockModelCollection.js';
 export declare function isRequestVM(item: unknown): item is IChatRequestViewModel;
 export declare function isResponseVM(item: unknown): item is IChatResponseViewModel;
+export declare function isChatTreeItem(item: unknown): item is IChatRequestViewModel | IChatResponseViewModel;
 export declare function assertIsResponseVM(item: unknown): asserts item is IChatResponseViewModel;
 export type IChatViewModelChangeEvent = IChatAddRequestEvent | IChangePlaceholderEvent | IChatSessionInitEvent | IChatSetHiddenEvent | IChatSetCheckpointEvent | null;
 export interface IChatAddRequestEvent {

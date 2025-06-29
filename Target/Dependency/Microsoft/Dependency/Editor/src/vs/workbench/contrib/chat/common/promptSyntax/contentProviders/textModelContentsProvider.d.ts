@@ -19,7 +19,7 @@ export declare class TextModelContentsProvider extends PromptContentsProviderBas
     get uri(): URI;
     get sourceName(): string;
     get languageId(): string;
-    constructor(model: ITextModel, options: Partial<IPromptContentsProviderOptions>, instantiationService: IInstantiationService);
+    constructor(model: ITextModel, options: IPromptContentsProviderOptions, instantiationService: IInstantiationService);
     /**
      * Creates a stream of binary data from the text model based on the changes
      * listed in the provided event.
@@ -34,7 +34,7 @@ export declare class TextModelContentsProvider extends PromptContentsProviderBas
     protected getContentsStream(_event: IModelContentChangedEvent | 'full', cancellationToken?: CancellationToken): Promise<VSBufferReadableStream>;
     createNew(promptContentsSource: TextModel | {
         uri: URI;
-    }, options?: Partial<IPromptContentsProviderOptions>): IPromptContentsProvider;
+    }, options: IPromptContentsProviderOptions): IPromptContentsProvider;
     /**
      * String representation of this object.
      */

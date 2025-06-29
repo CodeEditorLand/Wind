@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../Source/Application/TextEditor/Live.ts"],
-  "sourcesContent": ["/**\n * @module Live (Application/TextEditor)\n * @description Provides the \"live\" implementation `Layer` for the TextEditor service.\n */\n\nimport { Layer } from \"effect\";\nimport { TextEditorService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `TextEditorService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the `TextEditorService` service definition. It automatically includes all\n * dependencies required by its `effect` constructor.\n */\nexport const TextEditorLive: Layer.Layer<TextEditorService> =\n\tTextEditorService.Default;\n"],
-  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,yBAAyB;AAS3B,MAAM,iBACZ,kBAAkB;",
+  "sourcesContent": ["/**\n * @module Live (Application/TextEditor)\n * @description Provides the \"live\" implementation `Layer` for the TextEditor service.\n */\n\nimport { Layer } from \"effect\";\n\nimport { TextEditorService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `TextEditorService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the `TextEditorService` service definition. It automatically includes all\n * dependencies required by its `effect` constructor.\n */\nexport const TextEditorLive: Layer.Layer<TextEditorService> =\n\tTextEditorService.Default;\n"],
+  "mappings": "AAKA,SAAS,aAAa;AAEtB,SAAS,yBAAyB;AAS3B,MAAM,iBACZ,kBAAkB;",
   "names": []
 }

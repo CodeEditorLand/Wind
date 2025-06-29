@@ -22,6 +22,7 @@ export declare class SettingsChangeRelauncher extends Disposable implements IWor
     private readonly nativeTabs;
     private readonly nativeFullScreen;
     private readonly clickThroughInactive;
+    private readonly border;
     private readonly controlsStyle;
     private readonly updateMode;
     private accessibilitySupport;

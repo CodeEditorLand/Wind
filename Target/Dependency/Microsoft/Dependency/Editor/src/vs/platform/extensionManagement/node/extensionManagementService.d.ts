@@ -43,7 +43,7 @@ export declare class ExtensionManagementService extends AbstractExtensionManagem
     getTargetPlatform(): Promise<TargetPlatform>;
     zip(extension: ILocalExtension): Promise<URI>;
     getManifest(vsix: URI): Promise<IExtensionManifest>;
-    getInstalled(type?: ExtensionType, profileLocation?: URI, productVersion?: IProductVersion): Promise<ILocalExtension[]>;
+    getInstalled(type?: ExtensionType, profileLocation?: URI, productVersion?: IProductVersion, language?: string): Promise<ILocalExtension[]>;
     scanAllUserInstalledExtensions(): Promise<ILocalExtension[]>;
     scanInstalledExtensionAtLocation(location: URI): Promise<ILocalExtension | null>;
     install(vsix: URI, options?: InstallOptions): Promise<ILocalExtension>;
@@ -88,7 +88,7 @@ export declare class ExtensionsScanner extends Disposable {
     private scanUserExtensionsPromise;
     constructor(beforeRemovingExtension: (e: ILocalExtension) => Promise<void>, fileService: IFileService, extensionsScannerService: IExtensionsScannerService, extensionsProfileScannerService: IExtensionsProfileScannerService, uriIdentityService: IUriIdentityService, telemetryService: ITelemetryService, logService: ILogService);
     cleanUp(): Promise<void>;
-    scanExtensions(type: ExtensionType | null, profileLocation: URI, productVersion: IProductVersion): Promise<ILocalExtension[]>;
+    scanExtensions(type: ExtensionType | null, profileLocation: URI, productVersion: IProductVersion, language?: string): Promise<ILocalExtension[]>;
     scanAllUserExtensions(): Promise<ILocalExtension[]>;
     scanUserExtensionAtLocation(location: URI): Promise<ILocalExtension | null>;
     extractUserExtension(extensionKey: ExtensionKey, zipPath: string, removeIfExists: boolean, token: CancellationToken): Promise<ILocalExtension>;

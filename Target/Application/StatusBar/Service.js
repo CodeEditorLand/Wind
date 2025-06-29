@@ -6,10 +6,9 @@ import {
   Disposable,
   StatusBarAlignment
 } from "vscode";
-import { CommandService } from "Source/Application/Command/Service.js";
-import { HostService } from "Source/Application/Host/Service.js";
+import { CommandService } from "../Command/Service.js";
+import { HostService } from "../Host/Service.js";
 import { StatusBarItemImplementation } from "./StatusBarItem.js";
-import { StatusBarProblem } from "./Error.js";
 class StatusBarService extends Effect.Service()(
   "statusbarService",
   {

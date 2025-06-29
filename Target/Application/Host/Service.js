@@ -1,8 +1,10 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import {} from "@tauri-apps/api/event";
 import { Effect, Option } from "../../effect";
-import { URI } from "Source/Platform/VSCode/Type.js";
-import { IntegrationService } from "Source/Integration/Tauri/Service.js";
+import { Emitter } from "vs/base/common/event.js";
+import { IntegrationService } from "../../Integration/Tauri/Service.js";
+import {} from "../../Platform/VSCode/Type.js";
 import { HostServiceProblem } from "./Error.js";
 const CreateIpcRendererShim = /* @__PURE__ */ __name((Integration) => ({
   invoke: /* @__PURE__ */ __name((Channel, ...Arguments) => Effect.runPromise(
@@ -20,246 +22,157 @@ const CreateProcessShim = /* @__PURE__ */ __name((Configuration) => ({
   arch: Configuration.arch,
   platform: Configuration.platform,
   type: "renderer",
-  cwd: /* @__PURE__ */ __name(() => Configuration.VSCODE_CWD, "cwd"),
+  cwd: /* @__PURE__ */ __name(() => Configuration.cwd, "cwd"),
   env: { ...Configuration.userEnv },
   versions: Configuration.versions,
-  getProcessMemoryInfo: /* @__PURE__ */ __name(() => Promise.resolve({ total: 0, residentSet: 0, private: 0 }), "getProcessMemoryInfo"),
+  getProcessMemoryInfo: /* @__PURE__ */ __name(() => Promise.resolve({
+    residentSet: 0,
+    private: 0,
+    shared: 0
+  }), "getProcessMemoryInfo"),
   sandboxed: true,
   mas: false,
   windows: Configuration.platform === "win32",
   linux: Configuration.platform === "linux",
-  darwin: Configuration.platform === "darwin"
+  darwin: Configuration.platform === "darwin",
+  // --- Stubs for other NodeJS.Process properties ---
+  title: "wind",
+  version: "1.0.0",
+  config: {},
+  argv: [],
+  execArgv: [],
+  mainModule: void 0,
+  exit: /* @__PURE__ */ __name((_code) => {
+    throw new Error(
+      "process.exit is not supported in this environment."
+    );
+  }, "exit")
 }), "CreateProcessShim");
 class HostService extends Effect.Service()("wind/HostService", {
-  effect: Effect.gen(function* (Generator) {
-    const Integration = yield* Generator(IntegrationService);
-    const Configuration = yield* Generator(
-      Integration.Invoke(
-        "MountainGetWorkbenchConfiguration"
+  effect: Effect.gen(function* () {
+    const Integration = yield* IntegrationService;
+    const CreateProxyEffect = /* @__PURE__ */ __name((Method, Context) => {
+      return (...Arguments) => Integration.Invoke(
+        Method,
+        ...Arguments
       ).pipe(
+        Effect.mapError(
+          (cause) => new HostServiceProblem({ Cause: cause, Context })
+        )
+      );
+    }, "CreateProxyEffect");
+    const Configuration = yield* CreateProxyEffect(
+      "MountainGetWorkbenchConfiguration",
+      "FailedToFetchInitialConfiguration"
+    )();
+    const OnDidChangeWindowStateEmitter = new Emitter();
+    yield* Integration.Listen(
+      "sky://window/did-change-focus",
+      (Event) => {
+        if (Event.payload !== void 0) {
+          OnDidChangeWindowStateEmitter.fire(Event.payload);
+        }
+      }
+    );
+    return {
+      Configuration,
+      ProvideGlobals: /* @__PURE__ */ __name(() => Effect.sync(() => {
+        window.vscode = {
+          ipcRenderer: CreateIpcRendererShim(Integration),
+          process: CreateProcessShim(Configuration)
+        };
+      }), "ProvideGlobals"),
+      NotifyReady: /* @__PURE__ */ __name(() => Integration.Emit("sky://lifecycle/ready").pipe(
         Effect.mapError(
           (Cause) => new HostServiceProblem({
             Cause,
-            Context: "FailedToFetchInitialConfiguration"
+            Context: "FailedToNotifyHostReady"
           })
         )
+      ), "NotifyReady"),
+      Logger: CreateProxyEffect(
+        "sky://log",
+        "LogForwardingFailed"
+      ),
+      OnDidChangeWindowState: OnDidChangeWindowStateEmitter.event,
+      ShowTextDocument: CreateProxyEffect("WorkSpace.ShowTextDocument", "ShowTextDocumentFailed"),
+      ShowOpenDialog: CreateProxyEffect("UserInterface.ShowOpenDialog", "ShowOpenDialogFailed"),
+      ShowSaveDialog: CreateProxyEffect("UserInterface.ShowSaveDialog", "ShowSaveDialogFailed"),
+      ShowSaveConfirm: CreateProxyEffect("UserInterface.ShowSaveConfirm", "ShowSaveConfirmFailed"),
+      OpenFile: CreateProxyEffect(
+        "WorkSpace.OpenFile",
+        "OpenFileFailed"
+      ),
+      Stat: CreateProxyEffect(
+        "FileSystem.Stat",
+        "StatFailed"
+      ),
+      ReadDirectory: CreateProxyEffect(
+        "FileSystem.ReadDirectory",
+        "ReadDirectoryFailed"
+      ),
+      CreateDirectory: CreateProxyEffect(
+        "FileSystem.CreateDirectory",
+        "CreateDirectoryFailed"
+      ),
+      ReadFile: CreateProxyEffect(
+        "FileSystem.ReadFile",
+        "ReadFileFailed"
+      ),
+      WriteFile: CreateProxyEffect("FileSystem.WriteFile", "WriteFileFailed"),
+      Delete: CreateProxyEffect(
+        "FileSystem.Delete",
+        "DeleteFailed"
+      ),
+      Rename: CreateProxyEffect(
+        "FileSystem.Rename",
+        "RenameFailed"
+      ),
+      Copy: CreateProxyEffect(
+        "FileSystem.Copy",
+        "CopyFailed"
+      ),
+      ShowNotification: CreateProxyEffect(
+        "UserInterface.ShowNotification",
+        "ShowNotificationFailed"
+      ),
+      ShowPrompt: CreateProxyEffect("UserInterface.ShowPrompt", "ShowPromptFailed"),
+      ShowStatusMessage: CreateProxyEffect("UserInterface.ShowStatusMessage", "ShowStatusMessageFailed"),
+      SetStatusBarItem: CreateProxyEffect(
+        "UserInterface.SetStatusBarItem",
+        "SetStatusBarItemFailed"
+      ),
+      DisposeStatusBarItem: CreateProxyEffect(
+        "UserInterface.DisposeStatusBarItem",
+        "DisposeStatusBarItemFailed"
+      ),
+      SetStatusBarMessage: CreateProxyEffect(
+        "UserInterface.SetStatusBarMessage",
+        "SetStatusBarMessageFailed"
+      ),
+      DisposeStatusBarMessage: CreateProxyEffect(
+        "UserInterface.DisposeStatusBarMessage",
+        "DisposeStatusBarMessageFailed"
+      ),
+      SetWebviewHtml: CreateProxyEffect(
+        "WebView.SetHtml",
+        "SetWebviewHtmlFailed"
+      ),
+      SetWebviewOptions: CreateProxyEffect("WebView.SetOptions", "SetWebviewOptionsFailed"),
+      PostMessageToWebview: CreateProxyEffect(
+        "WebView.PostMessage",
+        "PostMessageToWebviewFailed"
+      ),
+      SetWebviewTitle: CreateProxyEffect(
+        "WebView.SetTitle",
+        "SetWebviewTitleFailed"
+      ),
+      SetWebviewIconPath: CreateProxyEffect("WebView.SetIconPath", "SetWebviewIconPathFailed"),
+      RevealWebviewPanel: CreateProxyEffect("WebView.Reveal", "RevealWebviewPanelFailed"),
+      DisposeWebview: CreateProxyEffect(
+        "WebView.Dispose",
+        "DisposeWebviewFailed"
       )
-    );
-    const ProvideGlobals = /* @__PURE__ */ __name(() => Effect.sync(() => {
-      window.vscode = {
-        ipcRenderer: CreateIpcRendererShim(Integration),
-        process: CreateProcessShim(Configuration)
-      };
-    }).pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "FailedToProvideGlobals"
-        })
-      )
-    ), "ProvideGlobals");
-    const NotifyReady = /* @__PURE__ */ __name(() => Integration.Emit("sky://lifecycle/ready").pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "FailedToNotifyHostReady"
-        })
-      )
-    ), "NotifyReady");
-    const ShowOpenDialog = /* @__PURE__ */ __name((Options) => Integration.Invoke(
-      "UserInterface.ShowOpenDialog",
-      Options
-    ).pipe(
-      Effect.map(Option.fromNullable),
-      Effect.map(Option.map((Uris) => Uris.map(URI.revive))),
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "ShowOpenDialogFailed"
-        })
-      )
-    ), "ShowOpenDialog");
-    const ShowSaveDialog = /* @__PURE__ */ __name((Options) => Integration.Invoke(
-      "UserInterface.ShowSaveDialog",
-      Options
-    ).pipe(
-      Effect.map(Option.fromNullable),
-      Effect.map(Option.map(URI.revive)),
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "ShowSaveDialogFailed"
-        })
-      )
-    ), "ShowSaveDialog");
-    const ShowSaveConfirm = /* @__PURE__ */ __name((Files) => Integration.Invoke(
-      "UserInterface.ShowSaveConfirm",
-      Files
-    ).pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "ShowSaveConfirmFailed"
-        })
-      )
-    ), "ShowSaveConfirm");
-    const OpenFile = /* @__PURE__ */ __name((Uri) => Integration.Invoke("WorkSpace.OpenFile", Uri.fsPath).pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "OpenFileFailed"
-        })
-      )
-    ), "OpenFile");
-    const Log = /* @__PURE__ */ __name((Level, Message) => Integration.Emit("sky://log", { Level, Message }).pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "LogForwardingFailed"
-        })
-      )
-    ), "Log");
-    const ShowNotification = /* @__PURE__ */ __name((Notification) => Integration.Invoke("UserInterface.ShowNotification", {
-      Notification
-    }).pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "ShowNotificationFailed"
-        })
-      )
-    ), "ShowNotification");
-    const ShowPrompt = /* @__PURE__ */ __name((Severity, Message, Choices, Options) => Integration.Invoke("UserInterface.ShowPrompt", {
-      Severity,
-      Message,
-      Choices,
-      Options
-    }).pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "ShowPromptFailed"
-        })
-      )
-    ), "ShowPrompt");
-    const ShowStatusMessage = /* @__PURE__ */ __name((Message, Options) => Integration.Invoke("UserInterface.ShowStatusMessage", {
-      Message: Message.toString(),
-      // Ensure message is a string for IPC
-      Options
-    }).pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "ShowStatusMessageFailed"
-        })
-      )
-    ), "ShowStatusMessage");
-    const Stat = /* @__PURE__ */ __name((Uri) => Integration.Invoke("FileSystem.Stat", { Uri }).pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "StatFailed"
-        })
-      )
-    ), "Stat");
-    const ReadDirectory = /* @__PURE__ */ __name((Uri) => Integration.Invoke(
-      "FileSystem.ReadDirectory",
-      { Uri }
-    ).pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "ReadDirectoryFailed"
-        })
-      )
-    ), "ReadDirectory");
-    const CreateDirectory = /* @__PURE__ */ __name((Uri) => Integration.Invoke("FileSystem.CreateDirectory", {
-      Uri
-    }).pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "CreateDirectoryFailed"
-        })
-      )
-    ), "CreateDirectory");
-    const ReadFile = /* @__PURE__ */ __name((Uri) => Integration.Invoke("FileSystem.ReadFile", {
-      Uri
-    }).pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "ReadFileFailed"
-        })
-      )
-    ), "ReadFile");
-    const WriteFile = /* @__PURE__ */ __name((Uri, Content, Options) => Integration.Invoke("FileSystem.WriteFile", {
-      Uri,
-      Content,
-      Options
-    }).pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "WriteFileFailed"
-        })
-      )
-    ), "WriteFile");
-    const Delete = /* @__PURE__ */ __name((Uri, Options) => Integration.Invoke("FileSystem.Delete", {
-      Uri,
-      Options
-    }).pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "DeleteFailed"
-        })
-      )
-    ), "Delete");
-    const Rename = /* @__PURE__ */ __name((Source, Target, Options) => Integration.Invoke("FileSystem.Rename", {
-      Source,
-      Target,
-      Options
-    }).pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "RenameFailed"
-        })
-      )
-    ), "Rename");
-    const Copy = /* @__PURE__ */ __name((Source, Target, Options) => Integration.Invoke("FileSystem.Copy", {
-      Source,
-      Target,
-      Options
-    }).pipe(
-      Effect.mapError(
-        (Cause) => new HostServiceProblem({
-          Cause,
-          Context: "CopyFailed"
-        })
-      )
-    ), "Copy");
-    return {
-      Configuration,
-      ProvideGlobals,
-      NotifyReady,
-      ShowOpenDialog,
-      ShowSaveDialog,
-      ShowSaveConfirm,
-      OpenFile,
-      Log,
-      ShowNotification,
-      ShowPrompt,
-      ShowStatusMessage,
-      Stat,
-      ReadDirectory,
-      CreateDirectory,
-      ReadFile,
-      WriteFile,
-      Delete,
-      Rename,
-      Copy
     };
   })
 }) {

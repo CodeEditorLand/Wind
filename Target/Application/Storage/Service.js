@@ -1,24 +1,26 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-import { Effect, Ref } from "../../effect";
-import { AbstractStorageService } from "vs/platform/storage/common/storageService.js";
-import { IntegrationService } from "Source/Integration/Tauri/Service.js";
-import { EffectStorage } from "./Storage.js";
+import { Effect } from "../../effect";
+import { ILogService } from "vs/platform/log/common/log.js";
 import {
-  IUserDataProfile,
+  AbstractStorageService
+} from "vs/platform/storage/common/storage.js";
+import {
   isUserDataProfile
 } from "vs/platform/userDataProfile/common/userDataProfile";
-import { ILogService } from "vs/platform/log/common/log.js";
+import { IntegrationService } from "../../Integration/Tauri/Service.js";
 class EffectStorageService extends AbstractStorageService {
-  constructor(Integration, LogService) {
-    super({});
+  constructor(Integration, LoggerService) {
+    super({
+      flushInterval: 0
+    });
     this.Integration = Integration;
-    this.LogService = LogService;
+    this.LoggerService = LoggerService;
   }
   static {
     __name(this, "EffectStorageService");
   }
-  getStorage(scope) {
+  getStorage(_scope) {
     return void 0;
   }
   getLogDetails(scope) {
@@ -27,12 +29,12 @@ class EffectStorageService extends AbstractStorageService {
   doInitialize() {
     return Promise.resolve();
   }
-  switchToProfile(toProfile, preserveData) {
-    this.LogService.info(`Switching to profile: ${toProfile.id}`);
+  switchToProfile(toProfile, _preserveData) {
+    this.LoggerService.info(`Switching to profile: ${toProfile.id}`);
     return Promise.resolve();
   }
-  switchToWorkspace(toWorkspace, preserveData) {
-    this.LogService.info(`Switching to workspace: ${toWorkspace.id}`);
+  switchToWorkspace(toWorkspace, _preserveData) {
+    this.LoggerService.info(`Switching to workspace: ${toWorkspace.id}`);
     return Promise.resolve();
   }
   hasScope(scope) {
@@ -47,10 +49,10 @@ class StorageService extends Effect.Service()(
   {
     effect: Effect.gen(function* (Generator) {
       const Integration = yield* Generator(IntegrationService);
-      const LogService = yield* Generator(ILogService);
+      const LoggerService = yield* Generator(ILogService);
       const ServiceInstance = new EffectStorageService(
         Integration,
-        LogService
+        LoggerService
       );
       yield* Generator(
         Effect.tryPromise({
@@ -69,6 +71,7 @@ class StorageService extends Effect.Service()(
   }
 }
 export {
+  EffectStorageService,
   StorageService
 };
 //# sourceMappingURL=Service.js.map

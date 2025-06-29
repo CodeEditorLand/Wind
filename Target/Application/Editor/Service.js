@@ -4,37 +4,33 @@ import { Effect } from "../../effect";
 import { Emitter } from "vs/base/common/event.js";
 import { isEditorInput } from "vs/workbench/common/editor.js";
 import { isPreferredGroup } from "vs/workbench/services/editor/common/editorGroupFinder.js";
-import { HostService } from "Source/Application/Host/Service.js";
-import { TextEditorService } from "Source/Application/TextEditor/Service.js";
+import { HostService } from "../Host/Service.js";
+import { TextEditorService } from "../TextEditor/Service.js";
 import { EditorProblem } from "./Error.js";
 class EditorService extends Effect.Service()(
   "vscode/EditorService",
   {
-    effect: Effect.gen(function* (Generator) {
-      const Host = yield* Generator(HostService);
-      const TextFileService = yield* Generator(TextEditorService);
-      const CreateOpenEditorEffect = /* @__PURE__ */ __name((Editor, _Options, _Group) => Effect.gen(function* (Generator2) {
-        const TypedEditor = isEditorInput(Editor) ? Editor : yield* Generator2(
-          Effect.tryPromise({
-            try: /* @__PURE__ */ __name(() => TextFileService.resolve(Editor), "try"),
-            catch: /* @__PURE__ */ __name((Cause) => new EditorProblem({
-              Cause,
-              Context: "ResolveEditorInputFailed"
-            }), "catch")
-          })
-        );
+    effect: Effect.gen(function* () {
+      const Host = yield* HostService;
+      const TextFileService = yield* TextEditorService;
+      const CreateOpenEditorEffect = /* @__PURE__ */ __name((Editor, _Options, _Group) => Effect.gen(function* () {
+        const TypedEditor = isEditorInput(Editor) ? Editor : yield* Effect.tryPromise({
+          try: /* @__PURE__ */ __name(() => TextFileService.resolve(Editor), "try"),
+          catch: /* @__PURE__ */ __name((Cause) => new EditorProblem({
+            Cause,
+            Context: "ResolveEditorInputFailed"
+          }), "catch")
+        });
         const ResourceURI = TypedEditor.resource;
         if (!ResourceURI) {
-          return yield* Generator2(
-            new EditorProblem({
-              Cause: new Error(
-                "Editor input lacks a resource URI."
-              ),
-              Context: "MissingResourceURI"
-            })
-          );
+          return yield* new EditorProblem({
+            Cause: new Error(
+              "Editor input lacks a resource URI."
+            ),
+            Context: "MissingResourceURI"
+          });
         }
-        yield* Generator2(Host.OpenFile(ResourceURI));
+        yield* Host.OpenFile(ResourceURI);
         return void 0;
       }), "CreateOpenEditorEffect");
       const ServiceImplementation = {
@@ -43,7 +39,11 @@ class EditorService extends Effect.Service()(
           const Options = !isPreferredGroup(OptionsOrGroup) ? OptionsOrGroup : void 0;
           const TargetGroup = isPreferredGroup(OptionsOrGroup) ? OptionsOrGroup : Group;
           return Effect.runPromise(
-            CreateOpenEditorEffect(Editor, Options, TargetGroup)
+            CreateOpenEditorEffect(
+              Editor,
+              Options,
+              TargetGroup
+            )
           );
         }, "openEditor"),
         // --- Stubs for other methods and events ---

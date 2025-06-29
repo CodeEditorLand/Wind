@@ -8,6 +8,7 @@ import { IEditorWorkerService } from '../../../../../editor/common/services/edit
 import { IAccessibilitySignalService } from '../../../../../platform/accessibilitySignal/browser/accessibilitySignalService.js';
 import { ICellEditOperation } from '../../../notebook/common/notebookCommon.js';
 import { ModifiedFileEntryState } from '../../common/chatEditingService.js';
+import { IChatResponseModel } from '../../common/chatModel.js';
 export declare class ChatEditingTextModelChangeService extends Disposable {
     private readonly originalModel;
     private readonly modifiedModel;
@@ -44,7 +45,7 @@ export declare class ChatEditingTextModelChangeService extends Disposable {
     constructor(originalModel: ITextModel, modifiedModel: ITextModel, state: IObservable<ModifiedFileEntryState>, _editorWorkerService: IEditorWorkerService, _accessibilitySignalService: IAccessibilitySignalService);
     clearCurrentEditLineDecoration(): void;
     areOriginalAndModifiedIdentical(): Promise<boolean>;
-    acceptAgentEdits(resource: URI, textEdits: (TextEdit | ICellEditOperation)[], isLastEdits: boolean): Promise<{
+    acceptAgentEdits(resource: URI, textEdits: (TextEdit | ICellEditOperation)[], isLastEdits: boolean, responseModel: IChatResponseModel): Promise<{
         rewriteRatio: number;
         maxLineNumber: number;
     }>;

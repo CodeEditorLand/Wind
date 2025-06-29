@@ -114,7 +114,11 @@ export declare class TextModel extends Disposable implements model.ITextModel, I
     equalsTextBuffer(other: model.ITextBuffer): boolean;
     getTextBuffer(): model.ITextBuffer;
     private _emitContentChangedEvent;
-    setValue(value: string | model.ITextSnapshot, reason?: TextModelEditReason): void;
+    setValue(value: string | model.ITextSnapshot, reason?: TextModelEditReason & {
+        metadataT: {
+            readonly source: "setValue";
+        };
+    }): void;
     private _createContentChanged2;
     private _setValueFromTextBuffer;
     setEOL(eol: model.EndOfLineSequence): void;

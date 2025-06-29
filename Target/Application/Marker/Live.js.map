@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../Source/Application/Marker/Live.ts"],
-  "sourcesContent": ["/**\n * @module Live (Application/Marker)\n * @description Provides the \"live\" implementation `Layer` for the MarkerService.\n */\n\nimport { Layer } from \"effect\";\nimport { ILogService } from \"vs/platform/log/common/log.js\";\nimport { IntegrationService } from \"Source/Integration/Tauri/Service.js\";\nimport { MarkerService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `MarkerService`.\n *\n * It automatically includes dependencies required by its `effect` constructor,\n * such as the `ILogService` and `IntegrationService`.\n */\nexport const MarkerLive: Layer.Layer<\n\tMarkerService,\n\tnever,\n\tILogService | IntegrationService\n> = MarkerService.Default;\n"],
-  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,mBAAmB;AAC5B,SAAS,0BAA0B;AACnC,SAAS,qBAAqB;AAQvB,MAAM,aAIT,cAAc;",
+  "sourcesContent": ["/**\n * @module Live (Application/Marker)\n * @description Provides the \"live\" implementation `Layer` for the MarkerService.\n */\n\nimport { Layer } from \"effect\";\nimport { ILogService } from \"vs/platform/log/common/log.js\";\n\nimport { IntegrationService } from \"../../Integration/Tauri/Service.js\";\nimport { MarkerService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `MarkerService`.\n *\n * It automatically includes dependencies required by its `effect` constructor,\n * such as the `ILogService` and `IntegrationService`.\n */\nexport const MarkerLive: Layer.Layer<\n\tMarkerService,\n\tnever,\n\tILogService | IntegrationService\n> = MarkerService.Default;\n"],
+  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,mBAAmB;AAE5B,SAAS,0BAA0B;AACnC,SAAS,qBAAqB;AAQvB,MAAM,aAIT,cAAc;",
   "names": []
 }

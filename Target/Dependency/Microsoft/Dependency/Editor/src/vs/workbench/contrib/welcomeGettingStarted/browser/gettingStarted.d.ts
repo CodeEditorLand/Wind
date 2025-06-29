@@ -30,7 +30,6 @@ import { IEditorGroup, IEditorGroupsService } from '../../../services/editor/com
 import { IExtensionService } from '../../../services/extensions/common/extensions.js';
 import { IHostService } from '../../../services/host/browser/host.js';
 import { IWorkbenchThemeService } from '../../../services/themes/common/workbenchThemeService.js';
-import { IGettingStartedExperimentService } from './gettingStartedExpService.js';
 export declare const allWalkthroughsHiddenContext: RawContextKey<boolean>;
 export declare const inWelcomeContext: RawContextKey<boolean>;
 export interface IWelcomePageStartEntry {
@@ -67,7 +66,6 @@ export declare class GettingStartedPage extends EditorPane {
     private readonly webviewService;
     private readonly workspaceContextService;
     private readonly accessibilityService;
-    private readonly gettingStartedExperimentService;
     static readonly ID = "gettingStartedPage";
     private editorInput;
     private inProgressScroll;
@@ -99,7 +97,7 @@ export declare class GettingStartedPage extends EditorPane {
     private detailsRenderer;
     private readonly categoriesSlideDisposables;
     private showFeaturedWalkthrough;
-    constructor(group: IEditorGroup, commandService: ICommandService, productService: IProductService, keybindingService: IKeybindingService, gettingStartedService: IWalkthroughsService, configurationService: IConfigurationService, telemetryService: ITelemetryService, languageService: ILanguageService, fileService: IFileService, openerService: IOpenerService, themeService: IWorkbenchThemeService, storageService: IStorageService, extensionService: IExtensionService, instantiationService: IInstantiationService, notificationService: INotificationService, groupsService: IEditorGroupsService, contextService: IContextKeyService, quickInputService: IQuickInputService, workspacesService: IWorkspacesService, labelService: ILabelService, hostService: IHostService, webviewService: IWebviewService, workspaceContextService: IWorkspaceContextService, accessibilityService: IAccessibilityService, gettingStartedExperimentService: IGettingStartedExperimentService);
+    constructor(group: IEditorGroup, commandService: ICommandService, productService: IProductService, keybindingService: IKeybindingService, gettingStartedService: IWalkthroughsService, configurationService: IConfigurationService, telemetryService: ITelemetryService, languageService: ILanguageService, fileService: IFileService, openerService: IOpenerService, themeService: IWorkbenchThemeService, storageService: IStorageService, extensionService: IExtensionService, instantiationService: IInstantiationService, notificationService: INotificationService, groupsService: IEditorGroupsService, contextService: IContextKeyService, quickInputService: IQuickInputService, workspacesService: IWorkspacesService, labelService: ILabelService, hostService: IHostService, webviewService: IWebviewService, workspaceContextService: IWorkspaceContextService, accessibilityService: IAccessibilityService);
     private shouldAnimate;
     private getWalkthroughCompletionStats;
     setInput(newInput: GettingStartedInput, options: IEditorOptions | undefined, context: IEditorOpenContext, token: CancellationToken): Promise<void>;

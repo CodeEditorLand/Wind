@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../Source/Application/TextEditor/Error.ts"],
-  "sourcesContent": ["/**\n * @module Error (Application/TextEditor)\n * @description Defines domain-specific, tagged errors for text editor (file model)\n * operations at the application layer.\n */\n\nimport { Data } from \"effect\";\nimport type { HostServiceProblem } from \"Source/Application/Host/Error.js\";\n\n/**\n * Represents a failure that occurs during text file operations, such as saving a file.\n * It wraps lower-level errors to provide a consistent error type for the application.\n */\nexport class TextEditorProblem extends Data.TaggedError(\"TextEditorProblem\")<{\n\treadonly Cause: HostServiceProblem | Error;\n\treadonly Context: string;\n}> {}\n"],
-  "mappings": ";;AAMA,SAAS,YAAY;AAOd,MAAM,0BAA0B,KAAK,YAAY,mBAAmB,EAGxE;AAAA,EAhBH,OAgBG;AAAA;AAAA;AAAC;",
+  "sourcesContent": ["/**\n * @module Error (Application/TextEditor)\n * @description Defines domain-specific, tagged errors for text editor (file model)\n * operations at the application layer.\n */\n\nimport { Data } from \"effect\";\n\nimport type { HostServiceProblem } from \"../Host/Error.js\";\n\n/**\n * Represents a failure that occurs during text file operations, such as saving a file.\n * It wraps lower-level errors to provide a consistent error type for the application.\n */\nexport class TextEditorProblem extends Data.TaggedError(\"TextEditorProblem\")<{\n\treadonly Cause: HostServiceProblem | Error;\n\treadonly Context: string;\n}> {}\n"],
+  "mappings": ";;AAMA,SAAS,YAAY;AAQd,MAAM,0BAA0B,KAAK,YAAY,mBAAmB,EAGxE;AAAA,EAjBH,OAiBG;AAAA;AAAA;AAAC;",
   "names": []
 }

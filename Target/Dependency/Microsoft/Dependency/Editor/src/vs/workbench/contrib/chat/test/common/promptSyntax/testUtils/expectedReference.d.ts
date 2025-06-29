@@ -1,6 +1,5 @@
 import { URI } from '../../../../../../../base/common/uri.js';
 import { TPromptReference } from '../../../../common/promptSyntax/parsers/types.js';
-import { TErrorCondition } from '../../../../common/promptSyntax/parsers/basePromptParser.js';
 /**
  * Options for the {@link ExpectedReference} class.
  */
@@ -31,11 +30,6 @@ interface IExpectedReferenceOptions {
      * Start column number of the `path` part of the reference.
      */
     readonly pathStartColumn: number;
-    /**
-     * Either an `error` that was generated during attempt to resolve this reference,
-     * or a list of expected child references if the attempt was successful.
-     */
-    readonly childrenOrError?: TErrorCondition | ExpectedReference[];
 }
 /**
  * An expected child reference to use in tests.

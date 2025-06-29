@@ -14,7 +14,7 @@ declare class PromptHeaderDiagnosticsProvider extends ProviderInstanceBase {
     /**
      * Update diagnostic markers for the current editor.
      */
-    protected onPromptSettled(_error: Error | undefined, token: CancellationToken): this;
+    protected onPromptSettled(_error: Error | undefined, token: CancellationToken): Promise<void>;
     /**
      * Returns a string representation of this object.
      */

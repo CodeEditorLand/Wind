@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../Source/Application/Command/Live.ts"],
-  "sourcesContent": ["/**\n * @module Live (Application/Command)\n * @description Provides the \"live\" implementation `Layer` for the Command service.\n */\n\nimport { Layer } from \"effect\";\nimport { CommandService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `CommandService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the service definition. It automatically includes any dependencies\n * required by its `effect` constructor, such as the `IPCService`, `LoggerService`,\n * and `WindowService`.\n */\nexport const CommandLive: Layer.Layer<CommandService> = CommandService.Default;\n"],
-  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,sBAAsB;AAUxB,MAAM,cAA2C,eAAe;",
+  "sourcesContent": ["/**\n * @module Live (Application/Command)\n * @description Provides the \"live\" implementation `Layer` for the Command service.\n */\n\nimport { Layer } from \"effect\";\n\nimport { IPCService } from \"../IPC/Service.js\";\nimport { LoggerService } from \"../Logger/Service.js\";\nimport { WindowService } from \"../Window/Service.js\";\nimport { CommandService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `CommandService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the service definition. It automatically includes any dependencies\n * required by its `effect` constructor, such as the `IPCService`, `LoggerService`,\n * and `WindowService`.\n */\nexport const CommandLive: Layer.Layer<\n\tCommandService,\n\tnever,\n\tIPCService | LoggerService | WindowService\n> = CommandService.Default;\n"],
+  "mappings": "AAKA,SAAS,aAAa;AAEtB,SAAS,kBAAkB;AAC3B,SAAS,qBAAqB;AAC9B,SAAS,qBAAqB;AAC9B,SAAS,sBAAsB;AAUxB,MAAM,cAIT,eAAe;",
   "names": []
 }

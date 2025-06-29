@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/Cancellation/Service.ts"],
+  "sourcesContent": ["/**\n * @module Service (Application/Cancellation)\n * @description Stub service definition for Cancellation.\n * This file is a stub created to resolve dependencies.\n */\n\nimport { Effect } from \"effect\";\n\n/**\n * The contract for the Cancellation service.\n */\nexport interface Cancellation {\n\treadonly CancelToken: (TokenId: number) => Effect.Effect<void, never>;\n}\n\n/**\n * The `Effect.Service` for the Cancellation service.\n */\nexport class CancellationService extends Effect.Service<Cancellation>()(\n\t\"Service/Cancellation\",\n\t{\n\t\tsync: () => ({\n\t\t\tCancelToken: (_TokenId: number) => Effect.void,\n\t\t}),\n\t},\n) {}\n"],
+  "mappings": ";;AAMA,SAAS,cAAc;AAYhB,MAAM,4BAA4B,OAAO,QAAsB;AAAA,EACrE;AAAA,EACA;AAAA,IACC,MAAM,8BAAO;AAAA,MACZ,aAAa,wBAAC,aAAqB,OAAO,MAA7B;AAAA,IACd,IAFM;AAAA,EAGP;AACD,EAAE;AAAA,EAzBF,OAyBE;AAAA;AAAA;AAAC;",
+  "names": []
+}

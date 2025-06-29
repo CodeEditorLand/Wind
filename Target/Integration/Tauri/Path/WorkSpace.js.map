@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../Source/Integration/Tauri/Path/WorkSpace.ts"],
+  "sourcesContent": ["/**\n * @module WorkSpace (Integration/Tauri/Path)\n * @description Resolves the workspace path using Tauri's API.\n */\n\nimport { BaseDirectory, resolve } from \"@tauri-apps/api/path\";\nimport { Effect } from \"effect\";\n\nimport { URI, type Uri } from \"../../../Platform/VSCode/Type.js\";\nimport { IntegrationPathProblem } from \"./Error.js\";\n\n/**\n * An Effect that resolves the path for workspace-specific settings.\n * For a standalone app, we can resolve this relative to the home directory\n * as a sensible default.\n */\nexport const ResolveWorkSpacePath = (): Effect.Effect<\n\tUri,\n\tIntegrationPathProblem\n> =>\n\tEffect.tryPromise({\n\t\t// In this context, we treat the \"workspace\" as the app's config dir.\n\t\ttry: async () => {\n\t\t\tconst WorkspaceConfigPath = await resolve(\n\t\t\t\tBaseDirectory.AppConfig.toString(),\n\t\t\t);\n\t\t\treturn URI.file(WorkspaceConfigPath);\n\t\t},\n\t\tcatch: (Cause) => new IntegrationPathProblem({ Cause }),\n\t});\n"],
+  "mappings": ";;AAKA,SAAS,eAAe,eAAe;AACvC,SAAS,cAAc;AAEvB,SAAS,WAAqB;AAC9B,SAAS,8BAA8B;AAOhC,MAAM,uBAAuB,6BAInC,OAAO,WAAW;AAAA;AAAA,EAEjB,KAAK,mCAAY;AAChB,UAAM,sBAAsB,MAAM;AAAA,MACjC,cAAc,UAAU,SAAS;AAAA,IAClC;AACA,WAAO,IAAI,KAAK,mBAAmB;AAAA,EACpC,GALK;AAAA,EAML,OAAO,wBAAC,UAAU,IAAI,uBAAuB,EAAE,MAAM,CAAC,GAA/C;AACR,CAAC,GAbkC;",
+  "names": []
+}

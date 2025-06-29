@@ -36,6 +36,11 @@ export declare class ChatEditingSessionSubmitAction extends SubmitAction {
 }
 export declare class CreateRemoteAgentJobAction extends Action2 {
     static readonly ID = "workbench.action.chat.createRemoteAgentJob";
+    static readonly markdownStringTrustedOptions: {
+        isTrusted: {
+            enabledCommands: string[];
+        };
+    };
     constructor();
     run(accessor: ServicesAccessor, ...args: any[]): Promise<void>;
 }

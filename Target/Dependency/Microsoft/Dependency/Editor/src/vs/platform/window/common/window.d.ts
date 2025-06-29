@@ -124,6 +124,7 @@ export interface IWindowSettings {
     readonly clickThroughInactive: boolean;
     readonly newWindowProfile: string;
     readonly density: IDensitySettings;
+    readonly border: 'off' | 'default' | string;
 }
 export interface IDensitySettings {
     readonly editorTabHeight: 'default' | 'compact';

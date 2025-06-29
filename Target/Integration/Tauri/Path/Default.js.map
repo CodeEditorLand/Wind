@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../Source/Integration/Tauri/Path/Default.ts"],
+  "sourcesContent": ["/**\n * @module Default (Integration/Tauri/Path)\n * @description Resolves the default application configuration path using Tauri's API.\n */\n\nimport { BaseDirectory, resolve } from \"@tauri-apps/api/path\";\nimport { Effect } from \"effect\";\n\nimport { URI, type Uri } from \"../../../Platform/VSCode/Type.js\";\nimport { IntegrationPathProblem } from \"./Error.js\";\n\n/**\n * An Effect that resolves the path to the application's configuration directory.\n * This is typically where user-level `settings.json` would reside.\n */\nexport const ResolveFinalDefaultPath = (): Effect.Effect<\n\tUri,\n\tIntegrationPathProblem\n> =>\n\tEffect.tryPromise({\n\t\ttry: async () => {\n\t\t\tconst AppConfigPath = await resolve(\n\t\t\t\tBaseDirectory.AppConfig.toString(),\n\t\t\t);\n\t\t\treturn URI.file(AppConfigPath);\n\t\t},\n\t\tcatch: (Cause) => new IntegrationPathProblem({ Cause }),\n\t});\n"],
+  "mappings": ";;AAKA,SAAS,eAAe,eAAe;AACvC,SAAS,cAAc;AAEvB,SAAS,WAAqB;AAC9B,SAAS,8BAA8B;AAMhC,MAAM,0BAA0B,6BAItC,OAAO,WAAW;AAAA,EACjB,KAAK,mCAAY;AAChB,UAAM,gBAAgB,MAAM;AAAA,MAC3B,cAAc,UAAU,SAAS;AAAA,IAClC;AACA,WAAO,IAAI,KAAK,aAAa;AAAA,EAC9B,GALK;AAAA,EAML,OAAO,wBAAC,UAAU,IAAI,uBAAuB,EAAE,MAAM,CAAC,GAA/C;AACR,CAAC,GAZqC;",
+  "names": []
+}

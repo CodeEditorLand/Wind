@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../Source/Application/Host/Live.ts"],
-  "sourcesContent": ["/**\n * @module Live (Application/Host)\n * @description Provides the \"live\" implementation `Layer` for the Host service.\n */\n\nimport { Layer } from \"effect\";\nimport { HostService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `HostService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the `HostService` service definition. It automatically includes the\n * dependencies required by its `effect` constructor, such as the\n * `IntegrationService`.\n */\nexport const HostLive: Layer.Layer<HostService> = HostService.Default;\n"],
-  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,mBAAmB;AAUrB,MAAM,WAAqC,YAAY;",
+  "sourcesContent": ["/**\n * @module Live (Application/Host)\n * @description Provides the \"live\" implementation `Layer` for the Host service.\n */\n\nimport { Layer } from \"effect\";\nimport type { IntegrationService } from \"Source/Integration/Tauri/Service.js\";\n\nimport { HostService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `HostService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the `HostService` service definition. It automatically includes the\n * dependencies required by its `effect` constructor, such as the\n * `IntegrationService`.\n */\nexport const HostLive: Layer.Layer<HostService, never, IntegrationService> =\n\tHostService.Default;\n"],
+  "mappings": "AAKA,SAAS,aAAa;AAGtB,SAAS,mBAAmB;AAUrB,MAAM,WACZ,YAAY;",
   "names": []
 }

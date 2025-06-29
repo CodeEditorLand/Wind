@@ -64,7 +64,7 @@ export declare abstract class BaseWindow extends Disposable implements IBaseWind
     get lastFocusTime(): number;
     private maximizedWindowState;
     protected _win: electron.BrowserWindow | null;
-    get win(): any;
+    get win(): electron.BrowserWindow | null;
     protected setWin(win: electron.BrowserWindow, options?: BrowserWindowConstructorOptions): void;
     private onDisplayAdded;
     constructor(configurationService: IConfigurationService, stateService: IStateService, environmentMainService: IEnvironmentMainService, logService: ILogService);

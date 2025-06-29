@@ -9,7 +9,7 @@ import { IInstantiationService } from '../../../../../../platform/instantiation/
  * including all the nested child file references it may have.
  */
 export declare class FilePromptParser extends BasePromptParser<FilePromptContentProvider> {
-    constructor(uri: URI, options: Partial<IPromptParserOptions>, instantiationService: IInstantiationService, workspaceService: IWorkspaceContextService, logService: ILogService);
+    constructor(uri: URI, options: IPromptParserOptions, instantiationService: IInstantiationService, workspaceService: IWorkspaceContextService, logService: ILogService);
     /**
      * Returns a string representation of this object.
      */

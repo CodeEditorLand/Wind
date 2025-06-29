@@ -8,6 +8,7 @@ import { ILanguageConfigurationService } from '../../../common/languages/languag
 import { IIdentifiedSingleEditOperation, ITextModel } from '../../../common/model.js';
 import { OvertypingCapturer } from '../../suggest/browser/suggestOvertypingCapturer.js';
 import { Choice, Marker, TextmateSnippet } from './snippetParser.js';
+import { TextModelEditReason } from '../../../common/textModelEditReason.js';
 export declare class OneSnippet {
     private readonly _editor;
     private readonly _snippet;
@@ -73,7 +74,7 @@ export declare class SnippetSession {
     constructor(_editor: IActiveCodeEditor, _template: string | ISnippetEdit[], _options: ISnippetSessionInsertOptions | undefined, _languageConfigurationService: ILanguageConfigurationService);
     dispose(): void;
     _logInfo(): string;
-    insert(): void;
+    insert(editReason?: TextModelEditReason): void;
     merge(template: string, options?: ISnippetSessionInsertOptions): void;
     next(): void;
     prev(): void;

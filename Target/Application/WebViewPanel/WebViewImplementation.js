@@ -2,8 +2,8 @@ var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 import { Effect } from "../../effect";
 import { Schemas } from "vs/base/common/network.js";
-import { CreateEventStream } from "Source/Utility/CreateEventStream.js";
-import { ConvertContentOptionsToDTO } from "Source/TypeConverter/WebView.js";
+import { ConvertContentOptionsToDTO } from "../../TypeConverter/WebView.js";
+import { CreateEventStream } from "../../Utility/EventStream.js";
 class WebViewImplementation {
   constructor(Handle, Host, Extension, InitialOptions) {
     this.Handle = Handle;

@@ -5,6 +5,7 @@ import { IDisposable } from '../../../base/common/lifecycle.js';
 import { URI } from '../../../base/common/uri.js';
 import { UndoRedoSource } from '../../../platform/undoRedo/common/undoRedo.js';
 import { CancellationToken } from '../../../base/common/cancellation.js';
+import { TextModelEditReason } from '../../common/textModelEditReason.js';
 export declare const IBulkEditService: import("../../../platform/instantiation/common/instantiation.js").ServiceIdentifier<IBulkEditService>;
 export declare class ResourceEdit {
     readonly metadata?: WorkspaceEditMetadata | undefined;
@@ -45,6 +46,7 @@ export interface IBulkEditOptions {
     undoRedoGroupId?: number;
     confirmBeforeUndo?: boolean;
     respectAutoSaveConfig?: boolean;
+    reason?: TextModelEditReason;
 }
 export interface IBulkEditResult {
     ariaSummary: string;

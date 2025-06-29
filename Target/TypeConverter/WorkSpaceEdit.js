@@ -3,7 +3,7 @@ var __name = (target, value) => __defProp(target, "name", { value, configurable:
 import {
   TextEdit as ExtHostTextEdit,
   WorkspaceEdit as ExtHostWorkspaceEdit
-} from "Source/Platform/VSCode/Type.js";
+} from "../Platform/VSCode/Type.js";
 import {
   FromAPI as TextEditFromAPI,
   ToAPI as TextEditToAPI

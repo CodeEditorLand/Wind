@@ -1,6 +1,6 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-import { MarkdownString, ThemeColor } from "Source/Platform/VSCode/Type.js";
+import { MarkdownString, ThemeColor } from "../Platform/VSCode/Type.js";
 import { FromAPI as MarkdownStringFromAPI } from "./Main/MarkdownString.js";
 const FromAPI = /* @__PURE__ */ __name((From, EntryId, CommandConverterInstance) => ({
   id: EntryId,

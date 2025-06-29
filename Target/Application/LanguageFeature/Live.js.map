@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../Source/Application/LanguageFeature/Live.ts"],
-  "sourcesContent": ["/**\n * @module Live (Application/LanguageFeature)\n * @description Provides the \"live\" implementation `Layer` for the LanguageFeature service.\n */\n\nimport { Layer } from \"effect\";\nimport { LanguageFeatureService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `LanguageFeatureService`.\n *\n * This layer is derived directly from the default (`sync`) implementation provided\n * in the `LanguageFeatureService` service definition. Because the current\n * implementation is a stub, it has no dependencies.\n */\nexport const LanguageFeatureLive: Layer.Layer<LanguageFeatureService> =\n\tLanguageFeatureService.Default;\n"],
-  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,8BAA8B;AAShC,MAAM,sBACZ,uBAAuB;",
+  "sourcesContent": ["/**\n * @module Live (Application/LanguageFeature)\n * @description Provides the \"live\" implementation `Layer` for the LanguageFeature service.\n */\n\nimport { Layer } from \"effect\";\n\nimport { LanguageFeatureService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `LanguageFeatureService`.\n *\n * This layer is derived directly from the default (`sync`) implementation provided\n * in the `LanguageFeatureService` service definition. Because the current\n * implementation is a stub, it has no dependencies.\n */\nexport const LanguageFeatureLive: Layer.Layer<LanguageFeatureService> =\n\tLanguageFeatureService.Default;\n"],
+  "mappings": "AAKA,SAAS,aAAa;AAEtB,SAAS,8BAA8B;AAShC,MAAM,sBACZ,uBAAuB;",
   "names": []
 }

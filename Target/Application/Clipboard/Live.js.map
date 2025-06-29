@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../Source/Application/Clipboard/Live.ts"],
-  "sourcesContent": ["/**\n * @module Live (Application/Clipboard)\n * @description Provides the \"live\" implementation `Layer` for the Clipboard service.\n * This layer is responsible for constructing the live `Clipboard` service instance.\n */\n\nimport { Layer } from \"effect\";\nimport { Clipboard } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `Clipboard` service.\n *\n * This layer is derived directly from the default implementation provided\n * in the `Clipboard` service definition. It is self-contained and has no\n * external service dependencies, as its definition encapsulates all necessary logic.\n */\nexport const ClipboardLive: Layer.Layer<Clipboard> = Clipboard.Default;\n"],
-  "mappings": "AAMA,SAAS,aAAa;AACtB,SAAS,iBAAiB;AASnB,MAAM,gBAAwC,UAAU;",
+  "sourcesContent": ["/**\n * @module Live (Application/Clipboard)\n * @description Provides the \"live\" implementation `Layer` for the Clipboard service.\n * This layer is responsible for constructing the live `Clipboard` service instance.\n */\n\nimport { Layer } from \"effect\";\n\nimport { Clipboard } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `Clipboard` service.\n *\n * This layer is derived directly from the default implementation provided\n * in the `Clipboard` service definition. It is self-contained and has no\n * external service dependencies, as its definition encapsulates all necessary logic.\n */\nexport const ClipboardLive: Layer.Layer<Clipboard> = Clipboard.Default;\n"],
+  "mappings": "AAMA,SAAS,aAAa;AAEtB,SAAS,iBAAiB;AASnB,MAAM,gBAAwC,UAAU;",
   "names": []
 }

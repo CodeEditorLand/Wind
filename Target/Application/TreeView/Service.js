@@ -4,12 +4,12 @@ import { Effect } from "../../effect";
 import { Emitter } from "vs/base/common/event.js";
 import { ILogService } from "vs/platform/log/common/log.js";
 import { IViewsService } from "vs/workbench/common/views.js";
-import { IntegrationService } from "Source/Integration/Tauri/Service.js";
+import { IntegrationService } from "../../Integration/Tauri/Service.js";
 class NativeTreeViewDataProvider {
-  constructor(ViewId, Integration, LogService) {
+  constructor(ViewId, Integration, LoggerService) {
     this.ViewId = ViewId;
     this.Integration = Integration;
-    this.LogService = LogService;
+    this.LoggerService = LoggerService;
   }
   static {
     __name(this, "NativeTreeViewDataProvider");
@@ -20,7 +20,7 @@ class NativeTreeViewDataProvider {
     return Element;
   }
   getChildren(Element) {
-    this.LogService.trace(
+    this.LoggerService.trace(
       `[NativeTreeViewDataProvider] Getting children for view '${this.ViewID}'`,
       Element
     );
@@ -32,7 +32,7 @@ class NativeTreeViewDataProvider {
       }
     ).pipe(
       Effect.catchAll((Cause) => {
-        this.LogService.error(
+        this.LoggerService.error(
           `[NativeTreeViewDataProvider] Failed to get children for ${this.ViewId}:`,
           Cause
         );
@@ -47,9 +47,9 @@ class TreeViewService extends Effect.Service()(
   {
     effect: Effect.gen(function* (Generator) {
       const ViewsService = yield* Generator(IViewsService);
-      const LogService = yield* Generator(ILogService);
+      const LoggerService = yield* Generator(ILogService);
       const registerTreeDataProvider = /* @__PURE__ */ __name((viewId, provider) => {
-        LogService.info(
+        LoggerService.info(
           `[TreeViewService] Registering tree data provider for view: ${viewId}`
         );
         return ViewsService.registerTreeDataProvider(

@@ -5,7 +5,7 @@ import { type ExtHostTerminalShellIntegrationShape, type MainThreadTerminalShell
 import { IExtHostRpcService } from './extHostRpcService.js';
 import { IExtHostTerminalService } from './extHostTerminalService.js';
 import { Emitter, type Event } from '../../../base/common/event.js';
-import { URI, type UriComponents } from '../../../base/common/uri.js';
+import { URI } from '../../../base/common/uri.js';
 export interface IExtHostTerminalShellIntegration extends ExtHostTerminalShellIntegrationShape {
     readonly _serviceBrand: undefined;
     readonly onDidChangeTerminalShellIntegration: Event<vscode.TerminalShellIntegrationChangeEvent>;
@@ -26,12 +26,13 @@ export declare class ExtHostTerminalShellIntegration extends Disposable implemen
     readonly onDidEndTerminalShellExecution: Event<vscode.TerminalShellExecutionEndEvent>;
     constructor(extHostRpc: IExtHostRpcService, _extHostTerminalService: IExtHostTerminalService);
     $shellIntegrationChange(instanceId: number): void;
-    $shellExecutionStart(instanceId: number, commandLineValue: string, commandLineConfidence: TerminalShellExecutionCommandLineConfidence, isTrusted: boolean, cwd: UriComponents | undefined): void;
+    $shellExecutionStart(instanceId: number, commandLineValue: string, commandLineConfidence: TerminalShellExecutionCommandLineConfidence, isTrusted: boolean, cwd: string | undefined): void;
     $shellExecutionEnd(instanceId: number, commandLineValue: string, commandLineConfidence: TerminalShellExecutionCommandLineConfidence, isTrusted: boolean, exitCode: number | undefined): void;
     $shellExecutionData(instanceId: number, data: string): void;
     $shellEnvChange(instanceId: number, shellEnvKeys: string[], shellEnvValues: string[], isTrusted: boolean): void;
-    $cwdChange(instanceId: number, cwd: UriComponents | undefined): void;
+    $cwdChange(instanceId: number, cwd: string | undefined): void;
     $closeTerminal(instanceId: number): void;
+    private _convertCwdToUri;
 }
 export declare class InternalTerminalShellIntegration extends Disposable {
     private readonly _terminal;

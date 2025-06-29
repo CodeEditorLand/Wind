@@ -3,7 +3,7 @@ var __name = (target, value) => __defProp(target, "name", { value, configurable:
 import {
   Range as ExtHostRange,
   TextEdit as ExtHostTextEdit
-} from "Source/Platform/VSCode/Type.js";
+} from "../../Platform/VSCode/Type.js";
 import { FromAPI as RangeFromAPI, ToAPI as RangeToAPI } from "./Range.js";
 const ToExtHostRange = /* @__PURE__ */ __name((range) => {
   return new ExtHostRange(

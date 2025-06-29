@@ -98,6 +98,7 @@ import './services/userActivity/common/userActivityService.js';
 import './services/userActivity/browser/userActivityBrowser.js';
 import './services/editor/browser/editorPaneService.js';
 import './services/editor/common/customEditorLabelService.js';
+import './services/coreExperimentation/common/coreExperimentationService.js';
 import './contrib/telemetry/browser/telemetry.contribution.js';
 import './contrib/preferences/browser/preferences.contribution.js';
 import './contrib/preferences/browser/keybindingsEditorContribution.js';

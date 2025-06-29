@@ -9,7 +9,7 @@ import { IInstantiationService } from '../../../../../../platform/instantiation/
  * including all the nested child file references it may have.
  */
 export declare class TextModelPromptParser extends BasePromptParser<TextModelContentsProvider> {
-    constructor(model: ITextModel, options: Partial<IPromptParserOptions>, instantiationService: IInstantiationService, workspaceService: IWorkspaceContextService, logService: ILogService);
+    constructor(model: ITextModel, options: IPromptParserOptions, instantiationService: IInstantiationService, workspaceService: IWorkspaceContextService, logService: ILogService);
     /**
      * Returns a string representation of this object.
      */

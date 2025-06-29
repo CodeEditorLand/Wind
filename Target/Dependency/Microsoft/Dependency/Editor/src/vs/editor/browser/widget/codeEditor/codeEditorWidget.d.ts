@@ -256,7 +256,7 @@ export declare class CodeEditorWidget extends Disposable implements editorBrowse
     pushUndoStop(): boolean;
     popUndoStop(): boolean;
     edit(edit: TextEdit, reason: TextModelEditReason): boolean;
-    executeEdits(source: string | null | undefined, edits: IIdentifiedSingleEditOperation[], endCursorState?: ICursorStateComputer | Selection[], editReason?: TextModelEditReason): boolean;
+    executeEdits(source: string | null | undefined | TextModelEditReason, edits: IIdentifiedSingleEditOperation[], endCursorState?: ICursorStateComputer | Selection[]): boolean;
     executeCommand(source: string | null | undefined, command: editorCommon.ICommand): void;
     executeCommands(source: string | null | undefined, commands: editorCommon.ICommand[]): void;
     createDecorationsCollection(decorations?: IModelDeltaDecoration[]): EditorDecorationsCollection;

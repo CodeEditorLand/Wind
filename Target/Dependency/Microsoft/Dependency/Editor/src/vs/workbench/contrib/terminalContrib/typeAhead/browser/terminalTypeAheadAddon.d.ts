@@ -21,8 +21,8 @@ declare class Cursor implements ICoordinate {
     get baseY(): number;
     get coordinate(): ICoordinate;
     constructor(rows: number, cols: number, _buffer: IBuffer);
-    getLine(): any;
-    getCell(loadInto?: IBufferCell): any;
+    getLine(): import("@xterm/xterm").IBufferLine | undefined;
+    getCell(loadInto?: IBufferCell): IBufferCell | undefined;
     moveTo(coordinate: ICoordinate): string;
     clone(): Cursor;
     move(x: number, y: number): string;

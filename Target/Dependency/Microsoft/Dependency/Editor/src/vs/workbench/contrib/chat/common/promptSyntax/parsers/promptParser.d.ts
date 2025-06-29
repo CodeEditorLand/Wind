@@ -14,7 +14,7 @@ export declare class PromptParser extends BasePromptParser<IPromptContentsProvid
      * Underlying prompt contents provider instance.
      */
     private readonly contentsProvider;
-    constructor(uri: URI, options: Partial<IPromptParserOptions>, logService: ILogService, modelService: IModelService, instaService: IInstantiationService, workspaceService: IWorkspaceContextService);
+    constructor(uri: URI, options: IPromptParserOptions, logService: ILogService, modelService: IModelService, instaService: IInstantiationService, workspaceService: IWorkspaceContextService);
     /**
      * Returns a string representation of this object.
      */

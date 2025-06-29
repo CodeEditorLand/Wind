@@ -3,7 +3,7 @@ var __name = (target, value) => __defProp(target, "name", { value, configurable:
 import { Effect } from "../../effect";
 import {
 } from "vscode";
-import { HostService } from "Source/Application/Host/Service.js";
+import { HostService } from "../Host/Service.js";
 import { FileSystemProblem } from "./Error.js";
 class FileSystemService extends Effect.Service()(
   "vscode/FileSystem",

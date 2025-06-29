@@ -4,16 +4,16 @@ import { Effect } from "../../effect";
 import * as Monaco from "monaco-editor";
 import { URI } from "vs/base/common/uri.js";
 import { ILogService } from "vs/platform/log/common/log.js";
-import { IntegrationService } from "Source/Integration/Tauri/Service.js";
+import { IntegrationService } from "../../Integration/Tauri/Service.js";
 import { MarkerProblem } from "./Error.js";
 class MarkerService extends Effect.Service()(
   "Wind/MarkerService",
   {
     effect: Effect.gen(function* (Generator) {
-      const LogService = yield* Generator(ILogService);
+      const LoggerService = yield* Generator(ILogService);
       const Integration = yield* Generator(IntegrationService);
       const UpdateMarkersForURIs = /* @__PURE__ */ __name((URIs) => Effect.gen(function* (Generator2) {
-        LogService.trace(
+        LoggerService.trace(
           `[MarkerService] Fetching diagnostics for ${URIs.length} URIs.`
         );
         const DiagnosticsByURI = yield* Generator2(
@@ -48,7 +48,7 @@ class MarkerService extends Effect.Service()(
       }).pipe(
         Effect.catchAll(
           (Cause) => Effect.sync(
-            () => LogService.error(
+            () => LoggerService.error(
               "[MarkerService] Failed to update markers:",
               Cause
             )
@@ -58,7 +58,7 @@ class MarkerService extends Effect.Service()(
       const Initialize = /* @__PURE__ */ __name(() => Integration.Listen(
         "sky://diagnostics/changed",
         (Event) => {
-          LogService.info(
+          LoggerService.info(
             `[MarkerService] Received diagnostic change from owner '${Event.payload.Owner}'. Updating markers for ${Event.payload.Uris.length} URIs.`
           );
           Effect.runFork(

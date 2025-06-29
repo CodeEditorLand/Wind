@@ -11,7 +11,7 @@ import { ITextModel } from '../../../../common/model.js';
 import { IFeatureDebounceInformation } from '../../../../common/services/languageFeatureDebounce.js';
 import { IModelContentChangedEvent } from '../../../../common/textModelEvents.js';
 import { InlineSuggestionIdentity, InlineSuggestionItem } from './inlineSuggestionItem.js';
-import { InlineCompletionContextWithoutUuid, InlineCompletionEditorType } from './provideInlineCompletions.js';
+import { InlineCompletionContextWithoutUuid, InlineSuggestRequestInfo } from './provideInlineCompletions.js';
 export declare class InlineCompletionsSource extends Disposable {
     private readonly _textModel;
     private readonly _versionId;
@@ -33,7 +33,7 @@ export declare class InlineCompletionsSource extends Disposable {
     private _log;
     private readonly _loadingCount;
     readonly loading: IObservable<boolean>;
-    fetch(providers: InlineCompletionsProvider[], context: InlineCompletionContextWithoutUuid, activeInlineCompletion: InlineSuggestionIdentity | undefined, withDebounce: boolean, userJumpedToActiveCompletion: IObservable<boolean>, providerhasChangedCompletion: boolean, editorType: InlineCompletionEditorType): Promise<boolean>;
+    fetch(providers: InlineCompletionsProvider[], context: InlineCompletionContextWithoutUuid, activeInlineCompletion: InlineSuggestionIdentity | undefined, withDebounce: boolean, userJumpedToActiveCompletion: IObservable<boolean>, providerhasChangedCompletion: boolean, requestInfo: InlineSuggestRequestInfo): Promise<boolean>;
     clear(tx: ITransaction): void;
     seedInlineCompletionsWithSuggestWidget(): void;
     clearSuggestWidgetInlineCompletions(tx: ITransaction): void;

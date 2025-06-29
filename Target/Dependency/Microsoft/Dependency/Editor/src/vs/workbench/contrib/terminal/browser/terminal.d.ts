@@ -886,7 +886,11 @@ export interface ITerminalInstance extends IBaseTerminalInstance {
      * from the backend. This will return the initial cwd if cwd detection is not available (ie.
      * on Windows when shell integration is disabled).
      */
-    getCwd(): Promise<string>;
+    getSpeculativeCwd(): Promise<string>;
+    /**
+     * Gets the cwd as a URI that has been validated to exist.
+     */
+    getCwdResource(): Promise<URI | undefined>;
     /**
      * Sets the title of the terminal to the provided string. If no title is provided, it will reset
      * to the terminal's title if it was not explicitly set by the user or API.

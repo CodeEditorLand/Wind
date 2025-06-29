@@ -69,11 +69,13 @@ export declare class DynamicAuthProvider implements vscode.AuthenticationProvide
     readonly authorizationServer: URI;
     protected readonly _serverMetadata: IAuthorizationServerMetadata;
     protected readonly _resourceMetadata: IAuthorizationProtectedResourceMetadata | undefined;
-    readonly clientId: string;
+    protected _clientId: string;
     readonly id: string;
     readonly label: string;
     private _onDidChangeSessions;
     readonly onDidChangeSessions: Event<vscode.AuthenticationProviderAuthenticationSessionsChangeEvent>;
+    private readonly _onDidChangeClientId;
+    readonly onDidChangeClientId: Event<void>;
     private readonly _tokenStore;
     protected readonly _createFlows: Array<{
         label: string;
@@ -83,11 +85,12 @@ export declare class DynamicAuthProvider implements vscode.AuthenticationProvide
     }>;
     protected readonly _logger: ILogger;
     private readonly _disposable;
-    constructor(_extHostWindow: IExtHostWindow, _extHostUrls: IExtHostUrlsService, _initData: IExtHostInitDataService, _extHostProgress: IExtHostProgress, loggerService: ILoggerService, _proxy: MainThreadAuthenticationShape, authorizationServer: URI, _serverMetadata: IAuthorizationServerMetadata, _resourceMetadata: IAuthorizationProtectedResourceMetadata | undefined, clientId: string, onDidDynamicAuthProviderTokensChange: Emitter<{
+    constructor(_extHostWindow: IExtHostWindow, _extHostUrls: IExtHostUrlsService, _initData: IExtHostInitDataService, _extHostProgress: IExtHostProgress, loggerService: ILoggerService, _proxy: MainThreadAuthenticationShape, authorizationServer: URI, _serverMetadata: IAuthorizationServerMetadata, _resourceMetadata: IAuthorizationProtectedResourceMetadata | undefined, _clientId: string, onDidDynamicAuthProviderTokensChange: Emitter<{
         authProviderId: string;
         clientId: string;
         tokens: IAuthorizationToken[];
     }>, initialTokens: IAuthorizationToken[]);
+    get clientId(): string;
     getSessions(scopes: readonly string[] | undefined, _options: vscode.AuthenticationProviderSessionOptions): Promise<vscode.AuthenticationSession[]>;
     createSession(scopes: string[], _options: vscode.AuthenticationProviderSessionOptions): Promise<vscode.AuthenticationSession>;
     removeSession(sessionId: string): Promise<void>;
@@ -98,6 +101,7 @@ export declare class DynamicAuthProvider implements vscode.AuthenticationProvide
     private waitForAuthorizationCode;
     protected exchangeCodeForToken(code: string, codeVerifier: string, redirectUri: string): Promise<IAuthorizationTokenResponse>;
     protected exchangeRefreshTokenForToken(refreshToken: string): Promise<IAuthorizationToken>;
+    protected _generateNewClientId(): Promise<void>;
 }
 type IAuthorizationToken = IAuthorizationTokenResponse & {
     /**

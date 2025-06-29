@@ -6,9 +6,8 @@
  */
 import { Effect } from "effect";
 import type { IConfigurationService } from "vs/platform/configuration/common/configuration.js";
-import { ApplicationConfigurationProblem } from "./Error.js";
 declare const Configuration_base: Effect.Service.Class<IConfigurationService, "vscode/ConfigurationService", {
-    readonly effect: Effect.Effect<IConfigurationService, ApplicationConfigurationProblem, never>;
+    readonly effect: Effect.Effect<IConfigurationService, never, never>;
 }>;
 /**
  * The `Effect.Service` for the `IConfigurationService`.

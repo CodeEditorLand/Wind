@@ -5,7 +5,7 @@ import { LineRange } from '../../../../../common/core/ranges/lineRange.js';
 import { Command, InlineCompletionCommand, InlineCompletionDisplayLocation } from '../../../../../common/languages.js';
 import { InlineCompletionsModel } from '../../model/inlineCompletionsModel.js';
 import { InlineCompletionItem } from '../../model/inlineSuggestionItem.js';
-import { IInlineEditHost, IInlineEditModel, InlineCompletionViewKind, InlineEditTabAction } from './inlineEditsViewInterface.js';
+import { IInlineEditHost, IInlineEditModel, InlineCompletionViewData, InlineCompletionViewKind, InlineEditTabAction } from './inlineEditsViewInterface.js';
 import { InlineEditWithChanges } from './inlineEditWithChanges.js';
 export declare class InlineEditModel implements IInlineEditModel {
     private readonly _model;
@@ -21,7 +21,7 @@ export declare class InlineEditModel implements IInlineEditModel {
     accept(): void;
     jump(): void;
     abort(reason: string): void;
-    handleInlineEditShown(viewKind: InlineCompletionViewKind): void;
+    handleInlineEditShown(viewKind: InlineCompletionViewKind, viewData: InlineCompletionViewData): void;
 }
 export declare class InlineEditHost implements IInlineEditHost {
     private readonly _model;

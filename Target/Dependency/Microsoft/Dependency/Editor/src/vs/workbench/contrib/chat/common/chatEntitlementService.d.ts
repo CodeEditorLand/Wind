@@ -58,6 +58,14 @@ export interface IChatSentiment {
      */
     disabled?: boolean;
     /**
+     * Chat is disabled due to missing workspace trust.
+     *
+     * Note: even though this disables Chat, we want to treat it
+     * different from the `disabled` state that is by explicit
+     * user choice.
+     */
+    untrusted?: boolean;
+    /**
      * User signals intent to use Chat later.
      */
     later?: boolean;
@@ -194,6 +202,7 @@ export declare class ChatEntitlementContext extends Disposable {
     private readonly laterContext;
     private readonly installedContext;
     private readonly disabledContext;
+    private readonly untrustedContext;
     private _state;
     private suspendedState;
     get state(): IChatEntitlementContextState;
@@ -205,6 +214,7 @@ export declare class ChatEntitlementContext extends Disposable {
     update(context: {
         installed: boolean;
         disabled: boolean;
+        untrusted: boolean;
     }): Promise<void>;
     update(context: {
         hidden: boolean;

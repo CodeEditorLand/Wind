@@ -5,12 +5,12 @@ import { IFileService } from "vs/platform/files/common/files.js";
 import { IInstantiationService } from "vs/platform/instantiation/common/instantiation.js";
 import { ILogService } from "vs/platform/log/common/log.js";
 import { IUriIdentityService } from "vs/platform/uriIdentity/common/uriIdentity.js";
-import { TextFileService as VSCodeTextFileService } from "vs/workbench/services/textfile/common/textFileService.js";
 import { IFilesConfigurationService } from "vs/workbench/services/filesConfiguration/common/filesConfigurationService.js";
 import { ILifecycleService } from "vs/workbench/services/lifecycle/common/lifecycle.js";
+import { ITextFileService as VSCodeTextFileService } from "vs/workbench/services/textfile/common/textfiles.js";
 import { IUntitledTextEditorService } from "vs/workbench/services/untitled/common/untitledTextEditorService.js";
 import { IWorkingCopyFileService } from "vs/workbench/services/workingCopy/common/workingCopyFileService.js";
-import { HostService } from "Source/Application/Host/Service.js";
+import { HostService } from "../../Application/Host/Service.js";
 import { TextEditorProblem } from "./Error.js";
 class TextEditorService extends Effect.Service()(
   "textFileService",
@@ -20,7 +20,7 @@ class TextEditorService extends Effect.Service()(
         IInstantiationService
       );
       const Host = yield* Generator(HostService);
-      const LogService = yield* Generator(ILogService);
+      const LoggerService = yield* Generator(ILogService);
       const ServiceInstance = InstantiationService.createInstance(
         VSCodeTextFileService,
         {},
@@ -30,16 +30,16 @@ class TextEditorService extends Effect.Service()(
         {},
         {},
         {},
-        LogService
+        LoggerService
       );
       ServiceInstance.save = async (Resource, Options) => {
         const TargetResource = "resource" in Resource ? Resource.resource : Resource;
         if (!TargetResource) {
           const ErrorMessage = "TextFileService.save called but no resource was found.";
-          LogService.warn(`[TextFileService] ${ErrorMessage}`);
+          LoggerService.warn(`[TextFileService] ${ErrorMessage}`);
           throw new Error(ErrorMessage);
         }
-        LogService.info(
+        LoggerService.info(
           `[TextFileService] Invoking 'Host.SaveFile' for URI: ${TargetResource.toString()}`
         );
         const SaveEffect = Host.SaveFile(TargetResource, Options).pipe(

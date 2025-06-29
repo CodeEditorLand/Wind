@@ -669,4 +669,7 @@ export declare const Codicon: {
     readonly copilotInProgress: ThemeIcon;
     readonly copilotError: ThemeIcon;
     readonly copilotSuccess: ThemeIcon;
+    readonly chatSparkle: ThemeIcon;
+    readonly searchSparkle: ThemeIcon;
+    readonly editSparkle: ThemeIcon;
 };

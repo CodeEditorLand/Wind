@@ -1,10 +1,16 @@
+import { IStringDictionary } from '../../../base/common/collections.js';
 import { Disposable } from '../../../base/common/lifecycle.js';
+import { Mutable } from '../../../base/common/types.js';
 import { URI } from '../../../base/common/uri.js';
 import { ConfigurationTarget } from '../../configuration/common/configuration.js';
 import { IFileService } from '../../files/common/files.js';
 import { IUriIdentityService } from '../../uriIdentity/common/uriIdentity.js';
-import { IScannedMcpServers, IScannedMcpServer } from './mcpManagement.js';
+import { IScannedMcpServer } from './mcpManagement.js';
 import { IMcpServerVariable } from './mcpPlatformTypes.js';
+interface IScannedMcpServers {
+    servers?: IStringDictionary<Mutable<IScannedMcpServer>>;
+    inputs?: IMcpServerVariable[];
+}
 export interface ProfileMcpServersEvent {
     readonly servers: readonly IScannedMcpServer[];
     readonly profileLocation: URI;
@@ -42,7 +48,10 @@ export declare class McpResourceScannerService extends Disposable implements IMc
     private writeScannedMcpServers;
     private writeScannedMcpServersToWorkspaceFolder;
     private writeScannedMcpServersToWorkspace;
+    private fromUserMcpServers;
     private fromWorkspaceFolderMcpServers;
+    private sanitizeServer;
     private toWorkspaceFolderMcpServers;
     private getResourceAccessQueue;
 }
+export {};

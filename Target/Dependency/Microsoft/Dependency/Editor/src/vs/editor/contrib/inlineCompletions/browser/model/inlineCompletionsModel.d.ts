@@ -18,7 +18,7 @@ import { InlineCompletionItem, InlineEditItem, InlineSuggestionItem } from './in
 import { InlineCompletionEditorType } from './provideInlineCompletions.js';
 import { SuggestItemInfo } from './suggestWidgetAdapter.js';
 import { ICodeEditorService } from '../../../../browser/services/codeEditorService.js';
-import { InlineCompletionViewKind } from '../view/inlineEdits/inlineEditsViewInterface.js';
+import { InlineCompletionViewData, InlineCompletionViewKind } from '../view/inlineEdits/inlineEditsViewInterface.js';
 export declare class InlineCompletionsModel extends Disposable {
     readonly textModel: ITextModel;
     private readonly _selectedSuggestItem;
@@ -134,7 +134,7 @@ export declare class InlineCompletionsModel extends Disposable {
     private readonly _inAcceptFlow;
     readonly inAcceptFlow: IObservable<boolean>;
     jump(): void;
-    handleInlineSuggestionShown(inlineCompletion: InlineSuggestionItem, viewKind: InlineCompletionViewKind): Promise<void>;
+    handleInlineSuggestionShown(inlineCompletion: InlineSuggestionItem, viewKind: InlineCompletionViewKind, viewData: InlineCompletionViewData): Promise<void>;
 }
 interface Repro {
     documentValue: string;

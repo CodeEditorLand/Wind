@@ -37,7 +37,6 @@ export type LoggerGroup = {
     readonly name: string;
 };
 export interface ILogService extends ILogger {
-    Error(Error: never): unknown;
     readonly _serviceBrand: undefined;
 }
 export interface ILoggerOptions {
@@ -278,6 +277,10 @@ export declare class NullLogger implements ILogger {
 }
 export declare class NullLogService extends NullLogger implements ILogService {
     readonly _serviceBrand: undefined;
+}
+export declare class NullLoggerService extends AbstractLoggerService {
+    constructor();
+    protected doCreateLogger(resource: URI, logLevel: LogLevel, options?: ILoggerOptions): ILogger;
 }
 export declare function getLogLevel(environmentService: IEnvironmentService): LogLevel;
 export declare function LogLevelToString(logLevel: LogLevel): string;

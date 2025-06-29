@@ -65,6 +65,7 @@ export declare class McpWorkbenchService extends Disposable implements IMcpWorkb
     constructor(mcpGalleryService: IMcpGalleryService, mcpManagementService: IWorkbenchMcpManagementService, editorService: IEditorService, userDataProfilesService: IUserDataProfilesService, uriIdentityService: IUriIdentityService, workspaceService: IWorkspaceContextService, environmentService: IWorkbenchEnvironmentService, labelService: ILabelService, productService: IProductService, remoteAgentService: IRemoteAgentService, instantiationService: IInstantiationService, urlService: IURLService);
     private onDidUninstallMcpServer;
     private onDidInstallMcpServers;
+    private onDidUpdateMcpServers;
     private fromGallery;
     queryGallery(options?: IQueryOptions, token?: CancellationToken): Promise<IWorkbenchMcpServer[]>;
     queryLocal(): Promise<IWorkbenchMcpServer[]>;

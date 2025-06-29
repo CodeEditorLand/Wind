@@ -2,11 +2,10 @@ import { TMetadata } from './promptHeader/headerBase.js';
 import { ModeHeader } from './promptHeader/modeHeader.js';
 import { URI } from '../../../../../../base/common/uri.js';
 import { FileReference } from '../codecs/tokens/fileReference.js';
-import { Event } from '../../../../../../base/common/event.js';
 import { InstructionsHeader } from './promptHeader/instructionsHeader.js';
 import { ILogService } from '../../../../../../platform/log/common/log.js';
 import type { IPromptContentsProvider } from '../contentProviders/types.js';
-import type { TPromptReference, IResolveError, ITopError } from './types.js';
+import type { TPromptReference, ITopError } from './types.js';
 import { type IDisposable } from '../../../../../../base/common/lifecycle.js';
 import { BaseToken } from '../codecs/base/baseToken.js';
 import { type IRange, Range } from '../../../../../../editor/common/core/range.js';
@@ -21,7 +20,7 @@ import { CancellationToken } from '../../../../../../base/common/cancellation.js
 /**
  * Options of the {@link BasePromptParser} class.
  */
-export interface IPromptParserOptions extends IPromptContentsProviderOptions {
+export interface IBasePromptParserOptions {
     /**
      * List of reference paths have been already seen before
      * getting to the current prompt. Used to prevent infinite
@@ -29,6 +28,7 @@ export interface IPromptParserOptions extends IPromptContentsProviderOptions {
      */
     readonly seenReferences: readonly string[];
 }
+export type IPromptParserOptions = IBasePromptParserOptions & IPromptContentsProviderOptions;
 /**
  * Error conditions that may happen during the file reference resolution.
  */
@@ -46,7 +46,7 @@ export declare class BasePromptParser<TContentsProvider extends IPromptContentsP
      * Options passed to the constructor, extended with
      * value defaults from {@link DEFAULT_OPTIONS}.
      */
-    protected readonly options: IPromptParserOptions;
+    protected readonly options: IBasePromptParserOptions;
     /**
      * List of all tokens that were parsed from the prompt contents so far.
      */
@@ -81,7 +81,7 @@ export declare class BasePromptParser<TContentsProvider extends IPromptContentsP
      * Subscribe to the event that is fired the parser state or contents
      * changes, including changes in the possible prompt child references.
      */
-    readonly onUpdate: Event<void>;
+    readonly onUpdate: import("../../../../../workbench.web.main.internal.js").Event<void>;
     /**
      * Event that is fired when the current prompt parser is settled.
      */
@@ -125,7 +125,7 @@ export declare class BasePromptParser<TContentsProvider extends IPromptContentsP
      * nested child prompt references and their children to be settled.
      */
     allSettled(): Promise<this>;
-    constructor(promptContentsProvider: TContentsProvider, options: Partial<IPromptParserOptions>, instantiationService: IInstantiationService, workspaceService: IWorkspaceContextService, logService: ILogService);
+    constructor(promptContentsProvider: TContentsProvider, options: IBasePromptParserOptions, instantiationService: IInstantiationService, workspaceService: IWorkspaceContextService, logService: ILogService);
     /**
      * The latest received stream of prompt tokens, if any.
      */
@@ -159,9 +159,6 @@ export declare class BasePromptParser<TContentsProvider extends IPromptContentsP
      * @param error Optional error object if stream ended with an error.
      */
     private onStreamEnd;
-    /**
-     * Dispose all currently held references.
-     */
     private disposeReferences;
     /**
      * Private attribute to track if the {@link start}
@@ -202,20 +199,6 @@ export declare class BasePromptParser<TContentsProvider extends IPromptContentsP
      */
     get metadata(): TMetadata | null;
     /**
-     * Entire associated `tools` metadata for this reference and
-     * all possible nested child references.
-     */
-    get allToolsMetadata(): readonly string[] | null;
-    /**
-     * Get list of errors for the direct links of the current reference.
-     */
-    get errors(): readonly ResolveError[];
-    /**
-     * List of all errors that occurred while resolving the current
-     * reference including all possible errors of nested children.
-     */
-    get allErrors(): readonly IResolveError[];
-    /**
      * The top most error of the current reference or any of its
      * possible child reference errors.
      */
@@ -224,10 +207,6 @@ export declare class BasePromptParser<TContentsProvider extends IPromptContentsP
      * Check if the current reference points to a given resource.
      */
     sameUri(otherUri: URI): boolean;
-    /**
-     * Check if the current reference points to a prompt snippet file.
-     */
-    get isPromptFile(): boolean;
     /**
      * Returns a string representation of this object.
      */
@@ -242,14 +221,10 @@ export declare class BasePromptParser<TContentsProvider extends IPromptContentsP
  * contents. For instance the file variable(`#file:/path/to/file.md`) or
  * a markdown link(`[#file:file.md](/path/to/file.md)`).
  */
-export declare class PromptReference extends ObservableDisposable implements TPromptReference {
-    private readonly promptContentsProvider;
+export declare class PromptReference implements TPromptReference {
+    readonly uri: URI;
     readonly token: FileReference | MarkdownLink;
-    /**
-     * Instance of underlying prompt parser object.
-     */
-    private readonly parser;
-    constructor(promptContentsProvider: IPromptContentsProvider, token: FileReference | MarkdownLink, options: Partial<IPromptParserOptions>, instantiationService: IInstantiationService);
+    constructor(uri: URI, token: FileReference | MarkdownLink);
     /**
      * Get the range of the `link` part of the reference.
      */
@@ -264,31 +239,9 @@ export declare class PromptReference extends ObservableDisposable implements TPr
      * or a `markdown link` reference (`[caption](/path/to/file.md)`).
      */
     get subtype(): 'prompt' | 'markdown';
-    /**
-     * Start parsing the reference contents.
-     */
-    start(): this;
-    /**
-     * Subscribe to the `onUpdate` event that is fired when prompt tokens are updated.
-     */
-    onUpdate(...args: Parameters<Event<void>>): ReturnType<Event<void>>;
     get range(): Range;
     get path(): string;
     get text(): string;
-    get resolveFailed(): boolean | undefined;
-    get errorCondition(): ResolveError | undefined;
-    get topError(): ITopError | undefined;
-    get uri(): URI;
-    get isPromptFile(): boolean;
-    get errors(): readonly ResolveError[];
-    get allErrors(): readonly IResolveError[];
-    get references(): readonly TPromptReference[];
-    get allReferences(): readonly TPromptReference[];
-    get metadata(): TMetadata | null;
-    get allToolsMetadata(): readonly string[] | null;
-    get allValidReferences(): readonly TPromptReference[];
-    settled(): Promise<this>;
-    allSettled(): Promise<this>;
     /**
      * Returns a string representation of this object.
      */

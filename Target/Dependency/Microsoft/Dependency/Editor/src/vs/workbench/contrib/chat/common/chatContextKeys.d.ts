@@ -44,6 +44,7 @@ export declare namespace ChatContextKeys {
         hidden: RawContextKey<boolean>;
         installed: RawContextKey<boolean>;
         disabled: RawContextKey<boolean>;
+        untrusted: RawContextKey<boolean>;
         later: RawContextKey<boolean>;
     };
     const Entitlement: {

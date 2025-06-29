@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../Source/Application/IPCConfiguration/Service.ts"],
+  "sourcesContent": ["/**\n * @module Service (Application/IPCConfiguration)\n * @description Stub service definition for IPC Configuration.\n * This file is a stub created to resolve dependencies.\n */\n\nimport { Effect } from \"effect\";\n\n/**\n * The contract for the IPCConfiguration service.\n */\nexport interface IPCConfiguration {\n\treadonly MountainAddress: string;\n}\n\n/**\n * The `Effect.Service` for the IPCConfiguration service.\n */\nexport class IPCConfigurationService extends Effect.Service<IPCConfiguration>()(\n\t\"Service/IPCConfiguration\",\n\t{\n\t\tsync: () => ({\n\t\t\tMountainAddress: \"localhost:50051\",\n\t\t}),\n\t},\n) {}\n"],
+  "mappings": ";;AAMA,SAAS,cAAc;AAYhB,MAAM,gCAAgC,OAAO,QAA0B;AAAA,EAC7E;AAAA,EACA;AAAA,IACC,MAAM,8BAAO;AAAA,MACZ,iBAAiB;AAAA,IAClB,IAFM;AAAA,EAGP;AACD,EAAE;AAAA,EAzBF,OAyBE;AAAA;AAAA;AAAC;",
+  "names": []
+}

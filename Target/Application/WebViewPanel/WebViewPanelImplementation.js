@@ -1,9 +1,9 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 import { Effect } from "../../effect";
-import { FromAPI as UriFromAPI } from "Source/TypeConverter/Main/URI.js";
-import { ConvertShowOptionsToDTO } from "Source/TypeConverter/WebView.js";
-import { CreateEventStream } from "Source/Utility/CreateEventStream.js";
+import { FromAPI as UriFromAPI } from "../../TypeConverter/Main/URI.js";
+import { ConvertShowOptionsToDTO } from "../../TypeConverter/WebView.js";
+import { CreateEventStream } from "../../Utility/EventStream.js";
 import { WebViewImplementation } from "./WebViewImplementation.js";
 class WebViewPanelImplementation {
   constructor(Handle, Host, Extension, OnDidDisposeCallback, InitialViewType, InitialTitle, InitialOptions, InitialViewColumn) {

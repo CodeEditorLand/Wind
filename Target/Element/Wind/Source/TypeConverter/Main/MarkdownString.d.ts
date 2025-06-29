@@ -3,16 +3,16 @@
  * @description Converts between `vscode.MarkdownString` and its DTO representation.
  */
 import type { IMarkdownString } from "vs/base/common/htmlContent.js";
-import { MarkdownString } from "../../Platform/VSCode/Type.js";
+import type { MarkdownString as VSCodeMarkdownString } from "vscode";
 /**
  * Converts a `vscode.MarkdownString` object into a plain DTO for IPC.
  * @param MarkdownStringInstance - The `vscode.MarkdownString` instance to convert.
  * @returns The `IMarkdownString` DTO.
  */
-export declare const FromAPI: (MarkdownStringInstance: MarkdownString) => IMarkdownString;
+export declare const FromAPI: (MarkdownStringInstance: VSCodeMarkdownString) => IMarkdownString;
 /**
  * Revives a markdown string DTO back into a `vscode.MarkdownString` class instance.
  * @param MarkdownStringDTO - The `IMarkdownString` DTO to revive.
  * @returns A new `vscode.MarkdownString` instance.
  */
-export declare const ToAPI: (MarkdownStringDTO: IMarkdownString) => MarkdownString;
+export declare const ToAPI: (MarkdownStringDTO: IMarkdownString) => VSCodeMarkdownString;

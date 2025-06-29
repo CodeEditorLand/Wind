@@ -11,7 +11,7 @@ export declare class PromptDecorator extends ProviderInstanceBase {
      */
     private readonly decorations;
     constructor(model: ITextModel, promptsService: IPromptsService);
-    protected onPromptSettled(_error?: Error): this;
+    protected onPromptSettled(_error?: Error): Promise<void>;
     /**
      * Get the current cursor position inside an active editor.
      * Note! Currently not implemented because the provider is disabled, and

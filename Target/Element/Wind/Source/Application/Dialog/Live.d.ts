@@ -3,6 +3,7 @@
  * @description Provides the "live" implementation `Layer` for the Dialog service.
  */
 import { Layer } from "effect";
+import { HostService } from "../Host/Service.js";
 import { DialogService } from "./Service.js";
 /**
  * The live implementation `Layer` for the `DialogService`.
@@ -11,4 +12,4 @@ import { DialogService } from "./Service.js";
  * in the `DialogService` service definition. It automatically includes the
  * dependencies required by its `effect` constructor, such as the `HostService`.
  */
-export declare const DialogLive: Layer.Layer<DialogService>;
+export declare const DialogLive: Layer.Layer<DialogService, never, HostService>;

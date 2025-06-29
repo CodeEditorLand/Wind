@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../Source/Application/QuickInput/Live.ts"],
-  "sourcesContent": ["/**\n * @module Live (Application/QuickInput)\n * @description Provides the \"live\" implementation `Layer` for the QuickInput service.\n */\n\nimport { Layer } from \"effect\";\nimport { QuickInputService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `QuickInputService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the `QuickInputService` service definition. It automatically includes the\n * dependencies required by its `effect` constructor, such as the `HostService`.\n */\nexport const QuickInputLive: Layer.Layer<QuickInputService> =\n\tQuickInputService.Default;\n"],
-  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,yBAAyB;AAS3B,MAAM,iBACZ,kBAAkB;",
+  "sourcesContent": ["/**\n * @module Live (Application/QuickInput)\n * @description Provides the \"live\" implementation `Layer` for the QuickInput service.\n */\n\nimport { Layer } from \"effect\";\n\nimport { QuickInputService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `QuickInputService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the `QuickInputService` service definition. It automatically includes the\n * dependencies required by its `effect` constructor, such as the `HostService`.\n */\nexport const QuickInputLive: Layer.Layer<QuickInputService> =\n\tQuickInputService.Default;\n"],
+  "mappings": "AAKA,SAAS,aAAa;AAEtB,SAAS,yBAAyB;AAS3B,MAAM,iBACZ,kBAAkB;",
   "names": []
 }

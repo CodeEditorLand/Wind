@@ -7,6 +7,7 @@ import { OvertypingCapturer } from '../../suggest/browser/suggestOvertypingCaptu
 import { IContextKeyService, RawContextKey } from '../../../../platform/contextkey/common/contextkey.js';
 import { ILogService } from '../../../../platform/log/common/log.js';
 import { ISnippetEdit } from './snippetSession.js';
+import { TextModelEditReason } from '../../../common/textModelEditReason.js';
 export interface ISnippetInsertOptions {
     overwriteBefore: number;
     overwriteAfter: number;
@@ -15,6 +16,7 @@ export interface ISnippetInsertOptions {
     undoStopAfter: boolean;
     clipboardText: string | undefined;
     overtypingCapturer: OvertypingCapturer | undefined;
+    reason?: TextModelEditReason;
 }
 export declare class SnippetController2 implements IEditorContribution {
     private readonly _editor;

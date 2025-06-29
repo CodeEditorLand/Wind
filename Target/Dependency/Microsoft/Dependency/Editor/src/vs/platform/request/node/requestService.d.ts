@@ -37,5 +37,5 @@ export declare class RequestService extends AbstractRequestService implements IR
     loadCertificates(): Promise<string[]>;
     private getConfigValue;
 }
-export declare function lookupKerberosAuthorization(urlStr: string, spnConfig: string | undefined, logService: ILogService, logPrefix: string): Promise<any>;
+export declare function lookupKerberosAuthorization(urlStr: string, spnConfig: string | undefined, logService: ILogService, logPrefix: string): Promise<string>;
 export declare function nodeRequest(options: NodeRequestOptions, token: CancellationToken): Promise<IRequestContext>;
