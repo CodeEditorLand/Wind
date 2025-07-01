@@ -1,1 +1,32 @@
-import{readText as i,writeText as a}from"@tauri-apps/plugin-clipboard-manager";import{Effect as e}from"../../../effect";import{IntegrationClipboardProblem as r}from"./Error.js";const m=e.tryPromise({try:()=>i(),catch:t=>new r({Cause:t,Operation:"ReadText"})}),p=t=>e.tryPromise({try:()=>a(t),catch:o=>new r({Cause:o,Operation:"WriteText"})}),f=e.fail(new r({Cause:"NotImplemented",Operation:"ReadImage"})),d=t=>e.fail(new r({Cause:"NotImplemented",Operation:"WriteImage"})),l=e.succeed([]),x=t=>e.void,I=e.succeed(!1);export{I as HasResourceList,f as ReadImage,l as ReadResourceList,m as ReadText,d as WriteImage,x as WriteResourceList,p as WriteText};
+import {
+	writeText as a,
+	readText as i,
+} from "@tauri-apps/plugin-clipboard-manager";
+
+import { Effect as e } from "../../../effect";
+import { IntegrationClipboardProblem as r } from "./Error.js";
+
+const m = e.tryPromise({
+		try: () => i(),
+		catch: (t) => new r({ Cause: t, Operation: "ReadText" }),
+	}),
+	p = (t) =>
+		e.tryPromise({
+			try: () => a(t),
+			catch: (o) => new r({ Cause: o, Operation: "WriteText" }),
+		}),
+	f = e.fail(new r({ Cause: "NotImplemented", Operation: "ReadImage" })),
+	d = (t) =>
+		e.fail(new r({ Cause: "NotImplemented", Operation: "WriteImage" })),
+	l = e.succeed([]),
+	x = (t) => e.void,
+	I = e.succeed(!1);
+export {
+	I as HasResourceList,
+	f as ReadImage,
+	l as ReadResourceList,
+	m as ReadText,
+	d as WriteImage,
+	x as WriteResourceList,
+	p as WriteText,
+};

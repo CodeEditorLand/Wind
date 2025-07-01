@@ -3,10 +3,12 @@
  * @description Provides the "live" implementation `Layer` for the Command service.
  */
 import { Layer } from "effect";
+
 import { IPCService } from "../IPC/Service.js";
 import { LoggerService } from "../Logger/Service.js";
 import { WindowService } from "../Window/Service.js";
 import { CommandService } from "./Service.js";
+
 /**
  * The live implementation `Layer` for the `CommandService`.
  *
@@ -15,4 +17,8 @@ import { CommandService } from "./Service.js";
  * required by its `effect` constructor, such as the `IPCService`, `LoggerService`,
  * and `WindowService`.
  */
-export declare const CommandLive: Layer.Layer<CommandService, never, IPCService | LoggerService | WindowService>;
+export declare const CommandLive: Layer.Layer<
+	CommandService,
+	never,
+	IPCService | LoggerService | WindowService
+>;

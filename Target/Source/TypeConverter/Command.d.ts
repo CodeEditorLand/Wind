@@ -6,24 +6,25 @@
  */
 import type { IDisposable } from "vs/base/common/lifecycle.js";
 import type { Command as VSCodeCommand } from "vscode";
+
 /**
  * A descriptor for a built-in API command, detailing its signature.
  * Note: The original implementation had more complex types which are simplified
  * here as this converter focuses on delegation.
  */
 export declare class APICommand {
-    readonly Id: string;
-    readonly InternalId: string;
-    constructor(Id: string, InternalId: string);
+	readonly Id: string;
+	readonly InternalId: string;
+	constructor(Id: string, InternalId: string);
 }
 /**
  * Represents the serializable DTO for a command sent over IPC.
  */
 export interface InternalCommand {
-    id: string;
-    title: string;
-    tooltip?: string;
-    arguments?: any[];
+	id: string;
+	title: string;
+	tooltip?: string;
+	arguments?: any[];
 }
 /**
  * The CommandConverter implementation.
@@ -32,13 +33,28 @@ export interface InternalCommand {
  * that contain functions as arguments by creating temporary, "delegating" commands.
  */
 export declare class CommandConverter {
-    private readonly RegisterCommand;
-    private readonly ExecuteCommand;
-    private readonly LookupAPICommand;
-    private readonly DelegatingCommandId;
-    private readonly DelegatedCommands;
-    constructor(RegisterCommand: (Global: boolean, Id: string, Handler: (...Arguments: any[]) => any, ThisArgument?: any) => IDisposable, ExecuteCommand: <T>(Command: string, ...Rest: any[]) => Promise<T | undefined>, LookupAPICommand: (Id: string) => APICommand | undefined);
-    private ExecuteDelegatedCommand;
-    ToInternal(Command: VSCodeCommand, DisposableArray: IDisposable[]): InternalCommand | undefined;
-    FromInternal(CommandDTO: InternalCommand): VSCodeCommand | undefined;
+	private readonly RegisterCommand;
+	private readonly ExecuteCommand;
+	private readonly LookupAPICommand;
+	private readonly DelegatingCommandId;
+	private readonly DelegatedCommands;
+	constructor(
+		RegisterCommand: (
+			Global: boolean,
+			Id: string,
+			Handler: (...Arguments: any[]) => any,
+			ThisArgument?: any,
+		) => IDisposable,
+		ExecuteCommand: <T>(
+			Command: string,
+			...Rest: any[]
+		) => Promise<T | undefined>,
+		LookupAPICommand: (Id: string) => APICommand | undefined,
+	);
+	private ExecuteDelegatedCommand;
+	ToInternal(
+		Command: VSCodeCommand,
+		DisposableArray: IDisposable[],
+	): InternalCommand | undefined;
+	FromInternal(CommandDTO: InternalCommand): VSCodeCommand | undefined;
 }

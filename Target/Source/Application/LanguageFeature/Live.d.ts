@@ -3,7 +3,9 @@
  * @description Provides the "live" implementation `Layer` for the LanguageFeature service.
  */
 import { Layer } from "effect";
+
 import { LanguageFeatureService } from "./Service.js";
+
 /**
  * The live implementation `Layer` for the `LanguageFeatureService`.
  *

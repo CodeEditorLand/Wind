@@ -1,4 +1,5 @@
 import type { BuildOptions } from "esbuild";
+
 export declare const On: boolean;
 export declare const Bundle: boolean;
 export declare const Compile: boolean;

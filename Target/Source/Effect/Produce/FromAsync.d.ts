@@ -4,7 +4,9 @@
  * function from a standard, promise-returning async function.
  */
 import { Cause, Effect } from "effect";
+
 import type { AsyncFunction, ErrorProducer } from "./Type.js";
+
 /**
  * A factory that takes a promise-based function and returns a new function
  * that, when called, produces a well-typed `Effect`.
@@ -24,7 +26,16 @@ import type { AsyncFunction, ErrorProducer } from "./Type.js";
  *
  * @returns A new function `(...args) => Effect.Effect<Value, ErrorType>`.
  */
-export declare function FromAsync<Argument extends any[], Value, ErrorData extends Record<string, any>, ErrorType extends Cause.YieldableError & {
-    readonly _tag: string;
-    readonly cause: unknown;
-} & ErrorData>(Source: AsyncFunction<Argument, Value>, CreateProblem: ErrorProducer<ErrorData, ErrorType>, StaticData: ErrorData): (...args: Argument) => Effect.Effect<Value, ErrorType>;
+export declare function FromAsync<
+	Argument extends any[],
+	Value,
+	ErrorData extends Record<string, any>,
+	ErrorType extends Cause.YieldableError & {
+		readonly _tag: string;
+		readonly cause: unknown;
+	} & ErrorData,
+>(
+	Source: AsyncFunction<Argument, Value>,
+	CreateProblem: ErrorProducer<ErrorData, ErrorType>,
+	StaticData: ErrorData,
+): (...args: Argument) => Effect.Effect<Value, ErrorType>;

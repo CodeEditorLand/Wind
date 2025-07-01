@@ -5,6 +5,7 @@
  */
 import type { UriComponents } from "vs/base/common/uri.js";
 import type { Uri as VSCodeURI } from "vscode";
+
 /**
  * Converts a `vscode.URI` object into a plain JSON object (`UriComponents`) for IPC.
  * @param TheURI - The `vscode.URI` instance to convert.

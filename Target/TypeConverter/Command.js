@@ -1,1 +1,66 @@
-import{generateUuid as a}from"vs/base/common/uuid.js";class d{constructor(e,t){this.Id=e;this.InternalId=t}}class m{constructor(e,t,n){this.RegisterCommand=e;this.ExecuteCommand=t;this.LookupAPICommand=n;this.DelegatingCommandId=`_wind.delegate.${a()}`,this.RegisterCommand(!1,this.DelegatingCommandId,this.ExecuteDelegatedCommand.bind(this),this)}DelegatingCommandId;DelegatedCommands=new Map;ExecuteDelegatedCommand(e,...t){const n=this.DelegatedCommands.get(e);if(!n)throw new Error(`Unknown delegated command: ${e}`);return this.ExecuteCommand(n.command,...n.arguments??[],...t)}ToInternal(e,t){if(!e)return;const n=this.LookupAPICommand(e.command);if(n)return{id:n.InternalId,title:e.title,arguments:e.arguments};if(Array.isArray(e.arguments)&&e.arguments.some(r=>typeof r=="function")){const r=a();return this.DelegatedCommands.set(r,e),t.push({dispose:()=>this.DelegatedCommands.delete(r)}),{id:this.DelegatingCommandId,title:e.title,arguments:[r,...e.arguments??[]]}}return{id:e.command,title:e.title,tooltip:e.tooltip,arguments:e.arguments}}FromInternal(e){if(!e)return;const t={command:e.id,title:e.title};return e.tooltip&&(t.tooltip=e.tooltip),e.arguments&&(t.arguments=e.arguments),t}}export{d as APICommand,m as CommandConverter};
+import { generateUuid as a } from "vs/base/common/uuid.js";
+
+class d {
+	constructor(e, t) {
+		this.Id = e;
+		this.InternalId = t;
+	}
+}
+class m {
+	constructor(e, t, n) {
+		this.RegisterCommand = e;
+		this.ExecuteCommand = t;
+		this.LookupAPICommand = n;
+		((this.DelegatingCommandId = `_wind.delegate.${a()}`),
+			this.RegisterCommand(
+				!1,
+				this.DelegatingCommandId,
+				this.ExecuteDelegatedCommand.bind(this),
+				this,
+			));
+	}
+	DelegatingCommandId;
+	DelegatedCommands = new Map();
+	ExecuteDelegatedCommand(e, ...t) {
+		const n = this.DelegatedCommands.get(e);
+		if (!n) throw new Error(`Unknown delegated command: ${e}`);
+		return this.ExecuteCommand(n.command, ...(n.arguments ?? []), ...t);
+	}
+	ToInternal(e, t) {
+		if (!e) return;
+		const n = this.LookupAPICommand(e.command);
+		if (n)
+			return { id: n.InternalId, title: e.title, arguments: e.arguments };
+		if (
+			Array.isArray(e.arguments) &&
+			e.arguments.some((r) => typeof r == "function")
+		) {
+			const r = a();
+			return (
+				this.DelegatedCommands.set(r, e),
+				t.push({ dispose: () => this.DelegatedCommands.delete(r) }),
+				{
+					id: this.DelegatingCommandId,
+					title: e.title,
+					arguments: [r, ...(e.arguments ?? [])],
+				}
+			);
+		}
+		return {
+			id: e.command,
+			title: e.title,
+			tooltip: e.tooltip,
+			arguments: e.arguments,
+		};
+	}
+	FromInternal(e) {
+		if (!e) return;
+		const t = { command: e.id, title: e.title };
+		return (
+			e.tooltip && (t.tooltip = e.tooltip),
+			e.arguments && (t.arguments = e.arguments),
+			t
+		);
+	}
+}
+export { d as APICommand, m as CommandConverter };

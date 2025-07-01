@@ -4,7 +4,9 @@
  * This layer is responsible for constructing the live `Clipboard` service instance.
  */
 import { Layer } from "effect";
+
 import { Clipboard } from "./Service.js";
+
 /**
  * The live implementation `Layer` for the `Clipboard` service.
  *

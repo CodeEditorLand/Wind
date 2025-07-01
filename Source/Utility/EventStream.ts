@@ -5,8 +5,11 @@
  * `Event` API.
  */
 
+import {
+	Emitter,
+	type Event,
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
 import { Effect, PubSub } from "effect";
-import { Emitter, type Event } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
 
 /**
  * Defines the structure of a hybrid event stream, which provides both

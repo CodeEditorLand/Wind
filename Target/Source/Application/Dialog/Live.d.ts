@@ -3,8 +3,10 @@
  * @description Provides the "live" implementation `Layer` for the Dialog service.
  */
 import { Layer } from "effect";
+
 import { HostService } from "../Host/Service.js";
 import { DialogService } from "./Service.js";
+
 /**
  * The live implementation `Layer` for the `DialogService`.
  *

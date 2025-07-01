@@ -1,1 +1,15 @@
-import{BaseDirectory as r,resolve as o}from"@tauri-apps/api/path";import{Effect as e}from"../../../effect";import{URI as i}from"../../../Platform/VSCode/Type.js";import{IntegrationPathProblem as a}from"./Error.js";const p=()=>e.tryPromise({try:async()=>{const t=await o(r.AppConfig.toString());return i.file(t)},catch:t=>new a({Cause:t})});export{p as ResolveWorkSpacePath};
+import { resolve as o, BaseDirectory as r } from "@tauri-apps/api/path";
+
+import { Effect as e } from "../../../effect";
+import { URI as i } from "../../../Platform/VSCode/Type.js";
+import { IntegrationPathProblem as a } from "./Error.js";
+
+const p = () =>
+	e.tryPromise({
+		try: async () => {
+			const t = await o(r.AppConfig.toString());
+			return i.file(t);
+		},
+		catch: (t) => new a({ Cause: t }),
+	});
+export { p as ResolveWorkSpacePath };

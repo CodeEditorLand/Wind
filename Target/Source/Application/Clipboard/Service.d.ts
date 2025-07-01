@@ -10,9 +10,14 @@
  *     Effect-TS world with the imperative, promise-based VS Code API.
  */
 import { Effect } from "effect";
-declare const Clipboard_base: Effect.Service.Class<IClipboardService, "vscode/ClipboardService", {
-    readonly effect: Effect.Effect<IClipboardService, never, never>;
-}>;
+
+declare const Clipboard_base: Effect.Service.Class<
+	IClipboardService,
+	"vscode/ClipboardService",
+	{
+		readonly effect: Effect.Effect<IClipboardService, never, never>;
+	}
+>;
 /**
  * The `Effect.Service` for the `IClipboardService`.
  *
@@ -26,6 +31,5 @@ declare const Clipboard_base: Effect.Service.Class<IClipboardService, "vscode/Cl
  * the `effect` constructor, which depends on the application `Runtime` to
  * execute the underlying integration-layer Effects.
  */
-export declare class Clipboard extends Clipboard_base {
-}
+export declare class Clipboard extends Clipboard_base {}
 export {};

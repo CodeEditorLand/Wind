@@ -1,1 +1,223 @@
-import{CancellationTokenSource as u}from"vs/base/common/cancellation.js";import{CancellationError as l}from"vs/base/common/errors.js";import{Emitter as d}from"vs/base/common/event.js";import{MarkdownString as m}from"vs/base/common/htmlContent.js";import{ThemeColor as h,ThemeIcon as f}from"vs/base/common/themables.js";import{URI as p}from"vs/base/common/uri.js";import{FileType as b}from"vs/platform/files/common/files.js";import{CompletionItemKind as v,CompletionItemTag as B,ConfigurationTarget as D,DiagnosticSeverity as q,DiagnosticTag as J,EndOfLine as N,ProgressLocation as U,QuickPickItemKind as A,SnippetString as R,StatusBarAlignment as M,TextEditorCursorStyle as F,TreeItemCollapsibleState as W,ViewColumn as K,ProcessExecution as S,Task as w,TextEdit as y,WorkspaceEdit as P}from"vscode";class L{OnDisposeCallback;constructor(e){this.OnDisposeCallback=e}dispose(){this.OnDisposeCallback()}[Symbol.dispose](){this.dispose()}}const Q=u,j=l,z=d,G=p,H=h,X=f,Y=m,Z=S,$=w,O=P,_=y,ee=b;class n{line;character;constructor(e,t){if(e<0)throw new Error("Illegal argument: line must be non-negative");if(t<0)throw new Error("Illegal argument: character must be non-negative");this.line=e,this.character=t}isBefore(e){return this.line<e.line||this.line===e.line&&this.character<e.character}isBeforeOrEqual(e){return!new n(e.line,e.character).isBefore(this)}isAfter(e){return new n(e.line,e.character).isBefore(this)}isAfterOrEqual(e){return!this.isBefore(e)}isEqual(e){return this.line===e.line&&this.character===e.character}compareTo(e){return this.line<e.line?-1:this.line>e.line?1:this.character<e.character?-1:this.character>e.character?1:0}translate(e,t=0){return e==null?this:typeof e=="number"?new n(this.line+e,this.character+t):new n(this.line+(e.lineDelta??0),this.character+(e.characterDelta??0))}with(e,t=this.character){return e==null?this:typeof e=="number"?new n(e,t):new n(e.line??this.line,e.character??this.character)}toJSON(){return{line:this.line,character:this.character}}}class s{start;end;constructor(e,t,r,a){let o,i;if(typeof e=="number"&&typeof t=="number"&&typeof r=="number"&&typeof a=="number")o=new n(e,t),i=new n(r,a);else if(e instanceof n&&t instanceof n)o=e,i=t;else throw new Error("Invalid arguments for Range constructor");o.isAfter(i)?(this.start=i,this.end=o):(this.start=o,this.end=i)}get isEmpty(){return this.start.isEqual(this.end)}get isSingleLine(){return this.start.line===this.end.line}contains(e){return e instanceof s?this.contains(e.start)&&this.contains(e.end):e.isAfterOrEqual(this.start)&&e.isBeforeOrEqual(this.end)}isEqual(e){return this.start.isEqual(e.start)&&this.end.isEqual(e.end)}intersection(e){const t=this.start.isAfter(e.start)?this.start:e.start,r=this.end.isBefore(e.end)?this.end:e.end;if(!t.isAfter(r))return new s(t,r)}union(e){const t=this.start.isBefore(e.start)?this.start:e.start,r=this.end.isAfter(e.end)?this.end:e.end;return new s(t,r)}with(e,t=this.end){return e==null?this:e instanceof n?new s(e,t):new s(e.start??this.start,e.end??this.end)}toJSON(){return[this.start.toJSON(),this.end.toJSON()]}}class te extends s{anchor;active;constructor(e,t,r,a){let o,i;if(typeof e=="number"&&typeof t=="number"&&typeof r=="number"&&typeof a=="number")o=new n(e,t),i=new n(r,a);else if(e instanceof n&&t instanceof n)o=e,i=t;else throw new Error("Invalid arguments for Selection constructor");super(o,i),this.anchor=o,this.active=i}get isReversed(){return this.active.isBefore(this.anchor)}toJSON(){return{start:this.start.toJSON(),end:this.end.toJSON(),active:this.active.toJSON(),anchor:this.anchor.toJSON()}}}export{j as CancellationError,Q as CancellationTokenSource,v as CompletionItemKind,B as CompletionItemTag,D as ConfigurationTarget,q as DiagnosticSeverity,J as DiagnosticTag,L as Disposable,N as EndOfLine,z as EventEmitter,ee as FileType,Y as MarkdownString,n as Position,Z as ProcessExecution,U as ProgressLocation,A as QuickPickItemKind,s as Range,te as Selection,R as SnippetString,M as StatusBarAlignment,$ as Task,_ as TextEdit,F as TextEditorCursorStyle,H as ThemeColor,X as ThemeIcon,W as TreeItemCollapsibleState,G as URI,K as ViewColumn,O as WorkspaceEdit};
+import { CancellationTokenSource as u } from "vs/base/common/cancellation.js";
+import { CancellationError as l } from "vs/base/common/errors.js";
+import { Emitter as d } from "vs/base/common/event.js";
+import { MarkdownString as m } from "vs/base/common/htmlContent.js";
+import { ThemeIcon as f, ThemeColor as h } from "vs/base/common/themables.js";
+import { URI as p } from "vs/base/common/uri.js";
+import { FileType as b } from "vs/platform/files/common/files.js";
+import {
+	QuickPickItemKind as A,
+	CompletionItemTag as B,
+	ConfigurationTarget as D,
+	TextEditorCursorStyle as F,
+	DiagnosticTag as J,
+	ViewColumn as K,
+	StatusBarAlignment as M,
+	EndOfLine as N,
+	WorkspaceEdit as P,
+	DiagnosticSeverity as q,
+	SnippetString as R,
+	ProcessExecution as S,
+	ProgressLocation as U,
+	CompletionItemKind as v,
+	TreeItemCollapsibleState as W,
+	Task as w,
+	TextEdit as y,
+} from "vscode";
+
+class L {
+	OnDisposeCallback;
+	constructor(e) {
+		this.OnDisposeCallback = e;
+	}
+	dispose() {
+		this.OnDisposeCallback();
+	}
+	[Symbol.dispose]() {
+		this.dispose();
+	}
+}
+const Q = u,
+	j = l,
+	z = d,
+	G = p,
+	H = h,
+	X = f,
+	Y = m,
+	Z = S,
+	$ = w,
+	O = P,
+	_ = y,
+	ee = b;
+class n {
+	line;
+	character;
+	constructor(e, t) {
+		if (e < 0)
+			throw new Error("Illegal argument: line must be non-negative");
+		if (t < 0)
+			throw new Error("Illegal argument: character must be non-negative");
+		((this.line = e), (this.character = t));
+	}
+	isBefore(e) {
+		return (
+			this.line < e.line ||
+			(this.line === e.line && this.character < e.character)
+		);
+	}
+	isBeforeOrEqual(e) {
+		return !new n(e.line, e.character).isBefore(this);
+	}
+	isAfter(e) {
+		return new n(e.line, e.character).isBefore(this);
+	}
+	isAfterOrEqual(e) {
+		return !this.isBefore(e);
+	}
+	isEqual(e) {
+		return this.line === e.line && this.character === e.character;
+	}
+	compareTo(e) {
+		return this.line < e.line
+			? -1
+			: this.line > e.line
+				? 1
+				: this.character < e.character
+					? -1
+					: this.character > e.character
+						? 1
+						: 0;
+	}
+	translate(e, t = 0) {
+		return e == null
+			? this
+			: typeof e == "number"
+				? new n(this.line + e, this.character + t)
+				: new n(
+						this.line + (e.lineDelta ?? 0),
+						this.character + (e.characterDelta ?? 0),
+					);
+	}
+	with(e, t = this.character) {
+		return e == null
+			? this
+			: typeof e == "number"
+				? new n(e, t)
+				: new n(e.line ?? this.line, e.character ?? this.character);
+	}
+	toJSON() {
+		return { line: this.line, character: this.character };
+	}
+}
+class s {
+	start;
+	end;
+	constructor(e, t, r, a) {
+		let o, i;
+		if (
+			typeof e == "number" &&
+			typeof t == "number" &&
+			typeof r == "number" &&
+			typeof a == "number"
+		)
+			((o = new n(e, t)), (i = new n(r, a)));
+		else if (e instanceof n && t instanceof n) ((o = e), (i = t));
+		else throw new Error("Invalid arguments for Range constructor");
+		o.isAfter(i)
+			? ((this.start = i), (this.end = o))
+			: ((this.start = o), (this.end = i));
+	}
+	get isEmpty() {
+		return this.start.isEqual(this.end);
+	}
+	get isSingleLine() {
+		return this.start.line === this.end.line;
+	}
+	contains(e) {
+		return e instanceof s
+			? this.contains(e.start) && this.contains(e.end)
+			: e.isAfterOrEqual(this.start) && e.isBeforeOrEqual(this.end);
+	}
+	isEqual(e) {
+		return this.start.isEqual(e.start) && this.end.isEqual(e.end);
+	}
+	intersection(e) {
+		const t = this.start.isAfter(e.start) ? this.start : e.start,
+			r = this.end.isBefore(e.end) ? this.end : e.end;
+		if (!t.isAfter(r)) return new s(t, r);
+	}
+	union(e) {
+		const t = this.start.isBefore(e.start) ? this.start : e.start,
+			r = this.end.isAfter(e.end) ? this.end : e.end;
+		return new s(t, r);
+	}
+	with(e, t = this.end) {
+		return e == null
+			? this
+			: e instanceof n
+				? new s(e, t)
+				: new s(e.start ?? this.start, e.end ?? this.end);
+	}
+	toJSON() {
+		return [this.start.toJSON(), this.end.toJSON()];
+	}
+}
+class te extends s {
+	anchor;
+	active;
+	constructor(e, t, r, a) {
+		let o, i;
+		if (
+			typeof e == "number" &&
+			typeof t == "number" &&
+			typeof r == "number" &&
+			typeof a == "number"
+		)
+			((o = new n(e, t)), (i = new n(r, a)));
+		else if (e instanceof n && t instanceof n) ((o = e), (i = t));
+		else throw new Error("Invalid arguments for Selection constructor");
+		(super(o, i), (this.anchor = o), (this.active = i));
+	}
+	get isReversed() {
+		return this.active.isBefore(this.anchor);
+	}
+	toJSON() {
+		return {
+			start: this.start.toJSON(),
+			end: this.end.toJSON(),
+			active: this.active.toJSON(),
+			anchor: this.anchor.toJSON(),
+		};
+	}
+}
+export {
+	j as CancellationError,
+	Q as CancellationTokenSource,
+	v as CompletionItemKind,
+	B as CompletionItemTag,
+	D as ConfigurationTarget,
+	q as DiagnosticSeverity,
+	J as DiagnosticTag,
+	L as Disposable,
+	N as EndOfLine,
+	z as EventEmitter,
+	ee as FileType,
+	Y as MarkdownString,
+	n as Position,
+	Z as ProcessExecution,
+	U as ProgressLocation,
+	A as QuickPickItemKind,
+	s as Range,
+	te as Selection,
+	R as SnippetString,
+	M as StatusBarAlignment,
+	$ as Task,
+	_ as TextEdit,
+	F as TextEditorCursorStyle,
+	H as ThemeColor,
+	X as ThemeIcon,
+	W as TreeItemCollapsibleState,
+	G as URI,
+	K as ViewColumn,
+	O as WorkspaceEdit,
+};

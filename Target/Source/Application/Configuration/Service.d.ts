@@ -5,9 +5,14 @@
  * contract from VS Code.
  */
 import { Effect } from "effect";
-declare const Configuration_base: Effect.Service.Class<IConfigurationService, "vscode/ConfigurationService", {
-    readonly effect: Effect.Effect<IConfigurationService, never, never>;
-}>;
+
+declare const Configuration_base: Effect.Service.Class<
+	IConfigurationService,
+	"vscode/ConfigurationService",
+	{
+		readonly effect: Effect.Effect<IConfigurationService, never, never>;
+	}
+>;
 /**
  * The `Effect.Service` for the `IConfigurationService`.
  *
@@ -16,6 +21,5 @@ declare const Configuration_base: Effect.Service.Class<IConfigurationService, "v
  * fetches and merges all configuration sources upon initialization, making the
  * final configuration available synchronously to the rest of the application.
  */
-export declare class Configuration extends Configuration_base {
-}
+export declare class Configuration extends Configuration_base {}
 export {};

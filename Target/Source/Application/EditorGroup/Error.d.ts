@@ -3,8 +3,12 @@
  * @description Defines a domain-specific, tagged error for editor group
  * operations at the application layer.
  */
-declare const EditorGroupProblem_base: new <A extends Record<string, any> = {}>(args: import("effect/Types").Equals<A, {}> extends true ? void : { readonly [P in keyof A as P extends "_tag" ? never : P]: A[P]; }) => import("effect/Cause").YieldableError & {
-    readonly _tag: "EditorGroupProblem";
+declare const EditorGroupProblem_base: new <A extends Record<string, any> = {}>(
+	args: import("effect/Types").Equals<A, {}> extends true
+		? void
+		: { readonly [P in keyof A as P extends "_tag" ? never : P]: A[P] },
+) => import("effect/Cause").YieldableError & {
+	readonly _tag: "EditorGroupProblem";
 } & Readonly<A>;
 /**
  * Represents a failure within the `EditorGroup` application service.
@@ -12,8 +16,7 @@ declare const EditorGroupProblem_base: new <A extends Record<string, any> = {}>(
  * invalid state transitions, such as attempting to remove the last editor group.
  */
 export declare class EditorGroupProblem extends EditorGroupProblem_base<{
-    readonly Cause?: unknown;
-    readonly Context: string;
-}> {
-}
+	readonly Cause?: unknown;
+	readonly Context: string;
+}> {}
 export {};

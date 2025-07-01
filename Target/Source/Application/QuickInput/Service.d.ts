@@ -4,9 +4,18 @@
  * and Input Box UI elements, conforming to the `IQuickInputService` contract.
  */
 import { Effect } from "effect";
-declare const QuickInputService_base: Effect.Service.Class<IQuickInputService, "quickInputService", {
-    readonly effect: Effect.Effect<IQuickInputService, never, import("../Host/Service.js").Host>;
-}>;
+
+declare const QuickInputService_base: Effect.Service.Class<
+	IQuickInputService,
+	"quickInputService",
+	{
+		readonly effect: Effect.Effect<
+			IQuickInputService,
+			never,
+			import("../Host/Service.js").Host
+		>;
+	}
+>;
 /**
  * The `Effect.Service` for the `IQuickInputService`.
  *
@@ -16,6 +25,5 @@ declare const QuickInputService_base: Effect.Service.Class<IQuickInputService, "
  * Quick Input instances are not supported in this architecture and will throw
  * an error, as the UI is managed by the native host.
  */
-export declare class QuickInputService extends QuickInputService_base {
-}
+export declare class QuickInputService extends QuickInputService_base {}
 export {};

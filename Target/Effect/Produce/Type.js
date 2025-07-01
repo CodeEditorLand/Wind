@@ -1,1 +1,1 @@
-import"../../effect";
+import "../../effect";

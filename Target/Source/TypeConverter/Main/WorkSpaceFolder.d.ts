@@ -4,6 +4,7 @@
  */
 import type { IWorkspaceFolderData } from "vs/platform/workspace/common/workspace.js";
 import type { WorkspaceFolder } from "vscode";
+
 /**
  * Revives a workspace folder DTO into a `vscode.WorkspaceFolder` object.
  * @param DTO - The `IWorkspaceFolderData` DTO from the host.

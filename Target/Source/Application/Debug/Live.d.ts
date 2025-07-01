@@ -3,8 +3,10 @@
  * @description Provides the "live" implementation `Layer` for the Debug service.
  */
 import { Layer } from "effect";
+
 import { IPCService } from "../IPC/Service.js";
 import { DebugService } from "./Service.js";
+
 /**
  * The live implementation `Layer` for the `DebugService`.
  *

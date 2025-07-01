@@ -5,7 +5,9 @@
 import { Layer } from "effect";
 import { ILogService } from "vs/platform/log/common/log.js";
 import { IViewsService } from "vs/workbench/common/views.js";
+
 import { TreeViewService } from "./Service.js";
+
 /**
  * The live implementation `Layer` for the `TreeViewService`.
  *
@@ -14,4 +16,8 @@ import { TreeViewService } from "./Service.js";
  * dependencies required by its `effect` constructor, such as `IViewsService`
  * and `ILogService`.
  */
-export declare const TreeViewLive: Layer.Layer<TreeViewService, never, IViewsService | ILogService>;
+export declare const TreeViewLive: Layer.Layer<
+	TreeViewService,
+	never,
+	IViewsService | ILogService
+>;

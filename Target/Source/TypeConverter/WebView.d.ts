@@ -4,29 +4,38 @@
  */
 import type { IExtensionDescription } from "vs/platform/extensions/common/extensions.js";
 import type { ViewColumn, WebviewOptions, WebviewPanelOptions } from "vscode";
+
 interface IEditorOptions {
-    preserveFocus?: boolean;
+	preserveFocus?: boolean;
 }
 /**
  * Converts `vscode.WebviewOptions` into a serializable DTO.
  */
-export declare const ConvertContentOptionsToDTO: (Extension: IExtensionDescription, Options: WebviewOptions) => {
-    enableCommandUris: any;
-    enableScripts: any;
-    enableForms: any;
-    localResourceRoots: any;
-    portMapping: any;
+export declare const ConvertContentOptionsToDTO: (
+	Extension: IExtensionDescription,
+	Options: WebviewOptions,
+) => {
+	enableCommandUris: any;
+	enableScripts: any;
+	enableForms: any;
+	localResourceRoots: any;
+	portMapping: any;
 };
 /**
  * Converts `vscode.WebviewPanelOptions` into a serializable DTO.
  */
-export declare const ConvertPanelOptionsToDTO: (Options: WebviewPanelOptions) => WebviewPanelOptions;
+export declare const ConvertPanelOptionsToDTO: (
+	Options: WebviewPanelOptions,
+) => WebviewPanelOptions;
 /**
  * Converts the user-provided `showOption` for a webview panel into a
  * structured DTO suitable for sending to the `Mountain` host process.
  */
-export declare const ConvertShowOptionsToDTO: (ViewColumn: ViewColumn | undefined, PreserveFocus: boolean) => {
-    viewColumn?: number;
-    preserveFocus: boolean;
+export declare const ConvertShowOptionsToDTO: (
+	ViewColumn: ViewColumn | undefined,
+	PreserveFocus: boolean,
+) => {
+	viewColumn?: number;
+	preserveFocus: boolean;
 } & IEditorOptions;
 export {};

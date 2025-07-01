@@ -3,6 +3,7 @@
  * @description A mock Effect for reading text from the clipboard.
  */
 import { Effect } from "effect";
+
 /**
  * A mock implementation of the `ReadText` integration effect.
  * Instead of calling a Tauri API, it immediately returns a successful Effect

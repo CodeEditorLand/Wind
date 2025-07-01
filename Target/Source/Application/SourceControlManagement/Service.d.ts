@@ -4,9 +4,14 @@
  * Source Control Management service, which conforms to the `ISCMService`.
  */
 import { Effect } from "effect";
-declare const SourceControlManagementService_base: Effect.Service.Class<ISCMService, "scmService", {
-    readonly effect: Effect.Effect<any, unknown, unknown>;
-}>;
+
+declare const SourceControlManagementService_base: Effect.Service.Class<
+	ISCMService,
+	"scmService",
+	{
+		readonly effect: Effect.Effect<any, unknown, unknown>;
+	}
+>;
 /**
  * The `Effect.Service` for the `ISCMService`.
  *
@@ -17,6 +22,5 @@ declare const SourceControlManagementService_base: Effect.Service.Class<ISCMServ
  *    from the `Mountain` host and sets up listeners for real-time updates.
  * 3. This `Initialize` effect must be run once at application startup.
  */
-export declare class SourceControlManagementService extends SourceControlManagementService_base {
-}
+export declare class SourceControlManagementService extends SourceControlManagementService_base {}
 export {};
