@@ -1,12 +1,1 @@
-var __defProp = Object.defineProperty;
-var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-import { Data } from "../../effect";
-class FileSystemProblem extends Data.TaggedError("FileSystemProblem") {
-  static {
-    __name(this, "FileSystemProblem");
-  }
-}
-export {
-  FileSystemProblem
-};
-//# sourceMappingURL=Error.js.map
+import{Data as e}from"../../effect";class t extends e.TaggedError("FileSystemProblem"){}export{t as FileSystemProblem};

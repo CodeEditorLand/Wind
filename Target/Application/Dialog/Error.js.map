@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Application/Dialog/Error.ts"],
-  "sourcesContent": ["/**\n * @module Error (Application/Dialog)\n * @description Defines a domain-specific, tagged error for dialog operations\n * at the application layer.\n */\n\nimport { Data } from \"effect\";\n\nimport type { HostServiceProblem } from \"../Host/Error.js\";\n\n/**\n * Represents a failure within the Dialog application service.\n *\n * This error acts as a wrapper around a more specific problem from a lower-level\n * service, like the `HostService`. This allows higher-level code to catch a\n * single, well-defined error type for this domain while preserving the original\n * cause for detailed logging and debugging.\n */\nexport class DialogProblem extends Data.TaggedError(\"DialogProblem\")<{\n\t/** The underlying problem that caused this failure. */\n\treadonly Cause: HostServiceProblem;\n\t/** A string describing the context of the operation (e.g., 'ShowOpenDialogFailed'). */\n\treadonly Context: string;\n}> {}\n"],
-  "mappings": ";;AAMA,SAAS,YAAY;AAYd,MAAM,sBAAsB,KAAK,YAAY,eAAe,EAKhE;AAAA,EAvBH,OAuBG;AAAA;AAAA;AAAC;",
-  "names": []
-}

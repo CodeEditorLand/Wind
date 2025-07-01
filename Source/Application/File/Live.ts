@@ -4,7 +4,7 @@
  */
 
 import { Layer } from "effect";
-import { ILogService } from "vs/platform/log/common/log.js";
+import { ILogService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
 
 import { FileSystemService } from "../FileSystem/Service.js";
 import { FileService } from "./Service.js";

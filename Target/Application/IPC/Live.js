@@ -1,10 +1,1 @@
-import { Layer } from "../../effect";
-import { CancellationService } from "../Cancellation/Service.js";
-import { IPCConfigurationService } from "../IPCConfiguration/Service.js";
-import { LoggerService } from "../Logger/Service.js";
-import { IPCService } from "./Service.js";
-const IPCLive = IPCService.Default;
-export {
-  IPCLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import"../Cancellation/Service.js";import"../IPCConfiguration/Service.js";import"../Logger/Service.js";import{IPCService as e}from"./Service.js";const C=e.Default;export{C as IPCLive};

@@ -4,11 +4,11 @@
  */
 
 import { Layer } from "effect";
-import { IContextKeyService } from "vs/platform/contextkey/common/contextkey.js";
-import { IInstantiationService } from "vs/platform/instantiation/common/instantiation.js";
-import { ILogService } from "vs/platform/log/common/log.js";
-import { IStorageService } from "vs/platform/storage/common/storage.js";
-import { IWorkspaceContextService } from "vs/platform/workspace/common/workspace.js";
+import { IContextKeyService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/contextkey/common/contextkey.js";
+import { IInstantiationService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/instantiation/common/instantiation.js";
+import { ILogService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
+import { IStorageService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/storage/common/storage.js";
+import { IWorkspaceContextService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/workspace/common/workspace.js";
 
 import { IntegrationService } from "../../Integration/Tauri/Service.js";
 import { SourceControlManagementService } from "./Service.js";

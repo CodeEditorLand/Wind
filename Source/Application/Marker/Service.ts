@@ -6,9 +6,9 @@
 
 import { Effect } from "effect";
 import * as Monaco from "monaco-editor";
-import { URI } from "vs/base/common/uri.js";
-import { ILogService } from "vs/platform/log/common/log.js";
-import type { IMarkerData } from "vs/platform/markers/common/markers.js";
+import { URI } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/uri.js";
+import { ILogService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
+import type { IMarkerData } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/markers/common/markers.js";
 
 import { IntegrationService } from "../../Integration/Tauri/Service.js";
 import { MarkerProblem } from "./Error.js";

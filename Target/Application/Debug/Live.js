@@ -1,7 +1,1 @@
-import { Layer } from "../../effect";
-import { DebugService } from "./Service.js";
-const DebugLive = DebugService.Default;
-export {
-  DebugLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import"../IPC/Service.js";import{DebugService as e}from"./Service.js";const v=e.Default;export{v as DebugLive};

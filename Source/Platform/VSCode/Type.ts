@@ -10,22 +10,22 @@
  */
 
 // --- Foundational VS Code & Base Imports ---
-import { CancellationTokenSource as VSCodeCancellationTokenSource } from "vs/base/common/cancellation.js";
-import { CancellationError as VSCodeCancellationError } from "vs/base/common/errors.js";
-import { Emitter } from "vs/base/common/event.js";
+import { CancellationTokenSource as VSCodeCancellationTokenSource } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/cancellation.js";
+import { CancellationError as VSCodeCancellationError } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/errors.js";
+import { Emitter } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
 import {
 	MarkdownString as VSCodeMarkdownString,
 	type IMarkdownString as VSCodeIMarkdownString,
-} from "vs/base/common/htmlContent.js";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/htmlContent.js";
 import {
 	ThemeColor as VSCodeThemeColor,
 	ThemeIcon as VSCodeThemeIcon,
-} from "vs/base/common/themables.js";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/themables.js";
 import {
 	URI as VSCodeURI,
 	type UriComponents as VSCodeUriComponents,
-} from "vs/base/common/uri.js";
-import { FileType as VSCodeFileType } from "vs/platform/files/common/files.js";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/uri.js";
+import { FileType as VSCodeFileType } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/files/common/files.js";
 import type * as VSCode from "vscode";
 // --- Direct Re-exports of VS Code Enums and Simple Classes ---
 import {

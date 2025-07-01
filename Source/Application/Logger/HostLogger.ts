@@ -9,7 +9,7 @@ import {
 	AbstractMessageLogger,
 	LogLevel,
 	type ILogger,
-} from "vs/platform/log/common/log.js";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
 
 import { HostService } from "../Host/Service.js";
 

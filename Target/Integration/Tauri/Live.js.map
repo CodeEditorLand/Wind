@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Integration/Tauri/Live.ts"],
-  "sourcesContent": ["/**\n * @module Live (Integration/Tauri)\n * @description Provides the live implementation `Layer` for the Integration service.\n */\n\nimport { Layer } from \"effect\";\n\nimport { IntegrationService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `IntegrationService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the service definition.\n */\nexport const IntegrationLive: Layer.Layer<IntegrationService> =\n\tIntegrationService.Default;\n"],
-  "mappings": "AAKA,SAAS,aAAa;AAEtB,SAAS,0BAA0B;AAQ5B,MAAM,kBACZ,mBAAmB;",
-  "names": []
-}

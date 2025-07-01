@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Application/IPC/Live.ts"],
-  "sourcesContent": ["/**\n * @module Live (Application/IPC)\n * @description Provides the \"live\" implementation `Layer` for the IPC service.\n */\n\nimport { Layer } from \"effect\";\n\nimport { CancellationService } from \"../Cancellation/Service.js\";\nimport { IPCConfigurationService } from \"../IPCConfiguration/Service.js\";\nimport { LoggerService } from \"../Logger/Service.js\";\nimport { IPCService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `IPCService`.\n *\n * It is derived from the default implementation in the service definition.\n * Because `IPCService` is scoped, this layer must also be scoped.\n * It depends on other core services to function.\n */\nexport const IPCLive: Layer.Layer<\n\tIPCService,\n\tnever,\n\tIPCConfigurationService | CancellationService | LoggerService\n> = IPCService.Default;\n"],
-  "mappings": "AAKA,SAAS,aAAa;AAEtB,SAAS,2BAA2B;AACpC,SAAS,+BAA+B;AACxC,SAAS,qBAAqB;AAC9B,SAAS,kBAAkB;AASpB,MAAM,UAIT,WAAW;",
-  "names": []
-}

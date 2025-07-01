@@ -1,12 +1,1 @@
-var __defProp = Object.defineProperty;
-var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-import { URI } from "vs/base/common/uri.js";
-const FromDTO = /* @__PURE__ */ __name((DTO) => ({
-  id: String(DTO.Handle),
-  label: DTO.Label,
-  rootUri: DTO.RootUri ? URI.parse(DTO.RootUri) : void 0
-}), "FromDTO");
-export {
-  FromDTO
-};
-//# sourceMappingURL=Provider.js.map
+import{Emitter as r}from"vs/base/common/event";import{observableValue as o}from"vs/base/common/observable";import{URI as n}from"vs/base/common/uri.js";const m=e=>({id:String(e.Handle),label:e.Label,rootUri:e.RootUri?n.parse(e.RootUri):void 0,contextValue:"",name:e.Label,groups:[],historyProvider:o("historyProvider",void 0),acceptInputCommand:void 0,actionButton:o("actionButton",void 0),count:o("count",void 0),commitTemplate:o("commitTemplate",""),statusBarCommands:o("statusBarCommands",void 0),onDidChangeResources:new r().event,onDidChangeResourceGroups:new r().event,inputBoxTextModel:{},getOriginalResource:()=>Promise.resolve(null),dispose:()=>{}});export{m as FromDTO};

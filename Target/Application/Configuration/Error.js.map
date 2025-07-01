@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Application/Configuration/Error.ts"],
-  "sourcesContent": ["/**\n * @module Error (Application/Configuration)\n * @description Defines a domain-specific, tagged error for configuration\n * operations at the application layer.\n */\n\nimport { Data } from \"effect\";\n\nimport type { IntegrationConfigurationProblem } from \"../../Integration/Tauri/Configuration/Error.js\";\nimport type { IntegrationPathProblem } from \"../../Integration/Tauri/Path/Error.js\";\n\n/**\n * Represents a failure within the `Configuration` application service.\n *\n * This error acts as a wrapper around more specific problems from the\n * Integration layer (e.g., file system or path resolution errors). This allows\n * higher-level code to catch a single, well-defined error type for this domain,\n * while preserving the original cause for detailed logging and debugging.\n */\nexport class ApplicationConfigurationProblem extends Data.TaggedError(\n\t\"ApplicationConfigurationProblem\",\n)<{\n\t/** The underlying problem from the Integration layer that caused this failure. */\n\treadonly Cause: IntegrationConfigurationProblem | IntegrationPathProblem;\n\t/** A string describing the context of the operation (e.g., 'FailedToResolveConfiguration'). */\n\treadonly Context: string;\n}> {}\n"],
-  "mappings": ";;AAMA,SAAS,YAAY;AAad,MAAM,wCAAwC,KAAK;AAAA,EACzD;AACD,EAKG;AAAA,EA1BH,OA0BG;AAAA;AAAA;AAAC;",
-  "names": []
-}

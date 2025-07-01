@@ -1,0 +1,34 @@
+/**
+ * @module Service (Application/IPC)
+ * @description Defines the high-level service for Inter-Process Communication (IPC)
+ * between Wind and Mountain. It orchestrates gRPC client/server connections,
+ * RPC protocol adaptation, and request/notification dispatching.
+ */
+import { Effect } from "effect";
+import type { IMessagePassingProtocol } from "vs/base/parts/ipc/common/ipc.js";
+import type { Disposable } from "vscode";
+import { IpcProblem } from "./Error.js";
+/**
+ * The contract for the IPC service.
+ */
+export interface IPC {
+    readonly SendRequest: <T = unknown>(Method: string, Parameters: readonly unknown[]) => Effect.Effect<T, IpcProblem>;
+    readonly SendNotification: (Method: string, Parameters: readonly unknown[]) => Effect.Effect<void, IpcProblem>;
+    readonly SendCancel: (TokenId: number) => Effect.Effect<void, never>;
+    readonly CreateProtocolAdapter: () => IMessagePassingProtocol & {
+        ProcessIncomingData: (Data: Uint8Array) => Effect.Effect<void, never>;
+    };
+    readonly CreateProxy: <T extends object>(Channel: string) => T;
+    readonly RegisterInvokeHandler: (Channel: string, Handler: (...Arguments: any[]) => Promise<any>) => Disposable;
+}
+declare const IPCService_base: Effect.Service.Class<IPC, "Service/IPC", {
+    readonly scoped: Effect.Effect<IPC, unknown, any>;
+}>;
+/**
+ * The `Effect.Service` for IPC. It is a scoped service because it
+ * manages the lifecycle of a gRPC client, ensuring it is gracefully
+ * acquired and released.
+ */
+export declare class IPCService extends IPCService_base {
+}
+export {};

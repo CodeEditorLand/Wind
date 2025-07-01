@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Application/Debug/Error.ts"],
-  "sourcesContent": ["/**\n * @module Error (Application/Debug)\n * @description Defines domain-specific, tagged errors for debugging operations.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure during the registration of a debug provider.\n */\nexport class DebugProviderRegistrationProblem extends Data.TaggedError(\n\t\"DebugProviderRegistrationProblem\",\n)<{\n\treadonly DebugType: string;\n\treadonly Cause?: unknown;\n}> {}\n\n/**\n * Represents a failure when attempting to start a debugging session.\n */\nexport class StartDebuggingProblem extends Data.TaggedError(\n\t\"StartDebuggingProblem\",\n)<{\n\treadonly Cause: unknown;\n}> {}\n"],
-  "mappings": ";;AAKA,SAAS,YAAY;AAKd,MAAM,yCAAyC,KAAK;AAAA,EAC1D;AACD,EAGG;AAAA,EAfH,OAeG;AAAA;AAAA;AAAC;AAKG,MAAM,8BAA8B,KAAK;AAAA,EAC/C;AACD,EAEG;AAAA,EAxBH,OAwBG;AAAA;AAAA;AAAC;",
-  "names": []
-}

@@ -13,18 +13,18 @@
  */
 
 import { Effect } from "effect";
-import { domContentLoaded } from "vs/base/browser/dom.js";
-import { onUnexpectedError } from "vs/base/common/errors.js";
-import { ServiceCollection } from "vs/platform/instantiation/common/serviceCollection.js";
-import { ILogService } from "vs/platform/log/common/log.js";
-import { IProductService } from "vs/platform/product/common/productService.js";
+import { domContentLoaded } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/browser/dom.js";
+import { onUnexpectedError } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/errors.js";
+import { ServiceCollection } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/instantiation/common/serviceCollection.js";
+import { ILogService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
+import { IProductService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/product/common/productService.js";
 import {
 	Extensions as QuickAccessExtensions,
 	type IQuickAccessRegistry,
-} from "vs/platform/quickinput/common/quickAccess.js";
-import { Registry } from "vs/platform/registry/common/platform.js";
-import { Workbench } from "vs/workbench/browser/workbench.js";
-import { CommandsQuickAccessProvider } from "vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.js";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/quickinput/common/quickAccess.js";
+import { Registry } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/registry/common/platform.js";
+import { Workbench } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/browser/workbench.js";
+import { CommandsQuickAccessProvider } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.js";
 
 import { IntegrationService } from "../Integration/Tauri/Service.js";
 import { HostService } from "./Host/Service.js";

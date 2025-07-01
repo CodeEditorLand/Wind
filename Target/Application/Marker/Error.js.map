@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Application/Marker/Error.ts"],
-  "sourcesContent": ["/**\n * @module Error (Application/Marker)\n * @description Defines domain-specific, tagged errors for marker service operations.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure that occurs within the `MarkerService`, such as an\n * inability to set up event listeners or fetch diagnostic data from the host.\n */\nexport class MarkerProblem extends Data.TaggedError(\"MarkerProblem\")<{\n\treadonly Cause: unknown;\n\treadonly Context: string;\n}> {}\n"],
-  "mappings": ";;AAKA,SAAS,YAAY;AAMd,MAAM,sBAAsB,KAAK,YAAY,eAAe,EAGhE;AAAA,EAdH,OAcG;AAAA;AAAA;AAAC;",
-  "names": []
-}

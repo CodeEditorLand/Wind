@@ -4,7 +4,7 @@
  * This centralizes URI serialization to prevent import cycles.
  */
 
-import type { UriComponents } from "vs/base/common/uri.js";
+import type { UriComponents } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/uri.js";
 import type { Uri as VSCodeURI } from "vscode";
 
 import { URI } from "../../Platform/VSCode/Type.js";

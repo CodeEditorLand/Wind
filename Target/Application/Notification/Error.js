@@ -1,14 +1,1 @@
-var __defProp = Object.defineProperty;
-var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-import { Data } from "../../effect";
-class NotificationProblem extends Data.TaggedError(
-  "NotificationProblem"
-) {
-  static {
-    __name(this, "NotificationProblem");
-  }
-}
-export {
-  NotificationProblem
-};
-//# sourceMappingURL=Error.js.map
+import{Data as o}from"../../effect";class e extends o.TaggedError("NotificationProblem"){}export{e as NotificationProblem};

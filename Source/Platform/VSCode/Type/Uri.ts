@@ -14,7 +14,7 @@
  *     to a single location in our platform layer.
  */
 
-import { URI } from "vs/base/common/uri.js";
+import { URI } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/uri.js";
 
 /**
  * The canonical `URI` class used throughout the application.

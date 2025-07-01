@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../Source/Integration/Tauri/Path/Error.ts"],
-  "sourcesContent": ["/**\n * @module Error (Integration/Tauri/Path)\n * @description Defines a tagged error for path-resolution failures at the\n * integration layer.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure when resolving a filesystem path via the Tauri API.\n */\nexport class IntegrationPathProblem extends Data.TaggedError(\n\t\"IntegrationPathProblem\",\n)<{\n\treadonly Cause?: unknown;\n}> {}\n"],
-  "mappings": ";;AAMA,SAAS,YAAY;AAKd,MAAM,+BAA+B,KAAK;AAAA,EAChD;AACD,EAEG;AAAA,EAfH,OAeG;AAAA;AAAA;AAAC;",
-  "names": []
-}

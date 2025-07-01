@@ -1,14 +1,1 @@
-var __defProp = Object.defineProperty;
-var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-import { Data } from "../../../effect";
-class IntegrationClipboardProblem extends Data.TaggedError(
-  "IntegrationClipboardProblem"
-) {
-  static {
-    __name(this, "IntegrationClipboardProblem");
-  }
-}
-export {
-  IntegrationClipboardProblem
-};
-//# sourceMappingURL=Error.js.map
+import{Data as e}from"../../../effect";class o extends e.TaggedError("IntegrationClipboardProblem"){}export{o as IntegrationClipboardProblem};

@@ -1,7 +1,1 @@
-import { Layer } from "../../effect";
-import { Clipboard } from "./Service.js";
-const ClipboardLive = Clipboard.Default;
-export {
-  ClipboardLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import{Clipboard as r}from"./Service.js";const i=r.Default;export{i as ClipboardLive};

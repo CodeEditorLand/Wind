@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Application/SourceControlManagement/Error.ts"],
-  "sourcesContent": ["/**\n * @module Error (Application/SourceControlManagement)\n * @description Defines domain-specific, tagged errors for Source Control Management\n * operations at the application layer.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure that occurs during an SCM operation, such as failing\n * to fetch the initial state from the host or an error during an update event.\n */\nexport class SourceControlManagementProblem extends Data.TaggedError(\n\t\"SourceControlManagementProblem\",\n)<{\n\treadonly Cause: unknown;\n\treadonly Context: string;\n}> {}\n"],
-  "mappings": ";;AAMA,SAAS,YAAY;AAMd,MAAM,uCAAuC,KAAK;AAAA,EACxD;AACD,EAGG;AAAA,EAjBH,OAiBG;AAAA;AAAA;AAAC;",
-  "names": []
-}

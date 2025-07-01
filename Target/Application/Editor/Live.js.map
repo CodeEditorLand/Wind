@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Application/Editor/Live.ts"],
-  "sourcesContent": ["/**\n * @module Live (Application/Editor)\n * @description Provides the \"live\" implementation `Layer` for the Editor service.\n */\n\nimport { Layer } from \"effect\";\n\nimport { EditorService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `EditorService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the `EditorService` service definition. It automatically includes the\n * dependencies required by its `effect` constructor, such as `HostService`\n * and `TextEditorService`.\n */\nexport const EditorLive: Layer.Layer<EditorService> = EditorService.Default;\n"],
-  "mappings": "AAKA,SAAS,aAAa;AAEtB,SAAS,qBAAqB;AAUvB,MAAM,aAAyC,cAAc;",
-  "names": []
-}

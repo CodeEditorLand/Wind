@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Application/Window/Error.ts"],
-  "sourcesContent": ["/**\n * @module Error (Application/Window)\n * @description Defines domain-specific, tagged errors for window operations.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure that occurs within the `WindowService`, for example, when\n * failing to show a text document because the host could not find a corresponding editor.\n */\nexport class WindowProblem extends Data.TaggedError(\"WindowProblem\")<{\n\treadonly Cause: unknown;\n\treadonly Context: string;\n}> {}\n"],
-  "mappings": ";;AAKA,SAAS,YAAY;AAMd,MAAM,sBAAsB,KAAK,YAAY,eAAe,EAGhE;AAAA,EAdH,OAcG;AAAA;AAAA;AAAC;",
-  "names": []
-}

@@ -6,8 +6,8 @@
  */
 
 import { Effect } from "effect";
-import { Emitter } from "vs/base/common/event.js";
-import type { IExtensionDescription } from "vs/platform/extensions/common/extensions.js";
+import { Emitter } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
+import type { IExtensionDescription } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/extensions/common/extensions.js";
 import type {
 	Event,
 	Uri,

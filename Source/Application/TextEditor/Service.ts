@@ -7,19 +7,19 @@
  */
 
 import { Effect } from "effect";
-import { IFileService } from "vs/platform/files/common/files.js";
-import { IInstantiationService } from "vs/platform/instantiation/common/instantiation.js";
-import { ILogService } from "vs/platform/log/common/log.js";
-import { IUriIdentityService } from "vs/platform/uriIdentity/common/uriIdentity.js";
-import { IFilesConfigurationService } from "vs/workbench/services/filesConfiguration/common/filesConfigurationService.js";
-import { ILifecycleService } from "vs/workbench/services/lifecycle/common/lifecycle.js";
+import { IFileService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/files/common/files.js";
+import { IInstantiationService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/instantiation/common/instantiation.js";
+import { ILogService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
+import { IUriIdentityService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/uriIdentity/common/uriIdentity.js";
+import { IFilesConfigurationService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/filesConfiguration/common/filesConfigurationService.js";
+import { ILifecycleService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/lifecycle/common/lifecycle.js";
 import {
 	ITextFileService,
 	type ITextFileSaveOptions,
-} from "vs/workbench/services/textfile/common/textfiles.js";
-import { TextFileService as VSCodeTextFileService } from "vs/workbench/services/textfile/common/textFileService.js";
-import { IUntitledTextEditorService } from "vs/workbench/services/untitled/common/untitledTextEditorService.js";
-import { IWorkingCopyFileService } from "vs/workbench/services/workingCopy/common/workingCopyFileService.js";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/textfile/common/textfiles.js";
+import { TextFileService as VSCodeTextFileService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/textfile/common/textFileService.js";
+import { IUntitledTextEditorService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/untitled/common/untitledTextEditorService.js";
+import { IWorkingCopyFileService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/workingCopy/common/workingCopyFileService.js";
 
 import { type Uri } from "../../Platform/VSCode/Type.js";
 import { HostService } from "../Host/Service.js";

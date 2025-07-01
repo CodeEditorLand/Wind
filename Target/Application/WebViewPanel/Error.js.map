@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Application/WebViewPanel/Error.ts"],
-  "sourcesContent": ["/**\n * @module Error (Application/WebViewPanel)\n * @description Defines domain-specific, tagged errors for webview panel operations.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure that occurs during a webview panel operation, such as\n * failing to create a panel via the host or an error during its lifecycle.\n */\nexport class WebViewPanelProblem extends Data.TaggedError(\n\t\"WebViewPanelProblem\",\n)<{\n\treadonly Cause: unknown;\n\treadonly Context: string;\n}> {}\n"],
-  "mappings": ";;AAKA,SAAS,YAAY;AAMd,MAAM,4BAA4B,KAAK;AAAA,EAC7C;AACD,EAGG;AAAA,EAhBH,OAgBG;AAAA;AAAA;AAAC;",
-  "names": []
-}

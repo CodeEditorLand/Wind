@@ -1,10 +1,1 @@
-import { Layer } from "../../effect";
-import { IPCService } from "../IPC/Service.js";
-import { LoggerService } from "../Logger/Service.js";
-import { WindowService } from "../Window/Service.js";
-import { CommandService } from "./Service.js";
-const CommandLive = CommandService.Default;
-export {
-  CommandLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import"../IPC/Service.js";import"../Logger/Service.js";import"../Window/Service.js";import{CommandService as e}from"./Service.js";const n=e.Default;export{n as CommandLive};

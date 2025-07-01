@@ -5,10 +5,10 @@
  */
 
 import { Effect } from "effect";
-import { Emitter } from "vs/base/common/event.js";
-import { isEditorInput } from "vs/workbench/common/editor.js";
-import type { EditorInput } from "vs/workbench/common/editor/editorInput.js";
-import { isPreferredGroup } from "vs/workbench/services/editor/common/editorGroupFinder.js";
+import { Emitter } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
+import { isEditorInput } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/common/editor.js";
+import type { EditorInput } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/common/editor/editorInput.js";
+import { isPreferredGroup } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/editor/common/editorGroupFinder.js";
 import type {
 	IActiveEditorChangeEvent,
 	IEditorCloseEvent,
@@ -26,7 +26,7 @@ import type {
 	IUntitledTextResourceEditorInput,
 	IUntypedEditorInput,
 	PreferredGroup,
-} from "vs/workbench/services/editor/common/editorService.js";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/editor/common/editorService.js";
 
 import { HostService } from "../Host/Service.js";
 import { TextEditorService } from "../TextEditor/Service.js";

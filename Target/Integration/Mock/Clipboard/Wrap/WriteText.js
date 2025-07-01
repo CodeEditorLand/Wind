@@ -1,8 +1,1 @@
-var __defProp = Object.defineProperty;
-var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-import { Effect } from "../../../../effect";
-const MockWriteText = /* @__PURE__ */ __name((Text) => Effect.logInfo(`MockWriteText received: "${Text}"`).pipe(Effect.asVoid), "MockWriteText");
-export {
-  MockWriteText
-};
-//# sourceMappingURL=WriteText.js.map
+import{Effect as e}from"../../../../effect";const i=o=>e.logInfo(`MockWriteText received: "${o}"`).pipe(e.asVoid);export{i as MockWriteText};

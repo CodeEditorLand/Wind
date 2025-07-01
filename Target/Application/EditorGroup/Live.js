@@ -1,9 +1,1 @@
-import { Layer } from "../../effect";
-import { IInstantiationService } from "vs/platform/instantiation/common/instantiation.js";
-import { IStorageService } from "vs/platform/storage/common/storage.js";
-import { EditorGroupService } from "./Service.js";
-const EditorGroupLive = EditorGroupService.Default;
-export {
-  EditorGroupLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import"vs/platform/instantiation/common/instantiation.js";import"vs/platform/storage/common/storage.js";import{EditorGroupService as r}from"./Service.js";const p=r.Default;export{p as EditorGroupLive};

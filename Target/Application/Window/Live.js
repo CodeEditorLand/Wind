@@ -1,7 +1,1 @@
-import { Layer } from "../../effect";
-import { WindowService } from "./Service.js";
-const WindowLive = WindowService.Default;
-export {
-  WindowLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import"../Host/Service.js";import"../WorkSpace/Service.js";import{WindowService as e}from"./Service.js";const S=e.Default;export{S as WindowLive};

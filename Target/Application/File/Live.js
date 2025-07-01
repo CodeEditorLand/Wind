@@ -1,7 +1,1 @@
-import { Layer } from "../../effect";
-import { FileService } from "./Service.js";
-const FileLive = FileService.Default;
-export {
-  FileLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import"vs/platform/log/common/log.js";import"../FileSystem/Service.js";import{FileService as e}from"./Service.js";const c=e.Default;export{c as FileLive};

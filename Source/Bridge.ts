@@ -7,22 +7,22 @@
  * Tauri's IPC mechanism.
  */
 
+import { URI } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/uri.js";
 import { invoke as TauriInvoke } from "@tauri-apps/api/core";
 import {
 	emit as TauriEmit,
 	listen as TauriListen,
 	type Event as TauriEvent,
 } from "@tauri-apps/api/event";
-import { URI } from "vs/base/common/uri.js";
-import type { ISandboxConfiguration } from "vs/base/parts/sandbox/common/sandboxTypes.js";
+import type { ISandboxConfiguration } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/sandbox/common/sandboxTypes.js";
 import type {
 	IpcRenderer,
 	IpcRendererEvent,
-} from "vs/base/parts/sandbox/electron-browser/electronTypes";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/sandbox/electron-browser/electronTypes";
 import type {
 	IMainWindowSandboxGlobals,
 	ISandboxNodeProcess,
-} from "vs/base/parts/sandbox/electron-browser/globals";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/sandbox/electron-browser/globals";
 
 /**
  * A shim for the `ipcRenderer` object, adapting it to use Tauri's IPC.

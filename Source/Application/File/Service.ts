@@ -6,13 +6,13 @@
  */
 
 import { Effect } from "effect";
-import { Schemas } from "vs/base/common/network.js";
+import { Schemas } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/network.js";
 import type {
 	IFileService,
 	IFileSystemProvider,
-} from "vs/platform/files/common/files.js";
-import { FileService as VSCodeFileService } from "vs/platform/files/common/fileService.js";
-import { ILogService } from "vs/platform/log/common/log.js";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/files/common/files.js";
+import { FileService as VSCodeFileService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/files/common/fileService.js";
+import { ILogService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
 
 import { FileSystemService } from "../FileSystem/Service.js";
 

@@ -5,17 +5,17 @@
  */
 
 import { Effect } from "effect";
-import { IFileService } from "vs/platform/files/common/files.js";
-import { ILogService } from "vs/platform/log/common/log.js";
-import { IPolicyService } from "vs/platform/policy/common/policy.js";
-import { IUriIdentityService } from "vs/platform/uriIdentity/common/uriIdentity.js";
-import { IUserDataProfilesService } from "vs/platform/userDataProfile/common/userDataProfile.js";
-import type { IWorkspaceContextService } from "vs/platform/workspace/common/workspace.js";
-import { WorkspaceService as VSCodeWorkspaceService } from "vs/workbench/services/configuration/browser/configurationService.js";
-import { type IConfigurationCache } from "vs/workbench/services/configuration/common/configuration.js";
-import { IBrowserWorkbenchEnvironmentService } from "vs/workbench/services/environment/browser/environmentService.js";
-import { IRemoteAgentService } from "vs/workbench/services/remote/common/remoteAgentService.js";
-import { IUserDataProfileService } from "vs/workbench/services/userDataProfile/common/userDataProfile.js";
+import { IFileService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/files/common/files.js";
+import { ILogService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
+import { IPolicyService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/policy/common/policy.js";
+import { IUriIdentityService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/uriIdentity/common/uriIdentity.js";
+import { IUserDataProfilesService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/userDataProfile/common/userDataProfile.js";
+import type { IWorkspaceContextService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/workspace/common/workspace.js";
+import { WorkspaceService as VSCodeWorkspaceService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/configuration/browser/configurationService.js";
+import { type IConfigurationCache } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/configuration/common/configuration.js";
+import { IBrowserWorkbenchEnvironmentService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/environment/browser/environmentService.js";
+import { IRemoteAgentService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/remote/common/remoteAgentService.js";
+import { IUserDataProfileService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/userDataProfile/common/userDataProfile.js";
 
 /**
  * The `Effect.Service` for the `IWorkspaceContextService`.

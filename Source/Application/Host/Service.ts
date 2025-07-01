@@ -7,20 +7,20 @@
 
 import { type Event as TauriEvent } from "@tauri-apps/api/event";
 import { Effect, Option } from "effect";
-import { Emitter, type Event } from "vs/base/common/event.js";
-import type { IMarkdownString } from "vs/base/common/htmlContent.js";
-import type { ISandboxConfiguration } from "vs/base/parts/sandbox/common/sandboxTypes.js";
+import { Emitter, type Event } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
+import type { IMarkdownString } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/htmlContent.js";
+import type { ISandboxConfiguration } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/sandbox/common/sandboxTypes.js";
 import type {
 	IpcRenderer,
 	IpcRendererEvent,
-} from "vs/base/parts/sandbox/electron-browser/electronTypes.js";
-import type { INativeOpenDialogOptions } from "vs/platform/dialogs/common/dialogs.js";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/sandbox/electron-browser/electronTypes.js";
+import type { INativeOpenDialogOptions } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/dialogs/common/dialogs.js";
 import type {
 	IFileDeleteOptions,
 	IFileOverwriteOptions,
 	IFileWriteOptions,
-} from "vs/platform/files/common/files.js";
-import type { LogLevel } from "vs/platform/log/common/log.js";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/files/common/files.js";
+import type { LogLevel } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
 import type {
 	INotification,
 	IPromptChoice,
@@ -28,8 +28,8 @@ import type {
 	IStatusMessageOptions,
 	NotificationMessage,
 	Severity,
-} from "vs/platform/notification/common/notification.js";
-import type { URI } from "vs/workbench/workbench.web.main.internal.js";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/notification/common/notification.js";
+import type { URI } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/workbench.web.main.internal.js";
 import type {
 	AccessibilityInformation,
 	Command,

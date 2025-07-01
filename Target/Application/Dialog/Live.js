@@ -1,8 +1,1 @@
-import { Layer } from "../../effect";
-import { HostService } from "../Host/Service.js";
-import { DialogService } from "./Service.js";
-const DialogLive = DialogService.Default;
-export {
-  DialogLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import"../Host/Service.js";import{DialogService as e}from"./Service.js";const m=e.Default;export{m as DialogLive};

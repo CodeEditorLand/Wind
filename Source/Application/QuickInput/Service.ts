@@ -5,8 +5,8 @@
  */
 
 import { Effect, Option } from "effect";
-import { CancellationToken } from "vs/base/common/cancellation.js";
-import { Emitter } from "vs/base/common/event.js";
+import { CancellationToken } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/cancellation.js";
+import { Emitter } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
 import type {
 	IInputBox,
 	IQuickInputService,
@@ -14,7 +14,7 @@ import type {
 	IQuickPickItem,
 	IInputOptions as VSCodeInputOptions,
 	IPickOptions as VSCodePickOptions,
-} from "vs/platform/quickinput/common/quickInput.js";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/quickinput/common/quickInput.js";
 
 import {
 	ToDTOFromInput as InputBoxToDTO,

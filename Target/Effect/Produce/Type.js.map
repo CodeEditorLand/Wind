@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Effect/Produce/Type.ts"],
-  "sourcesContent": ["/**\n * @module Type (Effect/Produce)\n * @description Type definitions for the FromAsync helper.\n * This file is a stub created to resolve dependencies.\n */\n\nimport { Cause } from \"effect\";\n\nexport type AsyncFunction<Argument extends any[], Value> = (\n\t...args: Argument\n) => Promise<Value>;\n\nexport type ErrorProducer<\n\tErrorData extends Record<string, any>,\n\tErrorType extends Cause.YieldableError & {\n\t\treadonly _tag: string;\n\t\treadonly cause: unknown;\n\t} & ErrorData,\n> = new (properties: { readonly cause: unknown } & ErrorData) => ErrorType;\n"],
-  "mappings": "AAMA,SAAS,aAAa;",
-  "names": []
-}

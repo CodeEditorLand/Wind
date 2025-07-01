@@ -1,7 +1,1 @@
-import { Layer } from "../../effect";
-import { WebViewPanelService } from "./Service.js";
-const WebViewPanelLive = WebViewPanelService.Default;
-export {
-  WebViewPanelLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import"../IPC/Service.js";import{WebViewPanelService as e}from"./Service.js";const t=e.Default;export{t as WebViewPanelLive};

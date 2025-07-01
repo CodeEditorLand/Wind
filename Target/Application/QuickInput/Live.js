@@ -1,7 +1,1 @@
-import { Layer } from "../../effect";
-import { QuickInputService } from "./Service.js";
-const QuickInputLive = QuickInputService.Default;
-export {
-  QuickInputLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import"../Host/Service.js";import{QuickInputService as e}from"./Service.js";const p=e.Default;export{p as QuickInputLive};

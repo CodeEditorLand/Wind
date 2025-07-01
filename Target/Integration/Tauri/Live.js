@@ -1,7 +1,1 @@
-import { Layer } from "../../effect";
-import { IntegrationService } from "./Service.js";
-const IntegrationLive = IntegrationService.Default;
-export {
-  IntegrationLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import{IntegrationService as e}from"./Service.js";const i=e.Default;export{i as IntegrationLive};

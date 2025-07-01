@@ -1,9 +1,1 @@
-import { Layer } from "../../effect";
-import { ILogService } from "vs/platform/log/common/log.js";
-import { IntegrationService } from "../../Integration/Tauri/Service.js";
-import { StorageService } from "./Service.js";
-const StorageLive = StorageService.Default;
-export {
-  StorageLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import"vs/platform/log/common/log.js";import"../../Integration/Tauri/Service.js";import{StorageService as e}from"./Service.js";const v=e.Default;export{v as StorageLive};

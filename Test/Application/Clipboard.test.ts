@@ -7,7 +7,7 @@ import { Effect, Layer, Runtime } from "effect";
 // Using vitest as an example test runner
 import { describe, expect, it } from "vitest";
 
-import { URI } from "vs/base/common/uri.js";
+import { URI } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/uri.js";
 
 import {
 	ClipboardServiceTag,

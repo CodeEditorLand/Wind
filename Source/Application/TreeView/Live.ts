@@ -4,8 +4,8 @@
  */
 
 import { Layer } from "effect";
-import { ILogService } from "vs/platform/log/common/log.js";
-import { IViewsService } from "vs/workbench/common/views.js";
+import { ILogService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
+import { IViewsService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/common/views.js";
 
 import { TreeViewService } from "./Service.js";
 

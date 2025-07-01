@@ -8,7 +8,7 @@ import { Effect, Option } from "effect";
 import type {
 	INativeOpenDialogOptions,
 	ISaveDialogOptions,
-} from "vs/platform/dialogs/common/dialogs.js";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/dialogs/common/dialogs.js";
 import type { OpenDialogOptions, SaveDialogOptions, Uri } from "vscode";
 
 import { HostService } from "../Host/Service.js";

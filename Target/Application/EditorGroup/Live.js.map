@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Application/EditorGroup/Live.ts"],
-  "sourcesContent": ["/**\n * @module Live (Application/EditorGroup)\n * @description Provides the \"live\" implementation `Layer` for the EditorGroup service.\n */\n\nimport { Layer } from \"effect\";\nimport { IInstantiationService } from \"vs/platform/instantiation/common/instantiation.js\";\nimport { IStorageService } from \"vs/platform/storage/common/storage.js\";\n\nimport { EditorGroupService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `EditorGroupService`.\n *\n * This layer is derived directly from the default implementation provided\n * in the `EditorGroupService` service definition. It automatically includes the\n * dependencies required by its `effect` constructor, which are the\n * `IInstantiationService` and `IStorageService`.\n */\nexport const EditorGroupLive: Layer.Layer<\n\tEditorGroupService,\n\tnever,\n\tIInstantiationService | IStorageService\n> = EditorGroupService.Default;\n"],
-  "mappings": "AAKA,SAAS,aAAa;AACtB,SAAS,6BAA6B;AACtC,SAAS,uBAAuB;AAEhC,SAAS,0BAA0B;AAU5B,MAAM,kBAIT,mBAAmB;",
-  "names": []
-}

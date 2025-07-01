@@ -1,13 +1,1 @@
-import { Layer } from "../../effect";
-import { IContextKeyService } from "vs/platform/contextkey/common/contextkey.js";
-import { IInstantiationService } from "vs/platform/instantiation/common/instantiation.js";
-import { ILogService } from "vs/platform/log/common/log.js";
-import { IStorageService } from "vs/platform/storage/common/storage.js";
-import { IWorkspaceContextService } from "vs/platform/workspace/common/workspace.js";
-import { IntegrationService } from "../../Integration/Tauri/Service.js";
-import { SourceControlManagementService } from "./Service.js";
-const SourceControlManagementLive = SourceControlManagementService.Default;
-export {
-  SourceControlManagementLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import"vs/platform/contextkey/common/contextkey.js";import"vs/platform/instantiation/common/instantiation.js";import"vs/platform/log/common/log.js";import"vs/platform/storage/common/storage.js";import"vs/platform/workspace/common/workspace.js";import"../../Integration/Tauri/Service.js";import{SourceControlManagementService as e}from"./Service.js";const L=e.Default;export{L as SourceControlManagementLive};

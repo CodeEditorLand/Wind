@@ -5,8 +5,8 @@
  * managing delegated commands for IPC transport.
  */
 
-import type { IDisposable } from "vs/base/common/lifecycle.js";
-import { generateUuid } from "vs/base/common/uuid.js";
+import type { IDisposable } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/lifecycle.js";
+import { generateUuid } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/uuid.js";
 import type { Command as VSCodeCommand } from "vscode";
 
 import { type CommandService } from "./Service.js";

@@ -1,9 +1,1 @@
-import { Layer } from "../../effect";
-import { IPCService } from "../IPC/Service.js";
-import { LoggerService } from "../Logger/Service.js";
-import { DocumentService } from "./Service.js";
-const DocumentLive = DocumentService.Default;
-export {
-  DocumentLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import"../IPC/Service.js";import"../Logger/Service.js";import{DocumentService as e}from"./Service.js";const L=e.Default;export{L as DocumentLive};

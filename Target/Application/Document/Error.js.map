@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Application/Document/Error.ts"],
-  "sourcesContent": ["/**\n * @module Error (Application/Document)\n * @description Defines domain-specific, tagged errors for document operations\n * at the application layer.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure that occurs when a requested document cannot be found.\n */\nexport class DocumentNotFoundProblem extends Data.TaggedError(\n\t\"DocumentNotFoundProblem\",\n)<{\n\treadonly Uri: string;\n}> {}\n\n/**\n * Represents a failure during the registration of a content provider.\n */\nexport class ContentProviderProblem extends Data.TaggedError(\n\t\"ContentProviderProblem\",\n)<{\n\treadonly Cause: unknown;\n\treadonly Scheme: string;\n\treadonly Context: string;\n}> {}\n"],
-  "mappings": ";;AAMA,SAAS,YAAY;AAKd,MAAM,gCAAgC,KAAK;AAAA,EACjD;AACD,EAEG;AAAA,EAfH,OAeG;AAAA;AAAA;AAAC;AAKG,MAAM,+BAA+B,KAAK;AAAA,EAChD;AACD,EAIG;AAAA,EA1BH,OA0BG;AAAA;AAAA;AAAC;",
-  "names": []
-}

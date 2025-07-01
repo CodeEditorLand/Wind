@@ -1,7 +1,1 @@
-import { Layer } from "../../effect";
-import { LoggerService } from "./Service.js";
-const LoggerLive = LoggerService.Default;
-export {
-  LoggerLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import"../Host/Service.js";import{LoggerService as e}from"./Service.js";const g=e.Default;export{g as LoggerLive};

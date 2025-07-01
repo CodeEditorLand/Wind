@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Application/Logger/Error.ts"],
-  "sourcesContent": ["/**\n * @module Error (Application/Logger)\n * @description Defines domain-specific, tagged errors for logging\n * operations at the application layer.\n */\n\nimport { Data } from \"effect\";\n\n/**\n * Represents a failure that occurs during a logging operation, such as the\n * inability to forward a log message to the native host.\n */\nexport class LoggerProblem extends Data.TaggedError(\"LoggerProblem\")<{\n\treadonly Cause: unknown;\n\treadonly Context: string;\n}> {}\n"],
-  "mappings": ";;AAMA,SAAS,YAAY;AAMd,MAAM,sBAAsB,KAAK,YAAY,eAAe,EAGhE;AAAA,EAfH,OAeG;AAAA;AAAA;AAAC;",
-  "names": []
-}

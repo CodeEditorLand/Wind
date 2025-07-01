@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../Source/Application/Window/Live.ts"],
-  "sourcesContent": ["/**\n * @module Live (Application/Window)\n * @description Provides the \"live\" implementation `Layer` for the Window service.\n */\n\nimport { Layer } from \"effect\";\n\nimport { WindowService } from \"./Service.js\";\n\n/**\n * The live implementation `Layer` for the `WindowService`.\n *\n * It automatically includes dependencies required by its `effect` constructor,\n * such as the `HostService` and `WorkSpaceService`.\n */\nexport const WindowLive: Layer.Layer<WindowService> = WindowService.Default;\n"],
-  "mappings": "AAKA,SAAS,aAAa;AAEtB,SAAS,qBAAqB;AAQvB,MAAM,aAAyC,cAAc;",
-  "names": []
-}

@@ -1,14 +1,1 @@
-var __defProp = Object.defineProperty;
-var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-import { Data } from "../../effect";
-class WebViewPanelProblem extends Data.TaggedError(
-  "WebViewPanelProblem"
-) {
-  static {
-    __name(this, "WebViewPanelProblem");
-  }
-}
-export {
-  WebViewPanelProblem
-};
-//# sourceMappingURL=Error.js.map
+import{Data as e}from"../../effect";class o extends e.TaggedError("WebViewPanelProblem"){}export{o as WebViewPanelProblem};

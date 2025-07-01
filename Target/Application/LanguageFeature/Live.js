@@ -1,7 +1,1 @@
-import { Layer } from "../../effect";
-import { LanguageFeatureService } from "./Service.js";
-const LanguageFeatureLive = LanguageFeatureService.Default;
-export {
-  LanguageFeatureLive
-};
-//# sourceMappingURL=Live.js.map
+import"../../effect";import{LanguageFeatureService as e}from"./Service.js";const u=e.Default;export{u as LanguageFeatureLive};

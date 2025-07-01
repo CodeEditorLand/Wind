@@ -8,10 +8,10 @@
 import * as Grpc from "@grpc/grpc-js";
 import * as ProtoLoader from "@grpc/proto-loader";
 import { Effect, Ref } from "effect";
-import { VSBuffer } from "vs/base/common/buffer.js";
-import { Emitter } from "vs/base/common/event.js";
-import type { IMessagePassingProtocol } from "vs/base/parts/ipc/common/ipc.js";
-import { RPCProtocol } from "vs/workbench/services/extensions/common/rpcProtocol.js";
+import { VSBuffer } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/buffer.js";
+import { Emitter } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
+import type { IMessagePassingProtocol } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/ipc/common/ipc.js";
+import { RPCProtocol } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/extensions/common/rpcProtocol.js";
 import type { Disposable } from "vscode";
 
 import { CancellationService } from "../Cancellation/Service.js";
