@@ -37,7 +37,11 @@
 		"@opentelemetry/sdk-metrics": "2.0.1",
 		"@opentelemetry/sdk-trace-base": "2.0.1",
 		"@opentelemetry/sdk-trace-web": "2.0.1",
+<<<<<<< HEAD
 		"@playform/build": "0.2.5",
+=======
+		"@playform/build": "0.2.4",
+>>>>>>> 534164ba2d398b3686da4096bb428b9b10b32451
 		"@types/node": "24.0.8",
 		"cross-env": "7.0.3",
 		"deepmerge-ts": "7.1.5",
