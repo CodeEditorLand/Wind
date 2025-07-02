@@ -5,8 +5,8 @@
  */
 
 import { Effect } from "effect";
-import { Emitter } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event";
-import { ICommandService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/commands/common/commands.js";
+import { Emitter } from "@codeeditorland/output/vs/base/common/event";
+import { ICommandService } from "@codeeditorland/output/vs/platform/commands/common/commands.js";
 import type {
 	INotification,
 	INotificationHandle,
@@ -16,9 +16,9 @@ import type {
 	IStatusMessageOptions,
 	NotificationMessage,
 	Severity,
-} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/notification/common/notification.js";
-import { IStorageService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/storage/common/storage.js";
-import { NotificationService as VSCodeNotificationService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/notification/common/notificationService.js";
+} from "@codeeditorland/output/vs/platform/notification/common/notification.js";
+import { IStorageService } from "@codeeditorland/output/vs/platform/storage/common/storage.js";
+import { NotificationService as VSCodeNotificationService } from "@codeeditorland/output/vs/workbench/services/notification/common/notificationService.js";
 
 import { HostService } from "../Host/Service.js";
 

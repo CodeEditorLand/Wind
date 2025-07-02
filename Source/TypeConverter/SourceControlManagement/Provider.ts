@@ -3,14 +3,14 @@
  * @description Implements the type converter for SCM Provider DTOs.
  */
 
-import { Emitter } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event";
-import { observableValue, type IObservable } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/observable";
-import { URI } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/uri.js";
-import type { ITextModel } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/editor/common/model";
+import { Emitter } from "@codeeditorland/output/vs/base/common/event";
+import { observableValue, type IObservable } from "@codeeditorland/output/vs/base/common/observable";
+import { URI } from "@codeeditorland/output/vs/base/common/uri.js";
+import type { ITextModel } from "@codeeditorland/output/vs/editor/common/model";
 import type {
 	ISCMProvider,
 	ISCMRepository,
-} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/contrib/scm/common/scm.js";
+} from "@codeeditorland/output/vs/workbench/contrib/scm/common/scm.js";
 import type {
 	Command,
 	ISCMActionButtonDescriptor,

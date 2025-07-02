@@ -11,7 +11,7 @@
  */
 
 import { Effect, Runtime } from "effect";
-import type { IClipboardService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/clipboard/common/clipboardService.js";
+import type { IClipboardService } from "@codeeditorland/output/vs/platform/clipboard/common/clipboardService.js";
 
 import type { IntegrationClipboardProblem } from "../../Integration/Tauri/Clipboard/Error.js";
 import {

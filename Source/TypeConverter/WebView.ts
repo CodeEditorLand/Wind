@@ -3,7 +3,7 @@
  * @description Type converters for the `vscode.Webview` and `vscode.WebviewPanel` APIs.
  */
 
-import type { IExtensionDescription } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/extensions/common/extensions.js";
+import type { IExtensionDescription } from "@codeeditorland/output/vs/platform/extensions/common/extensions.js";
 import type { ViewColumn, WebviewOptions, WebviewPanelOptions } from "vscode";
 
 import { FromAPI as ViewColumnFromAPI } from "./Main/ViewColumn.js";

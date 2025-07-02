@@ -4,7 +4,7 @@
  */
 
 import { Layer } from "effect";
-import { ILogService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
+import { ILogService } from "@codeeditorland/output/vs/platform/log/common/log.js";
 
 import { IntegrationService } from "../../Integration/Tauri/Service.js";
 import { StorageService } from "./Service.js";

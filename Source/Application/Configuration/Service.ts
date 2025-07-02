@@ -7,15 +7,15 @@
 
 import { deepmerge } from "deepmerge-ts";
 import { Effect } from "effect";
-import { Emitter } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
-import { joinPath } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/resources.js";
+import { Emitter } from "@codeeditorland/output/vs/base/common/event.js";
+import { joinPath } from "@codeeditorland/output/vs/base/common/resources.js";
 import type {
 	IConfigurationChangeEvent,
 	IConfigurationData,
 	IConfigurationOverrides,
 	IConfigurationService,
 	IConfigurationValue,
-} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/configuration/common/configuration.js";
+} from "@codeeditorland/output/vs/platform/configuration/common/configuration.js";
 
 import type { IntegrationConfigurationProblem } from "../../Integration/Tauri/Configuration/Error.js";
 import { ParseJSON } from "../../Integration/Tauri/File/ParseJSON.js";

@@ -4,14 +4,14 @@
  */
 
 import { Layer } from "effect";
-import { IFileService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/files/common/files.js";
-import { IInstantiationService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/instantiation/common/instantiation.js";
-import { ILogService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
-import { IUriIdentityService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/uriIdentity/common/uriIdentity.js";
-import { IFilesConfigurationService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/filesConfiguration/common/filesConfigurationService.js";
-import { ILifecycleService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/lifecycle/common/lifecycle.js";
-import { IUntitledTextEditorService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/untitled/common/untitledTextEditorService.js";
-import { IWorkingCopyFileService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/workingCopy/common/workingCopyFileService.js";
+import { IFileService } from "@codeeditorland/output/vs/platform/files/common/files.js";
+import { IInstantiationService } from "@codeeditorland/output/vs/platform/instantiation/common/instantiation.js";
+import { ILogService } from "@codeeditorland/output/vs/platform/log/common/log.js";
+import { IUriIdentityService } from "@codeeditorland/output/vs/platform/uriIdentity/common/uriIdentity.js";
+import { IFilesConfigurationService } from "@codeeditorland/output/vs/workbench/services/filesConfiguration/common/filesConfigurationService.js";
+import { ILifecycleService } from "@codeeditorland/output/vs/workbench/services/lifecycle/common/lifecycle.js";
+import { IUntitledTextEditorService } from "@codeeditorland/output/vs/workbench/services/untitled/common/untitledTextEditorService.js";
+import { IWorkingCopyFileService } from "@codeeditorland/output/vs/workbench/services/workingCopy/common/workingCopyFileService.js";
 
 import { HostService } from "../Host/Service.js";
 import { TextEditorService } from "./Service.js";

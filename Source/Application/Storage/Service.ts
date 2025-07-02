@@ -5,18 +5,18 @@
  */
 
 import { Effect } from "effect";
-import type { IStorage } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/storage/common/storage.js";
-import { ILogService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
+import type { IStorage } from "@codeeditorland/output/vs/base/parts/storage/common/storage.js";
+import { ILogService } from "@codeeditorland/output/vs/platform/log/common/log.js";
 import {
 	AbstractStorageService,
 	StorageScope,
 	type IStorageService,
-} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/storage/common/storage.js";
+} from "@codeeditorland/output/vs/platform/storage/common/storage.js";
 import {
 	isUserDataProfile,
 	type IUserDataProfile,
-} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/userDataProfile/common/userDataProfile.js";
-import type { IAnyWorkspaceIdentifier } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/workspace/common/workspace.js";
+} from "@codeeditorland/output/vs/platform/userDataProfile/common/userDataProfile.js";
+import type { IAnyWorkspaceIdentifier } from "@codeeditorland/output/vs/platform/workspace/common/workspace.js";
 
 import { IntegrationService } from "../../Integration/Tauri/Service.js";
 import { EffectStorage } from "./Storage.js";

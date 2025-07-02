@@ -7,7 +7,7 @@ import type {
 	IInputOptions,
 	IPickOptions,
 	IQuickPickItem,
-} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/quickinput/common/quickInput.js";
+} from "@codeeditorland/output/vs/platform/quickinput/common/quickInput.js";
 
 /**
  * The Data Transfer Object for a `IQuickPickItem`.

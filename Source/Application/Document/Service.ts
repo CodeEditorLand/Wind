@@ -5,10 +5,10 @@
  */
 
 import { Effect, HashMap, Option, Ref } from "effect";
-import { Emitter } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
-import type { IModelChangedEvent } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/editor/common/model/mirrorTextModel.js";
-import type { MainThreadDocumentsShape } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/api/common/extHost.protocol.js";
-import { ExtHostDocumentData } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/api/common/extHostDocumentData.js";
+import { Emitter } from "@codeeditorland/output/vs/base/common/event.js";
+import type { IModelChangedEvent } from "@codeeditorland/output/vs/editor/common/model/mirrorTextModel.js";
+import type { MainThreadDocumentsShape } from "@codeeditorland/output/vs/workbench/api/common/extHost.protocol.js";
+import { ExtHostDocumentData } from "@codeeditorland/output/vs/workbench/api/common/extHostDocumentData.js";
 import type {
 	Disposable,
 	Event,

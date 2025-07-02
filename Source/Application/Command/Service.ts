@@ -5,8 +5,8 @@
  */
 
 import { Effect, Ref } from "effect";
-import type { IDisposable } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/lifecycle.js";
-import type { MainThreadCommandsShape } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/api/common/extHost.protocol.js";
+import type { IDisposable } from "@codeeditorland/output/vs/base/common/lifecycle.js";
+import type { MainThreadCommandsShape } from "@codeeditorland/output/vs/workbench/api/common/extHost.protocol.js";
 import type { TextEditor, TextEditorEdit } from "vscode";
 
 import { IPCService } from "../IPC/Service.js";

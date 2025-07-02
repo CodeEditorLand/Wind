@@ -6,23 +6,23 @@
  */
 
 import { Effect, Ref } from "effect";
-import { Emitter, Event } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
-import { IInstantiationService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/instantiation/common/instantiation.js";
+import { Emitter, Event } from "@codeeditorland/output/vs/base/common/event.js";
+import { IInstantiationService } from "@codeeditorland/output/vs/platform/instantiation/common/instantiation.js";
 import {
 	IStorageService,
 	StorageScope,
 	StorageTarget,
-} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/storage/common/storage.js";
+} from "@codeeditorland/output/vs/platform/storage/common/storage.js";
 import {
 	EditorGroupModel,
 	type ISerializedEditorGroupModel,
-} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/common/editor/editorGroupModel.js";
+} from "@codeeditorland/output/vs/workbench/common/editor/editorGroupModel.js";
 import {
 	GroupDirection,
 	GroupsOrder,
 	type IEditorGroup,
 	type IEditorGroupService,
-} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/editor/common/editorGroupsService.js";
+} from "@codeeditorland/output/vs/workbench/services/editor/common/editorGroupsService.js";
 
 import { EditorGroupProblem } from "./Error.js";
 

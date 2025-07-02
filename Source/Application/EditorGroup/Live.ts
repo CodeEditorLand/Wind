@@ -4,8 +4,8 @@
  */
 
 import { Layer } from "effect";
-import { IInstantiationService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/instantiation/common/instantiation.js";
-import { IStorageService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/storage/common/storage.js";
+import { IInstantiationService } from "@codeeditorland/output/vs/platform/instantiation/common/instantiation.js";
+import { IStorageService } from "@codeeditorland/output/vs/platform/storage/common/storage.js";
 
 import { EditorGroupService } from "./Service.js";
 

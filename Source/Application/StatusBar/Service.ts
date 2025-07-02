@@ -5,9 +5,9 @@
  */
 
 import { Effect, Ref } from "effect";
-import { generateUuid } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/uuid.js";
-import type { IExtensionDescription } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/extensions/common/extensions.js";
-import type { IStatusbarService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/statusbar/browser/statusbar.js";
+import { generateUuid } from "@codeeditorland/output/vs/base/common/uuid.js";
+import type { IExtensionDescription } from "@codeeditorland/output/vs/platform/extensions/common/extensions.js";
+import type { IStatusbarService } from "@codeeditorland/output/vs/workbench/services/statusbar/browser/statusbar.js";
 import {
 	Disposable,
 	StatusBarAlignment,

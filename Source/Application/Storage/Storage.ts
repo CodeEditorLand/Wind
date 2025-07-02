@@ -5,13 +5,13 @@
  */
 
 import { Effect } from "effect";
-import { Emitter, type Event } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
+import { Emitter, type Event } from "@codeeditorland/output/vs/base/common/event.js";
 import {
 	type IStorage,
 	type IStorageChangeEvent,
 	type IUpdateRequest,
 	type StorageValue,
-} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/storage/common/storage.js";
+} from "@codeeditorland/output/vs/base/parts/storage/common/storage.js";
 
 import { IntegrationService } from "../../Integration/Tauri/Service.js";
 import type { StorageDatabase } from "./Database.js";

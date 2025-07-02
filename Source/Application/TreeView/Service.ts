@@ -6,9 +6,9 @@
  */
 
 import { Effect } from "effect";
-import { Emitter, type Event } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
-import { ILogService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
-import { IViewsService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/common/views.js";
+import { Emitter, type Event } from "@codeeditorland/output/vs/base/common/event.js";
+import { ILogService } from "@codeeditorland/output/vs/platform/log/common/log.js";
+import { IViewsService } from "@codeeditorland/output/vs/workbench/common/views.js";
 import type { TreeDataProvider, TreeItem, TreeView } from "vscode";
 
 import { IntegrationService } from "../../Integration/Tauri/Service.js";

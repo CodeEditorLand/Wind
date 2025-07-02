@@ -5,16 +5,16 @@
  */
 
 import { Effect } from "effect";
-import { IContextKeyService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/contextkey/common/contextkey.js";
-import { IInstantiationService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/instantiation/common/instantiation.js";
-import { ILogService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
-import { IStorageService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/storage/common/storage.js";
-import { IWorkspaceContextService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/workspace/common/workspace.js";
+import { IContextKeyService } from "@codeeditorland/output/vs/platform/contextkey/common/contextkey.js";
+import { IInstantiationService } from "@codeeditorland/output/vs/platform/instantiation/common/instantiation.js";
+import { ILogService } from "@codeeditorland/output/vs/platform/log/common/log.js";
+import { IStorageService } from "@codeeditorland/output/vs/platform/storage/common/storage.js";
+import { IWorkspaceContextService } from "@codeeditorland/output/vs/platform/workspace/common/workspace.js";
 import {
 	ISCMService,
 	type ISCMProvider,
-} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/contrib/scm/common/scm.js";
-import { SCMService as VSCodeSCMService } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/contrib/scm/common/scmService.js";
+} from "@codeeditorland/output/vs/workbench/contrib/scm/common/scm.js";
+import { SCMService as VSCodeSCMService } from "@codeeditorland/output/vs/workbench/contrib/scm/common/scmService.js";
 
 import { IntegrationService } from "../../Integration/Tauri/Service.js";
 import { FromDTO as ProviderFromDTO } from "../../TypeConverter/SourceControlManagement/Provider.js";
