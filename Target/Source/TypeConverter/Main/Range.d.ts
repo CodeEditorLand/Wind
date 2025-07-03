@@ -2,9 +2,8 @@
  * @module Range (TypeConverter/Main)
  * @description Converts between `vscode.Range` and its DTO representation (`IRange`).
  */
-import type { IRange } from "vs/editor/common/core/range.js";
+import type { IRange } from "@codeeditorland/output/vs/editor/common/core/range.js";
 import type { Range as VSCodeRange } from "vscode";
-
 /**
  * Converts a `vscode.Range` object into a plain DTO.
  * Note the conversion from 0-based (VS Code API) to 1-based (internal DTO) indexing.
@@ -19,3 +18,4 @@ export declare const FromAPI: (RangeInstance: VSCodeRange) => IRange;
  * @returns A new `vscode.Range` instance.
  */
 export declare const ToAPI: (RangeDTO: IRange) => VSCodeRange;
+//# sourceMappingURL=Range.d.ts.map

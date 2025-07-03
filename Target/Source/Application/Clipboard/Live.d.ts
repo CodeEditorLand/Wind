@@ -4,9 +4,7 @@
  * This layer is responsible for constructing the live `Clipboard` service instance.
  */
 import { Layer } from "effect";
-
 import { Clipboard } from "./Service.js";
-
 /**
  * The live implementation `Layer` for the `Clipboard` service.
  *
@@ -15,3 +13,4 @@ import { Clipboard } from "./Service.js";
  * external service dependencies, as its definition encapsulates all necessary logic.
  */
 export declare const ClipboardLive: Layer.Layer<Clipboard>;
+//# sourceMappingURL=Live.d.ts.map

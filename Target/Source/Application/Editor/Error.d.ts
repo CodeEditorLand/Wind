@@ -4,13 +4,8 @@
  * at the application layer.
  */
 import type { HostServiceProblem } from "../Host/Error.js";
-
-declare const EditorProblem_base: new <A extends Record<string, any> = {}>(
-	args: import("effect/Types").Equals<A, {}> extends true
-		? void
-		: { readonly [P in keyof A as P extends "_tag" ? never : P]: A[P] },
-) => import("effect/Cause").YieldableError & {
-	readonly _tag: "EditorProblem";
+declare const EditorProblem_base: new <A extends Record<string, any> = {}>(args: import("effect/Types").Equals<A, {}> extends true ? void : { readonly [P in keyof A as P extends "_tag" ? never : P]: A[P]; }) => import("effect/Cause").YieldableError & {
+    readonly _tag: "EditorProblem";
 } & Readonly<A>;
 /**
  * Represents a failure within the `EditorService`.
@@ -19,7 +14,9 @@ declare const EditorProblem_base: new <A extends Record<string, any> = {}>(
  * when trying to open a file.
  */
 export declare class EditorProblem extends EditorProblem_base<{
-	readonly Cause: HostServiceProblem | Error;
-	readonly Context: string;
-}> {}
+    readonly Cause: HostServiceProblem | Error;
+    readonly Context: string;
+}> {
+}
 export {};
+//# sourceMappingURL=Error.d.ts.map

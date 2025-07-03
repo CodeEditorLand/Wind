@@ -3,9 +3,7 @@
  * @description Provides the "live" implementation `Layer` for the Configuration service.
  */
 import { Layer } from "effect";
-
 import { Configuration } from "./Service.js";
-
 /**
  * The live implementation `Layer` for the `Configuration` service.
  *
@@ -16,3 +14,4 @@ import { Configuration } from "./Service.js";
  * inferred and added to this layer's context requirements.
  */
 export declare const ConfigurationLive: Layer.Layer<Configuration, never, any>;
+//# sourceMappingURL=Live.d.ts.map

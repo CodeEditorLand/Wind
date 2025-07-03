@@ -5,15 +5,8 @@
  */
 import type { IntegrationConfigurationProblem } from "../../Integration/Tauri/Configuration/Error.js";
 import type { IntegrationPathProblem } from "../../Integration/Tauri/Path/Error.js";
-
-declare const ApplicationConfigurationProblem_base: new <
-	A extends Record<string, any> = {},
->(
-	args: import("effect/Types").Equals<A, {}> extends true
-		? void
-		: { readonly [P in keyof A as P extends "_tag" ? never : P]: A[P] },
-) => import("effect/Cause").YieldableError & {
-	readonly _tag: "ApplicationConfigurationProblem";
+declare const ApplicationConfigurationProblem_base: new <A extends Record<string, any> = {}>(args: import("effect/Types").Equals<A, {}> extends true ? void : { readonly [P in keyof A as P extends "_tag" ? never : P]: A[P]; }) => import("effect/Cause").YieldableError & {
+    readonly _tag: "ApplicationConfigurationProblem";
 } & Readonly<A>;
 /**
  * Represents a failure within the `Configuration` application service.
@@ -24,9 +17,11 @@ declare const ApplicationConfigurationProblem_base: new <
  * while preserving the original cause for detailed logging and debugging.
  */
 export declare class ApplicationConfigurationProblem extends ApplicationConfigurationProblem_base<{
-	/** The underlying problem from the Integration layer that caused this failure. */
-	readonly Cause: IntegrationConfigurationProblem | IntegrationPathProblem;
-	/** A string describing the context of the operation (e.g., 'FailedToResolveConfiguration'). */
-	readonly Context: string;
-}> {}
+    /** The underlying problem from the Integration layer that caused this failure. */
+    readonly Cause: IntegrationConfigurationProblem | IntegrationPathProblem;
+    /** A string describing the context of the operation (e.g., 'FailedToResolveConfiguration'). */
+    readonly Context: string;
+}> {
+}
 export {};
+//# sourceMappingURL=Error.d.ts.map

@@ -3,9 +3,7 @@
  * @description Provides the live implementation `Layer` for the Integration service.
  */
 import { Layer } from "effect";
-
 import { IntegrationService } from "./Service.js";
-
 /**
  * The live implementation `Layer` for the `IntegrationService`.
  *
@@ -13,3 +11,4 @@ import { IntegrationService } from "./Service.js";
  * in the service definition.
  */
 export declare const IntegrationLive: Layer.Layer<IntegrationService>;
+//# sourceMappingURL=Live.d.ts.map

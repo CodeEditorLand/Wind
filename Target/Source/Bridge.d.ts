@@ -7,3 +7,4 @@
  * Tauri's IPC mechanism.
  */
 export {};
+//# sourceMappingURL=Bridge.d.ts.map

@@ -4,18 +4,10 @@
  * `ILogService`, which provides logging capabilities to the application.
  */
 import { Effect } from "effect";
-
-declare const LoggerService_base: Effect.Service.Class<
-	VSCodeLogService,
-	"loggerService",
-	{
-		readonly effect: Effect.Effect<
-			any,
-			never,
-			import("../Host/Service.js").Host
-		>;
-	}
->;
+import { type ILogService as VSCodeLogService } from "@codeeditorland/output/vs/platform/log/common/log.js";
+declare const LoggerService_base: Effect.Service.Class<VSCodeLogService, "loggerService", {
+    readonly effect: Effect.Effect<any, never, import("../Host/Service.js").Host>;
+}>;
 /**
  * The `Effect.Service` for the `ILogService`.
  *
@@ -25,5 +17,7 @@ declare const LoggerService_base: Effect.Service.Class<
  * `Mountain` host via the `HostService`. This ensures that all workbench logs
  * are centrally managed by the native backend.
  */
-export declare class LoggerService extends LoggerService_base {}
+export declare class LoggerService extends LoggerService_base {
+}
 export {};
+//# sourceMappingURL=Service.d.ts.map

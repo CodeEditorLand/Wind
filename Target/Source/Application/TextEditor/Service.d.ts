@@ -6,14 +6,10 @@
  * VS Code service it implements (`textFileService.ts`).
  */
 import { Effect } from "effect";
-
-declare const TextEditorService_base: Effect.Service.Class<
-	ITextFileService,
-	"textFileService",
-	{
-		readonly effect: Effect.Effect<ITextFileService, unknown, unknown>;
-	}
->;
+import { ITextFileService } from "@codeeditorland/output/vs/workbench/services/textfile/common/textfiles.js";
+declare const TextEditorService_base: Effect.Service.Class<ITextFileService, "textFileService", {
+    readonly effect: Effect.Effect<ITextFileService, unknown, unknown>;
+}>;
 /**
  * The `Effect.Service` for the `ITextFileService`.
  *
@@ -23,5 +19,7 @@ declare const TextEditorService_base: Effect.Service.Class<
  * native `Mountain` backend. All other dependencies are resolved from the DI
  * container, showcasing the hybrid DI model.
  */
-export declare class TextEditorService extends TextEditorService_base {}
+export declare class TextEditorService extends TextEditorService_base {
+}
 export {};
+//# sourceMappingURL=Service.d.ts.map

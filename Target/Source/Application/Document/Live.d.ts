@@ -3,11 +3,9 @@
  * @description Provides the "live" implementation `Layer` for the Document service.
  */
 import { Layer } from "effect";
-
 import { IPCService } from "../IPC/Service.js";
 import { LoggerService } from "../Logger/Service.js";
 import { DocumentService } from "./Service.js";
-
 /**
  * The live implementation `Layer` for the `DocumentService`.
  *
@@ -15,8 +13,5 @@ import { DocumentService } from "./Service.js";
  * in the `DocumentService` service definition. It automatically includes the
  * dependencies required by its `effect` constructor, such as `IPCService` and `LoggerService`.
  */
-export declare const DocumentLive: Layer.Layer<
-	DocumentService,
-	never,
-	IPCService | LoggerService
->;
+export declare const DocumentLive: Layer.Layer<DocumentService, never, IPCService | LoggerService>;
+//# sourceMappingURL=Live.d.ts.map

@@ -5,14 +5,11 @@
  * delegating to registered filesystem providers.
  */
 import { Effect } from "effect";
-
-declare const FileService_base: Effect.Service.Class<
-	IFileService,
-	"vscode/FileService",
-	{
-		readonly effect: Effect.Effect<any, unknown, unknown>;
-	}
->;
+import type { IFileService } from "@codeeditorland/output/vs/platform/files/common/files.js";
+import { FileService as VSCodeFileService } from "@codeeditorland/output/vs/platform/files/common/fileService.js";
+declare const FileService_base: Effect.Service.Class<IFileService, "vscode/FileService", {
+    readonly effect: Effect.Effect<VSCodeFileService, unknown, unknown>;
+}>;
 /**
  * The `Effect.Service` for the `IFileService`.
  *
@@ -22,5 +19,7 @@ declare const FileService_base: Effect.Service.Class<
  * `FileSystemService`) that it depends on. This allows us to use the
  * battle-tested VS Code implementation while managing its dependencies via Effect.
  */
-export declare class FileService extends FileService_base {}
+export declare class FileService extends FileService_base {
+}
 export {};
+//# sourceMappingURL=Service.d.ts.map

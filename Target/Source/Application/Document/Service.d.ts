@@ -4,66 +4,37 @@
  * It acts as the extension host's source of truth for document content and lifecycle events.
  */
 import { Effect, Option } from "effect";
-import type {
-	Disposable,
-	Event,
-	TextDocument,
-	TextDocumentChangeEvent,
-	TextDocumentContentProvider,
-	Uri,
-} from "vscode";
-
+import type { Disposable, Event, TextDocument, TextDocumentChangeEvent, TextDocumentContentProvider, Uri } from "vscode";
 import { Disposable as VSCodeDisposable } from "../../Platform/VSCode/Type.js";
 import { ContentProviderProblem } from "./Error.js";
-
 /**
  * The contract for the Document service. It manages all open text documents,
  * their content, and lifecycle events.
  */
 export interface Document {
-	readonly TextDocuments: Effect.Effect<readonly TextDocument[]>;
-	readonly OnDidOpenTextDocument: Event<TextDocument>;
-	readonly OnDidCloseTextDocument: Event<TextDocument>;
-	readonly OnDidChangeTextDocument: Event<TextDocumentChangeEvent>;
-	readonly OnDidSaveTextDocument: Event<TextDocument>;
-	readonly GetDocument: (
-		Uri: Uri,
-	) => Effect.Effect<Option.Option<TextDocument>>;
-	readonly RegisterTextDocumentContentProvider: (
-		Scheme: string,
-		Provider: TextDocumentContentProvider,
-	) => Effect.Effect<Disposable, ContentProviderProblem>;
+    readonly TextDocuments: Effect.Effect<readonly TextDocument[]>;
+    readonly OnDidOpenTextDocument: Event<TextDocument>;
+    readonly OnDidCloseTextDocument: Event<TextDocument>;
+    readonly OnDidChangeTextDocument: Event<TextDocumentChangeEvent>;
+    readonly OnDidSaveTextDocument: Event<TextDocument>;
+    readonly GetDocument: (Uri: Uri) => Effect.Effect<Option.Option<TextDocument>>;
+    readonly RegisterTextDocumentContentProvider: (Scheme: string, Provider: TextDocumentContentProvider) => Effect.Effect<Disposable, ContentProviderProblem>;
 }
-declare const DocumentService_base: Effect.Service.Class<
-	Document,
-	"Service/Document",
-	{
-		readonly effect: Effect.Effect<
-			{
-				TextDocuments: Effect.Effect<any[], never, never>;
-				OnDidOpenTextDocument: any;
-				OnDidCloseTextDocument: any;
-				OnDidChangeTextDocument: any;
-				OnDidSaveTextDocument: any;
-				GetDocument: (
-					Uri: Uri,
-				) => Effect.Effect<Option.Option<any>, never, never>;
-				RegisterTextDocumentContentProvider: (
-					Scheme: string,
-					Provider: TextDocumentContentProvider,
-				) => Effect.Effect<
-					VSCodeDisposable,
-					ContentProviderProblem,
-					never
-				>;
-			},
-			never,
-			any
-		>;
-	}
->;
+declare const DocumentService_base: Effect.Service.Class<Document, "Service/Document", {
+    readonly effect: Effect.Effect<{
+        TextDocuments: Effect.Effect<TextDocument[], never, never>;
+        OnDidOpenTextDocument: import("@codeeditorland/output/vs/workbench/workbench.web.main.internal.js").Event<TextDocument>;
+        OnDidCloseTextDocument: import("@codeeditorland/output/vs/workbench/workbench.web.main.internal.js").Event<TextDocument>;
+        OnDidChangeTextDocument: import("@codeeditorland/output/vs/workbench/workbench.web.main.internal.js").Event<TextDocumentChangeEvent>;
+        OnDidSaveTextDocument: import("@codeeditorland/output/vs/workbench/workbench.web.main.internal.js").Event<TextDocument>;
+        GetDocument: (Uri: Uri) => Effect.Effect<Option.Option<TextDocument>, never, never>;
+        RegisterTextDocumentContentProvider: (Scheme: string, Provider: TextDocumentContentProvider) => Effect.Effect<VSCodeDisposable, ContentProviderProblem, never>;
+    }, never, import("@codeeditorland/output/vs/platform/log/common/log.js").ILogService | import("../IPC/Service.js").IPC>;
+}>;
 /**
  * The `Effect.Service` for managing text documents.
  */
-export declare class DocumentService extends DocumentService_base {}
+export declare class DocumentService extends DocumentService_base {
+}
 export {};
+//# sourceMappingURL=Service.d.ts.map

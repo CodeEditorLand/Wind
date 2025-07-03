@@ -3,10 +3,8 @@
  * @description Provides the "live" implementation `Layer` for the Logger service.
  */
 import { Layer } from "effect";
-
 import { HostService } from "../Host/Service.js";
 import { LoggerService } from "./Service.js";
-
 /**
  * The live implementation `Layer` for the `LoggerService`.
  *
@@ -15,3 +13,4 @@ import { LoggerService } from "./Service.js";
  * dependencies required by its `effect` constructor, such as the `HostService`.
  */
 export declare const LoggerLive: Layer.Layer<LoggerService, never, HostService>;
+//# sourceMappingURL=Live.d.ts.map

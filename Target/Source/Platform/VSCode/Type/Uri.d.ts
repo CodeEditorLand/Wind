@@ -13,13 +13,13 @@
  * 3.  **Centralized Dependency:** Isolating the direct dependency on `vs/base/common/uri.js`
  *     to a single location in our platform layer.
  */
-import { URI } from "vs/base/common/uri.js";
-
+import { URI } from "@codeeditorland/output/vs/base/common/uri.js";
 /**
  * The canonical `URI` class used throughout the application.
  */
-export declare const Uri: any;
+export declare const Uri: typeof URI;
 /**
  * The TypeScript type for the canonical `URI` class.
  */
 export type Uri = URI;
+//# sourceMappingURL=Uri.d.ts.map

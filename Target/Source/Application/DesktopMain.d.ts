@@ -12,3 +12,4 @@
  *   - Sets up global error handling and gracefully runs the application.
  */
 export {};
+//# sourceMappingURL=DesktopMain.d.ts.map

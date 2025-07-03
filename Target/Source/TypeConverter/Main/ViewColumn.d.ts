@@ -4,7 +4,6 @@
  * representation, which is a numeric editor group identifier.
  */
 import { ViewColumn as VSCodeViewColumn } from "vscode";
-
 type EditorGroup = number;
 /**
  * Converts a public `vscode.ViewColumn` enum value into its internal numeric
@@ -14,7 +13,6 @@ type EditorGroup = number;
  * @returns The corresponding internal `EditorGroup` number, or `undefined` if
  * the input is invalid.
  */
-export declare const FromAPI: (
-	ViewColumn?: VSCodeViewColumn,
-) => EditorGroup | undefined;
+export declare const FromAPI: (ViewColumn?: VSCodeViewColumn) => EditorGroup | undefined;
 export {};
+//# sourceMappingURL=ViewColumn.d.ts.map

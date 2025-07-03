@@ -3,11 +3,9 @@
  * @description Provides the "live" implementation `Layer` for the TreeView service.
  */
 import { Layer } from "effect";
-import { ILogService } from "vs/platform/log/common/log.js";
-import { IViewsService } from "vs/workbench/common/views.js";
-
+import { ILogService } from "@codeeditorland/output/vs/platform/log/common/log.js";
+import { IViewsService } from "@codeeditorland/output/vs/workbench/common/views.js";
 import { TreeViewService } from "./Service.js";
-
 /**
  * The live implementation `Layer` for the `TreeViewService`.
  *
@@ -16,8 +14,5 @@ import { TreeViewService } from "./Service.js";
  * dependencies required by its `effect` constructor, such as `IViewsService`
  * and `ILogService`.
  */
-export declare const TreeViewLive: Layer.Layer<
-	TreeViewService,
-	never,
-	IViewsService | ILogService
->;
+export declare const TreeViewLive: Layer.Layer<TreeViewService, never, IViewsService | ILogService>;
+//# sourceMappingURL=Live.d.ts.map

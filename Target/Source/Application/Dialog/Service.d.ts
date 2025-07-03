@@ -5,43 +5,21 @@
  */
 import { Effect } from "effect";
 import type { OpenDialogOptions, SaveDialogOptions, Uri } from "vscode";
-
 import { DialogProblem } from "./Error.js";
-
 /**
  * The contract for the Dialog service, providing methods to show native
  * file open and save dialogs.
  */
 export interface Dialog {
-	readonly ShowOpenDialog: (
-		Options?: OpenDialogOptions,
-	) => Effect.Effect<readonly Uri[] | undefined, DialogProblem>;
-	readonly ShowSaveDialog: (
-		Options?: SaveDialogOptions,
-	) => Effect.Effect<Uri | undefined, DialogProblem>;
+    readonly ShowOpenDialog: (Options?: OpenDialogOptions) => Effect.Effect<readonly Uri[] | undefined, DialogProblem>;
+    readonly ShowSaveDialog: (Options?: SaveDialogOptions) => Effect.Effect<Uri | undefined, DialogProblem>;
 }
-declare const DialogService_base: Effect.Service.Class<
-	Dialog,
-	"Service/Dialog",
-	{
-		readonly effect: Effect.Effect<
-			{
-				ShowOpenDialog: (
-					Options?: OpenDialogOptions,
-				) => Effect.Effect<
-					readonly VSCodeURI[] | undefined,
-					DialogProblem,
-					never
-				>;
-				ShowSaveDialog: (
-					Options?: SaveDialogOptions,
-				) => Effect.Effect<any, DialogProblem, never>;
-			},
-			never,
-			import("../Host/Service.js").Host
-		>;
-	}
->;
+declare const DialogService_base: Effect.Service.Class<Dialog, "Service/Dialog", {
+    readonly effect: Effect.Effect<{
+        ShowOpenDialog: (Options?: OpenDialogOptions) => Effect.Effect<readonly import("@codeeditorland/output/vs/workbench/workbench.web.main.internal.js").URI[] | undefined, DialogProblem, never>;
+        ShowSaveDialog: (Options?: SaveDialogOptions) => Effect.Effect<import("@codeeditorland/output/vs/workbench/workbench.web.main.internal.js").URI | undefined, DialogProblem, never>;
+    }, never, import("../Host/Service.js").Host>;
+}>;
 /**
  * The `Effect.Service` for the Dialog service.
  *
@@ -49,5 +27,7 @@ declare const DialogService_base: Effect.Service.Class<
  * actual dialog-showing logic to the native backend (`Mountain`). It maps any
  * potential `HostServiceProblem` into a domain-specific `DialogProblem`.
  */
-export declare class DialogService extends DialogService_base {}
+export declare class DialogService extends DialogService_base {
+}
 export {};
+//# sourceMappingURL=Service.d.ts.map

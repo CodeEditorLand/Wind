@@ -3,9 +3,8 @@
  * @description Converts between `vscode.URI` and its DTO representation, `UriComponents`.
  * This centralizes URI serialization to prevent import cycles.
  */
-import type { UriComponents } from "vs/base/common/uri.js";
+import type { UriComponents } from "@codeeditorland/output/vs/base/common/uri.js";
 import type { Uri as VSCodeURI } from "vscode";
-
 /**
  * Converts a `vscode.URI` object into a plain JSON object (`UriComponents`) for IPC.
  * @param TheURI - The `vscode.URI` instance to convert.
@@ -18,3 +17,4 @@ export declare const FromAPI: (TheURI: VSCodeURI) => UriComponents;
  * @returns A new `vscode.URI` instance.
  */
 export declare const ToAPI: (DTO: UriComponents) => VSCodeURI;
+//# sourceMappingURL=URI.d.ts.map

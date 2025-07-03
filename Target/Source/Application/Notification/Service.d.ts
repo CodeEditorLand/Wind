@@ -4,14 +4,11 @@
  * to the `INotificationService` contract from VS Code.
  */
 import { Effect } from "effect";
-
-declare const NotificationService_base: Effect.Service.Class<
-	INotificationService,
-	"notificationService",
-	{
-		readonly effect: Effect.Effect<any, unknown, unknown>;
-	}
->;
+import type { INotificationService } from "@codeeditorland/output/vs/platform/notification/common/notification.js";
+import { NotificationService as VSCodeNotificationService } from "@codeeditorland/output/vs/workbench/services/notification/common/notificationService.js";
+declare const NotificationService_base: Effect.Service.Class<INotificationService, "notificationService", {
+    readonly effect: Effect.Effect<VSCodeNotificationService, unknown, unknown>;
+}>;
 /**
  * The `Effect.Service` for the `INotificationService`.
  *
@@ -23,5 +20,7 @@ declare const NotificationService_base: Effect.Service.Class<
  * to delegate the actual rendering of notifications to the `HostService`, which
  * communicates with the native `Mountain` host.
  */
-export declare class NotificationService extends NotificationService_base {}
+export declare class NotificationService extends NotificationService_base {
+}
 export {};
+//# sourceMappingURL=Service.d.ts.map

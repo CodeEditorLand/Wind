@@ -5,15 +5,8 @@
  * specific to the clipboard domain.
  */
 import type { IntegrationClipboardProblem } from "../../Integration/Tauri/Clipboard/Error.js";
-
-declare const ApplicationClipboardProblem_base: new <
-	A extends Record<string, any> = {},
->(
-	args: import("effect/Types").Equals<A, {}> extends true
-		? void
-		: { readonly [P in keyof A as P extends "_tag" ? never : P]: A[P] },
-) => import("effect/Cause").YieldableError & {
-	readonly _tag: "ApplicationClipboardProblem";
+declare const ApplicationClipboardProblem_base: new <A extends Record<string, any> = {}>(args: import("effect/Types").Equals<A, {}> extends true ? void : { readonly [P in keyof A as P extends "_tag" ? never : P]: A[P]; }) => import("effect/Cause").YieldableError & {
+    readonly _tag: "ApplicationClipboardProblem";
 } & Readonly<A>;
 /**
  * Represents a failure within the `Clipboard` application service.
@@ -25,7 +18,9 @@ declare const ApplicationClipboardProblem_base: new <
  * detailed logging and debugging purposes.
  */
 export declare class ApplicationClipboardProblem extends ApplicationClipboardProblem_base<{
-	/** The underlying problem from the Integration layer that caused this failure. */
-	readonly Cause: IntegrationClipboardProblem;
-}> {}
+    /** The underlying problem from the Integration layer that caused this failure. */
+    readonly Cause: IntegrationClipboardProblem;
+}> {
+}
 export {};
+//# sourceMappingURL=Error.d.ts.map

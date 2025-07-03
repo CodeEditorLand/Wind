@@ -4,19 +4,10 @@
  * VS Code status bar.
  */
 import { Effect } from "effect";
-
-declare const StatusBarService_base: Effect.Service.Class<
-	IStatusbarService,
-	"statusbarService",
-	{
-		readonly effect: Effect.Effect<
-			IStatusbarService,
-			never,
-			| import("../Host/Service.js").Host
-			| import("../Command/Service.js").Command
-		>;
-	}
->;
+import type { IStatusbarService } from "@codeeditorland/output/vs/workbench/services/statusbar/browser/statusbar.js";
+declare const StatusBarService_base: Effect.Service.Class<IStatusbarService, "statusbarService", {
+    readonly effect: Effect.Effect<IStatusbarService, never, import("../Host/Service.js").Host | import("../Command/Service.js").Command>;
+}>;
 /**
  * The `Effect.Service` for the `IStatusbarService`.
  *
@@ -24,5 +15,7 @@ declare const StatusBarService_base: Effect.Service.Class<
  * acts as a factory, creating `StatusBarItemImplementation` instances that
 trol the UI elements by proxying state changes to the `HostService`.
  */
-export declare class StatusBarService extends StatusBarService_base {}
+export declare class StatusBarService extends StatusBarService_base {
+}
 export {};
+//# sourceMappingURL=Service.d.ts.map

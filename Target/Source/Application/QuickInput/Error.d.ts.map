@@ -1,0 +1,1 @@
+{"version":3,"file":"Error.d.ts","sourceRoot":"","sources":["../../../../Source/Application/QuickInput/Error.ts"],"names":[],"mappings":"AAAA;;;;GAIG;AAIH,OAAO,KAAK,EAAE,kBAAkB,EAAE,MAAM,kBAAkB,CAAC;;;;AAE3D;;;GAGG;AACH,qBAAa,iBAAkB,SAAQ,uBAAsC;IAC5E,QAAQ,CAAC,KAAK,EAAE,kBAAkB,GAAG,KAAK,CAAC;IAC3C,QAAQ,CAAC,OAAO,EAAE,MAAM,CAAC;CACzB,CAAC;CAAG"}
