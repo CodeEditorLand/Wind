@@ -127,19 +127,19 @@ graph LR
 
 The `Wind` repository is organized to clearly separate concerns:
 
-```sh
+```
 Wind/
 └── Source/
-├── Preload.ts   # Core script for VSCode environment emulation in Tauri.
-├── Application/ # Core frontend service implementations (e.g., Dialog, Editor).
+├── Preload.ts			# Core script for VSCode environment emulation in Tauri.
+├── Application/		# Core frontend service implementations (e.g., Dialog, Editor).
 ├── Integration/
-│ └── Tauri/ # Bridge to Tauri APIs, wrapped in Effect-TS.
+│ └── Tauri/			# Bridge to Tauri APIs, wrapped in Effect-TS.
 ├── Platform/
-│ └── VSCode/ # Definitions of core VSCode types and service Tags.
+│ └── VSCode/			# Definitions of core VSCode types and service Tags.
 ├── Effect/
-│ └── Produce/ # Utilities for creating Effects from async code.
+│ └── Produce/			# Utilities for creating Effects from async code.
 └── Configuration/
-└── ESBuild/ # ESBuild configurations for bundling the project.
+└── ESBuild/			# ESBuild configurations for bundling the project.
 ```
 
 ---
