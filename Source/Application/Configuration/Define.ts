@@ -1,14 +1,13 @@
 /**
- * @module Service (Application/Configuration)
- * @description Defines the service interface and live implementation for the
- * application-level configuration service, which conforms to the `IConfigurationService`
- * contract from VS Code.
+ * @module Define
+ * @description
+ * Defines the service interface and live implementation for the application-level
+ * configuration service, which conforms to the `IConfigurationService` contract
+ * from VS Code. It is responsible for reading, merging, and providing access to
+ * user and workspace settings.
  */
 
-import { deepmerge } from "deepmerge-ts";
-import { Effect } from "effect";
 import { Emitter } from "@codeeditorland/output/vs/base/common/event.js";
-import { joinPath } from "@codeeditorland/output/vs/base/common/resources.js";
 import type {
 	IConfigurationChangeEvent,
 	IConfigurationData,
@@ -16,22 +15,20 @@ import type {
 	IConfigurationService,
 	IConfigurationValue,
 } from "@codeeditorland/output/vs/platform/configuration/common/configuration.js";
+import { deepmerge } from "deepmerge-ts";
+import { Effect } from "effect";
 
-import type { IntegrationConfigurationProblem } from "../../Integration/Tauri/Configuration/Error.js";
-import { ParseJSON } from "../../Integration/Tauri/File/ParseJSON.js";
-import { ReadRawFile } from "../../Integration/Tauri/File/ReadRawFile.js";
-import { ResolveFinalDefaultPath } from "../../Integration/Tauri/Path/Default.js";
-import type { IntegrationPathProblem } from "../../Integration/Tauri/Path/Error.js";
-import { ResolveWorkSpacePath } from "../../Integration/Tauri/Path/WorkSpace.js";
-import type { Uri } from "../../Platform/VSCode/Type.js";
-import { ApplicationConfigurationProblem } from "./Error.js";
+import type { Uri } from "../../Platform/Vscode/Type.js";
+import { IntegrationService } from "../Integration/Define.js";
+import type { IntegrationProblem } from "../Integration/Problem.js";
+import { ApplicationConfigurationProblem } from "./Problem.js";
 
 /**
  * A robust helper function to retrieve a nested property from a configuration
  * object using a dot-separated key string.
  *
- * @param ConfigurationObject - The root configuration object.
- * @param Key - The dot-separated key (e.g., 'workbench.editor.fontSize').
+ * @param ConfigurationObject The root configuration object.
+ * @param Key The dot-separated key (e.g., 'workbench.editor.fontSize').
  * @returns The value if found, otherwise `undefined`.
  */
 const GetValueFromObject = (
@@ -57,30 +54,48 @@ const GetValueFromObject = (
  * The implementation is provided directly using the `effect` constructor. It
  * fetches and merges all configuration sources upon initialization, making the
  * final configuration available synchronously to the rest of the application.
+ *
+ * It is registered with the identifier "configurationService" for compatibility
+ * with legacy VS Code service lookups.
  */
-export class Configuration extends Effect.Service<IConfigurationService>()(
-	"vscode/ConfigurationService",
+export class ConfigurationService extends Effect.Service<IConfigurationService>()(
+	"configurationService",
 	{
-		effect: Effect.gen(function* () {
+		effect: Effect.gen(function* (Generator) {
+			const Integration = yield* Generator(IntegrationService);
+
 			/**
 			 * An `Effect` that resolves a specific configuration file (e.g., 'settings.json')
 			 * from a given base directory Effect. It safely handles file reading and JSON parsing.
+			 * If the file doesn't exist or is invalid, it returns an empty object.
 			 */
 			const ResolveConfigurationFile = (
-				ConfigDirectoryEffect: Effect.Effect<
-					Uri,
-					IntegrationPathProblem
-				>,
+				PathResolverEffect: Effect.Effect<Uri, IntegrationProblem>,
 				FileName: string,
-			): Effect.Effect<
-				object,
-				IntegrationConfigurationProblem | IntegrationPathProblem
-			> =>
-				ConfigDirectoryEffect.pipe(
+			): Effect.Effect<object, IntegrationProblem> =>
+				PathResolverEffect.pipe(
 					Effect.flatMap((ConfigDirectory) =>
-						ReadRawFile(joinPath(ConfigDirectory, FileName)).pipe(
-							Effect.flatMap(ParseJSON),
-							// If the file doesn't exist or is invalid, treat it as an empty object.
+						Integration.ReadFile(
+							ConfigDirectory.with({
+								path: `${ConfigDirectory.path}/${FileName}`,
+							}),
+						).pipe(
+							Effect.flatMap((Buffer) =>
+								Effect.try({
+									try: () =>
+										JSON.parse(
+											new TextDecoder().decode(Buffer),
+										),
+									catch: () =>
+										new ApplicationConfigurationProblem({
+											Cause: new Error(
+												"JSON Parse Failed",
+											) as any,
+											Context:
+												"ParseConfigurationFileFailed",
+										}),
+								}),
+							),
 							Effect.catchAll(() => Effect.succeed({})),
 						),
 					),
@@ -88,15 +103,20 @@ export class Configuration extends Effect.Service<IConfigurationService>()(
 
 			/**
 			 * The main composed `Effect` to resolve the final, merged configuration.
+			 * It fetches user and workspace settings concurrently and merges them.
 			 */
 			const ResolveConfiguration = Effect.all(
 				{
 					User: ResolveConfigurationFile(
-						ResolveFinalDefaultPath(),
+						Integration.Invoke("Path.Resolve", {
+							Name: "UserConfig",
+						}),
 						"settings.json",
 					),
 					WorkSpace: ResolveConfigurationFile(
-						ResolveWorkSpacePath(),
+						Integration.Invoke("Path.Resolve", {
+							Name: "Workspace",
+						}),
 						"settings.json",
 					),
 				},
@@ -106,25 +126,29 @@ export class Configuration extends Effect.Service<IConfigurationService>()(
 				Effect.mapError(
 					(Cause) =>
 						new ApplicationConfigurationProblem({
-							Cause: Cause as IntegrationConfigurationProblem,
+							Cause: Cause as IntegrationProblem,
 							Context: "FailedToResolveConfiguration",
 						}),
 				),
 			);
 
-			const ConfigurationData = yield* ResolveConfiguration.pipe(
-				Effect.catchAll((error) =>
-					Effect.sync(() => {
+			// Execute the configuration loading process. If it fails, log the error
+			// and fall back to an empty configuration to prevent application crash.
+			const ConfigurationData = yield* Generator(
+				ResolveConfiguration.pipe(
+					Effect.catchAll((error) => {
 						console.error(
 							"Failed to load configuration, using empty default.",
 							error,
 						);
-						return {};
+						return Effect.succeed({});
 					}),
 				),
 			);
 
 			// The concrete implementation of the IConfigurationService interface.
+			// NOTE: Method names are camelCase to conform to the `IConfigurationService`
+			// contract from VS Code.
 			const ServiceImplementation: IConfigurationService = {
 				_serviceBrand: undefined,
 
@@ -132,8 +156,6 @@ export class Configuration extends Effect.Service<IConfigurationService>()(
 					let section: string | undefined;
 					if (typeof args[0] === "string") {
 						section = args[0];
-					} else if (typeof args[0] === "object") {
-						// overrides = args[0];
 					}
 
 					if (!section) {
@@ -156,7 +178,9 @@ export class Configuration extends Effect.Service<IConfigurationService>()(
 					const value = ServiceImplementation.getValue<T | undefined>(
 						key,
 					);
-					const result: IConfigurationValue<T> = {
+					// This is a simplified implementation. A full implementation would
+					// need to inspect each configuration source separately.
+					return {
 						value: value,
 						defaultValue: value,
 						userValue: value,
@@ -167,7 +191,6 @@ export class Configuration extends Effect.Service<IConfigurationService>()(
 						memoryValue: value,
 						policyValue: value,
 					};
-					return result;
 				},
 
 				keys: () => ({
