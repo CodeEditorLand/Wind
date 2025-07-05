@@ -1,21 +1,24 @@
 /**
- * @module Storage (Application/Storage)
- * @description Provides an Effect-native implementation of the `IStorage`
- * interface, which acts as the backing database for the `StorageService`.
+ * @module Storage
+ * @description
+ * This module provides an Effect-native implementation of the `IStorage`
+ * interface from VS Code. This class acts as the backing database for the
+ * `StorageService`, delegating all I/O to the native host.
  */
 
-import { Effect } from "effect";
-import { Emitter, type Event } from "@codeeditorland/output/vs/base/common/event.js";
 import {
+	type Event,
 	type IStorage,
 	type IStorageChangeEvent,
 	type IUpdateRequest,
 	type StorageValue,
 } from "@codeeditorland/output/vs/base/parts/storage/common/storage.js";
+import { Effect } from "effect";
 
-import { IntegrationService } from "../../Integration/Tauri/Service.js";
+import { CreateEmitter } from "../../Platform/Vscode/Type.js";
+import { IntegrationService } from "../Integration/Define.js";
 import type { StorageDatabase } from "./Database.js";
-import { StorageProblem } from "./Error.js";
+import { StorageProblem } from "./Problem.js";
 
 /**
  * An `IStorage` implementation that delegates all operations to a remote
@@ -24,69 +27,50 @@ import { StorageProblem } from "./Error.js";
  * backend communication.
  */
 export class EffectStorage implements IStorage {
-	private readonly OnDidChangeStorageEmitter =
-		new Emitter<IStorageChangeEvent>();
+	private readonly _OnDidChangeStorageEmitter =
+		CreateEmitter<IStorageChangeEvent>();
 	public readonly onDidChangeStorage: Event<IStorageChangeEvent> =
-		this.OnDidChangeStorageEmitter.event;
+		this._OnDidChangeStorageEmitter.event;
 
 	constructor(
 		private readonly Database: StorageDatabase,
 		private readonly Integration: IntegrationService,
 	) {
-		// Listen for external changes from the host
+		// Listen for external changes from the host and fire them locally.
 		const ListenEffect = this.Integration.Listen<IStorageChangeEvent>(
 			`storage://did-change/${Database.Name}`,
 			(Event) => {
 				if (Event.payload) {
-					this.OnDidChangeStorageEmitter.fire(Event.payload);
+					this._OnDidChangeStorageEmitter.fire(Event.payload);
 				}
 			},
 		);
 		Effect.runFork(ListenEffect);
 	}
-	getBoolean(key: string, fallbackValue: boolean): boolean;
-	getBoolean(key: string, fallbackValue?: boolean): boolean | undefined;
-	getBoolean(key: unknown, fallbackValue?: unknown): boolean | undefined {
-		throw new Error("Method not implemented.");
-	}
-	getNumber(key: string, fallbackValue: number): number;
-	getNumber(key: string, fallbackValue?: number): number | undefined;
-	getNumber(key: unknown, fallbackValue?: unknown): number | undefined {
-		throw new Error("Method not implemented.");
-	}
-	getObject<T extends object>(key: string, fallbackValue: T): T;
-	getObject<T extends object>(key: string, fallbackValue?: T): T | undefined;
-	getObject(key: unknown, fallbackValue?: unknown): T | T | undefined {
-		throw new Error("Method not implemented.");
-	}
-	whenFlushed(): Promise<void> {
-		throw new Error("Method not implemented.");
-	}
-	dispose(): void {
-		throw new Error("Method not implemented.");
-	}
 
-	get items(): Map<string, string> {
+	// The `IStorage` interface requires `items` and `size` to be synchronous getters.
+	// This is a necessary compromise where we must run the Effect synchronously.
+	// In a fully native Effect application, these would return an Effect.
+
+	public get items(): Map<string, string> {
 		const GetItemsEffect = this.Integration.Invoke<[string, string][]>(
 			"Storage.GetItems",
 			{ DatabaseName: this.Database.Name },
 		);
-		// This is a synchronous boundary required by the IStorage interface.
-		// A full implementation might require an initialization phase to pre-fetch.
 		return new Map(Effect.runSync(Effect.orDie(GetItemsEffect)));
 	}
 
-	get size(): number {
+	public get size(): number {
 		return this.items.size;
 	}
 
-	get(key: string, fallbackValue: string): string;
-	get(key: string, fallbackValue?: string): string | undefined {
+	public get(key: string, fallbackValue: string): string;
+	public get(key: string, fallbackValue?: string): string | undefined {
 		const value = this.items.get(key);
 		return value ?? fallbackValue;
 	}
 
-	set(key: string, value: StorageValue, _external?: boolean): Promise<void> {
+	public set(key: string, value: StorageValue): Promise<void> {
 		const request: IUpdateRequest =
 			value === undefined
 				? { deleted: new Set([key]), inserted: new Map() }
@@ -97,28 +81,30 @@ export class EffectStorage implements IStorage {
 		return this.update(request);
 	}
 
-	delete(key: string, _external?: boolean): Promise<void> {
+	public delete(key: string): Promise<void> {
 		return this.update({
 			deleted: new Set([key]),
 			inserted: new Map(),
 		});
 	}
 
-	update(request: IUpdateRequest): Promise<void> {
+	public update(request: IUpdateRequest): Promise<void> {
 		const UpdateEffect = this.Integration.Invoke<void>(
 			"Storage.UpdateItems",
-			{ DatabaseName: this.Database.Name, Request: request },
+			{
+				DatabaseName: this.Database.Name,
+				Request: request,
+			},
 		).pipe(
 			Effect.mapError(
 				(Cause) =>
 					new StorageProblem({ Cause, Context: "UpdateItemsFailed" }),
 			),
 		);
-		// Fire-and-forget the update operation.
 		return Effect.runPromise(UpdateEffect);
 	}
 
-	init(): Promise<void> {
+	public init(): Promise<void> {
 		const InitEffect = this.Integration.Invoke<void>("Storage.Init", {
 			DatabaseName: this.Database.Name,
 			Path: this.Database.Path,
@@ -130,19 +116,12 @@ export class EffectStorage implements IStorage {
 		return Effect.runPromise(InitEffect);
 	}
 
-	close(): Promise<void> {
-		// Close logic would be handled by the host.
-		// We just dispose the emitter.
-		this.OnDidChangeStorageEmitter.dispose();
+	public close(): Promise<void> {
+		this._OnDidChangeStorageEmitter.dispose();
 		return Promise.resolve();
 	}
 
-	flush(): Promise<void> {
-		// Flush is a host-side concept in this architecture.
-		return Promise.resolve();
-	}
-
-	optimize(): Promise<void> {
+	public optimize(): Promise<void> {
 		// Optimize is a host-side concept.
 		return Promise.resolve();
 	}
