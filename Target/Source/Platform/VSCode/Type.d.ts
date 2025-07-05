@@ -8,13 +8,8 @@
  * this file, we guarantee type consistency and isolate direct dependencies on
  * the `vs/` and `vscode` modules to one location.
  */
-import { CancellationTokenSource as VSCodeCancellationTokenSource } from "@codeeditorland/output/vs/base/common/cancellation.js";
-import { CancellationError as VSCodeCancellationError } from "@codeeditorland/output/vs/base/common/errors.js";
-import { Emitter } from "@codeeditorland/output/vs/base/common/event.js";
-import { MarkdownString as VSCodeMarkdownString, type IMarkdownString as VSCodeIMarkdownString } from "@codeeditorland/output/vs/base/common/htmlContent.js";
-import { ThemeColor as VSCodeThemeColor, ThemeIcon as VSCodeThemeIcon } from "@codeeditorland/output/vs/base/common/themables.js";
+import { type IMarkdownString as VSCodeIMarkdownString } from "@codeeditorland/output/vs/base/common/htmlContent.js";
 import { URI as VSCodeURI, type UriComponents as VSCodeUriComponents } from "@codeeditorland/output/vs/base/common/uri.js";
-import { FileType as VSCodeFileType } from "@codeeditorland/output/vs/platform/files/common/files.js";
 import type * as VSCode from "vscode";
 import { CompletionItemKind, CompletionItemTag, ConfigurationTarget, DiagnosticSeverity, DiagnosticTag, EndOfLine, ProgressLocation, QuickPickItemKind, SnippetString, StatusBarAlignment, TextEditorCursorStyle, TreeItemCollapsibleState, ViewColumn } from "vscode";
 export { CompletionItemKind, CompletionItemTag, ConfigurationTarget, DiagnosticSeverity, DiagnosticTag, EndOfLine, ProgressLocation, QuickPickItemKind, SnippetString, StatusBarAlignment, TextEditorCursorStyle, TreeItemCollapsibleState, ViewColumn, };
@@ -28,32 +23,32 @@ export declare class Disposable implements VSCode.Disposable {
     [Symbol.dispose](): void;
 }
 /** The canonical `CancellationTokenSource` class. */
-export declare const CancellationTokenSource: typeof VSCodeCancellationTokenSource;
+export declare const CancellationTokenSource: any;
 /** The canonical `CancellationError` class. */
-export declare const CancellationError: typeof VSCodeCancellationError;
+export declare const CancellationError: any;
 /** The canonical `EventEmitter` class. */
-export declare const EventEmitter: typeof Emitter;
+export declare const EventEmitter: any;
 /** The canonical `URI` class and its associated types. */
 export declare const URI: typeof VSCodeURI;
 export type Uri = VSCodeURI;
 export type UriComponents = VSCodeUriComponents;
 /** The canonical `ThemeColor` class. */
-export declare const ThemeColor: typeof VSCodeThemeColor;
+export declare const ThemeColor: any;
 /** The canonical `ThemeIcon` class. */
-export declare const ThemeIcon: typeof VSCodeThemeIcon;
+export declare const ThemeIcon: any;
 /** The canonical `MarkdownString` class. */
-export declare const MarkdownString: typeof VSCodeMarkdownString;
+export declare const MarkdownString: any;
 export type IMarkdownString = VSCodeIMarkdownString;
 /** The canonical `ProcessExecution` class for Tasks. */
-export declare const ProcessExecution: typeof VSCode.ProcessExecution;
+export declare const ProcessExecution: any;
 /** The canonical `Task` class. */
-export declare const Task: typeof VSCode.Task;
+export declare const Task: any;
 /** The canonical `WorkspaceEdit` class. */
-export declare const WorkspaceEdit: typeof VSCode.WorkspaceEdit;
+export declare const WorkspaceEdit: any;
 /** The canonical `TextEdit` class. */
-export declare const TextEdit: typeof VSCode.TextEdit;
+export declare const TextEdit: any;
 /** The canonical `FileType` enum. */
-export declare const FileType: typeof VSCodeFileType;
+export declare const FileType: any;
 /**
  * The canonical `Position` class, representing a line and character.
  */

@@ -2,7 +2,6 @@
  * @module Database (Application/Storage)
  * @description Defines the data structures for identifying storage databases.
  */
-import type { StorageScope } from "@codeeditorland/output/vs/platform/storage/common/storage.js";
 import type { Uri } from "../../Platform/VSCode/Type.js";
 /**
  * Represents the identity of a storage database, used to communicate with

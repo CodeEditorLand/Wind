@@ -1,1 +1,1 @@
-{"version":3,"file":"Service.d.ts","sourceRoot":"","sources":["../../../../Source/Application/Clipboard/Service.ts"],"names":[],"mappings":"AAAA;;;;;;;;;;GAUG;AAEH,OAAO,EAAE,MAAM,EAAW,MAAM,QAAQ,CAAC;AACzC,OAAO,KAAK,EAAE,iBAAiB,EAAE,MAAM,yEAAyE,CAAC;;;;AAcjH;;;;;;;;;;;;GAYG;AACH,qBAAa,SAAU,SAAQ,cAgE9B;CAAG"}
+{"version":3,"file":"Service.d.ts","sourceRoot":"","sources":["../../../../Source/Application/Clipboard/Service.ts"],"names":[],"mappings":"AAAA;;;;;;;;;;GAUG;AAEH,OAAO,EAAE,MAAM,EAAW,MAAM,QAAQ,CAAC;;;;AAezC;;;;;;;;;;;;GAYG;AACH,qBAAa,SAAU,SAAQ,cAgE9B;CAAG"}

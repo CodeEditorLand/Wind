@@ -6,7 +6,6 @@
  * VS Code service it implements (`textFileService.ts`).
  */
 import { Effect } from "effect";
-import { ITextFileService } from "@codeeditorland/output/vs/workbench/services/textfile/common/textfiles.js";
 declare const TextEditorService_base: Effect.Service.Class<ITextFileService, "textFileService", {
     readonly effect: Effect.Effect<ITextFileService, unknown, unknown>;
 }>;

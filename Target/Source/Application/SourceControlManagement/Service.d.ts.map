@@ -1,1 +1,1 @@
-{"version":3,"file":"Service.d.ts","sourceRoot":"","sources":["../../../../Source/Application/SourceControlManagement/Service.ts"],"names":[],"mappings":"AAAA;;;;GAIG;AAEH,OAAO,EAAE,MAAM,EAAE,MAAM,QAAQ,CAAC;AAMhC,OAAO,EACN,WAAW,EAEX,MAAM,+DAA+D,CAAC;;;;AAOvE;;;;;;;;;GASG;AACH,qBAAa,8BAA+B,SAAQ,mCA8FnD;CAAG"}
+{"version":3,"file":"Service.d.ts","sourceRoot":"","sources":["../../../../Source/Application/SourceControlManagement/Service.ts"],"names":[],"mappings":"AAAA;;;;GAIG;AAEH,OAAO,EAAE,MAAM,EAAE,MAAM,QAAQ,CAAC;;;;AAgBhC;;;;;;;;;GASG;AACH,qBAAa,8BAA+B,SAAQ,mCA8FnD;CAAG"}

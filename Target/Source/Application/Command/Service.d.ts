@@ -24,7 +24,7 @@ export interface Command {
     readonly getCommands: (FilterInternal?: boolean) => Promise<string[]>;
 }
 declare const CommandService_base: Effect.Service.Class<Command, "Service/Command", {
-    readonly effect: Effect.Effect<Command, never, import("@codeeditorland/output/vs/platform/log/common/log.js").ILogService | import("../IPC/Service.js").IPC | import("../Window/Service.js").Window>;
+    readonly effect: Effect.Effect<Command, never, any>;
 }>;
 /**
  * The `Effect.Service` for the Command service.

@@ -1,389 +1,409 @@
 /**
- * @module Type (Platform/VSCode)
- * @description Provides concrete implementations and re-exports of core `vscode` API
- * types, such as `URI`, `Range`, `Position`, and `Disposable`.
+ * @module Type
+ * @description
+ * This module serves as the canonical source of truth for all foundational types
+ * and classes from the VS Code API. It re-exports and implements core data
+ * structures like `Uri`, `Range`, `Position`, and `Disposable`.
  *
- * This file serves as the single source of truth for these foundational types
- * throughout the entire Wind application. By ensuring all modules import from
- * this file, we guarantee type consistency and isolate direct dependencies on
- * the `vs/` and `vscode` modules to one location.
+ * By centralizing these types, we ensure type consistency across the entire
+ * application, prevent `instanceof` issues, and isolate direct dependencies
+ * on the underlying `@codeeditorland/output` package to a single, controlled location.
+ * Every other module in the application should import these types from this file.
  */
 
-// --- Foundational VS Code & Base Imports ---
-import { CancellationTokenSource as VSCodeCancellationTokenSource } from "@codeeditorland/output/vs/base/common/cancellation.js";
-import { CancellationError as VSCodeCancellationError } from "@codeeditorland/output/vs/base/common/errors.js";
-import { Emitter } from "@codeeditorland/output/vs/base/common/event.js";
 import {
-	MarkdownString as VSCodeMarkdownString,
-	type IMarkdownString as VSCodeIMarkdownString,
-} from "@codeeditorland/output/vs/base/common/htmlContent.js";
-import {
-	ThemeColor as VSCodeThemeColor,
-	ThemeIcon as VSCodeThemeIcon,
-} from "@codeeditorland/output/vs/base/common/themables.js";
+	Emitter as VSCodeEmitter,
+	type Event as VSCodeEvent,
+} from "@codeeditorland/output/vs/base/common/event.js";
 import {
 	URI as VSCodeURI,
 	type UriComponents as VSCodeUriComponents,
 } from "@codeeditorland/output/vs/base/common/uri.js";
-import { FileType as VSCodeFileType } from "@codeeditorland/output/vs/platform/files/common/files.js";
 import type * as VSCode from "vscode";
-// --- Direct Re-exports of VS Code Enums and Simple Classes ---
-import {
-	CompletionItemKind,
-	CompletionItemTag,
-	ConfigurationTarget,
-	DiagnosticSeverity,
-	DiagnosticTag,
-	EndOfLine,
-	ProgressLocation,
-	QuickPickItemKind,
-	SnippetString,
-	StatusBarAlignment,
-	TextEditorCursorStyle,
-	TreeItemCollapsibleState,
-	ViewColumn,
-	ProcessExecution as VSCodeProcessExecution,
-	Task as VSCodeTask,
-	TextEdit as VSCodeTextEdit,
-	WorkspaceEdit as VSCodeWorkspaceEdit,
-} from "vscode";
-
-// Re-exporting these directly makes them available under our namespace.
-export {
-	CompletionItemKind,
-	CompletionItemTag,
-	ConfigurationTarget,
-	DiagnosticSeverity,
-	DiagnosticTag,
-	EndOfLine,
-	ProgressLocation,
-	QuickPickItemKind,
-	SnippetString,
-	StatusBarAlignment,
-	TextEditorCursorStyle,
-	TreeItemCollapsibleState,
-	ViewColumn,
-};
-
-// --- Canonical Class Implementations ---
 
 /**
- * The canonical `Disposable` class used throughout the application.
+ * A resource that can be disposed of.
  */
-export class Disposable implements VSCode.Disposable {
-	private OnDisposeCallback: () => any;
-
-	constructor(OnDisposeCallback: () => any) {
-		this.OnDisposeCallback = OnDisposeCallback;
-	}
-	dispose(): any {
-		this.OnDisposeCallback();
-	}
-	[Symbol.dispose](): void {
-		this.dispose();
-	}
+export interface Dispose {
+	/**
+	 * Disposes of the resource.
+	 */
+	(): void;
 }
 
-/** The canonical `CancellationTokenSource` class. */
-export const CancellationTokenSource = VSCodeCancellationTokenSource;
+/**
+ * An object that can be disposed of.
+ */
+export interface IDisposable {
+	/**
+	 * Disposes of the object.
+	 */
+	readonly Dispose: Dispose;
+}
 
-/** The canonical `CancellationError` class. */
-export const CancellationError = VSCodeCancellationError;
+/**
+ * Represents a typed event.
+ *
+ * A function that represents an event to which you subscribe by calling it with
+ * a listener function as argument.
+ *
+ * @example
+ * item.OnDidChange(function(event) { console.log("Event happened: " + event); });
+ */
+export type Event<T> = VSCodeEvent<T>;
 
-/** The canonical `EventEmitter` class. */
-export const EventEmitter = Emitter;
+/**
+ * An event emitter can be used to create and manage an {@link Event} for others
+ * to subscribe to. One emitter always owns one event.
+ *
+ * Use this class if you want to provide an event from within your extension.
+ */
+export const CreateEmitter = <T>(): VSCodeEmitter<T> => new VSCodeEmitter<T>();
 
-/** The canonical `URI` class and its associated types. */
-export const URI = VSCodeURI;
+/**
+ * The canonical `URI` class used throughout the application, representing a
+ * universal resource identifier.
+ */
 export type Uri = VSCodeURI;
-export type UriComponents = VSCodeUriComponents;
-
-/** The canonical `ThemeColor` class. */
-export const ThemeColor = VSCodeThemeColor;
-
-/** The canonical `ThemeIcon` class. */
-export const ThemeIcon = VSCodeThemeIcon;
-
-/** The canonical `MarkdownString` class. */
-export const MarkdownString = VSCodeMarkdownString;
-export type IMarkdownString = VSCodeIMarkdownString;
-
-/** The canonical `ProcessExecution` class for Tasks. */
-export const ProcessExecution = VSCodeProcessExecution;
-
-/** The canonical `Task` class. */
-export const Task = VSCodeTask;
-
-/** The canonical `WorkspaceEdit` class. */
-export const WorkspaceEdit = VSCodeWorkspaceEdit;
-
-/** The canonical `TextEdit` class. */
-export const TextEdit = VSCodeTextEdit;
-
-/** The canonical `FileType` enum. */
-export const FileType = VSCodeFileType;
+export const Uri = VSCodeURI;
 
 /**
- * The canonical `Position` class, representing a line and character.
+ * The Data Transfer Object (DTO) for a `Uri`, used for serialization.
  */
-export class Position implements VSCode.Position {
-	readonly line: number;
-	readonly character: number;
+export type UriDTO = VSCodeUriComponents;
 
-	constructor(line: number, character: number) {
-		if (line < 0) {
-			throw new Error("Illegal argument: line must be non-negative");
+/**
+ * Represents a line and character position, such as the position of the cursor.
+ * Position objects are immutable.
+ */
+export class Position {
+	/**
+	 * The zero-based line value.
+	 */
+	public readonly Line: number;
+
+	/**
+	 * The zero-based character value.
+	 */
+	public readonly Character: number;
+
+	/**
+	 * Creates a new Position object.
+	 * @param Line A zero-based line value. Must be non-negative.
+	 * @param Character A zero-based character value. Must be non-negative.
+	 */
+	constructor(Line: number, Character: number) {
+		if (Line < 0) {
+			throw new Error("Argument 'Line' must be non-negative.");
 		}
-		if (character < 0) {
-			throw new Error("Illegal argument: character must be non-negative");
+		if (Character < 0) {
+			throw new Error("Argument 'Character' must be non-negative.");
 		}
-		this.line = line;
-		this.character = character;
+		this.Line = Line;
+		this.Character = Character;
 	}
 
-	isBefore(other: VSCode.Position): boolean {
-		return (
-			this.line < other.line ||
-			(this.line === other.line && this.character < other.character)
-		);
-	}
-	isBeforeOrEqual(other: VSCode.Position): boolean {
-		return !new Position(other.line, other.character).isBefore(this);
-	}
-	isAfter(other: VSCode.Position): boolean {
-		return new Position(other.line, other.character).isBefore(this);
-	}
-	isAfterOrEqual(other: VSCode.Position): boolean {
-		return !this.isBefore(other);
-	}
-	isEqual(other: VSCode.Position): boolean {
-		return this.line === other.line && this.character === other.character;
-	}
-	compareTo(other: VSCode.Position): number {
-		if (this.line < other.line) {
-			return -1;
+	/**
+	 * Checks if this position is before another position.
+	 * @param Other The other position to compare against.
+	 * @returns `true` if this position is before `Other`.
+	 */
+	public IsBefore(Other: Position): boolean {
+		if (this.Line < Other.Line) {
+			return true;
 		}
-		if (this.line > other.line) {
-			return 1;
+		if (Other.Line < this.Line) {
+			return false;
 		}
-		if (this.character < other.character) {
-			return -1;
-		}
-		if (this.character > other.character) {
-			return 1;
-		}
-		return 0;
+		return this.Character < Other.Character;
 	}
-	translate(lineDelta?: number, characterDelta?: number): Position;
-	translate(change: {
-		lineDelta?: number;
-		characterDelta?: number;
-	}): Position;
-	translate(
-		lineDeltaOrChange:
-			| number
-			| { lineDelta?: number; characterDelta?: number }
-			| undefined,
-		characterDelta = 0,
+
+	/**
+	 * Checks if this position is before or equal to another position.
+	 * @param Other The other position to compare against.
+	 * @returns `true` if this position is before or equal to `Other`.
+	 */
+	public IsBeforeOrEqual(Other: Position): boolean {
+		return !new Position(Other.Line, Other.Character).IsBefore(this);
+	}
+
+	/**
+	 * Checks if this position is after another position.
+	 * @param Other The other position to compare against.
+	 * @returns `true` if this position is after `Other`.
+	 */
+	public IsAfter(Other: Position): boolean {
+		return !this.IsBeforeOrEqual(Other);
+	}
+
+	/**
+	 * Checks if this position is after or equal to another position.
+	 * @param Other The other position to compare against.
+	 * @returns `true` if this position is after or equal to `Other`.
+	 */
+	public IsAfterOrEqual(Other: Position): boolean {
+		return !this.IsBefore(Other);
+	}
+
+	/**
+	 * Checks if this position is equal to another position.
+	 * @param Other The other position to compare against.
+	 * @returns `true` if the positions are equal.
+	 */
+	public IsEqual(Other: Position): boolean {
+		return this.Line === Other.Line && this.Character === Other.Character;
+	}
+
+	/**
+	 * Creates a new position relative to this position.
+	 * @param LineDelta Delta value for the line.
+	 * @param CharacterDelta Delta value for the character.
+	 * @returns A new, translated position.
+	 */
+	public Translate(
+		LineDelta: number = 0,
+		CharacterDelta: number = 0,
 	): Position {
-		if (lineDeltaOrChange === null || lineDeltaOrChange === undefined) {
-			return this;
-		}
-		if (typeof lineDeltaOrChange === "number") {
-			return new Position(
-				this.line + lineDeltaOrChange,
-				this.character + characterDelta,
-			);
-		}
 		return new Position(
-			this.line + (lineDeltaOrChange.lineDelta ?? 0),
-			this.character + (lineDeltaOrChange.characterDelta ?? 0),
+			this.Line + LineDelta,
+			this.Character + CharacterDelta,
 		);
 	}
-	with(line?: number, character?: number): Position;
-	with(change: { line?: number; character?: number }): Position;
-	with(
-		lineOrChange:
-			| number
-			| { line?: number; character?: number }
-			| undefined,
-		character: number = this.character,
-	): Position {
-		if (lineOrChange === null || lineOrChange === undefined) {
-			return this;
-		}
-		if (typeof lineOrChange === "number") {
-			return new Position(lineOrChange, character);
-		}
+
+	/**
+	 * Creates a new position derived from this position.
+	 * @param Change An object describing the change.
+	 * @returns A new position with the applied changes.
+	 */
+	public With(Change: { Line?: number; Character?: number }): Position {
 		return new Position(
-			lineOrChange.line ?? this.line,
-			lineOrChange.character ?? this.character,
+			Change.Line ?? this.Line,
+			Change.Character ?? this.Character,
 		);
-	}
-	toJSON(): any {
-		return { line: this.line, character: this.character };
 	}
 }
 
 /**
- * The canonical `Range` class, representing a start and end position.
+ * Represents a range of text in a document, defined by a start and end position.
+ * A range is guaranteed to be ordered, i.e., `Start` is before or equal to `End`.
+ * Range objects are immutable.
  */
-export class Range implements VSCode.Range {
-	readonly start: Position;
-	readonly end: Position;
+export class Range {
+	/**
+	 * The start position of the range.
+	 */
+	public readonly Start: Position;
 
-	constructor(start: Position, end: Position);
+	/**
+	 * The end position of the range.
+	 */
+	public readonly End: Position;
+
+	/**
+	 * Creates a new range from two positions.
+	 * If `Start` is not before or equal to `End`, the values will be swapped.
+	 * @param Start The start position.
+	 * @param End The end position.
+	 */
+	constructor(Start: Position, End: Position);
+	/**
+	 * Creates a new range from number coordinates.
+	 * @param StartLine The zero-based start line.
+	 * @param StartCharacter The zero-based start character.
+	 * @param EndLine The zero-based end line.
+	 * @param EndCharacter The zero-based end character.
+	 */
 	constructor(
-		startLine: number,
-		startCharacter: number,
-		endLine: number,
-		endCharacter: number,
+		StartLine: number,
+		StartCharacter: number,
+		EndLine: number,
+		EndCharacter: number,
 	);
 	constructor(
-		startLineOrPosition: number | Position,
-		startCharacterOrPosition: number | Position,
-		endLine?: number,
-		endCharacter?: number,
+		StartLineOrPosition: number | Position,
+		StartCharacterOrPosition: number | Position,
+		EndLine?: number,
+		EndCharacter?: number,
 	) {
-		let start: Position;
-		let end: Position;
+		let Start: Position;
+		let End: Position;
+
 		if (
-			typeof startLineOrPosition === "number" &&
-			typeof startCharacterOrPosition === "number" &&
-			typeof endLine === "number" &&
-			typeof endCharacter === "number"
+			typeof StartLineOrPosition === "number" &&
+			typeof StartCharacterOrPosition === "number" &&
+			typeof EndLine === "number" &&
+			typeof EndCharacter === "number"
 		) {
-			start = new Position(startLineOrPosition, startCharacterOrPosition);
-			end = new Position(endLine, endCharacter);
+			Start = new Position(StartLineOrPosition, StartCharacterOrPosition);
+			End = new Position(EndLine, EndCharacter);
 		} else if (
-			startLineOrPosition instanceof Position &&
-			startCharacterOrPosition instanceof Position
+			StartLineOrPosition instanceof Position &&
+			StartCharacterOrPosition instanceof Position
 		) {
-			start = startLineOrPosition;
-			end = startCharacterOrPosition;
+			Start = StartLineOrPosition;
+			End = StartCharacterOrPosition;
 		} else {
 			throw new Error("Invalid arguments for Range constructor");
 		}
-		if (start.isAfter(end)) {
-			this.start = end;
-			this.end = start;
+
+		if (Start.IsAfter(End)) {
+			this.Start = End;
+			this.End = Start;
 		} else {
-			this.start = start;
-			this.end = end;
+			this.Start = Start;
+			this.End = End;
 		}
 	}
-	get isEmpty(): boolean {
-		return this.start.isEqual(this.end);
+
+	/**
+	 * `true` if the range is empty.
+	 */
+	public get IsEmpty(): boolean {
+		return this.Start.IsEqual(this.End);
 	}
-	get isSingleLine(): boolean {
-		return this.start.line === this.end.line;
+
+	/**
+	 * `true` if the range spans a single line.
+	 */
+	public get IsSingleLine(): boolean {
+		return this.Start.Line === this.End.Line;
 	}
-	contains(positionOrRange: Position | Range): boolean {
-		if (positionOrRange instanceof Range) {
+
+	/**
+	 * Checks if a position or another range is contained within this range.
+	 * @param PositionOrRange The position or range to check.
+	 * @returns `true` if the given position or range is inside this range.
+	 */
+	public Contains(PositionOrRange: Position | Range): boolean {
+		if (PositionOrRange instanceof Range) {
 			return (
-				this.contains(positionOrRange.start) &&
-				this.contains(positionOrRange.end)
+				this.Contains(PositionOrRange.Start) &&
+				this.Contains(PositionOrRange.End)
 			);
 		}
 		return (
-			positionOrRange.isAfterOrEqual(this.start) &&
-			positionOrRange.isBeforeOrEqual(this.end)
+			PositionOrRange.IsAfterOrEqual(this.Start) &&
+			PositionOrRange.IsBeforeOrEqual(this.End)
 		);
 	}
-	isEqual(other: Range): boolean {
-		return this.start.isEqual(other.start) && this.end.isEqual(other.end);
+
+	/**
+	 * Checks if another range is equal to this range.
+	 * @param Other The other range to compare against.
+	 * @returns `true` if the ranges are equal.
+	 */
+	public IsEqual(Other: Range): boolean {
+		return this.Start.IsEqual(Other.Start) && this.End.IsEqual(Other.End);
 	}
-	intersection(other: Range): Range | undefined {
-		const start = this.start.isAfter(other.start)
-			? this.start
-			: other.start;
-		const end = this.end.isBefore(other.end) ? this.end : other.end;
-		if (start.isAfter(end)) {
+
+	/**
+	 * Creates a new range that is the intersection of this range and another range.
+	 * @param Other The other range to intersect with.
+	 * @returns The intersection range, or `undefined` if there is no overlap.
+	 */
+	public Intersection(Other: Range): Range | undefined {
+		const Start = this.Start.IsAfter(Other.Start)
+			? this.Start
+			: Other.Start;
+		const End = this.End.IsBefore(Other.End) ? this.End : Other.End;
+		if (Start.IsAfter(End)) {
 			return undefined;
 		}
-		return new Range(start, end);
+		return new Range(Start, End);
 	}
-	union(other: Range): Range {
-		const start = this.start.isBefore(other.start)
-			? this.start
-			: other.start;
-		const end = this.end.isAfter(other.end) ? this.end : other.end;
-		return new Range(start, end);
+
+	/**
+	 * Creates a new range that is the union of this range and another range.
+	 * @param Other The other range to union with.
+	 * @returns A new range that encompasses both ranges.
+	 */
+	public Union(Other: Range): Range {
+		const Start = this.Start.IsBefore(Other.Start)
+			? this.Start
+			: Other.Start;
+		const End = this.End.IsAfter(Other.End) ? this.End : Other.End;
+		return new Range(Start, End);
 	}
-	with(start?: Position, end?: Position): Range;
-	with(change: { start?: Position; end?: Position }): Range;
-	with(
-		startOrChange:
-			| Position
-			| { start?: Position; end?: Position }
-			| undefined,
-		end: Position = this.end,
-	): Range {
-		if (startOrChange === null || startOrChange === undefined) {
-			return this;
-		}
-		if (startOrChange instanceof Position) {
-			return new Range(startOrChange, end);
-		}
-		return new Range(
-			startOrChange.start ?? this.start,
-			startOrChange.end ?? this.end,
-		);
-	}
-	toJSON(): any {
-		return [this.start.toJSON(), this.end.toJSON()];
+
+	/**
+	 * Creates a new range derived from this range.
+	 * @param Change An object describing the change.
+	 * @returns A new range with the applied changes.
+	 */
+	public With(Change: { Start?: Position; End?: Position }): Range {
+		return new Range(Change.Start ?? this.Start, Change.End ?? this.End);
 	}
 }
 
 /**
- * The canonical `Selection` class, representing a range with an active cursor position.
+ * Represents a selection in an editor.
+ * A selection is a range with an active cursor position and an anchor position.
  */
 export class Selection extends Range implements VSCode.Selection {
-	readonly anchor: Position;
-	readonly active: Position;
+	/**
+	 * The position at which the selection starts.
+	 * This position might be before or after `Active`.
+	 */
+	public readonly Anchor: Position;
 
-	constructor(anchor: Position, active: Position);
+	/**
+	 * The position of the cursor.
+	 * This position might be before or after `Anchor`.
+	 */
+	public readonly Active: Position;
+
+	/**
+	 * Create a new selection from two positions.
+	 * @param Anchor The anchor position.
+	 * @param Active The active (cursor) position.
+	 */
+	constructor(Anchor: Position, Active: Position);
+	/**
+	 * Create a new selection from four coordinates.
+	 * @param AnchorLine The zero-based line of the anchor.
+	 * @param AnchorCharacter The zero-based character of the anchor.
+	 * @param ActiveLine The zero-based line of the active position.
+	 * @param ActiveCharacter The zero-based character of the active position.
+	 */
 	constructor(
-		anchorLine: number,
-		anchorCharacter: number,
-		activeLine: number,
-		activeCharacter: number,
+		AnchorLine: number,
+		AnchorCharacter: number,
+		ActiveLine: number,
+		ActiveCharacter: number,
 	);
 	constructor(
-		anchor: Position | number,
-		active: Position | number,
-		activeLine?: number,
-		activeCharacter?: number,
+		Anchor: Position | number,
+		Active: Position | number,
+		ActiveLine?: number,
+		ActiveCharacter?: number,
 	) {
-		let anchorPos: Position;
-		let activePos: Position;
+		let AnchorPosition: Position;
+		let ActivePosition: Position;
+
 		if (
-			typeof anchor === "number" &&
-			typeof active === "number" &&
-			typeof activeLine === "number" &&
-			typeof activeCharacter === "number"
+			typeof Anchor === "number" &&
+			typeof Active === "number" &&
+			typeof ActiveLine === "number" &&
+			typeof ActiveCharacter === "number"
 		) {
-			anchorPos = new Position(anchor, active);
-			activePos = new Position(activeLine, activeCharacter);
-		} else if (anchor instanceof Position && active instanceof Position) {
-			anchorPos = anchor;
-			activePos = active;
+			AnchorPosition = new Position(Anchor, Active);
+			ActivePosition = new Position(ActiveLine, ActiveCharacter);
+		} else if (Anchor instanceof Position && Active instanceof Position) {
+			AnchorPosition = Anchor;
+			ActivePosition = Active;
 		} else {
 			throw new Error("Invalid arguments for Selection constructor");
 		}
-		super(anchorPos, activePos);
-		this.anchor = anchorPos;
-		this.active = activePos;
+
+		super(AnchorPosition, ActivePosition);
+		this.Anchor = AnchorPosition;
+		this.Active = ActivePosition;
 	}
-	get isReversed(): boolean {
-		return this.active.isBefore(this.anchor);
-	}
-	override toJSON(): any {
-		return {
-			start: this.start.toJSON(),
-			end: this.end.toJSON(),
-			active: this.active.toJSON(),
-			anchor: this.anchor.toJSON(),
-		};
+
+	/**
+	 * `true` if the selection is reversed (i.e., the active position is before the anchor).
+	 */
+	public get IsReversed(): boolean {
+		return this.Active.IsBefore(this.Anchor);
 	}
 }

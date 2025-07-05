@@ -22,7 +22,7 @@ declare const WebViewPanelService_base: Effect.Service.Class<WebViewPanel, "Serv
             viewColumn: ViewColumn;
             preserveFocus?: boolean;
         }, Options?: WebviewPanelOptions & WebviewOptions) => Effect.Effect<VSCodeWebviewPanel, WebViewPanelProblem, never>;
-        RegisterWebviewPanelSerializer: (_Extension: IExtensionDescription, ViewType: string, _Serializer: WebviewPanelSerializer) => Effect.Effect<Disposable, WebViewPanelProblem, never>;
+        RegisterWebviewPanelSerializer: (_Extension: IExtensionDescription, ViewType: string, _Serializer: WebviewPanelSerializer) => Effect.Effect<any, WebViewPanelProblem, never>;
     }, never, import("../Host/Service.js").Host | import("../IPC/Service.js").IPC>;
 }>;
 /**

@@ -3,7 +3,7 @@
  * @description Defines a custom `ILogger` implementation that forwards all
  * log messages to the native host via the `HostService`.
  */
-import { AbstractMessageLogger, LogLevel, type ILogger } from "@codeeditorland/output/vs/platform/log/common/log.js";
+import { AbstractMessageLogger, type ILogger } from "@codeeditorland/output/vs/platform/log/common/log.js";
 import { HostService } from "../Host/Service.js";
 /**
  * An `ILogger` implementation that sends log messages to the host process.

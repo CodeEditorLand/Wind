@@ -4,7 +4,6 @@
  * and Input Box UI elements, conforming to the `IQuickInputService` contract.
  */
 import { Effect } from "effect";
-import type { IQuickInputService } from "@codeeditorland/output/vs/platform/quickinput/common/quickInput.js";
 declare const QuickInputService_base: Effect.Service.Class<IQuickInputService, "quickInputService", {
     readonly effect: Effect.Effect<IQuickInputService, never, import("../Host/Service.js").Host>;
 }>;

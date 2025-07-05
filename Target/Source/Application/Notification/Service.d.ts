@@ -4,10 +4,8 @@
  * to the `INotificationService` contract from VS Code.
  */
 import { Effect } from "effect";
-import type { INotificationService } from "@codeeditorland/output/vs/platform/notification/common/notification.js";
-import { NotificationService as VSCodeNotificationService } from "@codeeditorland/output/vs/workbench/services/notification/common/notificationService.js";
 declare const NotificationService_base: Effect.Service.Class<INotificationService, "notificationService", {
-    readonly effect: Effect.Effect<VSCodeNotificationService, unknown, unknown>;
+    readonly effect: Effect.Effect<any, unknown, unknown>;
 }>;
 /**
  * The `Effect.Service` for the `INotificationService`.

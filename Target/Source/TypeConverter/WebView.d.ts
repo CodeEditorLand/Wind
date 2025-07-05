@@ -11,11 +11,11 @@ interface IEditorOptions {
  * Converts `vscode.WebviewOptions` into a serializable DTO.
  */
 export declare const ConvertContentOptionsToDTO: (Extension: IExtensionDescription, Options: WebviewOptions) => {
-    enableCommandUris: boolean | readonly string[] | undefined;
-    enableScripts: boolean | undefined;
-    enableForms: boolean | undefined;
-    localResourceRoots: readonly import("vscode").Uri[];
-    portMapping: readonly import("vscode").WebviewPortMapping[] | undefined;
+    enableCommandUris: any;
+    enableScripts: any;
+    enableForms: any;
+    localResourceRoots: any;
+    portMapping: any;
 };
 /**
  * Converts `vscode.WebviewPanelOptions` into a serializable DTO.

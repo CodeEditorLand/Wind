@@ -23,7 +23,7 @@ declare const WindowService_base: Effect.Service.Class<Window, "Service/Window",
         readonly activeTextEditor: any;
         readonly visibleTextEditors: any;
         ShowTextDocument: (documentOrUri: Uri | TextDocument, columnOrOptions?: ViewColumn | TextDocumentShowOptions, preserveFocus?: boolean) => Effect.Effect<TextEditor, WindowProblem>;
-    }, never, import("../Host/Service.js").Host | import("@codeeditorland/output/vs/platform/workspace/common/workspace.js").IWorkspaceContextService>;
+    }, never, any>;
 }>;
 /**
  * The `Effect.Service` for the Window service.

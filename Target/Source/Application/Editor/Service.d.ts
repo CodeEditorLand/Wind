@@ -4,9 +4,8 @@
  * `IEditorService`, which is responsible for managing editor panes and opening editors.
  */
 import { Effect } from "effect";
-import type { IEditorService } from "@codeeditorland/output/vs/workbench/services/editor/common/editorService.js";
 declare const EditorService_base: Effect.Service.Class<IEditorService, "vscode/EditorService", {
-    readonly effect: Effect.Effect<IEditorService, never, import("../Host/Service.js").Host | import("@codeeditorland/output/vs/workbench/services/textfile/common/textfiles.js").ITextFileService>;
+    readonly effect: Effect.Effect<IEditorService, never, any>;
 }>;
 /**
  * The `Effect.Service` for the `IEditorService`.

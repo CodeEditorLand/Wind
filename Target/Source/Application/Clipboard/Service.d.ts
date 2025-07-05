@@ -10,7 +10,6 @@
  *     Effect-TS world with the imperative, promise-based VS Code API.
  */
 import { Effect } from "effect";
-import type { IClipboardService } from "@codeeditorland/output/vs/platform/clipboard/common/clipboardService.js";
 declare const Clipboard_base: Effect.Service.Class<IClipboardService, "vscode/ClipboardService", {
     readonly effect: Effect.Effect<IClipboardService, never, never>;
 }>;

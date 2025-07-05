@@ -4,7 +4,6 @@
  * Source Control Management service, which conforms to the `ISCMService`.
  */
 import { Effect } from "effect";
-import { ISCMService } from "@codeeditorland/output/vs/workbench/contrib/scm/common/scm.js";
 declare const SourceControlManagementService_base: Effect.Service.Class<ISCMService, "scmService", {
     readonly effect: Effect.Effect<any, unknown, unknown>;
 }>;

@@ -5,13 +5,11 @@
  * responsible for providing essential shims and proxying native UI calls.
  */
 import { Effect, Option } from "effect";
-import { type Event } from "@codeeditorland/output/vs/base/common/event.js";
 import type { IMarkdownString } from "@codeeditorland/output/vs/base/common/htmlContent.js";
 import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes.js";
 import type { INativeOpenDialogOptions } from "@codeeditorland/output/vs/platform/dialogs/common/dialogs.js";
 import type { IFileDeleteOptions, IFileOverwriteOptions, IFileWriteOptions } from "@codeeditorland/output/vs/platform/files/common/files.js";
-import type { LogLevel } from "@codeeditorland/output/vs/platform/log/common/log.js";
-import type { INotification, IPromptChoice, IPromptOptions, IStatusMessageOptions, NotificationMessage, Severity } from "@codeeditorland/output/vs/platform/notification/common/notification.js";
+import type { INotification, IPromptChoice, IPromptOptions, IStatusMessageOptions, NotificationMessage } from "@codeeditorland/output/vs/platform/notification/common/notification.js";
 import type { URI } from "@codeeditorland/output/vs/workbench/workbench.web.main.internal.js";
 import type { AccessibilityInformation, Command, FileStat, FileType, WebviewOptions } from "vscode";
 import { type Uri, type UriComponents } from "../../Platform/VSCode/Type.js";
@@ -82,11 +80,11 @@ declare const HostService_base: Effect.Service.Class<Host, "wind/HostService", {
         ProvideGlobals: () => Effect.Effect<void, never, never>;
         NotifyReady: () => Effect.Effect<void, HostServiceProblem, never>;
         Logger: (Arguments_0: LogLevel, Arguments_1: string) => Effect.Effect<void, HostServiceProblem, never>;
-        OnDidChangeWindowState: Event<boolean>;
+        OnDidChangeWindowState: any;
         ShowTextDocument: (Arguments_0: URI, Arguments_1: number | undefined, Arguments_2: IResolvedTextEditorOptions) => Effect.Effect<string, HostServiceProblem, never>;
         ShowOpenDialog: (Arguments_0: INativeOpenDialogOptions) => Effect.Effect<Option.Option<readonly URI[]>, HostServiceProblem, never>;
         ShowSaveDialog: (Arguments_0: INativeSaveDialogOptions) => Effect.Effect<Option.Option<URI>, HostServiceProblem, never>;
-        ShowSaveConfirm: (Arguments_0: import("@codeeditorland/output/vs/base/common/uri.js").UriComponents[]) => Effect.Effect<ISaveDialogResult, HostServiceProblem, never>;
+        ShowSaveConfirm: (Arguments_0: VSCodeUriComponents[]) => Effect.Effect<ISaveDialogResult, HostServiceProblem, never>;
         OpenFile: (Arguments_0: URI) => Effect.Effect<void, HostServiceProblem, never>;
         Stat: (Arguments_0: URI) => Effect.Effect<FileStat, HostServiceProblem, never>;
         ReadDirectory: (Arguments_0: URI) => Effect.Effect<[string, FileType][], HostServiceProblem, never>;
@@ -97,8 +95,8 @@ declare const HostService_base: Effect.Service.Class<Host, "wind/HostService", {
         Rename: (Arguments_0: URI, Arguments_1: URI, Arguments_2: IFileOverwriteOptions) => Effect.Effect<void, HostServiceProblem, never>;
         Copy: (Arguments_0: URI, Arguments_1: URI, Arguments_2: IFileOverwriteOptions) => Effect.Effect<void, HostServiceProblem, never>;
         ShowNotification: (Arguments_0: INotification) => Effect.Effect<void, HostServiceProblem, never>;
-        ShowPrompt: (Arguments_0: Severity, Arguments_1: string, Arguments_2: IPromptChoice[], Arguments_3: IPromptOptions | undefined) => Effect.Effect<void, HostServiceProblem, never>;
-        ShowStatusMessage: (Arguments_0: NotificationMessage, Arguments_1: IStatusMessageOptions | undefined) => Effect.Effect<void, HostServiceProblem, never>;
+        ShowPrompt: (Arguments_0: Severity, Arguments_1: string, Arguments_2: IPromptChoice[], Arguments_3: any) => Effect.Effect<void, HostServiceProblem, never>;
+        ShowStatusMessage: (Arguments_0: NotificationMessage, Arguments_1: any) => Effect.Effect<void, HostServiceProblem, never>;
         SetStatusBarItem: (Arguments_0: StatusBarEntryDTO) => Effect.Effect<void, HostServiceProblem, never>;
         DisposeStatusBarItem: (Arguments_0: string) => Effect.Effect<void, HostServiceProblem, never>;
         SetStatusBarMessage: (Arguments_0: string, Arguments_1: string) => Effect.Effect<void, HostServiceProblem, never>;

@@ -22,7 +22,7 @@ export interface IPC {
     readonly RegisterInvokeHandler: (Channel: string, Handler: (...Arguments: any[]) => Promise<any>) => Disposable;
 }
 declare const IPCService_base: Effect.Service.Class<IPC, "Service/IPC", {
-    readonly scoped: Effect.Effect<IPC, unknown, unknown>;
+    readonly scoped: Effect.Effect<IPC, unknown, any>;
 }>;
 /**
  * The `Effect.Service` for IPC. It is a scoped service because it

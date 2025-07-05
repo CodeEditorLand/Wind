@@ -5,10 +5,8 @@
  * delegating to registered filesystem providers.
  */
 import { Effect } from "effect";
-import type { IFileService } from "@codeeditorland/output/vs/platform/files/common/files.js";
-import { FileService as VSCodeFileService } from "@codeeditorland/output/vs/platform/files/common/fileService.js";
 declare const FileService_base: Effect.Service.Class<IFileService, "vscode/FileService", {
-    readonly effect: Effect.Effect<VSCodeFileService, unknown, unknown>;
+    readonly effect: Effect.Effect<any, unknown, unknown>;
 }>;
 /**
  * The `Effect.Service` for the `IFileService`.

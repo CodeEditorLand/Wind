@@ -4,7 +4,6 @@
  * the gap between Effect's declarative `PubSub` and VS Code's imperative
  * `Event` API.
  */
-import { type Event } from "@codeeditorland/output/vs/base/common/event.js";
 import { Effect, PubSub } from "effect";
 /**
  * Defines the structure of a hybrid event stream, which provides both

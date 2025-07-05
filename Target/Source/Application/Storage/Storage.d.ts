@@ -3,7 +3,6 @@
  * @description Provides an Effect-native implementation of the `IStorage`
  * interface, which acts as the backing database for the `StorageService`.
  */
-import { type Event } from "@codeeditorland/output/vs/base/common/event.js";
 import { type IStorage, type IStorageChangeEvent, type IUpdateRequest, type StorageValue } from "@codeeditorland/output/vs/base/parts/storage/common/storage.js";
 import { IntegrationService } from "../../Integration/Tauri/Service.js";
 import type { StorageDatabase } from "./Database.js";

@@ -4,7 +4,6 @@
  * VS Code status bar.
  */
 import { Effect } from "effect";
-import type { IStatusbarService } from "@codeeditorland/output/vs/workbench/services/statusbar/browser/statusbar.js";
 declare const StatusBarService_base: Effect.Service.Class<IStatusbarService, "statusbarService", {
     readonly effect: Effect.Effect<IStatusbarService, never, import("../Host/Service.js").Host | import("../Command/Service.js").Command>;
 }>;

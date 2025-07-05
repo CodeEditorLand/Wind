@@ -5,7 +5,6 @@
  * contract from VS Code.
  */
 import { Effect } from "effect";
-import type { IConfigurationService } from "@codeeditorland/output/vs/platform/configuration/common/configuration.js";
 declare const Configuration_base: Effect.Service.Class<IConfigurationService, "vscode/ConfigurationService", {
     readonly effect: Effect.Effect<IConfigurationService, never, never>;
 }>;
