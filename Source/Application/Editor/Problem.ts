@@ -1,12 +1,13 @@
 /**
- * @module Error (Application/Editor)
- * @description Defines a domain-specific, tagged error for editor operations
- * at the application layer.
+ * @module Problem
+ * @description
+ * Defines a domain-specific, tagged error for editor operations at the
+ * application layer.
  */
 
 import { Data } from "effect";
 
-import type { HostServiceProblem } from "../Host/Error.js";
+import type { HostProblem } from "../Host/Problem.js";
 
 /**
  * Represents a failure within the `EditorService`.
@@ -15,6 +16,6 @@ import type { HostServiceProblem } from "../Host/Error.js";
  * when trying to open a file.
  */
 export class EditorProblem extends Data.TaggedError("EditorProblem")<{
-	readonly Cause: HostServiceProblem | Error;
+	readonly Cause: HostProblem | Error;
 	readonly Context: string;
 }> {}

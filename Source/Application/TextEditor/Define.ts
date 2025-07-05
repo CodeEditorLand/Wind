@@ -1,15 +1,13 @@
 /**
- * @module Service (Application/TextEditor)
- * @description Defines the service interface and `Effect.Service` tag for the
- * `ITextFileService`, which is responsible for managing text file models.
- * NOTE: The service was renamed from `ITextEditorService` to reflect the
- * VS Code service it implements (`textFileService.ts`).
+ * @module Define
+ * @description
+ * Defines the service for managing text file models, conforming to the
+ * `ITextFileService` from VS Code. This service is responsible for reading,
+ * writing, and managing the state of text-based files.
  */
 
-import { Effect } from "effect";
 import { IFileService } from "@codeeditorland/output/vs/platform/files/common/files.js";
 import { IInstantiationService } from "@codeeditorland/output/vs/platform/instantiation/common/instantiation.js";
-import { ILogService } from "@codeeditorland/output/vs/platform/log/common/log.js";
 import { IUriIdentityService } from "@codeeditorland/output/vs/platform/uriIdentity/common/uriIdentity.js";
 import { IFilesConfigurationService } from "@codeeditorland/output/vs/workbench/services/filesConfiguration/common/filesConfigurationService.js";
 import { ILifecycleService } from "@codeeditorland/output/vs/workbench/services/lifecycle/common/lifecycle.js";
@@ -20,10 +18,12 @@ import {
 import { TextFileService as VSCodeTextFileService } from "@codeeditorland/output/vs/workbench/services/textfile/common/textFileService.js";
 import { IUntitledTextEditorService } from "@codeeditorland/output/vs/workbench/services/untitled/common/untitledTextEditorService.js";
 import { IWorkingCopyFileService } from "@codeeditorland/output/vs/workbench/services/workingCopy/common/workingCopyFileService.js";
+import { Effect } from "effect";
 
-import { type Uri } from "../../Platform/VSCode/Type.js";
-import { HostService } from "../Host/Service.js";
-import { TextEditorProblem } from "./Error.js";
+import type { Uri } from "../../Platform/Vscode/Type.js";
+import { HostService } from "../Host/Define.js";
+import { LoggerService } from "../Logger/Define.js";
+import { TextEditorProblem } from "./Problem.js";
 
 /**
  * The `Effect.Service` for the `ITextFileService`.
@@ -33,21 +33,31 @@ import { TextEditorProblem } from "./Error.js";
  * delegate the save operation to our `HostService`, which communicates with the
  * native `Mountain` backend. All other dependencies are resolved from the DI
  * container, showcasing the hybrid DI model.
+ *
+ * It is registered with the identifier "textFileService" for compatibility.
  */
 export class TextEditorService extends Effect.Service<ITextFileService>()(
 	"textFileService",
 	{
-		effect: Effect.gen(function* () {
+		effect: Effect.gen(function* (Generator) {
 			// Resolve dependencies from the Effect context.
-			const InstantiationService = yield* IInstantiationService;
-			const Host = yield* HostService;
-			const LoggerService = yield* ILogService;
-			const FileService = yield* IFileService;
-			const UntitledTextEditorService = yield* IUntitledTextEditorService;
-			const LifecycleService = yield* ILifecycleService;
-			const FilesConfigurationService = yield* IFilesConfigurationService;
-			const WorkingCopyFileService = yield* IWorkingCopyFileService;
-			const UriIdentityService = yield* IUriIdentityService;
+			const InstantiationService = yield* Generator(
+				IInstantiationService,
+			);
+			const Host = yield* Generator(HostService);
+			const Logger = yield* Generator(LoggerService);
+			const FileService = yield* Generator(IFileService);
+			const UntitledTextEditorService = yield* Generator(
+				IUntitledTextEditorService,
+			);
+			const LifecycleService = yield* Generator(ILifecycleService);
+			const FilesConfigurationService = yield* Generator(
+				IFilesConfigurationService,
+			);
+			const WorkingCopyFileService = yield* Generator(
+				IWorkingCopyFileService,
+			);
+			const UriIdentityService = yield* Generator(IUriIdentityService);
 
 			// Instantiate the real VS Code TextFileService.
 			const ServiceInstance = InstantiationService.createInstance(
@@ -59,7 +69,7 @@ export class TextEditorService extends Effect.Service<ITextFileService>()(
 				FilesConfigurationService,
 				WorkingCopyFileService,
 				UriIdentityService,
-				LoggerService,
+				Logger,
 			) as ITextFileService;
 
 			// Override the `save` method to delegate to our host.
@@ -73,16 +83,18 @@ export class TextEditorService extends Effect.Service<ITextFileService>()(
 				if (!TargetResource) {
 					const ErrorMessage =
 						"TextFileService.save called but no resource was found.";
-					LoggerService.warn(`[TextFileService] ${ErrorMessage}`);
+					Logger.warn(`[TextFileService] ${ErrorMessage}`);
 					throw new Error(ErrorMessage);
 				}
 
-				LoggerService.info(
+				Logger.info(
 					`[TextFileService] Invoking 'Host.SaveFile' for URI: ${TargetResource.toString()}`,
 				);
 
-				const SaveEffect = Effect.promise(() =>
-					Host.SaveFile(TargetResource, Options),
+				const SaveEffect = Host.WriteFile(
+					TargetResource,
+					new Uint8Array(),
+					{},
 				).pipe(
 					Effect.mapError(
 						(Cause) =>
