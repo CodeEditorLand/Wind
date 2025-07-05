@@ -1,6 +1,7 @@
 /**
- * @module Error (Application/Notification)
- * @description Defines domain-specific, tagged errors for notification service operations.
+ * @module Problem
+ * @description
+ * Defines a domain-specific, tagged error for notification service operations.
  */
 
 import { Data } from "effect";
