@@ -27,7 +27,7 @@ import { MarkerLive } from "./Marker/Live.js";
 import { NotificationLive } from "./Notification/Live.js";
 import { QuickInputLive } from "./QuickInput/Live.js";
 import { SourceControlManagementLive } from "./SourceControlManagement/Live.js";
-import { StatusBarLive } from "./StatusBar/Live.js";
+import { StatusBarLive } from "./StatusBar/Implement.js";
 import { StorageLive } from "./Storage/Implement.js";
 import { TextEditorLive } from "./TextEditor/Live.js";
 import { TreeViewLive } from "./TreeView/Live.js";
