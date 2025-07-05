@@ -1,11 +1,12 @@
 /**
- * @module Service (Application/EditorGroup)
- * @description Defines the service interface and live implementation for the
- * application-level editor groups service, which conforms to the `IEditorGroupService`
- * contract from VS Code.
+ * @module Define
+ * @description
+ * Defines the service interface and live implementation for the application-level
+ * editor groups service, which conforms to the `IEditorGroupsService` contract
+ * from VS Code. This service manages the editor grid layout, including the
+ * creation, removal, and state management of editor groups.
  */
 
-import { Effect, Ref } from "effect";
 import { Emitter, Event } from "@codeeditorland/output/vs/base/common/event.js";
 import { IInstantiationService } from "@codeeditorland/output/vs/platform/instantiation/common/instantiation.js";
 import {
@@ -18,13 +19,13 @@ import {
 	type ISerializedEditorGroupModel,
 } from "@codeeditorland/output/vs/workbench/common/editor/editorGroupModel.js";
 import {
-	GroupDirection,
 	GroupsOrder,
 	type IEditorGroup,
-	type IEditorGroupService,
+	type IEditorGroupsService,
 } from "@codeeditorland/output/vs/workbench/services/editor/common/editorGroupsService.js";
+import { Effect, Layer, Ref } from "effect";
 
-import { EditorGroupProblem } from "./Error.js";
+import { EditorGroupProblem } from "./Problem.js";
 
 const EDITOR_PART_UI_STATE_STORAGE_KEY = "editorpart.state";
 
@@ -38,13 +39,14 @@ export interface IEditorPartUIState {
 }
 
 /**
- * The `Effect.Service` for the `IEditorGroupService`.
+ * The `Effect.Service` for the `IEditorGroupsService`.
  *
  * This service manages the editor grid layout, including the creation, removal,
  * and state management of editor groups. It persists its state to the `IStorageService`.
+ * It is registered with the identifier "editorGroupsService" for compatibility.
  */
-export class EditorGroupService extends Effect.Service<IEditorGroupService>()(
-	"vscode/EditorGroupService",
+export class EditorGroupService extends Effect.Service<IEditorGroupsService>()(
+	"editorGroupsService",
 	{
 		effect: Effect.gen(function* (Generator) {
 			const InstantiationService = yield* Generator(
@@ -57,12 +59,11 @@ export class EditorGroupService extends Effect.Service<IEditorGroupService>()(
 				Ref.make({
 					Groups: new Map<number, EditorGroupModel>(),
 					Mru: [] as number[],
-					ActiveGroupId: 0,
+					ActiveGroupID: 0,
 				}),
 			);
 
 			const OnDidAddGroupEmitter = new Emitter<IEditorGroup>();
-			// ... other event emitters would be defined here.
 
 			/**
 			 * Persists the current state of the editor groups to storage.
@@ -79,7 +80,7 @@ export class EditorGroupService extends Effect.Service<IEditorGroupService>()(
 						};
 						const StateToStore: IEditorPartUIState = {
 							SerializedGrid,
-							ActiveGroup: CurrentState.ActiveGroupId,
+							ActiveGroup: CurrentState.ActiveGroupID,
 							MostRecentActiveGroups: CurrentState.Mru,
 						};
 						StorageService.store(
@@ -125,7 +126,7 @@ export class EditorGroupService extends Effect.Service<IEditorGroupService>()(
 				return {
 					Groups: InitialGroups,
 					Mru: StoredState.MostRecentActiveGroups,
-					ActiveGroupId: StoredState.ActiveGroup,
+					ActiveGroupID: StoredState.ActiveGroup,
 				};
 			}).pipe(
 				Effect.flatMap((InitialState) =>
@@ -142,7 +143,7 @@ export class EditorGroupService extends Effect.Service<IEditorGroupService>()(
 						return Ref.update(State, (S) => ({
 							Groups: S.Groups.set(FirstGroup.id, FirstGroup),
 							Mru: [FirstGroup.id, ...S.Mru],
-							ActiveGroupId: FirstGroup.id,
+							ActiveGroupID: FirstGroup.id,
 						}));
 					}
 					return Effect.void;
@@ -155,13 +156,14 @@ export class EditorGroupService extends Effect.Service<IEditorGroupService>()(
 
 			const GetCurrentState = () => Effect.runSync(Ref.get(State));
 
-			const ServiceImplementation: IEditorGroupService = {
+			const ServiceImplementation: IEditorGroupsService = {
 				_serviceBrand: undefined,
 				onDidAddGroup: OnDidAddGroupEmitter.event,
-				// Stubs for other events
 				onDidRemoveGroup: new Emitter().event,
 				onDidMoveGroup: new Emitter().event,
 				onDidActivateGroup: new Emitter().event,
+				onDidChangeGroupIndex: new Emitter().event,
+				onDidChangeGroupLocked: new Emitter().event,
 				onDidLayout: new Emitter().event,
 				onDidScroll: new Emitter().event,
 
@@ -170,7 +172,7 @@ export class EditorGroupService extends Effect.Service<IEditorGroupService>()(
 				},
 				get activeGroup() {
 					const S = GetCurrentState();
-					return S.Groups.get(S.ActiveGroupId)!;
+					return S.Groups.get(S.ActiveGroupID)!;
 				},
 				get groups() {
 					return Array.from(GetCurrentState().Groups.values());
@@ -180,7 +182,7 @@ export class EditorGroupService extends Effect.Service<IEditorGroupService>()(
 				getGroups: (Order: GroupsOrder) => {
 					const S = GetCurrentState();
 					if (Order === GroupsOrder.MOST_RECENTLY_ACTIVE) {
-						return S.Mru.map((Id) => S.Groups.get(Id)!);
+						return S.Mru.map((ID) => S.Groups.get(ID)!);
 					}
 					return Array.from(S.Groups.values());
 				},
@@ -192,20 +194,16 @@ export class EditorGroupService extends Effect.Service<IEditorGroupService>()(
 					const UpdateEffect = Ref.update(State, (S) => ({
 						Groups: S.Groups.set(NewGroup.id, NewGroup),
 						Mru: [NewGroup.id, ...S.Mru],
-						ActiveGroupId: S.ActiveGroupId, // Active group does not change here
+						ActiveGroupID: S.ActiveGroupID,
 					})).pipe(
-						Effect.tap(() =>
-							Effect.sync(() =>
-								OnDidAddGroupEmitter.fire(NewGroup),
-							),
-						),
+						Effect.tap(() => OnDidAddGroupEmitter.fire(NewGroup)),
 						Effect.andThen(SaveState),
 					);
 					Effect.runFork(UpdateEffect);
-					return NewGroup;
+					return NewGroup as IEditorGroup;
 				},
 				removeGroup: (Group) => {
-					const Id = typeof Group === "number" ? Group : Group.id;
+					const ID = typeof Group === "number" ? Group : Group.id;
 					const UpdateEffect = Ref.get(State).pipe(
 						Effect.flatMap((S) => {
 							if (S.Groups.size <= 1) {
@@ -215,18 +213,18 @@ export class EditorGroupService extends Effect.Service<IEditorGroupService>()(
 									}),
 								);
 							}
-							const NewMru = S.Mru.filter((Gid) => Gid !== Id);
-							const NewActiveId =
-								S.ActiveGroupId === Id
-									? NewMru[0]
-									: S.ActiveGroupId;
+							const NewMru = S.Mru.filter((GID) => GID !== ID);
+							const NewActiveID =
+								S.ActiveGroupID === ID
+									? NewMru[0]!
+									: S.ActiveGroupID;
 							const NewGroups = new Map(S.Groups);
-							NewGroups.delete(Id);
+							NewGroups.delete(ID);
 
 							return Ref.set(State, {
 								Groups: NewGroups,
 								Mru: NewMru,
-								ActiveGroupId: NewActiveId,
+								ActiveGroupID: NewActiveID,
 							}).pipe(Effect.andThen(SaveState), Effect.as(true));
 						}),
 					);
@@ -236,26 +234,44 @@ export class EditorGroupService extends Effect.Service<IEditorGroupService>()(
 						),
 					);
 				},
-				// Stubs for other write methods
-				moveGroup: () => {
-					throw new Error("Function not implemented.");
+
+				// --- Stub implementations ---
+				onDidCreateAuxiliaryEditorPart: Event.None,
+				mainPart: {} as any,
+				parts: [],
+				getPart: () => ({}) as any,
+				createAuxiliaryEditorPart: () => Promise.resolve({} as any),
+				getScopedInstantiationService: () => InstantiationService,
+				get hasRestorableState() {
+					return false;
 				},
-				mergeGroup: () => {
-					throw new Error("Function not implemented.");
-				},
-				copyGroup: () => {
-					throw new Error("Function not implemented.");
-				},
-				activateGroup: () => {
-					throw new Error("Function not implemented.");
-				},
-				setGroupOrientation: () => {
-					throw new Error("Function not implemented.");
-				},
-				get partOptions() {
-					return {} as any;
-				},
-				onDidChangePartOptions: new Emitter().event,
+				whenReady: Promise.resolve(),
+				whenRestored: Promise.resolve(),
+				orientation: 0,
+				isReady: true,
+				moveGroup: () => ({}) as any,
+				copyGroup: () => ({}) as any,
+				mergeGroup: () => false,
+				mergeAllGroups: () => false,
+				activateGroup: () => ({}) as any,
+				getSize: () => ({ width: 0, height: 0 }),
+				setSize: () => {},
+				arrangeGroups: () => {},
+				toggleMaximizeGroup: () => {},
+				toggleExpandGroup: () => {},
+				applyLayout: () => {},
+				getLayout: () => ({ orientation: 0, groups: [] }),
+				setGroupOrientation: () => {},
+				findGroup: () => undefined,
+				createEditorDropTarget: () => ({ dispose: () => {} }),
+				partOptions: {} as any,
+				onDidChangeEditorPartOptions: new Emitter().event,
+				enforcePartOptions: () => ({ dispose: () => {} }),
+				saveWorkingSet: () => ({}) as any,
+				getWorkingSets: () => [],
+				applyWorkingSet: () => Promise.resolve(false),
+				deleteWorkingSet: () => {},
+				registerContextKeyProvider: () => ({ dispose: () => {} }),
 			};
 
 			return ServiceImplementation;
