@@ -15,7 +15,7 @@ import {
 } from "@codeeditorland/output/vs/base/parts/storage/common/storage.js";
 import { Effect } from "effect";
 
-import { CreateEmitter } from "../../Platform/Vscode/Type.js";
+import { CreateEmitter } from "../Problem.jsorm/Vscode/Type.js";
 import { IntegrationService } from "../Integration/Define.js";
 import type { StorageDatabase } from "./Database.js";
 import { StorageProblem } from "./Problem.js";
