@@ -1,24 +1,26 @@
 /**
- * @module Service (Application/Command)
- * @description Defines the service for managing and executing commands,
- * implementing the core logic of `vscode.commands`.
+ * @module Define
+ * @description
+ * Defines the service for managing and executing commands, implementing the
+ * core logic of `vscode.commands`. It handles registration, execution, and
+ * proxying of commands to the main host process.
  */
 
-import { Effect, Ref } from "effect";
 import type { IDisposable } from "@codeeditorland/output/vs/base/common/lifecycle.js";
 import type { MainThreadCommandsShape } from "@codeeditorland/output/vs/workbench/api/common/extHost.protocol.js";
+import { Effect, Ref } from "effect";
 import type { TextEditor, TextEditorEdit } from "vscode";
 
-import { IPCService } from "../IPC/Service.js";
-import { LoggerService } from "../Logger/Service.js";
-import { WindowService } from "../Window/Service.js";
-import { CommandProblem } from "./Error.js";
+import { IPCService } from "../IPC/Define.js";
+import { LoggerService } from "../Logger/Define.js";
+import { WindowService } from "../Window/Define.js";
+import { CommandProblem } from "./Problem.js";
 
 /**
- * Represents the internal structure of a registered command.
+ * Represents the internal structure of a registered command handler.
  */
 export interface InternalCommand {
-	readonly Id: string;
+	readonly ID: string;
 	readonly Callback: (...Arguments: any[]) => any;
 	readonly ThisArgument: any;
 }
@@ -26,15 +28,15 @@ export interface InternalCommand {
 /**
  * The contract for the Command service, mirroring the public `vscode.commands` API.
  */
-export interface Command {
+export interface Interface {
 	readonly registerCommand: (
-		Global: boolean,
-		Id: string,
+		IsGlobal: boolean,
+		ID: string,
 		Callback: <T>(...Arguments: any[]) => T | Promise<T>,
 		ThisArgument?: any,
 	) => IDisposable;
 	readonly registerTextEditorCommand: (
-		Id: string,
+		ID: string,
 		Callback: (
 			TextEditor: TextEditor,
 			Edit: TextEditorEdit,
@@ -43,34 +45,31 @@ export interface Command {
 		ThisArgument?: any,
 	) => IDisposable;
 	readonly executeCommand: <T>(
-		Id: string,
+		ID: string,
 		...Arguments: any[]
 	) => Promise<T | undefined>;
 	readonly getCommands: (FilterInternal?: boolean) => Promise<string[]>;
 }
 
 /**
- * The `Effect.Service` for the Command service.
+ * The `Effect.Service` for managing commands.
  */
-export class CommandService extends Effect.Service<Command>()(
+export class CommandService extends Effect.Service<Interface>()(
 	"Service/Command",
 	{
-		effect: Effect.gen(function* () {
-			const IPC = yield* IPCService;
-			const Logger = yield* LoggerService;
-			const Window = yield* WindowService;
+		effect: Effect.gen(function* (Generator) {
+			const IPC = yield* Generator(IPCService);
+			const Logger = yield* Generator(LoggerService);
+			const Window = yield* Generator(WindowService);
 
-			const Commands = yield* Ref.make(
-				new Map<string, InternalCommand>(),
+			const Commands = yield* Generator(
+				Ref.make(new Map<string, InternalCommand>()),
 			);
 			const MainThreadProxy = IPC.CreateProxy<MainThreadCommandsShape>(
 				"$rpc:mainThreadCommands",
 			);
 
-			const ExecuteLocalCommand = (
-				Command: InternalCommand,
-				Arguments: any[],
-			) =>
+			const ExecuteLocal = (Command: InternalCommand, Arguments: any[]) =>
 				Effect.tryPromise({
 					try: () =>
 						Promise.resolve(
@@ -88,58 +87,59 @@ export class CommandService extends Effect.Service<Command>()(
 
 			IPC.RegisterInvokeHandler(
 				"$executeContributedCommand",
-				([Id, ...Arguments]: [string, ...any[]]) => {
-					const handlerEffect = Ref.get(Commands).pipe(
+				([ID, ...Arguments]: [string, ...any[]]) => {
+					const HandlerEffect = Ref.get(Commands).pipe(
 						Effect.flatMap((Map) =>
-							Effect.fromNullable(Map.get(Id)),
+							Effect.fromNullable(Map.get(ID)),
 						),
 						Effect.flatMap((Command) =>
-							ExecuteLocalCommand(Command, Arguments),
+							ExecuteLocal(Command, Arguments),
 						),
 						Effect.catchAll((error) =>
 							Effect.sync(() =>
 								Logger.error(
-									`Failed to execute local command '${Id}'`,
+									`Failed to execute local command '${ID}'`,
 									error,
 								),
 							).pipe(Effect.as(undefined)),
 						),
 					);
-					return Effect.runPromise(handlerEffect);
+					return Effect.runPromise(HandlerEffect);
 				},
 			);
 
-			const self: Command = {
+			const self: Interface = {
 				registerCommand: (
-					Global: boolean,
-					Id: string,
+					IsGlobal: boolean,
+					ID: string,
 					Callback: <T>(...Arguments: any[]) => T | Promise<T>,
 					ThisArgument?: any,
 				): IDisposable => {
 					const RegistrationEffect = Ref.update(Commands, (Map) =>
-						Map.set(Id, { Id, Callback, ThisArgument }),
+						Map.set(ID, { ID, Callback, ThisArgument }),
 					).pipe(
 						Effect.tap(() =>
-							Effect.sync(() =>
-								Logger.trace(`Command '${Id}' registered.`),
-							),
+							Logger.trace(`Command '${ID}' registered.`),
 						),
 					);
 					Effect.runSync(RegistrationEffect);
 
-					if (Global) {
-						MainThreadProxy.$registerCommand(Id);
+					if (IsGlobal) {
+						MainThreadProxy.$registerCommand(ID);
 					}
 
 					return {
 						dispose: () => {
 							const CleanupEffect = Ref.update(
 								Commands,
-								(Map) => (Map.delete(Id), Map),
+								(Map) => {
+									Map.delete(ID);
+									return Map;
+								},
 							).pipe(
 								Effect.tap(() => {
-									if (Global) {
-										MainThreadProxy.$unregisterCommand(Id);
+									if (IsGlobal) {
+										MainThreadProxy.$unregisterCommand(ID);
 									}
 								}),
 							);
@@ -148,7 +148,7 @@ export class CommandService extends Effect.Service<Command>()(
 					};
 				},
 				registerTextEditorCommand: (
-					Id: string,
+					ID: string,
 					Callback: (
 						textEditor: TextEditor,
 						edit: TextEditorEdit,
@@ -161,16 +161,12 @@ export class CommandService extends Effect.Service<Command>()(
 					): Promise<boolean | undefined> => {
 						const ActiveEditor = Window.activeTextEditor;
 						if (!ActiveEditor) {
-							Effect.runSync(
-								Effect.sync(() =>
-									Logger.warn(
-										`Cannot execute text editor command '${Id}' because there is no active text editor.`,
-									),
-								),
+							Logger.warn(
+								`Cannot execute text editor command '${ID}' because there is no active text editor.`,
 							);
 							return Promise.resolve(undefined);
 						}
-						// `edit` returns a `Thenable<boolean>`, which we convert to a full Promise
+						// `edit` returns a `Thenable<boolean>`, which we convert to a full Promise.
 						return Promise.resolve(
 							ActiveEditor.edit((Builder) => {
 								Callback.apply(ThisArg, [
@@ -183,38 +179,35 @@ export class CommandService extends Effect.Service<Command>()(
 					};
 					return self.registerCommand(
 						true,
-						Id,
+						ID,
 						AdaptedCallback as <T>(
 							...args: any[]
 						) => T | Promise<T>,
 					);
 				},
 				executeCommand: async <T>(
-					Id: string,
+					ID: string,
 					...Arguments: any[]
 				): Promise<T | undefined> => {
 					const AllCommands = await Effect.runPromise(
 						Ref.get(Commands),
 					);
-					if (AllCommands.has(Id)) {
+					if (AllCommands.has(ID)) {
 						return Effect.runPromise(
-							ExecuteLocalCommand(
-								AllCommands.get(Id)!,
-								Arguments,
-							),
+							ExecuteLocal(AllCommands.get(ID)!, Arguments),
 						) as Promise<T | undefined>;
 					}
 					return MainThreadProxy.$executeCommand(
-						Id,
+						ID,
 						Arguments,
-						true,
+						true, // retry once
 					) as Promise<T | undefined>;
 				},
 				getCommands: (FilterInternal = false): Promise<string[]> =>
-					MainThreadProxy.$getCommands().then((cmds) =>
+					MainThreadProxy.$getCommands().then((Commands) =>
 						FilterInternal
-							? cmds.filter((c) => !c.startsWith("_"))
-							: cmds,
+							? Commands.filter((c) => !c.startsWith("_"))
+							: Commands,
 					),
 			};
 
