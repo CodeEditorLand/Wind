@@ -1,17 +1,18 @@
 /**
- * @module Service (Application/Logger)
- * @description Defines the service interface and live implementation for the
+ * @module Define
+ * @description
+ * This module defines the service interface and live implementation for the
  * `ILogService`, which provides logging capabilities to the application.
  */
 
-import { Effect } from "effect";
 import {
 	LogLevel,
 	LoggerService as VSCodeLoggerService,
 	type ILogService as VSCodeLogService,
 } from "@codeeditorland/output/vs/platform/log/common/log.js";
+import { Effect } from "effect";
 
-import { HostService } from "../Host/Service.js";
+import { HostService } from "../Host/Define.js";
 import { HostLogger } from "./HostLogger.js";
 
 /**
@@ -22,14 +23,17 @@ import { HostLogger } from "./HostLogger.js";
  * primary logger. The `HostLogger` forwards all log messages to the native
  * `Mountain` host via the `HostService`. This ensures that all workbench logs
  * are centrally managed by the native backend.
+ *
+ * The service is registered with the identifier "loggerService" for compatibility
+ * with legacy VS Code service lookups.
  */
 export class LoggerService extends Effect.Service<VSCodeLogService>()(
 	"loggerService",
 	{
-		effect: Effect.gen(function* () {
-			const Host = yield* HostService;
+		effect: Effect.gen(function* (Generator) {
+			const Host = yield* Generator(HostService);
 
-			// The log level is sourced from the initial configuration provided by the host.
+			// The initial log level is sourced from the configuration provided by the host at startup.
 			const InitialLogLevel =
 				(Host.Configuration as any).logLevel ?? LogLevel.Info;
 			const PrimaryLogger = new HostLogger(Host, InitialLogLevel);
@@ -37,8 +41,8 @@ export class LoggerService extends Effect.Service<VSCodeLogService>()(
 			// Instantiate the real VS Code LoggerService with our custom logger.
 			const ServiceInstance = new VSCodeLoggerService(PrimaryLogger);
 
-			// TODO: A full implementation would also need to listen for log level changes
-			// from the host and update the logger's level accordingly.
+			// A full implementation would also need to listen for log level changes
+			// from the host and update the logger's level accordingly. For example:
 			// Host.OnDidChangeLogLevel(level => ServiceInstance.setLevel(level));
 
 			return ServiceInstance;

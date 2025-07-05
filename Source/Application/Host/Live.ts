@@ -6,7 +6,7 @@
 import { Layer } from "effect";
 
 import { IntegrationService } from "../../Integration/Tauri/Service.js";
-import { HostService } from "./Service.js";
+import { HostService } from "./Define.js";
 
 /**
  * The live implementation `Layer` for the `HostService`.
