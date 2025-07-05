@@ -1,16 +1,17 @@
 /**
- * @module Error (Application/Clipboard)
- * @description Defines a domain-specific, tagged error for clipboard operations
+ * @module Problem
+ * @description
+ * This module defines a domain-specific, tagged error for clipboard operations
  * at the application layer. This provides a structured way to handle failures
  * specific to the clipboard domain.
  */
 
 import { Data } from "effect";
 
-import type { IntegrationClipboardProblem } from "../../Integration/Tauri/Clipboard/Error.js";
+import type { IntegrationProblem } from "../Integration/Problem.js";
 
 /**
- * Represents a failure within the `Clipboard` application service.
+ * Represents a failure within the `ClipboardService`.
  *
  * This error acts as a wrapper around a more specific problem from the
  * Integration layer (e.g., a failure to communicate with the native host).
@@ -21,6 +22,8 @@ import type { IntegrationClipboardProblem } from "../../Integration/Tauri/Clipbo
 export class ApplicationClipboardProblem extends Data.TaggedError(
 	"ApplicationClipboardProblem",
 )<{
-	/** The underlying problem from the Integration layer that caused this failure. */
-	readonly Cause: IntegrationClipboardProblem;
+	/**
+	 * The underlying problem from the Integration layer that caused this failure.
+	 */
+	readonly Cause: IntegrationProblem;
 }> {}

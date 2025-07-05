@@ -14,7 +14,7 @@ import * as Grpc from "@grpc/grpc-js";
 import * as ProtoLoader from "@grpc/proto-loader";
 import { Effect, Ref, Scope } from "effect";
 
-import { CreateEmitter, type IDisposable } from "../../Platform/Vscode/Type.js";
+import { CreateEmitter, type IDisposable } from "../../Platform/VSCode/Type.js";
 import { CancellationService } from "../Cancellation/Define.js";
 import { IPCConfigurationService } from "../IPCConfiguration/Define.js";
 import { LoggerService } from "../Logger/Define.js";
