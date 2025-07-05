@@ -1,29 +1,29 @@
 /**
- * @module EventStream (Utility)
- * @description A utility for creating a hybrid event emitter that bridges
- * the gap between Effect's declarative `PubSub` and VS Code's imperative
- * `Event` API.
+ * @module CreateStream
+ * @description
+ * This module provides a factory function for creating a hybrid event emitter.
+ * This "EventStream" bridges the gap between Effect's declarative `PubSub` for
+ * modern consumers and VS Code's imperative `Event` API for legacy components,
+ * ensuring both can subscribe to the same source of truth.
  */
 
-import {
-	Emitter,
-	type Event,
-} from "@codeeditorland/output/vs/base/common/event.js";
 import { Effect, PubSub } from "effect";
+
+import { CreateEmitter, type Event } from "../../Platform/VSCode/Type.js";
 
 /**
  * Defines the structure of a hybrid event stream, which provides both
  * an `Event` interface for legacy consumers and a `PubSub` for modern,
  * Effect-native consumers.
  */
-export interface EventStream<T> {
+export interface Interface<T> {
 	/**
 	 * An `Effect` that publishes a new event to all subscribers. It fires
 	 * the data to both the internal `PubSub` and the `Emitter`.
 	 * @param Data The event payload of type `T`.
 	 * @returns A `void` `Effect`.
 	 */
-	readonly Fire: (Data: T) => Effect.Effect<void, never>;
+	readonly Fire: (Data: T) => Effect.Effect<void>;
 
 	/**
 	 * The underlying `PubSub` instance. Effect-native services can subscribe
@@ -41,28 +41,28 @@ export interface EventStream<T> {
 	 * An `Effect` that shuts down the event stream, disposing of the underlying
 	 * `Emitter` and shutting down the `PubSub`.
 	 */
-	readonly Shutdown: () => Effect.Effect<void, never>;
+	readonly Shutdown: () => Effect.Effect<void>;
 }
 
 /**
- * A factory function that creates a new `EventStream`.
+ * Creates a new `EventStream` managed within a `Scope`.
  *
- * This function returns an `Effect` that, when executed, will create a new
- * `PubSub` and `Emitter`. This ensures that the creation of these stateful
- * objects is managed within the Effect runtime.
+ * This factory function returns a scoped `Effect` that, when executed,
+ * will create a new `PubSub` and `Emitter`. It ensures that all resources
+ * are gracefully released when the containing scope is closed.
  *
  * @returns An `Effect` that resolves to a new `EventStream<T>`.
  */
-export const CreateEventStream = <T>(): Effect.Effect<EventStream<T>, never> =>
+export const CreateStream = <T>(): Effect.Effect<Interface<T>> =>
 	Effect.gen(function* (Generator) {
-		const VSCodeEmitter = new Emitter<T>();
+		const VSCodeEmitter = CreateEmitter<T>();
 		const PubSubInstance = yield* Generator(PubSub.unbounded<T>());
 
 		const Fire = (Data: T): Effect.Effect<void> =>
-			PubSub.publish(PubSubInstance, Data).pipe(
-				Effect.andThen(Effect.sync(() => VSCodeEmitter.fire(Data))),
-				Effect.asVoid,
-			);
+			Effect.all([
+				PubSub.publish(PubSubInstance, Data),
+				Effect.sync(() => VSCodeEmitter.fire(Data)),
+			]).pipe(Effect.asVoid);
 
 		const Shutdown = (): Effect.Effect<void> =>
 			Effect.all([
