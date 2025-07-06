@@ -1,13 +1,14 @@
 /**
- * @module Live (Application/Window)
- * @description Provides the "live" implementation `Layer` for the Window service.
+ * @module Implement
+ * @description
+ * This module provides the "live" implementation `Layer` for the `WindowService`.
  */
 
 import { Layer } from "effect";
 
-import { HostService } from "../Host/Service.js";
+import { HostService } from "../Host/Define.js";
 import { WorkSpaceService } from "../WorkSpace/Define.js";
-import { WindowService } from "./Service.js";
+import { WindowService } from "./Define.js";
 
 /**
  * The live implementation `Layer` for the `WindowService`.
@@ -15,8 +16,8 @@ import { WindowService } from "./Service.js";
  * It automatically includes dependencies required by its `effect` constructor,
  * such as the `HostService` and `WorkSpaceService`.
  */
-export const WindowLive: Layer.Layer<
+export const ProvideWindow = WindowService.Default as Layer.Layer<
 	WindowService,
 	never,
 	HostService | WorkSpaceService
-> = WindowService.Default;
+>;

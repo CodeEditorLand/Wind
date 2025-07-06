@@ -1,6 +1,7 @@
 /**
- * @module Error (Application/Window)
- * @description Defines domain-specific, tagged errors for window operations.
+ * @module Problem
+ * @description
+ * Defines a domain-specific, tagged error for window operations.
  */
 
 import { Data } from "effect";

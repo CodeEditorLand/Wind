@@ -32,7 +32,7 @@ import { StorageLive } from "./Storage/Implement.js";
 import { TextEditorLive } from "./TextEditor/Live.js";
 import { TreeViewLive } from "./TreeView/Implement.js";
 import { WebViewPanelLive } from "./WebViewPanel/Implement.js";
-import { WindowLive } from "./Window/Live.js";
+import { WindowLive } from "./Window/Implement.js";
 import { WorkSpaceLive } from "./WorkSpace/Live.js";
 
 /**
