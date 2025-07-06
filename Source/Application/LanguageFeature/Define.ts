@@ -1,12 +1,12 @@
 /**
- * @module Service (Application/LanguageFeature)
- * @description Defines the service for registering language feature providers
- * such as for hovers, completions, and definitions. It conforms to the
+ * @module Define
+ * @description
+ * Defines the service for registering language feature providers such as for
+ * hovers, completions, and definitions. It conforms to a subset of the
  * `vscode.languages` API surface.
  */
 
 import { Effect } from "effect";
-import type { IExtensionDescription } from "@codeeditorland/output/vs/platform/extensions/common/extensions.js";
 import type {
 	CodeActionProvider,
 	CodeActionProviderMetadata,
@@ -17,41 +17,39 @@ import type {
 	ReferenceProvider,
 } from "vscode";
 
-import { Disposable } from "../../Platform/VSCode/Type.js";
-import { ProviderRegistrationProblem } from "./Error.js";
+import {
+	Disposable as VSCodeDisposable,
+	type IDisposable,
+} from "../../Platform/Vscode/Type.js";
+import { ProviderRegistrationProblem } from "./Problem.js";
 
 /**
  * The contract for the LanguageFeature service. This interface mirrors a subset
  * of the `vscode.languages` API, focusing on provider registration.
  */
-export interface LanguageFeature {
+export interface Interface {
 	readonly RegisterHoverProvider: (
 		Selector: DocumentSelector,
 		Provider: HoverProvider,
-		Extension: IExtensionDescription,
-	) => Effect.Effect<Disposable, ProviderRegistrationProblem>;
+	) => Effect.Effect<IDisposable, ProviderRegistrationProblem>;
 	readonly RegisterCompletionItemProvider: (
 		Selector: DocumentSelector,
 		Provider: CompletionItemProvider,
 		TriggerCharacters: string[],
-		Extension: IExtensionDescription,
-	) => Effect.Effect<Disposable, ProviderRegistrationProblem>;
+	) => Effect.Effect<IDisposable, ProviderRegistrationProblem>;
 	readonly RegisterDefinitionProvider: (
 		Selector: DocumentSelector,
 		Provider: DefinitionProvider,
-		Extension: IExtensionDescription,
-	) => Effect.Effect<Disposable, ProviderRegistrationProblem>;
+	) => Effect.Effect<IDisposable, ProviderRegistrationProblem>;
 	readonly RegisterReferenceProvider: (
 		Selector: DocumentSelector,
 		Provider: ReferenceProvider,
-		Extension: IExtensionDescription,
-	) => Effect.Effect<Disposable, ProviderRegistrationProblem>;
+	) => Effect.Effect<IDisposable, ProviderRegistrationProblem>;
 	readonly RegisterCodeActionsProvider: (
 		Selector: DocumentSelector,
 		Provider: CodeActionProvider,
 		Metadata: CodeActionProviderMetadata | undefined,
-		Extension: IExtensionDescription,
-	) => Effect.Effect<Disposable, ProviderRegistrationProblem>;
+	) => Effect.Effect<IDisposable, ProviderRegistrationProblem>;
 }
 
 /**
@@ -60,24 +58,22 @@ export interface LanguageFeature {
  * This service provides methods for extensions to register various language
  * feature providers. In this implementation, these registrations are stubs that
  * return a no-op `Disposable`. A full implementation would proxy these
-- * registrations to the `Mountain` host process via an IPC channel.
+ * registrations to the `Mountain` host process via an IPC channel.
  */
-export class LanguageFeatureService extends Effect.Service<LanguageFeature>()(
+export class LanguageFeatureService extends Effect.Service<Interface>()(
 	"Service/LanguageFeature",
 	{
 		sync: () => ({
-			// Each registration method is currently a stub. A full implementation would
-			// serialize the provider's metadata and send it to the host.
 			RegisterHoverProvider: () =>
-				Effect.succeed(new Disposable(() => {})),
+				Effect.succeed(new VSCodeDisposable(() => {})),
 			RegisterCompletionItemProvider: () =>
-				Effect.succeed(new Disposable(() => {})),
+				Effect.succeed(new VSCodeDisposable(() => {})),
 			RegisterDefinitionProvider: () =>
-				Effect.succeed(new Disposable(() => {})),
+				Effect.succeed(new VSCodeDisposable(() => {})),
 			RegisterReferenceProvider: () =>
-				Effect.succeed(new Disposable(() => {})),
+				Effect.succeed(new VSCodeDisposable(() => {})),
 			RegisterCodeActionsProvider: () =>
-				Effect.succeed(new Disposable(() => {})),
+				Effect.succeed(new VSCodeDisposable(() => {})),
 		}),
 	},
 ) {}

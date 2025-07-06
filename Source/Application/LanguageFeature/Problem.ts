@@ -1,7 +1,8 @@
 /**
- * @module Error (Application/LanguageFeature)
- * @description Defines domain-specific, tagged errors for language feature
- * provider registration.
+ * @module Problem
+ * @description
+ * Defines domain-specific, tagged errors for language feature provider
+ * registration.
  */
 
 import { Data } from "effect";

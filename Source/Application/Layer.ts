@@ -21,7 +21,7 @@ import { EditorGroupLive } from "./EditorGroup/Live.js";
 import { FileLive } from "./File/Implement.js";
 import { FileSystemLive } from "./FileSystem/Implement.js";
 import { HostLive } from "./Host/Live.js";
-import { LanguageFeatureLive } from "./LanguageFeature/Live.js";
+import { LanguageFeatureLive } from "./LanguageFeature/Implement.js";
 import { LoggerLive } from "./Logger/Live.js";
 import { MarkerLive } from "./Marker/Live.js";
 import { NotificationLive } from "./Notification/Implement.js";
