@@ -1,12 +1,13 @@
 /**
- * @module Live (Application/FileSystem)
- * @description Provides the "live" implementation `Layer` for the FileSystem service.
+ * @module Implement
+ * @description
+ * This module provides the "live" implementation `Layer` for the `FileSystemService`.
  */
 
 import { Layer } from "effect";
 
-import { HostService } from "../Host/Service.js";
-import { FileSystemService } from "./Service.js";
+import { HostService } from "../Host/Define.js";
+import { FileSystemService } from "./Define.js";
 
 /**
  * The live implementation `Layer` for the `FileSystemService`.
@@ -15,8 +16,8 @@ import { FileSystemService } from "./Service.js";
  * in the service definition. It automatically includes any dependencies
  * required by its `effect` constructor, such as the `HostService`.
  */
-export const FileSystemLive: Layer.Layer<
+export const ProvideFileSystem = FileSystemService.Default as Layer.Layer<
 	FileSystemService,
 	never,
 	HostService
-> = FileSystemService.Default;
+>;

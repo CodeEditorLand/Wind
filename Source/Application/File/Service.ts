@@ -14,7 +14,7 @@ import type {
 import { FileService as VSCodeFileService } from "@codeeditorland/output/vs/platform/files/common/fileService.js";
 import { ILogService } from "@codeeditorland/output/vs/platform/log/common/log.js";
 
-import { FileSystemService } from "../FileSystem/Service.js";
+import { FileSystemService } from "../FileSystem/Define.js";
 
 /**
  * The `Effect.Service` for the `IFileService`.

@@ -6,7 +6,7 @@
 import { Layer } from "effect";
 import { ILogService } from "@codeeditorland/output/vs/platform/log/common/log.js";
 
-import { FileSystemService } from "../FileSystem/Service.js";
+import { FileSystemService } from "../FileSystem/Define.js";
 import { FileService } from "./Service.js";
 
 /**
