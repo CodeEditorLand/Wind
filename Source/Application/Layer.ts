@@ -33,7 +33,7 @@ import { TextEditorLive } from "./TextEditor/Live.js";
 import { TreeViewLive } from "./TreeView/Implement.js";
 import { WebViewPanelLive } from "./WebViewPanel/Implement.js";
 import { WindowLive } from "./Window/Implement.js";
-import { WorkSpaceLive } from "./WorkSpace/Live.js";
+import { WorkSpaceLive } from "./WorkSpace/Implement.js";
 
 /**
  * The master `AppLayer` for the Wind application.
