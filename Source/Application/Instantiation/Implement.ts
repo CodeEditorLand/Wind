@@ -12,11 +12,12 @@ import { InstantiationService } from "./Define.js";
  * The live implementation `Layer` for the `InstantiationService`.
  *
  * This layer is derived directly from the default implementation provided
- * in the service definition. A more complete implementation would gather
- * services from the Effect context and populate the `ServiceCollection`.
+ * in the service definition. It is a simple layer because the complex logic
+ * of gathering services from the context is handled within the service's
+ * `effect` constructor itself.
  */
 export const ProvideInstantiation = InstantiationService.Default as Layer.Layer<
 	InstantiationService,
 	never,
-	never
+	never // Dependencies are implicitly gathered from the context.
 >;

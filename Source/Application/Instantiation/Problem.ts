@@ -8,7 +8,7 @@ import { Data } from "effect";
 
 /**
  * Represents a failure that occurs within the `InstantiationService`, such as
- * a cyclic dependency between services.
+ * a cyclic dependency between services or a failure to create a service instance.
  */
 export class InstantiationProblem extends Data.TaggedError(
 	"InstantiationProblem",
