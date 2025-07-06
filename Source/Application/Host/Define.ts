@@ -4,13 +4,17 @@
  * Defines the service interface and live implementation for the HostService.
  * This service is the primary bridge between the webview UI and the native host,
  * responsible for providing essential shims and proxying native UI calls. It
-s an abstraction over the `IntegrationService`, providing a semantic API for
+ * is an abstraction over the `IntegrationService`, providing a semantic API for
  * host interactions.
  */
 
 import type { IMarkdownString } from "@codeeditorland/output/vs/base/common/htmlContent.js";
 import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes.js";
-import type { INativeOpenDialogOptions } from "@codeeditorland/output/vs/platform/dialogs/common/dialogs.js";
+import type {
+	INativeOpenDialogOptions,
+	INativeSaveDialogOptions,
+	IResolvedTextEditorOptions,
+} from "@codeeditorland/output/vs/platform/dialogs/common/dialogs.js";
 import type {
 	IFileDeleteOptions,
 	IFileOverwriteOptions,
@@ -34,7 +38,8 @@ import type {
 	WebviewOptions,
 } from "vscode";
 
-import { CreateEmitter, type Event } from "../../Platform/VSCode/Type.js";
+import type { Event, Uri, UriDTO } from "../../Platform/Vscode/Type.js";
+import { CreateEventStream } from "../../Utility/CreateStream.js";
 import { IntegrationService } from "../Integration/Define.js";
 import type { IntegrationProblem } from "../Integration/Problem.js";
 import { HostProblem } from "./Problem.js";
@@ -111,8 +116,6 @@ export interface Interface {
 	 * An event that fires when the window's focus state changes.
 	 */
 	readonly OnDidChangeWindowState: Event<boolean>;
-
-	// --- File System Operations ---
 	readonly Stat: (URI: Uri) => Effect.Effect<FileStat, HostProblem>;
 	readonly ReadDirectory: (
 		URI: Uri,
@@ -138,16 +141,12 @@ export interface Interface {
 		Target: Uri,
 		Options: IFileOverwriteOptions,
 	) => Effect.Effect<void, HostProblem>;
-
-	// --- Workspace & Editor Operations ---
 	readonly OpenFile: (URI: Uri) => Effect.Effect<void, HostProblem>;
-
-	// --- User Interface Operations ---
 	readonly ShowOpenDialog: (
 		Options: INativeOpenDialogOptions,
 	) => Effect.Effect<Option.Option<readonly Uri[]>, HostProblem>;
 	readonly ShowSaveDialog: (
-		Options: any, // INativeSaveDialogOptions
+		Options: INativeSaveDialogOptions,
 	) => Effect.Effect<Option.Option<Uri>, HostProblem>;
 	readonly ShowNotification: (
 		Notification: INotification,
@@ -158,16 +157,12 @@ export interface Interface {
 		Choices: IPromptChoice[],
 		Options?: IPromptOptions,
 	) => Effect.Effect<void, HostProblem>;
-
-	// --- Status Bar ---
 	readonly SetStatusBarItem: (
 		DTO: StatusBarEntryDTO,
 	) => Effect.Effect<void, HostProblem>;
 	readonly DisposeStatusBarItem: (
 		EntryID: string,
 	) => Effect.Effect<void, HostProblem>;
-
-	// --- Webview ---
 	readonly SetWebviewHtml: (
 		Handle: string,
 		Html: string,
@@ -216,8 +211,7 @@ export class HostService extends Effect.Service<Interface>()("Service/Host", {
 			return (...Arguments: Arguments): Effect.Effect<T, HostProblem> =>
 				Integration.Invoke<T>(Method, { ...Arguments }).pipe(
 					Effect.mapError(
-						(Cause: IntegrationProblem) =>
-							new HostProblem({ Cause, Context }),
+						(Cause) => new HostProblem({ Cause, Context }),
 					),
 				);
 		};
@@ -232,8 +226,8 @@ export class HostService extends Effect.Service<Interface>()("Service/Host", {
 			)(),
 		);
 
-		const { event: OnDidChangeWindowState, fire: FireWindowState } =
-			yield* Generator(CreateEmitter<boolean>());
+		const { Event: OnDidChangeWindowState, Fire: FireWindowState } =
+			yield* Generator(CreateEventStream<boolean>());
 
 		// Fork a daemon to listen for window state changes from the host.
 		yield* Generator(
@@ -249,7 +243,6 @@ export class HostService extends Effect.Service<Interface>()("Service/Host", {
 			),
 		);
 
-		// Return the full implementation of the `Host` interface.
 		return {
 			Configuration,
 			ProvideGlobals: () =>
@@ -308,14 +301,14 @@ export class HostService extends Effect.Service<Interface>()("Service/Host", {
 				"WorkSpace.OpenFile",
 				"OpenFileFailed",
 			),
-			ShowOpenDialog: CreateProxy<Option.Option<readonly Uri[]>, [any]>(
-				"UserInterface.ShowOpenDialog",
-				"ShowOpenDialogFailed",
-			),
-			ShowSaveDialog: CreateProxy<Option.Option<Uri>, [any]>(
-				"UserInterface.ShowSaveDialog",
-				"ShowSaveDialogFailed",
-			),
+			ShowOpenDialog: CreateProxy<
+				Option.Option<readonly Uri[]>,
+				[INativeOpenDialogOptions]
+			>("UserInterface.ShowOpenDialog", "ShowOpenDialogFailed"),
+			ShowSaveDialog: CreateProxy<
+				Option.Option<Uri>,
+				[INativeSaveDialogOptions]
+			>("UserInterface.ShowSaveDialog", "ShowSaveDialogFailed"),
 			ShowNotification: CreateProxy<void, [INotification]>(
 				"UserInterface.ShowNotification",
 				"ShowNotificationFailed",
@@ -360,6 +353,6 @@ export class HostService extends Effect.Service<Interface>()("Service/Host", {
 				"WebView.Dispose",
 				"DisposeWebviewFailed",
 			),
-		};
+		} as Interface;
 	}),
 }) {}

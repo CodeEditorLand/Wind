@@ -21,7 +21,7 @@ import type { IntegrationProblem } from "../Integration/Problem.js";
  */
 export class HostProblem extends Data.TaggedError("HostProblem")<{
 	/**
-	 * The underlying error or reason for the failure.
+	 * The underlying problem that caused this failure.
 	 */
 	readonly Cause: IntegrationProblem;
 	/**

@@ -20,7 +20,7 @@ import { EditorLive } from "./Editor/Live.js";
 import { EditorGroupLive } from "./EditorGroup/Live.js";
 import { FileLive } from "./File/Implement.js";
 import { FileSystemLive } from "./FileSystem/Implement.js";
-import { HostLive } from "./Host/Live.js";
+import { HostLive } from "./Host/Implement.js";
 import { LanguageFeatureLive } from "./LanguageFeature/Implement.js";
 import { LoggerLive } from "./Logger/Live.js";
 import { MarkerLive } from "./Marker/Implement.js";
