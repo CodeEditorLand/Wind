@@ -7,8 +7,6 @@
  * contract for interacting with the `MountainService` on the native backend.
  */
 
-// --- Message Types (Data Transfer Objects) ---
-
 /**
  * A placeholder for the Protobuf message that wraps raw binary data
  * for the VS Code RPC protocol.
@@ -43,7 +41,7 @@ export class GenericRequest {
 }
 
 /**
- * A placeholder for a generic RPC notification message (a request without a response).
+ * A placeholder for a generic RPC notification message.
  */
 export class GenericNotification {
 	/**
@@ -70,8 +68,6 @@ export class GenericResponse {
 		return undefined;
 	}
 }
-
-// --- Service Contract ---
 
 /**
  * The client-side interface for the `MountainService` gRPC service. It defines

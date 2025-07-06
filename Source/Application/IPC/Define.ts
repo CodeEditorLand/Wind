@@ -12,9 +12,9 @@ import type { IMessagePassingProtocol } from "@codeeditorland/output/vs/base/par
 import { RPCProtocol } from "@codeeditorland/output/vs/workbench/services/extensions/common/rpcProtocol.js";
 import * as Grpc from "@grpc/grpc-js";
 import * as ProtoLoader from "@grpc/proto-loader";
-import { Effect, Ref, Scope } from "effect";
+import { Effect, Ref } from "effect";
 
-import { CreateEmitter, type IDisposable } from "../../Platform/VSCode/Type.js";
+import { CreateEmitter, type IDisposable } from "../../Platform/Vscode/Type.js";
 import { CancellationService } from "../Cancellation/Define.js";
 import { IPCConfigurationService } from "../IPCConfiguration/Define.js";
 import { LoggerService } from "../Logger/Define.js";
@@ -107,7 +107,6 @@ export class IPCService extends Effect.Service<Interface>()("Service/IPC", {
 		const GrpcClient = yield* Generator(
 			Effect.acquireRelease(
 				Effect.gen(function* (Generator) {
-					// NOTE: This path would be configurable in a real environment.
 					const ProtoPath = "proto/vine.ipc.proto";
 					const Definition = yield* Generator(
 						Effect.tryPromise({
@@ -124,7 +123,6 @@ export class IPCService extends Effect.Service<Interface>()("Service/IPC", {
 					const ClientConstructor = (
 						GrpcObject["vine_ipc"] as Grpc.GrpcObject
 					)["MountainService"] as Grpc.ServiceClientConstructor;
-
 					const Client = new ClientConstructor(
 						Config.MountainAddress,
 						Grpc.credentials.createInsecure(),
@@ -182,13 +180,12 @@ export class IPCService extends Effect.Service<Interface>()("Service/IPC", {
 						Cause,
 						Context: "sendRPCDataToMountain failed",
 					}),
-			}).pipe(Effect.orDie); // Errors in sending RPC data are considered fatal.
+			}).pipe(Effect.orDie);
 
 		const ProtocolAdapter: IMessagePassingProtocol = {
 			send: SendRPCData,
 			onMessage: OnMessage,
 		};
-
 		const RPCProtocolInstance = new RPCProtocol(ProtocolAdapter);
 
 		const self: Interface = {
@@ -266,7 +263,6 @@ export class IPCService extends Effect.Service<Interface>()("Service/IPC", {
 				),
 
 			SendCancel: Cancellation.CancelToken,
-
 			CreateProtocolAdapter: () => ({
 				...ProtocolAdapter,
 				...RPCProtocolInstance,
@@ -292,10 +288,7 @@ export class IPCService extends Effect.Service<Interface>()("Service/IPC", {
 					},
 				}),
 
-			RegisterInvokeHandler: (
-				Channel: string,
-				Handler: (...Arguments: any[]) => Promise<any>,
-			) => {
+			RegisterInvokeHandler: (Channel, Handler) => {
 				Effect.runSync(
 					Ref.update(InvokeHandlers, (Map) =>
 						Map.set(Channel, Handler),
@@ -314,5 +307,5 @@ export class IPCService extends Effect.Service<Interface>()("Service/IPC", {
 			},
 		};
 		return self;
-	}).pipe(Effect.provide(Scope.Scope)),
+	}),
 }) {}
