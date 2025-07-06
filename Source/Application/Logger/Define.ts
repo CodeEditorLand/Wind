@@ -41,10 +41,6 @@ export class LoggerService extends Effect.Service<VSCodeLogService>()(
 			// Instantiate the real VS Code LoggerService with our custom logger.
 			const ServiceInstance = new VSCodeLoggerService(PrimaryLogger);
 
-			// A full implementation would also need to listen for log level changes
-			// from the host and update the logger's level accordingly. For example:
-			// Host.OnDidChangeLogLevel(level => ServiceInstance.setLevel(level));
-
 			return ServiceInstance;
 		}),
 	},
