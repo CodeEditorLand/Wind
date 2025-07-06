@@ -1,6 +1,7 @@
 /**
- * @module Error (Application/Marker)
- * @description Defines domain-specific, tagged errors for marker service operations.
+ * @module Problem
+ * @description
+ * Defines a domain-specific, tagged error for marker service operations.
  */
 
 import { Data } from "effect";

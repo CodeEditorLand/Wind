@@ -23,7 +23,7 @@ import { FileSystemLive } from "./FileSystem/Implement.js";
 import { HostLive } from "./Host/Live.js";
 import { LanguageFeatureLive } from "./LanguageFeature/Implement.js";
 import { LoggerLive } from "./Logger/Live.js";
-import { MarkerLive } from "./Marker/Live.js";
+import { MarkerLive } from "./Marker/Implement.js";
 import { NotificationLive } from "./Notification/Implement.js";
 import { QuickInputLive } from "./QuickInput/Implement.js";
 import { SourceControlManagementLive } from "./SourceControlManagement/Implement.js";

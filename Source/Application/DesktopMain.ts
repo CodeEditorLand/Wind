@@ -30,7 +30,7 @@ import { IntegrationService } from "../Integration/Tauri/Service.js";
 import { HostService } from "./Host/Service.js";
 // Import the master application layer and core services.
 import { AppLayer } from "./Layer.js";
-import { MarkerService } from "./Marker/Service.js";
+import { MarkerService } from "./Marker/Define.js";
 import {
 	NativeTreeViewDataProvider,
 	TreeViewService,

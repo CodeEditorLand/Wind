@@ -1,20 +1,21 @@
 /**
- * @module Service (Application/Marker)
- * @description Defines the MarkerService, which listens for diagnostic changes from the
- * backend and updates the Monaco Editor's model markers.
+ * @module Define
+ * @description
+ * This module defines the MarkerService, which listens for diagnostic changes
+ * from the backend and updates the Monaco Editor's model markers accordingly.
  */
 
-import { Effect } from "effect";
-import * as Monaco from "monaco-editor";
 import { URI } from "@codeeditorland/output/vs/base/common/uri.js";
 import { ILogService } from "@codeeditorland/output/vs/platform/log/common/log.js";
 import type { IMarkerData } from "@codeeditorland/output/vs/platform/markers/common/markers.js";
+import { Effect } from "effect";
+import * as Monaco from "monaco-editor";
 
-import { IntegrationService } from "../../Integration/Tauri/Service.js";
-import { MarkerProblem } from "./Error.js";
+import { IntegrationService } from "../Integration/Define.js";
+import { MarkerProblem } from "./Problem.js";
 
 /**
- * The DTO for a single marker received from the Mountain host.
+ * The Data Transfer Object for a single marker received from the Mountain host.
  */
 export interface MarkerDataDTO {
 	readonly Severity: number;
@@ -30,10 +31,11 @@ export interface MarkerDataDTO {
  * The contract for the MarkerService. Its primary job is to listen for
  * backend events and orchestrate updates to the editor UI.
  */
-export interface Marker {
+export interface Interface {
 	/**
 	 * Initializes the service, registering all necessary event listeners to react
-	 * to changes from the backend. This is an Effect that runs once at startup.
+	 * to changes from the backend. This is an Effect that should be run once
+	 * as a daemon at application startup.
 	 */
 	readonly Initialize: () => Effect.Effect<void, MarkerProblem>;
 }
@@ -41,26 +43,29 @@ export interface Marker {
 /**
  * The `Effect.Service` for the `MarkerService`.
  */
-export class MarkerService extends Effect.Service<Marker>()(
-	"Wind/MarkerService",
+export class MarkerService extends Effect.Service<Interface>()(
+	"Service/Marker",
 	{
-		effect: Effect.gen(function* () {
-			const LoggerService = yield* ILogService;
-			const Integration = yield* IntegrationService;
+		effect: Effect.gen(function* (Generator) {
+			const Logger = yield* Generator(ILogService);
+			const Integration = yield* Generator(IntegrationService);
 
 			/**
 			 * An `Effect` that fetches all diagnostics for a given set of URIs from
 			 * the host and updates the corresponding Monaco editor models.
 			 */
 			const UpdateMarkersForURIs = (URIs: readonly string[]) =>
-				Effect.gen(function* () {
-					LoggerService.trace(
+				Effect.gen(function* (Generator) {
+					Logger.trace(
 						`[MarkerService] Fetching diagnostics for ${URIs.length} URIs.`,
 					);
 
-					const DiagnosticsByURI = yield* Integration.Invoke<
-						[string, MarkerDataDTO[]][]
-					>("GetAllDiagnosticsForURIs", { URIs });
+					const DiagnosticsByURI = yield* Generator(
+						Integration.Invoke<[string, MarkerDataDTO[]][]>(
+							"GetAllDiagnosticsForURIs",
+							{ URIs },
+						),
+					);
 
 					for (const [URIString, Markers] of DiagnosticsByURI) {
 						const Model = Monaco.editor.getModel(
@@ -91,7 +96,7 @@ export class MarkerService extends Effect.Service<Marker>()(
 				}).pipe(
 					Effect.catchAll((Cause) =>
 						Effect.sync(() =>
-							LoggerService.error(
+							Logger.error(
 								"[MarkerService] Failed to update markers:",
 								Cause,
 							),
@@ -103,7 +108,7 @@ export class MarkerService extends Effect.Service<Marker>()(
 				Integration.Listen<{ Owner: string; Uris: string[] }>(
 					"sky://diagnostics/changed",
 					(Event) => {
-						LoggerService.info(
+						Logger.info(
 							`[MarkerService] Received diagnostic change from owner '${Event.payload.Owner}'. Updating markers for ${Event.payload.Uris.length} URIs.`,
 						);
 
