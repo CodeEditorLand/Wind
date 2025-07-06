@@ -1,28 +1,29 @@
 /**
- * @module WebViewImplementation (Application/WebViewPanel)
- * @description The concrete implementation of the `vscode.Webview` interface.
- * An instance of this class represents a single webview from the application's
- * perspective, proxying state changes to the `Mountain` host.
+ * @module WebViewImplementation
+ * @description
+ * This module contains the concrete implementation of the `vscode.Webview`
+ * interface. An instance of this class represents a single webview's content
+ * and messaging channel, proxying state changes to the `Mountain` host.
  */
 
-import { Effect } from "effect";
 import { Schemas } from "@codeeditorland/output/vs/base/common/network.js";
 import type { IExtensionDescription } from "@codeeditorland/output/vs/platform/extensions/common/extensions.js";
+import { Effect } from "effect";
 import type { Event, Uri, Webview, WebviewOptions } from "vscode";
 
-import type { HostService } from "../../Application/Host/Service.js";
-import { ConvertContentOptionsToDTO } from "../../TypeConverter/WebView.js";
-import { CreateEventStream } from "../../Utility/EventStream.js";
+import { CreateEmitter } from "../../Platform/Vscode/Type.js";
+import type { Interface as HostService } from "../Host/Define.js";
+import { ConvertContentOptionsToDTO } from "./Convert.js";
 
 /**
  * A concrete implementation of the `vscode.Webview` interface.
  */
 export class WebViewImplementation implements Webview {
-	private IsDisposed = false;
+	private _IsDisposed = false;
 	private _html = "";
 	private _options: WebviewOptions;
 
-	private readonly OnDidReceiveMessageEmitter: Emitter<any>;
+	private readonly _OnDidReceiveMessageEmitter: Emitter<any>;
 	public readonly onDidReceiveMessage: Event<any>;
 
 	constructor(
@@ -32,15 +33,15 @@ export class WebViewImplementation implements Webview {
 		InitialOptions: WebviewOptions,
 	) {
 		this._options = InitialOptions;
-		this.OnDidReceiveMessageEmitter = new Emitter<any>();
-		this.onDidReceiveMessage = this.OnDidReceiveMessageEmitter.event;
+		this._OnDidReceiveMessageEmitter = CreateEmitter<any>();
+		this.onDidReceiveMessage = this._OnDidReceiveMessageEmitter.event;
 	}
 
 	public get html(): string {
 		return this._html;
 	}
 	public set html(Value: string) {
-		if (this.IsDisposed || this._html === Value) {
+		if (this._IsDisposed || this._html === Value) {
 			return;
 		}
 		this._html = Value;
@@ -51,7 +52,7 @@ export class WebViewImplementation implements Webview {
 		return this._options;
 	}
 	public set options(NewOptions: WebviewOptions) {
-		if (this.IsDisposed) {
+		if (this._IsDisposed) {
 			return;
 		}
 		this._options = NewOptions;
@@ -65,11 +66,12 @@ export class WebViewImplementation implements Webview {
 	}
 
 	public get cspSource(): string {
+		// This should be a securely generated nonce in a real implementation.
 		return "vscode-resource: vscode-webview-resource: https:";
 	}
 
 	public postMessage(Message: any): Promise<boolean> {
-		if (this.IsDisposed) {
+		if (this._IsDisposed) {
 			return Promise.resolve(false);
 		}
 		const PostEffect = this.Host.PostMessageToWebview(
@@ -80,23 +82,29 @@ export class WebViewImplementation implements Webview {
 	}
 
 	public asWebviewUri(LocalResource: Uri): Uri {
-		const Authority = this.Extension.identifier.value.toLowerCase();
+		const Authority = this.Extension.id.toLowerCase();
 		return LocalResource.with({
-			scheme: Schemas.vscodeFileResource,
+			scheme: Schemas.vscodeFileResource, // A special scheme for webview resources.
 			authority: Authority,
 		});
 	}
 
-	public fireDidReceiveMessage(Message: any): void {
-		if (!this.IsDisposed) {
-			this.OnDidReceiveMessageEmitter.fire(Message);
+	/**
+	 * Fires the `onDidReceiveMessage` event. Called by the `WebViewPanelService`.
+	 */
+	public FireDidReceiveMessage(Message: any): void {
+		if (!this._IsDisposed) {
+			this._OnDidReceiveMessageEmitter.fire(Message);
 		}
 	}
 
+	/**
+	 * Disposes the webview's resources, primarily the event emitter.
+	 */
 	public dispose(): void {
-		if (!this.IsDisposed) {
-			this.IsDisposed = true;
-			this.OnDidReceiveMessageEmitter.dispose();
+		if (!this._IsDisposed) {
+			this._IsDisposed = true;
+			this._OnDidReceiveMessageEmitter.dispose();
 		}
 	}
 }

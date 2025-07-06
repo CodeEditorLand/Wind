@@ -1,6 +1,7 @@
 /**
- * @module Error (Application/WebViewPanel)
- * @description Defines domain-specific, tagged errors for webview panel operations.
+ * @module Problem
+ * @description
+ * Defines a domain-specific, tagged error for webview panel operations.
  */
 
 import { Data } from "effect";

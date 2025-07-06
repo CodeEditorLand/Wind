@@ -1,13 +1,13 @@
 /**
- * @module WebViewPanelImplementation (Application/WebViewPanel)
- * @description The concrete implementation of the `vscode.WebviewPanel` interface.
- * An instance of this class represents a single webview panel, proxying state
- * changes to the `Mountain` host.
+ * @module WebViewPanelImplementation
+ * @description
+ * This module contains the concrete implementation of the `vscode.WebviewPanel`
+ * interface. An instance of this class represents a single webview panel,
+ * proxying state changes to the `Mountain` host and managing its lifecycle.
  */
 
-import { Effect } from "effect";
-import { Emitter } from "@codeeditorland/output/vs/base/common/event.js";
 import type { IExtensionDescription } from "@codeeditorland/output/vs/platform/extensions/common/extensions.js";
+import { Effect } from "effect";
 import type {
 	Event,
 	Uri,
@@ -19,16 +19,17 @@ import type {
 	WebviewPanelOptions,
 } from "vscode";
 
-import type { HostService } from "../../Application/Host/Service.js";
-import { FromAPI as UriFromAPI } from "../../TypeConverter/Main/URI.js";
-import { ConvertShowOptionsToDTO } from "../../TypeConverter/WebView.js";
+import { CreateEmitter } from "../../Platform/Vscode/Type.js";
+import type { Interface as HostService } from "../Host/Define.js";
+import { FromAPI as ConvertUriToDTO } from "../TypeConverter/Main/Uri.js";
+import { ConvertShowOptionsToDTO } from "./Convert.js";
 import { WebViewImplementation } from "./WebViewImplementation.js";
 
 /**
  * A concrete implementation of the `vscode.WebviewPanel` interface.
  */
 export class WebViewPanelImplementation implements WebviewPanel {
-	private IsDisposed = false;
+	private _IsDisposed = false;
 	private _title: string;
 	private _iconPath:
 		| Uri
@@ -38,11 +39,13 @@ export class WebViewPanelImplementation implements WebviewPanel {
 	private _visible: boolean;
 	private _viewColumn: ViewColumn;
 
-	private readonly OnDidDisposeEmitter = new Emitter<void>();
+	private readonly _OnDidDisposeEmitter = CreateEmitter<void>();
 	public readonly onDidDispose: Event<void>;
-	private readonly OnDidChangeViewStateEmitter =
-		new Emitter<WebviewPanelOnDidChangeViewStateEvent>();
+
+	private readonly _OnDidChangeViewStateEmitter =
+		CreateEmitter<WebviewPanelOnDidChangeViewStateEvent>();
 	public readonly onDidChangeViewState: Event<WebviewPanelOnDidChangeViewStateEvent>;
+
 	public readonly webview: Webview;
 	public readonly viewType: string;
 	public readonly options: WebviewPanelOptions;
@@ -67,61 +70,62 @@ export class WebViewPanelImplementation implements WebviewPanel {
 		);
 		this._title = InitialTitle;
 		this._viewColumn = InitialViewColumn;
-		this._active = true;
-		this._visible = true;
+		this._active = true; // A new panel is always active initially.
+		this._visible = true; // A new panel is always visible initially.
 		this._iconPath = undefined;
-		this.onDidDispose = this.OnDidDisposeEmitter.event;
-		this.onDidChangeViewState = this.OnDidChangeViewStateEmitter.event;
+		this.onDidDispose = this._OnDidDisposeEmitter.event;
+		this.onDidChangeViewState = this._OnDidChangeViewStateEmitter.event;
 	}
 
-	get viewColumn(): ViewColumn | undefined {
+	public get viewColumn(): ViewColumn {
 		return this._viewColumn;
 	}
-	get active(): boolean {
+	public get active(): boolean {
 		return this._active;
 	}
-	get visible(): boolean {
+	public get visible(): boolean {
 		return this._visible;
 	}
-	get title(): string {
+	public get title(): string {
 		return this._title;
 	}
-	set title(Value: string) {
-		if (this.IsDisposed || this._title === Value) {
+	public set title(Value: string) {
+		if (this._IsDisposed || this._title === Value) {
 			return;
 		}
 		this._title = Value;
 		Effect.runFork(this.Host.SetWebviewTitle(this.Handle, Value));
 	}
-	get iconPath():
+
+	public get iconPath():
 		| Uri
 		| { readonly light: Uri; readonly dark: Uri }
 		| undefined {
 		return this._iconPath;
 	}
-	set iconPath(
+	public set iconPath(
 		Value: Uri | { readonly light: Uri; readonly dark: Uri } | undefined,
 	) {
-		if (this.IsDisposed || this._iconPath === Value) {
+		if (this._IsDisposed || this._iconPath === Value) {
 			return;
 		}
 		this._iconPath = Value;
 		const IconPathDTO = Value
 			? "light" in Value && "dark" in Value
 				? {
-						light: UriFromAPI(Value.light),
-						dark: UriFromAPI(Value.dark),
+						light: ConvertUriToDTO(Value.light),
+						dark: ConvertUriToDTO(Value.dark),
 					}
 				: {
-						light: UriFromAPI(Value as Uri),
-						dark: UriFromAPI(Value as Uri),
+						light: ConvertUriToDTO(Value as Uri),
+						dark: ConvertUriToDTO(Value as Uri),
 					}
 			: undefined;
 		Effect.runFork(this.Host.SetWebviewIconPath(this.Handle, IconPathDTO));
 	}
 
 	public reveal(ViewColumn?: ViewColumn, PreserveFocus?: boolean): void {
-		if (this.IsDisposed) {
+		if (this._IsDisposed) {
 			return;
 		}
 		const DTO = ConvertShowOptionsToDTO(ViewColumn, PreserveFocus ?? false);
@@ -129,26 +133,28 @@ export class WebViewPanelImplementation implements WebviewPanel {
 	}
 
 	public dispose(): void {
-		if (this.IsDisposed) {
+		if (this._IsDisposed) {
 			return;
 		}
-		this.IsDisposed = true;
-		this.OnDidDisposeEmitter.fire();
+		this._IsDisposed = true;
+		this._OnDidDisposeEmitter.fire();
+		this._OnDidDisposeEmitter.dispose();
+		this._OnDidChangeViewStateEmitter.dispose();
 		this.OnDidDisposeCallback();
 		(this.webview as WebViewImplementation).dispose();
 		Effect.runFork(this.Host.DisposeWebview(this.Handle));
 	}
 
-	public fireDidReceiveMessage(Message: any): void {
-		(this.webview as WebViewImplementation).fireDidReceiveMessage(Message);
+	public FireDidReceiveMessage(Message: any): void {
+		(this.webview as WebViewImplementation).FireDidReceiveMessage(Message);
 	}
 
-	public updateViewState(NewState: {
+	public UpdateViewState(NewState: {
 		readonly active: boolean;
 		readonly visible: boolean;
 		readonly viewColumn: ViewColumn;
 	}): void {
-		if (this.IsDisposed) {
+		if (this._IsDisposed) {
 			return;
 		}
 		const Changed =
@@ -161,7 +167,7 @@ export class WebViewPanelImplementation implements WebviewPanel {
 		this._viewColumn = NewState.viewColumn;
 
 		if (Changed) {
-			this.OnDidChangeViewStateEmitter.fire({ webviewPanel: this });
+			this._OnDidChangeViewStateEmitter.fire({ webviewPanel: this });
 		}
 	}
 }

@@ -31,7 +31,7 @@ import { StatusBarLive } from "./StatusBar/Implement.js";
 import { StorageLive } from "./Storage/Implement.js";
 import { TextEditorLive } from "./TextEditor/Live.js";
 import { TreeViewLive } from "./TreeView/Implement.js";
-import { WebViewPanelLive } from "./WebViewPanel/Live.js";
+import { WebViewPanelLive } from "./WebViewPanel/Implement.js";
 import { WindowLive } from "./Window/Live.js";
 import { WorkSpaceLive } from "./WorkSpace/Live.js";
 
