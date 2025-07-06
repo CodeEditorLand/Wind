@@ -1,12 +1,13 @@
 /**
- * @module Error (Application/WorkSpace)
- * @description Defines domain-specific, tagged errors for workspace operations.
+ * @module Problem
+ * @description
+ * Defines a domain-specific, tagged error for workspace operations.
  */
 
 import { Data } from "effect";
 
 /**
- * Represents a failure that occurs within the `WorkspaceService`, for example,
+ * Represents a failure that occurs within the `WorkSpaceService`, for example,
  * an error during the initialization of the workspace context.
  */
 export class WorkSpaceProblem extends Data.TaggedError("WorkSpaceProblem")<{
