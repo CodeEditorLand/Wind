@@ -1,19 +1,53 @@
-// Application/BrowserWorkbenchEnvironment/Define.ts
-import { Effect } from "effect";
-import type { IBrowserWorkbenchEnvironmentService } from "@codeeditorland/output/vs/workbench/services/environment/browser/environmentService.js";
-export class BrowserWorkbenchEnvironmentService extends Effect.Service<IBrowserWorkbenchEnvironmentService>()("environmentService", { sync: () => ({}) as any }) {}
+/**
+ * @module Define
+ * @description
+ * Defines the service for providing environment-specific information to the
+ * workbench. This implementation lifts the `BrowserWorkbenchEnvironmentService`
+ * from VS Code and populates it with data from our `HostService`.
+ */
 
-// Application/UserDataProfile/Define.ts
+import { URI } from "@codeeditorland/output/vs/base/common/uri.js";
+import { IProductService } from "@codeeditorland/output/vs/platform/product/common/productService.js";
+import {
+	IBrowserWorkbenchEnvironmentService,
+	BrowserWorkbenchEnvironmentService as VSCodeBrowserWorkbenchEnvironmentService,
+} from "@codeeditorland/output/vs/workbench/services/environment/browser/environmentService.js";
 import { Effect } from "effect";
-import type { IUserDataProfileService } from "@codeeditorland/output/vs/workbench/services/userDataProfile/common/userDataProfile.js";
-export class UserDataProfileService extends Effect.Service<IUserDataProfileService>()("userDataProfileService", { sync: () => ({}) as any }) {}
 
-// Application/RemoteAgent/Define.ts
-import { Effect } from "effect";
-import type { IRemoteAgentService } from "@codeeditorland/output/vs/workbench/services/remote/common/remoteAgentService.js";
-export class RemoteAgentService extends Effect.Service<IRemoteAgentService>()("remoteAgentService", { sync: () => ({}) as any }) {}
+import { HostService } from "../Host/Define.js";
 
-// Application/Policy/Define.ts
-import { Effect } from "effect";
-import type { IPolicyService } from "@codeeditorland/output/vs/platform/policy/common/policy.js";
-export class PolicyService extends Effect.Service<IPolicyService>()("policyService", { sync: () => ({}) as any }) {}
+/**
+ * The `Effect.Service` for the `IBrowserWorkbenchEnvironmentService`.
+ *
+ * This service implementation "lifts" the original `BrowserWorkbenchEnvironmentService`
+ * class from VS Code. It is responsible for providing detailed information about the
+ * runtime environment, such as remote authority, log paths, and extension development
+ * settings.
+ *
+ * The service is constructed by taking the `ISandboxConfiguration` provided by our
+ * `HostService` and passing it as the `IWorkbenchConstructionOptions` that the
+ * VS Code service expects.
+ *
+ * It is registered with the identifier "environmentService" for compatibility.
+ */
+export class BrowserWorkbenchEnvironmentService extends Effect.Service<IBrowserWorkbenchEnvironmentService>()(
+	"environmentService",
+	{
+		effect: Effect.gen(function* (Generator) {
+			const Host = yield* Generator(HostService);
+			const ProductService = yield* Generator(IProductService);
+
+			const Configuration = Host.Configuration;
+
+			const ServiceInstance =
+				new VSCodeBrowserWorkbenchEnvironmentService(
+					Configuration.workspace.id,
+					URI.revive(Configuration.logsPath),
+					Configuration,
+					ProductService,
+				);
+
+			return ServiceInstance;
+		}),
+	},
+) {}
