@@ -1,6 +1,7 @@
 /**
- * @module Error (Integration/Tauri/Clipboard)
- * @description Defines a structured, tagged error for failures that occur when
+ * @module Problem
+ * @description
+ * Defines a structured, tagged error for failures that occur when
  * interacting directly with the Tauri clipboard API.
  */
 
@@ -13,8 +14,8 @@ import { Data } from "effect";
  * call to a Tauri clipboard command rejects. It captures the underlying cause
  * and the specific operation that failed for rich diagnostics.
  */
-export class IntegrationClipboardProblem extends Data.TaggedError(
-	"IntegrationClipboardProblem",
+export class TauriClipboardProblem extends Data.TaggedError(
+	"TauriClipboardProblem",
 )<{
 	readonly Cause: unknown;
 	readonly Operation:

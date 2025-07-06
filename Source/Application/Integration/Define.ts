@@ -5,9 +5,6 @@
  * `IntegrationService`. This service is the lowest-level bridge to the native
  * Tauri host, providing a declarative, Effect-native API for all interactions
  * with the backend.
- *
- * The implementation is provided directly within the service definition, a pattern
- * that encapsulates the default behavior of the service.
  */
 
 import { invoke as TauriInvoke, type InvokeArgs } from "@tauri-apps/api/core";
@@ -19,6 +16,7 @@ import {
 } from "@tauri-apps/api/event";
 import { Effect } from "effect";
 
+import * as TauriClipboard from "../../Integration/Tauri/Clipboard/Action.js";
 import { IntegrationProblem } from "./Problem.js";
 
 /**
@@ -77,6 +75,9 @@ export interface Interface {
 		EventName: string,
 		Payload?: unknown,
 	) => Effect.Effect<void, IntegrationProblem>;
+
+	// Expose the wrapped, specific actions directly
+	readonly Clipboard: typeof TauriClipboard;
 }
 
 /**
@@ -112,6 +113,8 @@ export class IntegrationService extends Effect.Service<Interface>()(
 					catch: (Cause) =>
 						new IntegrationProblem({ Cause, Context: "Emit" }),
 				}),
+
+			Clipboard: TauriClipboard,
 		}),
 	},
 ) {}
