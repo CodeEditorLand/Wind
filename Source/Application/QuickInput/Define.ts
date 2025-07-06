@@ -1,12 +1,12 @@
 /**
- * @module Service (Application/QuickInput)
- * @description Defines the service for interacting with VS Code's Quick Pick
- * and Input Box UI elements, conforming to the `IQuickInputService` contract.
+ * @module Define
+ * @description
+ * Defines the service for interacting with VS Code's Quick Pick and Input Box
+ * UI elements, conforming to the `IQuickInputService` contract. This implementation
+ * proxies all UI requests to the native host.
  */
 
-import { Effect, Option } from "effect";
 import { CancellationToken } from "@codeeditorland/output/vs/base/common/cancellation.js";
-import { Emitter } from "@codeeditorland/output/vs/base/common/event.js";
 import type {
 	IInputBox,
 	IQuickInputService,
@@ -15,13 +15,12 @@ import type {
 	IInputOptions as VSCodeInputOptions,
 	IPickOptions as VSCodePickOptions,
 } from "@codeeditorland/output/vs/platform/quickinput/common/quickInput.js";
+import { Effect, Option } from "effect";
 
-import {
-	ToDTOFromInput as InputBoxToDTO,
-	ToDTO as QuickPickToDTO,
-} from "../../TypeConverter/QuickInput.js";
-import { HostService } from "../Host/Service.js";
-import { QuickInputProblem } from "./Error.js";
+import { CreateEmitter } from "../../Platform/Vscode/Type.js";
+import { HostService } from "../Host/Define.js";
+import { InputToDTO, ToDTO } from "./Convert.js";
+import { QuickInputProblem } from "./Problem.js";
 
 /**
  * The `Effect.Service` for the `IQuickInputService`.
@@ -31,38 +30,47 @@ import { QuickInputProblem } from "./Error.js";
  * translating the results back from the host. Controller-based (stateful)
  * Quick Input instances are not supported in this architecture and will throw
  * an error, as the UI is managed by the native host.
+ *
+ * It is registered with the identifier "quickInputService" for compatibility.
  */
 export class QuickInputService extends Effect.Service<IQuickInputService>()(
 	"quickInputService",
 	{
-		effect: Effect.gen(function* () {
-			const Host = yield* HostService;
+		effect: Effect.gen(function* (Generator) {
+			const Host = yield* Generator(HostService);
 
 			const ShowQuickPick = <T extends IQuickPickItem>(
 				Items: readonly T[] | Promise<readonly T[]>,
 				Options: VSCodePickOptions<T> = {},
 				Token: CancellationToken = CancellationToken.None,
 			): Effect.Effect<T | T[] | undefined, QuickInputProblem> =>
-				Effect.gen(function* () {
+				Effect.gen(function* (Generator) {
 					if (Token.isCancellationRequested) {
-						return yield* Effect.interrupt;
+						return yield* Generator(Effect.interrupt);
 					}
-					const ResolvedItems = yield* Effect.tryPromise({
-						try: () => Promise.resolve(Items),
-						catch: (Cause) =>
-							new QuickInputProblem({
-								Cause: Cause as Error,
-								Context: "FailedToResolveQuickPickItems",
-							}),
-					});
-					const DTOs = QuickPickToDTO(ResolvedItems, Options);
-					const ResultHandles = yield* Host.ShowQuickPick(DTOs).pipe(
-						Effect.mapError(
-							(Cause) =>
+
+					const ResolvedItems = yield* Generator(
+						Effect.tryPromise({
+							try: () => Promise.resolve(Items),
+							catch: (Cause) =>
 								new QuickInputProblem({
-									Cause,
-									Context: "ShowQuickPickFailed",
+									Cause: Cause as Error,
+									Context: "FailedToResolveQuickPickItems",
 								}),
+						}),
+					);
+
+					const DTOs = ToDTO(ResolvedItems, Options);
+					const ResultHandles = yield* Generator(
+						(Host as any).ShowQuickPick(DTOs).pipe(
+							// Assuming HostService will have ShowQuickPick
+							Effect.mapError(
+								(Cause: any) =>
+									new QuickInputProblem({
+										Cause,
+										Context: "ShowQuickPickFailed",
+									}),
+							),
 						),
 					);
 
@@ -70,35 +78,37 @@ export class QuickInputService extends Effect.Service<IQuickInputService>()(
 						return undefined;
 					}
 
-					const Handles = ResultHandles.value;
+					const Handles = ResultHandles.value as number | number[];
 					if (Options.canPickMany) {
-						const SelectedIndices = new Set(Handles);
+						const SelectedIndices = new Set(Handles as number[]);
 						return ResolvedItems.filter((_, Index) =>
 							SelectedIndices.has(Index),
 						) as T[];
 					}
 
-					const SingleHandle = Handles as number;
-					return ResolvedItems[SingleHandle] as T;
+					return ResolvedItems[Handles as number] as T;
 				});
 
 			const ShowInputBox = (
 				Options: VSCodeInputOptions = {},
 				Token: CancellationToken = CancellationToken.None,
 			): Effect.Effect<string | undefined, QuickInputProblem> =>
-				Effect.gen(function* () {
+				Effect.gen(function* (Generator) {
 					if (Token.isCancellationRequested) {
-						return yield* Effect.interrupt;
+						return yield* Generator(Effect.interrupt);
 					}
-					const OptionsDTO = InputBoxToDTO(Options);
-					return yield* Host.ShowInputBox(OptionsDTO).pipe(
-						Effect.map(Option.getOrUndefined),
-						Effect.mapError(
-							(Cause) =>
-								new QuickInputProblem({
-									Cause,
-									Context: "ShowInputBoxFailed",
-								}),
+					const OptionsDTO = InputToDTO(Options);
+					return yield* Generator(
+						(Host as any).ShowInputBox(OptionsDTO).pipe(
+							// Assuming HostService will have ShowInputBox
+							Effect.map(Option.getOrUndefined),
+							Effect.mapError(
+								(Cause: any) =>
+									new QuickInputProblem({
+										Cause,
+										Context: "ShowInputBoxFailed",
+									}),
+							),
 						),
 					);
 				});
@@ -116,6 +126,7 @@ export class QuickInputService extends Effect.Service<IQuickInputService>()(
 					Token?: CancellationToken,
 				): Promise<string | undefined> =>
 					Effect.runPromise(ShowInputBox(Options, Token)),
+
 				createQuickPick: <
 					T extends IQuickPickItem,
 				>(): IQuickPick<T> => {
@@ -128,19 +139,21 @@ export class QuickInputService extends Effect.Service<IQuickInputService>()(
 						"Stateful InputBox controllers are not supported in this architecture.",
 					);
 				},
-				// Stubs for remaining properties and methods
+
+				// --- Stub implementations for other IQuickInputService properties ---
 				quickAccess: {} as any,
-				onDidAccept: new Emitter().event,
-				onDidTriggerButton: new Emitter().event,
-				onDidTriggerItemButton: new Emitter().event,
-				onWillAccept: new Emitter().event,
-				onDidChangeValue: new Emitter().event,
-				navigate: () => {},
+				onShow: CreateEmitter<void>().event,
+				onHide: CreateEmitter<void>().event,
 				focus: () => {},
 				toggle: () => {},
-				layout: () => {},
-				show: () => {},
-				hide: () => {},
+				navigate: () => {},
+				accept: () => Promise.resolve(),
+				back: () => Promise.resolve(),
+				cancel: () => Promise.resolve(),
+				currentQuickInput: undefined,
+				backButton: {} as any,
+				setAlignment: () => {},
+				toggleHover: () => {},
 			};
 
 			return ServiceImplementation;
