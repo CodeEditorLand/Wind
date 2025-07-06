@@ -1,7 +1,8 @@
 /**
- * @module Error (Application/File)
- * @description Defines domain-specific, tagged errors for file operations
- * at the application layer.
+ * @module Problem
+ * @description
+ * Defines a domain-specific, tagged error for file operations at the
+ * application layer.
  */
 
 import { Data } from "effect";

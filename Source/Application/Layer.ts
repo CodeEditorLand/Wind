@@ -18,7 +18,7 @@ import { DialogLive } from "./Dialog/Live.js";
 import { DocumentLive } from "./Document/Live.js";
 import { EditorLive } from "./Editor/Live.js";
 import { EditorGroupLive } from "./EditorGroup/Live.js";
-import { FileLive } from "./File/Live.js";
+import { FileLive } from "./File/Implement.js";
 import { FileSystemLive } from "./FileSystem/Implement.js";
 import { HostLive } from "./Host/Live.js";
 import { LanguageFeatureLive } from "./LanguageFeature/Live.js";
