@@ -1,20 +1,26 @@
 /**
- * @module Service (Application/TreeView)
- * @description Defines the service for creating and managing `vscode.TreeView`
- * instances. This service acts as a factory, handling the registration of tree
- * data providers with the host and managing the lifecycle of each tree view.
+ * @module Define
+ * @description
+ * Defines the service for creating and managing `vscode.TreeView` instances,
+ * as well as the native data provider that fetches tree data from the host.
  */
 
-import { Effect } from "effect";
-import { Emitter, type Event } from "@codeeditorland/output/vs/base/common/event.js";
 import { ILogService } from "@codeeditorland/output/vs/platform/log/common/log.js";
 import { IViewsService } from "@codeeditorland/output/vs/workbench/common/views.js";
-import type { TreeDataProvider, TreeItem, TreeView } from "vscode";
+import { Effect } from "effect";
+import type {
+	ProviderResult,
+	TreeDataProvider,
+	TreeItem,
+	TreeView,
+} from "vscode";
 
-import { IntegrationService } from "../../Integration/Tauri/Service.js";
+import { CreateEmitter, type Event } from "../../Platform/Vscode/Type.js";
+import { IntegrationService } from "../Integration/Define.js";
 
 /**
- * The DTO for a tree item received from the Mountain backend.
+ * The Data Transfer Object for a tree item received from the Mountain backend.
+ * This is the serializable representation of a `TreeItem`.
  */
 export interface TreeItemDTO {
 	readonly handle: string;
@@ -30,32 +36,44 @@ export interface TreeItemDTO {
 
 /**
  * A proxy `TreeDataProvider` that fetches its data from the `Mountain` backend.
- * This class is used for any tree view whose data is provided natively. It
- * translates Monaco/VS Code's provider requests into IPC calls to the host.
+ * This class is used for any tree view whose data is provided natively, such as
+ * the File Explorer. It translates VS Code's provider requests into IPC calls.
  */
 export class NativeTreeViewDataProvider
 	implements TreeDataProvider<TreeItemDTO>
 {
-	private readonly OnDidChangeTreeDataEmitter = new Emitter<
+	private readonly _OnDidChangeTreeDataEmitter = CreateEmitter<
 		TreeItemDTO | TreeItemDTO[] | undefined | null | void
 	>();
 
 	public readonly onDidChangeTreeData: Event<
 		TreeItemDTO | TreeItemDTO[] | undefined | null | void
-	> = this.OnDidChangeTreeDataEmitter.event;
+	> = this._OnDidChangeTreeDataEmitter.event;
 
 	constructor(
-		private readonly ViewId: string,
+		private readonly ViewID: string,
 		private readonly Integration: IntegrationService,
-		private readonly LoggerService: ILogService,
+		private readonly Logger: ILogService,
 	) {}
 
-	public getTreeItem(Element: TreeItemDTO): TreeItem | Thenable<TreeItem> {
+	/**
+	 * Returns the `TreeItem` representation of the given element.
+	 * In this case, the DTO is directly compatible with the `TreeItem` interface.
+	 * @param Element The data element (DTO).
+	 * @returns The `TreeItem` to be rendered.
+	 */
+	public getTreeItem(Element: TreeItemDTO): TreeItem {
 		return Element;
 	}
 
+	/**
+	 * Fetches the children of a given element from the native host.
+	 * If no element is provided, it fetches the root children.
+	 * @param Element The parent element (DTO) or `undefined` for the root.
+	 * @returns A promise that resolves to an array of children DTOs.
+	 */
 	public getChildren(Element?: TreeItemDTO): ProviderResult<TreeItemDTO[]> {
-		this.LoggerService.trace(
+		this.Logger.trace(
 			`[NativeTreeViewDataProvider] Getting children for view '${this.ViewID}'`,
 			Element,
 		);
@@ -63,13 +81,13 @@ export class NativeTreeViewDataProvider
 		const GetChildrenEffect = this.Integration.Invoke<TreeItemDTO[]>(
 			"GetTreeViewChildren",
 			{
-				ViewID: this.ViewId,
+				ViewID: this.ViewID,
 				ElementHandle: Element?.handle,
 			},
 		).pipe(
 			Effect.catchAll((Cause) => {
-				this.LoggerService.error(
-					`[NativeTreeViewDataProvider] Failed to get children for ${this.ViewId}:`,
+				this.Logger.error(
+					`[NativeTreeViewDataProvider] Failed to get children for ${this.ViewID}:`,
 					Cause,
 				);
 				return Effect.succeed([]);
@@ -84,7 +102,7 @@ export class NativeTreeViewDataProvider
  * The contract for the TreeView service. It wraps VS Code's `IViewsService`
  * for the specific purpose of registering tree data providers.
  */
-export interface TreeViewServiceMethods {
+export interface Interface {
 	readonly registerTreeDataProvider: <T>(
 		viewId: string,
 		provider: TreeDataProvider<T>,
@@ -93,26 +111,27 @@ export interface TreeViewServiceMethods {
 
 /**
  * The `Effect.Service` for the TreeView service. It uses the "viewsService"
- * identifier to ensure it can be located by legacy VS Code components.
+ * identifier to ensure it can be located by legacy VS Code components that
+ * rely on `IViewsService`.
  */
-export class TreeViewService extends Effect.Service<TreeViewServiceMethods>()(
+export class TreeViewService extends Effect.Service<Interface>()(
 	"viewsService",
 	{
 		effect: Effect.gen(function* (Generator) {
 			const ViewsService = yield* Generator(IViewsService);
-			const LoggerService = yield* Generator(ILogService);
+			const Logger = yield* Generator(ILogService);
 
 			const registerTreeDataProvider = <T>(
 				viewId: string,
 				provider: TreeDataProvider<T>,
 			): TreeView<T> => {
-				LoggerService.info(
+				Logger.info(
 					`[TreeViewService] Registering tree data provider for view: ${viewId}`,
 				);
 
 				return ViewsService.registerTreeDataProvider(
 					viewId,
-					provider,
+					provider as any, // Cast to any to satisfy the complex generic
 				) as TreeView<T>;
 			};
 

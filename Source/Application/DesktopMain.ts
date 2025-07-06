@@ -34,7 +34,7 @@ import { MarkerService } from "./Marker/Service.js";
 import {
 	NativeTreeViewDataProvider,
 	TreeViewService,
-} from "./TreeView/Service.js";
+} from "./TreeView/Define.js";
 
 /**
  * The main application startup workflow, described as a single, declarative `Effect`.

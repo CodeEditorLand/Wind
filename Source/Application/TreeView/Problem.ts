@@ -1,7 +1,8 @@
 /**
- * @module Error (Application/TreeView)
- * @description Defines domain-specific, tagged errors for TreeView operations
- * at the application layer.
+ * @module Problem
+ * @description
+ * Defines a domain-specific, tagged error for TreeView operations at the
+ * application layer.
  */
 
 import { Data } from "effect";
