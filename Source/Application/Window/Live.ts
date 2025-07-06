@@ -6,7 +6,7 @@
 import { Layer } from "effect";
 
 import { HostService } from "../Host/Service.js";
-import { WorkSpaceService } from "../WorkSpace/Service.js";
+import { WorkSpaceService } from "../WorkSpace/Define.js";
 import { WindowService } from "./Service.js";
 
 /**

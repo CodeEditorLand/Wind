@@ -1,6 +1,7 @@
 /**
- * @module Error (Application/SourceControlManagement)
- * @description Defines domain-specific, tagged errors for Source Control Management
+ * @module Problem
+ * @description
+ * Defines a domain-specific, tagged error for Source Control Management
  * operations at the application layer.
  */
 

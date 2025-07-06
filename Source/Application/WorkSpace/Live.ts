@@ -12,7 +12,7 @@ import { IBrowserWorkbenchEnvironmentService } from "@codeeditorland/output/vs/w
 import { IRemoteAgentService } from "@codeeditorland/output/vs/workbench/services/remote/common/remoteAgentService.js";
 import { IUserDataProfileService } from "@codeeditorland/output/vs/workbench/services/userDataProfile/common/userDataProfile.js";
 
-import { WorkSpaceService } from "./Service.js";
+import { WorkSpaceService } from "./Define.js";
 
 /**
  * The live implementation `Layer` for the `WorkSpaceService`.

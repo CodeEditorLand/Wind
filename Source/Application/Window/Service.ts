@@ -19,7 +19,7 @@ import { FromAPI as RangeFromAPI } from "../../TypeConverter/Main/Range.js";
 import { FromAPI as ViewColumnFromAPI } from "../../TypeConverter/Main/ViewColumn.js";
 import { CreateEventStream } from "../../Utility/EventStream.js";
 import { HostService } from "../Host/Service.js";
-import { WorkSpaceService } from "../WorkSpace/Service.js";
+import { WorkSpaceService } from "../WorkSpace/Define.js";
 import { WindowProblem } from "./Error.js";
 
 /**

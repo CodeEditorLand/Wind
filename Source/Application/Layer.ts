@@ -26,7 +26,7 @@ import { LoggerLive } from "./Logger/Live.js";
 import { MarkerLive } from "./Marker/Live.js";
 import { NotificationLive } from "./Notification/Implement.js";
 import { QuickInputLive } from "./QuickInput/Implement.js";
-import { SourceControlManagementLive } from "./SourceControlManagement/Live.js";
+import { SourceControlManagementLive } from "./SourceControlManagement/Implement.js";
 import { StatusBarLive } from "./StatusBar/Implement.js";
 import { StorageLive } from "./Storage/Implement.js";
 import { TextEditorLive } from "./TextEditor/Live.js";
