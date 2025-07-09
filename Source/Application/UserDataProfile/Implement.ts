@@ -13,7 +13,7 @@ import { Layer } from "effect";
 import { BrowserWorkbenchEnvironmentService } from "../BrowserWorkbenchEnvironment/Define.js";
 import { FileService } from "../File/Define.js";
 import { LoggerService } from "../Logger/Define.js";
-import { URIIdentityService } from "../UriIdentity/Define.js";
+import { URIIdentityService } from "../URIIdentity2/Define.js";
 import { UserDataProfileService, UserDataProfilesService } from "./Define.js";
 
 /**
