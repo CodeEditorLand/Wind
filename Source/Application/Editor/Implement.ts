@@ -21,7 +21,7 @@ import { LifecycleService } from "../Lifecycle/Define.js";
 import { LoggerService } from "../Logger/Define.js";
 import { TextEditorService } from "../TextEditor/Define.js";
 import { UntitledTextEditorService } from "../UntitledTextEditor/Define.js";
-import { URIIdentityService } from "../URIIdentity2/Define.js";
+import { URIIdentityService } from "../URIIdentity/Define.js";
 import { WorkingCopyFileService } from "../WorkingCopyFile/Define.js";
 import { EditorService } from "./Define.js";
 

@@ -21,7 +21,7 @@ import { FileService } from "../File/Define.js";
 import { LoggerService } from "../Logger/Define.js";
 import { PolicyService } from "../Policy/Define.js";
 import { RemoteAgentService } from "../RemoteAgent/Define.js";
-import { URIIdentityService } from "../URIIdentity2/Define.js";
+import { URIIdentityService } from "../URIIdentity/Define.js";
 import { UserDataProfileService } from "../UserDataProfile/Define.js";
 import { WorkSpaceService } from "./Define.js";
 
