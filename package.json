@@ -24,7 +24,7 @@
 	},
 	"dependencies": {
 		"@codeeditorland/output": "0.0.1",
-		"@effect/platform": "0.93.0",
+		"@effect/platform": "0.93.1",
 		"@tauri-apps/api": "2.9.0",
 		"@tauri-apps/plugin-dialog": "2.4.2",
 		"effect": "3.19.3"
