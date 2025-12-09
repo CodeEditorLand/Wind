@@ -27,7 +27,7 @@
 		"@effect/platform": "0.93.6",
 		"@tauri-apps/api": "2.9.1",
 		"@tauri-apps/plugin-dialog": "2.4.2",
-		"effect": "3.19.9"
+		"effect": "3.19.10"
 	},
 	"devDependencies": {
 		"@effect/experimental": "0.57.11",
