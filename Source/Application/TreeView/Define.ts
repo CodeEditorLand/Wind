@@ -39,9 +39,7 @@ export interface TreeItemDTO {
  * This class is used for any tree view whose data is provided natively, such as
  * the File Explorer. It translates VS Code's provider requests into IPC calls.
  */
-export class NativeTreeViewDataProvider
-	implements TreeDataProvider<TreeItemDTO>
-{
+export class NativeTreeViewDataProvider implements TreeDataProvider<TreeItemDTO> {
 	private readonly _OnDidChangeTreeDataEmitter = CreateEmitter<
 		TreeItemDTO | TreeItemDTO[] | undefined | null | void
 	>();

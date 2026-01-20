@@ -8,12 +8,6 @@
  */
 
 import { URI } from "@codeeditorland/output/vs/base/common/uri.js";
-import { invoke as TauriInvoke } from "@tauri-apps/api/core";
-import {
-	emit as TauriEmit,
-	listen as TauriListen,
-	type Event as TauriEvent,
-} from "@tauri-apps/api/event";
 import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes.js";
 import type {
 	IpcRenderer,
@@ -23,6 +17,12 @@ import type {
 	IMainWindowSandboxGlobals,
 	ISandboxNodeProcess,
 } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/globals";
+import { invoke as TauriInvoke } from "@tauri-apps/api/core";
+import {
+	emit as TauriEmit,
+	listen as TauriListen,
+	type Event as TauriEvent,
+} from "@tauri-apps/api/event";
 
 /**
  * A shim for the `ipcRenderer` object, adapting it to use Tauri's IPC.

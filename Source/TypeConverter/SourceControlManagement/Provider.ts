@@ -4,7 +4,10 @@
  */
 
 import { Emitter } from "@codeeditorland/output/vs/base/common/event";
-import { observableValue, type IObservable } from "@codeeditorland/output/vs/base/common/observable";
+import {
+	observableValue,
+	type IObservable,
+} from "@codeeditorland/output/vs/base/common/observable";
 import { URI } from "@codeeditorland/output/vs/base/common/uri.js";
 import type { ITextModel } from "@codeeditorland/output/vs/editor/common/model";
 import type {

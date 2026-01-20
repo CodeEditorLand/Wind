@@ -6,6 +6,7 @@
  */
 
 import { Data } from "effect";
+
 import type { IntegrationProblem } from "../Integration/Problem.js";
 
 /**

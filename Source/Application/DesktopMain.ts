@@ -12,7 +12,6 @@
  *   - Sets up global error handling and gracefully runs the application.
  */
 
-import { Effect } from "effect";
 import { domContentLoaded } from "@codeeditorland/output/vs/base/browser/dom.js";
 import { onUnexpectedError } from "@codeeditorland/output/vs/base/common/errors.js";
 import { ServiceCollection } from "@codeeditorland/output/vs/platform/instantiation/common/serviceCollection.js";
@@ -25,6 +24,7 @@ import {
 import { Registry } from "@codeeditorland/output/vs/platform/registry/common/platform.js";
 import { Workbench } from "@codeeditorland/output/vs/workbench/browser/workbench.js";
 import { CommandsQuickAccessProvider } from "@codeeditorland/output/vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.js";
+import { Effect } from "effect";
 
 import { IntegrationService } from "../Integration/Tauri/Service.js";
 import { HostService } from "./Host/Service.js";
