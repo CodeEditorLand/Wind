@@ -76,7 +76,7 @@ implementations with high-performance, OS-native equivalents, all underpinned by
 
 To understand how `Wind`'s internal components interact to provide these
 services, please refer to the detailed technical breakdown in
-[`docs/Deep Dive.md`](docs/Deep%20Dive.md). This document explains the role of
+[`Documentation/GitHub/Deep Dive.md`](Documentation/GitHub/Deep%20Dive.md). This document explains the role of
 the `Preload` script, the `Integration` layer, and how the `Application`
 services are constructed with Effect-TS.
 
