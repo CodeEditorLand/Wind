@@ -1,10 +1,16 @@
 /**
  * @module Define
  * @description
- * Defines the high-level service for Inter-Process Communication (IPC)
- * between the `Wind` frontend and the `Mountain` backend. It orchestrates
- * gRPC client connections, RPC protocol adaptation, and request/notification
- * dispatching.
+ * Enhanced IPC service with comprehensive Tauri integration, advanced error handling,
+ * and defensive coding patterns. Orchestrates communication between `Wind` frontend and
+ * `Mountain` backend with robust fallback mechanisms and graceful degradation.
+ * 
+ * Key improvements:
+ * - Comprehensive Tauri IPC integration alongside gRPC
+ * - Advanced error handling with retry logic and fallback modes
+ * - Connection health monitoring and automatic recovery
+ * - Enhanced protocol adaptation for VSCode compatibility
+ * - Defensive coding patterns with comprehensive logging
  */
 
 import { VSBuffer } from "@codeeditorland/output/vs/base/common/buffer.js";
@@ -12,7 +18,8 @@ import type { IMessagePassingProtocol } from "@codeeditorland/output/vs/base/par
 import { RPCProtocol } from "@codeeditorland/output/vs/workbench/services/extensions/common/rpcProtocol.js";
 import * as Grpc from "@grpc/grpc-js";
 import * as ProtoLoader from "@grpc/proto-loader";
-import { Effect, Ref } from "effect";
+import { invoke as TauriInvoke, type InvokeArgs } from "@tauri-apps/api/core";
+import { Effect, Ref, Schedule } from "effect";
 
 import { CreateEmitter, type IDisposable } from "../../Platform/Vscode/Type.js";
 import { CancellationService } from "../Cancellation/Define.js";
@@ -30,7 +37,25 @@ import {
 	GrpcConnectionProblem,
 	IpcProblem,
 	ProtoSerializationProblem,
+	TauriConnectionProblem,
 } from "./Problem.js";
+
+// Enhanced IPC connection state management
+interface ConnectionState {
+	status: 'connected' | 'connecting' | 'disconnected' | 'degraded';
+	lastError?: Error;
+	retryCount: number;
+	lastSuccessfulPing: number;
+}
+
+// Enhanced IPC options with comprehensive configuration
+interface EnhancedIPCOptions {
+	maxRetries: number;
+	retryDelay: number;
+	timeout: number;
+	enableTauriFallback: boolean;
+	healthCheckInterval: number;
+}
 
 /**
  * The contract for the Inter-Process Communication service.

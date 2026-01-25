@@ -1,0 +1,111 @@
+{
+  "compilerOptions": {
+    // Modern ECMAScript target for Tauri compatibility
+    "target": "ES2022",
+    
+    // Module system for ES modules
+    "module": "ESNext",
+    
+    // Module resolution strategy
+    "moduleResolution": "node",
+    
+    // Allow synthetic default imports
+    "allowSyntheticDefaultImports": true,
+    
+    // ES module interop
+    "esModuleInterop": true,
+    
+    // Skip type checking for library files
+    "skipLibCheck": true,
+    
+    // Strict type checking
+    "strict": true,
+    
+    // JSX support (for potential UI components)
+    "jsx": "react-jsx",
+    
+    // Declaration file generation
+    "declaration": false,
+    
+    // Source map generation
+    "sourceMap": true,
+    
+    // Output directory
+    "outDir": "../Target",
+    
+    // Root directory
+    "rootDir": ".",
+    
+    // Base URL for module resolution
+    "baseUrl": ".",
+    
+    // Path mapping for VSCode modules and Tauri integration
+    "paths": {
+      "@codeeditorland/output/vs/*": [
+        "../Dependency/Microsoft/VSCode/node_modules/@codeeditorland/output/vs/*"
+      ],
+      "@tauri-apps/api": [
+        "../node_modules/@tauri-apps/api"
+      ],
+      "@tauri-apps/api/*": [
+        "../node_modules/@tauri-apps/api/*"
+      ],
+      "effect": [
+        "../node_modules/effect"
+      ]
+    },
+    
+    // Library inclusion
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable",
+      "WebWorker"
+    ],
+    
+    // Additional type checking options
+    "forceConsistentCasingInFileNames": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    
+    // Module resolution enhancements
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": false,
+    
+    // Output configuration
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "inlineSources": false,
+    
+    // Experimental features
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  
+  // Include all TypeScript files in the source directory
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx"
+  ],
+  
+  // Exclude node_modules and build artifacts
+  "exclude": [
+    "node_modules",
+    "Target",
+    "Configuration",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ],
+  
+  // Type acquisition configuration
+  "typeAcquisition": {
+    "enable": false
+  }
+}
