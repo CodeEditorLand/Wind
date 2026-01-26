@@ -111,8 +111,7 @@ native implementations and Tauri integration.
 
 #### 1. VSCode Environment Emulation Architecture
 
-Wind's concrete environment emulation enables seamless VSCode
-compatibility:
+Wind's concrete environment emulation enables seamless VSCode compatibility:
 
 ```mermaid
 graph TB
@@ -141,8 +140,8 @@ graph TB
 
 **Concrete API Compatibility Guarantees**
 
-Wind's environment emulation provides high-fidelity VSCode API
-compatibility through:
+Wind's environment emulation provides high-fidelity VSCode API compatibility
+through:
 
 1. **Interface Matching:** All VSCode API interfaces are precisely matched in
    TypeScript definitions
@@ -226,8 +225,8 @@ graph LR
 
 #### Security Implementation Characteristics
 
-Wind's security architecture prevents common webview security
-vulnerabilities through:
+Wind's security architecture prevents common webview security vulnerabilities
+through:
 
 1. **CSP Enforcement:** Strict Content Security Policy prevents script injection
 2. **API Boundary Security:** Secure communication channel between webview and
@@ -497,27 +496,27 @@ graph TD
         AppLayer["AppLayer<br/>Service Composition"]
         Integration["Tauri Integration<br/>Native Bridge"]
         VSCodeServices["VSCode Services<br/>UI Integration"]
-        
+
         Preload --> AppLayer
         AppLayer --> Integration
         Integration --> VSCodeServices
     end
-    
+
     subgraph "Communication Protocols"
         Tauri["Tauri Events"]
         Mountain["Mountain Backend"]
         Sky["Sky UI Components"]
-        
+
         VSCodeServices --> Tauri
         Tauri --> Mountain
         VSCodeServices --> Sky
     end
-    
+
     subgraph "VSCode Service Mapping"
         VSCodeAPI["VSCode API"]
         WindServices["Wind Services"]
         EffectTS["Effect-TS Layer"]
-        
+
         VSCodeAPI --> WindServices
         WindServices --> EffectTS
     end
@@ -525,13 +524,13 @@ graph TD
 
 #### Service Implementation Table
 
-| VSCode Service | Wind Service | Effect-TS Layer | Communication Protocol |
-| :------------- | :---------- | :-------------- | :------------------- |
-| `vscode.window` | `WindowService` | `Effect.Service` | Tauri Events |
-| `vscode.commands` | `CommandService` | `Effect.Service` | Tauri Events |
-| `vscode.workspace` | `WorkspaceService` | `Effect.Service` | Tauri Events |
-| `vscode.extensions` | `ExtensionService` | `Effect.Service` | Tauri Events |
-| `vscode.languages` | `LanguageService` | `Effect.Service` | Tauri Events |
+| VSCode Service      | Wind Service       | Effect-TS Layer  | Communication Protocol |
+| :------------------ | :----------------- | :--------------- | :--------------------- |
+| `vscode.window`     | `WindowService`    | `Effect.Service` | Tauri Events           |
+| `vscode.commands`   | `CommandService`   | `Effect.Service` | Tauri Events           |
+| `vscode.workspace`  | `WorkspaceService` | `Effect.Service` | Tauri Events           |
+| `vscode.extensions` | `ExtensionService` | `Effect.Service` | Tauri Events           |
+| `vscode.languages`  | `LanguageService`  | `Effect.Service` | Tauri Events           |
 
 ### Component Block Map
 
@@ -543,19 +542,19 @@ graph TB
         Integration["Tauri Integration<br/>Native Bridge"]
         Services["VSCode Services<br/>Effect-TS Implementations"]
     end
-    
+
     subgraph "External Dependencies"
         EffectTS["Effect-TS Framework"]
         Tauri["Tauri Framework"]
         VSCode["VSCode API Definitions"]
         Mountain["Mountain Backend"]
     end
-    
+
     EffectTS --> AppLayer
     Tauri --> Integration
     VSCode --> Services
     Mountain --> Integration
-    
+
     Preload --> AppLayer
     AppLayer --> Services
     Services --> Integration
@@ -570,7 +569,7 @@ sequenceDiagram
     participant Wind as Wind Service
     participant Tauri as Tauri Bridge
     participant Mountain as Mountain Backend
-    
+
     Sky->>Wind: vscode.window.showInformationMessage()
     Wind->>Tauri: invoke('show_information_message')
     Tauri->>Mountain: Execute native operation

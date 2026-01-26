@@ -1,91 +1,45 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-
 	"compilerOptions": {
 		"allowImportingTsExtensions": false,
-
 		"baseUrl": "./",
-
 		"composite": true,
-
 		"declarationMap": true,
-
 		"emitDeclarationOnly": true,
-
 		"emitDecoratorMetadata": true,
-
 		"experimentalDecorators": true,
-
 		"lib": ["ESNext", "DOM", "DOM.Iterable"],
-
 		"module": "ESNext",
-
 		"moduleResolution": "Bundler",
-
 		"outDir": "Target",
-
 		"paths": {
 			"@codeeditorland/output/*": ["../Output/Target/Microsoft/VSCode/*"]
 		},
-
-		"plugins": [
-			{
-				"allowedDuplicatedPackages": [],
-
-				"completions": true,
-
-				"diagnosticSeverity": {
-					"duplicatePackage": "error",
-
-					"floatingEffect": "error",
-
-					"leakingRequirements": "error",
-
-					"missingEffectContext": "error",
-
-					"missingEffectError": "error",
-
-					"missingReturnYieldStar": "error",
-
-					"missingStarInYieldEffectGen": "error",
-
-					"unnecessaryEffectGen": "error",
-
-					"unnecessaryPipe": "error"
-				},
-
-				"diagnostics": true,
-
-				"name": "@effect/language-service",
-
-				"quickinfo": true,
-
-				"transform": "@effect/language-service/transform"
-			}
-		],
-
+		"plugins": [{
+			"allowedDuplicatedPackages": [],
+			"completions": true,
+			"diagnosticSeverity": {
+				"duplicatePackage": "error",
+				"floatingEffect": "error",
+				"leakingRequirements": "error",
+				"missingEffectContext": "error",
+				"missingEffectError": "error",
+				"missingReturnYieldStar": "error",
+				"missingStarInYieldEffectGen": "error",
+				"unnecessaryEffectGen": "error",
+				"unnecessaryPipe": "error"
+			},
+			"diagnostics": true,
+			"name": "@effect/language-service",
+			"quickinfo": true,
+			"transform": "@effect/language-service/transform"
+		}],
 		"rootDir": ".",
-
 		"target": "ESNext"
 	},
-
 	"exclude": ["Target"],
-
 	"extends": "@playform/build/tsconfig",
-
 	"include": [
-		"Source",
-
-		"@types/node",
-
-		"./node_modules/@codeeditorland/output/Target/Microsoft/VSCode/*.ts",
-
-		"./node_modules/@codeeditorland/output/Target/Microsoft/VSCode/typings",
-
-		"./node_modules/@codeeditorland/output/Target/Microsoft/VSCode/vs/**/*.ts",
-
-		"./node_modules/@codeeditorland/output/Target/Microsoft/VSCode/vscode-dts/vscode.proposed.*.d.ts",
-
-		"./node_modules/@codeeditorland/output/Target/Microsoft/VSCode/vscode-dts/vscode.d.ts"
+		"Source"
 	]
 }

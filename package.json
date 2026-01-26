@@ -13,7 +13,7 @@
 	},
 	"license": "SEE LICENSE IN LICENSE",
 	"author": {
-		"name": "Source 🖋️ Open 👐🏻",
+		"name": "Source 🖋️ Open👐🏻",
 		"email": "Source/Open@Editor.Land",
 		"url": "https://Editor.Land"
 	},
@@ -24,10 +24,12 @@
 	},
 	"dependencies": {
 		"@codeeditorland/output": "0.0.1",
+		"@codeeditorland/common": "0.0.6",
 		"@effect/platform": "0.94.2",
 		"@tauri-apps/api": "2.9.1",
 		"@tauri-apps/plugin-dialog": "2.6.0",
-		"effect": "3.19.15"
+		"effect": "3.19.15",
+		"typescript": "5.9.3"
 	},
 	"devDependencies": {
 		"@effect/experimental": "0.58.0",
