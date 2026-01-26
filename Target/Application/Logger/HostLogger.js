@@ -1,1 +1,0 @@
-import{Effect as e}from"../../effect";import{AbstractMessageLogger as s}from"vs/platform/log/common/log.js";import"../Host/Service.js";class n extends s{constructor(r,o){super();this.Host=r;this.setLevel(o)}log(r,o){const t=this.Host.Logger(r,o).pipe(e.catchAll(c=>e.sync(()=>{})));e.runFork(t)}flush(){}}export{n as HostLogger};

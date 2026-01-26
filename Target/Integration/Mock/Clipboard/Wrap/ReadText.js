@@ -1,4 +1,0 @@
-import { Effect as c } from "../../../../effect";
-
-const o = () => c.succeed("mock clipboard text");
-export { o as MockReadText };

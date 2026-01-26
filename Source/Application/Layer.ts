@@ -10,6 +10,10 @@ import { Layer } from "effect";
 
 // Import integration layers
 import { IntegrationLive } from "../Integration/Tauri/Live.js";
+// Import VSCode bootstrap services
+import { VSCodeBootstrapLayer } from "../Platform/VSCode/Layer.js";
+// Import enhanced bridge service
+import { BridgeLive } from "../Platform/VSCode/Bridge/Live.js";
 // Import all live service layers that will be part of the application.
 import { ClipboardLive } from "./Clipboard/Live.js";
 import { CommandLive } from "./Command/Live.js";
@@ -42,9 +46,14 @@ import { WorkSpaceLive } from "./WorkSpace/Implement.js";
  * services into a single, injectable unit. By providing this layer to our main
  * application `Effect`, we satisfy all of its dependencies at once.
  *
- * It starts with the lowest-level integration layer and builds upon it.
+ * It starts with the VSCode bootstrap layer and builds upon it.
  */
 export const AppLayer = Layer.mergeAll(
+	// Enhanced bridge service for VSCode bootstrap
+	BridgeLive,
+	// VSCode bootstrap services (replaces Electron functionality)
+	VSCodeBootstrapLayer,
+	// Wind application services
 	ClipboardLive,
 	CommandLive,
 	ConfigurationLive,

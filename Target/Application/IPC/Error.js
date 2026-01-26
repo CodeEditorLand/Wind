@@ -1,1 +1,0 @@
-import{Data as e}from"../../effect";class a extends e.TaggedError("GrpcConnectionProblem"){}class t extends e.TaggedError("IpcProblem"){}class i extends e.TaggedError("ProtoSerializationProblem"){message;constructor(r){super(r),this.message=`Protobuf ${this.Direction} failed: ${this.Cause}`}}export{a as GrpcConnectionProblem,t as IpcProblem,i as ProtoSerializationProblem};

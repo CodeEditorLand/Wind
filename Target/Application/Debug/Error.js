@@ -1,1 +1,0 @@
-import{Data as e}from"../../effect";class g extends e.TaggedError("DebugProviderRegistrationProblem"){}class n extends e.TaggedError("StartDebuggingProblem"){}export{g as DebugProviderRegistrationProblem,n as StartDebuggingProblem};

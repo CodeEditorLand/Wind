@@ -1,1 +1,0 @@
-import"../../effect";import"vs/platform/instantiation/common/instantiation.js";import"vs/platform/storage/common/storage.js";import{EditorGroupService as r}from"./Service.js";const p=r.Default;export{p as EditorGroupLive};

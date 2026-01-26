@@ -1,1 +1,0 @@
-class i{setBuffer(e){}}class t{setRequestid(e){}setMethod(e){}setParams(e){}}class s{setMethod(e){}setParams(e){}}class a{getResult(){}}export{s as GenericNotification,t as GenericRequest,a as GenericResponse,i as RPCDataPayload};

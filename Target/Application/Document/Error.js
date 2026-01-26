@@ -1,1 +1,0 @@
-import{Data as e}from"../../effect";class n extends e.TaggedError("DocumentNotFoundProblem"){}class t extends e.TaggedError("ContentProviderProblem"){}export{t as ContentProviderProblem,n as DocumentNotFoundProblem};

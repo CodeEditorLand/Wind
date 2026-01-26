@@ -1,1 +1,0 @@
-import"../../effect";import"../Cancellation/Service.js";import"../IPCConfiguration/Service.js";import"../Logger/Service.js";import{IPCService as e}from"./Service.js";const C=e.Default;export{C as IPCLive};

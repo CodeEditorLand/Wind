@@ -1,1 +1,0 @@
-import"../../effect";import"vs/platform/commands/common/commands.js";import"vs/platform/dialogs/common/dialogs.js";import"vs/platform/storage/common/storage.js";import"../Host/Service.js";import{NotificationService as e}from"./Service.js";const p=e.Default;export{p as NotificationLive};

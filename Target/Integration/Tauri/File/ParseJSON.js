@@ -1,6 +1,0 @@
-import { Effect as o } from "../../../effect";
-import { IntegrationConfigurationProblem as e } from "../Configuration/Error.js";
-
-const i = (t) =>
-	o.try({ try: () => JSON.parse(t), catch: (r) => new e({ Cause: r }) });
-export { i as ParseJSON };
