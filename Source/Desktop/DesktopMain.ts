@@ -39,6 +39,9 @@ import { TauriNativeHostService } from '../Services/Desktop/NativeHostService.js
 import { TauriFileService } from '../Services/Desktop/FileService.js';
 import { DesktopWorkbenchEnvironmentService } from '../Services/Desktop/EnvironmentService.js';
 
+// Advanced Wind-Mountain Integration
+import { windMountainIntegrationService } from '../Services/Desktop/WindMountainIntegrationService.js';
+
 // Tauri APIs (to be implemented)
 // TODO: Import actual Tauri APIs when available
 // import { invoke } from '@tauri-apps/api/tauri';
@@ -107,6 +110,107 @@ export class DesktopMain extends Disposable {
     }
   }
 
+  /**
+   * Initialize advanced Wind-Mountain integration
+   */
+  private async initAdvancedIntegration(): Promise<void> {
+    console.log('[DesktopMain] Initializing advanced Wind-Mountain integration');
+
+    try {
+      // Initialize comprehensive integration service
+      await windMountainIntegrationService.initialize();
+
+      console.log('[DesktopMain] Advanced integration initialized successfully');
+
+      // Add initial documents for synchronization
+      await this.addInitialDocumentsForSync();
+
+      // Set up collaboration sessions
+      await this.setupCollaborationSessions();
+
+      // Subscribe to real-time updates
+      await this.subscribeToRealTimeUpdates();
+
+    } catch (error) {
+      console.error('[DesktopMain] Failed to initialize advanced integration:', error);
+      // Continue with basic functionality - advanced features will be disabled
+    }
+  }
+
+  /**
+   * Add initial documents for synchronization
+   */
+  private async addInitialDocumentsForSync(): Promise<void> {
+    console.log('[DesktopMain] Adding initial documents for synchronization');
+
+    try {
+      // Add workspace files for synchronization
+      if (this.configuration.workspace) {
+        // TODO: Add workspace files based on configuration
+        console.log('[DesktopMain] Workspace synchronization setup');
+      }
+
+      // Add configuration files
+      await windMountainIntegrationService.addDocumentForSync(
+        'user-settings',
+        this.configuration.userDataPath + '/settings.json'
+      );
+
+      console.log('[DesktopMain] Initial documents added for synchronization');
+
+    } catch (error) {
+      console.error('[DesktopMain] Failed to add initial documents:', error);
+    }
+  }
+
+  /**
+   * Set up collaboration sessions
+   */
+  private async setupCollaborationSessions(): Promise<void> {
+    console.log('[DesktopMain] Setting up collaboration sessions');
+
+    try {
+      // Create default collaboration session
+      await windMountainIntegrationService.createCollaborationSession(
+        'default-session',
+        {
+          canEdit: true,
+          canView: true,
+          canComment: true,
+          canShare: false
+        }
+      );
+
+      console.log('[DesktopMain] Collaboration sessions setup complete');
+
+    } catch (error) {
+      console.error('[DesktopMain] Failed to setup collaboration sessions:', error);
+    }
+  }
+
+  /**
+   * Subscribe to real-time updates
+   */
+  private async subscribeToRealTimeUpdates(): Promise<void> {
+    console.log('[DesktopMain] Subscribing to real-time updates');
+
+    try {
+      // Subscribe to document changes
+      await windMountainIntegrationService.subscribeToUpdates('document-changes');
+
+      // Subscribe to UI state changes
+      await windMountainIntegrationService.subscribeToUpdates('ui-state-changes');
+
+      // Subscribe to performance updates
+      await windMountainIntegrationService.subscribeToUpdates('performance-updates');
+
+      console.log('[DesktopMain] Subscribed to real-time updates');
+
+    } catch (error) {
+      console.error('[DesktopMain] Failed to subscribe to updates:', error);
+    }
+  }
+
   private reviveUris() {
     // TODO: Implement URI revival similar to VSCode
     // This ensures file URIs are properly parsed and validated
@@ -117,6 +221,9 @@ export class DesktopMain extends Disposable {
     console.log('[DesktopMain] Starting desktop workbench...');
 
     try {
+      // Initialize advanced Wind-Mountain integration
+      await this.initAdvancedIntegration();
+
       // Initialize services
       const services = await this.initServices();
 
