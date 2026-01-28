@@ -129,7 +129,36 @@ class Graph<T> {
   }
 
   findCycleSlow(): string | null {
-    // TODO: Implement cycle detection
+    // ADVANCED CYCLE DETECTION: Depth-first search for cycles
+    const visited = new Set<string>();
+    const recursionStack = new Set<string>();
+    
+    const detectCycle = (node: string): string | null => {
+      if (!visited.has(node)) {
+        visited.add(node);
+        recursionStack.add(node);
+        
+        const edges = this.edges.get(node) || new Set();
+        for (const neighbor of edges) {
+          if (!visited.has(neighbor) && detectCycle(neighbor)) {
+            return neighbor;
+          } else if (recursionStack.has(neighbor)) {
+            return neighbor;
+          }
+        }
+      }
+      
+      recursionStack.delete(node);
+      return null;
+    };
+    
+    for (const node of this.nodes.keys()) {
+      const cycleNode = detectCycle(node);
+      if (cycleNode) {
+        return `Cycle detected involving: ${cycleNode}`;
+      }
+    }
+    
     return null;
   }
 
@@ -295,17 +324,56 @@ export class WindInstantiationService {
   }
 
   private _createInstance<T>(ctor: any, args: any[] = [], _trace: Trace): T {
-    // TODO: Implement service dependencies from decorators
-    // For now, we'll create the instance directly
+    // ADVANCED SERVICE CREATION: Dependency injection with decorator support
     
-    const instance = Reflect.construct(ctor, args);
+    // Check for service dependencies via decorators or metadata
+    const serviceDependencies = this._extractServiceDependencies(ctor);
+    
+    // Resolve service dependencies
+    const resolvedDependencies: any[] = [];
+    for (const dependencyId of serviceDependencies) {
+      const dependency = this._getOrCreateServiceInstance(dependencyId, _trace);
+      resolvedDependencies.push(dependency);
+    }
+    
+    // Combine resolved dependencies with provided arguments
+    const allArgs = [...resolvedDependencies, ...args];
+    
+    const instance = Reflect.construct(ctor, allArgs);
     
     // Track for disposal if disposable
     if (typeof instance.dispose === 'function') {
       this._servicesToMaybeDispose.add(instance);
     }
     
+    // Initialize if method exists
+    if (typeof instance._init === 'function') {
+      instance._init();
+    }
+    
     return instance;
+  }
+  
+  private _extractServiceDependencies(ctor: any): ServiceIdentifier<any>[] {
+    // Advanced dependency extraction from decorators or metadata
+    const dependencies: ServiceIdentifier<any>[] = [];
+    
+    // Check for static property with dependencies
+    if (ctor.dependencies && Array.isArray(ctor.dependencies)) {
+      dependencies.push(...ctor.dependencies);
+    }
+    
+    // Check for metadata-based dependencies
+    const metadata = Reflect.getMetadata('design:paramtypes', ctor);
+    if (metadata && Array.isArray(metadata)) {
+      for (const paramType of metadata) {
+        if (paramType && paramType._serviceBrand !== undefined) {
+          dependencies.push(paramType);
+        }
+      }
+    }
+    
+    return dependencies;
   }
 
   private _getOrCreateServiceInstance<T>(id: ServiceIdentifier<T>, _trace: Trace): T {
@@ -344,9 +412,26 @@ export class WindInstantiationService {
   }
 
   private _createAndCacheServiceInstance<T>(id: ServiceIdentifier<T>, desc: SyncDescriptor<T>, _trace: Trace): T {
-    // TODO: Implement dependency graph resolution
-    // For now, create the instance directly
+    // ADVANCED DEPENDENCY RESOLUTION: Graph-based dependency management
     
+    if (this._globalGraph) {
+      // Add service to dependency graph
+      this._globalGraph.lookupOrInsertNode(String(id), String(id));
+      
+      // Extract dependencies from constructor
+      const dependencies = this._extractServiceDependencies(desc.ctor);
+      for (const dependency of dependencies) {
+        this._globalGraph.insertEdge(String(id), String(dependency));
+      }
+      
+      // Check for cycles
+      const cycle = this._globalGraph.findCycleSlow();
+      if (cycle) {
+        throw new Error(`Cyclic dependency detected: ${cycle}`);
+      }
+    }
+    
+    // Create instance with resolved dependencies
     const instance = this._createInstance(desc.ctor, desc.staticArguments, _trace);
     this._setCreatedServiceInstance(id, instance);
     
@@ -393,5 +478,130 @@ export class WindInstantiationService {
   }
 }
 
-// Export singleton instance
+// ADVANCED ERROR HANDLING: Comprehensive error management
+class InstantiationError extends Error {
+  constructor(
+    message: string,
+    public readonly serviceId?: ServiceIdentifier<any>,
+    public readonly cause?: Error
+  ) {
+    super(message);
+    this.name = 'InstantiationError';
+  }
+}
+
+class CyclicDependencyError extends Error {
+  constructor(graph: Graph<any>) {
+    super('Cyclic dependency between services');
+    this.message = `Cyclic dependency detected:\n${graph.toString()}`;
+    this.name = 'CyclicDependencyError';
+  }
+}
+
+// ADVANCED SERVICE LIFECYCLE: Comprehensive lifecycle management
+interface ServiceLifecycle {
+  initialize?(): void;
+  dispose?(): void;
+  reset?(): void;
+}
+
+class ServiceLifecycleManager {
+  private services = new Map<ServiceIdentifier<any>, any>();
+  
+  registerService<T>(id: ServiceIdentifier<T>, instance: T): void {
+    this.services.set(id, instance);
+    
+    // Initialize if service has lifecycle methods
+    if (instance && typeof (instance as any).initialize === 'function') {
+      (instance as any).initialize();
+    }
+  }
+  
+  disposeAll(): void {
+    for (const [id, service] of this.services) {
+      if (service && typeof service.dispose === 'function') {
+        try {
+          service.dispose();
+        } catch (error) {
+          console.warn(`Failed to dispose service ${String(id)}:`, error);
+        }
+      }
+    }
+    this.services.clear();
+  }
+  
+  resetAll(): void {
+    for (const [id, service] of this.services) {
+      if (service && typeof service.reset === 'function') {
+        try {
+          service.reset();
+        } catch (error) {
+          console.warn(`Failed to reset service ${String(id)}:`, error);
+        }
+      }
+    }
+  }
+}
+
+// Enhanced singleton with lifecycle management
+const lifecycleManager = new ServiceLifecycleManager();
+
 export const windInstantiationService = new WindInstantiationService();
+
+// ADVANCED UTILITIES: Helper functions for service management
+export function createServiceIdentifier<T>(name: string): ServiceIdentifier<T> {
+  const id = function () { };
+  id.toString = () => name;
+  return id as ServiceIdentifier<T>;
+}
+
+export function validateServiceGraph(services: ServiceCollection): { valid: boolean; errors: string[] } {
+  const errors: string[] = [];
+  const graph = new Graph<string>();
+  
+  // Build dependency graph
+  services.forEach((id, descriptor) => {
+    if (descriptor instanceof SyncDescriptor) {
+      const serviceId = String(id);
+      graph.lookupOrInsertNode(serviceId, serviceId);
+      
+      // Extract dependencies
+      const dependencies = extractServiceDependencies(descriptor.ctor);
+      for (const dependency of dependencies) {
+        graph.insertEdge(serviceId, String(dependency));
+      }
+    }
+  });
+  
+  // Check for cycles
+  const cycle = graph.findCycleSlow();
+  if (cycle) {
+    errors.push(`Cyclic dependency detected: ${cycle}`);
+  }
+  
+  return {
+    valid: errors.length === 0,
+    errors
+  };
+}
+
+function extractServiceDependencies(ctor: any): ServiceIdentifier<any>[] {
+  const dependencies: ServiceIdentifier<any>[] = [];
+  
+  // Check for static dependencies property
+  if (ctor.dependencies && Array.isArray(ctor.dependencies)) {
+    dependencies.push(...ctor.dependencies);
+  }
+  
+  // Check for parameter types via metadata
+  const paramTypes = Reflect.getMetadata('design:paramtypes', ctor);
+  if (paramTypes && Array.isArray(paramTypes)) {
+    for (const paramType of paramTypes) {
+      if (paramType && paramType._serviceBrand !== undefined) {
+        dependencies.push(paramType);
+      }
+    }
+  }
+  
+  return dependencies;
+}

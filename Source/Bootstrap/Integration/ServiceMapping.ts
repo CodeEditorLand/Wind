@@ -18,6 +18,10 @@
 import { IServiceAdapter } from './ServiceAdapter';
 import { TauriIPCServer } from '../../Desktop/TauriIPCServer';
 import { TauriStorageService } from '../../Desktop/TauriStorageService';
+import { TauriFileService } from '../../Desktop/TauriFileService';
+import { TauriConfigurationService } from '../../Desktop/TauriConfigurationService';
+import { WindInstantiationService } from '../../Services/WindInstantiationService';
+import { TauriWorkbench } from '../../Desktop/TauriWorkbench';
 
 /**
  * Service mapping configuration
@@ -78,19 +82,9 @@ export class ServiceMappingRegistry {
       vscodeService: 'fileService',
       windService: 'tauriFileService',
       adapter: {
-        adapt: (service: any) => {
-          // TODO: Implement TauriFileService
-          console.warn('[ServiceMappingRegistry] TauriFileService not implemented');
-          return service;
-        },
-        validate: (service: any) => {
-          // TODO: Implement validation
-          return false;
-        },
-        fallback: () => {
-          console.warn('[ServiceMappingRegistry] Using fallback for fileService');
-          return {};
-        }
+        adapt: (service: any) => TauriFileService,
+        validate: (service: any) => service instanceof TauriFileService,
+        fallback: () => new TauriFileService()
       },
       priority: 80,
       dependencies: ['ipcServer']
@@ -101,19 +95,38 @@ export class ServiceMappingRegistry {
       vscodeService: 'configurationService',
       windService: 'tauriConfigurationService',
       adapter: {
-        adapt: (service: any) => {
-          // TODO: Implement TauriConfigurationService
-          console.warn('[ServiceMappingRegistry] TauriConfigurationService not implemented');
-          return service;
-        },
-        validate: (service: any) => false,
-        fallback: () => ({
-          getConfiguration: () => ({}),
-          updateConfiguration: () => Promise.resolve()
-        })
+        adapt: (service: any) => TauriConfigurationService,
+        validate: (service: any) => service instanceof TauriConfigurationService,
+        fallback: () => new TauriConfigurationService()
       },
       priority: 70,
       dependencies: ['storageService']
+    });
+
+    // Instantiation Service Mapping
+    this.registerMapping({
+      vscodeService: 'instantiationService',
+      windService: 'windInstantiationService',
+      adapter: {
+        adapt: (service: any) => WindInstantiationService,
+        validate: (service: any) => service instanceof WindInstantiationService,
+        fallback: () => new WindInstantiationService()
+      },
+      priority: 95,
+      dependencies: []
+    });
+
+    // Workbench Layout Service Mapping
+    this.registerMapping({
+      vscodeService: 'workbenchLayoutService',
+      windService: 'tauriWorkbench',
+      adapter: {
+        adapt: (service: any) => TauriWorkbench,
+        validate: (service: any) => service instanceof TauriWorkbench,
+        fallback: () => createTauriWorkbench(document.body, {})
+      },
+      priority: 90,
+      dependencies: ['instantiationService', 'configurationService']
     });
 
     // Window Service Mapping
