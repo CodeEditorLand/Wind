@@ -7,22 +7,21 @@
  * It serves as the complete dependency injection container for the application.
  */
 
-import { IContextKeyService } from "@codeeditorland/output/vs/platform/contextkey/common/contextkey.js";
-import { IFileService } from "@codeeditorland/output/vs/platform/files/common/files.js";
-import { IInstantiationService } from "@codeeditorland/output/vs/platform/instantiation/common/instantiation.js";
-import { IPolicyService } from "@codeeditorland/output/vs/platform/policy/common/policy.js";
-import { IUriIdentityService } from "@codeeditorland/output/vs/platform/uriIdentity/common/uriIdentity.js";
-import { IViewsService } from "@codeeditorland/output/vs/workbench/common/views.js";
-import { IBrowserWorkbenchEnvironmentService } from "@codeeditorland/output/vs/workbench/services/environment/browser/environmentService.js";
-import { IFilesConfigurationService } from "@codeeditorland/output/vs/workbench/services/filesConfiguration/common/filesConfigurationService.js";
-import { ILifecycleService } from "@codeeditorland/output/vs/workbench/services/lifecycle/common/lifecycle.js";
-import { IRemoteAgentService } from "@codeeditorland/output/vs/workbench/services/remote/common/remoteAgentService.js";
-import { IUntitledTextEditorService } from "@codeeditorland/output/vs/workbench/services/untitled/common/untitledTextEditorService.js";
-import {
-	IUserDataProfileService,
-	IUserDataProfilesService,
-} from "@codeeditorland/output/vs/workbench/services/userDataProfile/common/userDataProfile.js";
-import { IWorkingCopyFileService } from "@codeeditorland/output/vs/workbench/services/workingCopy/common/workingCopyFileService.js";
+// Simplified service interfaces for placeholder implementations
+type IContextKeyService = any;
+type IFileService = any;
+type IInstantiationService = any;
+type IPolicyService = any;
+type IUriIdentityService = any;
+type IViewsService = any;
+type IBrowserWorkbenchEnvironmentService = any;
+type IFilesConfigurationService = any;
+type ILifecycleService = any;
+type IRemoteAgentService = any;
+type IUntitledTextEditorService = any;
+type IUserDataProfileService = any;
+type IUserDataProfilesService = any;
+type IWorkingCopyFileService = any;
 // Import layers for placeholder services
 import { Layer, Layer as PlaceholderLayer } from "effect";
 
@@ -53,22 +52,59 @@ import { ProvideWindow } from "./Window/Implement.js";
 import { ProvideWorkSpace } from "./WorkSpace/Implement.js";
 
 const ProvidePlaceholders = Layer.mergeAll(
-	PlaceholderLayer.succeed(IContextKeyService, {} as any),
-	PlaceholderLayer.succeed(IBrowserWorkbenchEnvironmentService, {} as any),
-	PlaceholderLayer.succeed(IFileService, {} as any),
+	PlaceholderLayer.succeed(IContextKeyService, {
+		getContextKeyValue: () => undefined,
+		onDidChangeContext: () => ({ dispose: () => {} }),
+		createScoped: () => ({}) as any,
+	} as any),
+	PlaceholderLayer.succeed(IBrowserWorkbenchEnvironmentService, {
+		isBuilt: true,
+		isExtensionDevelopment: false,
+		logFile: { path: 'wind.log' },
+		options: {},
+	} as any),
+	PlaceholderLayer.succeed(IFileService, {
+		readFile: async () => '',
+		writeFile: async () => {},
+		exists: async () => false,
+		onDidFilesChange: () => ({ dispose: () => {} }),
+	} as any),
 	PlaceholderLayer.succeed(IInstantiationService, {
 		createInstance: (ctor: any, ...args: any[]) => new ctor(...args),
+		invokeFunction: (fn: Function) => fn({}),
+		createChild: () => ({}) as any,
 	} as any),
-	PlaceholderLayer.succeed(IPolicyService, {} as any),
-	PlaceholderLayer.succeed(IRemoteAgentService, {} as any),
-	PlaceholderLayer.succeed(IUriIdentityService, {} as any),
-	PlaceholderLayer.succeed(IUserDataProfileService, {} as any),
-	PlaceholderLayer.succeed(IUserDataProfilesService, {} as any),
-	PlaceholderLayer.succeed(IUntitledTextEditorService, {} as any),
-	PlaceholderLayer.succeed(IViewsService, {} as any),
-	PlaceholderLayer.succeed(ILifecycleService, {} as any),
-	PlaceholderLayer.succeed(IFilesConfigurationService, {} as any),
-	PlaceholderLayer.succeed(IWorkingCopyFileService, {} as any),
+	PlaceholderLayer.succeed(IPolicyService, {
+		registerPolicy: () => ({ dispose: () => {} }),
+	} as any),
+	PlaceholderLayer.succeed(IRemoteAgentService, {
+		getConnection: () => null,
+	} as any),
+	PlaceholderLayer.succeed(IUriIdentityService, {
+		extUri: (uri: any) => uri,
+	} as any),
+	PlaceholderLayer.succeed(IUserDataProfileService, {
+		currentProfile: { id: 'default', name: 'Default' },
+	} as any),
+	PlaceholderLayer.succeed(IUserDataProfilesService, {
+		profiles: [{ id: 'default', name: 'Default' }],
+	} as any),
+	PlaceholderLayer.succeed(IUntitledTextEditorService, {
+		create: () => ({ resource: { path: 'untitled' } }),
+	} as any),
+	PlaceholderLayer.succeed(IViewsService, {
+		openView: () => Promise.resolve(),
+	} as any),
+	PlaceholderLayer.succeed(ILifecycleService, {
+		phase: 2,
+		onWillShutdown: () => ({ dispose: () => {} }),
+	} as any),
+	PlaceholderLayer.succeed(IFilesConfigurationService, {
+		onDidChange: () => ({ dispose: () => {} }),
+	} as any),
+	PlaceholderLayer.succeed(IWorkingCopyFileService, {
+		onWillRun: () => ({ dispose: () => {} }),
+	} as any),
 );
 
 /**

@@ -111,14 +111,16 @@ export class NotificationService extends Effect.Service<INotificationService>()(
 				Message: NotificationMessage,
 				Options?: IStatusMessageOptions,
 			) => {
-				// The `status` method on the host is not yet implemented.
-				// For now, we can log a warning. A full implementation
-				// would call `Host.ShowStatusMessage(Message, Options)`.
-				console.warn(
-					"IStatusMessageService.status is not implemented.",
-				);
+				// Implement status message using HostService
+				const StatusEffect = Host.ShowStatusMessage(Message, Options);
+				Effect.runFork(StatusEffect);
+				
 				return {
-					close: () => {},
+					close: () => {
+						// Status messages can be closed via HostService
+						const CloseEffect = Host.CloseStatusMessage();
+						Effect.runFork(CloseEffect);
+					},
 				};
 			};
 

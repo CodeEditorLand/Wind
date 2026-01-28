@@ -18,7 +18,7 @@
  * - Testable: Each service can be unit tested independently
  */
 
-import * as Effect from 'effect/Effect';
+import { Effect } from 'effect';
 
 // ============================================================================
 // TYPES
@@ -303,14 +303,25 @@ const EnvironmentServiceImpl = EnvironmentServiceTag.of({
 		}),
 
 	getEnv: (key: string, fallback: string | undefined = undefined) =>
-		Effect.sync(() => {
-			// TODO: Integrate with Mountain backend to fetch environment variables
-			// Mountain API: `mountain_fetch_env` command
-			// For now, return undefined (handled by fallback or undefined return)
-			if (typeof process !== 'undefined' && process.env) {
-				return process.env[key] ?? fallback;
+		Effect.tryPromise({
+			try: async () => {
+				if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+					try {
+						const { invoke } = await import('@tauri-apps/api/core');
+						const result = await invoke('get_env_var', { key });
+						return result || fallback;
+					} catch (error) {
+						console.warn(`[EnvironmentService] Failed to get env var ${key}:`, error);
+						return fallback;
+					}
+				}
+				// Fallback for non-Tauri environments
+				return fallback;
+			},
+			catch: (error) => {
+				console.warn(`[EnvironmentService] Error getting env var ${key}:`, error);
+				return fallback;
 			}
-			return fallback;
 		}),
 
 	isTauri: () =>
@@ -319,27 +330,48 @@ const EnvironmentServiceImpl = EnvironmentServiceTag.of({
 		}),
 
 	getOS: () =>
-		Effect.sync(() => {
-			const platform =
-				typeof navigator !== 'undefined' && navigator.platform
-					? navigator.platform
-					: 'unknown';
-
-			// Detect architecture (simplified)
-			let arch = 'unknown';
-			if (typeof navigator !== 'undefined' && navigator.userAgent) {
-				if (navigator.userAgent.includes('x86_64') || navigator.userAgent.includes('x64')) {
-					arch = 'x64';
-				} else if (navigator.userAgent.includes('arm64') || navigator.userAgent.includes('aarch64')) {
-					arch = 'arm64';
-				} else if (navigator.userAgent.includes('i686') || navigator.userAgent.includes('x86')) {
-					arch = 'x86';
+		Effect.tryPromise({
+			try: async () => {
+				if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+					try {
+						const { invoke } = await import('@tauri-apps/api/core');
+						const osInfo = await invoke('get_os_info');
+						return {
+							platform: osInfo.platform || 'tauri',
+							arch: osInfo.arch || 'unknown',
+							version: osInfo.version
+						};
+					} catch (error) {
+						console.warn('[EnvironmentService] Failed to get OS info:', error);
+					}
 				}
-			}
+				
+				const platform =
+					typeof navigator !== 'undefined' && navigator.platform
+						? navigator.platform
+						: 'unknown';
 
-			// TODO: Fetch actual version from Mountain backend
-			// Mountain API: `mountain_get_system_info` command
-			return { platform, arch };
+				// Detect architecture (simplified)
+				let arch = 'unknown';
+				if (typeof navigator !== 'undefined' && navigator.userAgent) {
+					if (navigator.userAgent.includes('x86_64') || navigator.userAgent.includes('x64')) {
+						arch = 'x64';
+					} else if (navigator.userAgent.includes('arm64') || navigator.userAgent.includes('aarch64')) {
+						arch = 'arm64';
+					} else if (navigator.userAgent.includes('i686') || navigator.userAgent.includes('x86')) {
+						arch = 'x86';
+					}
+				}
+
+				return { platform, arch };
+			},
+			catch: (error) => {
+				console.warn('[EnvironmentService] Error getting OS info:', error);
+				return {
+					platform: 'unknown',
+					arch: 'unknown'
+				};
+			}
 		}),
 
 	createLayer: () => EnvironmentServiceTag.default(EnvironmentServiceImpl),
@@ -403,10 +435,24 @@ const LoggerServiceImpl: LoggerService = {
 	},
 
 	flush: () =>
-		Effect.sync(() => {
-			// TODO: Flush logs to file via Tauri
-			// Tauri API: `writeFile` in persistent storage
-			// For now, logs are in memory only
+		Effect.tryPromise({
+			try: async () => {
+				// Flush logs to file via Tauri
+				if (typeof TauriInvoke === 'function') {
+					await TauriInvoke('mountain_log_flush', { 
+						entries: this.logBuffer,
+						timestamp: new Date().toISOString()
+					});
+					this.logBuffer = [];
+					console.log('[LoggerService] Logs flushed to Mountain backend');
+				} else {
+					console.warn('[LoggerService] TauriInvoke not available, logs remain in memory');
+				}
+			},
+			catch: (error) => {
+				console.error('[LoggerService] Failed to flush logs:', error);
+				return error;
+			}
 		}),
 
 	shouldLog: function (level: LogLevel): boolean {
@@ -443,8 +489,18 @@ const LoggerServiceImpl: LoggerService = {
 				break;
 		}
 
-		// TODO: Store log entries for file flushing
-		// Store in memory buffer or send to backend
+		// Store log entries for file flushing
+		this.logBuffer.push({
+			timestamp: new Date().toISOString(),
+			level,
+			message,
+			context: data || {}
+		});
+		
+		// Auto-flush if buffer exceeds threshold
+		if (this.logBuffer.length >= 100) {
+			this.flush().pipe(Effect.runFork);
+		}
 	},
 };
 
@@ -482,9 +538,17 @@ const ConfigurationServiceImpl = ConfigurationServiceTag.of({
 				handlers.forEach((handler) => handler(value));
 			}
 
-			// TODO: Sync with Mountain backend
-			// Mountain API: `mountain_update_configuration` command
-			// Also need to handle conflict resolution with MountainWindSync
+			// Sync with Mountain backend
+			if (typeof TauriInvoke === 'function') {
+				await TauriInvoke('mountain_config_sync', { 
+					key,
+					value,
+					timestamp: new Date().toISOString()
+				});
+				console.log('[ConfigurationService] Configuration synced with Mountain backend');
+			} else {
+				console.warn('[ConfigurationService] TauriInvoke not available, config not synced');
+			}
 		}),
 
 	getAll: () =>
@@ -532,13 +596,17 @@ const FileServiceImpl = FileServiceTag.of({
 	readFile: (path: string) =>
 		Effect.tryPromise({
 			try: async () => {
-				// TODO: Implement Tauri file reading
-				// Import from @tauri-apps/plugin-fs or @tauri-apps/api/fs
-				// const { readTextFile } = await import('@tauri-apps/plugin-fs');
-				// return await readTextFile(path);
-
-				// Temporary stub for defensive implementation
-				throw new Error('File service not yet connected to Tauri APIs');
+				if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+					try {
+						const { invoke } = await import('@tauri-apps/api/core');
+						const content = await invoke('read_file', { path });
+						return content;
+					} catch (error) {
+						console.warn(`[FileService] Failed to read file ${path}:`, error);
+						throw error;
+					}
+				}
+				throw new Error('File service not available (non-Tauri environment)');
 			},
 			catch: (error) =>
 				Effect.fail(new Error(`Failed to read file ${path}: ${error}`)),
@@ -547,11 +615,17 @@ const FileServiceImpl = FileServiceTag.of({
 	writeFile: (path: string, content: string) =>
 		Effect.tryPromise({
 			try: async () => {
-				// TODO: Implement Tauri file writing
-				// const { writeTextFile } = await import('@tauri-apps/plugin-fs');
-				// await writeTextFile(path, content);
-
-				throw new Error('File service not yet connected to Tauri APIs');
+				if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+					try {
+						const { invoke } = await import('@tauri-apps/api/core');
+						await invoke('write_file', { path, content });
+						return undefined;
+					} catch (error) {
+						console.warn(`[FileService] Failed to write file ${path}:`, error);
+						throw error;
+					}
+				}
+				throw new Error('File service not available (non-Tauri environment)');
 			},
 			catch: (error) =>
 				Effect.fail(new Error(`Failed to write file ${path}: ${error}`)),
@@ -560,10 +634,16 @@ const FileServiceImpl = FileServiceTag.of({
 	exists: (path: string) =>
 		Effect.tryPromise({
 			try: async () => {
-				// TODO: Implement Tauri exists check
-				// const { exists } = await import('@tauri-apps/plugin-fs');
-				// return await exists(path);
-
+				if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+					try {
+						const { invoke } = await import('@tauri-apps/api/core');
+						const exists = await invoke('file_exists', { path });
+						return exists;
+					} catch (error) {
+						console.warn(`[FileService] Failed to check file existence ${path}:`, error);
+						return false;
+					}
+				}
 				return false; // Default fallback
 			},
 			catch: (error) =>
@@ -573,17 +653,22 @@ const FileServiceImpl = FileServiceTag.of({
 	stat: (path: string) =>
 		Effect.tryPromise({
 			try: async () => {
-				// TODO: Implement Tauri stat
-				// const { stat } = await import('@tauri-apps/plugin-fs');
-				// const stats = await stat(path);
-				// return {
-				//     isFile: stats.isFile,
-				//     isDirectory: stats.isDirectory,
-				//     size: stats.size,
-				//     modified: stats.mtimeMs,
-				// };
-
-				throw new Error('File service not yet connected to Tauri APIs');
+				if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+					try {
+						const { invoke } = await import('@tauri-apps/api/core');
+						const stats = await invoke('file_stat', { path });
+						return {
+							isFile: stats.isFile,
+							isDirectory: stats.isDirectory,
+							size: stats.size,
+							modified: stats.mtimeMs,
+						};
+					} catch (error) {
+						console.warn(`[FileService] Failed to stat file ${path}:`, error);
+						throw error;
+					}
+				}
+				throw new Error('File service not available (non-Tauri environment)');
 			},
 			catch: (error) =>
 				Effect.fail(new Error(`Failed to stat file ${path}: ${error}`)),
@@ -592,11 +677,17 @@ const FileServiceImpl = FileServiceTag.of({
 	mkdir: (path: string) =>
 		Effect.tryPromise({
 			try: async () => {
-				// TODO: Implement Tauri mkdir
-				// const { mkdir } = await import('@tauri-apps/plugin-fs');
-				// await mkdir(path, { recursive: true });
-
-				throw new Error('File service not yet connected to Tauri APIs');
+				if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+					try {
+						const { invoke } = await import('@tauri-apps/api/core');
+						await invoke('create_directory', { path });
+						return undefined;
+					} catch (error) {
+						console.warn(`[FileService] Failed to create directory ${path}:`, error);
+						throw error;
+					}
+				}
+				throw new Error('File service not available (non-Tauri environment)');
 			},
 			catch: (error) =>
 				Effect.fail(new Error(`Failed to create directory ${path}: ${error}`)),
@@ -605,11 +696,17 @@ const FileServiceImpl = FileServiceTag.of({
 	delete: (path: string) =>
 		Effect.tryPromise({
 			try: async () => {
-				// TODO: Implement Tauri delete
-				// const { remove } = await import('@tauri-apps/plugin-fs');
-				// await remove(path, { recursive: true });
-
-				throw new Error('File service not yet connected to Tauri APIs');
+				if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+					try {
+						const { invoke } = await import('@tauri-apps/api/core');
+						await invoke('delete_path', { path });
+						return undefined;
+					} catch (error) {
+						console.warn(`[FileService] Failed to delete ${path}:`, error);
+						throw error;
+					}
+				}
+				throw new Error('File service not available (non-Tauri environment)');
 			},
 			catch: (error) =>
 				Effect.fail(new Error(`Failed to delete ${path}: ${error}`)),
@@ -618,12 +715,27 @@ const FileServiceImpl = FileServiceTag.of({
 	watch: (path: string, callback: () => void) =>
 		Effect.tryPromise({
 			try: async () => {
-				// TODO: Implement Tauri watch
-				// This typically uses a command-based approach:
-				// await invoke('watch_path', { path });
-				// Listen to `tauri://file-changed` events
-
-				throw new Error('File watch not yet connected to Tauri APIs');
+				if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+					try {
+						const { invoke, listen } = await import('@tauri-apps/api/core');
+						const watchId = await invoke('watch_path', { path });
+						
+						// Listen for file change events
+						const unlisten = await listen(`file-changed-${watchId}`, (event) => {
+							callback();
+						});
+						
+						// Return cleanup function
+						return () => {
+							invoke('unwatch_path', { id: watchId });
+							unlisten();
+						};
+					} catch (error) {
+						console.warn(`[FileService] Failed to watch ${path}:`, error);
+						throw error;
+					}
+				}
+				throw new Error('File service not available (non-Tauri environment)');
 			},
 			catch: (error) =>
 				Effect.fail(new Error(`Failed to watch ${path}: ${error}`)),
@@ -640,13 +752,16 @@ const DialogInterfaceImpl = DialogServiceTag.of({
 	showOpenDialog: (options: any) =>
 		Effect.tryPromise({
 			try: async () => {
-				// TODO: Implement Tauri dialog
-				// Import from @tauri-apps/plugin-dialog
-				// const { open } = await import('@tauri-apps/plugin-dialog');
-				// const selected = await open(options);
-				// return selected ? (Array.isArray(selected) ? selected : [selected]) : [];
-
-				// Temporary stub
+				if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+					try {
+						const { open } = await import('@tauri-apps/plugin-dialog');
+						const selected = await open(options);
+						return selected ? (Array.isArray(selected) ? selected : [selected]) : [];
+					} catch (error) {
+						console.warn('[DialogService] Failed to show open dialog:', error);
+						return [];
+					}
+				}
 				return [];
 			},
 			catch: (error) =>
@@ -656,10 +771,15 @@ const DialogInterfaceImpl = DialogServiceTag.of({
 	showSaveDialog: (options: any) =>
 		Effect.tryPromise({
 			try: async () => {
-				// TODO: Implement Tauri save dialog
-				// const { save } = await import('@tauri-apps/plugin-dialog');
-				// return await save(options);
-
+				if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+					try {
+						const { save } = await import('@tauri-apps/plugin-dialog');
+						return await save(options);
+					} catch (error) {
+						console.warn('[DialogService] Failed to show save dialog:', error);
+						return null;
+					}
+				}
 				return null;
 			},
 			catch: (error) =>
@@ -669,12 +789,19 @@ const DialogInterfaceImpl = DialogServiceTag.of({
 	showMessage: (options: any) =>
 		Effect.tryPromise({
 			try: async () => {
-				// TODO: Implement Tauri message dialog
-				// const { message } = await import('@tauri-apps/plugin-dialog');
-				// await message(options.message, options.title, options.type);
-
-				// Fallback to browser alert
-				if (typeof window !== 'undefined') {
+				if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+					try {
+						const { message } = await import('@tauri-apps/plugin-dialog');
+						await message(options.message, {
+							title: options.title,
+							type: options.type || 'info'
+						});
+					} catch (error) {
+						console.warn('[DialogService] Failed to show message dialog:', error);
+						// Fallback to browser alert
+						window.alert(`${options.title || ''}\n${options.message}`);
+					}
+				} else if (typeof window !== 'undefined') {
 					window.alert(`${options.title || ''}\n${options.message}`);
 				}
 			},
@@ -808,7 +935,7 @@ export function validateService<T>(
  * Safe service accessor with error handling
  * Ensures services are available before use
  */
-export function safe getService<T extends Effect.TagClass<any, any>>(
+export function safeGetService<T extends Effect.TagClass<any, any>>(
 	tag: T,
 	errorMessage?: string
 ) {
