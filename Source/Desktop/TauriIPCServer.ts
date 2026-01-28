@@ -178,8 +178,88 @@ export class TauriIPCServer {
     return this.messageQueue.length;
   }
 
+  /**   * Set up channel listener with error handling and retry logic
+   */
+  private async setupChannelListener(channel: string, handler: (event: any) => void): Promise<void> {
+    try {
+      await listen(channel, handler);
+      console.log(`[TauriIPCServer] Listener registered for channel: ${channel}`);
+    } catch (error) {
+      console.error(`[TauriIPCServer] Failed to setup listener for channel ${channel}:`, error);
+      // Implement retry logic after delay
+      setTimeout(() => {
+        this.setupChannelListener(channel, handler);
+      }, 5000);
+    }
+  }
+
   /**
-   * Cleanup resources
+   * Handle advanced sync events from Mountain
+   */
+  private handleAdvancedSyncEvent(event: any): void {
+    try {
+      console.log('[TauriIPCServer] Received Mountain advanced sync event:', event);
+      
+      // Process different types of sync events
+      switch (event.type) {
+        case 'document_sync':
+          this.handleDocumentSync(event.payload);
+          break;
+        case 'ui_state_sync':
+          this.handleUIStateSync(event.payload);
+          break;
+        case 'performance_metrics':
+          this.handlePerformanceMetrics(event.payload);
+          break;
+        default:
+          console.warn('[TauriIPCServer] Unknown sync event type:', event.type);
+      }
+    } catch (error) {
+      console.error('[TauriIPCServer] Failed to handle advanced sync event:', error);
+    }
+  }
+
+  /**
+   * Verify Mountain connection status
+   */
+  private async verifyMountainConnection(): Promise<{ connected: boolean; version?: string }> {
+    try {
+      const status = await invoke<{ connected: boolean; version: string }>('mountain_get_connection_status');
+      return status;
+    } catch (error) {
+      console.error('[TauriIPCServer] Failed to verify Mountain connection:', error);
+      return { connected: false };
+    }
+  }
+
+  /**
+   * Handle document synchronization from Mountain
+   */
+  private handleDocumentSync(payload: any): void {
+    console.log('[TauriIPCServer] Processing document sync:', payload);
+    // Emit to Wind services for processing
+    emit('wind_document_sync', payload);
+  }
+
+  /**
+   * Handle UI state synchronization from Mountain
+   */
+  private handleUIStateSync(payload: any): void {
+    console.log('[TauriIPCServer] Processing UI state sync:', payload);
+    // Emit to Wind services for processing
+    emit('wind_ui_state_sync', payload);
+  }
+
+  /**
+   * Handle performance metrics from Mountain
+   */
+  private handlePerformanceMetrics(payload: any): void {
+    console.log('[TauriIPCServer] Processing performance metrics:', payload);
+    // Emit to Wind services for processing
+    emit('wind_performance_metrics', payload);
+  }
+
+  /**   * Cleanup resources
    */
   dispose(): void {
     this.listeners.clear();

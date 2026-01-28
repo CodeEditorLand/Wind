@@ -16,7 +16,7 @@
  */
 
 import { invoke } from '@tauri-apps/api/core';
-import { BaseDirectory, writeTextFile, readTextFile, createDir, exists } from '@tauri-apps/api/fs';
+import { BaseDirectory, writeTextFile, readTextFile, createDir, exists, metadata } from '@tauri-apps/api/fs';
 
 /**
  * Storage entry interface
@@ -46,6 +46,9 @@ export class TauriStorageService {
   private storage: Map<string, any> = new Map();
   private metadata: IStorageMetadata;
   private isInitialized: boolean = false;
+  private encryptionKey: string | null = null;
+  private storageQuota: number = 100 * 1024 * 1024; // 100MB default quota
+  private currentUsage: number = 0;
 
   constructor(private storageName: string = 'vscode-workbench') {
     this.storagePath = `storage/${storageName}.json`;
