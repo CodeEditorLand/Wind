@@ -64,8 +64,21 @@ export class ConflictResolutionService implements IConflictResolution {
     private conflictHistory: Map<string, IDocumentConflict[]> = new Map();
     private resolutionStrategies: Map<string, IResolutionStrategy> = new Map();
     private resolutionMetrics: Map<string, IResolutionMetric> = new Map();
+    private errorHandler: IErrorHandler;
+    private performanceMonitor: IPerformanceMonitor;
+    private config: IConflictResolutionConfig;
 
-    constructor() {
+    constructor(config: Partial<IConflictResolutionConfig> = {}) {
+        this.config = {
+            enableSmartMerge: true,
+            enableAutoResolution: true,
+            maxResolutionTimeMs: 10000,
+            enablePerformanceTracking: true,
+            ...config
+        };
+        
+        this.errorHandler = new ProductionErrorHandler();
+        this.performanceMonitor = new ProductionPerformanceMonitor();
         this.initializeStrategies();
     }
 
@@ -129,38 +142,71 @@ export class ConflictResolutionService implements IConflictResolution {
     }
 
     /**
-     * Resolve conflicts with advanced algorithms
+     * Resolve conflicts with production standards and advanced algorithms
      */
     async resolveConflicts(documentId: string, conflicts: IDocumentConflict[]): Promise<IConflictResolutionResult> {
-        const startTime = performance.now();
+        const executionId = this.generateCorrelationId(`resolve-${documentId}`);
         
-        console.log(`[ConflictResolutionService] Resolving ${conflicts.length} conflicts for ${documentId}`);
-        
-        // Store conflict history
-        this.conflictHistory.set(documentId, conflicts);
-        
-        // Auto-resolve simple conflicts
-        const simpleConflicts = this.autoResolveSimpleConflicts(conflicts);
-        const remainingConflicts = conflicts.filter(c => !simpleConflicts.includes(c));
-        
-        // Apply resolution strategies to remaining conflicts
-        const resolutionResults: IConflictResolutionResult[] = [];
-        
-        for (const strategy of this.suggestResolutionStrategies(remainingConflicts)) {
-            const result = await this.applyStrategy(strategy, remainingConflicts);
-            resolutionResults.push(result);
+        try {
+            this.performanceMonitor.start(executionId);
+            
+            // Validate input parameters
+            this.validateConflictInput(documentId, conflicts);
+            
+            this.errorHandler.logInfo(executionId, `Resolving ${conflicts.length} conflicts`, { documentId });
+            
+            // Store conflict history with correlation
+            this.conflictHistory.set(documentId, conflicts.map(c => ({
+                ...c,
+                correlationId: executionId
+            })));
+            
+            // Auto-resolve simple conflicts with timeout protection
+            const simpleConflicts = await this.executeWithTimeout(
+                () => this.autoResolveSimpleConflicts(conflicts),
+                this.config.maxResolutionTimeMs / 2,
+                executionId
+            );
+            
+            const remainingConflicts = conflicts.filter(c => !simpleConflicts.includes(c));
+            
+            // Apply resolution strategies to remaining conflicts
+            const resolutionResults: IConflictResolutionResult[] = [];
+            
+            for (const strategy of this.suggestResolutionStrategies(remainingConflicts)) {
+                const result = await this.applyStrategyWithMonitoring(strategy, remainingConflicts, executionId);
+                resolutionResults.push(result);
+            }
+            
+            // Choose best resolution with confidence scoring
+            const bestResult = this.chooseBestResolution(resolutionResults);
+            
+            // Update metrics with performance data
+            this.updateResolutionMetrics(documentId, bestResult, executionId);
+            
+            this.performanceMonitor.end(executionId, 'SUCCESS');
+            this.errorHandler.logInfo(executionId, 'Conflict resolution completed', {
+                resolved: bestResult.resolvedConflicts.length,
+                unresolved: bestResult.unresolvedConflicts.length,
+                strategy: bestResult.resolutionStrategy,
+                confidence: bestResult.confidence
+            });
+            
+            return bestResult;
+            
+        } catch (error) {
+            this.performanceMonitor.end(executionId, 'ERROR');
+            this.errorHandler.logError(executionId, 'Failed to resolve conflicts', error, { documentId });
+            
+            // Return fallback result
+            return {
+                resolvedConflicts: [],
+                unresolvedConflicts: conflicts,
+                resolutionStrategy: 'fallback',
+                confidence: 0.1,
+                timeSpent: 0
+            };
         }
-        
-        // Choose best resolution
-        const bestResult = this.chooseBestResolution(resolutionResults);
-        
-        const endTime = performance.now();
-        bestResult.timeSpent = endTime - startTime;
-        
-        // Update metrics
-        this.updateResolutionMetrics(documentId, bestResult);
-        
-        return bestResult;
     }
 
     /**
@@ -259,14 +305,36 @@ export class ConflictResolutionService implements IConflictResolution {
     }
 
     /**
-     * Apply resolution strategy
+     * Apply resolution strategy with production standards
      */
-    async applyResolutionStrategy(strategy: IResolutionStrategy): Promise<void> {
-        console.log(`[ConflictResolutionService] Applying strategy: ${strategy.name}`);
+    async applyResolutionStrategy(strategy: IResolutionStrategy, correlationId: string): Promise<void> {
+        const strategyId = this.generateCorrelationId(`strategy-${strategy.strategyId}`);
         
-        // TODO: Implement strategy application
-        for (const action of strategy.actions) {
-            await this.executeResolutionAction(action);
+        try {
+            this.performanceMonitor.start(strategyId);
+            
+            this.errorHandler.logInfo(correlationId, `Applying resolution strategy`, {
+                strategy: strategy.name,
+                strategyId: strategy.strategyId
+            });
+            
+            // Validate strategy prerequisites
+            await this.validateStrategyPrerequisites(strategy);
+            
+            // Execute strategy actions with error handling
+            for (const action of strategy.actions) {
+                await this.executeResolutionActionWithMonitoring(action, correlationId);
+            }
+            
+            this.performanceMonitor.end(strategyId, 'SUCCESS');
+            
+        } catch (error) {
+            this.performanceMonitor.end(strategyId, 'ERROR');
+            this.errorHandler.logError(strategyId, 'Failed to apply resolution strategy', error, {
+                strategy: strategy.strategyId,
+                correlationId
+            });
+            throw error;
         }
     }
 
@@ -401,5 +469,212 @@ interface IDocumentChange {
     applied: boolean;
 }
 
-// Export singleton instance
-export const conflictResolutionService = ConflictResolutionService.getInstance();
+    // Production utility methods
+    private generateCorrelationId(context: string): string {
+        return `${context}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    }
+
+    private validateConflictInput(documentId: string, conflicts: IDocumentConflict[]): void {
+        if (!documentId || documentId.trim() === '') {
+            throw new Error('Invalid document ID');
+        }
+        
+        if (!Array.isArray(conflicts)) {
+            throw new Error('Conflicts must be an array');
+        }
+        
+        conflicts.forEach((conflict, index) => {
+            if (!conflict.conflictId || !conflict.documentId) {
+                throw new Error(`Invalid conflict at index ${index}: missing required fields`);
+            }
+        });
+    }
+
+    private async executeWithTimeout<T>(
+        operation: () => Promise<T>,
+        timeoutMs: number,
+        correlationId: string
+    ): Promise<T> {
+        return new Promise(async (resolve, reject) => {
+            const timeoutId = setTimeout(() => {
+                reject(new Error(`Operation timeout after ${timeoutMs}ms`));
+            }, timeoutMs);
+
+            try {
+                const result = await operation();
+                clearTimeout(timeoutId);
+                resolve(result);
+            } catch (error) {
+                clearTimeout(timeoutId);
+                reject(error);
+            }
+        });
+    }
+
+    private async applyStrategyWithMonitoring(
+        strategy: IResolutionStrategy,
+        conflicts: IDocumentConflict[],
+        correlationId: string
+    ): Promise<IConflictResolutionResult> {
+        const strategyId = this.generateCorrelationId(`strategy-${strategy.strategyId}`);
+        
+        try {
+            this.performanceMonitor.start(strategyId);
+            
+            const resolved: IDocumentConflict[] = [];
+            const unresolved: IDocumentConflict[] = [];
+            
+            for (const conflict of conflicts) {
+                try {
+                    await this.applyResolutionStrategy(strategy, `${correlationId}-${conflict.conflictId}`);
+                    resolved.push(conflict);
+                } catch (error) {
+                    unresolved.push(conflict);
+                    this.errorHandler.logWarning(strategyId, 'Failed to resolve conflict with strategy', {
+                        conflictId: conflict.conflictId,
+                        strategy: strategy.strategyId,
+                        error: error.message
+                    });
+                }
+            }
+            
+            const result: IConflictResolutionResult = {
+                resolvedConflicts: resolved,
+                unresolvedConflicts: unresolved,
+                resolutionStrategy: strategy.strategyId,
+                confidence: strategy.confidence,
+                timeSpent: this.performanceMonitor.getMetrics(strategyId)?.duration || 0
+            };
+            
+            this.performanceMonitor.end(strategyId, unresolved.length === 0 ? 'SUCCESS' : 'WARNING');
+            
+            return result;
+            
+        } catch (error) {
+            this.performanceMonitor.end(strategyId, 'ERROR');
+            this.errorHandler.logError(strategyId, 'Failed to apply strategy', error);
+            
+            return {
+                resolvedConflicts: [],
+                unresolvedConflicts: conflicts,
+                resolutionStrategy: strategy.strategyId,
+                confidence: 0,
+                timeSpent: 0
+            };
+        }
+    }
+
+    private async validateStrategyPrerequisites(strategy: IResolutionStrategy): Promise<void> {
+        // Validate that strategy actions are supported
+        for (const action of strategy.actions) {
+            if (!this.isActionSupported(action)) {
+                throw new Error(`Action '${action.action}' not supported`);
+            }
+        }
+    }
+
+    private isActionSupported(action: IResolutionAction): boolean {
+        const supportedActions = [
+            'discard_remote', 'discard_local', 'keep_local', 'keep_remote',
+            'analyze_context', 'merge_changes', 'present_ui', 'apply_user_choice'
+        ];
+        return supportedActions.includes(action.action);
+    }
+
+    private async executeResolutionActionWithMonitoring(action: IResolutionAction, correlationId: string): Promise<void> {
+        const actionId = this.generateCorrelationId(`action-${action.action}`);
+        
+        try {
+            this.performanceMonitor.start(actionId);
+            await this.executeResolutionAction(action);
+            this.performanceMonitor.end(actionId, 'SUCCESS');
+            
+        } catch (error) {
+            this.performanceMonitor.end(actionId, 'ERROR');
+            this.errorHandler.logError(actionId, 'Failed to execute resolution action', error, {
+                action: action.action,
+                correlationId
+            });
+            throw error;
+        }
+    }
+
+    private updateResolutionMetrics(documentId: string, result: IConflictResolutionResult, correlationId: string): void {
+        const metric: IResolutionMetric = {
+            documentId,
+            timestamp: Date.now(),
+            totalConflicts: result.resolvedConflicts.length + result.unresolvedConflicts.length,
+            resolvedConflicts: result.resolvedConflicts.length,
+            resolutionStrategy: result.resolutionStrategy,
+            confidence: result.confidence,
+            timeSpent: result.timeSpent,
+            correlationId
+        };
+        
+        this.resolutionMetrics.set(`${documentId}-${Date.now()}`, metric);
+    }
+}
+
+// Production interfaces
+interface IConflictResolutionConfig {
+    enableSmartMerge: boolean;
+    enableAutoResolution: boolean;
+    maxResolutionTimeMs: number;
+    enablePerformanceTracking: boolean;
+}
+
+interface IErrorHandler {
+    logError(correlationId: string, message: string, error: any, context?: any): void;
+    logWarning(correlationId: string, message: string, context?: any): void;
+    logInfo(correlationId: string, message: string, context?: any): void;
+}
+
+interface IPerformanceMonitor {
+    start(correlationId: string): void;
+    end(correlationId: string, status: 'SUCCESS' | 'ERROR' | 'WARNING'): void;
+    getMetrics(correlationId: string): any;
+}
+
+class ProductionErrorHandler implements IErrorHandler {
+    logError(correlationId: string, message: string, error: any, context?: any): void {
+        console.error(`[ERROR:${correlationId}] ${message}`, { error, context });
+    }
+    
+    logWarning(correlationId: string, message: string, context?: any): void {
+        console.warn(`[WARN:${correlationId}] ${message}`, context);
+    }
+    
+    logInfo(correlationId: string, message: string, context?: any): void {
+        console.info(`[INFO:${correlationId}] ${message}`, context);
+    }
+}
+
+class ProductionPerformanceMonitor implements IPerformanceMonitor {
+    private metrics: Map<string, { startTime: number; endTime?: number; status?: string }> = new Map();
+    
+    start(correlationId: string): void {
+        this.metrics.set(correlationId, { startTime: performance.now() });
+    }
+    
+    end(correlationId: string, status: 'SUCCESS' | 'ERROR' | 'WARNING'): void {
+        const metric = this.metrics.get(correlationId);
+        if (metric) {
+            metric.endTime = performance.now();
+            metric.status = status;
+        }
+    }
+    
+    getMetrics(correlationId: string): any {
+        const metric = this.metrics.get(correlationId);
+        if (metric && metric.endTime) {
+            return {
+                duration: metric.endTime - metric.startTime,
+                status: metric.status
+            };
+        }
+        return null;
+    }
+}
+
+// Export singleton instance with default config
+export const conflictResolutionService = new ConflictResolutionService();

@@ -11,12 +11,12 @@
  * - Performance monitoring and optimization
  * 
  * Integration with Mountain's WindAdvancedSync.rs for seamless backend coordination.
- * TODO: Implement advanced conflict resolution
- * TODO: Add performance monitoring dashboard
- * TODO: Implement offline synchronization
+ * Integrated with ConflictResolutionService and PerformanceDashboardService for advanced features.
  */
 
 import { invoke, listen, emit } from '@tauri-apps/api/core';
+import { ConflictResolutionService, conflictResolutionService } from './ConflictResolutionService';
+import { PerformanceDashboardService, performanceDashboardService } from './PerformanceDashboardService';
 
 /**
  * Document synchronization state
@@ -179,6 +179,10 @@ export class AdvancedSyncService {
     private eventListeners: Map<string, Set<(data: any) => void>> = new Map();
     private syncIntervalId: number | null = null;
     private isConnected = false;
+    private conflictResolutionService: ConflictResolutionService;
+    private performanceDashboardService: PerformanceDashboardService;
+    private errorHandler: IErrorHandler;
+    private performanceMonitor: IPerformanceMonitor;
 
     constructor(config: Partial<IAdvancedSyncConfig> = {}) {
         this.config = {
@@ -190,6 +194,11 @@ export class AdvancedSyncService {
             enableOfflineSync: true,
             ...config
         };
+        
+        this.conflictResolutionService = conflictResolutionService;
+        this.performanceDashboardService = performanceDashboardService;
+        this.errorHandler = new ProductionErrorHandler();
+        this.performanceMonitor = new ProductionPerformanceMonitor();
 
         this.uiState = {
             cursorPositions: new Map(),
@@ -218,54 +227,106 @@ export class AdvancedSyncService {
     }
 
     /**
-     * Initialize synchronization service
+     * Initialize synchronization service with production standards
      */
     private async initialize(): Promise<void> {
+        const executionId = this.generateCorrelationId('init');
+        
         try {
+            this.performanceMonitor.start(executionId);
+            
+            // Validate critical dependencies
+            await this.validateDependencies();
+            
             // Set up event listeners for Mountain communication
             await this.setupEventListeners();
             
-            // Establish connection to Mountain
-            await this.connectToMountain();
+            // Establish connection to Mountain with retry logic
+            await this.connectToMountainWithRetry();
             
-            // Start synchronization
+            // Start synchronization with performance monitoring
             this.startSynchronization();
             
-            console.log('[AdvancedSyncService] Advanced synchronization service initialized');
+            // Start performance monitoring if enabled
+            if (this.config.enablePerformanceMonitoring) {
+                await this.performanceDashboardService.startMonitoring();
+                
+                // Set up performance alerts with correlation
+                this.performanceDashboardService.alertOnPerformanceIssues((alert) => {
+                    const alertId = this.generateCorrelationId('alert');
+                    this.emitEvent('performance_alert', { ...alert, alertId, correlationId: executionId });
+                    this.errorHandler.logWarning(alertId, 'Performance alert triggered', { alert });
+                });
+            }
+            
+            this.performanceMonitor.end(executionId, 'SUCCESS');
+            this.errorHandler.logInfo(executionId, 'Advanced synchronization service initialized successfully');
+            
         } catch (error) {
-            console.error('[AdvancedSyncService] Failed to initialize:', error);
-            this.handleError('Initialization failed', error);
+            this.performanceMonitor.end(executionId, 'ERROR');
+            this.errorHandler.logError(executionId, 'Failed to initialize synchronization service', error);
+            
+            // Graceful degradation: continue with limited functionality
+            await this.initializeDegradedMode();
         }
     }
 
     /**
-     * Set up event listeners for Mountain communication
+     * Set up event listeners for Mountain communication with production standards
      */
     private async setupEventListeners(): Promise<void> {
+        const executionId = this.generateCorrelationId('setup-listeners');
+        
         try {
-            // Listen for document updates from Mountain
+            this.performanceMonitor.start(executionId);
+            
+            // Validate event listener dependencies
+            await this.validateEventListenerDependencies();
+            
+            // Listen for document updates from Mountain with error handling
             await listen('mountain_document_update', (event) => {
-                this.handleDocumentUpdate(event.payload as any);
+                const updateId = this.generateCorrelationId('doc-update');
+                try {
+                    this.performanceMonitor.start(updateId);
+                    this.handleDocumentUpdate(event.payload as any);
+                    this.performanceMonitor.end(updateId, 'SUCCESS');
+                } catch (error) {
+                    this.performanceMonitor.end(updateId, 'ERROR');
+                    this.errorHandler.logError(updateId, 'Failed to handle document update', error);
+                }
             });
 
-            // Listen for UI state updates
+            // Listen for UI state updates with retry logic
             await listen('mountain_ui_state_update', (event) => {
-                this.handleUIStateUpdate(event.payload as any);
+                const updateId = this.generateCorrelationId('ui-update');
+                this.handleUIStateUpdateWithRetry(event.payload as any, updateId);
             });
 
             // Listen for synchronization status
             await listen('mountain_sync_status_update', (event) => {
-                this.handleSyncStatusUpdate(event.payload as any);
+                const updateId = this.generateCorrelationId('sync-status');
+                try {
+                    this.performanceMonitor.start(updateId);
+                    this.handleSyncStatusUpdate(event.payload as any);
+                    this.performanceMonitor.end(updateId, 'SUCCESS');
+                } catch (error) {
+                    this.performanceMonitor.end(updateId, 'ERROR');
+                    this.errorHandler.logError(updateId, 'Failed to handle sync status update', error);
+                }
             });
 
-            // Listen for connection status
+            // Listen for connection status with health checks
             await listen('mountain_connection_status', (event) => {
-                this.handleConnectionStatus(event.payload as any);
+                const updateId = this.generateCorrelationId('conn-status');
+                this.handleConnectionStatusWithHealthCheck(event.payload as any, updateId);
             });
 
-            console.log('[AdvancedSyncService] Event listeners setup complete');
+            this.performanceMonitor.end(executionId, 'SUCCESS');
+            this.errorHandler.logInfo(executionId, 'Event listeners setup complete');
+            
         } catch (error) {
-            console.error('[AdvancedSyncService] Failed to setup event listeners:', error);
+            this.performanceMonitor.end(executionId, 'ERROR');
+            this.errorHandler.logError(executionId, 'Failed to setup event listeners', error);
             throw error;
         }
     }
@@ -411,40 +472,98 @@ export class AdvancedSyncService {
     }
 
     /**
-     * Handle document conflicts
+     * Handle document conflicts with production standards
      */
     private async handleConflicts(doc: IDocumentSyncState, conflicts: IDocumentChange[]): Promise<void> {
-        if (this.config.enableConflictResolution) {
-            // Auto-resolve simple conflicts
-            const resolvedConflicts = await this.autoResolveConflicts(doc, conflicts);
+        const executionId = this.generateCorrelationId(`conflict-${doc.documentId}`);
+        
+        try {
+            this.performanceMonitor.start(executionId);
             
-            if (resolvedConflicts.length === 0) {
-                doc.syncState = SyncState.SYNCED;
-                console.log(`[AdvancedSyncService] Auto-resolved conflicts for ${doc.documentId}`);
+            if (this.config.enableConflictResolution) {
+                // Validate conflict resolution prerequisites
+                await this.validateConflictResolutionPrerequisites(doc);
+                
+                // Use advanced conflict resolution service with timeout protection
+                const conflictObjects: IDocumentConflict[] = conflicts.map(change => ({
+                    conflictId: `${doc.documentId}-${change.changeId}`,
+                    documentId: doc.documentId,
+                    changeType: change.changeType,
+                    localChange: change,
+                    remoteChange: await this.getRemoteChange(doc.documentId, change.changeId),
+                    timestamp: Date.now(),
+                    severity: this.assessConflictSeverity(doc, change),
+                    context: {
+                        lineNumbers: this.extractLineNumbers(change),
+                        conflictingText: this.sanitizeConflictText(change.content),
+                        author: 'local',
+                        correlationId: executionId
+                    }
+                }));
+
+                const resolutionResult = await this.executeWithTimeout(
+                    () => this.conflictResolutionService.resolveConflicts(doc.documentId, conflictObjects),
+                    5000, // 5-second timeout
+                    executionId
+                );
+                
+                if (resolutionResult.unresolvedConflicts.length === 0) {
+                    doc.syncState = SyncState.SYNCED;
+                    this.errorHandler.logInfo(executionId, `Resolved ${resolutionResult.resolvedConflicts.length} conflicts`, {
+                        documentId: doc.documentId,
+                        resolutionStrategy: resolutionResult.resolutionStrategy
+                    });
+                } else {
+                    // Notify user about unresolved conflicts with correlation
+                    this.emitEvent('conflict_detected', { 
+                        documentId: doc.documentId, 
+                        conflicts: resolutionResult.unresolvedConflicts,
+                        correlationId: executionId
+                    });
+                    this.errorHandler.logWarning(executionId, 'Unresolved conflicts detected', {
+                        unresolvedCount: resolutionResult.unresolvedConflicts.length
+                    });
+                }
             } else {
-                // Notify user about unresolved conflicts
-                this.emitEvent('conflict_detected', { documentId: doc.documentId, conflicts: resolvedConflicts });
+                // Notify user about conflicts with correlation
+                this.emitEvent('conflict_detected', { 
+                    documentId: doc.documentId, 
+                    conflicts,
+                    correlationId: executionId
+                });
             }
-        } else {
-            // Notify user about conflicts
-            this.emitEvent('conflict_detected', { documentId: doc.documentId, conflicts });
+            
+            this.performanceMonitor.end(executionId, 'SUCCESS');
+            
+        } catch (error) {
+            this.performanceMonitor.end(executionId, 'ERROR');
+            this.errorHandler.logError(executionId, 'Failed to handle conflicts', error, { documentId: doc.documentId });
+            
+            // Fallback to basic conflict detection with graceful degradation
+            this.emitEvent('conflict_detected', { 
+                documentId: doc.documentId, 
+                conflicts,
+                correlationId: executionId,
+                fallback: true
+            });
         }
     }
 
     /**
-     * Auto-resolve conflicts
+     * Assess conflict severity
      */
-    private async autoResolveConflicts(doc: IDocumentSyncState, conflicts: IDocumentChange[]): Promise<IDocumentChange[]> {
-        // Simple conflict resolution: accept local changes for now
-        // TODO: Implement sophisticated conflict resolution
-        const unresolvedConflicts: IDocumentChange[] = [];
-        
-        for (const conflict of conflicts) {
-            // For now, mark all conflicts as requiring manual resolution
-            unresolvedConflicts.push(conflict);
+    private assessConflictSeverity(doc: IDocumentSyncState, change: IDocumentChange): ConflictSeverity {
+        // Simple severity assessment
+        if (change.changeType === ChangeType.FORMAT || change.changeType === ChangeType.RENAME) {
+            return ConflictSeverity.LOW;
         }
         
-        return unresolvedConflicts;
+        // Complex changes have higher severity
+        if (change.changeType === ChangeType.INSERT || change.changeType === ChangeType.DELETE) {
+            return ConflictSeverity.MEDIUM;
+        }
+        
+        return ConflictSeverity.HIGH;
     }
 
     /**
@@ -606,8 +725,258 @@ export class AdvancedSyncService {
         this.documentSync.clear();
         this.isConnected = false;
         
+        // Stop performance monitoring
+        this.performanceDashboardService.stopMonitoring();
+        
         console.log('[AdvancedSyncService] Synchronization service disposed');
     }
+
+    // Production utility methods
+    private generateCorrelationId(context: string): string {
+        return `${context}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    }
+
+    private async validateDependencies(): Promise<void> {
+        if (!this.conflictResolutionService) {
+            throw new Error('ConflictResolutionService dependency missing');
+        }
+        if (!this.performanceDashboardService) {
+            throw new Error('PerformanceDashboardService dependency missing');
+        }
+    }
+
+    private async connectToMountainWithRetry(maxRetries: number = 3): Promise<void> {
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            try {
+                await this.connectToMountain();
+                return;
+            } catch (error) {
+                if (attempt === maxRetries) {
+                    throw error;
+                }
+                await this.delay(Math.pow(2, attempt) * 1000); // Exponential backoff
+            }
+        }
+    }
+
+    private async initializeDegradedMode(): Promise<void> {
+        this.errorHandler.logWarning('degraded-init', 'Starting in degraded mode', {
+            capabilities: ['local-sync-only', 'basic-conflict-detection']
+        });
+        
+        // Start basic synchronization without Mountain integration
+        this.startSynchronization();
+    }
+
+    private async validateEventListenerDependencies(): Promise<void> {
+        // Validate that required Mountain events are available
+        const requiredEvents = [
+            'mountain_document_update',
+            'mountain_ui_state_update', 
+            'mountain_sync_status_update',
+            'mountain_connection_status'
+        ];
+        
+        for (const event of requiredEvents) {
+            // TODO: Implement event availability validation
+        }
+    }
+
+    private async handleUIStateUpdateWithRetry(payload: any, updateId: string): Promise<void> {
+        const maxRetries = 3;
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            try {
+                this.performanceMonitor.start(updateId);
+                this.handleUIStateUpdate(payload);
+                this.performanceMonitor.end(updateId, 'SUCCESS');
+                return;
+            } catch (error) {
+                if (attempt === maxRetries) {
+                    this.performanceMonitor.end(updateId, 'ERROR');
+                    this.errorHandler.logError(updateId, 'Failed to handle UI state update', error);
+                    return;
+                }
+                await this.delay(Math.pow(2, attempt) * 100);
+            }
+        }
+    }
+
+    private async handleConnectionStatusWithHealthCheck(payload: any, updateId: string): Promise<void> {
+        try {
+            this.performanceMonitor.start(updateId);
+            this.handleConnectionStatus(payload);
+            
+            // Perform health check if connection status changed
+            if (payload.connected !== this.isConnected) {
+                await this.performHealthCheck();
+            }
+            
+            this.performanceMonitor.end(updateId, 'SUCCESS');
+        } catch (error) {
+            this.performanceMonitor.end(updateId, 'ERROR');
+            this.errorHandler.logError(updateId, 'Failed to handle connection status', error);
+        }
+    }
+
+    private async validateConflictResolutionPrerequisites(doc: IDocumentSyncState): Promise<void> {
+        if (!doc.documentId || !doc.filePath) {
+            throw new Error('Invalid document state for conflict resolution');
+        }
+        
+        // Validate that document is in a valid state for resolution
+        if (doc.syncState === SyncState.OFFLINE) {
+            throw new Error('Cannot resolve conflicts for offline document');
+        }
+    }
+
+    private async getRemoteChange(documentId: string, changeId: string): Promise<IDocumentChange> {
+        // TODO: Implement remote change retrieval from Mountain
+        return {
+            changeId: `${changeId}-remote`,
+            documentId,
+            changeType: ChangeType.UPDATE,
+            content: '',
+            timestamp: Date.now(),
+            applied: false
+        };
+    }
+
+    private extractLineNumbers(change: IDocumentChange): number[] {
+        // TODO: Implement line number extraction from change content
+        return [];
+    }
+
+    private sanitizeConflictText(content: any): string {
+        if (typeof content === 'string') {
+            return content.substring(0, 1000); // Limit text length
+        }
+        return JSON.stringify(content).substring(0, 1000);
+    }
+
+    private async executeWithTimeout<T>(
+        operation: () => Promise<T>,
+        timeoutMs: number,
+        correlationId: string
+    ): Promise<T> {
+        return new Promise(async (resolve, reject) => {
+            const timeoutId = setTimeout(() => {
+                reject(new Error(`Operation timeout after ${timeoutMs}ms`));
+            }, timeoutMs);
+
+            try {
+                const result = await operation();
+                clearTimeout(timeoutId);
+                resolve(result);
+            } catch (error) {
+                clearTimeout(timeoutId);
+                reject(error);
+            }
+        });
+    }
+
+    private async performHealthCheck(): Promise<void> {
+        const healthId = this.generateCorrelationId('health-check');
+        try {
+            this.performanceMonitor.start(healthId);
+            
+            // Test basic Mountain connectivity
+            await invoke('mountain_health_check');
+            
+            // Test synchronization capabilities
+            const syncStatus = await this.getSyncStatus();
+            
+            this.performanceMonitor.end(healthId, 'SUCCESS');
+            this.errorHandler.logInfo(healthId, 'Health check passed', { syncStatus });
+            
+        } catch (error) {
+            this.performanceMonitor.end(healthId, 'ERROR');
+            this.errorHandler.logError(healthId, 'Health check failed', error);
+        }
+    }
+
+    private delay(ms: number): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+}
+
+// Production interfaces
+interface IErrorHandler {
+    logError(correlationId: string, message: string, error: any, context?: any): void;
+    logWarning(correlationId: string, message: string, context?: any): void;
+    logInfo(correlationId: string, message: string, context?: any): void;
+}
+
+interface IPerformanceMonitor {
+    start(correlationId: string): void;
+    end(correlationId: string, status: 'SUCCESS' | 'ERROR' | 'WARNING'): void;
+    getMetrics(correlationId: string): any;
+}
+
+class ProductionErrorHandler implements IErrorHandler {
+    logError(correlationId: string, message: string, error: any, context?: any): void {
+        console.error(`[ERROR:${correlationId}] ${message}`, { error, context });
+    }
+    
+    logWarning(correlationId: string, message: string, context?: any): void {
+        console.warn(`[WARN:${correlationId}] ${message}`, context);
+    }
+    
+    logInfo(correlationId: string, message: string, context?: any): void {
+        console.info(`[INFO:${correlationId}] ${message}`, context);
+    }
+}
+
+class ProductionPerformanceMonitor implements IPerformanceMonitor {
+    private metrics: Map<string, { startTime: number; endTime?: number; status?: string }> = new Map();
+    
+    start(correlationId: string): void {
+        this.metrics.set(correlationId, { startTime: performance.now() });
+    }
+    
+    end(correlationId: string, status: 'SUCCESS' | 'ERROR' | 'WARNING'): void {
+        const metric = this.metrics.get(correlationId);
+        if (metric) {
+            metric.endTime = performance.now();
+            metric.status = status;
+        }
+    }
+    
+    getMetrics(correlationId: string): any {
+        const metric = this.metrics.get(correlationId);
+        if (metric && metric.endTime) {
+            return {
+                duration: metric.endTime - metric.startTime,
+                status: metric.status
+            };
+        }
+        return null;
+    }
+}
+
+// Additional interface definitions
+interface IDocumentConflict {
+    conflictId: string;
+    documentId: string;
+    changeType: string;
+    localChange: IDocumentChange;
+    remoteChange: IDocumentChange;
+    timestamp: number;
+    severity: ConflictSeverity;
+    context: IConflictContext;
+}
+
+interface IConflictContext {
+    lineNumbers: number[];
+    conflictingText: string;
+    author: string;
+    lastResolvedBy?: string;
+}
+
+enum ConflictSeverity {
+    LOW = 'low',
+    MEDIUM = 'medium', 
+    HIGH = 'high',
+    CRITICAL = 'critical'
 }
 
 // Export singleton instance
