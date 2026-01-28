@@ -40,25 +40,39 @@ export class TauriIPCServer {
   }
 
   /**
-   * Set up Tauri event listeners for IPC communication
+   * Set up Tauri event listeners for IPC communication with Mountain integration
    */
   private async setupListeners(): Promise<void> {
+    const startTime = Date.now();
     try {
+      console.log('[TauriIPCServer] Setting up IPC listeners with Mountain integration...');
+      
       // Listen for messages from the Tauri backend
-      await listen('vscode-ipc-message', (event) => {
+      await this.setupChannelListener('vscode-ipc-message', (event) => {
         this.handleIncomingMessage(event.payload as ITauriIPCMessage);
       });
 
-      // Listen for connection status
-      await listen('vscode-ipc-status', (event) => {
+      // Listen for Mountain connection status
+      await this.setupChannelListener('mountain-ipc-status', (event) => {
         this.handleConnectionStatus(event.payload as { connected: boolean });
       });
 
-      this.isConnected = true;
-      console.log('[TauriIPCServer] IPC listeners setup complete');
+      // Listen for Mountain synchronization events
+      await this.setupChannelListener('mountain-advanced-sync', (event) => {
+        this.handleAdvancedSyncEvent(event.payload as any);
+      });
+
+      // Verify Mountain connection
+      const mountainStatus = await this.verifyMountainConnection();
+      this.isConnected = mountainStatus.connected;
+      
+      console.log(`[TauriIPCServer] IPC listeners setup complete in ${Date.now() - startTime}ms`);
+      console.log(`[TauriIPCServer] Mountain connection status: ${mountainStatus.connected ? 'CONNECTED' : 'DISCONNECTED'}`);
+      
       this.processMessageQueue();
     } catch (error) {
       console.error('[TauriIPCServer] Failed to setup listeners:', error);
+      this.isConnected = false;
     }
   }
 

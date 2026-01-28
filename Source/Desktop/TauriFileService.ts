@@ -17,7 +17,7 @@
  */
 
 import { invoke } from '@tauri-apps/api/core';
-import { BaseDirectory, readTextFile, writeTextFile, readBinaryFile, writeBinaryFile, createDir, removeDir, removeFile, exists, copyFile, renameFile } from '@tauri-apps/api/fs';
+import { BaseDirectory, readTextFile, writeTextFile, readBinaryFile, writeBinaryFile, createDir, removeDir, removeFile, exists, copyFile, renameFile, readDir, metadata } from '@tauri-apps/api/fs';
 import { watch, unwatch, type FileSystemWatcher as TauriWatcher } from '@tauri-apps/api/fs';
 
 /**
@@ -152,12 +152,12 @@ export class TauriFileService {
         return;
       }
 
-      // TODO: Determine if path is directory or file
-      // For now, try removing as file first, then as directory
-      try {
-        await removeFile(path, { dir: BaseDirectory.AppData });
-      } catch (fileError) {
+      // Determine if path is directory or file using metadata
+      const metadata = await this.stat(path);
+      if (metadata.isDirectory) {
         await removeDir(path, { dir: BaseDirectory.AppData, recursive });
+      } else {
+        await removeFile(path, { dir: BaseDirectory.AppData });
       }
     } catch (error) {
       console.error(`[TauriFileService] Error deleting ${path}:`, error);
@@ -194,12 +194,18 @@ export class TauriFileService {
    */
   async readDirectory(path: string): Promise<IFileSystemEntry[]> {
     try {
-      // TODO: Implement directory listing using Tauri API
-      // Tauri doesn't have a direct directory listing API
-      // Need to use invoke with custom backend function
+      // Use Tauri's readDir API to list directory contents
+      const entries = await readDir(path, { dir: BaseDirectory.AppData });
       
-      const entries: IFileSystemEntry[] = await invoke('read_directory', { path });
-      return entries;
+      const fileSystemEntries: IFileSystemEntry[] = entries.map(entry => ({
+        path: entry.path,
+        name: entry.name || entry.path.split('/').pop() || entry.path,
+        isDirectory: entry.isDirectory,
+        size: entry.size || 0,
+        modified: entry.modified ? new Date(entry.modified).getTime() : Date.now()
+      }));
+      
+      return fileSystemEntries;
     } catch (error) {
       console.error(`[TauriFileService] Error reading directory ${path}:`, error);
       throw new Error(`Failed to read directory: ${path}`);
@@ -211,10 +217,17 @@ export class TauriFileService {
    */
   async stat(path: string): Promise<IFileSystemEntry> {
     try {
-      // TODO: Implement file stats using Tauri API
-      // Need custom backend function for file metadata
+      // Use Tauri's metadata API to get detailed file stats
+      const fileMetadata = await metadata(path, { dir: BaseDirectory.AppData });
       
-      const stats: IFileSystemEntry = await invoke('file_stat', { path });
+      const stats: IFileSystemEntry = {
+        path: path,
+        name: path.split('/').pop() || path,
+        isDirectory: fileMetadata.isDirectory,
+        size: fileMetadata.size || 0,
+        modified: fileMetadata.modified ? new Date(fileMetadata.modified).getTime() : Date.now()
+      };
+      
       return stats;
     } catch (error) {
       console.error(`[TauriFileService] Error getting stats for ${path}:`, error);
