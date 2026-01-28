@@ -24,13 +24,23 @@ import { watch, unwatch, type FileSystemWatcher as TauriWatcher } from '@tauri-a
  * File system entry interface
  */
 interface IFileSystemEntry {
-  path: string;
-  name: string;
-  isDirectory: boolean;
-  size?: number;
-  modified?: number;
-  created?: number;
+  readonly path: string;
+  readonly name: string;
+  readonly isDirectory: boolean;
+  readonly size?: number;
+  readonly modified?: number;
+  readonly created?: number;
 }
+
+interface IFileServiceConfig {
+  readonly enableFileWatching: boolean;
+  readonly maxFileSize: number;
+  readonly allowedExtensions: readonly string[];
+}
+
+type FileOperationResult<T = void> = 
+  | { success: true; data: T }
+  | { success: false; error: string; code?: string };
 
 /**
  * File system event

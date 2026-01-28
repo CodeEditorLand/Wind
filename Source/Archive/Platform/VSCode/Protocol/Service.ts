@@ -36,17 +36,17 @@ export interface IProtocolService {
      * Protocol handling
      */
     readonly registerBufferProtocol: (scheme: string, handler: (request: any, callback: (buffer?: Buffer) => void) => void) => void;
-    readonly registerStringProtocol: (scheme: string, handler: (request: any, callback: (data?: string) => void) => void;
-    readonly registerFileProtocol: (scheme: string, handler: (request: any, callback: (filePath?: string) => void) => void;
-    readonly registerHttpProtocol: (scheme: string, handler: (request: any, callback: (redirectRequest: any) => void) => void;
+    readonly registerStringProtocol: (scheme: string, handler: (request: any, callback: (data?: string) => void) => void) => void;
+    readonly registerFileProtocol: (scheme: string, handler: (request: any, callback: (filePath?: string) => void) => void) => void;
+    readonly registerHttpProtocol: (scheme: string, handler: (request: any, callback: (redirectRequest: any) => void) => void) => void;
     
     /**
      * Protocol interception
      */
-    readonly interceptBufferProtocol: (scheme: string, handler: (request: any, callback: (buffer?: Buffer) => void) => void;
-    readonly interceptStringProtocol: (scheme: string, handler: (request: any, callback: (data?: string) => void) => void;
-    readonly interceptFileProtocol: (scheme: string, handler: (request: any, callback: (filePath?: string) => void) => void;
-    readonly interceptHttpProtocol: (scheme: string, handler: (request: any, callback: (redirectRequest: any) => void) => void;
+    readonly interceptBufferProtocol: (scheme: string, handler: (request: any, callback: (buffer?: Buffer) => void) => void) => void;
+    readonly interceptStringProtocol: (scheme: string, handler: (request: any, callback: (data?: string) => void) => void) => void;
+    readonly interceptFileProtocol: (scheme: string, handler: (request: any, callback: (filePath?: string) => void) => void) => void;
+    readonly interceptHttpProtocol: (scheme: string, handler: (request: any, callback: (redirectRequest: any) => void) => void) => void;
     
     /**
      * Protocol unregistration

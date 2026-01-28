@@ -21,11 +21,27 @@ import { BaseDirectory, writeTextFile, readTextFile, createDir, exists, metadata
 /**
  * Storage entry interface
  */
-interface IStorageEntry {
-  key: string;
-  value: any;
-  timestamp: number;
-  version: number;
+interface IStorageEntry<T = unknown> {
+  readonly key: string;
+  readonly value: T;
+  readonly timestamp: number;
+  readonly version: number;
+  readonly ttl?: number; // Time to live in milliseconds
+}
+
+interface IStorageMetadata {
+  readonly version: string;
+  readonly created: number;
+  readonly lastModified: number;
+  readonly entryCount: number;
+  readonly totalSize: number;
+}
+
+interface IStorageQuota {
+  readonly maxSize: number;
+  readonly currentSize: number;
+  readonly warningThreshold: number;
+  readonly exceeded: boolean;
 }
 
 /**
@@ -96,7 +112,10 @@ export class TauriStorageService {
       }
 
       const data = await readTextFile(this.storagePath, { dir: BaseDirectory.AppData });
-      const parsedData = JSON.parse(data);
+      
+      // Try to decrypt data if it's encrypted
+      const decryptedData = await this.decryptData(data);
+      const parsedData = JSON.parse(decryptedData);
       
       if (parsedData.metadata) {
         this.metadata = parsedData.metadata;
@@ -110,7 +129,11 @@ export class TauriStorageService {
         this.metadata.entryCount = this.storage.size;
       }
       
-      console.log(`[TauriStorageService] Loaded ${this.storage.size} entries from storage`);
+      // Update current usage based on file size
+      const fileMetadata = await metadata(this.storagePath, { dir: BaseDirectory.AppData });
+      this.currentUsage = fileMetadata.size || data.length;
+      
+      console.log(`[TauriStorageService] Loaded ${this.storage.size} entries from storage (${this.currentUsage} bytes)`);
     } catch (error) {
       console.error(`[TauriStorageService] Failed to load storage:`, error);
       throw error;
@@ -145,11 +168,24 @@ export class TauriStorageService {
         entries: entries
       };
 
-      await writeTextFile(this.storagePath, JSON.stringify(storageData, null, 2), { 
+      const jsonData = JSON.stringify(storageData, null, 2);
+      
+      // Check storage quota
+      await this.checkStorageQuota(jsonData.length);
+      
+      // Encrypt data if encryption key is available
+      const dataToSave = this.encryptionKey 
+        ? await this.encryptData(jsonData)
+        : jsonData;
+
+      await writeTextFile(this.storagePath, dataToSave, { 
         dir: BaseDirectory.AppData 
       });
 
-      console.log(`[TauriStorageService] Saved ${this.storage.size} entries to storage`);
+      // Update current usage
+      this.currentUsage = dataToSave.length;
+
+      console.log(`[TauriStorageService] Saved ${this.storage.size} entries to storage (${dataToSave.length} bytes)`);
     } catch (error) {
       console.error(`[TauriStorageService] Failed to save storage:`, error);
       throw error;
@@ -256,6 +292,76 @@ export class TauriStorageService {
    */
   isReady(): boolean {
     return this.isInitialized;
+  }
+
+  /**
+   * Check storage quota
+   */
+  private async checkStorageQuota(dataSize: number): Promise<void> {
+    const totalSize = this.currentUsage + dataSize;
+    if (totalSize > this.storageQuota) {
+      throw new Error(`Storage quota exceeded: ${totalSize} bytes exceeds ${this.storageQuota} bytes limit`);
+    }
+  }
+
+  /**
+   * Encrypt data using Tauri's secure storage
+   */
+  private async encryptData(data: string): Promise<string> {
+    try {
+      // Use Tauri's invoke to encrypt data with secure storage
+      const encryptedData = await invoke<string>('encrypt_data', { 
+        data, 
+        key: this.encryptionKey 
+      });
+      return encryptedData;
+    } catch (error) {
+      console.warn('[TauriStorageService] Encryption failed, storing plain text:', error);
+      return data; // Fallback to plain text
+    }
+  }
+
+  /**
+   * Decrypt data using Tauri's secure storage
+   */
+  private async decryptData(encryptedData: string): Promise<string> {
+    try {
+      const decryptedData = await invoke<string>('decrypt_data', { 
+        data: encryptedData, 
+        key: this.encryptionKey 
+      });
+      return decryptedData;
+    } catch (error) {
+      console.warn('[TauriStorageService] Decryption failed, reading plain text:', error);
+      return encryptedData; // Assume it's plain text
+    }
+  }
+
+  /**
+   * Set encryption key for sensitive data
+   */
+  setEncryptionKey(key: string): void {
+    this.encryptionKey = key;
+    console.log('[TauriStorageService] Encryption key set');
+  }
+
+  /**
+   * Set storage quota
+   */
+  setQuota(quotaInMB: number): void {
+    this.storageQuota = quotaInMB * 1024 * 1024;
+    console.log(`[TauriStorageService] Storage quota set to ${quotaInMB}MB`);
+  }
+
+  /**
+   * Get current storage usage
+   */
+  getUsage(): { used: number; quota: number; percentage: number } {
+    return {
+      used: this.currentUsage,
+      quota: this.storageQuota,
+      percentage: (this.currentUsage / this.storageQuota) * 100
+    };
   }
 
   /**

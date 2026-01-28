@@ -108,7 +108,7 @@ class TauriChannel implements IChannel {
     // Placeholder implementation
     return {
       // Simple event emitter placeholder
-      (listener: (e: T) => any, thisArgs?: any, disposables?: Disposable[]): Disposable => {
+      addEventListener: (listener: (e: T) => any, thisArgs?: any, disposables?: Disposable[]): Disposable => {
         console.log(`[TauriChannel] Event listener registered for ${event}`);
         return { dispose: () => console.log(`[TauriChannel] Event listener disposed for ${event}`) };
       }
@@ -118,5 +118,5 @@ class TauriChannel implements IChannel {
 
 // Event type placeholder
 interface Event<T> {
-  (listener: (e: T) => any, thisArgs?: any, disposables?: Disposable[]): Disposable;
+  addEventListener(listener: (e: T) => any, thisArgs?: any, disposables?: Disposable[]): Disposable;
 }

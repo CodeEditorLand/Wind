@@ -123,11 +123,10 @@ export class CoreServices {
     const service: IVSCodeConfigurationService = {
       _serviceBrand: undefined,
       
-      onDidChangeConfiguration: {
-        (listener: (e: any) => any): any {
-          // Simple event implementation
-          return { dispose: () => {} };
-        }
+      onDidChangeConfiguration: (listener: (e: any) => any): any => {
+        // Simple event implementation
+        console.log('[CoreServices] onDidChangeConfiguration listener registered');
+        return { dispose: () => {} };
       },
       
       getValue<T>(section?: string): T {

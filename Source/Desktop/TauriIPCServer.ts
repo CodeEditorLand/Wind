@@ -14,17 +14,30 @@
  * TODO: Add performance monitoring and optimization
  */
 
-import { invoke, emit, listen } from '@tauri-apps/api/core';
+import { invoke } from '@tauri-apps/api/core';
+import { event } from '@tauri-apps/api';
 
 /**
  * Interface for Tauri IPC message structure
  */
 interface ITauriIPCMessage {
-  channel: string;
-  data: any;
-  sender?: string;
-  timestamp: number;
+  readonly channel: string;
+  readonly data: unknown;
+  readonly sender?: string;
+  readonly timestamp: number;
+  readonly correlationId?: string;
 }
+
+interface IIPCEvent<T = unknown> {
+  readonly type: string;
+  readonly payload: T;
+  readonly timestamp: number;
+  readonly source: 'mountain' | 'wind' | 'cocoon';
+}
+
+type IPCResult<T = unknown> = 
+  | { success: true; data: T; duration: number }
+  | { success: false; error: string; code: string; duration: number };
 
 /**
  * Tauri IPC Server implementation
@@ -182,7 +195,7 @@ export class TauriIPCServer {
    */
   private async setupChannelListener(channel: string, handler: (event: any) => void): Promise<void> {
     try {
-      await listen(channel, handler);
+      await event.listen(channel, handler);
       console.log(`[TauriIPCServer] Listener registered for channel: ${channel}`);
     } catch (error) {
       console.error(`[TauriIPCServer] Failed to setup listener for channel ${channel}:`, error);
@@ -238,7 +251,7 @@ export class TauriIPCServer {
   private handleDocumentSync(payload: any): void {
     console.log('[TauriIPCServer] Processing document sync:', payload);
     // Emit to Wind services for processing
-    emit('wind_document_sync', payload);
+    event.emit('wind_document_sync', payload);
   }
 
   /**
@@ -247,7 +260,7 @@ export class TauriIPCServer {
   private handleUIStateSync(payload: any): void {
     console.log('[TauriIPCServer] Processing UI state sync:', payload);
     // Emit to Wind services for processing
-    emit('wind_ui_state_sync', payload);
+    event.emit('wind_ui_state_sync', payload);
   }
 
   /**
@@ -256,7 +269,7 @@ export class TauriIPCServer {
   private handlePerformanceMetrics(payload: any): void {
     console.log('[TauriIPCServer] Processing performance metrics:', payload);
     // Emit to Wind services for processing
-    emit('wind_performance_metrics', payload);
+    event.emit('wind_performance_metrics', payload);
   }
 
   /**   * Cleanup resources

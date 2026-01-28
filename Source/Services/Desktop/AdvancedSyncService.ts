@@ -14,7 +14,8 @@
  * Integrated with ConflictResolutionService and PerformanceDashboardService for advanced features.
  */
 
-import { invoke, listen, emit } from '@tauri-apps/api/core';
+import { invoke } from '@tauri-apps/api/core';
+import { event } from '@tauri-apps/api';
 import { ConflictResolutionService, conflictResolutionService } from './ConflictResolutionService';
 import { PerformanceDashboardService, performanceDashboardService } from './PerformanceDashboardService';
 
@@ -284,7 +285,7 @@ export class AdvancedSyncService {
             await this.validateEventListenerDependencies();
             
             // Listen for document updates from Mountain with error handling
-            await listen('mountain_document_update', (event) => {
+            await event.listen('mountain_document_update', (event) => {
                 const updateId = this.generateCorrelationId('doc-update');
                 try {
                     this.performanceMonitor.start(updateId);
@@ -297,13 +298,13 @@ export class AdvancedSyncService {
             });
 
             // Listen for UI state updates with retry logic
-            await listen('mountain_ui_state_update', (event) => {
+            await event.listen('mountain_ui_state_update', (event) => {
                 const updateId = this.generateCorrelationId('ui-update');
                 this.handleUIStateUpdateWithRetry(event.payload as any, updateId);
             });
 
             // Listen for synchronization status
-            await listen('mountain_sync_status_update', (event) => {
+            await event.listen('mountain_sync_status_update', (event) => {
                 const updateId = this.generateCorrelationId('sync-status');
                 try {
                     this.performanceMonitor.start(updateId);
@@ -316,7 +317,7 @@ export class AdvancedSyncService {
             });
 
             // Listen for connection status with health checks
-            await listen('mountain_connection_status', (event) => {
+            await event.listen('mountain_connection_status', (event) => {
                 const updateId = this.generateCorrelationId('conn-status');
                 this.handleConnectionStatusWithHealthCheck(event.payload as any, updateId);
             });
@@ -418,6 +419,7 @@ export class AdvancedSyncService {
             
             console.error('[AdvancedSyncService] Synchronization failed:', error);
             this.handleError('Synchronization failed', error);
+        }
     }
 
     /**
@@ -485,7 +487,7 @@ export class AdvancedSyncService {
                 await this.validateConflictResolutionPrerequisites(doc);
                 
                 // Use advanced conflict resolution service with timeout protection
-                const conflictObjects: IDocumentConflict[] = conflicts.map(change => ({
+                const conflictObjects: IDocumentConflict[] = await Promise.all(conflicts.map(async change => ({
                     conflictId: `${doc.documentId}-${change.changeId}`,
                     documentId: doc.documentId,
                     changeType: change.changeType,

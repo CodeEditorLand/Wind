@@ -307,27 +307,27 @@ export class DesktopWorkbenchEnvironmentService implements INativeWorkbenchEnvir
     return this.configuration.telemetryMachineId;
   }
 
-  get extensionDevelopmentKind?: string[] {
+  get extensionDevelopmentKind(): string[] | undefined {
     return this.configuration.extensionDevelopmentKind;
   }
 
-  get extensionDevelopmentLocationURI?: URI[] {
+  get extensionDevelopmentLocationURI(): URI[] | undefined {
     return this.configuration.extensionDevelopmentLocationURI?.map((uri: string) => URI.parse(uri));
   }
 
-  get extensionTestsLocationURI?: URI {
+  get extensionTestsLocationURI(): URI | undefined {
     return this.configuration.extensionTestsLocationURI ? URI.parse(this.configuration.extensionTestsLocationURI) : undefined;
   }
 
-  get debugExtensionHost?: { port: number; break: boolean } {
+  get debugExtensionHost(): { port: number; break: boolean } | undefined {
     return this.configuration.debugExtensionHost;
   }
 
-  get logFile?: URI {
+  get logFile(): URI | undefined {
     return this.configuration.logFile ? URI.parse(this.configuration.logFile) : undefined;
   }
 
-  get extHostLogsPath?: URI {
+  get extHostLogsPath(): URI | undefined {
     return this.configuration.extHostLogsPath ? URI.parse(this.configuration.extHostLogsPath) : undefined;
   }
 }

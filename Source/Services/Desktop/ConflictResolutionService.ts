@@ -12,6 +12,15 @@ export interface IConflictResolution {
     applyResolutionStrategy(strategy: IResolutionStrategy): Promise<void>;
 }
 
+export interface IDocumentChange {
+    changeId: string;
+    documentId: string;
+    changeType: string;
+    content: any;
+    timestamp: number;
+    applied: boolean;
+}
+
 export interface IDocumentConflict {
     conflictId: string;
     documentId: string;
@@ -21,6 +30,7 @@ export interface IDocumentConflict {
     timestamp: number;
     severity: ConflictSeverity;
     context: IConflictContext;
+    resolutionStrategy?: string;
 }
 
 export interface IConflictContext {
@@ -43,6 +53,23 @@ export interface IConflictResolutionResult {
     resolutionStrategy: string;
     confidence: number;
     timeSpent: number;
+}
+
+export interface IResolutionMetric {
+    documentId: string;
+    timestamp: number;
+    totalConflicts: number;
+    resolvedConflicts: number;
+    resolutionStrategy: string;
+    confidence: number;
+    timeSpent: number;
+}
+
+export interface IConflictPattern {
+    totalConflicts: number;
+    simpleConflicts: number;
+    complexConflicts: number;
+    criticalConflicts: number;
 }
 
 export interface IResolutionStrategy {
@@ -439,35 +466,6 @@ export class ConflictResolutionService implements IConflictResolution {
     getConflictHistory(documentId: string): IDocumentConflict[] {
         return this.conflictHistory.get(documentId) || [];
     }
-}
-
-// Interface definitions
-
-interface IConflictPattern {
-    totalConflicts: number;
-    simpleConflicts: number;
-    complexConflicts: number;
-    criticalConflicts: number;
-}
-
-interface IResolutionMetric {
-    documentId: string;
-    timestamp: number;
-    totalConflicts: number;
-    resolvedConflicts: number;
-    resolutionStrategy: string;
-    confidence: number;
-    timeSpent: number;
-}
-
-interface IDocumentChange {
-    changeId: string;
-    documentId: string;
-    changeType: string;
-    content: any;
-    timestamp: number;
-    applied: boolean;
-}
 
     // Production utility methods
     private generateCorrelationId(context: string): string {

@@ -20,7 +20,12 @@
 	"type": "module",
 	"scripts": {
 		"Run": "sh Source/Run.sh",
-		"prepublishOnly": "sh Source/prepublishOnly.sh"
+		"prepublishOnly": "sh Source/prepublishOnly.sh",
+		"type-check": "tsc --noEmit",
+		"lint": "biome lint --write .",
+		"format": "biome format --write .",
+		"check": "biome check .",
+		"ci": "npm run type-check && npm run check"
 	},
 	"dependencies": {
 		"@codeeditorland/output": "0.0.1",
@@ -32,6 +37,7 @@
 		"typescript": "5.9.3"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "2.3.11",
 		"@effect/experimental": "0.58.0",
 		"@effect/language-service": "0.72.0",
 		"@effect/opentelemetry": "0.61.0",
