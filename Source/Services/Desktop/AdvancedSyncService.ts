@@ -357,571 +357,258 @@ export class AdvancedSyncService {
             
             console.error('[AdvancedSyncService] Synchronization failed:', error);
             this.handleError('Synchronization failed', error);
-        }
-    }
-        
-        this.uiStateSync = {
-            activeEditor: null,
-            cursorPositions: new Map(),
-            selectionRanges: new Map(),
-            viewState: {
-                zoomLevel: 1.0,
-                sidebarVisible: true,
-                panelVisible: false,
-                statusBarVisible: true
-            },
-            theme: 'dark',
-            layout: {
-                editorGroups: [],
-                activeGroup: 0,
-                gridLayout: {
-                    rows: 1,
-                    columns: 1,
-                    cellWidth: 100,
-                    cellHeight: 100
-                }
-            }
-        };
     }
 
     /**
-     * Get singleton instance
+     * Synchronize documents
      */
-    public static getInstance(): AdvancedSyncService {
-        if (!AdvancedSyncService.instance) {
-            AdvancedSyncService.instance = new AdvancedSyncService();
-        }
-        return AdvancedSyncService.instance;
-    }
+    private async synchronizeDocuments(): Promise<void> {
+        const modifiedDocuments = Array.from(this.documentSync.values())
+            .filter(doc => doc.syncState === SyncState.MODIFIED);
 
-    /**
-     * Initialize advanced synchronization
-     */
-    async initialize(): Promise<void> {
-        if (this.isInitialized) {
-            console.warn('[AdvancedSyncService] Already initialized');
+        if (modifiedDocuments.length === 0) {
             return;
         }
 
-        console.log('[AdvancedSyncService] Initializing advanced synchronization');
+        console.log(`[AdvancedSyncService] Synchronizing ${modifiedDocuments.length} modified documents`);
 
+        for (const doc of modifiedDocuments) {
+            try {
+                await this.synchronizeDocument(doc);
+            } catch (error) {
+                console.error(`[AdvancedSyncService] Failed to sync document ${doc.documentId}:`, error);
+                doc.syncState = SyncState.CONFLICTED;
+            }
+        }
+    }
+
+    /**
+     * Synchronize individual document
+     */
+    private async synchronizeDocument(doc: IDocumentSyncState): Promise<void> {
+        // Mark as syncing
+        doc.syncState = SyncState.SYNCING;
+
+        // Send changes to Mountain
+        const result = await invoke<{ success: boolean; newVersion: number; conflicts?: IDocumentChange[] }>(
+            'mountain_sync_document', 
+            { document: doc }
+        );
+
+        if (result.success) {
+            doc.syncState = SyncState.SYNCED;
+            doc.version = result.newVersion;
+            doc.pendingChanges = []; // Clear pending changes
+            
+            console.log(`[AdvancedSyncService] Document ${doc.documentId} synchronized to version ${result.newVersion}`);
+        } else if (result.conflicts) {
+            doc.syncState = SyncState.CONFLICTED;
+            console.warn(`[AdvancedSyncService] Document ${doc.documentId} has conflicts`);
+            
+            // Handle conflicts
+            await this.handleConflicts(doc, result.conflicts);
+        }
+    }
+
+    /**
+     * Handle document conflicts
+     */
+    private async handleConflicts(doc: IDocumentSyncState, conflicts: IDocumentChange[]): Promise<void> {
+        if (this.config.enableConflictResolution) {
+            // Auto-resolve simple conflicts
+            const resolvedConflicts = await this.autoResolveConflicts(doc, conflicts);
+            
+            if (resolvedConflicts.length === 0) {
+                doc.syncState = SyncState.SYNCED;
+                console.log(`[AdvancedSyncService] Auto-resolved conflicts for ${doc.documentId}`);
+            } else {
+                // Notify user about unresolved conflicts
+                this.emitEvent('conflict_detected', { documentId: doc.documentId, conflicts: resolvedConflicts });
+            }
+        } else {
+            // Notify user about conflicts
+            this.emitEvent('conflict_detected', { documentId: doc.documentId, conflicts });
+        }
+    }
+
+    /**
+     * Auto-resolve conflicts
+     */
+    private async autoResolveConflicts(doc: IDocumentSyncState, conflicts: IDocumentChange[]): Promise<IDocumentChange[]> {
+        // Simple conflict resolution: accept local changes for now
+        // TODO: Implement sophisticated conflict resolution
+        const unresolvedConflicts: IDocumentChange[] = [];
+        
+        for (const conflict of conflicts) {
+            // For now, mark all conflicts as requiring manual resolution
+            unresolvedConflicts.push(conflict);
+        }
+        
+        return unresolvedConflicts;
+    }
+
+    /**
+     * Synchronize UI state
+     */
+    private async synchronizeUIState(): Promise<void> {
         try {
-            // Set up Mountain IPC listeners
-            await this.setupMountainListeners();
-
-            // Start performance monitoring
-            this.startPerformanceMonitoring();
-
-            // Start document synchronization
-            this.startDocumentSynchronization();
-
-            // Start UI state synchronization
-            this.startUIStateSynchronization();
-
-            this.isInitialized = true;
-            console.log('[AdvancedSyncService] Advanced synchronization initialized');
-
+            await invoke('mountain_sync_ui_state', { uiState: this.uiState });
+            console.log('[AdvancedSyncService] UI state synchronized');
         } catch (error) {
-            console.error('[AdvancedSyncService] Failed to initialize:', error);
+            console.error('[AdvancedSyncService] Failed to sync UI state:', error);
             throw error;
         }
     }
 
     /**
-     * Set up Mountain IPC listeners
+     * Handle document update from Mountain
      */
-    private async setupMountainListeners(): Promise<void> {
-        console.log('[AdvancedSyncService] Setting up Mountain IPC listeners');
-
-        // Listen for performance statistics
-        await listen('ipc-performance-stats', (event) => {
-            this.handlePerformanceStats(event.payload as PerformanceStats);
-        });
-
-        // Listen for collaboration sessions
-        await listen('collaboration-sessions-update', (event) => {
-            this.handleCollaborationSessions(event.payload as CollaborationSession[]);
-        });
-
-        // Listen for UI state updates
-        await listen('ui-state-update', (event) => {
-            this.handleUIStateUpdate(event.payload as UIStateSynchronization);
-        });
-
-        // Listen for real-time updates
-        await listen('real-time-update-wind', (event) => {
-            this.handleRealTimeUpdate(event.payload as RealTimeUpdate);
-        });
-
-        console.log('[AdvancedSyncService] Mountain IPC listeners setup complete');
+    private handleDocumentUpdate(update: any): void {
+        const { documentId, changes, newVersion } = update;
+        
+        const doc = this.documentSync.get(documentId);
+        if (doc) {
+            // Apply changes
+            changes.forEach((change: IDocumentChange) => {
+                this.applyChange(doc, change);
+            });
+            
+            doc.version = newVersion;
+            doc.syncState = SyncState.SYNCED;
+            
+            console.log(`[AdvancedSyncService] Applied ${changes.length} changes to document ${documentId}`);
+            this.emitEvent('document_updated', { documentId, changes });
+        }
     }
 
     /**
-     * Start performance monitoring
+     * Apply change to document
      */
-    private startPerformanceMonitoring(): void {
-        console.log('[AdvancedSyncService] Starting performance monitoring');
-
-        setInterval(async () => {
-            try {
-                const stats = await invoke<PerformanceStats>('mountain_get_performance_stats');
-                this.performanceStats = stats;
-                
-                // Emit performance stats to UI
-                emit('wind-performance-stats', stats);
-                
-            } catch (error) {
-                console.error('[AdvancedSyncService] Failed to get performance stats:', error);
-            }
-        }, 10000); // Every 10 seconds
-    }
-
-    /**
-     * Start document synchronization
-     */
-    private startDocumentSynchronization(): void {
-        console.log('[AdvancedSyncService] Starting document synchronization');
-
-        setInterval(async () => {
-            try {
-                const syncStatus = await invoke<SyncStatus>('mountain_get_sync_status');
-                this.documentSync.syncStatus = syncStatus;
-                
-                // Apply pending changes to Mountain
-                await this.applyPendingChanges();
-                
-                // Emit sync status to UI
-                emit('wind-sync-status', syncStatus);
-                
-            } catch (error) {
-                console.error('[AdvancedSyncService] Failed to sync documents:', error);
-            }
-        }, 5000); // Every 5 seconds
-    }
-
-    /**
-     * Start UI state synchronization
-     */
-    private startUIStateSynchronization(): void {
-        console.log('[AdvancedSyncService] Starting UI state synchronization');
-
-        setInterval(async () => {
-            try {
-                // Send current UI state to Mountain
-                await this.sendUIStateToMountain();
-                
-                // Get UI state from Mountain
-                const mountainUIState = await invoke<UIStateSynchronization>('mountain_get_current_ui_state');
-                this.uiStateSync = mountainUIState;
-                
-                // Apply UI state changes
-                await this.applyUIStateChanges(mountainUIState);
-                
-            } catch (error) {
-                console.error('[AdvancedSyncService] Failed to sync UI state:', error);
-            }
-        }, 1000); // Every second
-    }
-
-    /**
-     * Handle performance statistics from Mountain
-     */
-    private handlePerformanceStats(stats: PerformanceStats): void {
-        this.performanceStats = stats;
-        console.debug('[AdvancedSyncService] Performance stats updated');
-    }
-
-    /**
-     * Handle collaboration sessions from Mountain
-     */
-    private handleCollaborationSessions(sessions: CollaborationSession[]): void {
-        this.collaborationSessions.clear();
-        sessions.forEach(session => {
-            this.collaborationSessions.set(session.sessionId, session);
-        });
-        console.debug('[AdvancedSyncService] Collaboration sessions updated');
+    private applyChange(doc: IDocumentSyncState, change: IDocumentChange): void {
+        // TODO: Implement actual change application
+        // This would involve modifying the document content
+        change.applied = true;
+        console.log(`[AdvancedSyncService] Applied change ${change.changeId} to ${doc.documentId}`);
     }
 
     /**
      * Handle UI state update from Mountain
      */
-    private handleUIStateUpdate(uiState: UIStateSynchronization): void {
-        this.uiStateSync = uiState;
-        console.debug('[AdvancedSyncService] UI state updated from Mountain');
+    private handleUIStateUpdate(update: any): void {
+        this.uiState = { ...this.uiState, ...update };
+        console.log('[AdvancedSyncService] UI state updated from Mountain');
+        this.emitEvent('ui_state_updated', this.uiState);
     }
 
     /**
-     * Handle real-time update from Mountain
+     * Handle sync status update
      */
-    private handleRealTimeUpdate(update: RealTimeUpdate): void {
-        console.debug('[AdvancedSyncService] Real-time update received:', update.updateType);
-        
-        switch (update.updateType) {
-            case 'DocumentChange':
-                this.handleDocumentChange(update.data);
-                break;
-            case 'CursorMove':
-                this.handleCursorMove(update.data);
-                break;
-            case 'SelectionChange':
-                this.handleSelectionChange(update.data);
-                break;
-            case 'ViewChange':
-                this.handleViewChange(update.data);
-                break;
-            case 'LayoutChange':
-                this.handleLayoutChange(update.data);
-                break;
-            case 'ThemeChange':
-                this.handleThemeChange(update.data);
-                break;
+    private handleSyncStatusUpdate(status: ISyncStatus): void {
+        console.log('[AdvancedSyncService] Sync status updated:', status);
+        this.emitEvent('sync_status_updated', status);
+    }
+
+    /**
+     * Handle connection status
+     */
+    private handleConnectionStatus(status: any): void {
+        this.isConnected = status.connected;
+        console.log(`[AdvancedSyncService] Connection status: ${this.isConnected ? 'connected' : 'disconnected'}`);
+        this.emitEvent('connection_status_changed', { connected: this.isConnected });
+    }
+
+    /**
+     * Handle error
+     */
+    private handleError(context: string, error: any): void {
+        console.error(`[AdvancedSyncService] ${context}:`, error);
+        this.emitEvent('error', { context, error: error.message });
+    }
+
+    /**
+     * Emit event to listeners
+     */
+    private emitEvent(event: string, data: any): void {
+        const listeners = this.eventListeners.get(event);
+        if (listeners) {
+            listeners.forEach(listener => {
+                try {
+                    listener(data);
+                } catch (error) {
+                    console.error(`[AdvancedSyncService] Error in event listener for ${event}:`, error);
+                }
+            });
         }
     }
 
     /**
-     * Apply pending changes to Mountain
+     * Add event listener
      */
-    private async applyPendingChanges(): Promise<void> {
-        const changes = Array.from(this.documentSync.pendingChanges.values()).flat();
-        
-        for (const change of changes) {
-            try {
-                await invoke('mountain_apply_document_change', { change });
-                
-                // Remove applied change
-                this.documentSync.pendingChanges.delete(change.documentId);
-                
-            } catch (error) {
-                console.error('[AdvancedSyncService] Failed to apply change:', error);
+    on(event: string, listener: (data: any) => void): void {
+        if (!this.eventListeners.has(event)) {
+            this.eventListeners.set(event, new Set());
+        }
+        this.eventListeners.get(event)!.add(listener);
+    }
+
+    /**
+     * Remove event listener
+     */
+    off(event: string, listener: (data: any) => void): void {
+        const listeners = this.eventListeners.get(event);
+        if (listeners) {
+            listeners.delete(listener);
+            if (listeners.size === 0) {
+                this.eventListeners.delete(event);
             }
         }
     }
 
     /**
-     * Send UI state to Mountain
+     * Get synchronization status
      */
-    private async sendUIStateToMountain(): Promise<void> {
-        try {
-            await invoke('mountain_update_ui_state', { uiState: this.uiStateSync });
-        } catch (error) {
-            console.error('[AdvancedSyncService] Failed to send UI state:', error);
-        }
-    }
-
-    /**
-     * Apply UI state changes from Mountain
-     */
-    private async applyUIStateChanges(uiState: UIStateSynchronization): Promise<void> {
-        // Apply theme changes
-        if (uiState.theme !== this.uiStateSync.theme) {
-            await this.applyTheme(uiState.theme);
-        }
-
-        // Apply layout changes
-        if (JSON.stringify(uiState.layout) !== JSON.stringify(this.uiStateSync.layout)) {
-            await this.applyLayout(uiState.layout);
-        }
-
-        // Apply view state changes
-        if (JSON.stringify(uiState.viewState) !== JSON.stringify(this.uiStateSync.viewState)) {
-            await this.applyViewState(uiState.viewState);
-        }
-    }
-
-    /**
-     * Apply theme changes
-     */
-    private async applyTheme(theme: string): Promise<void> {
-        console.log('[AdvancedSyncService] Applying theme:', theme);
-        // TODO: Implement theme application logic
-    }
-
-    /**
-     * Apply layout changes
-     */
-    private async applyLayout(layout: LayoutState): Promise<void> {
-        console.log('[AdvancedSyncService] Applying layout changes');
-        // TODO: Implement layout application logic
-    }
-
-    /**
-     * Apply view state changes
-     */
-    private async applyViewState(viewState: ViewState): Promise<void> {
-        console.log('[AdvancedSyncService] Applying view state changes');
-        // TODO: Implement view state application logic
-    }
-
-    /**
-     * Handle document change from Mountain
-     */
-    private handleDocumentChange(data: any): void {
-        console.log('[AdvancedSyncService] Handling document change:', data);
-        // TODO: Implement document change handling
-    }
-
-    /**
-     * Handle cursor move from Mountain
-     */
-    private handleCursorMove(data: any): void {
-        console.debug('[AdvancedSyncService] Handling cursor move');
-        // TODO: Implement cursor move handling
-    }
-
-    /**
-     * Handle selection change from Mountain
-     */
-    private handleSelectionChange(data: any): void {
-        console.debug('[AdvancedSyncService] Handling selection change');
-        // TODO: Implement selection change handling
-    }
-
-    /**
-     * Handle view change from Mountain
-     */
-    private handleViewChange(data: any): void {
-        console.debug('[AdvancedSyncService] Handling view change');
-        // TODO: Implement view change handling
-    }
-
-    /**
-     * Handle layout change from Mountain
-     */
-    private handleLayoutChange(data: any): void {
-        console.debug('[AdvancedSyncService] Handling layout change');
-        // TODO: Implement layout change handling
-    }
-
-    /**
-     * Handle theme change from Mountain
-     */
-    private handleThemeChange(data: any): void {
-        console.debug('[AdvancedSyncService] Handling theme change');
-        // TODO: Implement theme change handling
-    }
-
-    /**
-     * Add document for synchronization
-     */
-    async addDocumentForSync(documentId: string, filePath: string): Promise<void> {
-        try {
-            await invoke('mountain_add_document_for_sync', { documentId, filePath });
-            
-            this.documentSync.synchronizedDocuments.set(documentId, {
-                documentId,
-                filePath,
-                lastModified: Date.now(),
-                contentHash: '',
-                syncState: 'Synced',
-                version: 1
-            });
-            
-            console.log('[AdvancedSyncService] Document added for sync:', documentId);
-            
-        } catch (error) {
-            console.error('[AdvancedSyncService] Failed to add document for sync:', error);
-            throw error;
-        }
-    }
-
-    /**
-     * Create collaboration session
-     */
-    async createCollaborationSession(sessionId: string, permissions: CollaborationPermissions): Promise<void> {
-        try {
-            await invoke('mountain_create_collaboration_session', { sessionId, permissions });
-            
-            const session: CollaborationSession = {
-                sessionId,
-                participants: [],
-                activeDocuments: [],
-                lastActivity: Date.now(),
-                permissions
+    async getSyncStatus(): Promise<ISyncStatus> {
+        if (!this.isConnected) {
+            return {
+                totalDocuments: this.documentSync.size,
+                syncedDocuments: 0,
+                conflictedDocuments: 0,
+                offlineDocuments: this.documentSync.size,
+                lastSyncDuration: 0
             };
-            
-            this.collaborationSessions.set(sessionId, session);
-            console.log('[AdvancedSyncService] Collaboration session created:', sessionId);
-            
-        } catch (error) {
-            console.error('[AdvancedSyncService] Failed to create collaboration session:', error);
-            throw error;
         }
-    }
 
-    /**
-     * Subscribe to real-time updates
-     */
-    async subscribeToUpdates(target: string): Promise<void> {
         try {
-            await invoke('mountain_subscribe_to_updates', { target, subscriber: 'wind' });
-            console.log('[AdvancedSyncService] Subscribed to updates for:', target);
-            
+            return await invoke<ISyncStatus>('mountain_get_sync_status');
         } catch (error) {
-            console.error('[AdvancedSyncService] Failed to subscribe to updates:', error);
+            console.error('[AdvancedSyncService] Failed to get sync status:', error);
             throw error;
         }
     }
 
     /**
-     * Get performance statistics
+     * Manually trigger synchronization
      */
-    getPerformanceStats(): PerformanceStats {
-        return this.performanceStats;
+    async triggerSync(): Promise<void> {
+        await this.synchronize();
     }
 
     /**
-     * Get sync status
+     * Dispose synchronization service
      */
-    getSyncStatus(): SyncStatus {
-        return this.documentSync.syncStatus;
+    dispose(): void {
+        if (this.syncIntervalId) {
+            window.clearInterval(this.syncIntervalId);
+            this.syncIntervalId = null;
+        }
+
+        this.eventListeners.clear();
+        this.documentSync.clear();
+        this.isConnected = false;
+        
+        console.log('[AdvancedSyncService] Synchronization service disposed');
     }
-
-    /**
-     * Get collaboration sessions
-     */
-    getCollaborationSessions(): CollaborationSession[] {
-        return Array.from(this.collaborationSessions.values());
-    }
-
-    /**
-     * Get UI state
-     */
-    getUIState(): UIStateSynchronization {
-        return this.uiStateSync;
-    }
-
-    /**
-     * Set UI state
-     */
-    setUIState(uiState: UIStateSynchronization): void {
-        this.uiStateSync = uiState;
-    }
-}
-
-// Interfaces matching Mountain's Rust structures
-
-interface PerformanceStats {
-    totalMessagesSent: number;
-    totalMessagesReceived: number;
-    averageProcessingTimeMs: number;
-    peakMessageRate: number;
-    errorCount: number;
-    lastUpdate: number;
-    connectionUptime: number;
-}
-
-interface CollaborationSession {
-    sessionId: string;
-    participants: string[];
-    activeDocuments: string[];
-    lastActivity: number;
-    permissions: CollaborationPermissions;
-}
-
-interface CollaborationPermissions {
-    canEdit: boolean;
-    canView: boolean;
-    canComment: boolean;
-    canShare: boolean;
-}
-
-interface DocumentSynchronization {
-    synchronizedDocuments: Map<string, SynchronizedDocument>;
-    pendingChanges: Map<string, DocumentChange[]>;
-    lastSyncTime: number;
-    syncStatus: SyncStatus;
-}
-
-interface SynchronizedDocument {
-    documentId: string;
-    filePath: string;
-    lastModified: number;
-    contentHash: string;
-    syncState: string;
-    version: number;
-}
-
-interface DocumentChange {
-    changeId: string;
-    documentId: string;
-    changeType: string;
-    content: any;
-    timestamp: number;
-    applied: boolean;
-}
-
-interface SyncStatus {
-    totalDocuments: number;
-    syncedDocuments: number;
-    conflictedDocuments: number;
-    offlineDocuments: number;
-    lastSyncDurationMs: number;
-}
-
-interface UIStateSynchronization {
-    activeEditor: string | null;
-    cursorPositions: Map<string, CursorPosition>;
-    selectionRanges: Map<string, SelectionRange>;
-    viewState: ViewState;
-    theme: string;
-    layout: LayoutState;
-}
-
-interface CursorPosition {
-    line: number;
-    column: number;
-    documentId: string;
-}
-
-interface SelectionRange {
-    startLine: number;
-    startColumn: number;
-    endLine: number;
-    endColumn: number;
-    documentId: string;
-}
-
-interface ViewState {
-    zoomLevel: number;
-    sidebarVisible: boolean;
-    panelVisible: boolean;
-    statusBarVisible: boolean;
-}
-
-interface LayoutState {
-    editorGroups: EditorGroup[];
-    activeGroup: number;
-    gridLayout: GridLayout;
-}
-
-interface EditorGroup {
-    groupId: number;
-    activeEditor: string | null;
-    editors: string[];
-    dimensions: Dimensions;
-}
-
-interface Dimensions {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-}
-
-interface GridLayout {
-    rows: number;
-    columns: number;
-    cellWidth: number;
-    cellHeight: number;
-}
-
-interface RealTimeUpdate {
-    updateId: string;
-    updateType: string;
-    target: string;
-    data: any;
-    timestamp: number;
 }
 
 // Export singleton instance
-export const advancedSyncService = AdvancedSyncService.getInstance();
+export const advancedSyncService = new AdvancedSyncService();
