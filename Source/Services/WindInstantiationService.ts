@@ -512,6 +512,59 @@ export class WindInstantiationService {
     }
   }
 
+  // ADVANCED ERROR RECOVERY: Fallback service creation
+  private _createFallbackService<T>(id: ServiceIdentifier<T>): T | null {
+    // Create minimal service implementations for graceful degradation
+    const serviceName = String(id);
+    
+    // Common fallback services based on service identifier patterns
+    if (serviceName.includes('Configuration') || serviceName.includes('Config')) {
+      return this._createMinimalConfigurationService() as T;
+    }
+    
+    if (serviceName.includes('Log') || serviceName.includes('Logger')) {
+      return this._createMinimalLoggingService() as T;
+    }
+    
+    if (serviceName.includes('Storage') || serviceName.includes('File')) {
+      return this._createMinimalStorageService() as T;
+    }
+    
+    console.warn(`[WindInstantiationService] No fallback available for service: ${serviceName}`);
+    return null;
+  }
+
+  private _createMinimalConfigurationService(): any {
+    return {
+      get: (key: string) => undefined,
+      update: (key: string, value: any) => { console.log(`[FallbackConfig] ${key} = ${value}`); },
+      dispose: () => {}
+    };
+  }
+
+  private _createMinimalLoggingService(): any {
+    return {
+      info: (message: string) => console.log(`[INFO] ${message}`),
+      warn: (message: string) => console.warn(`[WARN] ${message}`),
+      error: (message: string) => console.error(`[ERROR] ${message}`),
+      dispose: () => {}
+    };
+  }
+
+  private _createMinimalStorageService(): any {
+    return {
+      read: (path: string) => Promise.resolve(''),
+      write: (path: string, content: string) => Promise.resolve(),
+      dispose: () => {}
+    };
+  }
+
+  private _isCriticalDependency(dependencies: ServiceIdentifier<any>[], failedCount: number): boolean {
+    // Critical if more than 50% of dependencies failed
+    const failureRatio = failedCount / dependencies.length;
+    return failureRatio > 0.5;
+  }
+
   // Public API for service management
   registerService<T>(id: ServiceIdentifier<T>, descriptor: SyncDescriptor<T>): void {
     this._services.set(id, descriptor);
@@ -534,7 +587,7 @@ export class WindInstantiationService {
   }
 }
 
-// ADVANCED ERROR HANDLING: Comprehensive error management
+// ADVANCED ERROR HANDLING: Microsoft-inspired comprehensive error management
 class InstantiationError extends Error {
   constructor(
     message: string,
@@ -543,6 +596,27 @@ class InstantiationError extends Error {
   ) {
     super(message);
     this.name = 'InstantiationError';
+    
+    // ADVANCED STACK TRACE: Preserve original stack with service context
+    if (cause && cause.stack) {
+      this.stack = `${this.name}: ${this.message}\nCaused by: ${cause.stack}`;
+    }
+    
+    // Microsoft pattern: Add service context to error message
+    if (serviceId) {
+      this.message = `[Service: ${String(serviceId)}] ${message}`;
+    }
+  }
+  
+  // ADVANCED ERROR ANALYSIS: Error categorization for recovery strategies
+  isRecoverable(): boolean {
+    return !this.message.includes('Cyclic dependency') && 
+           !this.message.includes('RECURSIVELY instantiating');
+  }
+  
+  requiresServiceRestart(): boolean {
+    return this.message.includes('illegalState') || 
+           this.message.includes('illegal state');
   }
 }
 
