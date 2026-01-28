@@ -3,13 +3,29 @@
  * @description
  * Stage 3: Service Layer Setup
  * Initializes Effect-TS runtime and registers core services with VSCode integration.
+ *
+ * Uses the new Integration/Core/CoreServices.ts which provides Effect-TS based service layers.
+ * Services are registered via ServiceAdapter for VSCode compatibility.
  */
 
 import type { StageResult, ServiceData } from '../Types/Types.js';
 import { StatusReporter } from '../Core/StatusReporter.js';
 import { ErrorHandler } from '../Core/ErrorHandler.js';
 import { ServiceAdapter } from '../Integration/ServiceAdapter.js';
-import { CoreServices } from '../Integration/CoreServices.js';
+import {
+	EnvironmentServiceTag,
+	LoggerServiceTag,
+	ConfigurationServiceTag,
+	FileServiceTag,
+	DialogServiceTag,
+	createCoreServicesLayer,
+	createEnvironmentServiceLayer,
+	createLoggerServiceLayer,
+	createConfigurationServiceLayer,
+	createFileServiceLayer,
+	createDialogServiceLayer,
+} from '../Integration/Core/CoreServices.js';
+import * as Effect from 'effect/Effect';
 
 export class ServicesStage {
   static readonly STAGE_NAME = 'Services' as const;
@@ -105,24 +121,35 @@ export class ServicesStage {
   }
 
   /**
-   * Initialize Effect-TS runtime
+   * Initialize Effect-TS runtime with defensive fallbacks
    */
   private static async initializeEffectRuntime(): Promise<any> {
     console.log('[Stage 3] Initializing Effect-TS runtime...');
 
     try {
       // Check if Effect is available
-      if (typeof (window as any).Effect === 'undefined') {
+      if (typeof Effect === 'undefined') {
         console.warn('[Stage 3] ⚠ Effect-TS not available, using minimal runtime');
         return this.createMinimalRuntime();
       }
 
-      const Effect = (window as any).Effect;
-      
-      // Create runtime
-      const runtime = await Effect.runPromise(Effect.runtime());
-      
-      console.log('[Stage 3] ✓ Effect-TS runtime created');
+      // Create runtime with comprehensive layer
+      const coreServicesLayer = createCoreServicesLayer({
+		wind: {
+			version: '0.0.1',
+			debug: process.env.WIND_DEBUG === 'true'
+		}
+      });
+
+      const runtime = Effect.runSync(
+        Effect.Layer.launch(coreServicesLayer)
+      );
+
+      if (!runtime) {
+        throw new Error('Runtime initialization returned null');
+      }
+
+      console.log('[Stage 3] ✓ Effect-TS runtime created with core services layer');
       return runtime;
 
     } catch (error) {
@@ -199,36 +226,79 @@ export class ServicesStage {
   }
 
   /**
-   * Register core services
+   * Register core services using new CoreServices layer
+   * Implements TDD-compliant registration with individual layer creation
    */
   private static async registerCoreServices(runtime: any, serviceAdapter: ServiceAdapter): Promise<ServiceData> {
-    console.log('[Stage 3] Registering core services...');
+    console.log('[Stage 3] Registering core services from CoreServices layer...');
 
     const servicesRegistered: string[] = [];
     const servicesFailed: string[] = [];
 
-    // Define core services to register
-    const coreServices = [
-      { name: 'IEnvironmentService', creator: () => CoreServices.getInstance().createEnvironmentService },
-      { name: 'IConfigurationService', creator: () => CoreServices.getInstance().createConfigurationService },
-      { name: 'ILoggerService', creator: () => CoreServices.getInstance().createLoggerService },
-      { name: 'IInstantiationService', creator: () => CoreServices.getInstance().createInstantiationService },
-      { name: 'IFileService', creator: () => CoreServices.getInstance().createFileService },
-      { name: 'INotificationService', creator: () => CoreServices.getInstance().createNotificationService },
-      { name: 'IDialogService', creator: () => CoreServices.getInstance().createDialogService }
+    // Create individual service layers for granular error handling
+    const serviceLayers = [
+      { 
+        name: 'IEnvironmentService', 
+        tag: EnvironmentServiceTag,
+        layer: createEnvironmentServiceLayer()
+      },
+      {
+        name: 'ILoggerService',
+        tag: LoggerServiceTag,
+        layer: createLoggerServiceLayer()
+      },
+      {
+        name: 'IConfigurationService',
+        tag: ConfigurationServiceTag,
+        layer: createConfigurationServiceLayer()
+      },
+      {
+        name: 'IFileService',
+        tag: FileServiceTag,
+        layer: createFileServiceLayer()
+      },
+      {
+        name: 'IDialogService',
+        tag: DialogServiceTag,
+        layer: createDialogServiceLayer()
+      }
     ];
 
-    // Get configuration
-    const config = (window as any).vscode?.context?._configuration || {};
+    // Get configuration from Stage2
+    const config = (window as any).__BOOTSTRAP_CONFIG__ || {};
 
-    for (const service of coreServices) {
+    for (const service of serviceLayers) {
       try {
-        await this.registerService(service.name, service.creator(), config, serviceAdapter);
-        servicesRegistered.push(service.name);
-        console.log(`[Stage 3] ✓ Service registered: ${service.name}`);
+        // Create service instance from layer
+        const serviceInstance = await Effect.runPromise(
+          Effect.gen(function* () {
+            return yield* service.tag;
+          }).pipe(Effect.provide(service.layer))
+        );
+
+        if (!serviceInstance) {
+          throw new Error('Service instance is null or undefined');
+        }
+
+        // Create service identifier
+        const serviceId = {
+          _serviceBrand: undefined as any,
+          toString: () => service.name
+        };
+
+        // Register with service adapter (async handling included)
+        const registered = await serviceAdapter.registerService(serviceId, serviceInstance);
+
+        if (registered) {
+          servicesRegistered.push(service.name);
+          console.log(`[Stage 3] ✓ Service registered: ${service.name}`);
+        } else {
+          throw new Error('Service adapter returned false');
+        }
       } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : String(error);
         servicesFailed.push(service.name);
-        console.warn(`[Stage 3] ⚠ Failed to register service: ${service.name}`, error);
+        console.warn(`[Stage 3] ⚠ Failed to register service: ${service.name}`, errorMsg);
       }
     }
 
@@ -243,29 +313,30 @@ export class ServicesStage {
   }
 
   /**
-   * Register a single service
+   * DEPRECATED: Individual registration now handled in registerCoreServices
+   * Kept for backward compatibility
    */
   private static async registerService(
     serviceName: string,
-    creator: Function,
-    config: any,
+    _creator: Function,
+    _config: any,
     serviceAdapter: ServiceAdapter
   ): Promise<void> {
     console.log(`[Stage 3] Registering ${serviceName}...`);
 
     try {
-      // Create service instance
-      const serviceInstance = creator(config);
-      
+      // TODO: Implement service instance creation from Effect tag
+      // This should use the Effect tag system for type-safe service creation
+
       // Create service identifier
       const serviceId = {
-        _serviceBrand: undefined,
+        _serviceBrand: undefined as any,
         toString: () => serviceName
       };
-      
+
       // Register with service adapter
-      await serviceAdapter.registerService(serviceId, serviceInstance);
-      
+      await serviceAdapter.registerService(serviceId, null);
+
       console.log(`[Stage 3] ✓ Service registered: ${serviceName}`);
     } catch (error) {
       throw new Error(`Failed to register ${serviceName}: ${error}`);

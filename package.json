@@ -20,7 +20,10 @@
 	"type": "module",
 	"scripts": {
 		"Run": "sh Source/Run.sh",
-		"prepublishOnly": "sh Source/prepublishOnly.sh"
+		"prepublishOnly": "sh Source/prepublishOnly.sh",
+		"test": "vitest --run",
+		"test:watch": "vitest",
+		"test:coverage": "vitest --coverage"
 	},
 	"dependencies": {
 		"@codeeditorland/output": "0.0.1",
