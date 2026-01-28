@@ -244,19 +244,37 @@ export class WindInstantiationService {
     if (!this._isDisposed) {
       this._isDisposed = true;
       
-      // Dispose all child services
-      this._children.forEach(child => child.dispose());
+      // ADVANCED DISPOSAL PATTERN: Microsoft-inspired cascading disposal
+      const disposalStart = performance.now();
+      let disposedServices = 0;
+      
+      // Dispose all child services (reverse order for dependency safety)
+      const childrenArray = Array.from(this._children).reverse();
+      childrenArray.forEach(child => {
+        try {
+          child.dispose();
+          disposedServices++;
+        } catch (error) {
+          console.warn(`Failed to dispose child service:`, error);
+        }
+      });
       this._children.clear();
       
       // Dispose all services created by this service
       this._servicesToMaybeDispose.forEach(service => {
-        if (typeof service.dispose === 'function') {
-          service.dispose();
+        try {
+          if (typeof service.dispose === 'function') {
+            service.dispose();
+            disposedServices++;
+          }
+        } catch (error) {
+          console.warn(`Failed to dispose service:`, error);
         }
       });
       this._servicesToMaybeDispose.clear();
       
-      console.log('[WindInstantiationService] Disposed');
+      const disposalTime = performance.now() - disposalStart;
+      console.log(`[WindInstantiationService] Disposed ${disposedServices} services in ${disposalTime.toFixed(2)}ms`);
     }
   }
 
@@ -324,31 +342,69 @@ export class WindInstantiationService {
   }
 
   private _createInstance<T>(ctor: any, args: any[] = [], _trace: Trace): T {
-    // ADVANCED SERVICE CREATION: Dependency injection with decorator support
+    // ADVANCED SERVICE CREATION: Microsoft-inspired instantiation with comprehensive error handling
     
     // Check for service dependencies via decorators or metadata
     const serviceDependencies = this._extractServiceDependencies(ctor);
     
-    // Resolve service dependencies
+    // ADVANCED DEPENDENCY RESOLUTION: Circuit breaker pattern for dependency failures
     const resolvedDependencies: any[] = [];
+    const dependencyErrors: Error[] = [];
+    
     for (const dependencyId of serviceDependencies) {
-      const dependency = this._getOrCreateServiceInstance(dependencyId, _trace);
-      resolvedDependencies.push(dependency);
+      try {
+        const dependency = this._getOrCreateServiceInstance(dependencyId, _trace);
+        resolvedDependencies.push(dependency);
+      } catch (error) {
+        // ADVANCED ERROR RECOVERY: Graceful degradation with fallback dependencies
+        dependencyErrors.push(error as Error);
+        console.warn(`[WindInstantiationService] Failed to resolve dependency ${String(dependencyId)}:`, error);
+        
+        // Try to create a minimal fallback service
+        const fallbackService = this._createFallbackService(dependencyId);
+        if (fallbackService) {
+          resolvedDependencies.push(fallbackService);
+        }
+      }
+    }
+    
+    // ADVANCED ERROR HANDLING: Throw comprehensive error if critical dependencies fail
+    if (dependencyErrors.length > 0 && this._isCriticalDependency(serviceDependencies, dependencyErrors.length)) {
+      throw new InstantiationError(
+        `Failed to resolve critical dependencies: ${dependencyErrors.map(e => e.message).join(', ')}`,
+        undefined,
+        new AggregateError(dependencyErrors, 'Dependency resolution failed')
+      );
     }
     
     // Combine resolved dependencies with provided arguments
     const allArgs = [...resolvedDependencies, ...args];
     
-    const instance = Reflect.construct(ctor, allArgs);
+    // ADVANCED INSTANTIATION: Constructor validation and error wrapping
+    let instance: T;
+    try {
+      instance = Reflect.construct(ctor, allArgs);
+    } catch (error) {
+      throw new InstantiationError(
+        `Failed to instantiate service: ${ctor.name || 'anonymous'}`,
+        undefined,
+        error as Error
+      );
+    }
     
     // Track for disposal if disposable
     if (typeof instance.dispose === 'function') {
       this._servicesToMaybeDispose.add(instance);
     }
     
-    // Initialize if method exists
+    // ADVANCED INITIALIZATION: Multi-phase initialization with error recovery
     if (typeof instance._init === 'function') {
-      instance._init();
+      try {
+        instance._init();
+      } catch (error) {
+        console.warn(`[WindInstantiationService] Service initialization failed:`, error);
+        // Continue with partially initialized service
+      }
     }
     
     return instance;
