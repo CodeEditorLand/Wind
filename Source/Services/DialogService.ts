@@ -201,13 +201,14 @@ class DialogService extends Effect.Service<DialogServiceInterface>()(
           try: () => performOpenDialog(options),
           catch: (error) => DialogProblem.CreateConnectionError(error as Error),
         }).pipe(
-          Effect.map(Option.getOrUndefined),
+          Effect.map((uris) => uris || undefined),
           Effect.mapError((cause) => 
-            new DialogProblem({
-              context: "ShowOpenDialogFailed",
+            new DialogProblem(
+              "ShowOpenDialogFailed",
               cause,
-              suggestion: "Check file permissions and dialog configuration"
-            })
+              true,
+              "Check file permissions and dialog configuration"
+            )
           )
         );
 
@@ -216,13 +217,14 @@ class DialogService extends Effect.Service<DialogServiceInterface>()(
           try: () => performSaveDialog(options),
           catch: (error) => DialogProblem.CreateConnectionError(error as Error),
         }).pipe(
-          Effect.map(Option.getOrUndefined),
+          Effect.map((uri) => uri || undefined),
           Effect.mapError((cause) => 
-            new DialogProblem({
-              context: "ShowSaveDialogFailed",
+            new DialogProblem(
+              "ShowSaveDialogFailed",
               cause,
-              suggestion: "Check file permissions and save location accessibility"
-            })
+              true,
+              "Check file permissions and save location accessibility"
+            )
           )
         );
 
@@ -232,11 +234,12 @@ class DialogService extends Effect.Service<DialogServiceInterface>()(
           catch: (error) => DialogProblem.CreateConnectionError(error as Error),
         }).pipe(
           Effect.mapError((cause) => 
-            new DialogProblem({
-              context: "ShowMessageDialogFailed",
+            new DialogProblem(
+              "ShowMessageDialogFailed",
               cause,
-              suggestion: "Check dialog configuration and user interaction"
-            })
+              true,
+              "Check dialog configuration and user interaction"
+            )
           )
         );
 
@@ -245,13 +248,14 @@ class DialogService extends Effect.Service<DialogServiceInterface>()(
           try: () => performInputDialog(options),
           catch: (error) => DialogProblem.CreateConnectionError(error as Error),
         }).pipe(
-          Effect.map(Option.getOrUndefined),
+          Effect.map((text) => text || undefined),
           Effect.mapError((cause) => 
-            new DialogProblem({
-              context: "ShowInputDialogFailed",
+            new DialogProblem(
+              "ShowInputDialogFailed",
               cause,
-              suggestion: "Check input validation and user interaction"
-            })
+              true,
+              "Check input validation and user interaction"
+            )
           )
         );
 
@@ -261,11 +265,12 @@ class DialogService extends Effect.Service<DialogServiceInterface>()(
           catch: (error) => DialogProblem.CreateConnectionError(error as Error),
         }).pipe(
           Effect.mapError((cause) => 
-            new DialogProblem({
-              context: "ShowConfirmationDialogFailed",
+            new DialogProblem(
+              "ShowConfirmationDialogFailed",
               cause,
-              suggestion: "Check dialog configuration and user interaction"
-            })
+              true,
+              "Check dialog configuration and user interaction"
+            )
           )
         );
 

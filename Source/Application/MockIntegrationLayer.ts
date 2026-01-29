@@ -4,8 +4,7 @@
  * Mock integration layer for testing clipboard service.
  */
 
-import * as Layer from "effect/Layer";
-import { MockClipboardServiceLayer } from "./Clipboard.js";
+import { MockClipboardServiceLayer } from "./Clipboard.ts";
 
 /**
  * Mock integration layer for testing

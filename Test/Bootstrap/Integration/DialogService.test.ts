@@ -34,7 +34,7 @@ describe('DialogService - showOpenDialog', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createDialogServiceLayer, DialogServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/DialogService.js'
+			"../../../../Source/Bootstrap/Integration/Core/CoreServices.ts"
 		);
 
 		const layer = createDialogServiceLayer();

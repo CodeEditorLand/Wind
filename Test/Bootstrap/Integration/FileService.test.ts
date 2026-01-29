@@ -48,7 +48,7 @@ describe('FileService - readFile', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			"../../../../Source/Bootstrap/Integration/Core/CoreServices.ts"
 		);
 
 		const layer = createFileServiceLayer();
@@ -70,7 +70,7 @@ describe('FileService - readFile', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -88,7 +88,7 @@ describe('FileService - readFile', () => {
 
 	it('should handle Tauri unavailability', async () => {
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -107,7 +107,7 @@ describe('FileService - readFile', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -134,7 +134,7 @@ describe('FileService - writeFile', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -155,7 +155,7 @@ describe('FileService - writeFile', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -176,7 +176,7 @@ describe('FileService - writeFile', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -204,7 +204,7 @@ describe('FileService - exists', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -225,7 +225,7 @@ describe('FileService - exists', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -246,7 +246,7 @@ describe('FileService - exists', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -279,7 +279,7 @@ describe('FileService - stat', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -309,7 +309,7 @@ describe('FileService - stat', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -331,7 +331,7 @@ describe('FileService - stat', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -358,7 +358,7 @@ describe('FileService - mkdir', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -379,7 +379,7 @@ describe('FileService - mkdir', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -402,7 +402,7 @@ describe('FileService - mkdir', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -429,7 +429,7 @@ describe('FileService - delete', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -450,7 +450,7 @@ describe('FileService - delete', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -471,7 +471,7 @@ describe('FileService - delete', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -502,7 +502,7 @@ describe('FileService - readdir', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -525,7 +525,7 @@ describe('FileService - readdir', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -552,7 +552,7 @@ describe('FileService - copy', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -573,7 +573,7 @@ describe('FileService - copy', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -600,7 +600,7 @@ describe('FileService - move', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -621,7 +621,7 @@ describe('FileService - move', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -649,7 +649,7 @@ describe('FileService - File Watching', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -677,7 +677,7 @@ describe('FileService - File Watching', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -702,7 +702,7 @@ describe('FileService - File Watching', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -728,7 +728,7 @@ describe('FileService - URI Mapping', () => {
 
 	it('should convert URI to OS path for tauri:// scheme', async () => {
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -745,7 +745,7 @@ describe('FileService - URI Mapping', () => {
 
 	it('should convert URI to OS path for file:// scheme', async () => {
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -761,7 +761,7 @@ describe('FileService - URI Mapping', () => {
 
 	it('should return path as-is for no scheme', async () => {
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -777,7 +777,7 @@ describe('FileService - URI Mapping', () => {
 
 	it('should convert OS path to URI', async () => {
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -803,7 +803,7 @@ describe('FileService - Error Scenarios', () => {
 
 	it('should handle invalid paths', async () => {
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -819,7 +819,7 @@ describe('FileService - Error Scenarios', () => {
 
 	it('should handle null/undefined paths gracefully', async () => {
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -837,7 +837,7 @@ describe('FileService - Error Scenarios', () => {
 		delete (global as any).__TAURI__;
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -863,7 +863,7 @@ describe('FileService - Effect-TS Wrappers', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag, readFileEffect } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -882,7 +882,7 @@ describe('FileService - Effect-TS Wrappers', () => {
 		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();
@@ -910,7 +910,7 @@ describe('FileService - VSCode Compatibility', () => {
 
 	it('should implement all VSCode IFileService methods', async () => {
 		const { createFileServiceLayer, FileServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/FileService.js'
+			'../../../../Source/Bootstrap/Integration/Services/FileService.ts'
 		);
 
 		const layer = createFileServiceLayer();

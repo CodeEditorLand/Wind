@@ -111,7 +111,7 @@ export interface ConfigurationServiceOptions {
 // CONTEXT TAG
 // ============================================================================
 
-export const ConfigurationServiceTag = Effect.Context.Tag<
+export const ConfigurationServiceTag = Effect.Tag<
 	ConfigurationService,
 	ConfigurationService
 >('ConfigurationService');

@@ -7,6 +7,7 @@
 
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
+import * as Context from "effect/Context";
 
 // ============================================================================
 // TYPES
@@ -78,14 +79,14 @@ const LiveClipboardService: ClipboardService = {
 /**
  * Clipboard service tag
  */
-export const ClipboardServiceTag = Effect.Context.Tag<ClipboardService>(
+export const ClipboardServiceTag = Effect.Tag<ClipboardService, ClipboardService>(
   "Application/ClipboardService"
 );
 
 /**
  * Live clipboard service layer
  */
-export const LiveClipboardServiceLayer = Effect.succeed(
+export const LiveClipboardServiceLayer = Layer.succeed(
   ClipboardServiceTag,
   LiveClipboardService
 );
@@ -107,7 +108,7 @@ const MockClipboardService: ClipboardService = {
 /**
  * Mock clipboard service layer
  */
-export const MockClipboardServiceLayer = Effect.succeed(
+export const MockClipboardServiceLayer = Layer.succeed(
   ClipboardServiceTag,
   MockClipboardService
 );

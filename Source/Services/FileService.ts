@@ -14,8 +14,8 @@
  * Microsoft Source Reference: `vs/platform/files/common/files.ts`
  */
 
-import { Effect, Layer, Option } from "effect";
-import { readTextFile, writeTextFile, exists, createDir, removeDir, removeFile } from '@tauri-apps/plugin-fs';
+import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
 
 // ADVANCED MICROSOFT PATTERN: Service interface definition
 // Microsoft Source Reference: `vs/platform/files/common/files.ts`
@@ -184,11 +184,12 @@ class FileService extends Effect.Service<FileServiceInterface>()(
           catch: (error) => FileProblem.CreateNetworkError(error as Error),
         }).pipe(
           Effect.mapError((cause) => 
-            new FileProblem({
-              context: "ReadFileFailed",
+            new FileProblem(
+              "ReadFileFailed",
               cause,
-              suggestion: "Check file permissions and file existence"
-            })
+              true,
+              "Check file permissions and file existence"
+            )
           )
         );
 
@@ -198,11 +199,12 @@ class FileService extends Effect.Service<FileServiceInterface>()(
           catch: (error) => FileProblem.CreatePermissionError(error as Error),
         }).pipe(
           Effect.mapError((cause) => 
-            new FileProblem({
-              context: "WriteFileFailed",
+            new FileProblem(
+              "WriteFileFailed",
               cause,
-              suggestion: "Check file permissions and disk space"
-            })
+              true,
+              "Check file permissions and disk space"
+            )
           )
         );
 
@@ -212,11 +214,12 @@ class FileService extends Effect.Service<FileServiceInterface>()(
           catch: (error) => FileProblem.CreateNetworkError(error as Error),
         }).pipe(
           Effect.mapError((cause) => 
-            new FileProblem({
-              context: "ExistsCheckFailed",
+            new FileProblem(
+              "ExistsCheckFailed",
               cause,
-              suggestion: "Check file system accessibility"
-            })
+              true,
+              "Check file system accessibility"
+            )
           )
         );
 
@@ -226,11 +229,12 @@ class FileService extends Effect.Service<FileServiceInterface>()(
           catch: (error) => FileProblem.CreatePermissionError(error as Error),
         }).pipe(
           Effect.mapError((cause) => 
-            new FileProblem({
-              context: "CreateDirectoryFailed",
+            new FileProblem(
+              "CreateDirectoryFailed",
               cause,
-              suggestion: "Check directory permissions and parent directory existence"
-            })
+              true,
+              "Check directory permissions and parent directory existence"
+            )
           )
         );
 
@@ -240,11 +244,12 @@ class FileService extends Effect.Service<FileServiceInterface>()(
           catch: (error) => FileProblem.CreatePermissionError(error as Error),
         }).pipe(
           Effect.mapError((cause) => 
-            new FileProblem({
-              context: "DeleteFailed",
+            new FileProblem(
+              "DeleteFailed",
               cause,
-              suggestion: "Check file permissions and ensure file is not in use"
-            })
+              true,
+              "Check file permissions and ensure file is not in use"
+            )
           )
         );
 
@@ -254,11 +259,12 @@ class FileService extends Effect.Service<FileServiceInterface>()(
           catch: (error) => FileProblem.CreatePermissionError(error as Error),
         }).pipe(
           Effect.mapError((cause) => 
-            new FileProblem({
-              context: "CopyFailed",
+            new FileProblem(
+              "CopyFailed",
               cause,
-              suggestion: "Check file permissions and disk space"
-            })
+              true,
+              "Check file permissions and disk space"
+            )
           )
         );
 
@@ -268,11 +274,12 @@ class FileService extends Effect.Service<FileServiceInterface>()(
           catch: (error) => FileProblem.CreatePermissionError(error as Error),
         }).pipe(
           Effect.mapError((cause) => 
-            new FileProblem({
-              context: "MoveFailed",
+            new FileProblem(
+              "MoveFailed",
               cause,
-              suggestion: "Check file permissions and ensure source file exists"
-            })
+              true,
+              "Check file permissions and ensure source file exists"
+            )
           )
         );
 

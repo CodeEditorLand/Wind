@@ -23,7 +23,7 @@ describe('EnvironmentService - Platform Detection', () => {
 		};
 
 		const { createEnvironmentServiceLayer, EnvironmentServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/EnvironmentService.js'
+			"../../../../Source/Bootstrap/Integration/Core/CoreServices.ts"
 		);
 
 		const layer = createEnvironmentServiceLayer();

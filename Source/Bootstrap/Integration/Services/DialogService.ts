@@ -248,7 +248,7 @@ export interface DialogService {
 // CONTEXT TAG
 // ============================================================================
 
-export const DialogServiceTag = Effect.Context.Tag<
+export const DialogServiceTag = Effect.Tag<
 	DialogService,
 	DialogService
 >('DialogService');

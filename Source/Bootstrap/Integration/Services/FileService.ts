@@ -158,7 +158,7 @@ export interface FileService {
 // CONTEXT TAG
 // ============================================================================
 
-export const FileServiceTag = Effect.Context.Tag<FileService, FileService>(
+export const FileServiceTag = Effect.Tag<FileService, FileService>(
 	'FileService'
 );
 

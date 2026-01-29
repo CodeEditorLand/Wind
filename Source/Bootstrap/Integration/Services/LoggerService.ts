@@ -100,7 +100,7 @@ interface LogEntry {
 // CONTEXT TAG
 // ============================================================================
 
-export const LoggerServiceTag = Effect.Context.Tag<LoggerService, LoggerService>(
+export const LoggerServiceTag = Effect.Tag<LoggerService, LoggerService>(
 	'LoggerService'
 );
 

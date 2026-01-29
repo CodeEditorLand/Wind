@@ -57,7 +57,7 @@ describe('LoggerService - Log Levels', () => {
 	describe('trace level (0)', () => {
 		it('should output trace messages when level is trace', async () => {
 			const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-				'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+				'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 			);
 
 			const layer = createLoggerServiceLayer({ level: 'trace' });
@@ -77,7 +77,7 @@ describe('LoggerService - Log Levels', () => {
 
 		it('should not output trace messages when level is above trace', async () => {
 			const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-				'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+				'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 			);
 
 			const layer = createLoggerServiceLayer({ level: 'info' });
@@ -94,7 +94,7 @@ describe('LoggerService - Log Levels', () => {
 
 		it('should include data object in trace output', async () => {
 			const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-				'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+				'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 			);
 
 			const layer = createLoggerServiceLayer({ level: 'trace' });
@@ -114,7 +114,7 @@ describe('LoggerService - Log Levels', () => {
 	describe('debug level (1)', () => {
 		it('should output debug messages when level is debug or lower', async () => {
 			const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-				'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+				'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 			);
 
 			const layer = createLoggerServiceLayer({ level: 'debug' });
@@ -134,7 +134,7 @@ describe('LoggerService - Log Levels', () => {
 
 		it('should not output debug messages when level is above debug', async () => {
 			const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-				'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+				'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 			);
 
 			const layer = createLoggerServiceLayer({ level: 'info' });
@@ -153,7 +153,7 @@ describe('LoggerService - Log Levels', () => {
 	describe('info level (2)', () => {
 		it('should output info messages when level is info or lower', async () => {
 			const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-				'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+				'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 			);
 
 			const layer = createLoggerServiceLayer({ level: 'info' });
@@ -173,7 +173,7 @@ describe('LoggerService - Log Levels', () => {
 
 		it('should include structured data in info output', async () => {
 			const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-				'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+				'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 			);
 
 			const layer = createLoggerServiceLayer({ level: 'info' });
@@ -192,7 +192,7 @@ describe('LoggerService - Log Levels', () => {
 	describe('warning level (3)', () => {
 		it('should output warning messages when level is warning or lower', async () => {
 			const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-				'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+				'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 			);
 
 			const layer = createLoggerServiceLayer({ level: 'warning' });
@@ -212,7 +212,7 @@ describe('LoggerService - Log Levels', () => {
 
 		it('should include metadata in warning output', async () => {
 			const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-				'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+				'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 			);
 
 			const layer = createLoggerServiceLayer({ level: 'warning' });
@@ -231,7 +231,7 @@ describe('LoggerService - Log Levels', () => {
 	describe('error level (4)', () => {
 		it('should output error messages when level is error or lower', async () => {
 			const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-				'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+				'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 			);
 
 			const layer = createLoggerServiceLayer({ level: 'error' });
@@ -256,7 +256,7 @@ describe('LoggerService - Log Levels', () => {
 
 		it('should handle non-Error objects gracefully', async () => {
 			const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-				'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+				'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 			);
 
 			const layer = createLoggerServiceLayer({ level: 'error' });
@@ -273,7 +273,7 @@ describe('LoggerService - Log Levels', () => {
 
 		it('should handle missing error parameter', async () => {
 			const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-				'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+				'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 			);
 
 			const layer = createLoggerServiceLayer({ level: 'error' });
@@ -292,7 +292,7 @@ describe('LoggerService - Log Levels', () => {
 	describe('critical level (5)', () => {
 		it('should output critical messages', async () => {
 			const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-				'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+				'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 			);
 
 			const layer = createLoggerServiceLayer({ level: 'critical' });
@@ -317,7 +317,7 @@ describe('LoggerService - Log Levels', () => {
 
 		it('should include full error stack trace', async () => {
 			const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-				'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+				'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 			);
 
 			const layer = createLoggerServiceLayer({ level: 'critical' });
@@ -348,7 +348,7 @@ describe('LoggerService - Effect-TS Wrappers', () => {
 
 	it('should provide logEffect wrapper for async logging', async () => {
 		const { createLoggerServiceLayer, LoggerServiceTag, logEffect } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		const layer = createLoggerServiceLayer({ level: 'info' });
@@ -368,7 +368,7 @@ describe('LoggerService - Effect-TS Wrappers', () => {
 
 	it('should provide errorEffect wrapper for error logging', async () => {
 		const { createLoggerServiceLayer, errorEffect } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		const layer = createLoggerServiceLayer({ level: 'error' });
@@ -389,7 +389,7 @@ describe('LoggerService - Effect-TS Wrappers', () => {
 
 	it('should support Effect composition', async () => {
 		const { createLoggerServiceLayer, logEffect } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		const layer = createLoggerServiceLayer({ level: 'info' });
@@ -418,7 +418,7 @@ describe('LoggerService - Console Integration and Color Coding', () => {
 
 	it('should use correct console method for each level', async () => {
 		const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			"../../../../Source/Bootstrap/Integration/Core/CoreServices.ts"
 		);
 
 		const layer = createLoggerServiceLayer({ level: 'trace' });
@@ -457,7 +457,7 @@ describe('LoggerService - Console Integration and Color Coding', () => {
 
 	it('should include timestamp in log output', async () => {
 		const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		const layer = createLoggerServiceLayer({ level: 'info' });
@@ -491,7 +491,7 @@ describe('LoggerService - File-based Logging (Tauri Integration)', () => {
 		};
 
 		const { createLoggerServiceLayer } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		expect(() => createLoggerServiceLayer({ enableFileLogging: true })).not.toThrow();
@@ -501,7 +501,7 @@ describe('LoggerService - File-based Logging (Tauri Integration)', () => {
 
 	it('should handle Tauri unavailability gracefully', async () => {
 		const { createLoggerServiceLayer } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		expect(() => createLoggerServiceLayer({ enableFileLogging: true })).not.toThrow();
@@ -509,7 +509,7 @@ describe('LoggerService - File-based Logging (Tauri Integration)', () => {
 
 	it('should provide flush Effect for persisting logs', async () => {
 		const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		const layer = createLoggerServiceLayer({ level: 'info' });
@@ -540,7 +540,7 @@ describe('LoggerService - StatusReporter Integration', () => {
 		} as any);
 
 		const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		const layer = createLoggerServiceLayer({
@@ -571,7 +571,7 @@ describe('LoggerService - Level Management', () => {
 
 	it('should set log level dynamically', async () => {
 		const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		const layer = createLoggerServiceLayer({ level: 'warning' });
@@ -588,7 +588,7 @@ describe('LoggerService - Level Management', () => {
 
 	it('should get current log level', async () => {
 		const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		const layer = createLoggerServiceLayer({ level: 'debug' });
@@ -607,7 +607,7 @@ describe('LoggerService - Level Management', () => {
 
 	it('should default to info level', async () => {
 		const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		const layer = createLoggerServiceLayer();
@@ -629,7 +629,7 @@ describe('LoggerService - Error Handling and Defensive Coding', () => {
 
 	it('should handle undefined/null data parameters gracefully', async () => {
 		const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		const layer = createLoggerServiceLayer({ level: 'info' });
@@ -646,7 +646,7 @@ describe('LoggerService - Error Handling and Defensive Coding', () => {
 
 	it('should handle circular reference detection', async () => {
 		const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		const layer = createLoggerServiceLayer({ level: 'info' });
@@ -665,7 +665,7 @@ describe('LoggerService - Error Handling and Defensive Coding', () => {
 
 	it('should handle very long messages', async () => {
 		const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		const layer = createLoggerServiceLayer({ level: 'info' });
@@ -682,7 +682,7 @@ describe('LoggerService - Error Handling and Defensive Coding', () => {
 
 	it('should handle special characters in messages', async () => {
 		const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		const layer = createLoggerServiceLayer({ level: 'info' });
@@ -706,7 +706,7 @@ describe('LoggerService - VSCode Compatibility', () => {
 
 	it('should implement all VSCode ILoggerService methods', async () => {
 		const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		const layer = createLoggerServiceLayer({ level: 'trace' });
@@ -733,7 +733,7 @@ describe('LoggerService - VSCode Compatibility', () => {
 
 	it('should support both warn and warning methods (VSCode compatibility)', async () => {
 		const { createLoggerServiceLayer, LoggerServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/LoggerService.js'
+			'../../../../Source/Bootstrap/Integration/Services/LoggerService.ts'
 		);
 
 		const layer = createLoggerServiceLayer({ level: 'warning' });

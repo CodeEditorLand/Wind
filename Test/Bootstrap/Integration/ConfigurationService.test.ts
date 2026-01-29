@@ -18,7 +18,7 @@ describe('ConfigurationService - Configuration Loading', () => {
 
 	it('should load configuration from Stage2', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const mockConfig = {
@@ -45,7 +45,7 @@ describe('ConfigurationService - Configuration Loading', () => {
 
 	it('should initialize with empty configuration', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer();
@@ -61,7 +61,7 @@ describe('ConfigurationService - Configuration Loading', () => {
 
 	it('should handle null/undefined initial config gracefully', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer(null as any);
@@ -83,7 +83,7 @@ describe('ConfigurationService - getValue', () => {
 
 	it('should get simple value by key', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer({ key1: 'value1' });
@@ -99,7 +99,7 @@ describe('ConfigurationService - getValue', () => {
 
 	it('should get nested value with dot notation', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer({
@@ -117,7 +117,7 @@ describe('ConfigurationService - getValue', () => {
 
 	it('should return default value for missing key', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer();
@@ -133,7 +133,7 @@ describe('ConfigurationService - getValue', () => {
 
 	it('should return undefined for missing key without default', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer();
@@ -149,7 +149,7 @@ describe('ConfigurationService - getValue', () => {
 
 	it('should support typed getValue', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer({ count: 42 });
@@ -165,7 +165,7 @@ describe('ConfigurationService - getValue', () => {
 
 	it('should handle deeply nested keys', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer({
@@ -183,7 +183,7 @@ describe('ConfigurationService - getValue', () => {
 
 	it('should get array values', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer({ items: ['a', 'b', 'c'] });
@@ -206,7 +206,7 @@ describe('ConfigurationService - updateValue', () => {
 
 	it('should update simple value', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer({ key1: 'old' });
@@ -229,7 +229,7 @@ describe('ConfigurationService - updateValue', () => {
 
 	it('should update nested value with dot notation', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer({ editor: { fontSize: 14 } });
@@ -252,7 +252,7 @@ describe('ConfigurationService - updateValue', () => {
 
 	it('should create nested structure when updating non-existent path', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer();
@@ -275,7 +275,7 @@ describe('ConfigurationService - updateValue', () => {
 
 	it('should overwrite existing values', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer({ key: 'old' });
@@ -304,7 +304,7 @@ describe('ConfigurationService - Change Events', () => {
 
 	it('should call callback when value changes', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer({ key: 'initial' });
@@ -332,7 +332,7 @@ describe('ConfigurationService - Change Events', () => {
 
 	it('should not call callback for different keys', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer();
@@ -359,7 +359,7 @@ describe('ConfigurationService - Change Events', () => {
 
 	it('should support multiple callbacks for same key', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer();
@@ -396,7 +396,7 @@ describe('ConfigurationService - Change Events', () => {
 
 	it('should unsubscribe callback via cleanup function', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer();
@@ -423,7 +423,7 @@ describe('ConfigurationService - Change Events', () => {
 
 	it('should handle nested key change events', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer({ editor: { fontSize: 14 } });
@@ -463,7 +463,7 @@ describe('ConfigurationService - Mountain Sync', () => {
 		};
 
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer({
@@ -492,7 +492,7 @@ describe('ConfigurationService - Mountain Sync', () => {
 		};
 
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer({
@@ -514,7 +514,7 @@ describe('ConfigurationService - Mountain Sync', () => {
 
 	it('should work without Mountain when Tauri unavailable', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer();
@@ -544,7 +544,7 @@ describe('ConfigurationService - Configuration Validation', () => {
 
 	it('should validate against VSCode settings schema', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const validConfig = {
@@ -570,7 +570,7 @@ describe('ConfigurationService - Configuration Validation', () => {
 
 	it('should handle invalid schema values gracefully', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer();
@@ -595,7 +595,7 @@ describe('ConfigurationService - Configuration Validation', () => {
 
 	it('should support complex nested configurations', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const complexConfig = {
@@ -639,7 +639,7 @@ describe('ConfigurationService - getAll and reset', () => {
 
 	it('should get all configuration', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const config = { key1: 'value1', key2: 'value2', nested: { key: 'value' } };
@@ -656,7 +656,7 @@ describe('ConfigurationService - getAll and reset', () => {
 
 	it('should reset configuration', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer({ key: 'value' });
@@ -685,7 +685,7 @@ describe('ConfigurationService - Error Scenarios', () => {
 
 	it('should handle null/undefined updates gracefully', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer();
@@ -702,7 +702,7 @@ describe('ConfigurationService - Error Scenarios', () => {
 
 	it('should handle malformed key paths', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer();
@@ -719,7 +719,7 @@ describe('ConfigurationService - Error Scenarios', () => {
 
 	it('should handle empty configuration input', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer({});
@@ -741,7 +741,7 @@ describe('ConfigurationService - VSCode Compatibility', () => {
 
 	it('should implement all VSCode IWorkbenchConfigurationService methods', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer();
@@ -760,7 +760,7 @@ describe('ConfigurationService - VSCode Compatibility', () => {
 
 	it('should support VSCode configuration section pattern', async () => {
 		const { createConfigurationServiceLayer, ConfigurationServiceTag } = await import(
-			'../../../../Source/Bootstrap/Integration/Services/ConfigurationService.js'
+			'../../../../Source/Bootstrap/Integration/Core/CoreServices.ts'
 		);
 
 		const layer = createConfigurationServiceLayer({

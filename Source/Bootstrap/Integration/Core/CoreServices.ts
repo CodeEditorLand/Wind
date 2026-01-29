@@ -19,6 +19,7 @@
  */
 
 import * as Effect from 'effect/Effect';
+import * as Layer from 'effect/Layer';
 
 // ============================================================================
 // TYPES
@@ -224,29 +225,29 @@ export interface DialogService {
 // ============================================================================
 
 /** Environment service context tag */
-export const EnvironmentServiceTag = Effect.Context.Tag<
+export const EnvironmentServiceTag = Effect.Tag<
 	EnvironmentService,
 	EnvironmentService
 >('EnvironmentService');
 
 /** Logger service context tag */
-export const LoggerServiceTag = Effect.Context.Tag<LoggerService, LoggerService>(
+export const LoggerServiceTag = Effect.Tag<LoggerService, LoggerService>(
 	'LoggerService'
 );
 
 /** Configuration service context tag */
-export const ConfigurationServiceTag = Effect.Context.Tag<
+export const ConfigurationServiceTag = Effect.Tag<
 	ConfigurationService,
 	ConfigurationService
 >('ConfigurationService');
 
 /** File service context tag */
-export const FileServiceTag = Effect.Context.Tag<FileService, FileService>(
+export const FileServiceTag = Effect.Tag<FileService, FileService>(
 	'FileService'
 );
 
 /** Dialog service context tag */
-export const DialogServiceTag = Effect.Context.Tag<
+export const DialogServiceTag = Effect.Tag<
 	DialogService,
 	DialogService
 >('DialogService');
@@ -259,7 +260,7 @@ export const DialogServiceTag = Effect.Context.Tag<
  * Environment service implementation
  * Detects platform and runtime environment information
  */
-const EnvironmentServiceImpl = EnvironmentServiceTag.of({
+const EnvironmentServiceImpl = {
 	getPlatform: () =>
 		Effect.sync(() => {
 			// Check for Tauri environment
@@ -374,9 +375,12 @@ const EnvironmentServiceImpl = EnvironmentServiceTag.of({
 			}
 		}),
 
-	createLayer: () => EnvironmentServiceTag.default(EnvironmentServiceImpl),
-});
-
+};
+// Create environment service context tag implementation
+const EnvironmentServiceImplWithLayer = {
+	service: EnvironmentServiceImpl,
+	createLayer: () => Layer.succeed(EnvironmentServiceTag, EnvironmentServiceImpl),
+};
 /**
  * Logger service implementation
  * Structured logging with multiple levels and output handling
@@ -507,14 +511,14 @@ const LoggerServiceImpl: LoggerService = {
 // Create logger context tag implementation
 const LoggerServiceImplWithLayer = {
 	service: LoggerServiceImpl,
-	createLayer: () => LoggerServiceTag.default(LoggerServiceImpl),
+	createLayer: () => Layer.succeed(LoggerServiceTag, LoggerServiceImpl),
 };
 
 /**
  * Configuration service implementation
  * Manages configuration with hierarchical access and defaults
  */
-const ConfigurationServiceImpl = ConfigurationServiceTag.of({
+const ConfigurationServiceImpl = {
 	config: new Map<string, unknown>(),
 	changeHandlers: new Map<string, Set<(value: unknown) => void>>(),
 
@@ -540,12 +544,15 @@ const ConfigurationServiceImpl = ConfigurationServiceTag.of({
 
 			// Sync with Mountain backend
 			if (typeof TauriInvoke === 'function') {
-				await TauriInvoke('mountain_config_sync', { 
+				TauriInvoke('mountain_config_sync', { 
 					key,
 					value,
 					timestamp: new Date().toISOString()
+				}).then(() => {
+					console.log('[ConfigurationService] Configuration synced with Mountain backend');
+				}).catch(error => {
+					console.error('[ConfigurationService] Failed to sync with Mountain:', error);
 				});
-				console.log('[ConfigurationService] Configuration synced with Mountain backend');
 			} else {
 				console.warn('[ConfigurationService] TauriInvoke not available, config not synced');
 			}
@@ -579,7 +586,7 @@ const ConfigurationServiceImpl = ConfigurationServiceTag.of({
 			};
 		}),
 
-	createLayer: () => ConfigurationServiceTag.default(ConfigurationServiceImpl),
+	createLayer: () => Layer.succeed(ConfigurationServiceTag, ConfigurationServiceImpl),
 
 	// Internal method to initialize with default configuration
 	initialize: (initialConfig: Record<string, unknown>) =>
@@ -587,14 +594,19 @@ const ConfigurationServiceImpl = ConfigurationServiceTag.of({
 			Object.entries(initialConfig).forEach(([key, value]) => {
 				ConfigurationServiceImpl.config.set(key, value);
 			});
-		}),
-});
+		})
+};
+
+const ConfigurationServiceImplWithLayer = {
+	service: ConfigurationServiceImpl,
+	createLayer: () => Layer.succeed(ConfigurationServiceTag, ConfigurationServiceImpl),
+};
 
 /**
  * File service implementation
  * Safe file operations with Tauri integration and error handling
  */
-const FileServiceImpl = FileServiceTag.of({
+const FileServiceImpl = {
 	readFile: (path: string) =>
 		Effect.tryPromise({
 			try: async () => {
@@ -741,16 +753,19 @@ const FileServiceImpl = FileServiceTag.of({
 			},
 			catch: (error) =>
 				Effect.fail(new Error(`Failed to watch ${path}: ${error}`)),
-		}),
+		})
+};
 
-	createLayer: () => FileServiceTag.default(FileServiceImpl),
-});
+const FileServiceImplWithLayer = {
+	service: FileServiceImpl,
+	createLayer: () => Layer.succeed(FileServiceTag, FileServiceImpl),
+};
 
 /**
  * Dialog service implementation
  * Native OS dialogs using Tauri plugin-dialog
  */
-const DialogInterfaceImpl = DialogServiceTag.of({
+const DialogInterfaceImpl = {
 	showOpenDialog: (options: any) =>
 		Effect.tryPromise({
 			try: async () => {
@@ -809,10 +824,13 @@ const DialogInterfaceImpl = DialogServiceTag.of({
 			},
 			catch: (error) =>
 				Effect.fail(new Error(`Failed to show message dialog: ${error}`)),
-		}),
+		})
+};
 
-	createLayer: () => DialogServiceTag.default(DialogInterfaceImpl),
-});
+const DialogInterfaceImplWithLayer = {
+	service: DialogInterfaceImpl,
+	createLayer: () => Layer.succeed(DialogServiceTag, DialogInterfaceImpl),
+};
 
 // ============================================================================
 // EXPORTED FACTORY FUNCTIONS
@@ -822,13 +840,13 @@ const DialogInterfaceImpl = DialogServiceTag.of({
  * Create the environment service layer
  * @returns Effect-TS layer for EnvironmentService
  */
-export const createEnvironmentServiceLayer = () => EnvironmentServiceImpl;
+export const createEnvironmentServiceLayer = () => EnvironmentServiceImplWithLayer.createLayer();
 
 /**
  * Create the logger service layer
  * @returns Effect-TS layer for LoggerService
  */
-export const createLoggerServiceLayer = () => LoggerServiceImplWithLayer;
+export const createLoggerServiceLayer = () => LoggerServiceImplWithLayer.createLayer();
 
 /**
  * Create the configuration service layer
@@ -837,19 +855,24 @@ export const createLoggerServiceLayer = () => LoggerServiceImplWithLayer;
  */
 export const createConfigurationServiceLayer = (
 	initialConfig?: Record<string, unknown>
-) => ConfigurationServiceImpl;
+) => {
+	if (initialConfig) {
+		ConfigurationServiceImpl.initialize(initialConfig);
+	}
+	return ConfigurationServiceImplWithLayer.createLayer();
+};
 
 /**
  * Create the file service layer
  * @returns Effect-TS layer for FileService
  */
-export const createFileServiceLayer = () => FileServiceImpl;
+export const createFileServiceLayer = () => FileServiceImplWithLayer.createLayer();
 
 /**
  * Create the dialog service layer
  * @returns Effect-TS layer for DialogService
  */
-export const createDialogServiceLayer = () => DialogInterfaceImpl;
+export const createDialogServiceLayer = () => DialogInterfaceImplWithLayer.createLayer();
 
 /**
  * Create the complete core services layer
@@ -865,12 +888,12 @@ export const createCoreServicesLayer = (
 		ConfigurationServiceImpl.initialize(initialConfig);
 	}
 
-	return Effect.Layer.mergeAll(
-		EnvironmentServiceImpl,
+	return Layer.mergeAll(
+		EnvironmentServiceImplWithLayer.createLayer(),
 		LoggerServiceImplWithLayer.createLayer(),
-		ConfigurationServiceImpl.createLayer(),
-		FileServiceImpl.createLayer(),
-		DialogInterfaceImpl.createLayer()
+		ConfigurationServiceImplWithLayer.createLayer(),
+		FileServiceImplWithLayer.createLayer(),
+		DialogInterfaceImplWithLayer.createLayer()
 	);
 };
 

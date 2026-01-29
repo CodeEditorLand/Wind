@@ -88,7 +88,7 @@ export interface EnvironmentService {
 // CONTEXT TAG
 // ============================================================================
 
-export const EnvironmentServiceTag = Effect.Context.Tag<
+export const EnvironmentServiceTag = Effect.Tag<
 	EnvironmentService,
 	EnvironmentService
 >('EnvironmentService');
