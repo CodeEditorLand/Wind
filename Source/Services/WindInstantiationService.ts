@@ -17,14 +17,18 @@
  */
 
 /**
- * Service identifier interface
+ * Service identifier interface - Enhanced Microsoft pattern
+ * TODO: Complete Microsoft-style ServiceIdentifier implementation
  */
 export interface ServiceIdentifier<T> {
+  (...args: any[]): void;
+  type: T;
   _serviceBrand?: T;
 }
 
 /**
- * Service descriptor for lazy instantiation
+ * Service descriptor for lazy instantiation - Enhanced Microsoft pattern
+ * TODO: Add SyncDescriptor0 and advanced descriptor features
  */
 export class SyncDescriptor<T> {
   constructor(
@@ -35,31 +39,45 @@ export class SyncDescriptor<T> {
 }
 
 /**
- * Service collection for managing service registrations
+ * Service collection for managing service registrations - Enhanced Microsoft pattern
+ * TODO: Add advanced collection features from Microsoft source
  */
 export class ServiceCollection {
-  private entries: Map<ServiceIdentifier<any>, any> = new Map();
+  private _entries = new Map<ServiceIdentifier<any>, any>();
 
-  set<T>(id: ServiceIdentifier<T>, instanceOrDescriptor: any): void {
-    this.entries.set(id, instanceOrDescriptor);
+  constructor(...entries: [ServiceIdentifier<any>, any][]) {
+    for (const [id, service] of entries) {
+      this.set(id, service);
+    }
   }
 
-  get<T>(id: ServiceIdentifier<T>): any {
-    return this.entries.get(id);
+  set<T>(id: ServiceIdentifier<T>, instanceOrDescriptor: T | SyncDescriptor<T>): T | SyncDescriptor<T> {
+    const result = this._entries.get(id);
+    this._entries.set(id, instanceOrDescriptor);
+    return result;
   }
 
   has<T>(id: ServiceIdentifier<T>): boolean {
-    return this.entries.has(id);
+    return this._entries.has(id);
+  }
+
+  get<T>(id: ServiceIdentifier<T>): T | SyncDescriptor<T> {
+    return this._entries.get(id);
   }
 
   forEach(callback: (id: ServiceIdentifier<any>, instanceOrDescriptor: any) => void): void {
-    this.entries.forEach((value, key) => {
+    this._entries.forEach((value, key) => {
       callback(key, value);
     });
   }
 
   size(): number {
-    return this.entries.size;
+    return this._entries.size;
+  }
+
+  // ADVANCED MICROSOFT PATTERN: Clear method for collection reset
+  clear(): void {
+    this._entries.clear();
   }
 }
 
@@ -495,8 +513,8 @@ export class WindInstantiationService {
   private _createInstance<T>(ctor: any, args: any[] = [], _trace: Trace): T {
     // ADVANCED SERVICE CREATION: Microsoft-inspired instantiation with comprehensive error handling
     
-    // Check for service dependencies via decorators or metadata
-    const serviceDependencies = this._extractServiceDependencies(ctor);
+    // ADVANCED MICROSOFT PATTERN: Extract dependencies using Microsoft's approach
+    const serviceDependencies = this._extractServiceDependenciesMicrosoftStyle(ctor);
     
     // ADVANCED DEPENDENCY RESOLUTION: Circuit breaker pattern for dependency failures
     const resolvedDependencies: any[] = [];
@@ -578,6 +596,27 @@ export class WindInstantiationService {
           dependencies.push(paramType);
         }
       }
+    }
+    
+    return dependencies;
+  }
+
+  // ADVANCED MICROSOFT PATTERN: Microsoft-style dependency extraction
+  private _extractServiceDependenciesMicrosoftStyle(ctor: any): ServiceIdentifier<any>[] {
+    const dependencies: ServiceIdentifier<any>[] = [];
+    
+    // TODO: Implement Microsoft's DI metadata extraction pattern
+    // Microsoft uses: ctor[DI_DEPENDENCIES] array for dependency tracking
+    
+    // Check for Microsoft-style dependency metadata
+    const diDependencies = (ctor as any)['$di$dependencies'];
+    if (diDependencies && Array.isArray(diDependencies)) {
+      dependencies.push(...diDependencies.map((dep: any) => dep.id));
+    }
+    
+    // Fallback to our existing extraction method
+    if (dependencies.length === 0) {
+      return this._extractServiceDependencies(ctor);
     }
     
     return dependencies;
@@ -769,6 +808,77 @@ class InstantiationError extends Error {
     return this.message.includes('illegalState') || 
            this.message.includes('illegal state');
   }
+}
+
+// ADVANCED MICROSOFT PATTERN: Service decorator for dependency injection
+// TODO: Implement proper decorator-based dependency injection
+function serviceDecorator<T>(id: ServiceIdentifier<T>): PropertyDecorator {
+  return (target: any, propertyKey: string | symbol) => {
+    // TODO: Implement decorator-based dependency injection
+    console.log(`[WindInstantiationService] Service decorator applied: ${String(id)}`);
+  };
+}
+
+// ADVANCED MICROSOFT PATTERN: Create service identifier utility
+// TODO: Implement proper Microsoft-style service identifier creation
+export function createServiceIdentifier<T>(name: string): ServiceIdentifier<T> {
+  const id = function () { };
+  id.toString = () => name;
+  return id as ServiceIdentifier<T>;
+}
+
+// ADVANCED MICROSOFT PATTERN: Service validation utilities
+// TODO: Implement comprehensive service validation
+export function validateServiceGraph(services: ServiceCollection): { valid: boolean; errors: string[] } {
+  const errors: string[] = [];
+  const graph = new Graph<string>();
+  
+  // Build dependency graph
+  services.forEach((id, descriptor) => {
+    if (descriptor instanceof SyncDescriptor) {
+      const serviceId = String(id);
+      graph.lookupOrInsertNode(serviceId, serviceId);
+      
+      // Extract dependencies
+      const dependencies = extractServiceDependencies(descriptor.ctor);
+      for (const dependency of dependencies) {
+        graph.insertEdge(serviceId, String(dependency));
+      }
+    }
+  });
+  
+  // Check for cycles
+  const cycle = graph.findCycleSlow();
+  if (cycle) {
+    errors.push(`Cyclic dependency detected: ${cycle}`);
+  }
+  
+  return {
+    valid: errors.length === 0,
+    errors
+  };
+}
+
+// ADVANCED MICROSOFT PATTERN: Dependency extraction utility
+function extractServiceDependencies(ctor: any): ServiceIdentifier<any>[] {
+  const dependencies: ServiceIdentifier<any>[] = [];
+  
+  // Check for static dependencies property
+  if (ctor.dependencies && Array.isArray(ctor.dependencies)) {
+    dependencies.push(...ctor.dependencies);
+  }
+  
+  // Check for parameter types via metadata
+  const paramTypes = Reflect.getMetadata('design:paramtypes', ctor);
+  if (paramTypes && Array.isArray(paramTypes)) {
+    for (const paramType of paramTypes) {
+      if (paramType && paramType._serviceBrand !== undefined) {
+        dependencies.push(paramType);
+      }
+    }
+  }
+  
+  return dependencies;
 }
 
 class CyclicDependencyError extends Error {
