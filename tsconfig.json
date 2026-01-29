@@ -38,7 +38,7 @@
 		"target": "ESNext"
 	},
 	"exclude": ["Target"],
-	"extends": "@playform/build/tsconfig",
+	// "extends": "@playform/build/tsconfig", // Commented out - package not available
 	"include": [
 		"Source"
 	]

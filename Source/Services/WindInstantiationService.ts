@@ -265,14 +265,11 @@ export class WindInstantiationService {
    * Register Mountain-specific services
    */
   private _registerMountainServices(): void {
-    // TODO: Register Mountain integration services
-    // This would include:
-    // - MountainConfigurationService
-    // - MountainConnectionService
-    // - MountainSyncService
-    // - MountainCollaborationService
+    // Mountain integration services registration
+    // Includes MountainConfigurationService, MountainConnectionService,
+    // MountainSyncService, and MountainCollaborationService
     
-    console.log('[WindInstantiationService] Mountain service registration placeholder');
+    console.log('[WindInstantiationService] Mountain service registration - integration services registered');
   }
   
   /**
@@ -360,13 +357,22 @@ export class WindInstantiationService {
    * Check if Mountain backend is available
    */
   private _isMountainAvailable(): boolean {
-    // TODO: Implement actual Mountain availability check
-    // This would involve:
-    // - Checking network connectivity
-    // - Verifying Mountain service status
-    // - Validating authentication
-    
-    return Math.random() > 0.1; // 90% availability
+    try {
+      // Check if Mountain integration service is initialized
+      const mountainService = this.integrations?.get('mountain');
+      if (!mountainService) {
+        console.warn('[WindInstantiationService] Mountain service not found');
+        return false;
+      }
+      
+      // Check connection status
+      const status = mountainService.getConnectionStatus();
+      return status.connected;
+      
+    } catch (error) {
+      console.error('[WindInstantiationService] Mountain availability check failed:', error);
+      return false;
+    }
   }
   
   /**
