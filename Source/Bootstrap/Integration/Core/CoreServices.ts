@@ -18,7 +18,7 @@
  * - Testable: Each service can be unit tested independently
  */
 
-import { Effect } from 'effect';
+import * as Effect from 'effect/Effect';
 
 // ============================================================================
 // TYPES
@@ -528,7 +528,7 @@ const ConfigurationServiceImpl = ConfigurationServiceTag.of({
 		}),
 
 	updateValue: <T>(key: string, value: T) =>
-		Effect.sync(() => {
+		Effect.tryPromise(async () => {
 			const oldValue = this.config.get(key);
 			this.config.set(key, value);
 
@@ -549,6 +549,8 @@ const ConfigurationServiceImpl = ConfigurationServiceTag.of({
 			} else {
 				console.warn('[ConfigurationService] TauriInvoke not available, config not synced');
 			}
+
+			return oldValue;
 		}),
 
 	getAll: () =>

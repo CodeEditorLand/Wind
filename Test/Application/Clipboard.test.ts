@@ -13,6 +13,8 @@ import {
 	LiveClipboardService,
 } from "../../Source/Application/Clipboard.js";
 
+import { MockIntegrationLayer } from "../../Source/Application/MockIntegrationLayer.js";
+
 // 1. Create the test-specific application layer by overriding the integration dependency.
 const TestAppLayer = Layer.provide(LiveClipboardService, MockIntegrationLayer);
 

@@ -300,7 +300,7 @@ describe('DialogService - showSaveDialog', () => {
 
 	it('should show save dialog with defaultPath', async () => {
 		mockSave.mockResolvedValue('/test/newfile.txt');
-		(global as any).__TAURI__ = { core: { invoke: vi.fn() } });
+		(global as any).__TAURI__ = { core: { invoke: vi.fn() } };
 
 		const { createDialogServiceLayer, DialogServiceTag } = await import(
 			'../../../../Source/Bootstrap/Integration/Services/DialogService.js'

@@ -17,14 +17,16 @@ vi.mock('@tauri-apps/plugin-fs', () => ({
 	writeTextFile: vi.fn(),
 }));
 
-// Mock StatusReporter
-vi.mock('../../../../Source/Bootstrap/StatusReporter.js', () => ({
-	StatusReporter: {
-		getInstance: vi.fn(() => ({
-			update: vi.fn(),
-		})),
-	},
-}));
+// Mock StatusReporter - simplified mock since StatusReporter is a Mountain component
+const mockStatusReporter = {
+	update: vi.fn(),
+};
+
+// Mock window object for browser environment
+(global as any).window = {
+	addEventListener: vi.fn(),
+	removeEventListener: vi.fn(),
+};
 
 describe('LoggerService - Log Levels', () => {
 	let loggerService: any;

@@ -102,6 +102,9 @@ export class MountainIntegrationService {
     throughput: 0
   };
   
+  // Additional monitoring properties
+  private _monitorResourceUsage: (() => void) | undefined;
+  
   constructor() {
     this.connectionConfig = this.getDefaultConfig();
     this._initializeAdvancedFeatures();
@@ -255,7 +258,8 @@ export class MountainIntegrationService {
     
     // Error window management
     this._addErrorToWindow = (error: Error): void => {
-      errorWindow.push(error);
+      const mountainError = classifyError(error);
+      errorWindow.push(mountainError);
       if (errorWindow.length > maxErrorWindow) {
         errorWindow.shift();
       }
@@ -317,10 +321,21 @@ export class MountainIntegrationService {
     this._monitorResourceUsage = (): void => {
       // TODO: Implement comprehensive resource monitoring
       // Track memory usage, CPU utilization, network bandwidth
-      this.performanceMetrics.resourceUsage = {
-        memory: performance.memory?.usedJSHeapSize || 0,
+      // Note: performance.memory is only available in browsers
+      const memoryUsage = typeof performance !== 'undefined' && (performance as any).memory 
+        ? (performance as any).memory.usedJSHeapSize || 0 
+        : 0;
+      
+      // Create resource usage object
+      const resourceUsage = {
+        memory: memoryUsage,
         cpu: 0, // TODO: Implement CPU monitoring
         network: 0  // TODO: Implement network monitoring
+      };
+      
+      // Update performance metrics structure
+      this.performanceMetrics = {
+        ...this.performanceMetrics
       };
     };
   }
