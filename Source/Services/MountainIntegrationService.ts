@@ -696,29 +696,6 @@ export class MountainIntegrationService {
    * Perform gRPC call
    */
   private async performGrpcCall(serviceName: string, method: string, request: any): Promise<any> {
-    const startTime = performance.now();
-    const callId = `${serviceName}.${method}.${Date.now()}`;
-    
-    console.log(`[MountainIntegrationService] Performing gRPC call: ${callId}`);
-    
-    try {
-      // Perform actual gRPC call
-      const response = await this.performGrpcCall(serviceName, method, request);
-      
-      console.log(`[MountainIntegrationService] ✅ gRPC call ${callId} completed`);
-      return response;
-      
-    } catch (error) {
-      console.error(`[MountainIntegrationService] ❌ gRPC call ${callId} failed:`, error);
-      this._addErrorToWindow?.(error);
-      throw error;
-    }
-  }
-  
-  /**
-   * Perform actual gRPC call to Mountain backend
-   */
-  private async performGrpcCall(serviceName: string, method: string, request: any): Promise<any> {
     const callId = `${serviceName}.${method}.${Date.now()}`;
     const startTime = performance.now();
     
@@ -751,6 +728,8 @@ export class MountainIntegrationService {
       throw error;
     }
   }
+  
+
   
   /**
    * Set up connection monitoring
