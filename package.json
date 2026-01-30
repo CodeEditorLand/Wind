@@ -29,7 +29,6 @@
 	},
 	"dependencies": {
 		"@codeeditorland/output": "0.0.1",
-		"@codeeditorland/common": "0.0.6",
 		"@effect/platform": "0.94.2",
 		"@tauri-apps/api": "2.9.1",
 		"@tauri-apps/plugin-dialog": "2.6.0",
@@ -47,9 +46,10 @@
 		"@opentelemetry/sdk-trace-base": "2.5.0",
 		"@opentelemetry/sdk-trace-web": "2.5.0",
 		"@playform/build": "0.2.6",
-		"@types/node": "25.0.10",
+		"@types/node": "25.1.0",
 		"cross-env": "10.1.0",
 		"deepmerge-ts": "7.1.5",
+		"jsdom": "^27.4.0",
 		"ts-patch": "3.3.0",
 		"ulid": "3.0.2"
 	},

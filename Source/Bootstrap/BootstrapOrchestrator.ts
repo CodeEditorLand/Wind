@@ -16,6 +16,9 @@ import { PreparationStage } from './Stage4-Preparation.js';
 import { InitializationStage } from './Stage5-Initialization.js';
 import { HealthCheckStage } from './Stage6-HealthCheck.js';
 
+// Advanced Mountain-Wind Integration
+import { MountainIntegrationService } from '../Services/MountainIntegrationService.js';
+
 export class BootstrapOrchestrator {
   private static instance: BootstrapOrchestrator;
   private config: BootstrapConfig;
@@ -23,9 +26,13 @@ export class BootstrapOrchestrator {
     name: string;
     execute: () => Promise<StageResult>;
   }> = [];
+  
+  // Advanced Integration Services
+  private mountainIntegrationService: MountainIntegrationService;
 
   private constructor(config: BootstrapConfig) {
     this.config = config;
+    this.mountainIntegrationService = new MountainIntegrationService();
     this.initializeStages();
   }
 
@@ -50,7 +57,7 @@ export class BootstrapOrchestrator {
   }
 
   /**
-   * Initialize all bootstrap stages
+   * Initialize all bootstrap stages with advanced Mountain integration
    */
   private initializeStages(): void {
     this.stages = [
@@ -60,8 +67,55 @@ export class BootstrapOrchestrator {
       { name: 'Services', execute: () => ServicesStage.execute() },
       { name: 'Preparation', execute: () => PreparationStage.execute() },
       { name: 'Initialization', execute: () => InitializationStage.execute() },
+      { name: 'MountainIntegration', execute: () => this.executeMountainIntegration() },
       { name: 'HealthCheck', execute: () => HealthCheckStage.execute() }
     ];
+  }
+  
+  /**
+   * Advanced Mountain integration stage
+   */
+  private async executeMountainIntegration(): Promise<StageResult> {
+    const startTime = performance.now();
+    
+    try {
+      console.log('[BootstrapOrchestrator] 🔗 Starting Mountain integration...');
+      
+      // Initialize Mountain service
+      await this.mountainIntegrationService.initialize();
+      
+      // Connect to Mountain backend
+      await this.mountainIntegrationService.connect();
+      
+      // Synchronize configuration with Mountain
+      await this.mountainIntegrationService.synchronizeConfiguration();
+      
+      // Initialize real-time communication
+      await this.mountainIntegrationService.initializeRealTimeCommunication();
+      
+      const duration = performance.now() - startTime;
+      console.log('[BootstrapOrchestrator] ✅ Mountain integration completed successfully');
+      
+      return {
+        stage: 'MountainIntegration',
+        success: true,
+        duration,
+        warnings: []
+      };
+      
+    } catch (error) {
+      const duration = performance.now() - startTime;
+      console.error('[BootstrapOrchestrator] ❌ Mountain integration failed:', error);
+      
+      return {
+        stage: 'MountainIntegration',
+        success: false,
+        duration,
+        error: error instanceof Error ? error : new Error(String(error)),
+        critical: false, // Mountain integration is important but not critical
+        warnings: ['Mountain integration failed - continuing with basic functionality']
+      };
+    }
   }
 
   /**
