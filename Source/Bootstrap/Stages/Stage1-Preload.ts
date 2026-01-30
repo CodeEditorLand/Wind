@@ -5,7 +5,7 @@
  * Loads Wind preload script and validates window.vscode API shims.
  */
 
-import type { StageResult } from '../Types/BootstrapTypes.ts';
+import type { StageResult } from '../Types/Types.js';
 import { StatusReporter } from '../Core/StatusReporter.js';
 import { ErrorHandler } from '../Core/ErrorHandler.js';
 

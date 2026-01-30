@@ -5,7 +5,7 @@
  * Prepares the DOM and environment for VSCode workbench initialization.
  */
 
-import type { StageResult } from '../Types/BootstrapTypes.ts';
+import type { StageResult } from '../Types/Types.js';
 import { StatusReporter } from '../Core/StatusReporter.js';
 import { ErrorHandler } from '../Core/ErrorHandler.js';
 

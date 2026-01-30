@@ -3,26 +3,6 @@
  * @description
  * Clipboard service implementation for Wind project.
  * Provides read/write operations for clipboard functionality.
- *
- * ## File Responsibilities
- * - Clipboard service interface definition and implementation
- * - Cross-platform clipboard operations (read/write text)
- * - Error handling for clipboard operations
- * - Mock implementation for testing environments
- * - Service layer integration with Effect system
- * - Type-safe clipboard operations
- *
- * ## TODO
- * - [ ] Add support for clipboard image operations
- * - [ ] Implement clipboard history and management
- * - [ ] Add clipboard format detection and conversion
- * - [ ] Implement secure clipboard operations
- * - [ ] Add clipboard monitoring and change detection
- * - [ ] Implement clipboard synchronization across devices
- * - [ ] Add clipboard data validation and sanitization
- * - [ ] Implement clipboard permission management
- * - [ ] Add clipboard performance optimization
- * - [ ] Implement clipboard error recovery mechanisms
  */
 
 import * as Effect from "effect/Effect";
@@ -68,9 +48,9 @@ const LiveClipboardService: ClipboardService = {
         }
         return await navigator.clipboard.readText();
       },
-      catch: (Error) => ({
+      catch: (error) => ({
         _tag: "ClipboardReadError",
-        error: Error as Error
+        error: error as Error
       } as ClipboardError)
     }),
 
@@ -85,9 +65,9 @@ const LiveClipboardService: ClipboardService = {
         }
         await navigator.clipboard.writeText(text);
       },
-      catch: (Error) => ({
+      catch: (error) => ({
         _tag: "ClipboardWriteError",
-        error: Error as Error
+        error: error as Error
       } as ClipboardError)
     })
 };

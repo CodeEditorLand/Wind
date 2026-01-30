@@ -4,7 +4,7 @@
  * Real-time visual feedback system for bootstrap process.
  */
 
-import type { StatusUpdate, BootstrapResult } from '../Types/BootstrapTypes.ts';
+import type { StatusUpdate, BootstrapResult } from '../Types/Types.js';
 
 export class StatusReporter {
   private static instance: StatusReporter;

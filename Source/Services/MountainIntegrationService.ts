@@ -127,6 +127,7 @@ export class MountainIntegrationService {
     };
     
     // Note: _messagePerformance tracking removed as it's not used in current implementation
+	this._messagePerformance = {
       totalMessages: 0,
       successfulMessages: 0,
       failedMessages: 0,

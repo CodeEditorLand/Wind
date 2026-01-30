@@ -10,11 +10,7 @@
  * - Cyclic dependency detection
  * - Service lifecycle management
  * 
- * Microsoft Source Reference: `vs/platform/instantiation/common/instantiationService.ts`
- * Microsoft Source Reference: `vs/platform/instantiation/common/descriptors.ts`
- * Microsoft Source Reference: `vs/platform/instantiation/common/serviceCollection.ts`
- * Microsoft Source Reference: `vs/platform/instantiation/common/instantiation.ts`
- * 
+ * VSCode Source Reference: `vs/platform/instantiation/common/instantiationService.ts`
  * TODO: Complete service descriptor implementation
  * TODO: Add comprehensive error handling
  * TODO: Implement service lifecycle phases
@@ -41,23 +37,11 @@ export interface ServiceIdentifier<T> {
 export type BrandedService = { _serviceBrand: undefined };
 
 // ADVANCED MICROSOFT PATTERN: Create service identifier utility
-// Microsoft Source Reference: `vs/platform/instantiation/common/instantiation.ts`
+// Fix: Remove duplicate function declarations
 export function createServiceIdentifier<T>(name: string): ServiceIdentifier<T> {
   const id = function () { };
   id.toString = () => name;
   return id as ServiceIdentifier<T>;
-}
-
-// Microsoft pattern: Service decorator for dependency injection
-// Microsoft Source Reference: `vs/platform/instantiation/common/instantiation.ts`
-export function service<T>(id: ServiceIdentifier<T>): PropertyDecorator {
-  return (target: any, propertyKey: string | symbol) => {
-    console.log(`[WindInstantiationService] Service decorator applied: ${String(id)}`);
-    // Microsoft pattern: Store service dependency metadata
-    const dependencies = Reflect.getMetadata('design:paramtypes', target.constructor) || [];
-    dependencies.push(id);
-    Reflect.defineMetadata('design:paramtypes', dependencies, target.constructor);
-  };
 }
 
 /**
@@ -288,12 +272,6 @@ export class WindInstantiationService {
   private _servicesToMaybeDispose: Set<any> = new Set();
   private _activeInstantiations: Set<ServiceIdentifier<any>> = new Set();
   private _globalGraph?: Graph<string>;
-  private _performanceCounters: {
-    serviceCreations: number;
-    serviceDisposals: number;
-    dependencyResolutions: number;
-    cyclicDependencyDetections: number;
-  };
 
   constructor(
     services: ServiceCollection = new ServiceCollection(),
@@ -306,46 +284,14 @@ export class WindInstantiationService {
     this._parent = parent;
     this._enableTracing = enableTracing;
     
-    // Microsoft pattern: Register self as a service
+    // Fix: Use proper ServiceIdentifier instead of constructor
     this._services.set(createServiceIdentifier<WindInstantiationService>('WindInstantiationService'), this);
     this._globalGraph = enableTracing ? new Graph() : undefined;
     
     // ADVANCED MOUNTAIN INTEGRATION: Initialize Mountain service tracking
     this._initializeMountainIntegration();
     
-    // Microsoft pattern: Service initialization logging
     console.log('[WindInstantiationService] Initialized with Mountain integration');
-    
-    // Microsoft pattern: Performance monitoring setup
-    this._setupPerformanceMonitoring();
-  }
-
-  /**
-   * Microsoft pattern: Performance monitoring setup
-   */
-  private _setupPerformanceMonitoring(): void {
-    console.log('[WindInstantiationService] Setting up performance monitoring');
-    
-    // Microsoft pattern: Performance counters
-    this._performanceCounters = {
-      serviceCreations: 0,
-      serviceDisposals: 0,
-      dependencyResolutions: 0,
-      cyclicDependencyDetections: 0,
-    };
-    
-    // Microsoft pattern: Performance metrics collection
-    this._startPerformanceMetricsCollection();
-  }
-
-  /**
-   * Microsoft pattern: Performance metrics collection
-   */
-  private _startPerformanceMetricsCollection(): void {
-    console.log('[WindInstantiationService] Starting performance metrics collection');
-    
-    // TODO: Implement Microsoft-style performance metrics collection
-    // Based on Microsoft's performance monitoring patterns
   }
   
   /**

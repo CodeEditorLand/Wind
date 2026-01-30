@@ -5,7 +5,7 @@
  * Detects platform, mode, and validates runtime environment.
  */
 
-import type { StageResult, EnvironmentData, Platform, Mode } from '../Types/BootstrapTypes.ts';
+import type { StageResult, EnvironmentData, Platform, Mode } from '../Types/Types.js';
 import { StatusReporter } from '../Core/StatusReporter.js';
 import { ErrorHandler } from '../Core/ErrorHandler.js';
 

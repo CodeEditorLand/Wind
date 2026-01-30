@@ -5,7 +5,7 @@
  * Fetches and validates workbench configuration from Mountain or meta tags.
  */
 
-import type { StageResult, ConfigurationData, Platform } from '../Types/BootstrapTypes.ts';
+import type { StageResult, ConfigurationData, Platform } from '../Types/Types.js';
 import { StatusReporter } from '../Core/StatusReporter.js';
 import { ErrorHandler } from '../Core/ErrorHandler.js';
 
