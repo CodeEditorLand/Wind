@@ -17,8 +17,6 @@
  */
 
 import { invoke } from '@tauri-apps/api/core';
-import { BaseDirectory, readTextFile, writeTextFile, readBinaryFile, writeBinaryFile, createDir, removeDir, removeFile, exists, copyFile, renameFile, readDir, metadata } from '@tauri-apps/api/fs';
-import { watch, unwatch, type FileSystemWatcher as TauriWatcher } from '@tauri-apps/api/fs';
 
 /**
  * File system entry interface
@@ -84,7 +82,11 @@ export class TauriFileService {
    */
   async exists(path: string): Promise<boolean> {
     try {
-      return await exists(path, { dir: BaseDirectory.AppData });
+      const result = await invoke('mountain_ipc_invoke', {
+        command: 'file:exists',
+        args: [path]
+      });
+      return result as boolean;
     } catch (error) {
       console.error(`[TauriFileService] Error checking existence of ${path}:`, error);
       return false;
@@ -96,7 +98,11 @@ export class TauriFileService {
    */
   async readFile(path: string, encoding: string = 'utf-8'): Promise<string> {
     try {
-      return await readTextFile(path, { dir: BaseDirectory.AppData });
+      const result = await invoke('mountain_ipc_invoke', {
+        command: 'file:read',
+        args: [path]
+      });
+      return result as string;
     } catch (error) {
       console.error(`[TauriFileService] Error reading file ${path}:`, error);
       throw new Error(`Failed to read file: ${path}`);
@@ -108,7 +114,18 @@ export class TauriFileService {
    */
   async readFileBinary(path: string): Promise<Uint8Array> {
     try {
-      return await readBinaryFile(path, { dir: BaseDirectory.AppData });
+      const result = await invoke('mountain_ipc_invoke', {
+        command: 'file:readBinary',
+        args: [path]
+      });
+      // Convert base64 string to Uint8Array
+      const base64 = result as string;
+      const binaryString = atob(base64);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      return bytes;
     } catch (error) {
       console.error(`[TauriFileService] Error reading binary file ${path}:`, error);
       throw new Error(`Failed to read binary file: ${path}`);
@@ -120,7 +137,10 @@ export class TauriFileService {
    */
   async writeFile(path: string, content: string, encoding: string = 'utf-8'): Promise<void> {
     try {
-      await writeTextFile(path, content, { dir: BaseDirectory.AppData });
+      await invoke('mountain_ipc_invoke', {
+        command: 'file:write',
+        args: [path, content]
+      });
     } catch (error) {
       console.error(`[TauriFileService] Error writing file ${path}:`, error);
       throw new Error(`Failed to write file: ${path}`);
@@ -132,7 +152,14 @@ export class TauriFileService {
    */
   async writeFileBinary(path: string, content: Uint8Array): Promise<void> {
     try {
-      await writeBinaryFile(path, content, { dir: BaseDirectory.AppData });
+      // Convert Uint8Array to base64 string
+      const binaryString = String.fromCharCode(...content);
+      const base64 = btoa(binaryString);
+      
+      await invoke('mountain_ipc_invoke', {
+        command: 'file:writeBinary',
+        args: [path, base64]
+      });
     } catch (error) {
       console.error(`[TauriFileService] Error writing binary file ${path}:`, error);
       throw new Error(`Failed to write binary file: ${path}`);
@@ -144,7 +171,10 @@ export class TauriFileService {
    */
   async createDirectory(path: string, recursive: boolean = true): Promise<void> {
     try {
-      await createDir(path, { dir: BaseDirectory.AppData, recursive });
+      await invoke('mountain_ipc_invoke', {
+        command: 'file:mkdir',
+        args: [path, recursive]
+      });
     } catch (error) {
       console.error(`[TauriFileService] Error creating directory ${path}:`, error);
       throw new Error(`Failed to create directory: ${path}`);
@@ -156,19 +186,10 @@ export class TauriFileService {
    */
   async delete(path: string, recursive: boolean = false): Promise<void> {
     try {
-      const pathExists = await this.exists(path);
-      if (!pathExists) {
-        console.warn(`[TauriFileService] Path does not exist: ${path}`);
-        return;
-      }
-
-      // Determine if path is directory or file using metadata
-      const metadata = await this.stat(path);
-      if (metadata.isDirectory) {
-        await removeDir(path, { dir: BaseDirectory.AppData, recursive });
-      } else {
-        await removeFile(path, { dir: BaseDirectory.AppData });
-      }
+      await invoke('mountain_ipc_invoke', {
+        command: 'file:delete',
+        args: [path]
+      });
     } catch (error) {
       console.error(`[TauriFileService] Error deleting ${path}:`, error);
       throw new Error(`Failed to delete: ${path}`);
@@ -180,7 +201,10 @@ export class TauriFileService {
    */
   async copy(source: string, target: string): Promise<void> {
     try {
-      await copyFile(source, target, { dir: BaseDirectory.AppData });
+      await invoke('mountain_ipc_invoke', {
+        command: 'file:copy',
+        args: [source, target]
+      });
     } catch (error) {
       console.error(`[TauriFileService] Error copying ${source} to ${target}:`, error);
       throw new Error(`Failed to copy file: ${source} -> ${target}`);
@@ -192,7 +216,10 @@ export class TauriFileService {
    */
   async move(source: string, target: string): Promise<void> {
     try {
-      await renameFile(source, target, { dir: BaseDirectory.AppData });
+      await invoke('mountain_ipc_invoke', {
+        command: 'file:move',
+        args: [source, target]
+      });
     } catch (error) {
       console.error(`[TauriFileService] Error moving ${source} to ${target}:`, error);
       throw new Error(`Failed to move file: ${source} -> ${target}`);
@@ -204,15 +231,18 @@ export class TauriFileService {
    */
   async readDirectory(path: string): Promise<IFileSystemEntry[]> {
     try {
-      // Use Tauri's readDir API to list directory contents
-      const entries = await readDir(path, { dir: BaseDirectory.AppData });
+      const result = await invoke('mountain_ipc_invoke', {
+        command: 'file:readdir',
+        args: [path]
+      });
       
+      const entries = result as any[];
       const fileSystemEntries: IFileSystemEntry[] = entries.map(entry => ({
         path: entry.path,
         name: entry.name || entry.path.split('/').pop() || entry.path,
         isDirectory: entry.isDirectory,
         size: entry.size || 0,
-        modified: entry.modified ? new Date(entry.modified).getTime() : Date.now()
+        modified: entry.modified || Date.now()
       }));
       
       return fileSystemEntries;
@@ -227,18 +257,21 @@ export class TauriFileService {
    */
   async stat(path: string): Promise<IFileSystemEntry> {
     try {
-      // Use Tauri's metadata API to get detailed file stats
-      const fileMetadata = await metadata(path, { dir: BaseDirectory.AppData });
+      const result = await invoke('mountain_ipc_invoke', {
+        command: 'file:stat',
+        args: [path]
+      });
       
-      const stats: IFileSystemEntry = {
+      const stats = result as any;
+      const fileStats: IFileSystemEntry = {
         path: path,
         name: path.split('/').pop() || path,
-        isDirectory: fileMetadata.isDirectory,
-        size: fileMetadata.size || 0,
-        modified: fileMetadata.modified ? new Date(fileMetadata.modified).getTime() : Date.now()
+        isDirectory: stats.isDirectory || false,
+        size: stats.size || 0,
+        modified: stats.modified || Date.now()
       };
       
-      return stats;
+      return fileStats;
     } catch (error) {
       console.error(`[TauriFileService] Error getting stats for ${path}:`, error);
       throw new Error(`Failed to get file stats: ${path}`);

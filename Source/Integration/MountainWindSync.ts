@@ -13,7 +13,8 @@
  * - Comprehensive conflict resolution capabilities
  */
 
-import { invoke, listen, emit } from '@tauri-apps/api/core';
+import { invoke } from '@tauri-apps/api/core';
+import { listen, emit } from '@tauri-apps/api/event';
 
 /**
  * Synchronization status
