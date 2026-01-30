@@ -5,7 +5,7 @@
  * Coordinates all bootstrap stages and manages the overall process.
  */
 
-import type { BootstrapResult, BootstrapConfig, StageResult } from '../Types/Types.js';
+import type { BootstrapResult, BootstrapConfig, StageResult } from '../Types/BootstrapTypes.ts';
 import { StatusReporter } from './StatusReporter.js';
 import { ErrorHandler } from './ErrorHandler.js';
 import { EnvironmentStage } from '../Stages/Stage0-Environment.js';

@@ -225,32 +225,34 @@ export interface DialogService {
 // ============================================================================
 
 /** Environment service context tag */
-export const EnvironmentServiceTag = Effect.Tag<
-	EnvironmentService,
-	EnvironmentService
->('EnvironmentService');
+export class EnvironmentServiceTag extends Effect.Tag("EnvironmentService")<
+  EnvironmentService,
+  EnvironmentService
+>() {}
 
 /** Logger service context tag */
-export const LoggerServiceTag = Effect.Tag<LoggerService, LoggerService>(
-	'LoggerService'
-);
+export class LoggerServiceTag extends Effect.Tag("LoggerService")<
+  LoggerService,
+  LoggerService
+>() {}
 
 /** Configuration service context tag */
-export const ConfigurationServiceTag = Effect.Tag<
-	ConfigurationService,
-	ConfigurationService
->('ConfigurationService');
+export class ConfigurationServiceTag extends Effect.Tag("ConfigurationService")<
+  ConfigurationService,
+  ConfigurationService
+>() {}
 
 /** File service context tag */
-export const FileServiceTag = Effect.Tag<FileService, FileService>(
-	'FileService'
-);
+export class FileServiceTag extends Effect.Tag("FileService")<
+  FileService,
+  FileService
+>() {}
 
 /** Dialog service context tag */
-export const DialogServiceTag = Effect.Tag<
-	DialogService,
-	DialogService
->('DialogService');
+export class DialogServiceTag extends Effect.Tag("DialogService")<
+  DialogService,
+  DialogService
+>() {}
 
 // ============================================================================
 // SERVICE IMPLEMENTATIONS

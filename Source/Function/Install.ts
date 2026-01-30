@@ -17,21 +17,21 @@ export default async function Install(): Promise<void> {
 	try {
 		// Validate window context
 		if (typeof window === 'undefined') {
-			const error = new Error('Cannot install Wind polyfill: window is not defined');
-			console.error(error);
+			const Error = new Error('Cannot install Wind polyfill: window is not defined');
+			console.error(Error);
 			return;
 		}
 
 		// Prevent double initialization
-		if ((window as unknown as { polyfillInstalled?: boolean }).polyfillInstalled) {
+		if ((window as unknown as { PolyfillInstalled?: boolean }).PolyfillInstalled) {
 			return;
 		}
-		(window as unknown as { polyfillInstalled: boolean }).polyfillInstalled = true;
+		(window as unknown as { PolyfillInstalled: boolean }).PolyfillInstalled = true;
 
 		// Initialize core components
 		const Configuration = await ResolveConfiguration();
-		const IPCRenderer = createIpcRenderer();
-		const Process = createProcess(Configuration);
+		const IPCRenderer = CreateIpcRenderer();
+		const Process = CreateProcess(Configuration);
 
 		// Construct compliant VSCode API object
 		const Globals: IMainWindowSandboxGlobals = {
@@ -42,7 +42,7 @@ export default async function Install(): Promise<void> {
 				resolveConfiguration: async () => Configuration
 			},
 			webFrame: { setZoomLevel: () => {} },
-			webUtils: { getPathForFile: (file: File) => file.name },
+			webUtils: { GetPathForFile: (file: File) => file.name },
 			ipcMessagePort: { acquire: () => {} }
 		};
 
@@ -50,30 +50,30 @@ export default async function Install(): Promise<void> {
 		(window as any).vscode = Globals;
 		console.info("[Wind Raleigh] Successfully installed Electron API polyfill for workbench.");
 
-	} catch (error: unknown) {
-		console.error(`[Wind Raleigh] Install error:`, error);
-		fallback(error);
+	} catch (Error: unknown) {
+		console.error(`[Wind Raleigh] Install error:`, Error);
+		Fallback(Error);
 	}
 }
 
 // IpcRenderer factory with proper VSCode typing
-export function createIpcRenderer(): IpcRenderer {
+export function CreateIpcRenderer(): IpcRenderer {
 	return {
 		send: (channel: string): void => {
-			if (!validateIPCChannel(channel)) return;
+			if (!ValidateIPCChannel(channel)) return;
 		},
 		invoke: async (channel: string): Promise<unknown> => {
-			if (!validateIPCChannel(channel)) {
+			if (!ValidateIPCChannel(channel)) {
 				throw new Error(`Invalid IPC channel: ${channel}`);
 			}
 			return {};
 		},
 		on: (channel: string, listener: (event: IpcRendererEvent) => void): IpcRenderer => {
-			if (!validateIPCChannel(channel)) return this;
+			if (!ValidateIPCChannel(channel)) return this;
 			return this;
 		},
 		once: (channel: string, listener: (event: IpcRendererEvent) => void): IpcRenderer => {
-			if (!validateIPCChannel(channel)) return this;
+			if (!ValidateIPCChannel(channel)) return this;
 			return this;
 		},
 		removeListener: (channel: string, listener: (event: IpcRendererEvent) => void): IpcRenderer => {
@@ -83,7 +83,7 @@ export function createIpcRenderer(): IpcRenderer {
 }
 
 // Process factory with proper VSCode typing
-export function createProcess(configuration: ISandboxConfiguration): ISandboxNodeProcess {
+export function CreateProcess(configuration: ISandboxConfiguration): ISandboxNodeProcess {
 	return {
 		platform: 'web',
 		arch: 'web',
@@ -115,7 +115,7 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 /**
  * Validates IPC channels with proper guard clauses
  */
-export function validateIPCChannel(channel: string): boolean {
+export function ValidateIPCChannel(channel: string): boolean {
 	if (!channel || typeof channel !== 'string') return false;
 	if (typeof navigator !== 'undefined' && !channel.startsWith('vscode:')) return false;
 	return true;
@@ -124,7 +124,7 @@ export function validateIPCChannel(channel: string): boolean {
 /**
  * Implements graceful degradation with fallback support
  */
-export function fallback(error: unknown): void {
+export function Fallback(error: unknown): void {
 	if (typeof (window as any).legacyBridge !== 'undefined') {
 		(window as any).vscode = (window as any).legacyBridge;
 		return;

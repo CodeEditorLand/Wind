@@ -8,7 +8,7 @@
  * Services are registered via ServiceAdapter for VSCode compatibility.
  */
 
-import type { StageResult, ServiceData } from '../Types/Types.js';
+import type { StageResult, ServiceData } from '../Types/BootstrapTypes.ts';
 import { StatusReporter } from '../Core/StatusReporter.js';
 import { ErrorHandler } from '../Core/ErrorHandler.js';
 import { ServiceAdapter } from '../Integration/ServiceAdapter.js';

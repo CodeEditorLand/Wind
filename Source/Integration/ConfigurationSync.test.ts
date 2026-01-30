@@ -7,17 +7,28 @@
 import { TauriConfigurationService, ConfigurationScope } from '../Desktop/TauriConfigurationService';
 
 // Mock Tauri invoke function
-const mockInvoke = jest.fn();
 jest.mock('@tauri-apps/api/core', () => ({
-  invoke: (...args: any[]) => mockInvoke(...args)
+  invoke: jest.fn()
 }));
+
+import { invoke } from '@tauri-apps/api/core';
+
+const mockInvoke = invoke as jest.Mock;
 
 describe('Configuration Synchronization', () => {
   let windConfigService: TauriConfigurationService;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     mockInvoke.mockClear();
+    // Mock successful configuration load
+    mockInvoke.mockResolvedValue({
+      application: {},
+      workspace: {},
+      profile: {}
+    });
     windConfigService = new TauriConfigurationService();
+    // Wait for initialization to complete
+    await new Promise(resolve => setTimeout(resolve, 0));
   });
 
   afterEach(() => {
@@ -76,8 +87,8 @@ describe('Configuration Synchronization', () => {
 
       await windConfigService.updateValue('window.zoomLevel', 1, ConfigurationScope.APPLICATION);
 
-      // Verify retry logic was executed
-      expect(mockInvoke).toHaveBeenCalledTimes(2);
+      // Verify retry logic was executed (retries 3 times + initial call = 4 total)
+      expect(mockInvoke).toHaveBeenCalledTimes(4);
     });
   });
 

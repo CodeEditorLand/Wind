@@ -50,6 +50,7 @@
 		"jest": "^29.7.0",
 		"jest-environment-jsdom": "^29.7.0",
 		"jsdom": "^27.4.0",
+		"ts-jest": "^29.4.6",
 		"ts-patch": "3.3.0",
 		"ulid": "3.0.2"
 	},

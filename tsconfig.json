@@ -28,7 +28,7 @@
 		"noUnusedParameters": true,
 		"outDir": "Target",
 		"paths": {
-			"@codeeditorland/output/*": ["../Output/Target/Microsoft/VSCode/*"]
+			"@codeeditorland/output/*": ["../Output/Target/Microsoft/VSCode/vs/*"]
 		},
 		"plugins": [{
 			"allowedDuplicatedPackages": [],
@@ -59,9 +59,12 @@
 		"target": "ESNext",
 		"useDefineForClassFields": true
 	},
-	"exclude": ["Target", "node_modules", "Source/Archive"],
+	"exclude": ["Target", "node_modules", "Source/Archive", "Source/**/*.rs", "Source/**/*.toml", "node_modules/@types/serviceworker"],
 	"extends": "@playform/build/tsconfig",
 	"include": [
-		"Source"
+		"Source/**/*.ts",
+		"Source/**/*.tsx",
+		"Source/**/*.js",
+		"Source/**/*.jsx"
 	]
 }

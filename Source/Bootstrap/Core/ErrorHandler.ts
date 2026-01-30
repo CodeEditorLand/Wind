@@ -4,7 +4,7 @@
  * Centralized error handling with recovery strategies.
  */
 
-import type { ErrorSeverity, StageName } from '../Types/Types.js';
+import type { ErrorSeverity, StageName } from '../Types/BootstrapTypes.ts';
 
 export class ErrorHandler {
   private static instance: ErrorHandler;

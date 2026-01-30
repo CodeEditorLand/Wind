@@ -5,6 +5,13 @@
  * Replaces the old bootstrap with the new highly atomic, debuggable system.
  */
 
+declare global {
+  /** Tauri invoke function for calling Rust backend */
+  const TauriInvoke: {
+    (command: string, payload?: any): Promise<any>;
+  } | undefined;
+}
+
 import { bootstrap } from './Bootstrap/index.js';
 
 // ============================================================================

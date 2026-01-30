@@ -6,23 +6,22 @@ const config = {
   testMatch: [
     '**/__tests__/**/*.ts',
     '**/?(*.)+(spec|test).ts'
+  ],
+  transform: {
+    '^.+\\.ts$': 'ts-jest',
+  },
+  moduleNameMapper: {
+    '^@tauri-apps/api/core$': '<rootDir>/Source/Mocks/tauri.mock.ts'
+  },
 
+  collectCoverageFrom: [
+    'Source/**/*.ts',
+    '!Source/**/*.d.ts',
+    '!Source/**/*.test.ts',
+    '!Source/**/__tests__/**'
+  ],
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov', 'html']
+};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-module.exports = config;};  coverageReporters: ['text', 'lcov', 'html']  coverageDirectory: 'coverage',  ],    '!Source/**/__tests__/**'    '!Source/**/*.test.ts',    '!Source/**/*.d.ts',    'Source/**/*.ts',  collectCoverageFrom: [  setupFilesAfterEnv: ['<rootDir>/Source/TestSetup.ts'],  },    '^@tauri-apps/api/core$': '<rootDir>/Source/Mocks/tauri.mock.ts'  moduleNameMapping: {  },    '^.+\.ts$': 'ts-jest',  transform: {  ],
+export default config;

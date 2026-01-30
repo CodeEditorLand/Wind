@@ -126,8 +126,7 @@ export class MountainIntegrationService {
       maxConnectionTime: 0
     };
     
-    // Track message performance
-    this._messagePerformance = {
+    // Note: _messagePerformance tracking removed as it's not used in current implementation
       totalMessages: 0,
       successfulMessages: 0,
       failedMessages: 0,
@@ -1005,8 +1004,8 @@ export class MountainIntegrationService {
       
       if (windConfig.extensions && mountainConfig.extensions) {
         merged.extensions = {
-          installed: [...new Set([...windConfig.extensions.installed, ...mountainConfig.extensions.installed])],
-          enabled: [...new Set([...windConfig.extensions.enabled, ...mountainConfig.extensions.enabled])]
+          installed: Array.from(new Set([...windConfig.extensions.installed, ...mountainConfig.extensions.installed])),
+          enabled: Array.from(new Set([...windConfig.extensions.enabled, ...mountainConfig.extensions.enabled]))
         };
       }
       
