@@ -13,36 +13,7 @@
  * - Comprehensive conflict resolution capabilities
  */
 
-// import { invoke, listen, emit } from '@tauri-apps/api/core'; // Commented out for now - fix import path
-
-// Mock implementations for Tauri APIs
-const invoke = async <T>(command: string, ...args: any[]): Promise<T> => {
-  console.log(`[MountainWindSync] Mock invoke: ${command}`, args);
-  
-  // Mock responses based on command
-  switch (command) {
-    case 'mountain_get_status':
-      return { connected: true, version: '1.0.0' } as T;
-    case 'mountain_get_configuration':
-      return { editor: { theme: 'dark' }, extensions: { installed: [] } } as T;
-    case 'mountain_get_services_status':
-      return { editor: { status: 'running' }, extensionHost: { status: 'running' } } as T;
-    case 'mountain_get_state':
-      return { ui: {}, editor: {}, workspace: {} } as T;
-    default:
-      return {} as T;
-  }
-};
-
-const listen = async (event: string, callback: (event: any) => void): Promise<void> => {
-  console.log(`[MountainWindSync] Mock listen: ${event}`);
-  // Mock event listening - would setup real listeners in production
-};
-
-const emit = async (event: string, payload?: any): Promise<void> => {
-  console.log(`[MountainWindSync] Mock emit: ${event}`, payload);
-  // Mock event emission - would emit real events in production
-};
+import { invoke, listen, emit } from '@tauri-apps/api/core';
 
 /**
  * Synchronization status

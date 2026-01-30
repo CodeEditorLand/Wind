@@ -14,8 +14,7 @@
  * TODO: Add performance monitoring and optimization
  */
 
-import { invoke } from '@tauri-apps/api/core';
-import { event } from '@tauri-apps/api';
+import { invoke, event } from '@tauri-apps/api/core';
 
 /**
  * Interface for Tauri IPC message structure

@@ -149,7 +149,30 @@ export class TauriConfigurationService implements IConfigurationService {
       console.log('[TauriConfigurationService] Configuration loaded successfully');
     } catch (error) {
       console.error('[TauriConfigurationService] Failed to load configuration:', error);
-      throw error;
+      
+      // Initialize with default configuration if loading fails
+      this.configuration.set(ConfigurationScope.APPLICATION, {
+        _version: 1,
+        _timestamp: Date.now(),
+        window: {
+          zoomLevel: 0,
+          theme: 'dark'
+        },
+        editor: {
+          fontSize: 14,
+          lineNumbers: 'on'
+        }
+      });
+      this.configuration.set(ConfigurationScope.WORKSPACE, {
+        _version: 1,
+        _timestamp: Date.now()
+      });
+      this.configuration.set(ConfigurationScope.PROFILE, {
+        _version: 1,
+        _timestamp: Date.now()
+      });
+      
+      console.log('[TauriConfigurationService] Initialized with default configuration');
     }
   }
 
@@ -173,7 +196,49 @@ export class TauriConfigurationService implements IConfigurationService {
       console.log('[TauriConfigurationService] Configuration saved successfully');
     } catch (error) {
       console.error('[TauriConfigurationService] Failed to save configuration:', error);
-      throw error;
+      
+      // Implement conflict resolution: retry with exponential backoff
+      await this.handleConfigurationConflict(error);
+    }
+  }
+
+  /**
+   * Handle configuration conflicts with retry logic
+   */
+  private async handleConfigurationConflict(error: any): Promise<void> {
+    console.warn('[TauriConfigurationService] Configuration conflict detected, implementing retry logic');
+    
+    const maxRetries = 3;
+    const baseDelay = 100; // ms
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      const delay = baseDelay * Math.pow(2, attempt - 1);
+      console.log(`[TauriConfigurationService] Retry attempt ${attempt}/${maxRetries} after ${delay}ms`);
+      
+      await new Promise(resolve => setTimeout(resolve, delay));
+      
+      try {
+        // Reload configuration first to get latest state
+        await this.loadConfiguration();
+        
+        // Retry saving
+        const configData = {
+          application: this.configuration.get(ConfigurationScope.APPLICATION) || {},
+          workspace: this.configuration.get(ConfigurationScope.WORKSPACE) || {},
+          profile: this.configuration.get(ConfigurationScope.PROFILE) || {}
+        };
+
+        await invoke('save_configuration_data', { configData });
+        console.log('[TauriConfigurationService] Configuration saved successfully after retry');
+        return;
+      } catch (retryError) {
+        console.error(`[TauriConfigurationService] Retry attempt ${attempt} failed:`, retryError);
+        
+        if (attempt === maxRetries) {
+          console.error('[TauriConfigurationService] All retry attempts failed, configuration may be out of sync');
+          throw new Error(`Configuration synchronization failed after ${maxRetries} attempts: ${retryError}`);
+        }
+      }
     }
   }
 
