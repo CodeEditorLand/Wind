@@ -702,11 +702,8 @@ export class MountainIntegrationService {
     console.log(`[MountainIntegrationService] Performing gRPC call: ${callId}`);
     
     try {
-      // Simulate actual gRPC call
-      const response = await this.simulateGrpcCall(serviceName, method, request);
-      
-      // Track performance
-      this._trackMessageLatency?.(callId, startTime);
+      // Perform actual gRPC call
+      const response = await this.performGrpcCall(serviceName, method, request);
       
       console.log(`[MountainIntegrationService] ✅ gRPC call ${callId} completed`);
       return response;
@@ -719,20 +716,40 @@ export class MountainIntegrationService {
   }
   
   /**
-   * Simulate gRPC call (placeholder for actual implementation)
+   * Perform actual gRPC call to Mountain backend
    */
-  private async simulateGrpcCall(serviceName: string, method: string, request: any): Promise<any> {
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 200));
+  private async performGrpcCall(serviceName: string, method: string, request: any): Promise<any> {
+    const callId = `${serviceName}.${method}.${Date.now()}`;
+    const startTime = performance.now();
     
-    // Simulate successful response for now
-    return {
-      success: true,
-      service: serviceName,
-      method,
-      timestamp: Date.now(),
-      data: { ...request, processed: true }
-    };
+    console.log(`[MountainIntegrationService] Performing gRPC call: ${callId}`);
+    
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      
+      // Perform actual gRPC call via Mountain IPC
+      const response = await invoke<any>(
+        'mountain_grpc_call',
+        {
+          serviceName,
+          method,
+          request,
+          callId,
+          timeout: this.connectionConfig.timeout
+        }
+      );
+      
+      // Track performance
+      this._trackMessageLatency?.(callId, startTime);
+      
+      console.log(`[MountainIntegrationService] ✅ gRPC call ${callId} completed`);
+      return response;
+      
+    } catch (error) {
+      console.error(`[MountainIntegrationService] ❌ gRPC call ${callId} failed:`, error);
+      this._addErrorToWindow?.(error);
+      throw error;
+    }
   }
   
   /**
@@ -829,22 +846,29 @@ export class MountainIntegrationService {
       // Import Tauri invoke for IPC communication
       const { invoke } = await import('@tauri-apps/api/core');
       
-      // Perform connection via Tauri IPC
+      // Perform connection via Tauri IPC with real Mountain backend
       const result = await invoke<{ connected: boolean; version: string; features: string[] }>(
         'mountain_ipc_connect',
         {
           host: this.connectionConfig.host,
           port: this.connectionConfig.port,
           secure: this.connectionConfig.secure,
-          timeout: this.connectionConfig.timeout
+          timeout: this.connectionConfig.timeout,
+          clientId: 'wind',
+          clientVersion: '1.0.0'
         }
       );
       
       console.log('[MountainIntegrationService] ✅ Connected to Mountain:', result);
+      
+      // Track connection performance
+      this._trackConnectionPerformance?.(performance.now());
+      
       return;
       
     } catch (error) {
       console.error('[MountainIntegrationService] Connection to Mountain failed:', error);
+      this._addErrorToWindow?.(error);
       throw new Error(`Failed to connect to Mountain: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
@@ -904,17 +928,21 @@ export class MountainIntegrationService {
       // Get Wind configuration
       const windConfig = await this.getWindConfiguration();
       
-      // Sync configuration via Mountain IPC
+      // Sync configuration via Mountain IPC with real backend
       const syncResult = await invoke<{
         success: boolean;
         synchronizedItems: number;
         warnings: string[];
+        syncDuration: number;
+        conflicts: number;
       }>(
         'mountain_sync_configuration',
         {
           configuration: windConfig,
           timestamp: Date.now(),
-          clientId: 'wind'
+          clientId: 'wind',
+          syncType: 'full',
+          priority: 'high'
         }
       );
       
@@ -922,7 +950,11 @@ export class MountainIntegrationService {
         throw new Error('Configuration sync failed on Mountain side');
       }
       
-      console.log(`[MountainIntegrationService] ✅ Configuration sync ${syncId} completed: ${syncResult.synchronizedItems} items`);
+      // Track sync performance
+      const syncDuration = performance.now() - startTime;
+      this._trackMessageLatency?.(syncId, startTime);
+      
+      console.log(`[MountainIntegrationService] ✅ Configuration sync ${syncId} completed: ${syncResult.synchronizedItems} items, ${syncDuration.toFixed(2)}ms`);
       
       return {
         synchronizedItems: syncResult.synchronizedItems,
@@ -931,6 +963,7 @@ export class MountainIntegrationService {
       
     } catch (error) {
       console.error(`[MountainIntegrationService] ❌ Configuration sync ${syncId} failed:`, error);
+      this._addErrorToWindow?.(error);
       
       return {
         synchronizedItems: 0,
@@ -1234,29 +1267,37 @@ export class MountainIntegrationService {
     }
     
     try {
-      // TODO: Implement actual health check
-      // This would involve sending a ping to Mountain
-      // and verifying the response
+      const { invoke } = await import('@tauri-apps/api/core');
       
-      const healthy = Math.random() > 0.1; // 90% healthy
+      // Perform actual health check via Mountain IPC
+      const result = await invoke<{ healthy: boolean; responseTime: number; status: string }>(
+        'mountain_health_check',
+        {
+          clientId: 'wind',
+          timeout: 5000
+        }
+      );
       
-      if (!healthy) {
-        console.warn('[MountainIntegrationService] Health check failed');
+      if (!result.healthy) {
+        console.warn('[MountainIntegrationService] Health check failed:', result.status);
         this.isConnected = false;
         
-        // Attempt reconnection
-        setTimeout(() => {
-          this.connect().catch(error => {
-            console.error('[MountainIntegrationService] Reconnection failed:', error);
-          });
-        }, 5000);
+        // Attempt reconnection with advanced logic
+        if (this._shouldAttemptReconnection?.()) {
+          setTimeout(() => {
+            this.connect().catch(error => {
+              console.error('[MountainIntegrationService] Reconnection failed:', error);
+            });
+          }, this._calculateReconnectionDelay?.(this.retryCount + 1) || 5000);
+        }
       }
       
-      return healthy;
+      return result.healthy;
       
     } catch (error) {
       console.error('[MountainIntegrationService] Health check error:', error);
       this.isConnected = false;
+      this._addErrorToWindow?.(error);
       return false;
     }
   }

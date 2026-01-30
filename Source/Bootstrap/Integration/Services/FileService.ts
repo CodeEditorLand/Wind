@@ -26,6 +26,7 @@
  */
 
 import * as Effect from 'effect/Effect';
+import { invoke } from '@tauri-apps/api/core';
 
 // ============================================================================
 // TYPES
@@ -167,9 +168,9 @@ export const FileServiceTag = Effect.Tag<FileService, FileService>(
 // ============================================================================
 
 /**
- * Check if Tauri fs plugin is available
+ * Check if Tauri is available
  */
-function isTauriFsAvailable(): boolean {
+function isTauriAvailable(): boolean {
 	return typeof (globalThis as any).__TAURI__ !== 'undefined';
 }
 
@@ -252,13 +253,15 @@ const FileServiceImpl = FileServiceTag.of({
 	readFile: (path: string) => {
 		return Effect.tryPromise({
 			try: async () => {
-				if (!isTauriFsAvailable()) {
-					throw new Error('Tauri file system not available');
+				if (!isTauriAvailable()) {
+					throw new Error('Tauri not available');
 				}
 
-				const fs = await import('@tauri-apps/plugin-fs');
-				const normalizedPath = normalizePath(path);
-				return await fs.readTextFile(normalizedPath);
+				const result = await invoke('mountain_ipc_invoke', {
+					command: 'file:read',
+					args: [path]
+				});
+				return result as string;
 			},
 			catch: (error) => {
 				return new Error(`Failed to read file ${path}: ${error}`);
@@ -269,15 +272,13 @@ const FileServiceImpl = FileServiceTag.of({
 	writeFile: (path: string, content: string) => {
 		return Effect.tryPromise({
 			try: async () => {
-				if (!isTauriFsAvailable()) {
-					throw new Error('Tauri file system not available');
+				if (!isTauriAvailable()) {
+					throw new Error('Tauri not available');
 				}
 
-				const fs = await import('@tauri-apps/plugin-fs');
-				const normalizedPath = normalizePath(path);
-				await fs.writeTextFile(normalizedPath, content, {
-					create: true,
-					append: false,
+				await invoke('mountain_ipc_invoke', {
+					command: 'file:write',
+					args: [path, content]
 				});
 			},
 			catch: (error) => {
@@ -289,13 +290,15 @@ const FileServiceImpl = FileServiceTag.of({
 	exists: (path: string) => {
 		return Effect.tryPromise({
 			try: async () => {
-				if (!isTauriFsAvailable()) {
+				if (!isTauriAvailable()) {
 					return false;
 				}
 
-				const fs = await import('@tauri-apps/plugin-fs');
-				const normalizedPath = normalizePath(path);
-				return await fs.exists(normalizedPath);
+				const result = await invoke('mountain_ipc_invoke', {
+					command: 'file:exists',
+					args: [path]
+				});
+				return result as boolean;
 			},
 			catch: () => {
 				return false;
@@ -306,14 +309,24 @@ const FileServiceImpl = FileServiceTag.of({
 	stat: (path: string) => {
 		return Effect.tryPromise({
 			try: async () => {
-				if (!isTauriFsAvailable()) {
-					throw new Error('Tauri file system not available');
+				if (!isTauriAvailable()) {
+					throw new Error('Tauri not available');
 				}
 
-				const fs = await import('@tauri-apps/plugin-fs');
-				const normalizedPath = normalizePath(path);
-				const stats = await fs.stat(normalizedPath);
-				return convertTauriStats(stats);
+				const result = await invoke('mountain_ipc_invoke', {
+					command: 'file:stat',
+					args: [path]
+				});
+				const stats = result as any;
+				return {
+					isFile: !stats.isDirectory,
+					isDirectory: stats.isDirectory || false,
+					isSymlink: stats.isSymlink || false,
+					size: stats.size || 0,
+					modified: stats.modified || Date.now(),
+					accessed: stats.accessed,
+					created: stats.created
+				};
 			},
 			catch: (error) => {
 				return new Error(`Failed to stat file ${path}: ${error}`);
@@ -324,13 +337,14 @@ const FileServiceImpl = FileServiceTag.of({
 	mkdir: (path: string) => {
 		return Effect.tryPromise({
 			try: async () => {
-				if (!isTauriFsAvailable()) {
-					throw new Error('Tauri file system not available');
+				if (!isTauriAvailable()) {
+					throw new Error('Tauri not available');
 				}
 
-				const fs = await import('@tauri-apps/plugin-fs');
-				const normalizedPath = normalizePath(path);
-				await fs.mkdir(normalizedPath, { recursive: true });
+				await invoke('mountain_ipc_invoke', {
+					command: 'file:mkdir',
+					args: [path, true]
+				});
 			},
 			catch: (error) => {
 				return new Error(`Failed to create directory ${path}: ${error}`);
@@ -341,13 +355,14 @@ const FileServiceImpl = FileServiceTag.of({
 	delete: (path: string) => {
 		return Effect.tryPromise({
 			try: async () => {
-				if (!isTauriFsAvailable()) {
-					throw new Error('Tauri file system not available');
+				if (!isTauriAvailable()) {
+					throw new Error('Tauri not available');
 				}
 
-				const fs = await import('@tauri-apps/plugin-fs');
-				const normalizedPath = normalizePath(path);
-				await fs.remove(normalizedPath, { recursive: true });
+				await invoke('mountain_ipc_invoke', {
+					command: 'file:delete',
+					args: [path]
+				});
 			},
 			catch: (error) => {
 				return new Error(`Failed to delete ${path}: ${error}`);
@@ -358,26 +373,21 @@ const FileServiceImpl = FileServiceTag.of({
 	readdir: (path: string) => {
 		return Effect.tryPromise({
 			try: async () => {
-				if (!isTauriFsAvailable()) {
-					throw new Error('Tauri file system not available');
+				if (!isTauriAvailable()) {
+					throw new Error('Tauri not available');
 				}
 
-				const fs = await import('@tauri-apps/plugin-fs');
-				const normalizedPath = normalizePath(path);
-
-				// Try newer API first
-				if ('readDir' in fs && typeof fs.readDir === 'function') {
-					const entries = await fs.readDir(normalizedPath);
-					return entries.map(convertTauriDirEntry);
-				}
-
-				// Fallback to older API
-				if ('readdir' in fs && typeof fs.readdir === 'function') {
-					const entries = await fs.readdir(normalizedPath);
-					return entries.map(convertTauriDirEntry);
-				}
-
-				throw new Error('No suitable directory reading method available');
+				const result = await invoke('mountain_ipc_invoke', {
+					command: 'file:readdir',
+					args: [path]
+				});
+				const entries = result as any[];
+				return entries.map(entry => ({
+					name: entry.name,
+					isFile: !entry.isDirectory,
+					isDirectory: entry.isDirectory || false,
+					isSymlink: entry.isSymlink || false
+				}));
 			},
 			catch: (error) => {
 				return new Error(`Failed to read directory ${path}: ${error}`);
@@ -388,23 +398,14 @@ const FileServiceImpl = FileServiceTag.of({
 	copy: (source: string, destination: string) => {
 		return Effect.tryPromise({
 			try: async () => {
-				if (!isTauriFsAvailable()) {
-					throw new Error('Tauri file system not available');
+				if (!isTauriAvailable()) {
+					throw new Error('Tauri not available');
 				}
 
-				const fs = await import('@tauri-apps/plugin-fs');
-				const normalizedSource = normalizePath(source);
-				const normalizedDest = normalizePath(destination);
-
-				// Try copyFile (newer API)
-				if ('copyFile' in fs && typeof fs.copyFile === 'function') {
-					await fs.copyFile(normalizedSource, normalizedDest);
-					return;
-				}
-
-				// Fallback: read and write
-				const content = await fs.readTextFile(normalizedSource);
-				await fs.writeTextFile(normalizedDest, content, { create: true });
+				await invoke('mountain_ipc_invoke', {
+					command: 'file:copy',
+					args: [source, destination]
+				});
 			},
 			catch: (error) => {
 				return new Error(`Failed to copy ${source} to ${destination}: ${error}`);
@@ -415,21 +416,14 @@ const FileServiceImpl = FileServiceTag.of({
 	move: (source: string, destination: string) => {
 		return Effect.tryPromise({
 			try: async () => {
-				if (!isTauriFsAvailable()) {
-					throw new Error('Tauri file system not available');
+				if (!isTauriAvailable()) {
+					throw new Error('Tauri not available');
 				}
 
-				const fs = await import('@tauri-apps/plugin-fs');
-				const normalizedSource = normalizePath(source);
-				const normalizedDest = normalizePath(destination);
-
-				// Try rename (newer API)
-				if ('rename' in fs && typeof fs.rename === 'function') {
-					await fs.rename(normalizedSource, normalizedDest);
-					return;
-				}
-
-				throw new Error('No suitable move/rename method available');
+				await invoke('mountain_ipc_invoke', {
+					command: 'file:move',
+					args: [source, destination]
+				});
 			},
 			catch: (error) => {
 				return new Error(`Failed to move ${source} to ${destination}: ${error}`);
@@ -480,13 +474,22 @@ const FileServiceImpl = FileServiceTag.of({
 	readBinaryFile: (path: string) => {
 		return Effect.tryPromise({
 			try: async () => {
-				if (!isTauriFsAvailable()) {
-					throw new Error('Tauri file system not available');
+				if (!isTauriAvailable()) {
+					throw new Error('Tauri not available');
 				}
 
-				const fs = await import('@tauri-apps/plugin-fs');
-				const normalizedPath = normalizePath(path);
-				return await fs.readFile(normalizedPath);
+				const result = await invoke('mountain_ipc_invoke', {
+					command: 'file:readBinary',
+					args: [path]
+				});
+				// Convert base64 string to Uint8Array
+				const base64 = result as string;
+				const binaryString = atob(base64);
+				const bytes = new Uint8Array(binaryString.length);
+				for (let i = 0; i < binaryString.length; i++) {
+					bytes[i] = binaryString.charCodeAt(i);
+				}
+				return bytes;
 			},
 			catch: (error) => {
 				return new Error(`Failed to read binary file ${path}: ${error}`);
@@ -497,14 +500,17 @@ const FileServiceImpl = FileServiceTag.of({
 	writeBinaryFile: (path: string, content: Uint8Array) => {
 		return Effect.tryPromise({
 			try: async () => {
-				if (!isTauriFsAvailable()) {
-					throw new Error('Tauri file system not available');
+				if (!isTauriAvailable()) {
+					throw new Error('Tauri not available');
 				}
 
-				const fs = await import('@tauri-apps/plugin-fs');
-				const normalizedPath = normalizePath(path);
-				await fs.writeFile(normalizedPath, content, {
-					create: true,
+				// Convert Uint8Array to base64 string
+				const binaryString = String.fromCharCode(...content);
+				const base64 = btoa(binaryString);
+				
+				await invoke('mountain_ipc_invoke', {
+					command: 'file:writeBinary',
+					args: [path, base64]
 				});
 			},
 			catch: (error) => {
