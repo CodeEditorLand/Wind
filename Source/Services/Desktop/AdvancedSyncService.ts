@@ -230,7 +230,7 @@ export class AdvancedSyncService {
     /**
      * Initialize synchronization service with production standards
      */
-    private async initialize(): Promise<void> {
+    async initialize(): Promise<void> {
         const executionId = this.generateCorrelationId('init');
         
         try {
@@ -703,6 +703,159 @@ export class AdvancedSyncService {
             return await invoke<ISyncStatus>('mountain_get_sync_status');
         } catch (error) {
             console.error('[AdvancedSyncService] Failed to get sync status:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Get performance statistics
+     */
+    getPerformanceStats(): any {
+        try {
+            const dashboardStats = (this.performanceDashboardService as any).getPerformanceStats?.();
+            return dashboardStats || {
+                totalMessagesSent: 0,
+                totalMessagesReceived: 0,
+                averageProcessingTimeMs: 0,
+                peakMessageRate: 0,
+                errorCount: 0,
+                lastUpdate: Date.now(),
+                connectionUptime: this.isConnected ? Date.now() : 0
+            };
+        } catch (error) {
+            console.warn('[AdvancedSyncService] Failed to get performance stats:', error);
+            return {
+                totalMessagesSent: 0,
+                totalMessagesReceived: 0,
+                averageProcessingTimeMs: 0,
+                peakMessageRate: 0,
+                errorCount: 0,
+                lastUpdate: Date.now(),
+                connectionUptime: 0
+            };
+        }
+    }
+
+    /**
+     * Add document for synchronization
+     */
+    async addDocumentForSync(documentId: string, filePath: string): Promise<void> {
+        const executionId = this.generateCorrelationId(`add-doc-${documentId}`);
+        
+        try {
+            this.performanceMonitor.start(executionId);
+            
+            console.log(`[AdvancedSyncService] Adding document for sync: ${documentId} at ${filePath}`);
+            
+            // Add to local tracking
+            const documentState: IDocumentSyncState = {
+                documentId,
+                filePath,
+                lastModified: Date.now(),
+                contentHash: '',
+                syncState: SyncState.OFFLINE,
+                version: 0,
+                pendingChanges: []
+            };
+            
+            this.documentSync.set(documentId, documentState);
+            
+            // Register with Mountain if connected
+            if (this.isConnected) {
+                await invoke('mountain_add_document_for_sync', {
+                    documentId,
+                    filePath
+                });
+                
+                documentState.syncState = SyncState.SYNCED;
+                console.log(`[AdvancedSyncService] ✅ Document ${documentId} added to Mountain sync`);
+            } else {
+                console.log(`[AdvancedSyncService] Document ${documentId} queued for sync when connected`);
+            }
+            
+            this.performanceMonitor.end(executionId, 'SUCCESS');
+            this.emitEvent('document_added', { documentId, filePath });
+            
+        } catch (error) {
+            this.performanceMonitor.end(executionId, 'ERROR');
+            this.errorHandler.logError(executionId, `Failed to add document for sync: ${documentId}`, error);
+            throw error;
+        }
+    }
+
+    /**
+     * Create collaboration session
+     */
+    async createCollaborationSession(sessionId: string, permissions: any): Promise<void> {
+        const executionId = this.generateCorrelationId(`collab-session-${sessionId}`);
+        
+        try {
+            this.performanceMonitor.start(executionId);
+            
+            console.log(`[AdvancedSyncService] Creating collaboration session: ${sessionId}`);
+            
+            // Create session via Mountain IPC
+            if (this.isConnected) {
+                await invoke('mountain_create_collaboration_session', {
+                    sessionId,
+                    permissions
+                });
+                
+                console.log(`[AdvancedSyncService] ✅ Collaboration session ${sessionId} created`);
+            } else {
+                console.warn(`[AdvancedSyncService] Cannot create collaboration session - not connected to Mountain`);
+            }
+            
+            this.performanceMonitor.end(executionId, 'SUCCESS');
+            this.emitEvent('collaboration_session_created', { sessionId, permissions });
+            
+        } catch (error) {
+            this.performanceMonitor.end(executionId, 'ERROR');
+            this.errorHandler.logError(executionId, `Failed to create collaboration session: ${sessionId}`, error);
+            throw error;
+        }
+    }
+
+    /**
+     * Get collaboration sessions
+     */
+    getCollaborationSessions(): any[] {
+        try {
+            // TODO: Implement actual session retrieval from Mountain
+            return [];
+        } catch (error) {
+            console.warn('[AdvancedSyncService] Failed to get collaboration sessions:', error);
+            return [];
+        }
+    }
+
+    /**
+     * Subscribe to updates
+     */
+    async subscribeToUpdates(target: string): Promise<void> {
+        const executionId = this.generateCorrelationId(`subscribe-${target}`);
+        
+        try {
+            this.performanceMonitor.start(executionId);
+            
+            console.log(`[AdvancedSyncService] Subscribing to updates for: ${target}`);
+            
+            if (this.isConnected) {
+                await invoke('mountain_subscribe_to_updates', {
+                    target
+                });
+                
+                console.log(`[AdvancedSyncService] ✅ Subscribed to ${target} updates`);
+            } else {
+                console.warn(`[AdvancedSyncService] Cannot subscribe to updates - not connected to Mountain`);
+            }
+            
+            this.performanceMonitor.end(executionId, 'SUCCESS');
+            this.emitEvent('subscription_created', { target });
+            
+        } catch (error) {
+            this.performanceMonitor.end(executionId, 'ERROR');
+            this.errorHandler.logError(executionId, `Failed to subscribe to ${target} updates`, error);
             throw error;
         }
     }

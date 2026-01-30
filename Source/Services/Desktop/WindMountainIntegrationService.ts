@@ -12,7 +12,8 @@
  * - Monitors integration health
  */
 
-import { invoke, listen, emit } from '@tauri-apps/api/core';
+import { invoke } from '@tauri-apps/api/core';
+import { listen, emit } from '@tauri-apps/api/event';
 import { advancedSyncService } from './AdvancedSyncService.js';
 
 /**
@@ -280,8 +281,8 @@ export class WindMountainIntegrationService {
 
         // Check document sync health
         try {
-            const syncStatus = advancedSyncService.getSyncStatus();
-            this.integrationStatus.documentSync = syncStatus.conflictedDocuments > 0 ? 'conflicted' : 'enabled';
+            const syncStatus = await advancedSyncService.getSyncStatus();
+            this.integrationStatus.documentSync = (syncStatus.conflictedDocuments || 0) > 0 ? 'conflicted' : 'enabled';
             
             this.serviceHealth.set('document-sync', {
                 status: 'healthy',
@@ -534,6 +535,79 @@ export class WindMountainIntegrationService {
      */
     getCollaborationSessions(): CollaborationSession[] {
         return advancedSyncService.getCollaborationSessions();
+    }
+
+    /**
+     * Track performance metrics
+     */
+    async trackPerformanceMetrics(metrics: any): Promise<void> {
+        try {
+            console.log('[WindMountainIntegrationService] Tracking performance metrics:', metrics);
+            
+            // Send metrics via Tauri IPC
+            const { invoke } = await import('@tauri-apps/api/core');
+            await invoke('mountain_track_performance_metrics', {
+                metrics: {
+                    ...metrics,
+                    timestamp: Date.now(),
+                    source: 'wind'
+                }
+            });
+            
+            console.log('[WindMountainIntegrationService] ✅ Performance metrics tracked');
+        } catch (error) {
+            console.debug('[WindMountainIntegrationService] Failed to track performance metrics:', error);
+        }
+    }
+
+    /**
+     * Track error
+     */
+    async trackError(error: Error, context?: any): Promise<void> {
+        try {
+            console.log('[WindMountainIntegrationService] Tracking error:', error.message);
+            
+            // Send error via Tauri IPC
+            const { invoke } = await import('@tauri-apps/api/core');
+            await invoke('mountain_track_error', {
+                error: {
+                    message: error.message,
+                    stack: error.stack,
+                    name: error.name,
+                    timestamp: Date.now(),
+                    context,
+                    source: 'wind'
+                }
+            });
+            
+            console.log('[WindMountainIntegrationService] ✅ Error tracked');
+        } catch (innerError) {
+            console.debug('[WindMountainIntegrationService] Failed to track error:', innerError);
+        }
+    }
+
+    /**
+     * Send analytics event
+     */
+    async sendAnalyticsEvent(eventName: string, eventData?: any): Promise<void> {
+        try {
+            console.log('[WindMountainIntegrationService] Sending analytics event:', eventName);
+            
+            // Send analytics event via Tauri IPC
+            const { invoke } = await import('@tauri-apps/api/core');
+            await invoke('mountain_send_analytics_event', {
+                event: {
+                    name: eventName,
+                    data: eventData || {},
+                    timestamp: Date.now(),
+                    source: 'wind'
+                }
+            });
+            
+            console.log('[WindMountainIntegrationService] ✅ Analytics event sent');
+        } catch (error) {
+            console.debug('[WindMountainIntegrationService] Failed to send analytics event:', error);
+        }
     }
 }
 

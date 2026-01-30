@@ -823,25 +823,30 @@ export class MountainIntegrationService {
    * Perform actual connection to Mountain
    */
   private async performConnection(): Promise<void> {
-    // TODO: Implement actual gRPC connection logic
-    // This would include:
-    // - Creating gRPC channel
-    // - Establishing secure connection
-    // - Performing handshake
+    console.log('[MountainIntegrationService] Connecting to Mountain backend...');
     
-    return new Promise((resolve, reject) => {
-      // Simulate connection delay
-      setTimeout(() => {
-        // Simulate success/failure
-        const success = Math.random() > 0.2; // 80% success rate
-        
-        if (success) {
-          resolve();
-        } else {
-          reject(new Error('Connection timeout'));
+    try {
+      // Import Tauri invoke for IPC communication
+      const { invoke } = await import('@tauri-apps/api/core');
+      
+      // Perform connection via Tauri IPC
+      const result = await invoke<{ connected: boolean; version: string; features: string[] }>(
+        'mountain_ipc_connect',
+        {
+          host: this.connectionConfig.host,
+          port: this.connectionConfig.port,
+          secure: this.connectionConfig.secure,
+          timeout: this.connectionConfig.timeout
         }
-      }, 1000);
-    });
+      );
+      
+      console.log('[MountainIntegrationService] ✅ Connected to Mountain:', result);
+      return;
+      
+    } catch (error) {
+      console.error('[MountainIntegrationService] Connection to Mountain failed:', error);
+      throw new Error(`Failed to connect to Mountain: ${error instanceof Error ? error.message : String(error)}`);
+    }
   }
   
   /**
@@ -894,42 +899,34 @@ export class MountainIntegrationService {
     console.log(`[MountainIntegrationService] Starting configuration sync: ${syncId}`);
     
     try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      
       // Get Wind configuration
       const windConfig = await this.getWindConfiguration();
       
-      // Send configuration to Mountain
-      const syncResult = await this.grpcClient?.configurationService?.call(
-        'setConfiguration',
+      // Sync configuration via Mountain IPC
+      const syncResult = await invoke<{
+        success: boolean;
+        synchronizedItems: number;
+        warnings: string[];
+      }>(
+        'mountain_sync_configuration',
         {
           configuration: windConfig,
           timestamp: Date.now(),
-          source: 'wind'
+          clientId: 'wind'
         }
       );
       
-      // Get Mountain configuration
-      const mountainConfig = await this.grpcClient?.configurationService?.call(
-        'getConfiguration',
-        {}
-      );
+      if (!syncResult.success) {
+        throw new Error('Configuration sync failed on Mountain side');
+      }
       
-      // Merge configurations
-      const mergedConfig = this.mergeConfigurations(windConfig, mountainConfig?.data?.configuration || {});
-      
-      // Validate merged configuration
-      const validationResult = this.validateConfiguration(mergedConfig);
-      
-      // Apply merged configuration
-      await this.applyConfiguration(mergedConfig);
-      
-      const synchronizedItems = Object.keys(mergedConfig).length;
-      const warnings = validationResult.warnings;
-      
-      console.log(`[MountainIntegrationService] ✅ Configuration sync ${syncId} completed: ${synchronizedItems} items`);
+      console.log(`[MountainIntegrationService] ✅ Configuration sync ${syncId} completed: ${syncResult.synchronizedItems} items`);
       
       return {
-        synchronizedItems,
-        warnings
+        synchronizedItems: syncResult.synchronizedItems,
+        warnings: syncResult.warnings || []
       };
       
     } catch (error) {
@@ -1082,11 +1079,54 @@ export class MountainIntegrationService {
     }
     
     try {
-      // Set up real-time channels
-      await this.setupRealTimeChannels();
+      const { invoke } = await import('@tauri-apps/api/core');
+      const { listen } = await import('@tauri-apps/api/event');
       
-      // Start listening for updates
-      await this.startListeningForUpdates();
+      // Set up real-time channels via Mountain IPC
+      await invoke('mountain_setup_real_time_channel', {
+        channelType: 'configuration-sync',
+        priority: 'high'
+      });
+      
+      // Listen for configuration changes from Mountain
+      await listen('mountain_configuration_changed', (event) => {
+        const update: RealTimeUpdate = {
+          type: 'configuration-change',
+          payload: event.payload,
+          timestamp: Date.now()
+        };
+        this.notifySubscribers(update);
+      });
+      
+      // Listen for document changes from Mountain
+      await listen('mountain_document_changed', (event) => {
+        const update: RealTimeUpdate = {
+          type: 'document-change',
+          payload: event.payload,
+          timestamp: Date.now()
+        };
+        this.notifySubscribers(update);
+      });
+      
+      // Listen for cursor updates (collaboration)
+      await listen('mountain_cursor_update', (event) => {
+        const update: RealTimeUpdate = {
+          type: 'cursor-update',
+          payload: event.payload,
+          timestamp: Date.now()
+        };
+        this.notifySubscribers(update);
+      });
+      
+      // Listen for collaboration events
+      await listen('mountain_collaboration_event', (event) => {
+        const update: RealTimeUpdate = {
+          type: 'collaboration-event',
+          payload: event.payload,
+          timestamp: Date.now()
+        };
+        this.notifySubscribers(update);
+      });
       
       console.log('[MountainIntegrationService] ✅ Real-time communication initialized');
       
@@ -1100,26 +1140,65 @@ export class MountainIntegrationService {
    * Set up real-time channels
    */
   private async setupRealTimeChannels(): Promise<void> {
-    // TODO: Implement real-time channel setup
-    // This would include:
-    // - Creating WebSocket connections
-    // - Setting up message handlers
-    // - Configuring event subscriptions
-    
     console.log('[MountainIntegrationService] Setting up real-time channels...');
+    
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      
+      // Set up channel for document synchronization
+      await invoke('mountain_setup_channel', {
+        channelId: 'document-sync',
+        priority: 'high',
+        buffering: 'adaptive'
+      });
+      
+      // Set up channel for UI state synchronization
+      await invoke('mountain_setup_channel', {
+        channelId: 'ui-state-sync',
+        priority: 'medium',
+        buffering: 'adaptive'
+      });
+      
+      // Set up channel for performance metrics
+      await invoke('mountain_setup_channel', {
+        channelId: 'performance-metrics',
+        priority: 'low',
+        buffering: 'batch'
+      });
+      
+      console.log('[MountainIntegrationService] ✅ Real-time channels setup completed');
+      
+    } catch (error) {
+      console.error('[MountainIntegrationService] Failed to setup real-time channels:', error);
+      throw error;
+    }
   }
   
   /**
    * Start listening for updates
    */
   private async startListeningForUpdates(): Promise<void> {
-    // TODO: Implement update listening
-    // This would include:
-    // - Subscribing to Mountain events
-    // - Handling incoming messages
-    // - Dispatching to subscribers
-    
     console.log('[MountainIntegrationService] Starting to listen for updates...');
+    
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      
+      // Enable listening for Mountain updates via IPC
+      await invoke('mountain_enable_event_listening', {
+        events: [
+          'configuration-change',
+          'document-change',
+          'cursor-update',
+          'collaboration-event'
+        ]
+      });
+      
+      console.log('[MountainIntegrationService] ✅ Started listening for Mountain updates');
+      
+    } catch (error) {
+      console.error('[MountainIntegrationService] Failed to start listening for updates:', error);
+      throw error;
+    }
   }
   
   /**
@@ -1194,8 +1273,10 @@ export class MountainIntegrationService {
     }
     
     try {
-      // Graceful disconnect implementation
-      // Includes gRPC channel cleanup, event unsubscription, and resource cleanup
+      const { invoke } = await import('@tauri-apps/api/core');
+      
+      // Graceful disconnect via Mountain IPC
+      await invoke('mountain_disconnect', {});
       
       this.isConnected = false;
       
@@ -1210,7 +1291,90 @@ export class MountainIntegrationService {
       
     } catch (error) {
       console.error('[MountainIntegrationService] ❌ Error during disconnect:', error);
+      this.isConnected = false;
       throw error;
+    }
+  }
+  
+  /**
+   * Track performance metrics to Mountain analytics
+   */
+  async trackPerformanceMetrics(metrics: any): Promise<void> {
+    if (!this.isConnected) {
+      console.debug('[MountainIntegrationService] Cannot track metrics - not connected');
+      return;
+    }
+    
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      
+      await invoke('mountain_track_metrics', {
+        metrics: {
+          ...metrics,
+          timestamp: Date.now(),
+          source: 'wind'
+        }
+      });
+      
+    } catch (error) {
+      console.debug('[MountainIntegrationService] Failed to track performance metrics:', error);
+      // Silent fail - metrics should not break the application
+    }
+  }
+  
+  /**
+   * Track error to Mountain error tracking
+   */
+  async trackError(error: Error, context: any = {}): Promise<void> {
+    if (!this.isConnected) {
+      console.debug('[MountainIntegrationService] Cannot track error - not connected');
+      return;
+    }
+    
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      
+      await invoke('mountain_track_error', {
+        error: {
+          message: error.message,
+          stack: error.stack,
+          name: error.name,
+          timestamp: Date.now(),
+          context,
+          source: 'wind'
+        }
+      });
+      
+    } catch (innerError) {
+      console.debug('[MountainIntegrationService] Failed to track error:', innerError);
+      // Silent fail - error tracking should not break the application
+    }
+  }
+  
+  /**
+   * Send analytics event to Mountain
+   */
+  async sendAnalyticsEvent(eventName: string, eventData: any = {}): Promise<void> {
+    if (!this.isConnected) {
+      console.debug('[MountainIntegrationService] Cannot send analytics event - not connected');
+      return;
+    }
+    
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      
+      await invoke('mountain_send_analytics_event', {
+        event: {
+          name: eventName,
+          data: eventData,
+          timestamp: Date.now(),
+          source: 'wind'
+        }
+      });
+      
+    } catch (error) {
+      console.debug('[MountainIntegrationService] Failed to send analytics event:', error);
+      // Silent fail - analytics should not break the application
     }
   }
   
