@@ -501,7 +501,7 @@ export class AdvancedSyncService {
                         author: 'local',
                         correlationId: executionId
                     }
-                }));
+                })));
 
                 const resolutionResult = await this.executeWithTimeout(
                     () => this.conflictResolutionService.resolveConflicts(doc.documentId, conflictObjects),

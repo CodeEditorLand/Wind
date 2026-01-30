@@ -59,10 +59,9 @@
 		"target": "ESNext",
 		"useDefineForClassFields": true
 	},
-	"exclude": ["Target", "node_modules"],
+	"exclude": ["Target", "node_modules", "Source/Archive"],
 	"extends": "@playform/build/tsconfig",
 	"include": [
-		"Source/**/*.ts",
-		"Source/**/*.tsx"
+		"Source"
 	]
 }
