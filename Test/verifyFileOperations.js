@@ -3,12 +3,161 @@
  * @description
  * Verification script to test file operations integration
  */
+import { tauriFileService } from '../Source/Desktop/TauriFileService.js';
 async function verifyFileOperations() {
     console.log('🔍 Verifying file operations integration...\n');
-    export { verifyFileOperations };
+    const testResults = {
+        total: 0,
+        passed: 0,
+        failed: 0
+    };
+    async function runTest(name, testFn) {
+        testResults.total++;
+        try {
+            const result = await testFn();
+            if (result) {
+                testResults.passed++;
+                console.log(`✅ ${name}`);
+            }
+            else {
+                testResults.failed++;
+                console.log(`❌ ${name}`);
+            }
+        }
+        catch (error) {
+            testResults.failed++;
+            console.log(`❌ ${name} - Error: ${error}`);
+        }
+    }
+    // Test 1: Basic file operations
+    await runTest('File write operation', async () => {
+        try {
+            await tauriFileService.writeFile('/tmp/verify-test.txt', 'Test content');
+            return true;
+        }
+        catch {
+            return false;
+        }
+    });
+    // Test 2: File read operation
+    await runTest('File read operation', async () => {
+        try {
+            const content = await tauriFileService.readFile('/tmp/verify-test.txt');
+            return content === 'Test content';
+        }
+        catch {
+            return false;
+        }
+    });
+    // Test 3: File exists operation
+    await runTest('File exists operation', async () => {
+        try {
+            const exists = await tauriFileService.exists('/tmp/verify-test.txt');
+            return exists === true;
+        }
+        catch {
+            return false;
+        }
+    });
+    // Test 4: File stat operation
+    await runTest('File stat operation', async () => {
+        try {
+            const stats = await tauriFileService.stat('/tmp/verify-test.txt');
+            return stats && typeof stats.isDirectory === 'boolean';
+        }
+        catch {
+            return false;
+        }
+    });
+    // Test 5: Directory creation
+    await runTest('Directory creation', async () => {
+        try {
+            await tauriFileService.createDirectory('/tmp/verify-dir');
+            return true;
+        }
+        catch {
+            return false;
+        }
+    });
+    // Test 6: Directory listing
+    await runTest('Directory listing', async () => {
+        try {
+            const entries = await tauriFileService.readDirectory('/tmp');
+            return Array.isArray(entries);
+        }
+        catch {
+            return false;
+        }
+    });
+    // Test 7: File copy operation
+    await runTest('File copy operation', async () => {
+        try {
+            await tauriFileService.copy('/tmp/verify-test.txt', '/tmp/verify-test-copy.txt');
+            return true;
+        }
+        catch {
+            return false;
+        }
+    });
+    // Test 8: File move operation
+    await runTest('File move operation', async () => {
+        try {
+            await tauriFileService.move('/tmp/verify-test-copy.txt', '/tmp/verify-dir/moved-file.txt');
+            return true;
+        }
+        catch {
+            return false;
+        }
+    });
+    // Test 9: File delete operation
+    await runTest('File delete operation', async () => {
+        try {
+            await tauriFileService.delete('/tmp/verify-test.txt');
+            return true;
+        }
+        catch {
+            return false;
+        }
+    });
+    // Test 10: Binary file operations
+    await runTest('Binary file operations', async () => {
+        try {
+            const binaryData = new Uint8Array([72, 101, 108, 108, 111]); // "Hello"
+            await tauriFileService.writeFileBinary('/tmp/verify-binary.bin', binaryData);
+            const readData = await tauriFileService.readFileBinary('/tmp/verify-binary.bin');
+            return readData.length === binaryData.length;
+        }
+        catch {
+            return false;
+        }
+    });
+    // Cleanup
+    try {
+        await tauriFileService.delete('/tmp/verify-dir');
+        await tauriFileService.delete('/tmp/verify-binary.bin');
+    }
+    catch {
+        // Ignore cleanup errors
+    }
+    console.log('\n📊 Test Results:');
+    console.log(`Total Tests: ${testResults.total}`);
+    console.log(`Passed: ${testResults.passed}`);
+    console.log(`Failed: ${testResults.failed}`);
+    const successRate = (testResults.passed / testResults.total) * 100;
+    console.log(`Success Rate: ${successRate.toFixed(1)}%`);
+    if (testResults.failed === 0) {
+        console.log('\n🎉 All file operations integration tests passed!');
+        return true;
+    }
+    else {
+        console.log('\n⚠️ Some file operations integration tests failed');
+        return false;
+    }
 }
-;
-process.exit(success ? 0 : 1);
-verifyFileOperations().then(success => { if (import.meta.url === `file://${process.argv[1]}`) {
-} }); // Run verification if this file is executed directly}    }        return false;        console.log('\n⚠️ Some file operations integration tests failed');    } else {        return true;        console.log('\n🎉 All file operations integration tests passed!');    if (testResults.failed === 0) {        console.log(`Success Rate: ${successRate.toFixed(1)}%`);    const successRate = (testResults.passed / testResults.total) * 100;        console.log(`Failed: ${testResults.failed}`);    console.log(`Passed: ${testResults.passed}`);    console.log(`Total Tests: ${testResults.total}`);    console.log('\n📊 Test Results:');        }        // Ignore cleanup errors    } catch {        await tauriFileService.delete('/tmp/verify-binary.bin');        await tauriFileService.delete('/tmp/verify-dir');    try {    // Cleanup        });        }            return false;        } catch {            return readData.length === binaryData.length;            const readData = await tauriFileService.readFileBinary('/tmp/verify-binary.bin');            await tauriFileService.writeFileBinary('/tmp/verify-binary.bin', binaryData);            const binaryData = new Uint8Array([72, 101, 108, 108, 111]); // "Hello"        try {    await runTest('Binary file operations', async () => {    // Test 10: Binary file operations        });        }            return false;        } catch {            return true;            await tauriFileService.delete('/tmp/verify-test.txt');        try {    await runTest('File delete operation', async () => {    // Test 9: File delete operation        });        }            return false;        } catch {            return true;            await tauriFileService.move('/tmp/verify-test-copy.txt', '/tmp/verify-dir/moved-file.txt');        try {    await runTest('File move operation', async () => {    // Test 8: File move operation        });        }            return false;        } catch {            return true;            await tauriFileService.copy('/tmp/verify-test.txt', '/tmp/verify-test-copy.txt');        try {    await runTest('File copy operation', async () => {    // Test 7: File copy operation        });        }            return false;        } catch {            return Array.isArray(entries);            const entries = await tauriFileService.readDirectory('/tmp');        try {    await runTest('Directory listing', async () => {    // Test 6: Directory listing        });        }            return false;        } catch {            return true;            await tauriFileService.createDirectory('/tmp/verify-dir');        try {    await runTest('Directory creation', async () => {    // Test 5: Directory creation        });        }            return false;        } catch {            return stats && typeof stats.isDirectory === 'boolean';            const stats = await tauriFileService.stat('/tmp/verify-test.txt');        try {    await runTest('File stat operation', async () => {    // Test 4: File stat operation        });        }            return false;        } catch {            return exists === true;            const exists = await tauriFileService.exists('/tmp/verify-test.txt');        try {    await runTest('File exists operation', async () => {    // Test 3: File exists operation        });        }            return false;        } catch {            return content === 'Test content';            const content = await tauriFileService.readFile('/tmp/verify-test.txt');        try {    await runTest('File read operation', async () => {    // Test 2: File read operation        });        }            return false;        } catch {            return true;            await tauriFileService.writeFile('/tmp/verify-test.txt', 'Test content');        try {    await runTest('File write operation', async () => {    // Test 1: Basic file operations        }        }            console.log(`❌ ${name} - Error: ${error}`);            testResults.failed++;        } catch (error) {            }                console.log(`❌ ${name}`);                testResults.failed++;            } else {                console.log(`✅ ${name}`);                testResults.passed++;            if (result) {            const result = await testFn();        try {        testResults.total++;    async function runTest(name: string, testFn: () => Promise<boolean>) {        };        failed: 0        passed: 0,        total: 0,    const testResults = {    
-export {};
+// Run verification if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+    verifyFileOperations().then(success => {
+        process.exit(success ? 0 : 1);
+    });
+}
+export { verifyFileOperations };

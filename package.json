@@ -21,7 +21,9 @@
 	"scripts": {
 		"Run": "sh Source/Run.sh",
 		"prepublishOnly": "sh Source/prepublishOnly.sh",
-		"type-check": "tsc --noEmit"
+		"type-check": "tsc --noEmit",
+		"test": "jest",
+		"test:config": "jest --testPathPattern=\"ConfigurationSync\" --passWithNoTests"
 	},
 	"dependencies": {
 		"@codeeditorland/output": "0.0.1",
@@ -45,6 +47,8 @@
 		"@types/node": "25.1.0",
 		"cross-env": "10.1.0",
 		"deepmerge-ts": "7.1.5",
+		"jest": "^29.7.0",
+		"jest-environment-jsdom": "^29.7.0",
 		"jsdom": "^27.4.0",
 		"ts-patch": "3.3.0",
 		"ulid": "3.0.2"

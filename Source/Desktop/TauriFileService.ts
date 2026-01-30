@@ -18,6 +18,24 @@
 
 import { invoke } from '@tauri-apps/api/core';
 
+// Mock types for file watching functionality
+interface TauriWatcher {
+    unwatch(): Promise<void>;
+}
+
+// Mock watch function
+async function watch(path: string, options: any, callback: (event: any) => void): Promise<TauriWatcher> {
+    console.warn('[TauriFileService] File watching not implemented');
+    return {
+        unwatch: async () => {}
+    };
+}
+
+// Mock unwatch function
+async function unwatch(watchId: string): Promise<void> {
+    console.warn('[TauriFileService] File unwatching not implemented');
+}
+
 /**
  * File system entry interface
  */

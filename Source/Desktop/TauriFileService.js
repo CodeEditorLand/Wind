@@ -16,6 +16,17 @@
  * TODO: Add file system event propagation
  */
 import { invoke } from '@tauri-apps/api/core';
+// Mock watch function
+async function watch(path, options, callback) {
+    console.warn('[TauriFileService] File watching not implemented');
+    return {
+        unwatch: async () => { }
+    };
+}
+// Mock unwatch function
+async function unwatch(watchId) {
+    console.warn('[TauriFileService] File unwatching not implemented');
+}
 /**
  * Tauri File Service implementation
  */

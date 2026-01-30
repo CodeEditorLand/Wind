@@ -4,7 +4,7 @@
  * Verification script to test file operations integration
  */
 
-import { tauriFileService } from '../Source/Desktop/TauriFileService';
+import { tauriFileService } from '../Source/Desktop/TauriFileService.js';
 
 async function verifyFileOperations() {
     console.log('🔍 Verifying file operations integration...\n');

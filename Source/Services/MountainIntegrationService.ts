@@ -24,9 +24,9 @@ interface MountainConnectionConfig {
 interface MountainIntegrationError extends Error {
   readonly errorType: 'connection' | 'authentication' | 'protocol' | 'resource' | 'timeout' | 'unknown';
   readonly recoverable: boolean;
-  readonly retryAfter?: number;
-  readonly service?: string;
-  readonly operation?: string;
+  readonly retryAfter?: number | undefined;
+  readonly service?: string | undefined;
+  readonly operation?: string | undefined;
 }
 
 // ADVANCED MICROSOFT PATTERN: Performance metrics collection
@@ -236,13 +236,13 @@ export class MountainIntegrationService {
         recommendedAction = 'Proceed with caution, monitor error rates';
       }
       
-      if (errorTypes.authentication > 0) {
+      if ((errorTypes['authentication'] ?? 0) > 0) {
         recoverySuggestion = 'Authentication errors detected - check credentials';
         recommendedAction = 'Verify authentication configuration and retry';
-      } else if (errorTypes.protocol > 0) {
+      } else if ((errorTypes['protocol'] ?? 0) > 0) {
         recoverySuggestion = 'Protocol errors detected - check Mountain API compatibility';
         recommendedAction = 'Update Mountain integration or check version compatibility';
-      } else if (errorTypes.timeout > errorTypes.connection) {
+      } else if ((errorTypes['timeout'] ?? 0) > (errorTypes['connection'] ?? 0)) {
         recoverySuggestion = 'Timeout errors predominant - increase timeout values';
         recommendedAction = 'Adjust timeout settings or optimize network performance';
       }
@@ -291,7 +291,7 @@ export class MountainIntegrationService {
     };
     
     // Message latency tracking
-    this._trackMessageLatency = (messageId: string, startTime: number): void => {
+    this._trackMessageLatency = (_messageId: string, startTime: number): void => {
       const latency = performance.now() - startTime;
       this.performanceMetrics.messageLatency = latency;
       
@@ -327,7 +327,7 @@ export class MountainIntegrationService {
         : 0;
       
       // Create resource usage object
-      const resourceUsage = {
+      const _resourceUsage = {
         memory: memoryUsage,
         cpu: 0, // TODO: Implement CPU monitoring
         network: 0  // TODO: Implement network monitoring
@@ -558,7 +558,7 @@ export class MountainIntegrationService {
   }
   
   // ADVANCED MICROSOFT PATTERN: Error handling
-  private _handleGrpcInitializationError(error: Error, duration: number): void {
+  private _handleGrpcInitializationError(error: Error, _duration: number): void {
     this._connectionPerformance.totalConnections++;
     this._connectionPerformance.failedConnections++;
     
@@ -724,7 +724,7 @@ export class MountainIntegrationService {
       
     } catch (error) {
       console.error(`[MountainIntegrationService] ❌ gRPC call ${callId} failed:`, error);
-      this._addErrorToWindow?.(error);
+      this._addErrorToWindow?.(error instanceof Error ? error : new Error(String(error)));
       throw error;
     }
   }
@@ -847,7 +847,7 @@ export class MountainIntegrationService {
       
     } catch (error) {
       console.error('[MountainIntegrationService] Connection to Mountain failed:', error);
-      this._addErrorToWindow?.(error);
+      this._addErrorToWindow?.(error instanceof Error ? error : new Error(String(error)));
       throw new Error(`Failed to connect to Mountain: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
@@ -942,7 +942,7 @@ export class MountainIntegrationService {
       
     } catch (error) {
       console.error(`[MountainIntegrationService] ❌ Configuration sync ${syncId} failed:`, error);
-      this._addErrorToWindow?.(error);
+      this._addErrorToWindow?.(error instanceof Error ? error : new Error(String(error)));
       
       return {
         synchronizedItems: 0,
