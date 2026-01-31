@@ -88,14 +88,9 @@ interface MessageBoxOptions {
     cancelButton?: number;
     checkboxLabel?: string;
     checkboxChecked?: boolean;
-}
-interface InputDialogOptions {
-    title?: string;
-    prompt?: string;
-    value?: string;
-    password?: boolean;
-    placeHolder?: string;
-    validateInput?: (value: string) => string | undefined;
+    modal?: boolean;
+    allowCancel?: boolean;
+    noLink?: boolean;
 }
 interface FileFilter {
     name: string;
@@ -103,7 +98,15 @@ interface FileFilter {
 }
 interface Uri {
     fsPath: string;
+    scheme?: string;
+    authority?: string;
+    path?: string;
+    query?: string;
+    fragment?: string;
     toString(): string;
+    toJSON(): string;
+    withPath(path: string): Uri;
+    withQuery(query: string): Uri;
 }
 interface MessageBoxResult {
     response: number;
@@ -118,6 +121,9 @@ declare class DialogProblem extends Error {
     static CreateConnectionError(cause: Error): DialogProblem;
     static CreatePermissionError(cause: Error): DialogProblem;
     static CreateValidationError(message: string): DialogProblem;
+    static CreateTimeoutError(timeout: number): DialogProblem;
+    static CreateCanceledError(): DialogProblem;
+    static CreateUnknownError(cause: Error): DialogProblem;
 }
 declare const DialogService_base: Effect.Service.Class<DialogServiceInterface, "Service/Dialog", {
     readonly effect: Effect.Effect<{
@@ -137,6 +143,7 @@ export declare class DialogErrorRecovery {
     private static recoverFromConnectionError;
     private static recoverFromPermissionError;
     private static recoverFromValidationError;
+    private static testDialogAvailability;
 }
 export declare class DialogPerformanceMonitor {
     private static metrics;
