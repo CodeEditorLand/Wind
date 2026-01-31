@@ -18,7 +18,7 @@ import { Sandbox, SandboxService } from "./Sandbox.js";
 
 export class ConfigFetchError extends Error {
   readonly _tag = "ConfigFetchError";
-  constructor(readonly cause: unknown) {
+  constructor(override readonly cause: unknown) {
     super(`Failed to fetch configuration: ${String(cause)}`);
   }
 }
@@ -32,7 +32,7 @@ export class ConfigValidationError extends Error {
 
 export class ConfigApplyError extends Error {
   readonly _tag = "ConfigApplyError";
-  constructor(readonly key: string, readonly cause: unknown) {
+  constructor(readonly key: string, override readonly cause: unknown) {
     super(`Failed to apply configuration for '${key}': ${String(cause)}`);
   }
 }
