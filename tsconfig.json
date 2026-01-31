@@ -30,25 +30,27 @@
 		"paths": {
 			"@codeeditorland/output/*": ["../Output/Target/Microsoft/VSCode/*"]
 		},
-		"plugins": [{
-			"allowedDuplicatedPackages": [],
-			"completions": true,
-			"diagnosticSeverity": {
-				"duplicatePackage": "error",
-				"floatingEffect": "error",
-				"leakingRequirements": "error",
-				"missingEffectContext": "error",
-				"missingEffectError": "error",
-				"missingReturnYieldStar": "error",
-				"missingStarInYieldEffectGen": "error",
-				"unnecessaryEffectGen": "error",
-				"unnecessaryPipe": "error"
-		},
-			"diagnostics": true,
-			"name": "@effect/language-service",
-			"quickinfo": true,
-			"transform": "@effect/language-service/transform"
-		}],
+		"plugins": [
+			{
+				"allowedDuplicatedPackages": [],
+				"completions": true,
+				"diagnosticSeverity": {
+					"duplicatePackage": "error",
+					"floatingEffect": "error",
+					"leakingRequirements": "error",
+					"missingEffectContext": "error",
+					"missingEffectError": "error",
+					"missingReturnYieldStar": "error",
+					"missingStarInYieldEffectGen": "error",
+					"unnecessaryEffectGen": "error",
+					"unnecessaryPipe": "error"
+				},
+				"diagnostics": true,
+				"name": "@effect/language-service",
+				"quickinfo": true,
+				"transform": "@effect/language-service/transform"
+			}
+		],
 		"rootDir": ".",
 		"skipLibCheck": true,
 		"strict": true,
@@ -59,9 +61,7 @@
 		"target": "ESNext",
 		"useDefineForClassFields": true
 	},
-	"exclude": ["Target", "node_modules", "Source/Archive"],
+	"exclude": ["Target", "node_modules"],
 	"extends": "@playform/build/tsconfig",
-	"include": [
-		"Source"
-	]
+	"include": ["Source"]
 }
