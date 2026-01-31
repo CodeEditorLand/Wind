@@ -9,7 +9,7 @@ import { Layer } from "effect";
 import { SandboxMockLive } from "../Sandbox.js";
 import { IPCMockLive } from "../IPC.js";
 import { ConfigurationMockLive } from "../Configuration.js";
-import { TelemetryMockLive } from "../Telemetry.js";
+import { TelemetryMockLive, TelemetryLive } from "../Telemetry.js";
 import { MountainMockLive } from "../Mountain.js";
 
 // ============================================================================
