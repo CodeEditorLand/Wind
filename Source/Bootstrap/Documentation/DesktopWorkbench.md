@@ -1,7 +1,10 @@
 # Desktop Workbench Implementation Plan
 
 ## Overview
-This document outlines the comprehensive plan for implementing VSCode's desktop workbench using Wind services for Tauri integration, based on detailed analysis of VSCode source code.
+
+This document outlines the comprehensive plan for implementing VSCode's desktop
+workbench using Wind services for Tauri integration, based on detailed analysis
+of VSCode source code.
 
 ## VSCode Workbench Architecture Analysis
 
@@ -17,23 +20,25 @@ The VSCode Workbench class extends Layout and manages:
 ### Key Implementation Details from Source Analysis
 
 #### Service Initialization Sequence
+
 ```typescript
 private initServices(serviceCollection: ServiceCollection): IInstantiationService {
     // Layout Service registration
     serviceCollection.set(IWorkbenchLayoutService, this);
-    
+
     // Contributed services from registry
     const contributedServices = getSingletonServiceDescriptors();
     for (const [id, descriptor] of contributedServices) {
         serviceCollection.set(id, descriptor);
     }
-    
+
     const instantiationService = new InstantiationService(serviceCollection, true);
     // ... lifecycle phase transitions
 }
 ```
 
 #### Workbench Parts Creation
+
 ```typescript
 // Parts definition from workbench.ts
 const parts = [
@@ -49,6 +54,7 @@ const parts = [
 ```
 
 #### Factory Pattern (`vs/workbench/browser/web.factory.ts`)
+
 - Uses `create()` function to instantiate workbench
 - Registers commands and menus
 - Manages workbench lifecycle through BrowserMain
@@ -57,48 +63,52 @@ const parts = [
 
 ### Critical Services (Must Implement)
 
-1. **InstantiationService** (`vs/platform/instantiation/common/instantiationService.ts`)
-   - Dependency injection container
-   - Service lifecycle management
-   - TODO: Implement Wind-compatible instantiation service
+1. **InstantiationService**
+   (`vs/platform/instantiation/common/instantiationService.ts`)
+    - Dependency injection container
+    - Service lifecycle management
+    - TODO: Implement Wind-compatible instantiation service
 
 2. **StorageService** (`vs/platform/storage/common/storage.ts`)
-   - Persistent data storage
-   - Scope-based storage (APPLICATION, WORKSPACE, PROFILE)
-   - TODO: Complete TauriStorageService implementation
+    - Persistent data storage
+    - Scope-based storage (APPLICATION, WORKSPACE, PROFILE)
+    - TODO: Complete TauriStorageService implementation
 
-3. **ConfigurationService** (`vs/platform/configuration/common/configuration.ts`)
-   - Configuration management and validation
-   - Change event propagation
-   - TODO: Implement TauriConfigurationService
+3. **ConfigurationService**
+   (`vs/platform/configuration/common/configuration.ts`)
+    - Configuration management and validation
+    - Change event propagation
+    - TODO: Implement TauriConfigurationService
 
 4. **LifecycleService** (`vs/workbench/services/lifecycle/common/lifecycle.ts`)
-   - Lifecycle phase management (Ready, Restored, Eventually)
-   - Shutdown event handling
-   - TODO: Implement WindLifecycleService
+    - Lifecycle phase management (Ready, Restored, Eventually)
+    - Shutdown event handling
+    - TODO: Implement WindLifecycleService
 
 5. **HostService** (`vs/workbench/services/host/browser/host.ts`)
-   - Window management and focus events
-   - Multi-window support
-   - TODO: Implement TauriHostService
+    - Window management and focus events
+    - Multi-window support
+    - TODO: Implement TauriHostService
 
 ### UI Services
 
-6. **NotificationService** (`vs/workbench/services/notification/common/notificationService.ts`)
-   - Notification center, toasts, alerts
-   - TODO: Implement WindNotificationService
+6. **NotificationService**
+   (`vs/workbench/services/notification/common/notificationService.ts`)
+    - Notification center, toasts, alerts
+    - TODO: Implement WindNotificationService
 
 7. **DialogService** (`vs/platform/dialogs/common/dialogs.ts`)
-   - Modal dialog management
-   - TODO: Implement TauriDialogService
+    - Modal dialog management
+    - TODO: Implement TauriDialogService
 
 8. **HoverService** (`vs/platform/hover/browser/hover.ts`)
-   - Hover delegate management
-   - TODO: Implement WindHoverService
+    - Hover delegate management
+    - TODO: Implement WindHoverService
 
 ## Wind/Tauri Implementation Strategy
 
 ### Phase 1: Core Service Infrastructure ✅ COMPLETED
+
 - [x] TauriIPCServer - Basic IPC implementation
 - [x] TauriStorageService - Basic storage implementation
 - [x] ServiceMapping Registry - Service mapping infrastructure
@@ -107,27 +117,30 @@ const parts = [
 ### Phase 2: Critical Service Implementation 🔄 IN PROGRESS
 
 #### 2.1 TauriFileService Implementation
-**Source Reference**: `vs/platform/files/common/files.ts`
-**Wind Equivalent**: `Source/Desktop/TauriFileService.ts`
-**TODO**:
+
+**Source Reference**: `vs/platform/files/common/files.ts` **Wind Equivalent**:
+`Source/Desktop/TauriFileService.ts` **TODO**:
+
 - [ ] Implement file system operations
 - [ ] Add file watching capabilities
 - [ ] Implement file event handling
 - [ ] Add error recovery mechanisms
 
 #### 2.2 TauriConfigurationService Implementation
-**Source Reference**: `vs/platform/configuration/common/configuration.ts`
-**Wind Equivalent**: `Source/Desktop/TauriConfigurationService.ts`
-**TODO**:
+
+**Source Reference**: `vs/platform/configuration/common/configuration.ts` **Wind
+Equivalent**: `Source/Desktop/TauriConfigurationService.ts` **TODO**:
+
 - [ ] Implement configuration storage
 - [ ] Add configuration validation
 - [ ] Implement change event system
 - [ ] Add migration support
 
 #### 2.3 WindInstantiationService Implementation
+
 **Source Reference**: `vs/platform/instantiation/common/instantiationService.ts`
-**Wind Equivalent**: `Source/Services/WindInstantiationService.ts`
-**TODO**:
+**Wind Equivalent**: `Source/Services/WindInstantiationService.ts` **TODO**:
+
 - [ ] Implement service descriptor registry
 - [ ] Add dependency injection
 - [ ] Implement service lifecycle
@@ -136,18 +149,20 @@ const parts = [
 ### Phase 3: Workbench Creation ❌ NOT STARTED
 
 #### 3.1 Workbench Class Implementation
-**Source Reference**: `vs/workbench/browser/workbench.ts`
-**Wind Equivalent**: `Source/Desktop/TauriWorkbench.ts`
-**TODO**:
+
+**Source Reference**: `vs/workbench/browser/workbench.ts` **Wind Equivalent**:
+`Source/Desktop/TauriWorkbench.ts` **TODO**:
+
 - [ ] Extend Layout class
 - [ ] Implement service initialization
 - [ ] Create workbench parts
 - [ ] Implement rendering pipeline
 
 #### 3.2 Workbench Factory Implementation
-**Source Reference**: `vs/workbench/browser/web.factory.ts`
-**Wind Equivalent**: `Source/Desktop/TauriWorkbenchFactory.ts`
-**TODO**:
+
+**Source Reference**: `vs/workbench/browser/web.factory.ts` **Wind Equivalent**:
+`Source/Desktop/TauriWorkbenchFactory.ts` **TODO**:
+
 - [ ] Implement create() function
 - [ ] Register commands and menus
 - [ ] Manage workbench lifecycle
@@ -155,7 +170,9 @@ const parts = [
 ### Phase 4: UI Components ❌ NOT STARTED
 
 #### 4.1 Workbench Parts Implementation
+
 **TODO**:
+
 - [ ] Titlebar part
 - [ ] Activitybar part
 - [ ] Sidebar part
@@ -164,7 +181,9 @@ const parts = [
 - [ ] Statusbar part
 
 #### 4.2 Notification System
+
 **TODO**:
+
 - [ ] Notification center
 - [ ] Toast notifications
 - [ ] Alert system
@@ -173,6 +192,7 @@ const parts = [
 ## Implementation Details
 
 ### Service Dependency Resolution
+
 Based on VSCode's service initialization pattern:
 
 ```typescript
@@ -185,28 +205,35 @@ instantiationService.invokeFunction(accessor => {
 ```
 
 **Wind Implementation Strategy**:
+
 - Use ServiceMappingRegistry for service resolution
 - Implement dependency injection through accessor pattern
 - Handle service lifecycle transitions
 
 ### Error Handling Strategy
+
 VSCode uses comprehensive error handling:
+
 - Global unhandled rejection handler
 - Unexpected error handler with deduplication
 - Graceful degradation for non-critical services
 
 **Wind Implementation**:
+
 - Implement similar error handling patterns
 - Add service-specific error recovery
 - Ensure graceful degradation
 
 ### Performance Optimization
+
 VSCode uses performance marks:
+
 - `mark('code/willStartWorkbench')`
 - `mark('code/didStartWorkbench')`
 - Performance measurement for workbench creation
 
 **Wind Implementation**:
+
 - Add performance tracking
 - Implement lazy loading for services
 - Optimize bootstrap sequence
@@ -214,18 +241,21 @@ VSCode uses performance marks:
 ## VSCode Source Files for Reference
 
 ### Core Files
+
 - `vs/workbench/browser/workbench.ts` - Main workbench implementation
 - `vs/workbench/browser/web.factory.ts` - Workbench factory
 - `vs/workbench/browser/web.main.ts` - Browser main entry
 - `vs/workbench/electron-browser/desktop.main.ts` - Desktop main entry
 
 ### Service Files
+
 - `vs/platform/instantiation/common/instantiationService.ts` - Service container
 - `vs/platform/storage/common/storage.ts` - Storage service
 - `vs/platform/configuration/common/configuration.ts` - Configuration service
 - `vs/workbench/services/lifecycle/common/lifecycle.ts` - Lifecycle service
 
 ### UI Component Files
+
 - `vs/workbench/browser/parts/notifications/` - Notification system
 - `vs/workbench/browser/parts/editor/editorPart.ts` - Editor part
 - `vs/workbench/browser/parts/activitybar/activitybarPart.ts` - Activitybar
@@ -233,16 +263,19 @@ VSCode uses performance marks:
 ## Next Implementation Steps
 
 ### Immediate (Next Session)
+
 1. **Complete TauriFileService** - Implement file system operations
 2. **Implement TauriConfigurationService** - Configuration management
 3. **Create WindInstantiationService** - Dependency injection
 
 ### Short-term (1-2 Sessions)
+
 1. **Implement Workbench class** - Core workbench functionality
 2. **Create workbench parts** - UI components implementation
 3. **Integrate service mapping** - Complete service adaptation
 
 ### Testing Strategy
+
 1. Unit tests for each service
 2. Integration tests for service interactions
 3. End-to-end tests for workbench creation
@@ -250,6 +283,7 @@ VSCode uses performance marks:
 ## Service Mapping Details
 
 ### Main Process Service (IMainProcessService)
+
 ```typescript
 // VSCode Electron Implementation
 class ElectronIPCMainProcessService {
@@ -266,6 +300,7 @@ class TauriMainProcessService {
 ```
 
 ### Native Host Service (INativeHostService)
+
 ```typescript
 // VSCode Electron Implementation
 class ElectronNativeHostService {
@@ -279,7 +314,7 @@ class TauriNativeHostService {
   async showItemInFolder(path: string): Promise<void> {
     await invoke('show_item_in_folder', { path });
   }
-  
+
   async openExternal(url: string): Promise<boolean> {
     return await invoke('open_external', { url });
   }
@@ -287,6 +322,7 @@ class TauriNativeHostService {
 ```
 
 ### File Service (IFileService)
+
 ```typescript
 // VSCode Electron Implementation
 class DiskFileSystemProvider {
@@ -306,21 +342,25 @@ class TauriFileSystemProvider {
 ## Bootstrap Sequence for Desktop
 
 ### Stage 1: Preload Setup
+
 - Initialize Tauri API shims
 - Set up window.vscode global
 - Load desktop configuration
 
 ### Stage 2: Service Registration
+
 - Register desktop-specific services
 - Set up Tauri IPC channels
 - Initialize file system providers
 
 ### Stage 3: Workbench Creation
+
 - Create desktop workbench instance
 - Set up window management
 - Initialize editor components
 
 ### Stage 4: Desktop Features
+
 - Set up menu bar integration
 - Configure window controls
 - Initialize extension host
@@ -328,18 +368,21 @@ class TauriFileSystemProvider {
 ## Critical TODOs and Missing Components
 
 ### High Priority TODOs
+
 1. **Tauri IPC Bridge** - Missing implementation
 2. **File System Integration** - Needs Tauri FS APIs
 3. **Window Management** - Tauri window controls
 4. **Menu Bar Integration** - Tauri menu system
 
 ### Medium Priority TODOs
+
 1. **Extension Host** - Running extensions in Tauri
 2. **Debug Integration** - Debug adapter protocol
 3. **Terminal Integration** - Tauri terminal APIs
 4. **Search Integration** - File search functionality
 
 ### Low Priority TODOs
+
 1. **Theme Integration** - Custom titlebar theming
 2. **Accessibility** - Screen reader support
 3. **Performance** - Optimizations for Tauri
@@ -348,6 +391,7 @@ class TauriFileSystemProvider {
 ## Integration Points with Sky
 
 ### Webview Configuration
+
 ```typescript
 // Sky webview needs desktop-specific configuration
 const desktopConfig = {
@@ -359,6 +403,7 @@ const desktopConfig = {
 ```
 
 ### Wind Services Integration
+
 ```typescript
 // Desktop services extend Wind services
 class DesktopWindService extends WindService {
@@ -372,11 +417,13 @@ class DesktopWindService extends WindService {
 ## Performance Considerations
 
 ### Startup Optimization
+
 - Preload critical services
 - Lazy load desktop features
 - Optimize Tauri IPC calls
 
 ### Memory Management
+
 - Proper service disposal
 - Window state management
 - Resource cleanup
@@ -384,16 +431,19 @@ class DesktopWindService extends WindService {
 ## Testing Strategy
 
 ### Unit Tests
+
 - Service adapter layers
 - IPC communication
 - Window management
 
 ### Integration Tests
+
 - Desktop workbench startup
 - File system operations
 - Extension loading
 
 ### End-to-End Tests
+
 - Complete desktop workflow
 - Multi-window scenarios
 - Performance benchmarks

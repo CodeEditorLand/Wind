@@ -6,11 +6,12 @@
  */
 
 import { Layer } from "effect";
-import { SandboxMockLive } from "../Sandbox.js";
-import { IPCMockLive } from "../IPC.js";
+
 import { ConfigurationMockLive } from "../Configuration.js";
-import { TelemetryMockLive, TelemetryLive } from "../Telemetry.js";
+import { IPCMockLive } from "../IPC.js";
 import { MountainMockLive } from "../Mountain.js";
+import { SandboxMockLive } from "../Sandbox.js";
+import { TelemetryLive, TelemetryMockLive } from "../Telemetry.js";
 
 // ============================================================================
 // Full Test Layer (all mocks)
@@ -21,11 +22,11 @@ import { MountainMockLive } from "../Mountain.js";
  * No real backend connections, all effects succeed with dummy data.
  */
 export const TestLayer = Layer.empty.pipe(
-  Layer.provide(SandboxMockLive),
-  Layer.provide(IPCMockLive),
-  Layer.provide(ConfigurationMockLive),
-  Layer.provide(TelemetryMockLive),
-  Layer.provide(MountainMockLive)
+	Layer.provide(SandboxMockLive),
+	Layer.provide(IPCMockLive),
+	Layer.provide(ConfigurationMockLive),
+	Layer.provide(TelemetryMockLive),
+	Layer.provide(MountainMockLive),
 );
 
 // ============================================================================
@@ -37,11 +38,11 @@ export const TestLayer = Layer.empty.pipe(
  * Useful for testing performance monitoring.
  */
 export const TestWithTelemetryLayer = Layer.empty.pipe(
-  Layer.provide(SandboxMockLive),
-  Layer.provide(IPCMockLive),
-  Layer.provide(ConfigurationMockLive),
-  Layer.provide(TelemetryLive),
-  Layer.provide(MountainMockLive)
+	Layer.provide(SandboxMockLive),
+	Layer.provide(IPCMockLive),
+	Layer.provide(ConfigurationMockLive),
+	Layer.provide(TelemetryLive),
+	Layer.provide(MountainMockLive),
 );
 
 // Export default for convenience

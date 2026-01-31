@@ -7,5 +7,5 @@
 export const invoke = jest.fn();
 
 export default {
-  invoke
+	invoke,
 };

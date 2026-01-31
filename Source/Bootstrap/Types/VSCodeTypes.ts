@@ -9,315 +9,324 @@
  * Based on vs/workbench/browser/web.factory.ts
  */
 export interface IVSCodeWorkbenchOptions {
-  // Connection
-  remoteAuthority?: string;
-  serverBasePath?: string;
-  connectionToken?: string | Promise<string>;
-  webviewEndpoint?: string;
-  webSocketFactory?: IWebSocketFactory;
-  resourceUriProvider?: IResourceUriProvider;
-  resolveExternalUri?: IExternalUriResolver;
-  tunnelProvider?: ITunnelProvider;
-  codeExchangeProxyEndpoints?: { [providerId: string]: string };
-  editSessionId?: string;
-  remoteResourceProvider?: IRemoteResourceProvider;
-  
-  // Workbench
-  workspaceProvider?: IWorkspaceProvider;
-  settingsSyncOptions?: ISettingsSyncOptions;
-  secretStorageProvider?: ISecretStorageProvider;
-  additionalBuiltinExtensions?: readonly (MarketplaceExtension | UriComponents)[];
-  enabledExtensions?: readonly ExtensionId[];
-  additionalTrustedDomains?: string[];
-  enableWorkspaceTrust?: boolean;
-  openerAllowedExternalUrlPrefixes?: string[];
-  urlCallbackProvider?: IURLCallbackProvider;
-  resolveCommonTelemetryProperties?: ICommonTelemetryPropertiesResolver;
-  commands?: readonly ICommand[];
-  defaultLayout?: IDefaultLayout;
-  configurationDefaults?: Record<string, unknown>;
-  
-  // Profile
-  profile?: { readonly name: string; readonly contents?: string | UriComponents };
-  profileToPreview?: UriComponents;
-  
-  // Update/Quality
-  updateProvider?: IUpdateProvider;
-  productQualityChangeHandler?: IProductQualityChangeHandler;
-  
-  // Branding
-  welcomeBanner?: IWelcomeBanner;
-  productConfiguration?: Partial<IProductConfiguration>;
-  windowIndicator?: IWindowIndicator;
-  initialColorTheme?: IInitialColorTheme;
-  
-  // IPC
-  messagePorts?: ReadonlyMap<ExtensionId, MessagePort>;
-  
-  // Authentication
-  authenticationProviders?: readonly IAuthenticationProvider[];
-  
-  // Development
-  developmentOptions?: IDevelopmentOptions;
+	// Connection
+	remoteAuthority?: string;
+	serverBasePath?: string;
+	connectionToken?: string | Promise<string>;
+	webviewEndpoint?: string;
+	webSocketFactory?: IWebSocketFactory;
+	resourceUriProvider?: IResourceUriProvider;
+	resolveExternalUri?: IExternalUriResolver;
+	tunnelProvider?: ITunnelProvider;
+	codeExchangeProxyEndpoints?: { [providerId: string]: string };
+	editSessionId?: string;
+	remoteResourceProvider?: IRemoteResourceProvider;
+
+	// Workbench
+	workspaceProvider?: IWorkspaceProvider;
+	settingsSyncOptions?: ISettingsSyncOptions;
+	secretStorageProvider?: ISecretStorageProvider;
+	additionalBuiltinExtensions?: readonly (
+		| MarketplaceExtension
+		| UriComponents
+	)[];
+	enabledExtensions?: readonly ExtensionId[];
+	additionalTrustedDomains?: string[];
+	enableWorkspaceTrust?: boolean;
+	openerAllowedExternalUrlPrefixes?: string[];
+	urlCallbackProvider?: IURLCallbackProvider;
+	resolveCommonTelemetryProperties?: ICommonTelemetryPropertiesResolver;
+	commands?: readonly ICommand[];
+	defaultLayout?: IDefaultLayout;
+	configurationDefaults?: Record<string, unknown>;
+
+	// Profile
+	profile?: {
+		readonly name: string;
+		readonly contents?: string | UriComponents;
+	};
+	profileToPreview?: UriComponents;
+
+	// Update/Quality
+	updateProvider?: IUpdateProvider;
+	productQualityChangeHandler?: IProductQualityChangeHandler;
+
+	// Branding
+	welcomeBanner?: IWelcomeBanner;
+	productConfiguration?: Partial<IProductConfiguration>;
+	windowIndicator?: IWindowIndicator;
+	initialColorTheme?: IInitialColorTheme;
+
+	// IPC
+	messagePorts?: ReadonlyMap<ExtensionId, MessagePort>;
+
+	// Authentication
+	authenticationProviders?: readonly IAuthenticationProvider[];
+
+	// Development
+	developmentOptions?: IDevelopmentOptions;
 }
 
 /**
  * VSCode Service Collection Interface
  */
 export interface IVSCodeServiceCollection {
-  set<T>(id: IVSCodeServiceIdentifier<T>, instance: T): void;
-  get<T>(id: IVSCodeServiceIdentifier<T>): T;
-  has<T>(id: IVSCodeServiceIdentifier<T>): boolean;
+	set<T>(id: IVSCodeServiceIdentifier<T>, instance: T): void;
+	get<T>(id: IVSCodeServiceIdentifier<T>): T;
+	has<T>(id: IVSCodeServiceIdentifier<T>): boolean;
 }
 
 /**
  * VSCode Service Identifier
  */
 export interface IVSCodeServiceIdentifier<T> {
-  _serviceBrand: undefined;
-  toString(): string;
+	_serviceBrand: undefined;
+	toString(): string;
 }
 
 /**
  * VSCode Environment Service Interface
  */
 export interface IVSCodeEnvironmentService {
-  _serviceBrand: undefined;
-  machineId: string;
-  sessionId: string;
-  remoteAuthority?: string;
-  isExtensionDevelopment: boolean;
-  execPath: string;
-  userHome: string;
-  userDataPath: string;
-  logPath: string;
-  extHostLogsPath: string;
-  extensionsPath: string;
-  logsPath: string;
-  argvResource: string;
-  workspaceStorageHome: string;
-  userRoamingDataHome: string;
-  crashReporterDirectory?: string;
-  disableExtensions: boolean;
-  
-  // Window configuration
-  windowId: number;
-  window: {
-    configuration: any;
-    
-  };
+	_serviceBrand: undefined;
+	machineId: string;
+	sessionId: string;
+	remoteAuthority?: string;
+	isExtensionDevelopment: boolean;
+	execPath: string;
+	userHome: string;
+	userDataPath: string;
+	logPath: string;
+	extHostLogsPath: string;
+	extensionsPath: string;
+	logsPath: string;
+	argvResource: string;
+	workspaceStorageHome: string;
+	userRoamingDataHome: string;
+	crashReporterDirectory?: string;
+	disableExtensions: boolean;
+
+	// Window configuration
+	windowId: number;
+	window: {
+		configuration: any;
+	};
 }
 
 /**
  * VSCode Configuration Service Interface
  */
 export interface IVSCodeConfigurationService {
-  _serviceBrand: undefined;
-  onDidChangeConfiguration: Event<IConfigurationChangeEvent>;
-  getValue<T>(section?: string): T;
-  updateValue(key: string, value: any, target?: ConfigurationTarget): Promise<void>;
-  inspect<T>(key: string): {
-    default: T;
-    user: T;
-    workspace?: T;
-    workspaceFolder?: T;
-    memory?: T;
-  };
+	_serviceBrand: undefined;
+	onDidChangeConfiguration: Event<IConfigurationChangeEvent>;
+	getValue<T>(section?: string): T;
+	updateValue(
+		key: string,
+		value: any,
+		target?: ConfigurationTarget,
+	): Promise<void>;
+	inspect<T>(key: string): {
+		default: T;
+		user: T;
+		workspace?: T;
+		workspaceFolder?: T;
+		memory?: T;
+	};
 }
 
 /**
  * VSCode Logger Service Interface
  */
 export interface IVSCodeLoggerService {
-  _serviceBrand: undefined;
-  createLogger(file: string, options?: ILoggerOptions): ILogger;
-  getLogger(file: string): ILogger | undefined;
-  dispose(): void;
+	_serviceBrand: undefined;
+	createLogger(file: string, options?: ILoggerOptions): ILogger;
+	getLogger(file: string): ILogger | undefined;
+	dispose(): void;
 }
 
 /**
  * Supporting interfaces for VSCode types
  */
 export interface IWebSocketFactory {
-  create(url: string): IWebSocket;
+	create(url: string): IWebSocket;
 }
 
 export interface IWebSocket {
-  readonly onData: Event<ArrayBuffer>;
-  readonly onOpen: Event<void>;
-  readonly onClose: Event<void>;
-  readonly onError: Event<any>;
-  send(data: ArrayBuffer): void;
-  close(): void;
+	readonly onData: Event<ArrayBuffer>;
+	readonly onOpen: Event<void>;
+	readonly onClose: Event<void>;
+	readonly onError: Event<any>;
+	send(data: ArrayBuffer): void;
+	close(): void;
 }
 
 export interface IResourceUriProvider {
-  (uri: UriComponents): UriComponents;
+	(uri: UriComponents): UriComponents;
 }
 
 export interface IExternalUriResolver {
-  (uri: UriComponents): Promise<UriComponents>;
+	(uri: UriComponents): Promise<UriComponents>;
 }
 
 export interface ITunnelProvider {
-  forwardPort?(tunnelOptions: ITunnelOptions): Promise<ITunnel>;
+	forwardPort?(tunnelOptions: ITunnelOptions): Promise<ITunnel>;
 }
 
 export interface IRemoteResourceProvider {
-  provideResource(uri: UriComponents): Promise<Uint8Array>;
+	provideResource(uri: UriComponents): Promise<Uint8Array>;
 }
 
 export interface IWorkspaceProvider {
-  workspace?: IWorkspace;
-  trusted?: boolean;
+	workspace?: IWorkspace;
+	trusted?: boolean;
 }
 
 export interface ISettingsSyncOptions {
-  enabled: boolean;
+	enabled: boolean;
 }
 
 export interface ISecretStorageProvider {
-  get(key: string): Promise<string | undefined>;
-  set(key: string, value: string): Promise<void>;
-  delete(key: string): Promise<void>;
+	get(key: string): Promise<string | undefined>;
+	set(key: string, value: string): Promise<void>;
+	delete(key: string): Promise<void>;
 }
 
 export interface IURLCallbackProvider {
-  create(options: { url: string }): Promise<URI>;
+	create(options: { url: string }): Promise<URI>;
 }
 
 export interface ICommonTelemetryPropertiesResolver {
-  (): { [key: string]: any };
+	(): { [key: string]: any };
 }
 
 export interface ICommand {
-  id: string;
-  handler: (...args: any[]) => any;
+	id: string;
+	handler: (...args: any[]) => any;
 }
 
 export interface IDefaultLayout {
-  editors?: any[];
+	editors?: any[];
 }
 
 export interface IUpdateProvider {
-  available: boolean;
+	available: boolean;
 }
 
 export interface IProductQualityChangeHandler {
-  (quality: string): void;
+	(quality: string): void;
 }
 
 export interface IWelcomeBanner {
-  title: string;
-  message: string;
-  icon: string;
+	title: string;
+	message: string;
+	icon: string;
 }
 
 export interface IProductConfiguration {
-  nameShort: string;
-  nameLong: string;
-  applicationName: string;
-  version: string;
-  commit: string;
-  date: string;
+	nameShort: string;
+	nameLong: string;
+	applicationName: string;
+	version: string;
+	commit: string;
+	date: string;
 }
 
 export interface IWindowIndicator {
-  label: string;
-  tooltip: string;
+	label: string;
+	tooltip: string;
 }
 
 export interface IInitialColorTheme {
-  theme: string;
+	theme: string;
 }
 
 export interface IAuthenticationProvider {
-  id: string;
-  label: string;
+	id: string;
+	label: string;
 }
 
 export interface IDevelopmentOptions {
-  enableSmokeTestDriver?: boolean;
-  extensionTestsPath?: string;
+	enableSmokeTestDriver?: boolean;
+	extensionTestsPath?: string;
 }
 
 /**
  * Basic VSCode interfaces
  */
 export interface Event<T> {
-  (listener: (e: T) => any): IDisposable;
+	(listener: (e: T) => any): IDisposable;
 }
 
 export interface IDisposable {
-  dispose(): void;
+	dispose(): void;
 }
 
 export interface IConfigurationChangeEvent {
-  affectsConfiguration(section: string, resource?: URI): boolean;
+	affectsConfiguration(section: string, resource?: URI): boolean;
 }
 
 export enum ConfigurationTarget {
-  USER = 1,
-  WORKSPACE = 2,
-  WORKSPACE_FOLDER = 3,
-  DEFAULT = 4,
-  MEMORY = 5
+	USER = 1,
+	WORKSPACE = 2,
+	WORKSPACE_FOLDER = 3,
+	DEFAULT = 4,
+	MEMORY = 5,
 }
 
 export interface ILoggerOptions {
-  name?: string;
-  logLevel?: LogLevel;
+	name?: string;
+	logLevel?: LogLevel;
 }
 
 export interface ILogger {
-  trace(message: string, ...args: any[]): void;
-  debug(message: string, ...args: any[]): void;
-  info(message: string, ...args: any[]): void;
-  warn(message: string, ...args: any[]): void;
-  error(message: string, ...args: any[]): void;
-  critical(message: string, ...args: any[]): void;
+	trace(message: string, ...args: any[]): void;
+	debug(message: string, ...args: any[]): void;
+	info(message: string, ...args: any[]): void;
+	warn(message: string, ...args: any[]): void;
+	error(message: string, ...args: any[]): void;
+	critical(message: string, ...args: any[]): void;
 }
 
 export enum LogLevel {
-  Trace = 0,
-  Debug = 1,
-  Info = 2,
-  Warning = 3,
-  Error = 4,
-  Critical = 5,
-  Off = 6
+	Trace = 0,
+	Debug = 1,
+	Info = 2,
+	Warning = 3,
+	Error = 4,
+	Critical = 5,
+	Off = 6,
 }
 
 /**
  * URI and utility types
  */
 export interface UriComponents {
-  scheme: string;
-  authority?: string;
-  path: string;
-  query?: string;
-  fragment?: string;
+	scheme: string;
+	authority?: string;
+	path: string;
+	query?: string;
+	fragment?: string;
 }
 
 export interface URI {
-  scheme: string;
-  authority?: string;
-  path: string;
-  query?: string;
-  fragment?: string;
-  toString(): string;
+	scheme: string;
+	authority?: string;
+	path: string;
+	query?: string;
+	fragment?: string;
+	toString(): string;
 }
 
 export interface IWorkspace {
-  id: string;
-  folders: IWorkspaceFolder[];
-  configuration?: UriComponents;
+	id: string;
+	folders: IWorkspaceFolder[];
+	configuration?: UriComponents;
 }
 
 export interface IWorkspaceFolder {
-  uri: UriComponents;
-  name: string;
-  index: number;
+	uri: UriComponents;
+	name: string;
+	index: number;
 }
 
 export type ExtensionId = string;

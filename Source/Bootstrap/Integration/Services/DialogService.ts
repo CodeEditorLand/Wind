@@ -24,7 +24,7 @@
  * - showErrorMessage(message, options): Promise<string>
  */
 
-import * as Effect from 'effect/Effect';
+import * as Effect from "effect/Effect";
 
 // ============================================================================
 // TYPES
@@ -97,7 +97,7 @@ export interface MessageBoxOptions {
 	/**
 	 * Icon type
 	 */
-	type?: 'info' | 'warning' | 'error' | 'question';
+	type?: "info" | "warning" | "error" | "question";
 
 	/**
 	 * Button labels
@@ -168,9 +168,7 @@ export interface DialogService {
 	 * @param options - Dialog options
 	 * @returns Array of selected file paths (empty if canceled) wrapped in Effect
 	 */
-	showOpenDialog: (
-		options?: FileDialogOptions
-	) => Effect.Effect<string[]>;
+	showOpenDialog: (options?: FileDialogOptions) => Effect.Effect<string[]>;
 
 	/**
 	 * Show file save dialog
@@ -178,7 +176,7 @@ export interface DialogService {
 	 * @returns Selected file path (undefined if canceled) wrapped in Effect
 	 */
 	showSaveDialog: (
-		options?: FileDialogOptions
+		options?: FileDialogOptions,
 	) => Effect.Effect<string | undefined>;
 
 	/**
@@ -187,7 +185,7 @@ export interface DialogService {
 	 * @returns Selected button response wrapped in Effect
 	 */
 	showMessageBox: (
-		options: MessageBoxOptions & { message: string }
+		options: MessageBoxOptions & { message: string },
 	) => Effect.Effect<MessageBoxResult>;
 
 	/**
@@ -198,7 +196,7 @@ export interface DialogService {
 	 */
 	showInformationMessage: (
 		message: string,
-		buttons?: MessageButtons
+		buttons?: MessageButtons,
 	) => Effect.Effect<string>;
 
 	/**
@@ -209,7 +207,7 @@ export interface DialogService {
 	 */
 	showWarningMessage: (
 		message: string,
-		buttons?: MessageButtons
+		buttons?: MessageButtons,
 	) => Effect.Effect<string>;
 
 	/**
@@ -220,7 +218,7 @@ export interface DialogService {
 	 */
 	showErrorMessage: (
 		message: string,
-		buttons?: MessageButtons
+		buttons?: MessageButtons,
 	) => Effect.Effect<string>;
 
 	/**
@@ -231,7 +229,7 @@ export interface DialogService {
 	 */
 	showConfirmDialog: (
 		message: string,
-		title?: string
+		title?: string,
 	) => Effect.Effect<boolean>;
 
 	/**
@@ -240,7 +238,7 @@ export interface DialogService {
 	 * @returns Selected directory path (undefined if canceled)
 	 */
 	showDirectoryPicker: (
-		startPath?: string
+		startPath?: string,
 	) => Effect.Effect<string | undefined>;
 }
 
@@ -248,10 +246,9 @@ export interface DialogService {
 // CONTEXT TAG
 // ============================================================================
 
-export const DialogServiceTag = Effect.Tag<
-	DialogService,
-	DialogService
->('DialogService');
+export const DialogServiceTag = Effect.Tag<DialogService, DialogService>(
+	"DialogService",
+);
 
 // ============================================================================
 // UTILITY FUNCTIONS
@@ -261,14 +258,14 @@ export const DialogServiceTag = Effect.Tag<
  * Check if Tauri is available in the environment
  */
 function isTauriAvailable(): boolean {
-	return typeof (globalThis as any).__TAURI__ !== 'undefined';
+	return typeof (globalThis as any).__TAURI__ !== "undefined";
 }
 
 /**
  * Convert VSCode FileFilter to Tauri dialog filter format
  */
 function convertFiltersToTauri(
-	filters?: FileFilter[]
+	filters?: FileFilter[],
 ): Array<{ name: string; extensions: string[] }> | undefined {
 	if (!filters || filters.length === 0) {
 		return undefined;
@@ -283,7 +280,7 @@ function convertFiltersToTauri(
  * Convert MessageButtons to array of labels
  */
 function convertButtonsToLabels(
-	buttons?: MessageButtons
+	buttons?: MessageButtons,
 ): string[] | undefined {
 	if (!buttons) {
 		return undefined;
@@ -311,7 +308,9 @@ function browserOpenDialog(options?: FileDialogOptions): Promise<string[]> {
 /**
  * Browser fallback for file save dialog
  */
-function browserSaveDialog(options?: FileDialogOptions): Promise<string | undefined> {
+function browserSaveDialog(
+	options?: FileDialogOptions,
+): Promise<string | undefined> {
 	return Promise.resolve(undefined);
 }
 
@@ -319,22 +318,22 @@ function browserSaveDialog(options?: FileDialogOptions): Promise<string | undefi
  * Browser fallback for message dialog
  */
 function browserMessageBox(
-	options: MessageBoxOptions & { message: string }
+	options: MessageBoxOptions & { message: string },
 ): Promise<MessageBoxResult> {
 	return new Promise((resolve) => {
-		let icon = '';
+		let icon = "";
 		switch (options.type) {
-			case 'warning':
-				icon = '⚠️ ';
+			case "warning":
+				icon = "⚠️ ";
 				break;
-			case 'error':
-				icon = '❌ ';
+			case "error":
+				icon = "❌ ";
 				break;
-			case 'question':
-				icon = '❓ ';
+			case "question":
+				icon = "❓ ";
 				break;
 			default:
-				icon = 'ℹ️ ';
+				icon = "ℹ️ ";
 		}
 		const message = `${icon}${options.message}`;
 		const confirmed = window.confirm(message);
@@ -347,17 +346,19 @@ function browserMessageBox(
  */
 function browserInfoMessage(
 	message: string,
-	buttons?: MessageButtons
+	buttons?: MessageButtons,
 ): Promise<string> {
 	const labels = convertButtonsToLabels(buttons);
 	if (labels && labels.length > 1) {
 		return new Promise((resolve) => {
-			const confirmed = window.confirm(`${message}\n\n${labels.join(' | ')}`);
+			const confirmed = window.confirm(
+				`${message}\n\n${labels.join(" | ")}`,
+			);
 			resolve(confirmed ? labels[0] : labels[labels.length - 1]);
 		});
 	}
 	window.alert(message);
-	return Promise.resolve(buttons?.primary || 'OK');
+	return Promise.resolve(buttons?.primary || "OK");
 }
 
 /**
@@ -365,19 +366,19 @@ function browserInfoMessage(
  */
 function browserWarningMessage(
 	message: string,
-	buttons?: MessageButtons
+	buttons?: MessageButtons,
 ): Promise<string> {
 	const labels = convertButtonsToLabels(buttons);
 	if (labels && labels.length > 1) {
 		return new Promise((resolve) => {
 			const confirmed = window.confirm(
-				`⚠️ WARNING\n\n${message}\n\n${labels.join(' | ')}`
+				`⚠️ WARNING\n\n${message}\n\n${labels.join(" | ")}`,
 			);
 			resolve(confirmed ? labels[0] : labels[labels.length - 1]);
 		});
 	}
 	window.confirm(`⚠️ WARNING\n\n${message}`);
-	return Promise.resolve(buttons?.primary || 'OK');
+	return Promise.resolve(buttons?.primary || "OK");
 }
 
 /**
@@ -385,19 +386,19 @@ function browserWarningMessage(
  */
 function browserErrorMessage(
 	message: string,
-	buttons?: MessageButtons
+	buttons?: MessageButtons,
 ): Promise<string> {
 	const labels = convertButtonsToLabels(buttons);
 	if (labels && labels.length > 1) {
 		return new Promise((resolve) => {
 			const confirmed = window.confirm(
-				`❌ ERROR\n\n${message}\n\n${labels.join(' | ')}`
+				`❌ ERROR\n\n${message}\n\n${labels.join(" | ")}`,
 			);
 			resolve(confirmed ? labels[0] : labels[labels.length - 1]);
 		});
 	}
 	window.alert(`❌ ERROR\n\n${message}`);
-	return Promise.resolve(buttons?.primary || 'OK');
+	return Promise.resolve(buttons?.primary || "OK");
 }
 
 // ============================================================================
@@ -414,7 +415,7 @@ const DialogServiceImpl = DialogServiceTag.of({
 				}
 
 				// Tauri native dialog
-				const dialog = await import('@tauri-apps/plugin-dialog');
+				const dialog = await import("@tauri-apps/plugin-dialog");
 
 				// Convert options
 				const tauriOptions: any = {
@@ -423,9 +424,12 @@ const DialogServiceImpl = DialogServiceTag.of({
 				};
 
 				if (options?.title) tauriOptions.title = options.title;
-				if (options?.defaultPath) tauriOptions.defaultPath = options.defaultPath;
-				if (options?.directory) tauriOptions.directory = options.directory;
-				if (options?.hidden !== undefined) tauriOptions.hidden = options.hidden;
+				if (options?.defaultPath)
+					tauriOptions.defaultPath = options.defaultPath;
+				if (options?.directory)
+					tauriOptions.directory = options.directory;
+				if (options?.hidden !== undefined)
+					tauriOptions.hidden = options.hidden;
 
 				const filters = convertFiltersToTauri(options?.filters);
 				if (filters && filters.length > 0) {
@@ -443,7 +447,7 @@ const DialogServiceImpl = DialogServiceTag.of({
 				return Array.isArray(result) ? result : [result];
 			},
 			catch: (error) => {
-				console.error('[DialogService] Open dialog error:', error);
+				console.error("[DialogService] Open dialog error:", error);
 				return [];
 			},
 		});
@@ -458,14 +462,16 @@ const DialogServiceImpl = DialogServiceTag.of({
 				}
 
 				// Tauri native dialog
-				const dialog = await import('@tauri-apps/plugin-dialog');
+				const dialog = await import("@tauri-apps/plugin-dialog");
 
 				// Convert options
 				const tauriOptions: any = {};
 
 				if (options?.title) tauriOptions.title = options.title;
-				if (options?.defaultPath) tauriOptions.defaultPath = options.defaultPath;
-				if (options?.hidden !== undefined) tauriOptions.hidden = options.hidden;
+				if (options?.defaultPath)
+					tauriOptions.defaultPath = options.defaultPath;
+				if (options?.hidden !== undefined)
+					tauriOptions.hidden = options.hidden;
 
 				const filters = convertFiltersToTauri(options?.filters);
 				if (filters && filters.length > 0) {
@@ -476,7 +482,7 @@ const DialogServiceImpl = DialogServiceTag.of({
 				return await dialog.save(tauriOptions);
 			},
 			catch: (error) => {
-				console.error('[DialogService] Save dialog error:', error);
+				console.error("[DialogService] Save dialog error:", error);
 				return undefined;
 			},
 		});
@@ -491,11 +497,11 @@ const DialogServiceImpl = DialogServiceTag.of({
 				}
 
 				// Tauri native dialog
-				const dialog = await import('@tauri-apps/plugin-dialog');
+				const dialog = await import("@tauri-apps/plugin-dialog");
 
 				// Convert options
 				const tauriOptions: any = {
-					title: options.title || '',
+					title: options.title || "",
 					message: options.message,
 				};
 
@@ -515,158 +521,145 @@ const DialogServiceImpl = DialogServiceTag.of({
 				return await dialog.message(tauriOptions);
 			},
 			catch: (error) => {
-				console.error('[DialogService] Message dialog error:', error);
+				console.error("[DialogService] Message dialog error:", error);
 				return { response: 1 }; // Return default cancel response
 			},
 		});
 	},
 
 	showInformationMessage: (message: string, buttons?: MessageButtons) => {
-		return Effect.flatMap(
-			DialogServiceTag,
-			(service) => {
-				// Browser fallback
-				if (!isTauriAvailable()) {
-					return Effect.tryPromise({
-						try: async () => await browserInfoMessage(message, buttons),
-						catch: () => 'OK',
-					});
-				}
-
-				// Tauri native dialog
-				const labels = convertButtonsToLabels(buttons);
-
-				// Convert to MessageBoxOptions
-				const msgOptions: MessageBoxOptions & { message: string } = {
-					message,
-					type: 'info',
-					title: 'Information',
-					buttons: labels || ['OK'],
-				};
-
+		return Effect.flatMap(DialogServiceTag, (service) => {
+			// Browser fallback
+			if (!isTauriAvailable()) {
 				return Effect.tryPromise({
-					try: async () => {
-						const result = await service.showMessageBox(msgOptions);
-						const selectedButton = result.buttons?.[result.response];
-						return selectedButton || buttons?.primary || 'OK';
-					},
-					catch: () => 'OK',
+					try: async () => await browserInfoMessage(message, buttons),
+					catch: () => "OK",
 				});
 			}
-		);
+
+			// Tauri native dialog
+			const labels = convertButtonsToLabels(buttons);
+
+			// Convert to MessageBoxOptions
+			const msgOptions: MessageBoxOptions & { message: string } = {
+				message,
+				type: "info",
+				title: "Information",
+				buttons: labels || ["OK"],
+			};
+
+			return Effect.tryPromise({
+				try: async () => {
+					const result = await service.showMessageBox(msgOptions);
+					const selectedButton = result.buttons?.[result.response];
+					return selectedButton || buttons?.primary || "OK";
+				},
+				catch: () => "OK",
+			});
+		});
 	},
 
 	showWarningMessage: (message: string, buttons?: MessageButtons) => {
-		return Effect.flatMap(
-			DialogServiceTag,
-			(service) => {
-				// Browser fallback
-				if (!isTauriAvailable()) {
-					return Effect.tryPromise({
-						try: async () => await browserWarningMessage(message, buttons),
-						catch: () => 'OK',
-					});
-				}
-
-				// Tauri native dialog
-				const labels = convertButtonsToLabels(buttons);
-
-				// Convert to MessageBoxOptions
-				const msgOptions: MessageBoxOptions & { message: string } = {
-					message,
-					type: 'warning',
-					title: 'Warning',
-					buttons: labels || ['OK'],
-				};
-
+		return Effect.flatMap(DialogServiceTag, (service) => {
+			// Browser fallback
+			if (!isTauriAvailable()) {
 				return Effect.tryPromise({
-					try: async () => {
-						const result = await service.showMessageBox(msgOptions);
-						const selectedButton = result.buttons?.[result.response];
-						return selectedButton || buttons?.primary || 'OK';
-					},
-					catch: () => 'OK',
+					try: async () =>
+						await browserWarningMessage(message, buttons),
+					catch: () => "OK",
 				});
 			}
-		);
+
+			// Tauri native dialog
+			const labels = convertButtonsToLabels(buttons);
+
+			// Convert to MessageBoxOptions
+			const msgOptions: MessageBoxOptions & { message: string } = {
+				message,
+				type: "warning",
+				title: "Warning",
+				buttons: labels || ["OK"],
+			};
+
+			return Effect.tryPromise({
+				try: async () => {
+					const result = await service.showMessageBox(msgOptions);
+					const selectedButton = result.buttons?.[result.response];
+					return selectedButton || buttons?.primary || "OK";
+				},
+				catch: () => "OK",
+			});
+		});
 	},
 
 	showErrorMessage: (message: string, buttons?: MessageButtons) => {
-		return Effect.flatMap(
-			DialogServiceTag,
-			(service) => {
-				// Browser fallback
-				if (!isTauriAvailable()) {
-					return Effect.tryPromise({
-						try: async () => await browserErrorMessage(message, buttons),
-						catch: () => 'OK',
-					});
-				}
-
-				// Tauri native dialog
-				const labels = convertButtonsToLabels(buttons);
-
-				// Convert to MessageBoxOptions
-				const msgOptions: MessageBoxOptions & { message: string } = {
-					message,
-					type: 'error',
-					title: 'Error',
-					buttons: labels || ['OK'],
-				};
-
+		return Effect.flatMap(DialogServiceTag, (service) => {
+			// Browser fallback
+			if (!isTauriAvailable()) {
 				return Effect.tryPromise({
-					try: async () => {
-						const result = await service.showMessageBox(msgOptions);
-						const selectedButton = result.buttons?.[result.response];
-						return selectedButton || buttons?.primary || 'OK';
-					},
-					catch: () => 'OK',
+					try: async () =>
+						await browserErrorMessage(message, buttons),
+					catch: () => "OK",
 				});
 			}
-		);
+
+			// Tauri native dialog
+			const labels = convertButtonsToLabels(buttons);
+
+			// Convert to MessageBoxOptions
+			const msgOptions: MessageBoxOptions & { message: string } = {
+				message,
+				type: "error",
+				title: "Error",
+				buttons: labels || ["OK"],
+			};
+
+			return Effect.tryPromise({
+				try: async () => {
+					const result = await service.showMessageBox(msgOptions);
+					const selectedButton = result.buttons?.[result.response];
+					return selectedButton || buttons?.primary || "OK";
+				},
+				catch: () => "OK",
+			});
+		});
 	},
 
 	showConfirmDialog: (message: string, title?: string) => {
-		return Effect.flatMap(
-			DialogServiceTag,
-			(service) => {
-				return Effect.tryPromise({
-					try: async () => {
-						// Use message box for confirmation
-						const result = await Effect.runPromise(
-							service.showMessageBox({
-								message,
-								title: title || 'Confirm',
-								type: 'question',
-								buttons: ['OK', 'Cancel'],
-								cancelId: 1,
-							})
-						);
-						return result.response === 0;
-					},
-					catch: () => false,
-				});
-			}
-		);
+		return Effect.flatMap(DialogServiceTag, (service) => {
+			return Effect.tryPromise({
+				try: async () => {
+					// Use message box for confirmation
+					const result = await Effect.runPromise(
+						service.showMessageBox({
+							message,
+							title: title || "Confirm",
+							type: "question",
+							buttons: ["OK", "Cancel"],
+							cancelId: 1,
+						}),
+					);
+					return result.response === 0;
+				},
+				catch: () => false,
+			});
+		});
 	},
 
 	showDirectoryPicker: (startPath?: string) => {
-		return Effect.flatMap(
-			DialogServiceTag,
-			(service) => {
-				return Effect.map(
-					service.showOpenDialog({
-						title: 'Select Directory',
-						directories: true,
-						defaultPath: startPath,
-						multiple: false,
-					}),
-					(paths) => {
-						return paths.length > 0 ? paths[0] : undefined;
-					}
-				);
-			}
-		);
+		return Effect.flatMap(DialogServiceTag, (service) => {
+			return Effect.map(
+				service.showOpenDialog({
+					title: "Select Directory",
+					directories: true,
+					defaultPath: startPath,
+					multiple: false,
+				}),
+				(paths) => {
+					return paths.length > 0 ? paths[0] : undefined;
+				},
+			);
+		});
 	},
 });
 
@@ -689,11 +682,10 @@ export function createDialogServiceLayer(): Effect.Layer<never> {
  * Effect wrapper for file open dialog
  */
 export const showOpenDialogEffect = (
-	options?: FileDialogOptions
+	options?: FileDialogOptions,
 ): Effect.Effect<string[]> => {
-	return Effect.flatMap(
-		DialogServiceTag,
-		(service) => service.showOpenDialog(options)
+	return Effect.flatMap(DialogServiceTag, (service) =>
+		service.showOpenDialog(options),
 	);
 };
 
@@ -701,11 +693,10 @@ export const showOpenDialogEffect = (
  * Effect wrapper for file save dialog
  */
 export const showSaveDialogEffect = (
-	options?: FileDialogOptions
+	options?: FileDialogOptions,
 ): Effect.Effect<string | undefined> => {
-	return Effect.flatMap(
-		DialogServiceTag,
-		(service) => service.showSaveDialog(options)
+	return Effect.flatMap(DialogServiceTag, (service) =>
+		service.showSaveDialog(options),
 	);
 };
 
@@ -713,11 +704,10 @@ export const showSaveDialogEffect = (
  * Effect wrapper for message box
  */
 export const showMessageBoxEffect = (
-	options: MessageBoxOptions & { message: string }
+	options: MessageBoxOptions & { message: string },
 ): Effect.Effect<MessageBoxResult> => {
-	return Effect.flatMap(
-		DialogServiceTag,
-		(service) => service.showMessageBox(options)
+	return Effect.flatMap(DialogServiceTag, (service) =>
+		service.showMessageBox(options),
 	);
 };
 
@@ -726,11 +716,10 @@ export const showMessageBoxEffect = (
  */
 export const showInformationMessageEffect = (
 	message: string,
-	buttons?: MessageButtons
+	buttons?: MessageButtons,
 ): Effect.Effect<string> => {
-	return Effect.flatMap(
-		DialogServiceTag,
-		(service) => service.showInformationMessage(message, buttons)
+	return Effect.flatMap(DialogServiceTag, (service) =>
+		service.showInformationMessage(message, buttons),
 	);
 };
 
@@ -739,11 +728,10 @@ export const showInformationMessageEffect = (
  */
 export const showWarningMessageEffect = (
 	message: string,
-	buttons?: MessageButtons
+	buttons?: MessageButtons,
 ): Effect.Effect<string> => {
-	return Effect.flatMap(
-		DialogServiceTag,
-		(service) => service.showWarningMessage(message, buttons)
+	return Effect.flatMap(DialogServiceTag, (service) =>
+		service.showWarningMessage(message, buttons),
 	);
 };
 
@@ -752,11 +740,10 @@ export const showWarningMessageEffect = (
  */
 export const showErrorMessageEffect = (
 	message: string,
-	buttons?: MessageButtons
+	buttons?: MessageButtons,
 ): Effect.Effect<string> => {
-	return Effect.flatMap(
-		DialogServiceTag,
-		(service) => service.showErrorMessage(message, buttons)
+	return Effect.flatMap(DialogServiceTag, (service) =>
+		service.showErrorMessage(message, buttons),
 	);
 };
 
@@ -765,11 +752,10 @@ export const showErrorMessageEffect = (
  */
 export const showConfirmDialogEffect = (
 	message: string,
-	title?: string
+	title?: string,
 ): Effect.Effect<boolean> => {
-	return Effect.flatMap(
-		DialogServiceTag,
-		(service) => service.showConfirmDialog(message, title)
+	return Effect.flatMap(DialogServiceTag, (service) =>
+		service.showConfirmDialog(message, title),
 	);
 };
 
@@ -777,11 +763,10 @@ export const showConfirmDialogEffect = (
  * Effect wrapper for directory picker
  */
 export const showDirectoryPickerEffect = (
-	startPath?: string
+	startPath?: string,
 ): Effect.Effect<string | undefined> => {
-	return Effect.flatMap(
-		DialogServiceTag,
-		(service) => service.showDirectoryPicker(startPath)
+	return Effect.flatMap(DialogServiceTag, (service) =>
+		service.showDirectoryPicker(startPath),
 	);
 };
 
@@ -794,8 +779,8 @@ export const showDirectoryPickerEffect = (
  */
 export const confirmCloseUnsaved = (): Effect.Effect<boolean> => {
 	return showConfirmDialogEffect(
-		'Do you want to save changes before closing?',
-		'Unsaved Changes'
+		"Do you want to save changes before closing?",
+		"Unsaved Changes",
 	);
 };
 
@@ -805,7 +790,7 @@ export const confirmCloseUnsaved = (): Effect.Effect<boolean> => {
 export const confirmOverwrite = (filePath: string): Effect.Effect<boolean> => {
 	return showConfirmDialogEffect(
 		`File "${filePath}" already exists. Do you want to overwrite it?`,
-		'Confirm Overwrite'
+		"Confirm Overwrite",
 	);
 };
 

@@ -22,7 +22,7 @@
  * - dispose()
  */
 
-import * as Effect from 'effect/Effect';
+import * as Effect from "effect/Effect";
 
 // ============================================================================
 // TYPES
@@ -32,7 +32,13 @@ import * as Effect from 'effect/Effect';
  * Available log levels ordered by severity
  * Lower values are more verbose
  */
-export type LogLevel = 'trace' | 'debug' | 'info' | 'warning' | 'error' | 'critical';
+export type LogLevel =
+	| "trace"
+	| "debug"
+	| "info"
+	| "warning"
+	| "error"
+	| "critical";
 
 /**
  * Logger service configuration options
@@ -101,7 +107,7 @@ interface LogEntry {
 // ============================================================================
 
 export const LoggerServiceTag = Effect.Tag<LoggerService, LoggerService>(
-	'LoggerService'
+	"LoggerService",
 );
 
 // ============================================================================
@@ -111,7 +117,14 @@ export const LoggerServiceTag = Effect.Tag<LoggerService, LoggerService>(
 /**
  * Log level order for comparison
  */
-const LOG_LEVEL_ORDER: LogLevel[] = ['trace', 'debug', 'info', 'warning', 'error', 'critical'];
+const LOG_LEVEL_ORDER: LogLevel[] = [
+	"trace",
+	"debug",
+	"info",
+	"warning",
+	"error",
+	"critical",
+];
 
 /**
  * Get numeric level for comparison
@@ -132,20 +145,20 @@ function shouldLog(currentLevel: LogLevel, messageLevel: LogLevel): boolean {
  */
 function getConsoleColor(level: LogLevel): string {
 	switch (level) {
-		case 'trace':
-			return '#9e9e9e'; // gray
-		case 'debug':
-			return '#2196f3'; // blue
-		case 'info':
-			return '#4caf50'; // green
-		case 'warning':
-			return '#ff9800'; // orange
-		case 'error':
-			return '#f44336'; // red
-		case 'critical':
-			return '#d32f2f'; // dark red
+		case "trace":
+			return "#9e9e9e"; // gray
+		case "debug":
+			return "#2196f3"; // blue
+		case "info":
+			return "#4caf50"; // green
+		case "warning":
+			return "#ff9800"; // orange
+		case "error":
+			return "#f44336"; // red
+		case "critical":
+			return "#d32f2f"; // dark red
 		default:
-			return '#ffffff';
+			return "#ffffff";
 	}
 }
 
@@ -165,15 +178,15 @@ function safeStringify(obj: unknown, space?: number): string {
 	return JSON.stringify(
 		obj,
 		(_key, value) => {
-			if (typeof value === 'object' && value !== null) {
+			if (typeof value === "object" && value !== null) {
 				if (seen.has(value)) {
-					return '[Circular]';
+					return "[Circular]";
 				}
 				seen.add(value);
 			}
 			return value;
 		},
-		space
+		space,
 	);
 }
 
@@ -204,27 +217,28 @@ class LoggerServiceImpl implements LoggerService {
 	private disposed: boolean = false;
 
 	constructor(options: LoggerServiceOptions = {}) {
-		this.level = options.level || 'info';
+		this.level = options.level || "info";
 		this.enableFileLogging = options.enableFileLogging || false;
-		this.logFilePath = options.logFilePath || 'logs/wind.log';
-		this.integrateWithStatusReporter = options.integrateWithStatusReporter || false;
+		this.logFilePath = options.logFilePath || "logs/wind.log";
+		this.integrateWithStatusReporter =
+			options.integrateWithStatusReporter || false;
 		this.logBuffer = [];
 	}
 
 	trace(message: string, ...args: unknown[]): void {
-		this.log('trace', message, args);
+		this.log("trace", message, args);
 	}
 
 	debug(message: string, ...args: unknown[]): void {
-		this.log('debug', message, args);
+		this.log("debug", message, args);
 	}
 
 	info(message: string, ...args: unknown[]): void {
-		this.log('info', message, args);
+		this.log("info", message, args);
 	}
 
 	warning(message: string, ...args: unknown[]): void {
-		this.log('warning', message, args);
+		this.log("warning", message, args);
 	}
 
 	warn(message: string, ...args: unknown[]): void {
@@ -233,11 +247,11 @@ class LoggerServiceImpl implements LoggerService {
 	}
 
 	error(message: string, ...args: unknown[]): void {
-		this.log('error', message, args);
+		this.log("error", message, args);
 	}
 
 	critical(message: string, ...args: unknown[]): void {
-		this.log('critical', message, args);
+		this.log("critical", message, args);
 	}
 
 	setLevel(level: LogLevel): void {
@@ -258,10 +272,13 @@ class LoggerServiceImpl implements LoggerService {
 			if (this.enableFileLogging && this.logBuffer.length > 0) {
 				yield* Effect.tryPromise({
 					try: async () => {
-						const fs = await import('@tauri-apps/plugin-fs');
+						const fs = await import("@tauri-apps/plugin-fs");
 						const logContent = this.logBuffer
-							.map(entry => `[${entry.timestamp}][${entry.level.toUpperCase()}] ${entry.message}`)
-							.join('\n');
+							.map(
+								(entry) =>
+									`[${entry.timestamp}][${entry.level.toUpperCase()}] ${entry.message}`,
+							)
+							.join("\n");
 
 						await fs.writeTextFile(this.logFilePath, logContent, {
 							append: true,
@@ -273,7 +290,9 @@ class LoggerServiceImpl implements LoggerService {
 					},
 					catch: (error) => {
 						// Silently fail file logging to not disrupt application
-						console.warn(`[LoggerService] Failed to flush logs: ${error}`);
+						console.warn(
+							`[LoggerService] Failed to flush logs: ${error}`,
+						);
 					},
 				});
 			}
@@ -323,7 +342,10 @@ class LoggerServiceImpl implements LoggerService {
 		this.logToConsole(level, timestamp, message, data);
 
 		// Integrate with StatusReporter for errors
-		if (this.integrateWithStatusReporter && (level === 'error' || level === 'critical')) {
+		if (
+			this.integrateWithStatusReporter &&
+			(level === "error" || level === "critical")
+		) {
 			this.notifyStatusReporter(level, message, data);
 		}
 	}
@@ -331,25 +353,46 @@ class LoggerServiceImpl implements LoggerService {
 	/**
 	 * Log to console with color coding
 	 */
-	private logToConsole(level: LogLevel, timestamp: string, message: string, data?: unknown): void {
+	private logToConsole(
+		level: LogLevel,
+		timestamp: string,
+		message: string,
+		data?: unknown,
+	): void {
 		const formattedMessage = `[${timestamp}][${level.toUpperCase()}] ${message}`;
 		const color = getConsoleColor(level);
 
 		switch (level) {
-			case 'trace':
-			case 'debug':
-				console.debug(`%c${formattedMessage}`, `color: ${color}`, data || '');
+			case "trace":
+			case "debug":
+				console.debug(
+					`%c${formattedMessage}`,
+					`color: ${color}`,
+					data || "",
+				);
 				break;
-			case 'info':
-				console.info(`%c${formattedMessage}`, `color: ${color}`, data || '');
+			case "info":
+				console.info(
+					`%c${formattedMessage}`,
+					`color: ${color}`,
+					data || "",
+				);
 				break;
-			case 'warning':
-				console.warn(`%c${formattedMessage}`, `color: ${color}`, data || '');
+			case "warning":
+				console.warn(
+					`%c${formattedMessage}`,
+					`color: ${color}`,
+					data || "",
+				);
 				break;
-			case 'error':
-			case 'critical':
+			case "error":
+			case "critical":
 				const errorInfo = data ? getErrorInfo(data) : undefined;
-				console.error(`%c${formattedMessage}`, `color: ${color}`, errorInfo || '');
+				console.error(
+					`%c${formattedMessage}`,
+					`color: ${color}`,
+					errorInfo || "",
+				);
 				break;
 		}
 	}
@@ -357,16 +400,20 @@ class LoggerServiceImpl implements LoggerService {
 	/**
 	 * Notify StatusReporter of error
 	 */
-	private notifyStatusReporter(level: LogLevel, message: string, data?: unknown): void {
+	private notifyStatusReporter(
+		level: LogLevel,
+		message: string,
+		data?: unknown,
+	): void {
 		try {
-			const { StatusReporter } = require('./../../StatusReporter.js');
+			const { StatusReporter } = require("./../../StatusReporter.js");
 			const reporter = StatusReporter.getInstance();
 
 			const error = data instanceof Error ? data : undefined;
 
 			reporter.update({
-				stage: 'Logger',
-				status: 'error',
+				stage: "Logger",
+				status: "error",
 				message: `[${level.toUpperCase()}] ${message}`,
 				progress: 0, // Progress not applicable
 				error,
@@ -386,7 +433,9 @@ class LoggerServiceImpl implements LoggerService {
  * @param options - Logger configuration options
  * @returns Effect-TS layer for LoggerService
  */
-export function createLoggerServiceLayer(options?: LoggerServiceOptions): Effect.Layer<never> {
+export function createLoggerServiceLayer(
+	options?: LoggerServiceOptions,
+): Effect.Layer<never> {
 	const loggerService = new LoggerServiceImpl(options);
 	return LoggerServiceTag.provide(loggerService);
 }
@@ -398,27 +447,31 @@ export function createLoggerServiceLayer(options?: LoggerServiceOptions): Effect
 /**
  * Effect wrapper for logging messages
  */
-export function logEffect(level: LogLevel, message: string, data?: unknown): Effect.Effect<void> {
+export function logEffect(
+	level: LogLevel,
+	message: string,
+	data?: unknown,
+): Effect.Effect<void> {
 	return Effect.gen(function* () {
 		const logger = yield* LoggerServiceTag;
 
 		switch (level) {
-			case 'trace':
+			case "trace":
 				logger.trace(message, data);
 				break;
-			case 'debug':
+			case "debug":
 				logger.debug(message, data);
 				break;
-			case 'info':
+			case "info":
 				logger.info(message, data);
 				break;
-			case 'warning':
+			case "warning":
 				logger.warning(message, data);
 				break;
-			case 'error':
+			case "error":
 				logger.error(message, data);
 				break;
-			case 'critical':
+			case "critical":
 				logger.critical(message, data);
 				break;
 		}
@@ -428,43 +481,61 @@ export function logEffect(level: LogLevel, message: string, data?: unknown): Eff
 /**
  * Effect wrapper for error logging
  */
-export function errorEffect(message: string, error?: Error | unknown): Effect.Effect<void> {
-	return logEffect('error', message, error);
+export function errorEffect(
+	message: string,
+	error?: Error | unknown,
+): Effect.Effect<void> {
+	return logEffect("error", message, error);
 }
 
 /**
  * Effect wrapper for info logging
  */
-export function infoEffect(message: string, data?: unknown): Effect.Effect<void> {
-	return logEffect('info', message, data);
+export function infoEffect(
+	message: string,
+	data?: unknown,
+): Effect.Effect<void> {
+	return logEffect("info", message, data);
 }
 
 /**
  * Effect wrapper for debug logging
  */
-export function debugEffect(message: string, data?: unknown): Effect.Effect<void> {
-	return logEffect('debug', message, data);
+export function debugEffect(
+	message: string,
+	data?: unknown,
+): Effect.Effect<void> {
+	return logEffect("debug", message, data);
 }
 
 /**
  * Effect wrapper for trace logging
  */
-export function traceEffect(message: string, data?: unknown): Effect.Effect<void> {
-	return logEffect('trace', message, data);
+export function traceEffect(
+	message: string,
+	data?: unknown,
+): Effect.Effect<void> {
+	return logEffect("trace", message, data);
 }
 
 /**
  * Effect wrapper for warning logging
  */
-export function warningEffect(message: string, data?: unknown): Effect.Effect<void> {
-	return logEffect('warning', message, data);
+export function warningEffect(
+	message: string,
+	data?: unknown,
+): Effect.Effect<void> {
+	return logEffect("warning", message, data);
 }
 
 /**
  * Effect wrapper for critical logging
  */
-export function criticalEffect(message: string, error?: Error | unknown): Effect.Effect<void> {
-	return logEffect('critical', message, error);
+export function criticalEffect(
+	message: string,
+	error?: Error | unknown,
+): Effect.Effect<void> {
+	return logEffect("critical", message, error);
 }
 
 // ============================================================================

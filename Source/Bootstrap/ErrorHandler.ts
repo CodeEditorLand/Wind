@@ -2,7 +2,7 @@
  * @module ErrorHandler
  * @description
  * Centralized error handling with recovery strategies and reporting.
- * 
+ *
  * This component provides comprehensive error management for the bootstrap process.
  * It categorizes errors, registers recovery strategies, manages error UI display,
  * tracks error history, and exports error data for diagnostics.
@@ -85,377 +85,418 @@
  * - Add error recovery performance tracking
  */
 
-import type { ErrorSeverity } from './Types.js';
-import { StatusReporter } from './StatusReporter.js';
+import { StatusReporter } from "./StatusReporter.js";
+import type { ErrorSeverity } from "./Types.js";
 
 export interface ErrorContext {
-  stage: string;
-  error: Error;
-  severity: ErrorSeverity;
-  timestamp: number;
-  additionalInfo?: any;
+	stage: string;
+	error: Error;
+	severity: ErrorSeverity;
+	timestamp: number;
+	additionalInfo?: any;
 }
 
 export interface RecoveryStrategy {
-  canRecover: boolean;
-  action: () => Promise<void>;
-  fallback?: () => Promise<void>;
-  priority?: number;
-  maxAttempts?: number;
+	canRecover: boolean;
+	action: () => Promise<void>;
+	fallback?: () => Promise<void>;
+	priority?: number;
+	maxAttempts?: number;
 }
 
 export interface ErrorHistory {
-  errors: ErrorContext[];
-  summary: {
-    total: number;
-    byStage: Map<string, number>;
-    bySeverity: Map<ErrorSeverity, number>;
-    timeRange: { start: number; end: number };
-  };
+	errors: ErrorContext[];
+	summary: {
+		total: number;
+		byStage: Map<string, number>;
+		bySeverity: Map<ErrorSeverity, number>;
+		timeRange: { start: number; end: number };
+	};
 }
 
 export class ErrorHandler {
-  private static instance: ErrorHandler;
-  private errors: ErrorContext[] = [];
-  private recoveryStrategies: Map<string, RecoveryStrategy> = new Map();
-  private errorUIVisible: boolean = false;
-  private circuitBreakerFailures: number = 0;
-  private readonly CIRCUIT_BREAKER_THRESHOLD = 5;
+	private static instance: ErrorHandler;
+	private errors: ErrorContext[] = [];
+	private recoveryStrategies: Map<string, RecoveryStrategy> = new Map();
+	private errorUIVisible: boolean = false;
+	private circuitBreakerFailures: number = 0;
+	private readonly CIRCUIT_BREAKER_THRESHOLD = 5;
 
-  private constructor() {}
+	private constructor() {}
 
-  /**
-   * Get the ErrorHandler singleton instance
-   */
-  static getInstance(): ErrorHandler {
-    if (!ErrorHandler.instance) {
-      ErrorHandler.instance = new ErrorHandler();
-    }
-    return ErrorHandler.instance;
-  }
+	/**
+	 * Get the ErrorHandler singleton instance
+	 */
+	static getInstance(): ErrorHandler {
+		if (!ErrorHandler.instance) {
+			ErrorHandler.instance = new ErrorHandler();
+		}
+		return ErrorHandler.instance;
+	}
 
-  /**
-   * Categorize error by analyzing its content and context
-   * @param error The error object
-   * @param stage The stage where error occurred
-   * @returns Categorized error severity
-   */
-  CategorizeError(error: Error, stage: string): ErrorSeverity {
-    const errorMessage = error.message.toLowerCase();
-    const errorName = error.name.toLowerCase();
+	/**
+	 * Categorize error by analyzing its content and context
+	 * @param error The error object
+	 * @param stage The stage where error occurred
+	 * @returns Categorized error severity
+	 */
+	CategorizeError(error: Error, stage: string): ErrorSeverity {
+		const errorMessage = error.message.toLowerCase();
+		const errorName = error.name.toLowerCase();
 
-    // Critical errors that prevent bootstrap from completing
-    if (
-      errorMessage.includes('timeout') ||
-      errorMessage.includes('cannot read') ||
-      errorMessage.includes('cannot access') ||
-      errorMessage.includes('not defined') ||
-      errorName.includes('referenceerror') ||
-      errorName.includes('typeerror') && errorMessage.includes('is not a')
-    ) {
-      return 'critical';
-    }
+		// Critical errors that prevent bootstrap from completing
+		if (
+			errorMessage.includes("timeout") ||
+			errorMessage.includes("cannot read") ||
+			errorMessage.includes("cannot access") ||
+			errorMessage.includes("not defined") ||
+			errorName.includes("referenceerror") ||
+			(errorName.includes("typeerror") &&
+				errorMessage.includes("is not a"))
+		) {
+			return "critical";
+		}
 
-    // Warnings that don't prevent bootstrapping
-    if (
-      errorMessage.includes('deprecated') ||
-      errorMessage.includes('warning') ||
-      errorMessage.includes('slow') ||
-      errorMessage.includes('performance')
-    ) {
-      return 'warning';
-    }
+		// Warnings that don't prevent bootstrapping
+		if (
+			errorMessage.includes("deprecated") ||
+			errorMessage.includes("warning") ||
+			errorMessage.includes("slow") ||
+			errorMessage.includes("performance")
+		) {
+			return "warning";
+		}
 
-    // Default to critical for bootstrap errors
-    return 'critical';
-  }
+		// Default to critical for bootstrap errors
+		return "critical";
+	}
 
-  /**
-   * Register recovery strategy for a stage
-   * @param stage The stage name
-   * @param strategy The recovery strategy
-   */
-  RegisterRecoveryStrategy(stage: string, strategy: RecoveryStrategy): void {
-    this.recoveryStrategies.set(stage, strategy);
-    console.log(`[ErrorHandler] Recovery strategy registered for ${stage}`);
-  }
+	/**
+	 * Register recovery strategy for a stage
+	 * @param stage The stage name
+	 * @param strategy The recovery strategy
+	 */
+	RegisterRecoveryStrategy(stage: string, strategy: RecoveryStrategy): void {
+		this.recoveryStrategies.set(stage, strategy);
+		console.log(`[ErrorHandler] Recovery strategy registered for ${stage}`);
+	}
 
-  /**
-   * Execute recovery strategy for a stage
-   * @param stage The stage name
-   * @param error The error that occurred
-   * @returns Recovery success status
-   */
-  async ExecuteRecovery(stage: string, error: Error): Promise<boolean> {
-    const strategy = this.recoveryStrategies.get(stage);
-    if (!strategy || !strategy.canRecover) {
-      console.log(`[ErrorHandler] No recovery strategy available for ${stage}`);
-      return false;
-    }
+	/**
+	 * Execute recovery strategy for a stage
+	 * @param stage The stage name
+	 * @param error The error that occurred
+	 * @returns Recovery success status
+	 */
+	async ExecuteRecovery(stage: string, error: Error): Promise<boolean> {
+		const strategy = this.recoveryStrategies.get(stage);
+		if (!strategy || !strategy.canRecover) {
+			console.log(
+				`[ErrorHandler] No recovery strategy available for ${stage}`,
+			);
+			return false;
+		}
 
-    console.log(`[ErrorHandler] Attempting recovery for ${stage}...`);
+		console.log(`[ErrorHandler] Attempting recovery for ${stage}...`);
 
-    const maxAttempts = strategy.maxAttempts || 1;
-    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-      try {
-        await strategy.action();
-        console.log(`[ErrorHandler] ✓ Recovery successful for ${stage} (attempt ${attempt})`);
-        return true;
-      } catch (recoveryError) {
-        console.error(`[ErrorHandler] ✗ Recovery attempt ${attempt} failed for ${stage}:`, recoveryError);
+		const maxAttempts = strategy.maxAttempts || 1;
+		for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+			try {
+				await strategy.action();
+				console.log(
+					`[ErrorHandler] ✓ Recovery successful for ${stage} (attempt ${attempt})`,
+				);
+				return true;
+			} catch (recoveryError) {
+				console.error(
+					`[ErrorHandler] ✗ Recovery attempt ${attempt} failed for ${stage}:`,
+					recoveryError,
+				);
 
-        if (strategy.fallback && attempt === maxAttempts) {
-          console.log(`[ErrorHandler] Trying fallback for ${stage}...`);
-          try {
-            await strategy.fallback();
-            console.log(`[ErrorHandler] ✓ Fallback successful for ${stage}`);
-            return true;
-          } catch (fallbackError) {
-            console.error(`[ErrorHandler] ✗ Fallback failed for ${stage}:`, fallbackError);
-          }
-        }
-      }
-    }
+				if (strategy.fallback && attempt === maxAttempts) {
+					console.log(
+						`[ErrorHandler] Trying fallback for ${stage}...`,
+					);
+					try {
+						await strategy.fallback();
+						console.log(
+							`[ErrorHandler] ✓ Fallback successful for ${stage}`,
+						);
+						return true;
+					} catch (fallbackError) {
+						console.error(
+							`[ErrorHandler] ✗ Fallback failed for ${stage}:`,
+							fallbackError,
+						);
+					}
+				}
+			}
+		}
 
-    return false;
-  }
+		return false;
+	}
 
-  /**
-   * Manage error UI visibility
-   * @param visible Whether the error UI should be visible
-   */
-  ManageErrorUI(visible: boolean): void {
-    if (visible === this.errorUIVisible) return;
+	/**
+	 * Manage error UI visibility
+	 * @param visible Whether the error UI should be visible
+	 */
+	ManageErrorUI(visible: boolean): void {
+		if (visible === this.errorUIVisible) return;
 
-    const errorDiv = document.getElementById('bootstrap-error-overlay');
-    if (errorDiv) {
-      errorDiv.style.display = visible ? 'flex' : 'none';
-      this.errorUIVisible = visible;
-    }
-  }
+		const errorDiv = document.getElementById("bootstrap-error-overlay");
+		if (errorDiv) {
+			errorDiv.style.display = visible ? "flex" : "none";
+			this.errorUIVisible = visible;
+		}
+	}
 
-  /**
-   * Export error data for diagnostics
-   * @param format Export format (json, csv, txt)
-   * @returns Exported error data as string
-   */
-  ExportErrors(format: 'json' | 'csv' | 'txt' = 'json'): string {
-    switch (format) {
-      case 'json':
-        return JSON.stringify(this.errors, null, 2);
-      case 'csv':
-        return this.errorsToCSV();
-      case 'txt':
-        return this.errorsToText();
-      default:
-        return JSON.stringify(this.errors, null, 2);
-    }
-  }
+	/**
+	 * Export error data for diagnostics
+	 * @param format Export format (json, csv, txt)
+	 * @returns Exported error data as string
+	 */
+	ExportErrors(format: "json" | "csv" | "txt" = "json"): string {
+		switch (format) {
+			case "json":
+				return JSON.stringify(this.errors, null, 2);
+			case "csv":
+				return this.errorsToCSV();
+			case "txt":
+				return this.errorsToText();
+			default:
+				return JSON.stringify(this.errors, null, 2);
+		}
+	}
 
-  /**
-   * Convert errors to CSV format
-   * @returns CSV string of errors
-   */
-  private errorsToCSV(): string {
-    const headers = ['Stage', 'Severity', 'Timestamp', 'Error', 'Stack'];
-    const rows = this.errors.map(ctx => [
-      ctx.stage,
-      ctx.severity,
-      new Date(ctx.timestamp).toISOString(),
-      `"${ctx.error.message.replace(/"/g, '""')}"`,
-      `"${(ctx.error.stack || '').replace(/"/g, '""')}"`
-    ]);
+	/**
+	 * Convert errors to CSV format
+	 * @returns CSV string of errors
+	 */
+	private errorsToCSV(): string {
+		const headers = ["Stage", "Severity", "Timestamp", "Error", "Stack"];
+		const rows = this.errors.map((ctx) => [
+			ctx.stage,
+			ctx.severity,
+			new Date(ctx.timestamp).toISOString(),
+			`"${ctx.error.message.replace(/"/g, '""')}"`,
+			`"${(ctx.error.stack || "").replace(/"/g, '""')}"`,
+		]);
 
-    return [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
-  }
+		return [headers.join(","), ...rows.map((row) => row.join(","))].join(
+			"\n",
+		);
+	}
 
-  /**
-   * Convert errors to text format
-   * @returns Text string of errors
-   */
-  private errorsToText(): string {
-    return this.errors.map((ctx, index) => `
+	/**
+	 * Convert errors to text format
+	 * @returns Text string of errors
+	 */
+	private errorsToText(): string {
+		return this.errors
+			.map(
+				(ctx, index) => `
 Error ${index + 1}:
   Stage: ${ctx.stage}
   Severity: ${ctx.severity}
   Timestamp: ${new Date(ctx.timestamp).toISOString()}
   Error: ${ctx.error.message}
-  Stack: ${ctx.error.stack || 'No stack trace'}
-  ${ctx.additionalInfo ? `Additional Info: ${JSON.stringify(ctx.additionalInfo, null, 2)}` : ''}
-`).join('\n' + '-'.repeat(60) + '\n');
-  }
+  Stack: ${ctx.error.stack || "No stack trace"}
+  ${ctx.additionalInfo ? `Additional Info: ${JSON.stringify(ctx.additionalInfo, null, 2)}` : ""}
+`,
+			)
+			.join("\n" + "-".repeat(60) + "\n");
+	}
 
-  /**
-   * Track error history with summary statistics
-   * @returns Error history with summary
-   */
-  TrackErrorHistory(): ErrorHistory {
-    const byStage = new Map<string, number>();
-    const bySeverity = new Map<ErrorSeverity, number>();
+	/**
+	 * Track error history with summary statistics
+	 * @returns Error history with summary
+	 */
+	TrackErrorHistory(): ErrorHistory {
+		const byStage = new Map<string, number>();
+		const bySeverity = new Map<ErrorSeverity, number>();
 
-    this.errors.forEach(ctx => {
-      byStage.set(ctx.stage, (byStage.get(ctx.stage) || 0) + 1);
-      bySeverity.set(ctx.severity, (bySeverity.get(ctx.severity) || 0) + 1);
-    });
+		this.errors.forEach((ctx) => {
+			byStage.set(ctx.stage, (byStage.get(ctx.stage) || 0) + 1);
+			bySeverity.set(
+				ctx.severity,
+				(bySeverity.get(ctx.severity) || 0) + 1,
+			);
+		});
 
-    const timestamps = this.errors.map(ctx => ctx.timestamp);
-    const timeRange = timestamps.length > 0
-      ? { start: Math.min(...timestamps), end: Math.max(...timestamps) }
-      : { start: Date.now(), end: Date.now() };
+		const timestamps = this.errors.map((ctx) => ctx.timestamp);
+		const timeRange =
+			timestamps.length > 0
+				? {
+						start: Math.min(...timestamps),
+						end: Math.max(...timestamps),
+					}
+				: { start: Date.now(), end: Date.now() };
 
-    return {
-      errors: [...this.errors],
-      summary: {
-        total: this.errors.length,
-        byStage,
-        bySeverity,
-        timeRange
-      }
-    };
-  }
+		return {
+			errors: [...this.errors],
+			summary: {
+				total: this.errors.length,
+				byStage,
+				bySeverity,
+				timeRange,
+			},
+		};
+	}
 
-  /**
-   * Handle an error with optional recovery
-   */
-  async handle(
-    stage: string,
-    error: Error,
-    severity: ErrorSeverity = 'critical',
-    additionalInfo?: any
-  ): Promise<boolean> {
-    // Auto-categorize error if not provided
-    const errorSeverity = severity || this.CategorizeError(error, stage);
+	/**
+	 * Handle an error with optional recovery
+	 */
+	async handle(
+		stage: string,
+		error: Error,
+		severity: ErrorSeverity = "critical",
+		additionalInfo?: any,
+	): Promise<boolean> {
+		// Auto-categorize error if not provided
+		const errorSeverity = severity || this.CategorizeError(error, stage);
 
-    const context: ErrorContext = {
-      stage,
-      error,
-      severity: errorSeverity,
-      timestamp: Date.now(),
-      additionalInfo
-    };
+		const context: ErrorContext = {
+			stage,
+			error,
+			severity: errorSeverity,
+			timestamp: Date.now(),
+			additionalInfo,
+		};
 
-    this.errors.push(context);
+		this.errors.push(context);
 
-    // Check circuit breaker for repeated errors
-    if (this.shouldTriggerCircuitBreaker(context)) {
-      this.openCircuitBreaker();
-      console.error('[ErrorHandler] Circuit breaker triggered - stopping error handling');
-      return false;
-    }
+		// Check circuit breaker for repeated errors
+		if (this.shouldTriggerCircuitBreaker(context)) {
+			this.openCircuitBreaker();
+			console.error(
+				"[ErrorHandler] Circuit breaker triggered - stopping error handling",
+			);
+			return false;
+		}
 
-    // Log the error
-    this.logError(context);
+		// Log the error
+		this.logError(context);
 
-    // Report to status reporter
-    const reporter = StatusReporter.getInstance();
-    reporter.update({
-      stage: stage as any,
-      status: errorSeverity === 'critical' ? 'error' : 'warning',
-      message: error.message,
-      progress: 0,
-      error
-    });
+		// Report to status reporter
+		const reporter = StatusReporter.getInstance();
+		reporter.update({
+			stage: stage as any,
+			status: errorSeverity === "critical" ? "error" : "warning",
+			message: error.message,
+			progress: 0,
+			error,
+		});
 
-    // Attempt recovery if possible
-    const strategy = this.recoveryStrategies.get(stage);
-    if (strategy && strategy.canRecover) {
-      console.log(`[ErrorHandler] Attempting recovery for ${stage}...`);
-      const recovered = await this.ExecuteRecovery(stage, error);
-      if (recovered) {
-        return true;
-      }
-    }
+		// Attempt recovery if possible
+		const strategy = this.recoveryStrategies.get(stage);
+		if (strategy && strategy.canRecover) {
+			console.log(`[ErrorHandler] Attempting recovery for ${stage}...`);
+			const recovered = await this.ExecuteRecovery(stage, error);
+			if (recovered) {
+				return true;
+			}
+		}
 
-    // Show error UI for critical errors
-    if (errorSeverity === 'critical') {
-      this.showErrorUI(context);
-    }
+		// Show error UI for critical errors
+		if (errorSeverity === "critical") {
+			this.showErrorUI(context);
+		}
 
-    return false;
-  }
+		return false;
+	}
 
-  /**
-   * Register a recovery strategy for a stage
-   */
-  RegisterRecoveryStrategy(stage: string, strategy: RecoveryStrategy): void {
-    this.recoveryStrategies.set(stage, strategy);
-  }
+	/**
+	 * Register a recovery strategy for a stage
+	 */
+	RegisterRecoveryStrategy(stage: string, strategy: RecoveryStrategy): void {
+		this.recoveryStrategies.set(stage, strategy);
+	}
 
-  /**
-   * Check if circuit breaker should be triggered
-   * @param context The error context
-   * @returns Whether to trigger circuit breaker
-   */
-  private shouldTriggerCircuitBreaker(context: ErrorContext): boolean {
-    if (context.severity !== 'critical') {
-      return false;
-    }
+	/**
+	 * Check if circuit breaker should be triggered
+	 * @param context The error context
+	 * @returns Whether to trigger circuit breaker
+	 */
+	private shouldTriggerCircuitBreaker(context: ErrorContext): boolean {
+		if (context.severity !== "critical") {
+			return false;
+		}
 
-    this.circuitBreakerFailures++;
+		this.circuitBreakerFailures++;
 
-    // Check repeated errors in short time window
-    const recentErrors = this.errors.filter(
-      e => e.stage === context.stage &&
-      e.severity === 'critical' &&
-      e.timestamp > Date.now() - 60000 // Last 60 seconds
-    );
+		// Check repeated errors in short time window
+		const recentErrors = this.errors.filter(
+			(e) =>
+				e.stage === context.stage &&
+				e.severity === "critical" &&
+				e.timestamp > Date.now() - 60000, // Last 60 seconds
+		);
 
-    return recentErrors.length >= this.CIRCUIT_BREAKER_THRESHOLD;
-  }
+		return recentErrors.length >= this.CIRCUIT_BREAKER_THRESHOLD;
+	}
 
-  /**
-   * Open circuit breaker to stop error handling
-   */
-  private openCircuitBreaker(): void {
-    this.circuitBreakerOpen = true;
-    console.error(`[ErrorHandler] Circuit breaker opened after ${this.circuitBreakerFailures} failures`);
+	/**
+	 * Open circuit breaker to stop error handling
+	 */
+	private openCircuitBreaker(): void {
+		this.circuitBreakerOpen = true;
+		console.error(
+			`[ErrorHandler] Circuit breaker opened after ${this.circuitBreakerFailures} failures`,
+		);
 
-    // Auto-reset after 5 minutes
-    setTimeout(() => {
-      this.closeCircuitBreaker();
-    }, 300000);
-  }
+		// Auto-reset after 5 minutes
+		setTimeout(() => {
+			this.closeCircuitBreaker();
+		}, 300000);
+	}
 
-  /**
-   * Close circuit breaker and reset state
-   */
-  private closeCircuitBreaker(): void {
-    this.circuitBreakerOpen = false;
-    this.circuitBreakerFailures = 0;
-    console.log('[ErrorHandler] Circuit breaker closed');
-  }
+	/**
+	 * Close circuit breaker and reset state
+	 */
+	private closeCircuitBreaker(): void {
+		this.circuitBreakerOpen = false;
+		this.circuitBreakerFailures = 0;
+		console.log("[ErrorHandler] Circuit breaker closed");
+	}
 
-  /**
-   * Log error to console and potentially to backend
-   */
-  private logError(context: ErrorContext): void {
-    const { stage, error, severity, timestamp } = context;
-    const time = new Date(timestamp).toISOString();
+	/**
+	 * Log error to console and potentially to backend
+	 */
+	private logError(context: ErrorContext): void {
+		const { stage, error, severity, timestamp } = context;
+		const time = new Date(timestamp).toISOString();
 
-    switch (severity) {
-      case 'critical':
-        console.error(`%c[${time}] [${stage}] CRITICAL ERROR:`, 'color: #f44336; font-weight: bold', error);
-        break;
-      case 'warning':
-        console.warn(`%c[${time}] [${stage}] WARNING:`, 'color: #ff9800; font-weight: bold', error);
-        break;
-      case 'info':
-        console.info(`[${time}] [${stage}] INFO:`, error);
-        break;
-    }
+		switch (severity) {
+			case "critical":
+				console.error(
+					`%c[${time}] [${stage}] CRITICAL ERROR:`,
+					"color: #f44336; font-weight: bold",
+					error,
+				);
+				break;
+			case "warning":
+				console.warn(
+					`%c[${time}] [${stage}] WARNING:`,
+					"color: #ff9800; font-weight: bold",
+					error,
+				);
+				break;
+			case "info":
+				console.info(`[${time}] [${stage}] INFO:`, error);
+				break;
+		}
 
-    if (context.additionalInfo) {
-      console.log('Additional info:', context.additionalInfo);
-    }
-  }
+		if (context.additionalInfo) {
+			console.log("Additional info:", context.additionalInfo);
+		}
+	}
 
-  /**
-   * Show error UI in the page
-   */
-  private showErrorUI(context: ErrorContext): void {
-    const errorDiv = document.createElement('div');
-    errorDiv.id = 'bootstrap-error-overlay';
-    errorDiv.style.cssText = `
+	/**
+	 * Show error UI in the page
+	 */
+	private showErrorUI(context: ErrorContext): void {
+		const errorDiv = document.createElement("div");
+		errorDiv.id = "bootstrap-error-overlay";
+		errorDiv.style.cssText = `
       position: fixed;
       top: 0;
       left: 0;
@@ -469,8 +510,8 @@ Error ${index + 1}:
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     `;
 
-    const errorBox = document.createElement('div');
-    errorBox.style.cssText = `
+		const errorBox = document.createElement("div");
+		errorBox.style.cssText = `
       background: white;
       border-radius: 8px;
       padding: 24px;
@@ -479,7 +520,7 @@ Error ${index + 1}:
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     `;
 
-    errorBox.innerHTML = `
+		errorBox.innerHTML = `
       <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
         <span style="font-size: 32px;">❌</span>
         <h2 style="margin: 0; color: #c62828;">Bootstrap Error</h2>
@@ -506,7 +547,9 @@ Error ${index + 1}:
         ">${context.error.stack || context.error.message}</pre>
       </div>
       
-      ${context.additionalInfo ? `
+      ${
+			context.additionalInfo
+				? `
         <div style="margin-bottom: 16px;">
           <strong>Additional Info:</strong>
           <pre style="
@@ -519,7 +562,9 @@ Error ${index + 1}:
             margin: 8px 0 0 0;
           ">${JSON.stringify(context.additionalInfo, null, 2)}</pre>
         </div>
-      ` : ''}
+      `
+				: ""
+		}
       
       <div style="display: flex; gap: 12px; margin-top: 24px;">
         <button id="bootstrap-retry-btn" style="
@@ -550,22 +595,22 @@ Error ${index + 1}:
       </div>
     `;
 
-    errorDiv.appendChild(errorBox);
-    document.body.appendChild(errorDiv);
+		errorDiv.appendChild(errorBox);
+		document.body.appendChild(errorDiv);
 
-    // Add event listeners
-    const retryBtn = document.getElementById('bootstrap-retry-btn');
-    if (retryBtn) {
-      retryBtn.addEventListener('click', () => {
-        console.log('[ErrorHandler] Retry requested by user');
-        window.location.reload();
-      });
-    }
+		// Add event listeners
+		const retryBtn = document.getElementById("bootstrap-retry-btn");
+		if (retryBtn) {
+			retryBtn.addEventListener("click", () => {
+				console.log("[ErrorHandler] Retry requested by user");
+				window.location.reload();
+			});
+		}
 
-    const copyBtn = document.getElementById('bootstrap-copy-error-btn');
-    if (copyBtn) {
-      copyBtn.addEventListener('click', () => {
-        const errorText = `
+		const copyBtn = document.getElementById("bootstrap-copy-error-btn");
+		if (copyBtn) {
+			copyBtn.addEventListener("click", () => {
+				const errorText = `
 Stage: ${context.stage}
 Severity: ${context.severity}
 Error: ${context.error.message}
@@ -573,65 +618,65 @@ Stack: ${context.error.stack}
 Additional Info: ${JSON.stringify(context.additionalInfo, null, 2)}
         `.trim();
 
-        navigator.clipboard.writeText(errorText).then(() => {
-          copyBtn.textContent = 'Copied!';
-          setTimeout(() => {
-            copyBtn.textContent = 'Copy Error';
-          }, 2000);
-        });
-      });
-    }
-  }
+				navigator.clipboard.writeText(errorText).then(() => {
+					copyBtn.textContent = "Copied!";
+					setTimeout(() => {
+						copyBtn.textContent = "Copy Error";
+					}, 2000);
+				});
+			});
+		}
+	}
 
-  /**
-   * Remove error UI
-   */
-  removeErrorUI(): void {
-    const errorDiv = document.getElementById('bootstrap-error-overlay');
-    if (errorDiv) {
-      errorDiv.remove();
-    }
-  }
+	/**
+	 * Remove error UI
+	 */
+	removeErrorUI(): void {
+		const errorDiv = document.getElementById("bootstrap-error-overlay");
+		if (errorDiv) {
+			errorDiv.remove();
+		}
+	}
 
-  /**
-   * Get all errors
-   */
-  getErrors(): ErrorContext[] {
-    return [...this.errors];
-  }
+	/**
+	 * Get all errors
+	 */
+	getErrors(): ErrorContext[] {
+		return [...this.errors];
+	}
 
-  /**
-   * Get errors by severity
-   */
-  getErrorsBySeverity(severity: ErrorSeverity): ErrorContext[] {
-    return this.errors.filter(e => e.severity === severity);
-  }
+	/**
+	 * Get errors by severity
+	 */
+	getErrorsBySeverity(severity: ErrorSeverity): ErrorContext[] {
+		return this.errors.filter((e) => e.severity === severity);
+	}
 
-  /**
-   * Get errors by stage
-   */
-  getErrorsByStage(stage: string): ErrorContext[] {
-    return this.errors.filter(e => e.stage === stage);
-  }
+	/**
+	 * Get errors by stage
+	 */
+	getErrorsByStage(stage: string): ErrorContext[] {
+		return this.errors.filter((e) => e.stage === stage);
+	}
 
-  /**
-   * Clear all errors
-   */
-  clearErrors(): void {
-    this.errors = [];
-  }
+	/**
+	 * Clear all errors
+	 */
+	clearErrors(): void {
+		this.errors = [];
+	}
 
-  /**
-   * Export errors as JSON
-   */
-  exportErrors(): string {
-    return JSON.stringify(this.errors, null, 2);
-  }
+	/**
+	 * Export errors as JSON
+	 */
+	exportErrors(): string {
+		return JSON.stringify(this.errors, null, 2);
+	}
 
-  /**
-   * Check if there are critical errors
-   */
-  hasCriticalErrors(): boolean {
-    return this.errors.some(e => e.severity === 'critical');
-  }
+	/**
+	 * Check if there are critical errors
+	 */
+	hasCriticalErrors(): boolean {
+		return this.errors.some((e) => e.severity === "critical");
+	}
 }

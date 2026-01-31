@@ -17,7 +17,7 @@
  * - inspect<T>(key: string): IConfigurationChangeEvent
  */
 
-import * as Effect from 'effect/Effect';
+import * as Effect from "effect/Effect";
 
 // ============================================================================
 // TYPES
@@ -45,7 +45,7 @@ export interface ConfigurationService {
 	 */
 	getValue: <T = ConfigValue>(
 		key: string,
-		defaultValue?: T
+		defaultValue?: T,
 	) => Effect.Effect<T | undefined>;
 
 	/**
@@ -74,7 +74,7 @@ export interface ConfigurationService {
 	 */
 	onDidChange: (
 		key: string,
-		callback: ConfigChangeHandler
+		callback: ConfigChangeHandler,
 	) => Effect.Effect<() => void>;
 
 	/**
@@ -83,7 +83,7 @@ export interface ConfigurationService {
 	 * @returns Effect that resolves to section configuration
 	 */
 	getConfiguration: <T = Record<string, unknown>>(
-		sectionId: string
+		sectionId: string,
 	) => Effect.Effect<T | undefined>;
 
 	/**
@@ -114,7 +114,7 @@ export interface ConfigurationServiceOptions {
 export const ConfigurationServiceTag = Effect.Tag<
 	ConfigurationService,
 	ConfigurationService
->('ConfigurationService');
+>("ConfigurationService");
 
 // ============================================================================
 // UTILITY FUNCTIONS
@@ -124,8 +124,8 @@ export const ConfigurationServiceTag = Effect.Tag<
  * Get nested object value by dot notation key
  */
 function getNestedValue(obj: Record<string, unknown>, key: string): unknown {
-	return key.split('.').reduce((current: unknown, prop: string) => {
-		if (current && typeof current === 'object' && prop in current) {
+	return key.split(".").reduce((current: unknown, prop: string) => {
+		if (current && typeof current === "object" && prop in current) {
 			return (current as Record<string, unknown>)[prop];
 		}
 		return undefined;
@@ -138,15 +138,19 @@ function getNestedValue(obj: Record<string, unknown>, key: string): unknown {
 function setNestedValue(
 	obj: Record<string, unknown>,
 	key: string,
-	value: unknown
+	value: unknown,
 ): void {
-	const keys = key.split('.');
+	const keys = key.split(".");
 	const lastKey = keys.pop()!;
 
 	let current: Record<string, unknown> = obj;
 
 	for (const prop of keys) {
-		if (!(prop in current) || typeof current[prop] !== 'object' || current[prop] === null) {
+		if (
+			!(prop in current) ||
+			typeof current[prop] !== "object" ||
+			current[prop] === null
+		) {
 			current[prop] = {};
 		}
 		current = current[prop] as Record<string, unknown>;
@@ -160,7 +164,7 @@ function setNestedValue(
  */
 function flattenObject(
 	obj: Record<string, unknown>,
-	prefix: string = ''
+	prefix: string = "",
 ): Record<string, unknown> {
 	const result: Record<string, unknown> = {};
 
@@ -168,8 +172,11 @@ function flattenObject(
 		const value = obj[key];
 		const newKey = prefix ? `${prefix}.${key}` : key;
 
-		if (value && typeof value === 'object' && !Array.isArray(value)) {
-			Object.assign(result, flattenObject(value as Record<string, unknown>, newKey));
+		if (value && typeof value === "object" && !Array.isArray(value)) {
+			Object.assign(
+				result,
+				flattenObject(value as Record<string, unknown>, newKey),
+			);
 		} else {
 			result[newKey] = value;
 		}
@@ -181,7 +188,9 @@ function flattenObject(
 /**
  * Unflatten dot notation keys to nested object
  */
-function unflattenObject(flat: Record<string, unknown>): Record<string, unknown> {
+function unflattenObject(
+	flat: Record<string, unknown>,
+): Record<string, unknown> {
 	const result: Record<string, unknown> = {};
 
 	for (const key in flat) {
@@ -195,13 +204,15 @@ function unflattenObject(flat: Record<string, unknown>): Record<string, unknown>
  * Sync configuration to Mountain via Tauri
  */
 async function syncToMountain(key: string, value: unknown): Promise<void> {
-	if (typeof (globalThis as any).__TAURI__ !== 'undefined') {
+	if (typeof (globalThis as any).__TAURI__ !== "undefined") {
 		try {
 			const { invoke } = (globalThis as any).__TAURI__.core;
-			await invoke('mountain_update_configuration', { key, value });
+			await invoke("mountain_update_configuration", { key, value });
 		} catch (error) {
 			// Silently ignore sync errors
-			console.warn(`[ConfigurationService] Failed to sync to Mountain: ${error}`);
+			console.warn(
+				`[ConfigurationService] Failed to sync to Mountain: ${error}`,
+			);
 		}
 	}
 }
@@ -211,7 +222,7 @@ async function syncToMountain(key: string, value: unknown): Promise<void> {
  */
 function validateConfiguration(
 	config: Record<string, unknown>,
-	schema: Record<string, unknown> | undefined
+	schema: Record<string, unknown> | undefined,
 ): boolean {
 	if (!schema) {
 		return true;
@@ -222,7 +233,7 @@ function validateConfiguration(
 		const value = getNestedValue(config, key);
 		const schemaValue = schema[key];
 
-		if (typeof schemaValue === 'type') {
+		if (typeof schemaValue === "type") {
 			if (value === undefined || typeof value !== schemaValue) {
 				return false;
 			}
@@ -258,7 +269,7 @@ class ConfigurationServiceImpl implements ConfigurationService {
 
 	getValue: <T = ConfigValue>(
 		key: string,
-		defaultValue?: T
+		defaultValue?: T,
 	) => Effect.Effect<T | undefined> = (key, defaultValue) => {
 		return Effect.sync(() => {
 			const value = this.config.get(key);
@@ -269,7 +280,10 @@ class ConfigurationServiceImpl implements ConfigurationService {
 		});
 	};
 
-	updateValue: <T>(key: string, value: T) => Effect.Effect<void> = (key, value) => {
+	updateValue: <T>(key: string, value: T) => Effect.Effect<void> = (
+		key,
+		value,
+	) => {
 		return Effect.sync(() => {
 			const oldValue = this.config.get(key);
 			this.config.set(key, value);
@@ -283,7 +297,9 @@ class ConfigurationServiceImpl implements ConfigurationService {
 				} else {
 					this.config.delete(key);
 				}
-				throw new Error(`Configuration validation failed for key: ${key}`);
+				throw new Error(
+					`Configuration validation failed for key: ${key}`,
+				);
 			}
 
 			// Notify listeners
@@ -293,7 +309,9 @@ class ConfigurationServiceImpl implements ConfigurationService {
 					try {
 						handler(value);
 					} catch (error) {
-						console.warn(`[ConfigurationService] Handler error: ${error}`);
+						console.warn(
+							`[ConfigurationService] Handler error: ${error}`,
+						);
 					}
 				});
 			}
@@ -330,7 +348,9 @@ class ConfigurationServiceImpl implements ConfigurationService {
 					try {
 						handler(undefined);
 					} catch (error) {
-						console.warn(`[ConfigurationService] Handler error: ${error}`);
+						console.warn(
+							`[ConfigurationService] Handler error: ${error}`,
+						);
 					}
 				});
 			});
@@ -339,7 +359,7 @@ class ConfigurationServiceImpl implements ConfigurationService {
 
 	onDidChange: (
 		key: string,
-		callback: ConfigChangeHandler
+		callback: ConfigChangeHandler,
 	) => Effect.Effect<() => void> = (key, callback) => {
 		return Effect.sync(() => {
 			if (!this.changeHandlers.has(key)) {
@@ -361,7 +381,7 @@ class ConfigurationServiceImpl implements ConfigurationService {
 	};
 
 	getConfiguration: <T = Record<string, unknown>>(
-		sectionId: string
+		sectionId: string,
 	) => Effect.Effect<T | undefined> = (sectionId) => {
 		return Effect.sync(() => {
 			// Find all keys that start with sectionId
@@ -388,7 +408,9 @@ class ConfigurationServiceImpl implements ConfigurationService {
 		});
 	};
 
-	setMany: (values: Record<string, unknown>) => Effect.Effect<void> = (values) => {
+	setMany: (values: Record<string, unknown>) => Effect.Effect<void> = (
+		values,
+	) => {
 		return Effect.sync(() => {
 			const flattened = flattenObject(values);
 
@@ -412,17 +434,24 @@ class ConfigurationServiceImpl implements ConfigurationService {
 	 * Persist configuration to storage
 	 */
 	private async persist(): Promise<void> {
-		if (typeof (globalThis as any).__TAURI__ !== 'undefined') {
+		if (typeof (globalThis as any).__TAURI__ !== "undefined") {
 			try {
-				const { writeTextFile, mkdir } = await import('@tauri-apps/plugin-fs');
-				const configDir = 'config';
+				const { writeTextFile, mkdir } =
+					await import("@tauri-apps/plugin-fs");
+				const configDir = "config";
 
 				await mkdir(configDir, { recursive: true });
 
-				const configStr = JSON.stringify(Object.fromEntries(this.config), null, 2);
+				const configStr = JSON.stringify(
+					Object.fromEntries(this.config),
+					null,
+					2,
+				);
 				await writeTextFile(`${configDir}/wind-config.json`, configStr);
 			} catch (error) {
-				console.warn(`[ConfigurationService] Failed to persist config: ${error}`);
+				console.warn(
+					`[ConfigurationService] Failed to persist config: ${error}`,
+				);
 			}
 		}
 	}
@@ -431,10 +460,11 @@ class ConfigurationServiceImpl implements ConfigurationService {
 	 * Load configuration from storage
 	 */
 	async load(): Promise<void> {
-		if (typeof (globalThis as any).__TAURI__ !== 'undefined') {
+		if (typeof (globalThis as any).__TAURI__ !== "undefined") {
 			try {
-				const { readTextFile, exists } = await import('@tauri-apps/plugin-fs');
-				const configPath = 'config/wind-config.json';
+				const { readTextFile, exists } =
+					await import("@tauri-apps/plugin-fs");
+				const configPath = "config/wind-config.json";
 
 				const configExists = await exists(configPath);
 				if (configExists) {
@@ -443,7 +473,9 @@ class ConfigurationServiceImpl implements ConfigurationService {
 					this.initialize(configObj);
 				}
 			} catch (error) {
-				console.warn(`[ConfigurationService] Failed to load config: ${error}`);
+				console.warn(
+					`[ConfigurationService] Failed to load config: ${error}`,
+				);
 			}
 		}
 	}
@@ -459,7 +491,7 @@ class ConfigurationServiceImpl implements ConfigurationService {
  * @returns Effect-TS layer for ConfigurationService
  */
 export function createConfigurationServiceLayer(
-	options?: ConfigurationServiceOptions
+	options?: ConfigurationServiceOptions,
 ): Effect.Layer<never> {
 	const configurationService = new ConfigurationServiceImpl(options);
 	return ConfigurationServiceTag.provide(configurationService);
@@ -474,21 +506,22 @@ export function createConfigurationServiceLayer(
  */
 export function getValueEffect<T = ConfigValue>(
 	key: string,
-	defaultValue?: T
+	defaultValue?: T,
 ): Effect.Effect<T | undefined> {
-	return Effect.flatMap(
-		ConfigurationServiceTag,
-		(service) => service.getValue<T>(key, defaultValue)
+	return Effect.flatMap(ConfigurationServiceTag, (service) =>
+		service.getValue<T>(key, defaultValue),
 	);
 }
 
 /**
  * Effect wrapper for updating configuration value
  */
-export function updateValueEffect<T>(key: string, value: T): Effect.Effect<void> {
-	return Effect.flatMap(
-		ConfigurationServiceTag,
-		(service) => service.updateValue<T>(key, value)
+export function updateValueEffect<T>(
+	key: string,
+	value: T,
+): Effect.Effect<void> {
+	return Effect.flatMap(ConfigurationServiceTag, (service) =>
+		service.updateValue<T>(key, value),
 	);
 }
 
@@ -496,11 +529,10 @@ export function updateValueEffect<T>(key: string, value: T): Effect.Effect<void>
  * Effect wrapper for getting configuration section
  */
 export function getConfigurationEffect<T = Record<string, unknown>>(
-	sectionId: string
+	sectionId: string,
 ): Effect.Effect<T | undefined> {
-	return Effect.flatMap(
-		ConfigurationServiceTag,
-		(service) => service.getConfiguration<T>(sectionId)
+	return Effect.flatMap(ConfigurationServiceTag, (service) =>
+		service.getConfiguration<T>(sectionId),
 	);
 }
 
@@ -509,11 +541,10 @@ export function getConfigurationEffect<T = Record<string, unknown>>(
  */
 export function onDidChangeEffect(
 	key: string,
-	callback: ConfigChangeHandler
+	callback: ConfigChangeHandler,
 ): Effect.Effect<() => void> {
-	return Effect.flatMap(
-		ConfigurationServiceTag,
-		(service) => service.onDidChange(key, callback)
+	return Effect.flatMap(ConfigurationServiceTag, (service) =>
+		service.onDidChange(key, callback),
 	);
 }
 
@@ -521,19 +552,19 @@ export function onDidChangeEffect(
  * Effect wrapper for resetting configuration value
  */
 export function resetEffect(key: string): Effect.Effect<void> {
-	return Effect.flatMap(
-		ConfigurationServiceTag,
-		(service) => service.reset(key)
+	return Effect.flatMap(ConfigurationServiceTag, (service) =>
+		service.reset(key),
 	);
 }
 
 /**
  * Effect wrapper for setting multiple configuration values
  */
-export function setManyEffect(values: Record<string, unknown>): Effect.Effect<void> {
-	return Effect.flatMap(
-		ConfigurationServiceTag,
-		(service) => service.setMany(values)
+export function setManyEffect(
+	values: Record<string, unknown>,
+): Effect.Effect<void> {
+	return Effect.flatMap(ConfigurationServiceTag, (service) =>
+		service.setMany(values),
 	);
 }
 
@@ -541,5 +572,10 @@ export function setManyEffect(values: Record<string, unknown>): Effect.Effect<vo
 // TYPE EXPORTS
 // ============================================================================
 
-export type { ConfigurationService, ConfigValue, ConfigChangeHandler, ConfigurationServiceOptions };
+export type {
+	ConfigurationService,
+	ConfigValue,
+	ConfigChangeHandler,
+	ConfigurationServiceOptions,
+};
 export default ConfigurationServiceTag;

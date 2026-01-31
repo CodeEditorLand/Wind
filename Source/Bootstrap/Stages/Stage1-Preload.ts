@@ -153,251 +153,270 @@
  * - Add WebSocket message permissioncast
  */
 
-import type { StageResult } from '../Types/index.js';
-import { StatusReporter } from '../Core/StatusReporter.js';
-import { ErrorHandler } from '../Core/ErrorHandler.js';
+import { ErrorHandler } from "../Core/ErrorHandler.js";
+import { StatusReporter } from "../Core/StatusReporter.js";
+import type { StageResult } from "../Types/index.js";
 
 export class PreloadStage {
-  static readonly STAGE_NAME = 'Preload' as const;
+	static readonly STAGE_NAME = "Preload" as const;
 
-  /**
-   * Execute the preload initialization stage
-   */
-  static async execute(): Promise<StageResult> {
-    const startTime = performance.now();
-    const reporter = StatusReporter.getInstance();
-    const errorHandler = ErrorHandler.getInstance();
+	/**
+	 * Execute the preload initialization stage
+	 */
+	static async execute(): Promise<StageResult> {
+		const startTime = performance.now();
+		const reporter = StatusReporter.getInstance();
+		const errorHandler = ErrorHandler.getInstance();
 
-    try {
-      // Update status to running
-      reporter.update({
-        stage: this.STAGE_NAME,
-        status: 'running',
-        message: 'Loading preload script...',
-        progress: 14.3
-      });
+		try {
+			// Update status to running
+			reporter.update({
+				stage: this.STAGE_NAME,
+				status: "running",
+				message: "Loading preload script...",
+				progress: 14.3,
+			});
 
-      console.log('[Stage 1] Starting preload initialization...');
+			console.log("[Stage 1] Starting preload initialization...");
 
-      // Wait for preload script to be ready
-      await this.waitForPreloadReady();
-      console.log('[Stage 1] ✓ Preload script ready');
+			// Wait for preload script to be ready
+			await this.waitForPreloadReady();
+			console.log("[Stage 1] ✓ Preload script ready");
 
-      // Validate window.vscode exists
-      this.validateVSCodeAPI();
-      console.log('[Stage 1] ✓ window.vscode API validated');
+			// Validate window.vscode exists
+			this.validateVSCodeAPI();
+			console.log("[Stage 1] ✓ window.vscode API validated");
 
-      // Verify API shims are present
-      this.verifyAPIShims();
-      console.log('[Stage 1] ✓ API shims verified');
+			// Verify API shims are present
+			this.verifyAPIShims();
+			console.log("[Stage 1] ✓ API shims verified");
 
-      // Test IPC communication
-      await this.testIPCCommunication();
-      console.log('[Stage 1] ✓ IPC communication tested');
+			// Test IPC communication
+			await this.testIPCCommunication();
+			console.log("[Stage 1] ✓ IPC communication tested");
 
-      const duration = performance.now() - startTime;
+			const duration = performance.now() - startTime;
 
-      // Update status to success
-      reporter.update({
-        stage: this.STAGE_NAME,
-        status: 'success',
-        message: 'Preload script loaded and validated',
-        progress: 28.6, // 2/7 stages
-        duration
-      });
+			// Update status to success
+			reporter.update({
+				stage: this.STAGE_NAME,
+				status: "success",
+				message: "Preload script loaded and validated",
+				progress: 28.6, // 2/7 stages
+				duration,
+			});
 
-      return {
-        success: true,
-        stage: this.STAGE_NAME,
-        duration,
-        data: {
-          vscodeAPIAvailable: true,
-          ipcAvailable: true,
-          shimsAvailable: true
-        }
-      };
+			return {
+				success: true,
+				stage: this.STAGE_NAME,
+				duration,
+				data: {
+					vscodeAPIAvailable: true,
+					ipcAvailable: true,
+					shimsAvailable: true,
+				},
+			};
+		} catch (error) {
+			const duration = performance.now() - startTime;
+			const errorObj =
+				error instanceof Error ? error : new Error(String(error));
 
-    } catch (error) {
-      const duration = performance.now() - startTime;
-      const errorObj = error instanceof Error ? error : new Error(String(error));
+			// Handle error
+			await errorHandler.handle(this.STAGE_NAME, errorObj, "critical", {
+				stage: "Preload Initialization",
+				suggestion:
+					"Check Wind preload script loading and console for errors",
+			});
 
-      // Handle error
-      await errorHandler.handle(
-        this.STAGE_NAME,
-        errorObj,
-        'critical',
-        { 
-          stage: 'Preload Initialization',
-          suggestion: 'Check Wind preload script loading and console for errors'
-        }
-      );
+			return {
+				success: false,
+				stage: this.STAGE_NAME,
+				duration,
+				error: errorObj,
+				critical: true,
+			};
+		}
+	}
 
-      return {
-        success: false,
-        stage: this.STAGE_NAME,
-        duration,
-        error: errorObj,
-        critical: true
-      };
-    }
-  }
+	/**
+	 * Wait for preload script to be ready with configurable timeout
+	 */
+	private static async waitForPreloadReady(): Promise<void> {
+		console.log("[Stage 1] Waiting for preload script...");
 
-  /**
-   * Wait for preload script to be ready with configurable timeout
-   */
-  private static async waitForPreloadReady(): Promise<void> {
-    console.log('[Stage 1] Waiting for preload script...');
+		// Get timeout from global or use default
+		const configuredTimeout = (window as any).__BOOTSTRAP_PRELOAD_TIMEOUT__;
+		const maxWaitTime =
+			typeof configuredTimeout === "number" ? configuredTimeout : 5000; // 5 seconds default
+		const pollInterval = 100; // 100ms poll interval
+		const startTime = performance.now();
+		let attempts = 0;
 
-    // Get timeout from global or use default
-    const configuredTimeout = (window as any).__BOOTSTRAP_PRELOAD_TIMEOUT__;
-    const maxWaitTime = typeof configuredTimeout === 'number' ? configuredTimeout : 5000; // 5 seconds default
-    const pollInterval = 100; // 100ms poll interval
-    const startTime = performance.now();
-    let attempts = 0;
+		console.log(
+			`[Stage 1] Timeout configured: ${maxWaitTime}ms, poll interval: ${pollInterval}ms`,
+		);
 
-    console.log(`[Stage 1] Timeout configured: ${maxWaitTime}ms, poll interval: ${pollInterval}ms`);
+		while (performance.now() - startTime < maxWaitTime) {
+			attempts++;
 
-    while (performance.now() - startTime < maxWaitTime) {
-      attempts++;
+			if (this.isPreloadReady()) {
+				const elapsed = performance.now() - startTime;
+				console.log(
+					`[Stage 1] ✓ Preload script ready after ${elapsed.toFixed(0)}ms (${attempts} attempts)`,
+				);
+				return;
+			}
 
-      if (this.isPreloadReady()) {
-        const elapsed = performance.now() - startTime;
-        console.log(`[Stage 1] ✓ Preload script ready after ${elapsed.toFixed(0)}ms (${attempts} attempts)`);
-        return;
-      }
+			await new Promise((resolve) => setTimeout(resolve, pollInterval));
+		}
 
-      await new Promise(resolve => setTimeout(resolve, pollInterval));
-    }
+		const elapsed = performance.now() - startTime;
+		const error = new Error(
+			`Preload script not ready after ${elapsed.toFixed(0)}ms (${attempts} attempts). ` +
+				`This may indicate that the preload script failed to load or is taking too long to initialize.`,
+		);
 
-    const elapsed = performance.now() - startTime;
-    const error = new Error(
-      `Preload script not ready after ${elapsed.toFixed(0)}ms (${attempts} attempts). ` +
-      `This may indicate that the preload script failed to load or is taking too long to initialize.`
-    );
+		console.error("[Stage 1] ✗ Preload timeout:", error.message);
+		console.error("[Stage 1] Check points:");
+		console.error(
+			"  1. Is the preload script path correct in the window configuration?",
+		);
+		console.error("  2. Are there any errors in the main process console?");
+		console.error(
+			"  3. Is the preload script being blocked by CSP policies?",
+		);
 
-    console.error('[Stage 1] ✗ Preload timeout:', error.message);
-    console.error('[Stage 1] Check points:');
-    console.error('  1. Is the preload script path correct in the window configuration?');
-    console.error('  2. Are there any errors in the main process console?');
-    console.error('  3. Is the preload script being blocked by CSP policies?');
+		throw error;
+	}
 
-    throw error;
-  }
+	/**
+	 * Check if preload script is ready
+	 */
+	private static isPreloadReady(): boolean {
+		const vscode = (window as any).vscode;
 
-  /**
-   * Check if preload script is ready
-   */
-  private static isPreloadReady(): boolean {
-    const vscode = (window as any).vscode;
-    
-    return !!(vscode && 
-             vscode.context && 
-             vscode.context.configuration && 
-             vscode.ipcRenderer);
-  }
+		return !!(
+			vscode &&
+			vscode.context &&
+			vscode.context.configuration &&
+			vscode.ipcRenderer
+		);
+	}
 
-  /**
-   * Validate window.vscode API
-   */
-  private static validateVSCodeAPI(): void {
-    console.log('[Stage 1] Validating window.vscode API...');
+	/**
+	 * Validate window.vscode API
+	 */
+	private static validateVSCodeAPI(): void {
+		console.log("[Stage 1] Validating window.vscode API...");
 
-    const vscode = (window as any).vscode;
-    
-    if (!vscode) {
-      throw new Error('window.vscode not available');
-    }
+		const vscode = (window as any).vscode;
 
-    // Check required properties
-    const requiredProperties = ['context', 'ipcRenderer', 'process'];
-    const missingProperties: string[] = [];
+		if (!vscode) {
+			throw new Error("window.vscode not available");
+		}
 
-    for (const prop of requiredProperties) {
-      if (!vscode[prop]) {
-        missingProperties.push(prop);
-        console.warn(`[Stage 1] ⚠ Missing property: ${prop}`);
-      }
-    }
+		// Check required properties
+		const requiredProperties = ["context", "ipcRenderer", "process"];
+		const missingProperties: string[] = [];
 
-    if (missingProperties.length > 0) {
-      throw new Error(`Missing required properties: ${missingProperties.join(', ')}`);
-    }
+		for (const prop of requiredProperties) {
+			if (!vscode[prop]) {
+				missingProperties.push(prop);
+				console.warn(`[Stage 1] ⚠ Missing property: ${prop}`);
+			}
+		}
 
-    // Validate context structure
-    if (!vscode.context.configuration) {
-      throw new Error('vscode.context.configuration not available');
-    }
+		if (missingProperties.length > 0) {
+			throw new Error(
+				`Missing required properties: ${missingProperties.join(", ")}`,
+			);
+		}
 
-    console.log('[Stage 1] ✓ window.vscode API validated');
-  }
+		// Validate context structure
+		if (!vscode.context.configuration) {
+			throw new Error("vscode.context.configuration not available");
+		}
 
-  /**
-   * Verify API shims are present
-   */
-  private static verifyAPIShims(): void {
-    console.log('[Stage 1] Verifying API shims...');
+		console.log("[Stage 1] ✓ window.vscode API validated");
+	}
 
-    const vscode = (window as any).vscode;
-    
-    // Check IPC shim
-    if (!vscode.ipcRenderer || typeof vscode.ipcRenderer.invoke !== 'function') {
-      throw new Error('IPC renderer shim not available');
-    }
+	/**
+	 * Verify API shims are present
+	 */
+	private static verifyAPIShims(): void {
+		console.log("[Stage 1] Verifying API shims...");
 
-    // Check process shim
-    if (!vscode.process || typeof vscode.process.arch !== 'string') {
-      throw new Error('Process shim not available');
-    }
+		const vscode = (window as any).vscode;
 
-    // Check environment shim
-    if (!vscode.context._configuration) {
-      throw new Error('Configuration shim not available');
-    }
+		// Check IPC shim
+		if (
+			!vscode.ipcRenderer ||
+			typeof vscode.ipcRenderer.invoke !== "function"
+		) {
+			throw new Error("IPC renderer shim not available");
+		}
 
-    console.log('[Stage 1] ✓ API shims verified');
-  }
+		// Check process shim
+		if (!vscode.process || typeof vscode.process.arch !== "string") {
+			throw new Error("Process shim not available");
+		}
 
-  /**
-   * Test IPC communication
-   */
-  private static async testIPCCommunication(): Promise<void> {
-    console.log('[Stage 1] Testing IPC communication...');
+		// Check environment shim
+		if (!vscode.context._configuration) {
+			throw new Error("Configuration shim not available");
+		}
 
-    const vscode = (window as any).vscode;
-    
-    try {
-      // Test basic IPC call
-      const result = await vscode.ipcRenderer.invoke('vscode:test-connection');
-      
-      if (result !== 'pong') {
-        console.warn('[Stage 1] ⚠ IPC test returned unexpected result:', result);
-      }
+		console.log("[Stage 1] ✓ API shims verified");
+	}
 
-      console.log('[Stage 1] ✓ IPC communication tested');
-    } catch (error) {
-      console.warn('[Stage 1] ⚠ IPC test failed:', error);
-      
-      // IPC test failure is not critical - continue anyway
-      console.log('[Stage 1] ✓ IPC communication test failed but continuing');
-    }
-  }
+	/**
+	 * Test IPC communication
+	 */
+	private static async testIPCCommunication(): Promise<void> {
+		console.log("[Stage 1] Testing IPC communication...");
 
-  /**
-   * Get preload status
-   */
-  static getPreloadStatus(): {
-    ready: boolean;
-    vscodeAvailable: boolean;
-    contextAvailable: boolean;
-    ipcAvailable: boolean;
-  } {
-    const vscode = (window as any).vscode;
-    
-    return {
-      ready: this.isPreloadReady(),
-      vscodeAvailable: !!vscode,
-      contextAvailable: !!(vscode && vscode.context),
-      ipcAvailable: !!(vscode && vscode.ipcRenderer)
-    };
-  }
+		const vscode = (window as any).vscode;
+
+		try {
+			// Test basic IPC call
+			const result = await vscode.ipcRenderer.invoke(
+				"vscode:test-connection",
+			);
+
+			if (result !== "pong") {
+				console.warn(
+					"[Stage 1] ⚠ IPC test returned unexpected result:",
+					result,
+				);
+			}
+
+			console.log("[Stage 1] ✓ IPC communication tested");
+		} catch (error) {
+			console.warn("[Stage 1] ⚠ IPC test failed:", error);
+
+			// IPC test failure is not critical - continue anyway
+			console.log(
+				"[Stage 1] ✓ IPC communication test failed but continuing",
+			);
+		}
+	}
+
+	/**
+	 * Get preload status
+	 */
+	static getPreloadStatus(): {
+		ready: boolean;
+		vscodeAvailable: boolean;
+		contextAvailable: boolean;
+		ipcAvailable: boolean;
+	} {
+		const vscode = (window as any).vscode;
+
+		return {
+			ready: this.isPreloadReady(),
+			vscodeAvailable: !!vscode,
+			contextAvailable: !!(vscode && vscode.context),
+			ipcAvailable: !!(vscode && vscode.ipcRenderer),
+		};
+	}
 }

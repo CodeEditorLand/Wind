@@ -16,7 +16,7 @@
  * VSCode IBrowserWorkbenchEnvironmentService compatibility
  */
 
-import * as Effect from 'effect/Effect';
+import * as Effect from "effect/Effect";
 
 // ============================================================================
 // TYPES
@@ -25,7 +25,7 @@ import * as Effect from 'effect/Effect';
 /**
  * Platform type
  */
-export type Platform = 'tauri' | 'browser' | 'web';
+export type Platform = "tauri" | "browser" | "web";
 
 /**
  * OS information
@@ -71,7 +71,10 @@ export interface EnvironmentService {
 	 * @param key - Environment variable name
 	 * @param fallback - Fallback value if not found
 	 */
-	getEnv: (key: string, fallback?: string) => Effect.Effect<string | undefined>;
+	getEnv: (
+		key: string,
+		fallback?: string,
+	) => Effect.Effect<string | undefined>;
 
 	/**
 	 * Check if running in Tauri environment
@@ -91,7 +94,7 @@ export interface EnvironmentService {
 export const EnvironmentServiceTag = Effect.Tag<
 	EnvironmentService,
 	EnvironmentService
->('EnvironmentService');
+>("EnvironmentService");
 
 // ============================================================================
 // UTILITY FUNCTIONS
@@ -101,7 +104,7 @@ export const EnvironmentServiceTag = Effect.Tag<
  * Check if Tauri is available
  */
 function isTauriAvailable(): boolean {
-	return typeof (globalThis as any).__TAURI__ !== 'undefined';
+	return typeof (globalThis as any).__TAURI__ !== "undefined";
 }
 
 /**
@@ -109,22 +112,22 @@ function isTauriAvailable(): boolean {
  */
 function detectPlatform(): Platform {
 	if (isTauriAvailable()) {
-		return 'tauri';
+		return "tauri";
 	}
-	if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-		return 'browser';
+	if (typeof window !== "undefined" && typeof document !== "undefined") {
+		return "browser";
 	}
-	return 'web';
+	return "web";
 }
 
 /**
  * Get language from browser
  */
 function getBrowserLanguage(): string {
-	if (typeof navigator !== 'undefined' && navigator.language) {
+	if (typeof navigator !== "undefined" && navigator.language) {
 		return navigator.language;
 	}
-	return 'en-US'; // Fallback
+	return "en-US"; // Fallback
 }
 
 /**
@@ -138,40 +141,48 @@ function isValidLanguageCode(code: string): boolean {
  * Get user agent from navigator
  */
 function getUserAgentString(): string {
-	if (typeof navigator !== 'undefined' && navigator.userAgent) {
+	if (typeof navigator !== "undefined" && navigator.userAgent) {
 		return navigator.userAgent;
 	}
-	return 'Wind/1.0.0 (Unknown)'; // Fallback
+	return "Wind/1.0.0 (Unknown)"; // Fallback
 }
 
 /**
  * Detect architecture from user agent
  */
 function detectArchitecture(): string {
-	if (typeof navigator !== 'undefined' && navigator.userAgent) {
+	if (typeof navigator !== "undefined" && navigator.userAgent) {
 		const ua = navigator.userAgent;
 
-		if (ua.includes('x86_64') || ua.includes('x64') || ua.includes('WOW64')) {
-			return 'x64';
+		if (
+			ua.includes("x86_64") ||
+			ua.includes("x64") ||
+			ua.includes("WOW64")
+		) {
+			return "x64";
 		}
-		if (ua.includes('arm64') || ua.includes('aarch64') || ua.includes('armv8')) {
-			return 'arm64';
+		if (
+			ua.includes("arm64") ||
+			ua.includes("aarch64") ||
+			ua.includes("armv8")
+		) {
+			return "arm64";
 		}
-		if (ua.includes('i686') || ua.includes('i386') || ua.includes('x86')) {
-			return 'x86';
+		if (ua.includes("i686") || ua.includes("i386") || ua.includes("x86")) {
+			return "x86";
 		}
 	}
-	return 'unknown';
+	return "unknown";
 }
 
 /**
  * Detect platform from navigator
  */
 function detectOSPlatform(): string {
-	if (typeof navigator !== 'undefined' && navigator.platform) {
+	if (typeof navigator !== "undefined" && navigator.platform) {
 		return navigator.platform;
 	}
-	return 'unknown';
+	return "unknown";
 }
 
 /**
@@ -179,24 +190,26 @@ function detectOSPlatform(): string {
  */
 function sanitizePath(path: string, platform: Platform): string {
 	// No sanitization needed for web platforms
-	if (platform === 'browser' || platform === 'web') {
+	if (platform === "browser" || platform === "web") {
 		return path;
 	}
 
 	// Basic path normalization
-	return path.replace(/\\/g, '/');
+	return path.replace(/\\/g, "/");
 }
 
 /**
  * Get environment variable from multiple sources
  */
-async function getEnvironmentVariable(key: string): Promise<string | undefined> {
+async function getEnvironmentVariable(
+	key: string,
+): Promise<string | undefined> {
 	// Try Mountain (Tauri) first
 	if (isTauriAvailable()) {
 		try {
 			const { invoke } = (globalThis as any).__TAURI__.core;
-			const envVars = await invoke('mountain_fetch_env');
-			if (envVars && typeof envVars === 'object' && key in envVars) {
+			const envVars = await invoke("mountain_fetch_env");
+			if (envVars && typeof envVars === "object" && key in envVars) {
 				return envVars[key];
 			}
 		} catch {
@@ -205,7 +218,7 @@ async function getEnvironmentVariable(key: string): Promise<string | undefined> 
 	}
 
 	// Try process.env (Node.js environment)
-	if (typeof process !== 'undefined' && process.env && key in process.env) {
+	if (typeof process !== "undefined" && process.env && key in process.env) {
 		return process.env[key];
 	}
 
@@ -229,12 +242,12 @@ const EnvironmentServiceImpl = EnvironmentServiceTag.of({
 			// Validate language code format
 			if (!isValidLanguageCode(language)) {
 				// Try extracting first two characters
-				const shortLang = language.split('-')[0];
+				const shortLang = language.split("-")[0];
 				language = `${shortLang}-${shortLang.toUpperCase()}`;
 
 				// Still invalid, use fallback
 				if (!isValidLanguageCode(language)) {
-					language = 'en-US';
+					language = "en-US";
 				}
 			}
 
@@ -244,13 +257,13 @@ const EnvironmentServiceImpl = EnvironmentServiceTag.of({
 	getTimezone: () =>
 		Effect.sync(() => {
 			try {
-				if (typeof Intl !== 'undefined' && Intl.DateTimeFormat) {
+				if (typeof Intl !== "undefined" && Intl.DateTimeFormat) {
 					return Intl.DateTimeFormat().resolvedOptions().timeZone;
 				}
 			} catch {
 				// Ignore timezone detection errors
 			}
-			return 'UTC'; // Fallback
+			return "UTC"; // Fallback
 		}),
 
 	getUserAgent: () =>
@@ -298,13 +311,13 @@ const EnvironmentServiceImpl = EnvironmentServiceTag.of({
 		Effect.sync(() => {
 			const platform = detectPlatform();
 
-			if (platform === 'tauri') {
+			if (platform === "tauri") {
 				// Use forward slashes internally, will be converted by Tauri
-				return segments.join('/').replace(/\/+/g, '/');
+				return segments.join("/").replace(/\/+/g, "/");
 			}
 
 			// For web platforms, use URL-style paths
-			return segments.join('/').replace(/\/+/g, '/');
+			return segments.join("/").replace(/\/+/g, "/");
 		}),
 
 	/**
@@ -314,14 +327,14 @@ const EnvironmentServiceImpl = EnvironmentServiceTag.of({
 		Effect.sync(() => {
 			const platform = detectPlatform();
 
-			if (platform === 'tauri') {
+			if (platform === "tauri") {
 				// Tauri will provide proper app data directory
 				// This is a placeholder - actual implementation would use Tauri APIs
-				return '';
+				return "";
 			}
 
 			// For web, use empty string (no filesystem access)
-			return '';
+			return "";
 		}),
 
 	/**
@@ -331,14 +344,14 @@ const EnvironmentServiceImpl = EnvironmentServiceTag.of({
 		Effect.sync(() => {
 			const platform = detectPlatform();
 
-			if (platform === 'tauri') {
+			if (platform === "tauri") {
 				// Tauri will provide proper home directory
 				// This is a placeholder - actual implementation would use Tauri APIs
-				return '';
+				return "";
 			}
 
 			// For web, no concept of home directory
-			return '';
+			return "";
 		}),
 
 	/**
@@ -347,12 +360,12 @@ const EnvironmentServiceImpl = EnvironmentServiceTag.of({
 	uriToPath: (uri: string) =>
 		Effect.sync(() => {
 			// Handle tauri:// URIs
-			if (uri.startsWith('tauri://')) {
+			if (uri.startsWith("tauri://")) {
 				return uri.substring(8);
 			}
 
 			// Handle file:// URIs
-			if (uri.startsWith('file://')) {
+			if (uri.startsWith("file://")) {
 				return decodeURIComponent(uri.substring(7));
 			}
 
@@ -366,7 +379,7 @@ const EnvironmentServiceImpl = EnvironmentServiceTag.of({
 	pathToUri: (path: string) =>
 		Effect.sync(() => {
 			// If already a URI, return as-is
-			if (path.startsWith('file://') || path.startsWith('tauri://')) {
+			if (path.startsWith("file://") || path.startsWith("tauri://")) {
 				return path;
 			}
 
@@ -396,7 +409,7 @@ export function createEnvironmentServiceLayer(): Effect.Layer<never> {
  */
 export const getPlatformEffect = Effect.flatMap(
 	EnvironmentServiceTag,
-	(service) => service.getPlatform()
+	(service) => service.getPlatform(),
 );
 
 /**
@@ -404,7 +417,7 @@ export const getPlatformEffect = Effect.flatMap(
  */
 export const getLanguageEffect = Effect.flatMap(
 	EnvironmentServiceTag,
-	(service) => service.getLanguage()
+	(service) => service.getLanguage(),
 );
 
 /**
@@ -412,7 +425,7 @@ export const getLanguageEffect = Effect.flatMap(
  */
 export const getTimezoneEffect = Effect.flatMap(
 	EnvironmentServiceTag,
-	(service) => service.getTimezone()
+	(service) => service.getTimezone(),
 );
 
 /**
@@ -420,33 +433,33 @@ export const getTimezoneEffect = Effect.flatMap(
  */
 export const getUserAgentEffect = Effect.flatMap(
 	EnvironmentServiceTag,
-	(service) => service.getUserAgent()
+	(service) => service.getUserAgent(),
 );
 
 /**
  * Effect wrapper for getting environment variable
  */
-export function getEnvEffect(key: string, fallback?: string): Effect.Effect<string | undefined> {
-	return Effect.flatMap(
-		EnvironmentServiceTag,
-		(service) => service.getEnv(key, fallback)
+export function getEnvEffect(
+	key: string,
+	fallback?: string,
+): Effect.Effect<string | undefined> {
+	return Effect.flatMap(EnvironmentServiceTag, (service) =>
+		service.getEnv(key, fallback),
 	);
 }
 
 /**
  * Effect wrapper for checking if Tauri
  */
-export const isTauriEffect = Effect.flatMap(
-	EnvironmentServiceTag,
-	(service) => service.isTauri()
+export const isTauriEffect = Effect.flatMap(EnvironmentServiceTag, (service) =>
+	service.isTauri(),
 );
 
 /**
  * Effect wrapper for getting OS info
  */
-export const getOSEffect = Effect.flatMap(
-	EnvironmentServiceTag,
-	(service) => service.getOS()
+export const getOSEffect = Effect.flatMap(EnvironmentServiceTag, (service) =>
+	service.getOS(),
 );
 
 // ============================================================================

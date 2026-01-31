@@ -25,8 +25,8 @@
  * - copy(source, target)
  */
 
-import * as Effect from 'effect/Effect';
-import { invoke } from '@tauri-apps/api/core';
+import { invoke } from "@tauri-apps/api/core";
+import * as Effect from "effect/Effect";
 
 // ============================================================================
 // TYPES
@@ -160,7 +160,7 @@ export interface FileService {
 // ============================================================================
 
 export const FileServiceTag = Effect.Tag<FileService, FileService>(
-	'FileService'
+	"FileService",
 );
 
 // ============================================================================
@@ -171,7 +171,7 @@ export const FileServiceTag = Effect.Tag<FileService, FileService>(
  * Check if Tauri is available
  */
 function isTauriAvailable(): boolean {
-	return typeof (globalThis as any).__TAURI__ !== 'undefined';
+	return typeof (globalThis as any).__TAURI__ !== "undefined";
 }
 
 /**
@@ -179,16 +179,16 @@ function isTauriAvailable(): boolean {
  */
 function uriToPathImpl(uri: string): string {
 	// Handle tauri:// URIs
-	if (uri.startsWith('tauri://')) {
+	if (uri.startsWith("tauri://")) {
 		return uri.substring(8);
 	}
 
 	// Handle file:// URIs
-	if (uri.startsWith('file:///')) {
+	if (uri.startsWith("file:///")) {
 		return decodeURIComponent(uri.substring(8));
 	}
 
-	if (uri.startsWith('file://')) {
+	if (uri.startsWith("file://")) {
 		return decodeURIComponent(uri.substring(7));
 	}
 
@@ -201,13 +201,13 @@ function uriToPathImpl(uri: string): string {
  */
 function pathToUriImpl(path: string): string {
 	// If already a URI, return as-is
-	if (path.startsWith('file://') || path.startsWith('tauri://')) {
+	if (path.startsWith("file://") || path.startsWith("tauri://")) {
 		return path;
 	}
 
 	// Convert to file:// URI
 	// Ensure path starts with /
-	const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+	const normalizedPath = path.startsWith("/") ? path : `/${path}`;
 	return `file://${encodeURI(normalizedPath)}`;
 }
 
@@ -215,7 +215,7 @@ function pathToUriImpl(path: string): string {
  * Normalize path separators
  */
 function normalizePath(path: string): string {
-	return path.replace(/\\/g, '/');
+	return path.replace(/\\/g, "/");
 }
 
 /**
@@ -254,12 +254,12 @@ const FileServiceImpl = FileServiceTag.of({
 		return Effect.tryPromise({
 			try: async () => {
 				if (!isTauriAvailable()) {
-					throw new Error('Tauri not available');
+					throw new Error("Tauri not available");
 				}
 
-				const result = await invoke('mountain_ipc_invoke', {
-					command: 'file:read',
-					args: [path]
+				const result = await invoke("mountain_ipc_invoke", {
+					command: "file:read",
+					args: [path],
 				});
 				return result as string;
 			},
@@ -273,12 +273,12 @@ const FileServiceImpl = FileServiceTag.of({
 		return Effect.tryPromise({
 			try: async () => {
 				if (!isTauriAvailable()) {
-					throw new Error('Tauri not available');
+					throw new Error("Tauri not available");
 				}
 
-				await invoke('mountain_ipc_invoke', {
-					command: 'file:write',
-					args: [path, content]
+				await invoke("mountain_ipc_invoke", {
+					command: "file:write",
+					args: [path, content],
 				});
 			},
 			catch: (error) => {
@@ -294,9 +294,9 @@ const FileServiceImpl = FileServiceTag.of({
 					return false;
 				}
 
-				const result = await invoke('mountain_ipc_invoke', {
-					command: 'file:exists',
-					args: [path]
+				const result = await invoke("mountain_ipc_invoke", {
+					command: "file:exists",
+					args: [path],
 				});
 				return result as boolean;
 			},
@@ -310,12 +310,12 @@ const FileServiceImpl = FileServiceTag.of({
 		return Effect.tryPromise({
 			try: async () => {
 				if (!isTauriAvailable()) {
-					throw new Error('Tauri not available');
+					throw new Error("Tauri not available");
 				}
 
-				const result = await invoke('mountain_ipc_invoke', {
-					command: 'file:stat',
-					args: [path]
+				const result = await invoke("mountain_ipc_invoke", {
+					command: "file:stat",
+					args: [path],
 				});
 				const stats = result as any;
 				return {
@@ -325,7 +325,7 @@ const FileServiceImpl = FileServiceTag.of({
 					size: stats.size || 0,
 					modified: stats.modified || Date.now(),
 					accessed: stats.accessed,
-					created: stats.created
+					created: stats.created,
 				};
 			},
 			catch: (error) => {
@@ -338,16 +338,18 @@ const FileServiceImpl = FileServiceTag.of({
 		return Effect.tryPromise({
 			try: async () => {
 				if (!isTauriAvailable()) {
-					throw new Error('Tauri not available');
+					throw new Error("Tauri not available");
 				}
 
-				await invoke('mountain_ipc_invoke', {
-					command: 'file:mkdir',
-					args: [path, true]
+				await invoke("mountain_ipc_invoke", {
+					command: "file:mkdir",
+					args: [path, true],
 				});
 			},
 			catch: (error) => {
-				return new Error(`Failed to create directory ${path}: ${error}`);
+				return new Error(
+					`Failed to create directory ${path}: ${error}`,
+				);
 			},
 		});
 	},
@@ -356,12 +358,12 @@ const FileServiceImpl = FileServiceTag.of({
 		return Effect.tryPromise({
 			try: async () => {
 				if (!isTauriAvailable()) {
-					throw new Error('Tauri not available');
+					throw new Error("Tauri not available");
 				}
 
-				await invoke('mountain_ipc_invoke', {
-					command: 'file:delete',
-					args: [path]
+				await invoke("mountain_ipc_invoke", {
+					command: "file:delete",
+					args: [path],
 				});
 			},
 			catch: (error) => {
@@ -374,19 +376,19 @@ const FileServiceImpl = FileServiceTag.of({
 		return Effect.tryPromise({
 			try: async () => {
 				if (!isTauriAvailable()) {
-					throw new Error('Tauri not available');
+					throw new Error("Tauri not available");
 				}
 
-				const result = await invoke('mountain_ipc_invoke', {
-					command: 'file:readdir',
-					args: [path]
+				const result = await invoke("mountain_ipc_invoke", {
+					command: "file:readdir",
+					args: [path],
 				});
 				const entries = result as any[];
-				return entries.map(entry => ({
+				return entries.map((entry) => ({
 					name: entry.name,
 					isFile: !entry.isDirectory,
 					isDirectory: entry.isDirectory || false,
-					isSymlink: entry.isSymlink || false
+					isSymlink: entry.isSymlink || false,
 				}));
 			},
 			catch: (error) => {
@@ -399,16 +401,18 @@ const FileServiceImpl = FileServiceTag.of({
 		return Effect.tryPromise({
 			try: async () => {
 				if (!isTauriAvailable()) {
-					throw new Error('Tauri not available');
+					throw new Error("Tauri not available");
 				}
 
-				await invoke('mountain_ipc_invoke', {
-					command: 'file:copy',
-					args: [source, destination]
+				await invoke("mountain_ipc_invoke", {
+					command: "file:copy",
+					args: [source, destination],
 				});
 			},
 			catch: (error) => {
-				return new Error(`Failed to copy ${source} to ${destination}: ${error}`);
+				return new Error(
+					`Failed to copy ${source} to ${destination}: ${error}`,
+				);
 			},
 		});
 	},
@@ -417,16 +421,18 @@ const FileServiceImpl = FileServiceTag.of({
 		return Effect.tryPromise({
 			try: async () => {
 				if (!isTauriAvailable()) {
-					throw new Error('Tauri not available');
+					throw new Error("Tauri not available");
 				}
 
-				await invoke('mountain_ipc_invoke', {
-					command: 'file:move',
-					args: [source, destination]
+				await invoke("mountain_ipc_invoke", {
+					command: "file:move",
+					args: [source, destination],
 				});
 			},
 			catch: (error) => {
-				return new Error(`Failed to move ${source} to ${destination}: ${error}`);
+				return new Error(
+					`Failed to move ${source} to ${destination}: ${error}`,
+				);
 			},
 		});
 	},
@@ -435,10 +441,10 @@ const FileServiceImpl = FileServiceTag.of({
 		return Effect.tryPromise({
 			try: async () => {
 				if (!isTauriFsAvailable()) {
-					throw new Error('Tauri file system not available');
+					throw new Error("Tauri file system not available");
 				}
 
-				const fs = await import('@tauri-apps/plugin-fs');
+				const fs = await import("@tauri-apps/plugin-fs");
 				const normalizedPath = normalizePath(path);
 
 				// Watch implementation
@@ -446,13 +452,15 @@ const FileServiceImpl = FileServiceTag.of({
 					try {
 						callback();
 					} catch (error) {
-						console.warn(`[FileService] Watch callback error: ${error}`);
+						console.warn(
+							`[FileService] Watch callback error: ${error}`,
+						);
 					}
 				});
 
 				// Return cleanup function
 				return () => {
-					if (typeof unwatch === 'function') {
+					if (typeof unwatch === "function") {
 						unwatch();
 					}
 				};
@@ -475,12 +483,12 @@ const FileServiceImpl = FileServiceTag.of({
 		return Effect.tryPromise({
 			try: async () => {
 				if (!isTauriAvailable()) {
-					throw new Error('Tauri not available');
+					throw new Error("Tauri not available");
 				}
 
-				const result = await invoke('mountain_ipc_invoke', {
-					command: 'file:readBinary',
-					args: [path]
+				const result = await invoke("mountain_ipc_invoke", {
+					command: "file:readBinary",
+					args: [path],
 				});
 				// Convert base64 string to Uint8Array
 				const base64 = result as string;
@@ -492,7 +500,9 @@ const FileServiceImpl = FileServiceTag.of({
 				return bytes;
 			},
 			catch: (error) => {
-				return new Error(`Failed to read binary file ${path}: ${error}`);
+				return new Error(
+					`Failed to read binary file ${path}: ${error}`,
+				);
 			},
 		});
 	},
@@ -501,20 +511,22 @@ const FileServiceImpl = FileServiceTag.of({
 		return Effect.tryPromise({
 			try: async () => {
 				if (!isTauriAvailable()) {
-					throw new Error('Tauri not available');
+					throw new Error("Tauri not available");
 				}
 
 				// Convert Uint8Array to base64 string
 				const binaryString = String.fromCharCode(...content);
 				const base64 = btoa(binaryString);
-				
-				await invoke('mountain_ipc_invoke', {
-					command: 'file:writeBinary',
-					args: [path, base64]
+
+				await invoke("mountain_ipc_invoke", {
+					command: "file:writeBinary",
+					args: [path, base64],
 				});
 			},
 			catch: (error) => {
-				return new Error(`Failed to write binary file ${path}: ${error}`);
+				return new Error(
+					`Failed to write binary file ${path}: ${error}`,
+				);
 			},
 		});
 	},
@@ -523,12 +535,11 @@ const FileServiceImpl = FileServiceTag.of({
 	 * Check if path is a file
 	 */
 	isFile: (path: string) => {
-		return Effect.flatMap(
-			FileServiceTag,
-			(service) => service.stat(path)
+		return Effect.flatMap(FileServiceTag, (service) =>
+			service.stat(path),
 		).pipe(
 			Effect.map((stats) => stats.isFile),
-			Effect.catchAll(() => Effect.succeed(false))
+			Effect.catchAll(() => Effect.succeed(false)),
 		);
 	},
 
@@ -536,12 +547,11 @@ const FileServiceImpl = FileServiceTag.of({
 	 * Check if path is a directory
 	 */
 	isDirectory: (path: string) => {
-		return Effect.flatMap(
-			FileServiceTag,
-			(service) => service.stat(path)
+		return Effect.flatMap(FileServiceTag, (service) =>
+			service.stat(path),
 		).pipe(
 			Effect.map((stats) => stats.isDirectory),
-			Effect.catchAll(() => Effect.succeed(false))
+			Effect.catchAll(() => Effect.succeed(false)),
 		);
 	},
 
@@ -549,12 +559,11 @@ const FileServiceImpl = FileServiceTag.of({
 	 * Get file size
 	 */
 	getSize: (path: string) => {
-		return Effect.flatMap(
-			FileServiceTag,
-			(service) => service.stat(path)
+		return Effect.flatMap(FileServiceTag, (service) =>
+			service.stat(path),
 		).pipe(
 			Effect.map((stats) => stats.size),
-			Effect.catchAll(() => Effect.succeed(0))
+			Effect.catchAll(() => Effect.succeed(0)),
 		);
 	},
 });
@@ -578,13 +587,8 @@ export function createFileServiceLayer(): Effect.Layer<never> {
 /**
  * Effect wrapper for reading file
  */
-export const readFileEffect = (
-	path: string
-): Effect.Effect<string> => {
-	return Effect.flatMap(
-		FileServiceTag,
-		(service) => service.readFile(path)
-	);
+export const readFileEffect = (path: string): Effect.Effect<string> => {
+	return Effect.flatMap(FileServiceTag, (service) => service.readFile(path));
 };
 
 /**
@@ -592,72 +596,46 @@ export const readFileEffect = (
  */
 export const writeFileEffect = (
 	path: string,
-	content: string
+	content: string,
 ): Effect.Effect<void> => {
-	return Effect.flatMap(
-		FileServiceTag,
-		(service) => service.writeFile(path, content)
+	return Effect.flatMap(FileServiceTag, (service) =>
+		service.writeFile(path, content),
 	);
 };
 
 /**
  * Effect wrapper for checking if path exists
  */
-export const existsEffect = (
-	path: string
-): Effect.Effect<boolean> => {
-	return Effect.flatMap(
-		FileServiceTag,
-		(service) => service.exists(path)
-	);
+export const existsEffect = (path: string): Effect.Effect<boolean> => {
+	return Effect.flatMap(FileServiceTag, (service) => service.exists(path));
 };
 
 /**
  * Effect wrapper for getting file stats
  */
-export const statEffect = (
-	path: string
-): Effect.Effect<FileStat> => {
-	return Effect.flatMap(
-		FileServiceTag,
-		(service) => service.stat(path)
-	);
+export const statEffect = (path: string): Effect.Effect<FileStat> => {
+	return Effect.flatMap(FileServiceTag, (service) => service.stat(path));
 };
 
 /**
  * Effect wrapper for creating directory
  */
-export const mkdirEffect = (
-	path: string
-): Effect.Effect<void> => {
-	return Effect.flatMap(
-		FileServiceTag,
-		(service) => service.mkdir(path)
-	);
+export const mkdirEffect = (path: string): Effect.Effect<void> => {
+	return Effect.flatMap(FileServiceTag, (service) => service.mkdir(path));
 };
 
 /**
  * Effect wrapper for deleting file/directory
  */
-export const deleteEffect = (
-	path: string
-): Effect.Effect<void> => {
-	return Effect.flatMap(
-		FileServiceTag,
-		(service) => service.delete(path)
-	);
+export const deleteEffect = (path: string): Effect.Effect<void> => {
+	return Effect.flatMap(FileServiceTag, (service) => service.delete(path));
 };
 
 /**
  * Effect wrapper for reading directory
  */
-export const readdirEffect = (
-	path: string
-): Effect.Effect<DirEntry[]> => {
-	return Effect.flatMap(
-		FileServiceTag,
-		(service) => service.readdir(path)
-	);
+export const readdirEffect = (path: string): Effect.Effect<DirEntry[]> => {
+	return Effect.flatMap(FileServiceTag, (service) => service.readdir(path));
 };
 
 /**
@@ -665,11 +643,10 @@ export const readdirEffect = (
  */
 export const copyEffect = (
 	source: string,
-	destination: string
+	destination: string,
 ): Effect.Effect<void> => {
-	return Effect.flatMap(
-		FileServiceTag,
-		(service) => service.copy(source, destination)
+	return Effect.flatMap(FileServiceTag, (service) =>
+		service.copy(source, destination),
 	);
 };
 
@@ -678,11 +655,10 @@ export const copyEffect = (
  */
 export const moveEffect = (
 	source: string,
-	destination: string
+	destination: string,
 ): Effect.Effect<void> => {
-	return Effect.flatMap(
-		FileServiceTag,
-		(service) => service.move(source, destination)
+	return Effect.flatMap(FileServiceTag, (service) =>
+		service.move(source, destination),
 	);
 };
 
@@ -691,11 +667,10 @@ export const moveEffect = (
  */
 export const watchEffect = (
 	path: string,
-	callback: () => void
+	callback: () => void,
 ): Effect.Effect<() => void> => {
-	return Effect.flatMap(
-		FileServiceTag,
-		(service) => service.watch(path, callback)
+	return Effect.flatMap(FileServiceTag, (service) =>
+		service.watch(path, callback),
 	);
 };
 

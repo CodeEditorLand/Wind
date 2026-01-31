@@ -6,11 +6,15 @@
  */
 
 import { Layer } from "effect";
-import { SandboxLive } from "../Sandbox.js";
+
+import {
+	ConfigurationLive,
+	ConfigurationWithSyncLive,
+} from "../Configuration.js";
 import { IPCTauriLive } from "../IPC.js";
-import { ConfigurationLive, ConfigurationWithSyncLive } from "../Configuration.js";
-import { TelemetryLive } from "../Telemetry.js";
 import { MountainLive } from "../Mountain.js";
+import { SandboxLive } from "../Sandbox.js";
+import { TelemetryLive } from "../Telemetry.js";
 
 // ============================================================================
 // Base Tauri Layer (without config sync)
@@ -19,15 +23,15 @@ import { MountainLive } from "../Mountain.js";
 /**
  * Base Tauri layer stack.
  * Provides: Sandbox + IPC + Configuration + Telemetry + Mountain
- * 
+ *
  * Use this when you need manual control over configuration sync.
  */
 export const TauriBaseLayer = Layer.empty.pipe(
-  Layer.provide(SandboxLive),
-  Layer.provide(IPCTauriLive),
-  Layer.provide(TelemetryLive),
-  Layer.provide(ConfigurationLive),
-  Layer.provide(MountainLive)
+	Layer.provide(SandboxLive),
+	Layer.provide(IPCTauriLive),
+	Layer.provide(TelemetryLive),
+	Layer.provide(ConfigurationLive),
+	Layer.provide(MountainLive),
 );
 
 // ============================================================================
@@ -37,15 +41,15 @@ export const TauriBaseLayer = Layer.empty.pipe(
 /**
  * Full Tauri layer stack with automatic configuration sync.
  * Provides: All base services + reactive Mountain-driven config updates
- * 
+ *
  * This is the standard layer for Wind production builds.
  */
 export const TauriLiveLayer = Layer.empty.pipe(
-  Layer.provide(SandboxLive),
-  Layer.provide(IPCTauriLive),
-  Layer.provide(TelemetryLive),
-  Layer.provide(ConfigurationWithSyncLive),
-  Layer.provide(MountainLive)
+	Layer.provide(SandboxLive),
+	Layer.provide(IPCTauriLive),
+	Layer.provide(TelemetryLive),
+	Layer.provide(ConfigurationWithSyncLive),
+	Layer.provide(MountainLive),
 );
 
 // ============================================================================
@@ -57,11 +61,11 @@ export const TauriLiveLayer = Layer.empty.pipe(
  * Useful for debugging and development.
  */
 export const TauriDevLayer = Layer.empty.pipe(
-  Layer.provide(SandboxLive),
-  Layer.provide(IPCTauriLive),
-  Layer.provide(TelemetryLive),
-  Layer.provide(ConfigurationWithSyncLive),
-  Layer.provide(MountainLive)
+	Layer.provide(SandboxLive),
+	Layer.provide(IPCTauriLive),
+	Layer.provide(TelemetryLive),
+	Layer.provide(ConfigurationWithSyncLive),
+	Layer.provide(MountainLive),
 );
 
 // Export default for convenience

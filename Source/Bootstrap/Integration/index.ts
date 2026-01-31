@@ -1,5 +1,9 @@
-import * as Effect from 'effect/Effect';
+import * as Effect from "effect/Effect";
 
+import { createConfigurationServiceLayer as _createConfigurationServiceLayer } from "./Services/ConfigurationService.js";
+import { createDialogServiceLayer as _createDialogServiceLayer } from "./Services/DialogService.js";
+import { createEnvironmentServiceLayer as _createEnvironmentServiceLayer } from "./Services/EnvironmentService.js";
+import { createFileServiceLayer as _createFileServiceLayer } from "./Services/FileService.js";
 /**
  * @module Bootstrap/Integration
  * @description
@@ -14,21 +18,7 @@ import * as Effect from 'effect/Effect';
 // =============================================================================
 // INTERNAL IMPORTS (for combined layer)
 // =============================================================================
-import {
-	createLoggerServiceLayer as _createLoggerServiceLayer,
-} from './Services/LoggerService.js';
-import {
-	createEnvironmentServiceLayer as _createEnvironmentServiceLayer,
-} from './Services/EnvironmentService.js';
-import {
-	createConfigurationServiceLayer as _createConfigurationServiceLayer,
-} from './Services/ConfigurationService.js';
-import {
-	createFileServiceLayer as _createFileServiceLayer,
-} from './Services/FileService.js';
-import {
-	createDialogServiceLayer as _createDialogServiceLayer,
-} from './Services/DialogService.js';
+import { createLoggerServiceLayer as _createLoggerServiceLayer } from "./Services/LoggerService.js";
 
 // ============================================================================
 // LOGGER SERVICE
@@ -37,11 +27,9 @@ import {
 export {
 	LoggerServiceTag,
 	createLoggerServiceLayer,
-} from './Services/LoggerService.js';
+} from "./Services/LoggerService.js";
 
-export type {
-	LoggerService,
-} from './Services/LoggerService.js';
+export type { LoggerService } from "./Services/LoggerService.js";
 
 export {
 	// Effect-TS wrappers for logging
@@ -51,7 +39,7 @@ export {
 	debugEffect,
 	traceEffect,
 	criticalEffect,
-} from './Services/LoggerService.js';
+} from "./Services/LoggerService.js";
 
 // ============================================================================
 // ENVIRONMENT SERVICE
@@ -60,16 +48,14 @@ export {
 export {
 	EnvironmentServiceTag,
 	createEnvironmentServiceLayer,
-} from './Services/EnvironmentService.js';
+} from "./Services/EnvironmentService.js";
 
-export type {
-	EnvironmentService,
-} from './Services/EnvironmentService.js';
+export type { EnvironmentService } from "./Services/EnvironmentService.js";
 
 export {
 	// Platform constants
 	Platform,
-} from './Services/EnvironmentService.js';
+} from "./Services/EnvironmentService.js";
 
 // ============================================================================
 // CONFIGURATION SERVICE
@@ -78,11 +64,9 @@ export {
 export {
 	ConfigurationServiceTag,
 	createConfigurationServiceLayer,
-} from './Services/ConfigurationService.js';
+} from "./Services/ConfigurationService.js";
 
-export type {
-	ConfigurationService,
-} from './Services/ConfigurationService.js';
+export type { ConfigurationService } from "./Services/ConfigurationService.js";
 
 export {
 	// Effect-TS wrappers for configuration
@@ -91,7 +75,7 @@ export {
 	resetEffect,
 	getConfigurationEffect,
 	setManyEffect,
-} from './Services/ConfigurationService.js';
+} from "./Services/ConfigurationService.js";
 
 // ============================================================================
 // FILE SERVICE
@@ -100,14 +84,14 @@ export {
 export {
 	FileServiceTag,
 	createFileServiceLayer,
-} from './Services/FileService.js';
+} from "./Services/FileService.js";
 
 export type {
 	FileService,
 	FileStat,
 	DirEntry,
 	FileType,
-} from './Services/FileService.js';
+} from "./Services/FileService.js";
 
 export {
 	// Effect-TS wrappers for file operations
@@ -121,7 +105,7 @@ export {
 	copyEffect,
 	moveEffect,
 	watchEffect,
-} from './Services/FileService.js';
+} from "./Services/FileService.js";
 
 // ============================================================================
 // DIALOG SERVICE
@@ -130,7 +114,7 @@ export {
 export {
 	DialogServiceTag,
 	createDialogServiceLayer,
-} from './Services/DialogService.js';
+} from "./Services/DialogService.js";
 
 export type {
 	DialogService,
@@ -139,7 +123,7 @@ export type {
 	MessageBoxOptions,
 	MessageBoxResult,
 	MessageButtons,
-} from './Services/DialogService.js';
+} from "./Services/DialogService.js";
 
 export {
 	// Effect-TS wrappers for dialogs
@@ -155,7 +139,7 @@ export {
 	// Pre-configured dialog helpers
 	confirmCloseUnsaved,
 	confirmOverwrite,
-} from './Services/DialogService.js';
+} from "./Services/DialogService.js";
 
 // ============================================================================
 // COMBINED LAYER

@@ -1,3 +1,14 @@
+// Type imports for VSCode compatibility
+import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes";
+import type {
+	IpcRenderer,
+	IpcRendererEvent,
+} from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/electronTypes";
+import type {
+	IMainWindowSandboxGlobals,
+	ISandboxNodeProcess,
+} from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/globals";
+
 /**
  * @module Install
  *
@@ -16,17 +27,24 @@
 export default async function Install(): Promise<void> {
 	try {
 		// Validate window context
-		if (typeof window === 'undefined') {
-			const error = new Error('Cannot install Wind polyfill: window is not defined');
+		if (typeof window === "undefined") {
+			const error = new Error(
+				"Cannot install Wind polyfill: window is not defined",
+			);
 			console.error(error);
 			return;
 		}
 
 		// Prevent double initialization
-		if ((window as unknown as { polyfillInstalled?: boolean }).polyfillInstalled) {
+		if (
+			(window as unknown as { polyfillInstalled?: boolean })
+				.polyfillInstalled
+		) {
 			return;
 		}
-		(window as unknown as { polyfillInstalled: boolean }).polyfillInstalled = true;
+		(
+			window as unknown as { polyfillInstalled: boolean }
+		).polyfillInstalled = true;
 
 		// Initialize core components
 		const Configuration = await ResolveConfiguration();
@@ -39,17 +57,18 @@ export default async function Install(): Promise<void> {
 			process: Process,
 			context: {
 				configuration: () => Configuration,
-				resolveConfiguration: async () => Configuration
+				resolveConfiguration: async () => Configuration,
 			},
 			webFrame: { setZoomLevel: () => {} },
 			webUtils: { getPathForFile: (file: File) => file.name },
-			ipcMessagePort: { acquire: () => {} }
+			ipcMessagePort: { acquire: () => {} },
 		};
 
 		// Attach to window
 		(window as any).vscode = Globals;
-		console.info("[Wind Raleigh] Successfully installed Electron API polyfill for workbench.");
-
+		console.info(
+			"[Wind Raleigh] Successfully installed Electron API polyfill for workbench.",
+		);
 	} catch (error: unknown) {
 		console.error(`[Wind Raleigh] Install error:`, error);
 		fallback(error);
@@ -68,35 +87,46 @@ export function createIpcRenderer(): IpcRenderer {
 			}
 			return {};
 		},
-		on: (channel: string, listener: (event: IpcRendererEvent) => void): IpcRenderer => {
+		on: (
+			channel: string,
+			listener: (event: IpcRendererEvent) => void,
+		): IpcRenderer => {
 			if (!validateIPCChannel(channel)) return this;
 			return this;
 		},
-		once: (channel: string, listener: (event: IpcRendererEvent) => void): IpcRenderer => {
+		once: (
+			channel: string,
+			listener: (event: IpcRendererEvent) => void,
+		): IpcRenderer => {
 			if (!validateIPCChannel(channel)) return this;
 			return this;
 		},
-		removeListener: (channel: string, listener: (event: IpcRendererEvent) => void): IpcRenderer => {
+		removeListener: (
+			channel: string,
+			listener: (event: IpcRendererEvent) => void,
+		): IpcRenderer => {
 			return this;
-		}
+		},
 	};
 }
 
 // Process factory with proper VSCode typing
-export function createProcess(configuration: ISandboxConfiguration): ISandboxNodeProcess {
+export function createProcess(
+	configuration: ISandboxConfiguration,
+): ISandboxNodeProcess {
 	return {
-		platform: 'web',
-		arch: 'web',
-		type: 'renderer',
+		platform: "web",
+		arch: "web",
+		type: "renderer",
 		versions: { webview_runtime: navigator.userAgent },
 		env: configuration.userEnv,
-		cwd: () => '/',
+		cwd: () => "/",
 		sandboxed: true,
-		execPath: '/app/vscode-wind',
-		resourcesPath: '/app/resources',
+		execPath: "/app/vscode-wind",
+		resourcesPath: "/app/resources",
 		on: (type: string, callback: Function) => {},
 		getProcessMemoryInfo: async () => CrossFunctions.CrossFunctions,
-		shellEnv: async () => Promise.resolve({ PATH: '/usr/bin:/bin' }),
+		shellEnv: async () => Promise.resolve({ PATH: "/usr/bin:/bin" }),
 	};
 }
 
@@ -104,11 +134,11 @@ export function createProcess(configuration: ISandboxConfiguration): ISandboxNod
 export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 	return {
 		windowId: 1,
-		appRoot: 'file:///app',
-		userEnv: { PATH: '/usr/bin:/bin', HOME: '/' },
-		product: { nameShort: 'VSCode Wind', applicationName: 'vscode-wind' },
+		appRoot: "file:///app",
+		userEnv: { PATH: "/usr/bin:/bin", HOME: "/" },
+		product: { nameShort: "VSCode Wind", applicationName: "vscode-wind" },
 		zoomLevel: 0,
-		nls: { messages: [], language: 'en' },
+		nls: { messages: [], language: "en" },
 	};
 }
 
@@ -116,8 +146,9 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
  * Validates IPC channels with proper guard clauses
  */
 export function validateIPCChannel(channel: string): boolean {
-	if (!channel || typeof channel !== 'string') return false;
-	if (typeof navigator !== 'undefined' && !channel.startsWith('vscode:')) return false;
+	if (!channel || typeof channel !== "string") return false;
+	if (typeof navigator !== "undefined" && !channel.startsWith("vscode:"))
+		return false;
 	return true;
 }
 
@@ -125,22 +156,17 @@ export function validateIPCChannel(channel: string): boolean {
  * Implements graceful degradation with fallback support
  */
 export function fallback(error: unknown): void {
-	if (typeof (window as any).legacyBridge !== 'undefined') {
+	if (typeof (window as any).legacyBridge !== "undefined") {
 		(window as any).vscode = (window as any).legacyBridge;
 		return;
 	}
-	if (typeof (window as any).vscode === 'undefined') {
+	if (typeof (window as any).vscode === "undefined") {
 		(window as any).vscode = {
-			process: { platform: 'web' },
+			process: { platform: "web" },
 			ipcRenderer: { send: () => {} },
 		};
 	}
 }
 
-// Type imports for VSCode compatibility
-import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes";
-import type { IpcRenderer, IpcRendererEvent } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/electronTypes";
-import type { IMainWindowSandboxGlobals, ISandboxNodeProcess } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/globals";
-
 // This prevents compilation failures
-declare const CrossFunctions: { CrossFunctions: any | Promise<any>; };
+declare const CrossFunctions: { CrossFunctions: any | Promise<any> };
