@@ -15,6 +15,11 @@ import { IPCTauriLive } from "../IPC.js";
 import { MountainLive } from "../Mountain.js";
 import { SandboxLive } from "../Sandbox.js";
 import { TelemetryLive } from "../Telemetry.js";
+import { EnvironmentLive } from "../Environment.js";
+import { HealthLive } from "../Health.js";
+import { BootstrapLive } from "../Bootstrap.js";
+import { LiveClipboardServiceLayer as ClipboardLive } from "../Clipboard.js";
+import { MountainSyncLive } from "../MountainSync.js";
 
 // ============================================================================
 // Base Tauri Layer (without config sync)
@@ -28,10 +33,14 @@ import { TelemetryLive } from "../Telemetry.js";
  */
 export const TauriBaseLayer = Layer.empty.pipe(
 	Layer.provide(SandboxLive),
-	Layer.provide(IPCTauriLive),
+	Layer.provide(EnvironmentLive),
+	Layer.provide(ClipboardLive),
 	Layer.provide(TelemetryLive),
 	Layer.provide(ConfigurationLive),
 	Layer.provide(MountainLive),
+	Layer.provide(MountainSyncLive),
+	Layer.provide(HealthLive),
+	Layer.provide(BootstrapLive),
 );
 
 // ============================================================================
@@ -46,10 +55,14 @@ export const TauriBaseLayer = Layer.empty.pipe(
  */
 export const TauriLiveLayer = Layer.empty.pipe(
 	Layer.provide(SandboxLive),
-	Layer.provide(IPCTauriLive),
+	Layer.provide(EnvironmentLive),
+	Layer.provide(ClipboardLive),
 	Layer.provide(TelemetryLive),
 	Layer.provide(ConfigurationWithSyncLive),
 	Layer.provide(MountainLive),
+	Layer.provide(MountainSyncLive),
+	Layer.provide(HealthLive),
+	Layer.provide(BootstrapLive),
 );
 
 // ============================================================================
@@ -62,10 +75,14 @@ export const TauriLiveLayer = Layer.empty.pipe(
  */
 export const TauriDevLayer = Layer.empty.pipe(
 	Layer.provide(SandboxLive),
-	Layer.provide(IPCTauriLive),
+	Layer.provide(EnvironmentLive),
+	Layer.provide(ClipboardLive),
 	Layer.provide(TelemetryLive),
 	Layer.provide(ConfigurationWithSyncLive),
 	Layer.provide(MountainLive),
+	Layer.provide(MountainSyncLive),
+	Layer.provide(HealthLive),
+	Layer.provide(BootstrapLive),
 );
 
 // Export default for convenience

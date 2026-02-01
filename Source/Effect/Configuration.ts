@@ -10,7 +10,6 @@ import {
 	Context,
 	Effect,
 	Layer,
-	Schedule,
 	Stream,
 	SubscriptionRef,
 } from "effect";
@@ -18,10 +17,9 @@ import {
 import {
 	ConfigurationNotReadyError,
 	type ISandboxConfiguration,
-	type ProcessEnvironment,
 } from "../Types/Sandbox.js";
-import { IPC, IPCService } from "./IPC.js";
-import { Sandbox, SandboxService } from "./Sandbox.js";
+import { IPC } from "./IPC.js";
+import { Sandbox } from "./Sandbox.js";
 
 // ============================================================================
 // Configuration Error Types
@@ -71,10 +69,10 @@ const validateConfig = (config: unknown): ReadonlyArray<ConfigSchemaIssue> => {
 	const cfg = config as Record<string, unknown>;
 
 	// Validate zoomLevel if present
-	if (cfg.zoomLevel !== undefined) {
-		if (typeof cfg.zoomLevel !== "number") {
+	if (cfg["zoomLevel"] !== undefined) {
+		if (typeof cfg["zoomLevel"] !== "number") {
 			issues.push({ path: "zoomLevel", message: "Must be a number" });
-		} else if (cfg.zoomLevel < -10 || cfg.zoomLevel > 10) {
+		} else if (cfg["zoomLevel"] < -10 || cfg["zoomLevel"] > 10) {
 			issues.push({
 				path: "zoomLevel",
 				message: "Must be between -10 and 10",
@@ -83,23 +81,23 @@ const validateConfig = (config: unknown): ReadonlyArray<ConfigSchemaIssue> => {
 	}
 
 	// Validate userEnv if present
-	if (cfg.userEnv !== undefined && typeof cfg.userEnv !== "object") {
+	if (cfg["userEnv"] !== undefined && typeof cfg["userEnv"] !== "object") {
 		issues.push({ path: "userEnv", message: "Must be an object" });
 	}
 
 	// Validate workspace if present
-	if (cfg.workspace !== undefined) {
-		if (typeof cfg.workspace !== "object" || cfg.workspace === null) {
+	if (cfg["workspace"] !== undefined) {
+		if (typeof cfg["workspace"] !== "object" || cfg["workspace"] === null) {
 			issues.push({ path: "workspace", message: "Must be an object" });
 		} else {
-			const ws = cfg.workspace as Record<string, unknown>;
-			if (ws.id !== undefined && typeof ws.id !== "string") {
+			const ws = cfg["workspace"] as Record<string, unknown>;
+			if (ws["id"] !== undefined && typeof ws["id"] !== "string") {
 				issues.push({
 					path: "workspace.id",
 					message: "Must be a string",
 				});
 			}
-			if (ws.uri !== undefined && typeof ws.uri !== "string") {
+			if (ws["uri"] !== undefined && typeof ws["uri"] !== "string") {
 				issues.push({
 					path: "workspace.uri",
 					message: "Must be a string",
@@ -142,8 +140,12 @@ export interface ConfigurationService {
 	readonly refresh: Effect.Effect<ISandboxConfiguration, ConfigFetchError>;
 }
 
-export const Configuration =
-	Context.GenericTag<ConfigurationService>("Configuration");
+export class ConfigurationTag extends Context.Tag("Configuration")<
+	ConfigurationTag,
+	ConfigurationService
+>() {}
+
+export const Configuration = ConfigurationTag;
 
 // ============================================================================
 // Implementation
@@ -167,14 +169,14 @@ export const ConfigurationLive = Layer.effect(
 			);
 
 			if (fromSandbox._tag === "Right") {
-				return fromSandbox.right;
+				return fromSandbox.right as ISandboxConfiguration;
 			}
 
 			// Fallback: fetch directly via IPC
 			return yield* ipc
 				.invoke("mountain_get_workbench_configuration")([])
 				.pipe(Effect.mapError((error) => new ConfigFetchError(error)));
-		});
+		}) as Effect.Effect<ISandboxConfiguration, ConfigFetchError>;
 
 		// Atom: Validate configuration
 		const validate = (
@@ -201,72 +203,61 @@ export const ConfigurationLive = Layer.effect(
 			Effect.gen(function* () {
 				// Apply zoom level
 				if (config.zoomLevel !== undefined) {
-					yield* Effect.sync(() => {
-						document.documentElement.style.setProperty(
-							"--zoom-level",
-							String(config.zoomLevel),
-						);
-					}).pipe(
-						Effect.mapError(
-							(error) => new ConfigApplyError("zoomLevel", error),
-						),
-					);
+					yield* Effect.try({
+						try: () => {
+							if (window && (window as any).vscode) {
+								(window as any).vscode.postMessage({
+									type: "setZoomLevel",
+									payload: config.zoomLevel,
+								});
+							}
+						},
+						catch: (error) => new ConfigApplyError("zoomLevel", error),
+					});
 				}
 
-				// Apply userEnv to process.env
+				// Apply user environment variables
 				if (config.userEnv) {
-					yield* Effect.forEach(
-						Object.entries(config.userEnv),
-						([key, value]) =>
-							Effect.sync(() => {
-								if (value !== undefined) {
-									process.env[key] = value;
+					for (const [key, value] of Object.entries(config.userEnv || {})) {
+						yield* Effect.try({
+							try: () => {
+								if (typeof process !== "undefined" && process.env) {
+									process.env[key] = value as string;
 								}
-							}).pipe(
-								Effect.mapError(
-									(error) =>
-										new ConfigApplyError(
-											`userEnv.${key}`,
-											error,
-										),
-								),
-							),
-						{ discard: true },
-					);
+							},
+							catch: (error) => new ConfigApplyError(key, error),
+						});
+					}
 				}
-
-				// Update the subscription ref
-				yield* configRef.set(config);
-
-				console.log("[Configuration] Applied configuration:", config);
 			});
+
+		// Stream of configuration changes
+		const changes = configRef.changes.pipe(
+			Stream.filter((config): config is ISandboxConfiguration => config !== null),
+		);
 
 		// Atom: Get current configuration
 		const get = Effect.gen(function* () {
 			const current = yield* configRef.get;
-			if (current === null) {
-				return yield* Effect.fail(new ConfigurationNotReadyError());
+			if (!current) {
+				return yield* Effect.fail<ConfigurationNotReadyError>(
+					new ConfigurationNotReadyError(),
+				);
 			}
 			return current;
 		});
 
 		// Atom: Refresh configuration from backend
-		const refresh = Effect.gen(function* () {
-			const raw = yield* fetch;
-			const validated = yield* validate(raw);
-			yield* apply(validated);
-			return validated;
+		const refresh: Effect.Effect<ISandboxConfiguration, ConfigFetchError> = Effect.gen(function* () {
+			const config = yield* fetch;
+			yield* SubscriptionRef.set(configRef, config);
+			return config;
 		});
 
-		// Stream of configuration changes
-		const changes = Stream.fromSubscriptionRef(configRef).pipe(
-			Stream.filter(
-				(config): config is ISandboxConfiguration => config !== null,
-			),
-		);
+		// Initial fetch and set
+		yield* fetch.pipe(Effect.flatMap((config) => SubscriptionRef.set(configRef, config)));
 
-		// Initialize: fetch and apply on startup
-		yield* Effect.log("[Configuration] Initializing configuration service");
+		yield* Effect.log("[Configuration] Configuration service initialized");
 
 		return {
 			get,
@@ -280,60 +271,62 @@ export const ConfigurationLive = Layer.effect(
 );
 
 // ============================================================================
-// Live with polling for changes
+// Helper: Get configuration value with path
 // ============================================================================
 
-export const ConfigurationWithSyncLive = ConfigurationLive.pipe(
-	Layer.effect(Configuration, (baseConfig) =>
-		Effect.gen(function* () {
-			const base = yield* baseConfig;
-			const ipc = yield* IPC;
+export const getConfigValue = <T>(
+	config: ISandboxConfiguration,
+	path: string,
+): T | undefined => {
+	const parts = path.split(".");
+	let current: unknown = config;
 
-			// Set up background sync from Mountain events
-			const syncFiber = yield* ipc
-				.events("mountain_configuration_update")
-				.pipe(
-					Stream.runForEach((message) =>
-						Effect.gen(function* () {
-							console.log(
-								"[Configuration] Received update from Mountain:",
-								message,
-							);
-							const raw = message.args[0];
-							const validated = yield* base.validate(raw);
-							yield* base.apply(validated);
-						}).pipe(
-							Effect.catchAll((error) =>
-								Effect.logError(
-									`[Configuration] Failed to apply update: ${error}`,
-								),
-							),
-						),
-					),
-					Effect.fork,
-				);
+	for (const part of parts) {
+		if (current && typeof current === "object" && part in current) {
+			current = (current as Record<string, unknown>)[part];
+		} else {
+			return undefined;
+		}
+	}
 
-			return {
-				...base,
-				refresh: base.refresh.pipe(
-					Effect.tap(() =>
-						Effect.log("[Configuration] Configuration refreshed"),
-					),
-				),
-			};
-		}),
-	),
-);
+	return current as T | undefined;
+};
 
 // ============================================================================
 // Mock Implementation
 // ============================================================================
 
-export const ConfigurationMockLive = Layer.succeed(Configuration, {
-	get: Effect.succeed({} as ISandboxConfiguration),
-	fetch: Effect.succeed({} as ISandboxConfiguration),
-	validate: (config) => Effect.succeed(config as ISandboxConfiguration),
-	apply: () => Effect.unit,
-	changes: Stream.empty,
-	refresh: Effect.succeed({} as ISandboxConfiguration),
-});
+export const makeMockConfiguration = (
+	overrides?: Partial<ISandboxConfiguration>,
+): ConfigurationService => {
+	const mockConfig: ISandboxConfiguration = {
+		zoomLevel: 0,
+		userEnv: {},
+		workspace: {
+			id: "mock-workspace",
+			uri: "mock://workspace",
+		},
+		...overrides,
+	};
+
+	return {
+		get: Effect.succeed(mockConfig),
+		fetch: Effect.succeed(mockConfig),
+		validate: (config) =>
+			Effect.sync(() => {
+				const issues = validateConfig(config);
+				if (issues.length > 0) {
+					return Effect.fail(new ConfigValidationError(issues.map((i) => `${i.path}: ${i.message}`)));
+				}
+				return Effect.succeed(config as ISandboxConfiguration);
+			}).pipe(Effect.flatten),
+		apply: () => Effect.void,
+		changes: Stream.empty,
+		refresh: Effect.succeed(mockConfig),
+	};
+};
+
+export const ConfigurationMock = Layer.succeed(
+	Configuration,
+	makeMockConfiguration(),
+);

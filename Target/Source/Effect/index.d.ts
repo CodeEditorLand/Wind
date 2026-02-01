@@ -14,6 +14,16 @@ export { Telemetry, TelemetryLive, TelemetryMockLive, withSpan, withMetric, } fr
 export type { TelemetryService } from "./Telemetry.js";
 export { Mountain, MountainLive, MountainMockLive } from "./Mountain.js";
 export type { MountainService, MountainConnectionState, SyncResource, SyncResult, } from "./Mountain.js";
+export { EnvironmentTag, EnvironmentLive, EnvironmentMock } from "./Environment.js";
+export type { EnvironmentService, EnvironmentInfo, Platform, Architecture } from "./Environment.js";
+export { HealthTag, HealthLive, HealthMock } from "./Health.js";
+export type { HealthService, ServiceHealth, SystemHealth, HealthStatus } from "./Health.js";
+export { BootstrapTag, BootstrapLive, BootstrapMock, runBootstrap } from "./Bootstrap.js";
+export type { BootstrapService, BootstrapOptions, StageResult, BootstrapResult } from "./Bootstrap.js";
+export { MountainSyncTag, MountainSyncLive, MountainSyncMock } from "./MountainSync.js";
+export type { MountainSyncService, SyncConfig, SyncStats, SyncResult, SyncStatus } from "./MountainSync.js";
+export { ClipboardServiceTag, LiveClipboardServiceLayer, MockClipboardServiceLayer } from "./Clipboard.js";
+export type { ClipboardService, ClipboardProblem } from "./Clipboard.js";
 export { IPCInvokeError, IPCSendError, IPCSubscriptionError } from "./IPC.js";
 export { ConfigFetchError, ConfigValidationError, ConfigApplyError, } from "./Configuration.js";
 export { TelemetryCollectionError } from "./Telemetry.js";

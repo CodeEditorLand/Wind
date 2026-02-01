@@ -32,6 +32,26 @@ export type {
 	SyncResult,
 } from "./Mountain.js";
 
+// Environment service (replaces Stage0)
+export { EnvironmentTag, EnvironmentLive, EnvironmentMock } from "./Environment.js";
+export type { EnvironmentService, EnvironmentInfo, Platform, Architecture } from "./Environment.js";
+
+// Health service (replaces Stage6)
+export { HealthTag, HealthLive, HealthMock } from "./Health.js";
+export type { HealthService, ServiceHealth, SystemHealth, HealthStatus } from "./Health.js";
+
+// Bootstrap service (orchestrates all stages)
+export { BootstrapTag, BootstrapLive, BootstrapMock, runBootstrap } from "./Bootstrap.js";
+export type { BootstrapService, BootstrapOptions, StageResult, BootstrapResult } from "./Bootstrap.js";
+
+// MountainSync service (replaces class-based MountainWindSync)
+export { MountainSyncTag, MountainSyncLive, MountainSyncMock } from "./MountainSync.js";
+export type { MountainSyncService, SyncConfig, SyncStats, SyncResult, SyncStatus } from "./MountainSync.js";
+
+// Clipboard service
+export { ClipboardServiceTag, LiveClipboardServiceLayer, MockClipboardServiceLayer } from "./Clipboard.js";
+export type { ClipboardService, ClipboardProblem } from "./Clipboard.js";
+
 // Re-export error types
 export { IPCInvokeError, IPCSendError, IPCSubscriptionError } from "./IPC.js";
 

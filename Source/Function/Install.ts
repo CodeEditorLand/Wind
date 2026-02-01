@@ -13,7 +13,7 @@ import type {
  * @module Install
  *
  * @description
- * Main entry point for Wind Raleigh polyfill. Creates and attaches Electron API
+ * Main entry point for Wind polyfill. Creates and attaches Electron API
  * shims to window.vscode that Electron workbench expects, using proper Tauri
  * integration and VSCode type compliance.
  *
@@ -67,10 +67,10 @@ export default async function Install(): Promise<void> {
 		// Attach to window
 		(window as any).vscode = Globals;
 		console.info(
-			"[Wind Raleigh] Successfully installed Electron API polyfill for workbench.",
+			"[Wind] Successfully installed Electron API polyfill for workbench.",
 		);
 	} catch (error: unknown) {
-		console.error(`[Wind Raleigh] Install error:`, error);
+		console.error(`[Wind] Install error:`, error);
 		fallback(error);
 	}
 }

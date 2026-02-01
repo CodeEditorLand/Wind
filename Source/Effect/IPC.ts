@@ -5,7 +5,8 @@
  * Wraps Tauri IPC with typed effects and streams.
  */
 
-import { emit, invoke, listen } from "@tauri-apps/api/event";
+import { emit, listen } from "@tauri-apps/api/event";
+import { invoke as tauriInvoke } from "@tauri-apps/api/core";
 import { Context, Effect, Layer, Stream } from "effect";
 
 import { SandboxNotReadyError, type IPCMessage } from "../Types/Sandbox.js";
@@ -16,34 +17,55 @@ import { SandboxNotReadyError, type IPCMessage } from "../Types/Sandbox.js";
 
 export class IPCInvokeError extends Error {
 	readonly _tag = "IPCInvokeError";
+	readonly _channel: string;
+	readonly _cause: unknown;
 	constructor(
-		readonly channel: string,
-		readonly cause: unknown,
+		channel: string,
+		cause: unknown,
 	) {
 		super(`IPC invoke failed on channel '${channel}': ${String(cause)}`);
+		this._channel = channel;
+		this._cause = cause;
+		Object.setPrototypeOf(this, IPCInvokeError.prototype);
 	}
+	get channel() { return this._channel; }
+	get cause() { return this._cause; }
 }
 
 export class IPCSendError extends Error {
 	readonly _tag = "IPCSendError";
+	readonly _channel: string;
+	readonly _cause: unknown;
 	constructor(
-		readonly channel: string,
-		readonly cause: unknown,
+		channel: string,
+		cause: unknown,
 	) {
 		super(`IPC send failed on channel '${channel}': ${String(cause)}`);
+		this._channel = channel;
+		this._cause = cause;
+		Object.setPrototypeOf(this, IPCSendError.prototype);
 	}
+	get channel() { return this._channel; }
+	get cause() { return this._cause; }
 }
 
 export class IPCSubscriptionError extends Error {
 	readonly _tag = "IPCSubscriptionError";
+	readonly _channel: string;
+	readonly _cause: unknown;
 	constructor(
-		readonly channel: string,
-		readonly cause: unknown,
+		channel: string,
+		cause: unknown,
 	) {
 		super(
 			`IPC subscription failed on channel '${channel}': ${String(cause)}`,
 		);
+		this._channel = channel;
+		this._cause = cause;
+		Object.setPrototypeOf(this, IPCSubscriptionError.prototype);
 	}
+	get channel() { return this._channel; }
+	get cause() { return this._cause; }
 }
 
 // ============================================================================
@@ -80,7 +102,9 @@ export interface IPCService {
 }
 
 // Tag for dependency injection
-export const IPC = Context.GenericTag<IPCService>("IPC");
+export class IPCTag extends Context.Tag("IPC")<IPCTag, IPCService>() {}
+
+export const IPC = IPCTag;
 
 // ============================================================================
 // Tauri Implementation
@@ -108,7 +132,7 @@ export const IPCTauriLive = Layer.effect(
 		// Atom: invoke
 		const invoke_ = (channel: string) => (args: ReadonlyArray<unknown>) =>
 			Effect.tryPromise({
-				try: () => invoke(channel, args.length === 1 ? args[0] : args),
+				try: () => tauriInvoke(channel, args.length === 1 ? args[0] : args),
 				catch: (error) => new IPCInvokeError(channel, error),
 			});
 
@@ -161,7 +185,7 @@ export const IPCTauriLive = Layer.effect(
 		// Atom: remove all listeners
 		const removeAllListeners = (channel: string) =>
 			Effect.log(`[IPC] Remove all listeners for ${channel}`).pipe(
-				Effect.asUnit,
+				Effect.map(() => undefined),
 			);
 
 		return {
@@ -249,10 +273,10 @@ export const IPCElectronLive = Layer.effect(
 // ============================================================================
 
 export const IPCMockLive = Layer.succeed(IPC, {
-	send: (_channel: string) => (_args: ReadonlyArray<unknown>) => Effect.unit,
+	send: (_channel: string) => (_args: ReadonlyArray<unknown>) => Effect.void,
 	invoke: (_channel: string) => (_args: ReadonlyArray<unknown>) =>
 		Effect.succeed({}),
 	events: (_channel: string) => Stream.empty,
 	once: (_channel: string) => Effect.succeed({ channel: _channel, args: [] }),
-	removeAllListeners: (_channel: string) => Effect.unit,
+	removeAllListeners: (_channel: string) => Effect.void,
 });

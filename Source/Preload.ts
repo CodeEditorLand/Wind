@@ -5,7 +5,8 @@
  * All heavy lifting moved to Effect services.
  */
 
-import { emit, invoke, listen } from "@tauri-apps/api/event";
+import { emit, listen } from "@tauri-apps/api/event";
+import { invoke as tauriInvoke } from "@tauri-apps/api/core";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { readFile, writeFile } from "@tauri-apps/plugin-fs";
 
@@ -32,7 +33,7 @@ const ipcRenderer = {
 	},
 
 	invoke: async (channel: string, ...args: unknown[]): Promise<unknown> => {
-		return invoke(channel, args.length === 1 ? args[0] : args);
+		return tauriInvoke(channel, args.length === 1 ? args[0] : args);
 	},
 
 	on: (
@@ -155,7 +156,7 @@ const context = {
 		if (cachedConfiguration) return cachedConfiguration;
 
 		try {
-			const config = await invoke("mountain_get_workbench_configuration");
+			const config = await tauriInvoke("mountain_get_workbench_configuration");
 			cachedConfiguration = config;
 			return config;
 		} catch (error) {

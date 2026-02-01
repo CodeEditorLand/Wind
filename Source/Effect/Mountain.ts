@@ -6,22 +6,11 @@
  * unified backend integration layer with proper error handling and resilience.
  */
 
-import {
-	Context,
-	Effect,
-	Exit,
-	Fiber,
-	Layer,
-	Option,
-	pipe,
-	Schedule,
-	Stream,
-	SubscriptionRef,
-} from "effect";
+import { Context, Effect, Fiber, Layer, Schedule, Stream, SubscriptionRef } from "effect";
 
-import { Configuration, ConfigurationService } from "./Configuration.js";
-import { IPC, IPCService } from "./IPC.js";
-import { Telemetry, TelemetryService, withSpan } from "./Telemetry.js";
+import { Configuration } from "./Configuration.js";
+import { IPC } from "./IPC.js";
+import { Telemetry, withSpan } from "./Telemetry.js";
 
 // ============================================================================
 // Mountain Error Types
@@ -29,39 +18,55 @@ import { Telemetry, TelemetryService, withSpan } from "./Telemetry.js";
 
 export class MountainConnectionError extends Error {
 	readonly _tag = "MountainConnectionError";
-	constructor(readonly cause: unknown) {
+	readonly _cause: unknown;
+	constructor(cause: unknown) {
 		super(`Failed to connect to Mountain backend: ${String(cause)}`);
+		this._cause = cause;
+		Object.setPrototypeOf(this, MountainConnectionError.prototype);
 	}
+	get cause() { return this._cause; }
 }
 
 export class MountainRPCError extends Error {
 	readonly _tag = "MountainRPCError";
-	constructor(
-		readonly method: string,
-		readonly cause: unknown,
-	) {
+	readonly _method: string;
+	readonly _cause: unknown;
+	constructor(method: string, cause: unknown) {
 		super(`Mountain RPC '${method}' failed: ${String(cause)}`);
+		this._method = method;
+		this._cause = cause;
+		Object.setPrototypeOf(this, MountainRPCError.prototype);
 	}
+	get method() { return this._method; }
+	get cause() { return this._cause; }
 }
 
 export class MountainSyncError extends Error {
 	readonly _tag = "MountainSyncError";
-	constructor(
-		readonly resource: string,
-		readonly cause: unknown,
-	) {
+	readonly _resource: string;
+	readonly _cause: unknown;
+	constructor(resource: string, cause: unknown) {
 		super(`Mountain sync for '${resource}' failed: ${String(cause)}`);
+		this._resource = resource;
+		this._cause = cause;
+		Object.setPrototypeOf(this, MountainSyncError.prototype);
 	}
+	get resource() { return this._resource; }
+	get cause() { return this._cause; }
 }
 
 export class MountainStateError extends Error {
 	readonly _tag = "MountainStateError";
-	constructor(
-		readonly expected: string,
-		readonly actual: string,
-	) {
+	readonly _expected: string;
+	readonly _actual: string;
+	constructor(expected: string, actual: string) {
 		super(`Mountain state error: expected ${expected}, got ${actual}`);
+		this._expected = expected;
+		this._actual = actual;
+		Object.setPrototypeOf(this, MountainStateError.prototype);
 	}
+	get expected() { return this._expected; }
+	get actual() { return this._actual; }
 }
 
 // ============================================================================
@@ -131,7 +136,12 @@ export interface MountainService {
 	readonly healthCheck: Effect.Effect<boolean, MountainConnectionError>;
 }
 
-export const Mountain = Context.GenericTag<MountainService>("Mountain");
+export class MountainTag extends Context.Tag("Mountain")<
+	MountainTag,
+	MountainService
+>() {}
+
+export const Mountain = MountainTag;
 
 // ============================================================================
 // Implementation
@@ -162,17 +172,14 @@ export const MountainLive = Layer.effect(
 
 		// Atom: Update connection state
 		const setState = (state: MountainConnectionState) =>
-			stateRef
-				.set(state)
-				.pipe(
-					Effect.tap(() =>
-						telemetry.log("info", `Mountain state: ${state._tag}`),
-					),
-				);
+			Effect.gen(function* () {
+				yield* SubscriptionRef.modify(stateRef, () => [undefined, state]);
+				yield* telemetry.log("info", `Mountain state: ${state._tag}`);
+			});
 
 		// Atom: Get current state
 		const connectionState = stateRef.get;
-		const connectionChanges = Stream.fromSubscriptionRef(stateRef);
+		const connectionChanges = stateRef.changes;
 
 		// Atom: Connect to Mountain
 		const connect = Effect.gen(function* () {
@@ -300,9 +307,7 @@ export const MountainLive = Layer.effect(
 									hash: mountainHash,
 								};
 
-								yield* syncEventsRef.update((events) =>
-									[...events, resource].slice(-1000),
-								);
+								yield* SubscriptionRef.modify(syncEventsRef, (events) => [undefined, [...events, resource].slice(-1000)]);
 							}
 
 							return {
@@ -325,9 +330,7 @@ export const MountainLive = Layer.effect(
 								hash: JSON.stringify(services),
 							};
 
-							yield* syncEventsRef.update((events) =>
-								[...events, resource].slice(-1000),
-							);
+							yield* SubscriptionRef.modify(syncEventsRef, (events) => [undefined, [...events, resource].slice(-1000)]);
 
 							return {
 								success: true,
@@ -350,9 +353,7 @@ export const MountainLive = Layer.effect(
 								hash: JSON.stringify(state),
 							};
 
-							yield* syncEventsRef.update((events) =>
-								[...events, resource].slice(-1000),
-							);
+							yield* SubscriptionRef.modify(syncEventsRef, (events) => [undefined, [...events, resource].slice(-1000)]);
 
 							return {
 								success: true,
@@ -393,7 +394,7 @@ export const MountainLive = Layer.effect(
 			});
 
 		// Stream of sync events
-		const syncEvents = Stream.fromSubscriptionRef(syncEventsRef).pipe(
+		const syncEvents = syncEventsRef.changes.pipe(
 			Stream.flatMap((events) => Stream.fromIterable(events)),
 		);
 
@@ -464,7 +465,7 @@ export const MountainLive = Layer.effect(
 								),
 							);
 						})
-					: Effect.unit,
+					: Effect.void,
 			);
 		}).pipe(Effect.fork);
 
@@ -496,8 +497,8 @@ export const MountainMockLive = Layer.succeed(Mountain, {
 		version: "mock",
 	}),
 	connectionChanges: Stream.empty,
-	connect: Effect.unit,
-	disconnect: Effect.unit,
+	connect: Effect.void,
+	disconnect: Effect.void,
 	rpc: () => () => Effect.succeed({}),
 	sync: () =>
 		Effect.succeed({
