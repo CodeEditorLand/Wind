@@ -16,7 +16,7 @@
  * - updateValue(key: string, value: any, target?: ConfigurationTarget): Promise<void>
  * - inspect<T>(key: string): IConfigurationChangeEvent
  */
-import * as Effect from 'effect/Effect';
+import * as Effect from "effect/Effect";
 /**
  * Configuration value type
  */
@@ -116,6 +116,6 @@ export declare function resetEffect(key: string): Effect.Effect<void>;
  * Effect wrapper for setting multiple configuration values
  */
 export declare function setManyEffect(values: Record<string, unknown>): Effect.Effect<void>;
-export type { ConfigurationService, ConfigValue, ConfigChangeHandler, ConfigurationServiceOptions };
+export type { ConfigurationService, ConfigValue, ConfigChangeHandler, ConfigurationServiceOptions, };
 export default ConfigurationServiceTag;
 //# sourceMappingURL=ConfigurationService.d.ts.map

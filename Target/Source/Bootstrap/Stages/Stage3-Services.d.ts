@@ -263,8 +263,8 @@
  * - Add service cache migration
  * - Implement service cache transition
  */
-import type { StageResult } from '../Types/index.js';
-import { ServiceAdapter } from '../Integration/ServiceAdapter.js';
+import { ServiceAdapter } from "../Integration/ServiceAdapter.js";
+import type { StageResult } from "../Types/index.js";
 export declare class ServicesStage {
     static readonly STAGE_NAME: "Services";
     /**

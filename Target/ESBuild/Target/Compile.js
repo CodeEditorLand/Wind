@@ -1,1 +1,0 @@
-const i=(await import("../Wind.js")).On,o=(await import("../Wind.js")).Bundle,e=(await import("deepmerge-ts")).deepmergeCustom({mergeArrays:!1});var r=async t=>e(await(await import("../Target.js")).default(t),{bundle:!0,outbase:"Target",tsconfig:"Configuration/tsconfig/Target/Compile.json",plugins:[],allowOverwrite:!0});export{o as Bundle,e as Merge,i as On,r as default};

@@ -23,7 +23,7 @@
  * - showWarningMessage(message, options): Promise<string>
  * - showErrorMessage(message, options): Promise<string>
  */
-import * as Effect from 'effect/Effect';
+import * as Effect from "effect/Effect";
 /**
  * File dialog options for open/save dialogs
  */
@@ -81,7 +81,7 @@ export interface MessageBoxOptions {
     /**
      * Icon type
      */
-    type?: 'info' | 'warning' | 'error' | 'question';
+    type?: "info" | "warning" | "error" | "question";
     /**
      * Button labels
      */

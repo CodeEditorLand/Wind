@@ -4,8 +4,8 @@
  * Atomic IPC service using Effect-TS.
  * Wraps Tauri IPC with typed effects and streams.
  */
-import { Context, Effect, Stream, Layer } from "effect";
-import type { IPCMessage } from "../Types/Sandbox.js";
+import { Context, Effect, Layer, Stream } from "effect";
+import { type IPCMessage } from "../Types/Sandbox.js";
 export declare class IPCInvokeError extends Error {
     readonly channel: string;
     readonly cause: unknown;

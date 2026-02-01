@@ -30,7 +30,7 @@ interface IFileSystemEntry {
  * File system event
  */
 interface IFileSystemEvent {
-    type: 'created' | 'modified' | 'deleted' | 'renamed';
+    type: "created" | "modified" | "deleted" | "renamed";
     path: string;
     oldPath?: string;
 }

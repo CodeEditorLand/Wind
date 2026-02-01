@@ -24,7 +24,7 @@
  * - move(source, target)
  * - copy(source, target)
  */
-import * as Effect from 'effect/Effect';
+import * as Effect from "effect/Effect";
 /**
  * File statistics
  */

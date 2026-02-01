@@ -22,12 +22,12 @@ export interface TelemetrySpan {
     readonly labels?: Readonly<Record<string, string>>;
 }
 export interface TelemetryEvent {
-    readonly type: 'metric' | 'span' | 'log';
+    readonly type: "metric" | "span" | "log";
     readonly timestamp: number;
     readonly data: TelemetryMetric | TelemetrySpan | TelemetryLog;
 }
 export interface TelemetryLog {
-    readonly level: 'debug' | 'info' | 'warn' | 'error';
+    readonly level: "debug" | "info" | "warn" | "error";
     readonly message: string;
     readonly context?: Record<string, unknown>;
 }
@@ -43,7 +43,7 @@ export interface TelemetryService {
     /** Start a timed span */
     readonly startSpan: (name: string, labels?: Record<string, string>) => Effect.Effect<SpanHandle, never>;
     /** Log an event */
-    readonly log: (level: TelemetryLog['level'], message: string, context?: Record<string, unknown>) => Effect.Effect<void, never>;
+    readonly log: (level: TelemetryLog["level"], message: string, context?: Record<string, unknown>) => Effect.Effect<void, never>;
     /** Stream of all telemetry events */
     readonly events: Stream.Stream<TelemetryEvent, never>;
     /** Get metrics by name */

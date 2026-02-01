@@ -4,7 +4,7 @@
  * Stage 4: Workbench Preparation
  * Prepares the DOM and environment for VSCode workbench initialization.
  */
-import type { StageResult } from '../Types/Types.js';
+import type { StageResult } from "../Types/Types.js";
 export declare class PreparationStage {
     static readonly STAGE_NAME: "Preparation";
     /**

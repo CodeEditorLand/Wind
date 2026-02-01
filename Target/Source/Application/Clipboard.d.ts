@@ -49,9 +49,9 @@
  * VERSION: 2.0.0
  * LAST UPDATED: January 31, 2026
  */
+import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
-import * as Context from "effect/Context";
 /**
  * Clipboard service interface
  * Microsoft VSCode Reference: IClipboardService from vs/platform/clipboard/common/clipboardService.ts

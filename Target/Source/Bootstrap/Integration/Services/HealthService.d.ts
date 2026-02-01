@@ -61,7 +61,7 @@ export interface HealthConfig {
  * Health event
  */
 export interface HealthEvent {
-    type: 'service_discovered' | 'service_healthy' | 'service_degraded' | 'service_unhealthy' | 'service_lost' | 'recovery_attempted' | 'recovery_successful';
+    type: "service_discovered" | "service_healthy" | "service_degraded" | "service_unhealthy" | "service_lost" | "recovery_attempted" | "recovery_successful";
     timestamp: number;
     service: string;
     data?: any;

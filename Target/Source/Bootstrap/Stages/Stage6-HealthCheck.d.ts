@@ -4,7 +4,7 @@
  * Stage 6: Health Check
  * Verifies that the VSCode workbench is running correctly and tests core functionality.
  */
-import type { StageResult } from '../Types/Types.js';
+import type { StageResult } from "../Types/Types.js";
 export declare class HealthCheckStage {
     static readonly STAGE_NAME: "HealthCheck";
     /**

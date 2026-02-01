@@ -6,8 +6,7 @@
  * Replaces duplicated logic in Preload, MountainIntegrationService, and MountainWindSync.
  */
 import { Context, Effect, Layer, Stream } from "effect";
-import type { ISandboxConfiguration } from "../Types/Sandbox.js";
-import { ConfigurationNotReadyError } from "../Types/Sandbox.js";
+import { ConfigurationNotReadyError, type ISandboxConfiguration } from "../Types/Sandbox.js";
 import { IPCService } from "./IPC.js";
 import { SandboxService } from "./Sandbox.js";
 export declare class ConfigFetchError extends Error {
@@ -41,7 +40,7 @@ export interface ConfigurationService {
     readonly refresh: Effect.Effect<ISandboxConfiguration, ConfigFetchError>;
 }
 export declare const Configuration: Context.Tag<ConfigurationService, ConfigurationService>;
-export declare const ConfigurationLive: Layer.Layer<ConfigurationService, never, SandboxService | IPCService>;
+export declare const ConfigurationLive: Layer.Layer<ConfigurationService, never, IPCService | SandboxService>;
 export declare const ConfigurationWithSyncLive: never;
 export declare const ConfigurationMockLive: Layer.Layer<ConfigurationService, never, never>;
 //# sourceMappingURL=Configuration.d.ts.map

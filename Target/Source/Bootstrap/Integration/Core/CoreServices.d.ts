@@ -17,15 +17,15 @@
  * - Type safety: Strongly typed interfaces
  * - Testable: Each service can be unit tested independently
  */
-import * as Effect from 'effect/Effect';
-import * as Layer from 'effect/Layer';
+import * as Effect from "effect/Effect";
+import * as Layer from "effect/Layer";
 /**
  * Environment service interface
  * Provides platform detection and runtime environment information
  */
 export interface EnvironmentService {
     /** Get current platform: 'tauri' | 'browser' | 'web' */
-    getPlatform: () => Effect.Effect<'tauri' | 'browser' | 'web'>;
+    getPlatform: () => Effect.Effect<"tauri" | "browser" | "web">;
     /** Get browser language code (e.g., 'en-US') */
     getLanguage: () => Effect.Effect<string>;
     /** Get timezone string (e.g., 'America/New_York') */
@@ -70,7 +70,7 @@ export interface LoggerService {
 /**
  * Log levels ordered by severity
  */
-export type LogLevel = 'trace' | 'debug' | 'info' | 'warning' | 'error' | 'critical';
+export type LogLevel = "trace" | "debug" | "info" | "warning" | "error" | "critical";
 /**
  * Configuration service interface
  * Manages application configuration with typed access
@@ -176,12 +176,12 @@ export interface DialogService {
     showMessage: (options: {
         title?: string;
         message: string;
-        type?: 'info' | 'warning' | 'error';
+        type?: "info" | "warning" | "error";
     }) => Effect.Effect<void>;
 }
 /** Environment service context tag */
 export declare const EnvironmentServiceTag: <Self, Type extends Effect.Tag.AllowedType>() => import("effect/Context").TagClass<Self, EnvironmentService, Type> & (Type extends Record<PropertyKey, any> ? Effect.Tag.Proxy<Self, Type> : {}) & {
-    use: <X>(body: (_: Type) => X) => [X] extends [Effect.Effect<infer A, infer E, infer R>] ? Effect.Effect<A, E, Self | R> : [X] extends [PromiseLike<infer A_1>] ? Effect.Effect<A_1, import("effect/Cause").UnknownException, Self> : Effect.Effect<X, never, Self>;
+    use: <X>(body: (_: Type) => X) => [X] extends [Effect.Effect<infer A, infer E, infer R>] ? Effect.Effect<A, E, R | Self> : [X] extends [PromiseLike<infer A_1>] ? Effect.Effect<A_1, import("effect/Cause").UnknownException, Self> : Effect.Effect<X, never, Self>;
 };
 /** Logger service context tag */
 export declare const LoggerServiceTag: <Self, Type extends Effect.Tag.AllowedType>() => import("effect/Context").TagClass<Self, LoggerService, Type> & (Type extends Record<PropertyKey, any> ? Effect.Tag.Proxy<Self, Type> : {}) & {
@@ -252,10 +252,10 @@ export interface VSCodeConfiguration {
         fontSize?: number;
         fontFamily?: string;
         tabSize?: number;
-        wordWrap?: 'off' | 'on' | 'wordWrapColumn' | 'bounded';
+        wordWrap?: "off" | "on" | "wordWrapColumn" | "bounded";
     };
     files?: {
-        autoSave?: 'afterDelay' | 'onFocusChange' | 'onWindowChange' | 'off';
+        autoSave?: "afterDelay" | "onFocusChange" | "onWindowChange" | "off";
         autoSaveDelay?: number;
     };
     terminal?: {
@@ -277,7 +277,7 @@ export declare function validateService<T>(service: T, serviceName: string): ass
 export declare function safeGetService<T extends Effect.TagClass<any, any>>(tag: T, errorMessage?: string): Effect.Effect<any, unknown, unknown>;
 declare const _default: {
     EnvironmentService: <Self, Type extends Effect.Tag.AllowedType>() => import("effect/Context").TagClass<Self, EnvironmentService, Type> & (Type extends Record<PropertyKey, any> ? Effect.Tag.Proxy<Self, Type> : {}) & {
-        use: <X>(body: (_: Type) => X) => [X] extends [Effect.Effect<infer A, infer E, infer R>] ? Effect.Effect<A, E, Self | R> : [X] extends [PromiseLike<infer A_1>] ? Effect.Effect<A_1, import("effect/Cause").UnknownException, Self> : Effect.Effect<X, never, Self>;
+        use: <X>(body: (_: Type) => X) => [X] extends [Effect.Effect<infer A, infer E, infer R>] ? Effect.Effect<A, E, R | Self> : [X] extends [PromiseLike<infer A_1>] ? Effect.Effect<A_1, import("effect/Cause").UnknownException, Self> : Effect.Effect<X, never, Self>;
     };
     LoggerService: <Self, Type extends Effect.Tag.AllowedType>() => import("effect/Context").TagClass<Self, LoggerService, Type> & (Type extends Record<PropertyKey, any> ? Effect.Tag.Proxy<Self, Type> : {}) & {
         use: <X>(body: (_: Type) => X) => [X] extends [Effect.Effect<infer A, infer E, infer R>] ? Effect.Effect<A, E, R | Self> : [X] extends [PromiseLike<infer A_1>] ? Effect.Effect<A_1, import("effect/Cause").UnknownException, Self> : Effect.Effect<X, never, Self>;

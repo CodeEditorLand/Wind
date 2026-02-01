@@ -30,7 +30,7 @@
  * - Graceful degradation
  * - Service dependency resolution
  */
-import { URI, Disposable, type ILogService } from '../Mocks/MicrosoftVSCodeMocks.js';
+import { Disposable, URI, type ILogService } from "../Mocks/MicrosoftVSCodeMocks.js";
 /**
  * Advanced Configuration Management System
  */
@@ -229,7 +229,7 @@ interface IDesktopConfiguration extends ITauriDesktopConfiguration {
         resource: any;
     }>;
     backupPath?: string;
-    'disable-layout-restore'?: boolean;
+    "disable-layout-restore"?: boolean;
     os: {
         release: string;
     };
@@ -347,7 +347,7 @@ export declare class WindDesktopMain extends Disposable {
      */
     getHealthStatus(): {
         timestamp: number;
-        overallHealth: 'HEALTHY' | 'DEGRADED' | 'CRITICAL';
+        overallHealth: "HEALTHY" | "DEGRADED" | "CRITICAL";
         services: Record<string, ServiceHealthStatus>;
         errorStats: any;
         degradation: any;
@@ -454,7 +454,7 @@ export declare class WindDesktopMain extends Disposable {
     /**
      * Set log level
      */
-    setLogLevel(level: 'trace' | 'debug' | 'info' | 'warn' | 'error'): void;
+    setLogLevel(level: "trace" | "debug" | "info" | "warn" | "error"): void;
     /**
      * Get service dependency information
      */
@@ -466,7 +466,7 @@ export declare class WindDesktopMain extends Disposable {
         timestamp: number;
         services: IServiceHealthStatus[];
         dependencies: Record<string, string[]>;
-        systemHealth: 'healthy' | 'degraded' | 'critical';
+        systemHealth: "healthy" | "degraded" | "critical";
     }>;
 }
 /**
@@ -511,7 +511,7 @@ interface PerformanceMetrics {
 interface ServiceMetric {
     name: string;
     initTime: number;
-    status: 'initializing' | 'ready' | 'error';
+    status: "initializing" | "ready" | "error";
     memoryUsage: number;
     loadTime: number;
     lazyLoaded: boolean;
@@ -813,7 +813,7 @@ declare class ServiceHealthMonitor {
      */
     getHealthReport(): {
         timestamp: number;
-        overallHealth: 'HEALTHY' | 'DEGRADED' | 'CRITICAL';
+        overallHealth: "HEALTHY" | "DEGRADED" | "CRITICAL";
         totalServices: number;
         healthyServices: number;
         degradedServices: number;
@@ -853,8 +853,8 @@ declare class MountainIntegrationService {
     private processPerformanceQueue;
 }
 export { WindDesktopMain as DesktopMain };
-export { WindPerformanceMonitor, WindErrorRecovery, MountainIntegrationService, ConfigurationValidator, AdvancedConfigurationManager, MountainConfigurationSynchronizer, ServiceHealthMonitor, ErrorTrackingService, GracefulDegradationManager, CircuitBreaker };
-export type { IConfigurationSchema, IConfigurationValidationResult, IConfigurationVersion, IConfigurationBackup, IConfigurationMigration };
+export { WindPerformanceMonitor, WindErrorRecovery, MountainIntegrationService, ConfigurationValidator, AdvancedConfigurationManager, MountainConfigurationSynchronizer, ServiceHealthMonitor, ErrorTrackingService, GracefulDegradationManager, CircuitBreaker, };
+export type { IConfigurationSchema, IConfigurationValidationResult, IConfigurationVersion, IConfigurationBackup, IConfigurationMigration, };
 /**
  * Comprehensive error tracking and reporting system
  */
@@ -872,7 +872,7 @@ declare class ErrorTrackingService {
     /**
      * Track an error occurrence
      */
-    trackError(error: Error, context: string, severity?: 'low' | 'medium' | 'high' | 'critical', metadata?: Record<string, any>): void;
+    trackError(error: Error, context: string, severity?: "low" | "medium" | "high" | "critical", metadata?: Record<string, any>): void;
     /**
      * Check if error threshold is exceeded
      */
@@ -892,7 +892,7 @@ declare class ErrorTrackingService {
     /**
      * Get error summary
      */
-    getErrorSummary(): Record<string, Omit<ErrorSummary, 'contexts'> & {
+    getErrorSummary(): Record<string, Omit<ErrorSummary, "contexts"> & {
         contexts: string[];
     }>;
     /**
@@ -970,7 +970,7 @@ interface ErrorLogEntry {
     errorType: string;
     message: string;
     context: string;
-    severity: 'low' | 'medium' | 'high' | 'critical';
+    severity: "low" | "medium" | "high" | "critical";
     stack: string;
     metadata?: Record<string, any>;
     reported: boolean;
@@ -1052,7 +1052,7 @@ declare class LogManager {
     private currentLevel;
     private logs;
     private maxLogs;
-    setLevel(level: 'trace' | 'debug' | 'info' | 'warn' | 'error'): void;
+    setLevel(level: "trace" | "debug" | "info" | "warn" | "error"): void;
     private shouldLog;
     private formatMessage;
     trace(context: string, message: string, ...args: any[]): void;

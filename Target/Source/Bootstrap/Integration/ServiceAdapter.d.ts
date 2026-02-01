@@ -5,7 +5,7 @@
  * This implementation provides advanced proxy patterns, lazy loading, dependency resolution, and error recovery.
  * Enables seamless integration with VSCode workbench while maintaining Wind's architectural patterns.
  */
-import type { IVSCodeServiceCollection, IVSCodeServiceIdentifier } from '../Types/VSCodeTypes.js';
+import type { IVSCodeServiceCollection, IVSCodeServiceIdentifier } from "../Types/VSCodeTypes.js";
 interface ServiceAdapterConfig {
     enableLazyLoading: boolean;
     enableProxyPatterns: boolean;

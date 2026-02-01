@@ -4,7 +4,7 @@
  * Practical examples demonstrating the advanced configuration management system for Wind.
  * Shows how to validate, migrate, backup, restore, and sync configurations with Mountain.
  */
-import { AdvancedConfigurationManager, ConfigurationValidator, MountainConfigurationSynchronizer, DesktopMain } from './DesktopMain.js';
+import { AdvancedConfigurationManager, ConfigurationValidator, DesktopMain, MountainConfigurationSynchronizer } from "./DesktopMain.js";
 /**
  * Example 1: Basic Configuration Validation
  */

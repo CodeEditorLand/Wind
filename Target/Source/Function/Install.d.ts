@@ -1,3 +1,6 @@
+import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes";
+import type { IpcRenderer } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/electronTypes";
+import type { ISandboxNodeProcess } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/globals";
 /**
  * @module Install
  *
@@ -25,7 +28,4 @@ export declare function validateIPCChannel(channel: string): boolean;
  * Implements graceful degradation with fallback support
  */
 export declare function fallback(error: unknown): void;
-import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes";
-import type { IpcRenderer } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/electronTypes";
-import type { ISandboxNodeProcess } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/globals";
 //# sourceMappingURL=Install.d.ts.map

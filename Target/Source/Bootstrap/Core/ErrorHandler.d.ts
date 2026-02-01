@@ -3,7 +3,7 @@
  * @description
  * Centralized error handling with recovery strategies.
  */
-import type { ErrorSeverity, StageName } from '../Types/Types.js';
+import type { ErrorSeverity, StageName } from "../Types/Types.js";
 export declare class ErrorHandler {
     private static instance;
     private errors;

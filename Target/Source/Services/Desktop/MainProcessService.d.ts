@@ -15,9 +15,9 @@
  * - Handle Tauri-specific events
  * - Add error handling and retry logic
  */
-import { Disposable } from '../../../../Dependency/Microsoft/Dependency/Editor/src/vs/base/common/lifecycle.js';
-import { IMainProcessService } from '../../../../Dependency/Microsoft/Dependency/Editor/src/vs/platform/ipc/common/mainProcessService.js';
-import { IChannel, IServerChannel } from '../../../../Dependency/Microsoft/Dependency/Editor/src/vs/base/parts/ipc/common/ipc.js';
+import { Disposable } from "@codeeditorland/output/vs/base/common/lifecycle.js";
+import { IChannel, IServerChannel } from "@codeeditorland/output/vs/base/parts/ipc/common/ipc.js";
+import { IMainProcessService } from "@codeeditorland/output/vs/platform/ipc/common/mainProcessService.js";
 export declare class TauriMainProcessService extends Disposable implements IMainProcessService {
     private readonly windowId;
     readonly _serviceBrand: undefined;

@@ -4,7 +4,7 @@
  * Core VSCode service implementations using Wind services.
  * These services bridge Wind's Effect-TS architecture to VSCode's service requirements.
  */
-import type { IVSCodeEnvironmentService, IVSCodeConfigurationService, IVSCodeLoggerService } from '../Types/VSCodeTypes.js';
+import type { IVSCodeConfigurationService, IVSCodeEnvironmentService, IVSCodeLoggerService } from "../Types/VSCodeTypes.js";
 export declare class CoreServices {
     private static instance;
     private services;

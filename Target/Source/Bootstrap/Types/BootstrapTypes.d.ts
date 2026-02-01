@@ -3,10 +3,10 @@
  * @description
  * Bootstrap-specific type definitions.
  */
-export type Platform = 'tauri' | 'browser';
-export type Mode = 'development' | 'production';
-export type StageName = 'Environment' | 'Preload' | 'Configuration' | 'Services' | 'Preparation' | 'Initialization' | 'HealthCheck';
-export type ErrorSeverity = 'critical' | 'warning' | 'info';
+export type Platform = "tauri" | "browser";
+export type Mode = "development" | "production";
+export type StageName = "Environment" | "Preload" | "Configuration" | "Services" | "Preparation" | "Initialization" | "HealthCheck";
+export type ErrorSeverity = "critical" | "warning" | "info";
 export interface StageResult {
     success: boolean;
     stage: StageName;
@@ -30,7 +30,7 @@ export interface BootstrapConfig {
 }
 export interface StatusUpdate {
     stage: StageName;
-    status: 'pending' | 'running' | 'success' | 'error' | 'warning';
+    status: "pending" | "running" | "success" | "error" | "warning";
     message: string;
     progress: number;
     duration?: number;

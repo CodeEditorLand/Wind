@@ -4,7 +4,7 @@
  * Main orchestrator for the atomic bootstrap system.
  * Coordinates all bootstrap stages and manages the overall process.
  */
-import type { BootstrapResult, BootstrapConfig, StageResult } from './Types.js';
+import type { BootstrapConfig, BootstrapResult, StageResult } from "./Types.js";
 export declare class BootstrapOrchestrator {
     private static instance;
     private config;

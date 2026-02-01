@@ -15,11 +15,11 @@
  *
  * VSCode IBrowserWorkbenchEnvironmentService compatibility
  */
-import * as Effect from 'effect/Effect';
+import * as Effect from "effect/Effect";
 /**
  * Platform type
  */
-export type Platform = 'tauri' | 'browser' | 'web';
+export type Platform = "tauri" | "browser" | "web";
 /**
  * OS information
  */

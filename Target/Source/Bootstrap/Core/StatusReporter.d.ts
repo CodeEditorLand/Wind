@@ -3,7 +3,7 @@
  * @description
  * Real-time visual feedback system for bootstrap process.
  */
-import type { StatusUpdate, BootstrapResult } from '../Types/Types.js';
+import type { BootstrapResult, StatusUpdate } from "../Types/Types.js";
 export declare class StatusReporter {
     private static instance;
     private updates;

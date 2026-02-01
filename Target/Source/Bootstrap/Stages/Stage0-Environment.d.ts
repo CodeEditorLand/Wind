@@ -86,7 +86,7 @@
  * - Add Nullish Coalescing detection
  * - Implement Top-Level Await detection
  */
-import type { StageResult, Platform, Mode } from '../Types/index.js';
+import type { Mode, Platform, StageResult } from "../Types/index.js";
 export declare class EnvironmentStage {
     static readonly STAGE_NAME: "Environment";
     /**

@@ -152,7 +152,7 @@
  * - Implement WebSocket message rolecast
  * - Add WebSocket message permissioncast
  */
-import type { StageResult } from '../Types/index.js';
+import type { StageResult } from "../Types/index.js";
 export declare class PreloadStage {
     static readonly STAGE_NAME: "Preload";
     /**

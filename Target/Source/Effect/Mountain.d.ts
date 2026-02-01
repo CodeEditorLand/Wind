@@ -45,7 +45,7 @@ export type MountainConnectionState = {
     readonly error: Error;
 };
 export interface SyncResource {
-    readonly type: 'configuration' | 'services' | 'state' | 'files';
+    readonly type: "configuration" | "services" | "state" | "files";
     readonly id: string;
     readonly data: unknown;
     readonly timestamp: number;
@@ -69,7 +69,7 @@ export interface MountainService {
     /** Execute RPC method */
     readonly rpc: <T>(method: string) => (args?: Record<string, unknown>) => Effect.Effect<T, MountainRPCError>;
     /** Sync a specific resource type */
-    readonly sync: (resourceType: SyncResource['type']) => Effect.Effect<SyncResult, MountainSyncError>;
+    readonly sync: (resourceType: SyncResource["type"]) => Effect.Effect<SyncResult, MountainSyncError>;
     /** Stream of all sync events */
     readonly syncEvents: Stream.Stream<SyncResource, never>;
     /** Get Mountain version */

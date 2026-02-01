@@ -87,7 +87,7 @@
  * - Add stage completion sound notifications
  * - Implement status UI mini-mode for space-constrained displays
  */
-import type { StatusUpdate, BootstrapConfig } from './Types.js';
+import type { BootstrapConfig, StatusUpdate } from "./Types.js";
 export declare class StatusReporter {
     private static instance;
     private config;
@@ -128,7 +128,7 @@ export declare class StatusReporter {
      * @param element The UI element to manage
      * @param state Desired state (visible, hidden, disabled)
      */
-    ManageUIElement(element: HTMLElement | null, state: 'visible' | 'hidden' | 'disabled'): void;
+    ManageUIElement(element: HTMLElement | null, state: "visible" | "hidden" | "disabled"): void;
     /**
      * Manage log panel visibility
      * @param visible Whether the log panel should be visible

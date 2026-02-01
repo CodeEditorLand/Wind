@@ -11,7 +11,7 @@
  * - Includes robust error handling and fallback mechanisms
  * - Performance monitoring and dependency resolution
  */
-import { IServiceAdapter } from './ServiceAdapter';
+import { IServiceAdapter } from "./ServiceAdapter";
 /**
  * Service mapping configuration
  */

@@ -37,12 +37,12 @@ export default async (Current: BuildOptions): Promise<BuildOptions> =>
 
 			outbase: "Source",
 
-			external: [
-				"@tauri-apps/api",
-				"@tauri-apps/api/core",
-				"@tauri-apps/api/event",
-				"@codeeditorland/output",
-			],
+			// external: [
+			// 	"@tauri-apps/api",
+			// 	"@tauri-apps/api/core",
+			// 	"@tauri-apps/api/event",
+			// 	"@codeeditorland/output",
+			// ],
 
 			plugins: Compile
 				? Merge<[BuildOptions["plugins"], BuildOptions["plugins"]]>(

@@ -296,7 +296,7 @@
  * - Implement configuration GDPR breach security plan
  * - Add configuration GDPR breach compliance plan
  */
-import type { StageResult, ConfigurationData } from '../Types/index.js';
+import type { ConfigurationData, StageResult } from "../Types/index.js";
 export declare class ConfigurationStage {
     static readonly STAGE_NAME: "Configuration";
     /**

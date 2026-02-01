@@ -5,7 +5,7 @@
  * Creates and initializes the VSCode workbench instance.
  * This is the critical integration point with VSCode's workbench system.
  */
-import type { StageResult, WorkbenchData } from '../Types/Types.js';
+import type { StageResult, WorkbenchData } from "../Types/Types.js";
 export declare class InitializationStage {
     static readonly STAGE_NAME: "Initialization";
     /**

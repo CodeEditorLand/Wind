@@ -44,7 +44,7 @@ export interface SandboxNodeProcess {
         readonly privateBytes: number;
         readonly sharedBytes: number;
     }>;
-    readonly on: (type: 'uncaughtException' | 'unhandledRejection', callback: (error: Error) => void) => void;
+    readonly on: (type: "uncaughtException" | "unhandledRejection", callback: (error: Error) => void) => void;
 }
 export interface SandboxContext {
     readonly configuration: () => Promise<ISandboxConfiguration>;

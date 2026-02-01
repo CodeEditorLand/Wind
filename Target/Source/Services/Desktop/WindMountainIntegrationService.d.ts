@@ -135,17 +135,17 @@ export declare class WindMountainIntegrationService {
     sendAnalyticsEvent(eventName: string, eventData?: any): Promise<void>;
 }
 interface IntegrationStatus {
-    overall: 'connected' | 'disconnected' | 'error';
-    mountainConnection: 'connected' | 'disconnected' | 'error';
-    ipcCommunication: 'connected' | 'disconnected' | 'error';
-    documentSync: 'enabled' | 'disabled' | 'conflicted' | 'error';
-    uiStateSync: 'enabled' | 'disabled' | 'error';
-    performanceMonitoring: 'enabled' | 'disabled' | 'error';
+    overall: "connected" | "disconnected" | "error";
+    mountainConnection: "connected" | "disconnected" | "error";
+    ipcCommunication: "connected" | "disconnected" | "error";
+    documentSync: "enabled" | "disabled" | "conflicted" | "error";
+    uiStateSync: "enabled" | "disabled" | "error";
+    performanceMonitoring: "enabled" | "disabled" | "error";
     lastHealthCheck: number;
     uptime: number;
 }
 interface ServiceHealth {
-    status: 'healthy' | 'unhealthy' | 'degraded';
+    status: "healthy" | "unhealthy" | "degraded";
     lastCheck: number;
     responseTime?: number;
     error?: string;

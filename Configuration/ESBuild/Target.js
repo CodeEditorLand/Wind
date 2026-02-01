@@ -1,1 +1,60 @@
-const t=(await import("./Wind.js")).On,u=(await import("./Wind.js")).Bundle,n=(await import("./Wind.js")).Compile,p=(await import("deepmerge-ts")).deepmerge;var s=async o=>p((await import("./Wind.js")).default,{outdir:"Target",drop:t?[]:["debugger","console"],define:{__DEV__:t?"true":"false",__INCREMENT__:`"${`${t?"DEVELOPMENT":"PRODUCTION"}-${(await import("ulid")).ulid()}`}"`},treeShaking:!t,entryPoints:(await import("@playform/build/Target/Function/Entry.js")).default(o,["Source/Configuration/*"]),platform:"browser",outbase:"Source",external:["@tauri-apps/api","@tauri-apps/api/core","@tauri-apps/api/event","@codeeditorland/output"],plugins:n?p(o.plugins,[{name:"Compile",setup({onEnd:a}){a(async({metafile:r})=>{const e=r?.outputs;for(const i in e)Object.prototype.hasOwnProperty.call(e,i)&&i.endsWith(".js")&&(await import("@playform/build/Target/Function/Exec.js")).default(`Build '${i}' 													--ESBuild Configuration/ESBuild/Target/Compile.js 													--TypeScript Configuration/tsconfig/Target/Compile.json`)})}}]):[]});export{u as Bundle,n as Compile,p as Merge,t as On,s as default};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+const On = (await import("./Wind.js")).On;
+const Bundle = (await import("./Wind.js")).Bundle;
+const Compile = (await import("./Wind.js")).Compile;
+const Merge = (await import("deepmerge-ts")).deepmerge;
+var Target_default = /* @__PURE__ */ __name(async (Current) => Merge(
+  (await import("./Wind.js")).default,
+  {
+    outdir: "Target",
+    drop: On ? [] : ["debugger", "console"],
+    define: {
+      __DEV__: On ? "true" : "false",
+      __INCREMENT__: `"${`${On ? "DEVELOPMENT" : "PRODUCTION"}-${(await import("ulid")).ulid()}`}"`
+    },
+    treeShaking: !On,
+    entryPoints: (await import("@playform/build/Target/Function/Entry.js")).default(Current, ["Source/Configuration/*"]),
+    platform: "browser",
+    outbase: "Source",
+    // external: [
+    // 	"@tauri-apps/api",
+    // 	"@tauri-apps/api/core",
+    // 	"@tauri-apps/api/event",
+    // 	"@codeeditorland/output",
+    // ],
+    plugins: Compile ? Merge(
+      Current.plugins,
+      [
+        {
+          name: "Compile",
+          setup({ onEnd }) {
+            onEnd(async ({ metafile }) => {
+              const _Output = metafile?.outputs;
+              for (const Output in _Output) {
+                if (Object.prototype.hasOwnProperty.call(
+                  _Output,
+                  Output
+                )) {
+                  if (Output.endsWith(".js")) {
+                    (await import("@playform/build/Target/Function/Exec.js")).default(
+                      `Build '${Output}' 													--ESBuild Configuration/ESBuild/Target/Compile.js 													--TypeScript Configuration/tsconfig/Target/Compile.json`
+                    );
+                  }
+                }
+              }
+            });
+          }
+        }
+      ]
+    ) : []
+  }
+), "default");
+export {
+  Bundle,
+  Compile,
+  Merge,
+  On,
+  Target_default as default
+};
+//# sourceMappingURL=Target.js.map

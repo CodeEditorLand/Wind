@@ -84,7 +84,7 @@
  * - Implement error recovery analytics
  * - Add error recovery performance tracking
  */
-import type { ErrorSeverity } from './Types.js';
+import type { ErrorSeverity } from "./Types.js";
 export interface ErrorContext {
     stage: string;
     error: Error;
@@ -147,7 +147,7 @@ export declare class ErrorHandler {
      * @param format Export format (json, csv, txt)
      * @returns Exported error data as string
      */
-    ExportErrors(format?: 'json' | 'csv' | 'txt'): string;
+    ExportErrors(format?: "json" | "csv" | "txt"): string;
     /**
      * Convert errors to CSV format
      * @returns CSV string of errors

@@ -25,7 +25,7 @@ export declare enum SyncStatus {
  * Synchronization event
  */
 export interface ISyncEvent {
-    type: 'connected' | 'disconnected' | 'sync_started' | 'sync_completed' | 'error';
+    type: "connected" | "disconnected" | "sync_started" | "sync_completed" | "error";
     timestamp: number;
     data?: any;
     error?: string;

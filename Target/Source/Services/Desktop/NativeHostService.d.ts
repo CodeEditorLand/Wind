@@ -17,9 +17,9 @@
  * - Implement Tauri notification APIs
  * - Handle platform-specific features
  */
-import { Disposable } from '../../../../Dependency/Microsoft/Dependency/Editor/src/vs/base/common/lifecycle.js';
-import { INativeHostService } from '../../../../Dependency/Microsoft/Dependency/Editor/src/vs/platform/native/common/native.js';
-import { URI } from '../../../../Dependency/Microsoft/Dependency/Editor/src/vs/base/common/uri.js';
+import { Disposable } from "@codeeditorland/output/vs/base/common/lifecycle.js";
+import { URI } from "@codeeditorland/output/vs/base/common/uri.js";
+import { INativeHostService } from "@codeeditorland/output/vs/platform/native/common/native.js";
 export declare class TauriNativeHostService extends Disposable implements INativeHostService {
     readonly _serviceBrand: undefined;
     private readonly _onDidMaximizeWindow;

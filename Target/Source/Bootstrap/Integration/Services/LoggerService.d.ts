@@ -21,12 +21,12 @@
  * - flush()
  * - dispose()
  */
-import * as Effect from 'effect/Effect';
+import * as Effect from "effect/Effect";
 /**
  * Available log levels ordered by severity
  * Lower values are more verbose
  */
-export type LogLevel = 'trace' | 'debug' | 'info' | 'warning' | 'error' | 'critical';
+export type LogLevel = "trace" | "debug" | "info" | "warning" | "error" | "critical";
 /**
  * Logger service configuration options
  */

@@ -15,9 +15,9 @@
  * - Handle platform-specific configurations
  * - Integrate with Tauri app and path APIs
  */
-import { URI } from '../../../../Dependency/Microsoft/Dependency/Editor/src/vs/base/common/uri.js';
-import { INativeWorkbenchEnvironmentService } from '../../../../Dependency/Microsoft/Dependency/Editor/src/vs/workbench/services/environment/electron-browser/environmentService.js';
-import { IProductService } from '../../../../Dependency/Microsoft/Dependency/Editor/src/vs/platform/product/common/productService.js';
+import { URI } from "@codeeditorland/output/vs/base/common/uri.js";
+import { IProductService } from "@codeeditorland/output/vs/platform/product/common/productService.js";
+import { INativeWorkbenchEnvironmentService } from "@codeeditorland/output/vs/workbench/services/environment/electron-browser/environmentService.js";
 export declare class DesktopWorkbenchEnvironmentService implements INativeWorkbenchEnvironmentService {
     private readonly configuration;
     private readonly productService;
@@ -90,7 +90,7 @@ export declare class DesktopWorkbenchEnvironmentService implements INativeWorkbe
     get useNativeTitleBar(): boolean;
     get sandbox(): boolean;
     get driver(): boolean;
-    get statusBarVisibility(): 'visible' | 'toggle' | 'hidden';
+    get statusBarVisibility(): "visible" | "toggle" | "hidden";
     get zenMode(): {
         hide: boolean;
         restore: boolean;
@@ -99,11 +99,11 @@ export declare class DesktopWorkbenchEnvironmentService implements INativeWorkbe
     get skipReleaseNotes(): boolean;
     get disableWorkspaceTrust(): boolean;
     get enableWorkspaceTrust(): boolean;
-    get workspaceTrustEnablement(): 'on' | 'off' | 'limited';
+    get workspaceTrustEnablement(): "on" | "off" | "limited";
     get workspaceTrustRequestOnStartup(): boolean;
     get skipAddToRecentlyOpened(): boolean;
     get disableTelemetry(): boolean;
-    get telemetryLogLevel(): 'error' | 'info' | 'verbose' | undefined;
+    get telemetryLogLevel(): "error" | "info" | "verbose" | undefined;
     get telemetryEndpoint(): string | undefined;
     get telemetryMachineId(): string | undefined;
     get extensionDevelopmentKind(): string[] | undefined;

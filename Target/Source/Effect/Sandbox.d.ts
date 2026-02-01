@@ -5,8 +5,7 @@
  * Provides access to window.vscode with proper error handling.
  */
 import { Context, Effect, Layer } from "effect";
-import type { SandboxGlobals, IPCRenderer, SandboxContext, ISandboxConfiguration } from "../Types/Sandbox.js";
-import { SandboxNotReadyError, ConfigurationNotReadyError } from "../Types/Sandbox.js";
+import { ConfigurationNotReadyError, SandboxNotReadyError, type IPCRenderer, type ISandboxConfiguration, type SandboxContext, type SandboxGlobals } from "../Types/Sandbox.js";
 export interface SandboxService {
     /** Access the complete sandbox globals */
     readonly globals: Effect.Effect<SandboxGlobals, SandboxNotReadyError>;
