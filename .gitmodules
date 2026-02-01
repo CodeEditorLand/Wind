@@ -1,9 +1,0 @@
-[submodule "Module/effect"]
-path = Module/effect
-url = ssh://git@github.com/Effect-TS/effect.git
-ignore = all
-
-[submodule "Module/effect-website"]
-path = Module/effect-website
-url = ssh://git@github.com/Effect-TS/website.git
-ignore = all

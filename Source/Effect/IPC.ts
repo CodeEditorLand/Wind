@@ -7,6 +7,7 @@
 
 import { emit, listen } from "@tauri-apps/api/event";
 import { invoke as tauriInvoke } from "@tauri-apps/api/core";
+import type { InvokeArgs } from "@tauri-apps/api/core";
 import { Context, Effect, Layer, Stream } from "effect";
 
 import { SandboxNotReadyError, type IPCMessage } from "../Types/Sandbox.js";
@@ -28,8 +29,9 @@ export class IPCInvokeError extends Error {
 		this._cause = cause;
 		Object.setPrototypeOf(this, IPCInvokeError.prototype);
 	}
+	override get name() { return "IPCInvokeError"; }
 	get channel() { return this._channel; }
-	get cause() { return this._cause; }
+	override get cause() { return this._cause; }
 }
 
 export class IPCSendError extends Error {
@@ -45,8 +47,9 @@ export class IPCSendError extends Error {
 		this._cause = cause;
 		Object.setPrototypeOf(this, IPCSendError.prototype);
 	}
+	override get name() { return "IPCSendError"; }
 	get channel() { return this._channel; }
-	get cause() { return this._cause; }
+	override get cause() { return this._cause; }
 }
 
 export class IPCSubscriptionError extends Error {
@@ -55,7 +58,7 @@ export class IPCSubscriptionError extends Error {
 	readonly _cause: unknown;
 	constructor(
 		channel: string,
-		cause: unknown,
+			cause: unknown,
 	) {
 		super(
 			`IPC subscription failed on channel '${channel}': ${String(cause)}`,
@@ -64,8 +67,9 @@ export class IPCSubscriptionError extends Error {
 		this._cause = cause;
 		Object.setPrototypeOf(this, IPCSubscriptionError.prototype);
 	}
+	override get name() { return "IPCSubscriptionError"; }
 	get channel() { return this._channel; }
-	get cause() { return this._cause; }
+	override get cause() { return this._cause; }
 }
 
 // ============================================================================
@@ -114,11 +118,11 @@ export const IPCTauriLive = Layer.effect(
 	IPC,
 	Effect.gen(function* () {
 		// Verify Tauri is available
-		const isTauri =
+		const isTauriAvailable =
 			typeof window !== "undefined" &&
 			(window as any).__TAURI__ !== undefined;
 
-		if (!isTauri) {
+		if (!isTauriAvailable) {
 			return yield* Effect.die(new SandboxNotReadyError());
 		}
 
@@ -127,12 +131,19 @@ export const IPCTauriLive = Layer.effect(
 			Effect.try({
 				try: () => emit(channel, args.length === 1 ? args[0] : args),
 				catch: (error) => new IPCSendError(channel, error),
-			});
+			}).pipe(
+				Effect.mapError((error) => new IPCSendError(channel, error)),
+			);
 
 		// Atom: invoke
 		const invoke_ = (channel: string) => (args: ReadonlyArray<unknown>) =>
 			Effect.tryPromise({
-				try: () => tauriInvoke(channel, args.length === 1 ? args[0] : args),
+				try: () => {
+					const invokeArgs: InvokeArgs | undefined = args.length === 1
+						? (args[0] as InvokeArgs)
+						: (args as unknown as InvokeArgs);
+					return tauriInvoke(channel, invokeArgs);
+				},
 				catch: (error) => new IPCInvokeError(channel, error),
 			});
 
@@ -164,18 +175,14 @@ export const IPCTauriLive = Layer.effect(
 			channel: string,
 		): Effect.Effect<IPCMessage, IPCSubscriptionError> =>
 			Effect.async((resume) => {
-				listen(
-					channel,
-					(event) => {
-						resume(
-							Effect.succeed({
-								channel,
-								args: [event.payload],
-							}),
-						);
-					},
-					{ once: true },
-				).catch((error) => {
+				listen(channel, (event) => {
+					resume(
+						Effect.succeed({
+							channel,
+							args: [event.payload],
+						}),
+					);
+				}).catch((error) => {
 					resume(
 						Effect.fail(new IPCSubscriptionError(channel, error)),
 					);

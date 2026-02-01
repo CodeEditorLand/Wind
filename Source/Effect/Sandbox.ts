@@ -132,7 +132,13 @@ export const SandboxLive = Layer.effect(
 				try: () => ctx.resolveConfiguration(),
 				catch: () => new ConfigurationNotReadyError(),
 			});
-		});
+		}).pipe(
+			Effect.catchAll((error) =>
+				error instanceof SandboxNotReadyError
+					? Effect.fail(new ConfigurationNotReadyError())
+					: Effect.fail(error as ConfigurationNotReadyError)
+			),
+		);
 
 		return {
 			globals: getGlobals,

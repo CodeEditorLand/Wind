@@ -49,22 +49,20 @@
  * VERSION: 2.0.0
  * LAST UPDATED: January 31, 2026
  */
-import * as Context from "effect/Context";
-import * as Effect from "effect/Effect";
-import * as Layer from "effect/Layer";
+import { Context, Effect, Layer } from "effect";
 /**
  * Clipboard service interface
  * Microsoft VSCode Reference: IClipboardService from vs/platform/clipboard/common/clipboardService.ts
  */
 export interface ClipboardService {
-    readonly ReadText: () => Effect.Effect<string, ClipboardProblem>;
-    readonly WriteText: (text: string) => Effect.Effect<void, ClipboardProblem>;
-    readonly ReadHTML: () => Effect.Effect<string, ClipboardProblem>;
-    readonly WriteHTML: (html: string, text: string) => Effect.Effect<void, ClipboardProblem>;
-    readonly ReadImage: () => Effect.Effect<Blob, ClipboardProblem>;
-    readonly WriteImage: (blob: Blob) => Effect.Effect<void, ClipboardProblem>;
-    readonly HasText: () => Effect.Effect<boolean, ClipboardProblem>;
-    readonly Clear: () => Effect.Effect<void, ClipboardProblem>;
+    readonly readText: () => Effect.Effect<string, ClipboardProblem>;
+    readonly writeText: (text: string) => Effect.Effect<void, ClipboardProblem>;
+    readonly readHTML: () => Effect.Effect<string, ClipboardProblem>;
+    readonly writeHTML: (html: string, text: string) => Effect.Effect<void, ClipboardProblem>;
+    readonly readImage: () => Effect.Effect<Blob, ClipboardProblem>;
+    readonly writeImage: (blob: Blob) => Effect.Effect<void, ClipboardProblem>;
+    readonly hasText: () => Effect.Effect<boolean, ClipboardProblem>;
+    readonly clear: () => Effect.Effect<void, ClipboardProblem>;
 }
 /**
  * Clipboard error types with categorization
@@ -90,18 +88,19 @@ export type ClipboardProblem = {
     readonly size: number;
     readonly limit: number;
 };
+declare const ClipboardServiceTag_base: Context.TagClass<ClipboardServiceTag, "Application/ClipboardService", ClipboardService>;
 /**
  * Clipboard service tag
  */
-export declare const ClipboardServiceTag: <Self, Type extends Effect.Tag.AllowedType>() => Context.TagClass<Self, ClipboardService, Type> & (Type extends Record<PropertyKey, any> ? Effect.Tag.Proxy<Self, Type> : {}) & {
-    use: <X>(body: (_: Type) => X) => [X] extends [Effect.Effect<infer A, infer E, infer R>] ? Effect.Effect<A, E, Self | R> : [X] extends [PromiseLike<infer A_1>] ? Effect.Effect<A_1, import("effect/Cause").UnknownException, Self> : Effect.Effect<X, never, Self>;
-};
+export declare class ClipboardServiceTag extends ClipboardServiceTag_base {
+}
 /**
  * Live clipboard service layer
  */
-export declare const LiveClipboardServiceLayer: Layer.Layer<unknown, never, never>;
+export declare const LiveClipboardServiceLayer: Layer.Layer<ClipboardServiceTag, never, never>;
 /**
  * Mock clipboard service layer
  */
-export declare const MockClipboardServiceLayer: Layer.Layer<unknown, never, never>;
+export declare const MockClipboardServiceLayer: Layer.Layer<ClipboardServiceTag, never, never>;
+export {};
 //# sourceMappingURL=Clipboard.d.ts.map

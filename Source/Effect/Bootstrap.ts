@@ -14,11 +14,11 @@
  * - Stage 6: Health checks (via Health service)
  */
 
-import { Effect, Layer, pipe, Context } from "effect";
+import { Effect, Layer, Context } from "effect";
 import { EnvironmentTag, type EnvironmentInfo } from "./Environment.js";
-import { Telemetry, withSpan } from "./Telemetry.js";
-import { Sandbox } from "./Sandbox.js";
-import { Configuration } from "./Configuration.js";
+import { Telemetry, TelemetryTag, withSpan } from "./Telemetry.js";
+import { Sandbox, type SandboxService } from "./Sandbox.js";
+import { Configuration, ConfigurationTag } from "./Configuration.js";
 import { MountainTag } from "./Mountain.js";
 import { HealthTag } from "./Health.js";
 
@@ -49,7 +49,7 @@ export interface BootstrapResult {
 }
 
 export interface BootstrapService {
-	readonly run: (options?: BootstrapOptions) => Effect.Effect<BootstrapResult>;
+	readonly run: (options?: BootstrapOptions) => Effect.Effect<BootstrapResult, never, typeof Sandbox | typeof TelemetryTag | typeof EnvironmentTag | typeof MountainTag | typeof HealthTag | typeof ConfigurationTag>;
 }
 
 // ============================================================================
@@ -234,7 +234,7 @@ const stage6_HealthCheck = withSpan(
 // ============================================================================
 
 const makeBootstrap = (): BootstrapService => ({
-	run: (options): Effect.Effect<BootstrapResult, never, never> =>
+	run: (options): Effect.Effect<BootstrapResult, never, typeof Sandbox | typeof TelemetryTag | typeof EnvironmentTag | typeof MountainTag | typeof HealthTag | typeof ConfigurationTag> =>
 		Effect.gen(function* () {
 			const telemetry = yield* Telemetry;
 
@@ -344,10 +344,9 @@ export const BootstrapMock = Layer.effect(BootstrapTag, Effect.succeed(makeMockB
 // ============================================================================
 
 export const runBootstrap = (options?: BootstrapOptions) =>
-	pipe(
-		Effect.gen(function* () {
-			const bootstrap = yield* BootstrapTag;
-			return yield* bootstrap.run(options);
-		}),
+	Effect.gen(function* () {
+		const bootstrap = yield* BootstrapTag;
+		return yield* bootstrap.run(options);
+	}).pipe(
 		Effect.provide(BootstrapLive),
 	);

@@ -4,7 +4,10 @@
  * Mountain-Wind synchronization service using Effect-TS.
  * Replaces class-based MountainWindSync with Effect-based reactive sync.
  */
-import { Effect, Layer } from "effect";
+import { Context, Effect, Layer } from "effect";
+import { MountainTag } from "./Mountain.js";
+import { IPCTag } from "./IPC.js";
+import { TelemetryTag } from "./Telemetry.js";
 export type SyncStatus = "idle" | "syncing" | "paused" | "error";
 export interface SyncConfig {
     readonly enabled: boolean;
@@ -23,20 +26,23 @@ export interface SyncStats {
 export interface MountainSyncService {
     readonly start: (config?: Partial<SyncConfig>) => Effect.Effect<void>;
     readonly stop: () => Effect.Effect<void>;
-    readonly syncNow: () => Effect.Effect<SyncResult>;
+    readonly syncNow: () => Effect.Effect<MountainSyncResult>;
     readonly getStatus: () => Effect.Effect<SyncStatus>;
     readonly getStats: () => Effect.Effect<SyncStats>;
     readonly pause: () => Effect.Effect<void>;
     readonly resume: () => Effect.Effect<void>;
 }
-export interface SyncResult {
+export interface MountainSyncResult {
     readonly success: boolean;
     readonly itemsSynced: number;
     readonly duration: number;
     readonly error?: Error;
 }
-export declare const MountainSyncTag: any;
-export declare const MountainSyncLive: Layer.Layer<unknown, unknown, unknown>;
+declare const MountainSyncTag_base: Context.TagClass<MountainSyncTag, "Effect/MountainSyncService", MountainSyncService>;
+export declare class MountainSyncTag extends MountainSyncTag_base {
+}
+export declare const MountainSyncLive: Layer.Layer<MountainSyncTag, never, TelemetryTag | MountainTag | IPCTag>;
 export declare const makeMockMountainSync: () => MountainSyncService;
-export declare const MountainSyncMock: Layer.Layer<unknown, never, never>;
+export declare const MountainSyncMock: Layer.Layer<MountainSyncTag, never, never>;
+export {};
 //# sourceMappingURL=MountainSync.d.ts.map

@@ -4,15 +4,15 @@
  * Health monitoring service for checking service availability and system health.
  * Replaces Bootstrap Stage6 - HealthCheck with Effect-based monitoring.
  */
-import { Effect, Layer } from "effect";
+import { Effect, Context, Layer } from "effect";
 export type HealthStatus = "healthy" | "degraded" | "unhealthy" | "unknown";
 export interface ServiceHealth {
     readonly serviceName: string;
     readonly status: HealthStatus;
     readonly message: string;
     readonly lastChecked: number;
-    readonly responseTime?: number;
-    readonly details?: Readonly<Record<string, unknown>>;
+    readonly responseTime: number;
+    readonly details: Readonly<Record<string, unknown>> | undefined;
 }
 export interface SystemHealth {
     readonly overallStatus: HealthStatus;
@@ -25,13 +25,16 @@ export interface SystemHealth {
     readonly lastChecked: number;
 }
 export interface HealthService {
-    readonly checkService: (serviceName: string) => Effect.Effect<ServiceHealth>;
-    readonly checkAllServices: () => Effect.Effect<SystemHealth>;
-    readonly getOverallStatus: () => Effect.Effect<HealthStatus>;
-    readonly monitorService: (serviceName: string, intervalMs: number) => Effect.Effect<void>;
+    readonly checkService: (serviceName: string) => Effect.Effect<ServiceHealth, never>;
+    readonly checkAllServices: () => Effect.Effect<SystemHealth, never>;
+    readonly getOverallStatus: () => Effect.Effect<HealthStatus, never>;
+    readonly monitorService: (serviceName: string, intervalMs: number) => Effect.Effect<void, never>;
 }
-export declare const HealthTag: any;
-export declare const HealthLive: Layer.Layer<unknown, unknown, unknown>;
+declare const HealthTag_base: Context.TagClass<HealthTag, "Effect/HealthService", HealthService>;
+export declare class HealthTag extends HealthTag_base {
+}
+export declare const HealthLive: Layer.Layer<HealthTag, never, never>;
 export declare const makeMockHealth: (overrides?: Partial<Record<string, HealthStatus>>) => HealthService;
-export declare const HealthMock: Layer.Layer<unknown, never, never>;
+export declare const HealthMock: Layer.Layer<HealthTag, never, never>;
+export {};
 //# sourceMappingURL=Health.d.ts.map

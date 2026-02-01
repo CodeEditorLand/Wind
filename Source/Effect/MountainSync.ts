@@ -6,9 +6,12 @@
  */
 
 import { Context, Effect, Layer, Fiber } from "effect";
-import { Mountain, MountainTag, type MountainService } from "./Mountain.js";
-import { IPC, type IPCService } from "./IPC.js";
-import { Telemetry, TelemetryTag, type TelemetryService } from "./Telemetry.js";
+import type { MountainService } from "./Mountain.js";
+import { MountainTag } from "./Mountain.js";
+import type { IPCService } from "./IPC.js";
+import { IPCTag } from "./IPC.js";
+import type { TelemetryService } from "./Telemetry.js";
+import { TelemetryTag } from "./Telemetry.js";
 
 // ============================================================================
 // TYPES
@@ -35,14 +38,14 @@ export interface SyncStats {
 export interface MountainSyncService {
 	readonly start: (config?: Partial<SyncConfig>) => Effect.Effect<void>;
 	readonly stop: () => Effect.Effect<void>;
-	readonly syncNow: () => Effect.Effect<SyncResult>;
+	readonly syncNow: () => Effect.Effect<MountainSyncResult>;
 	readonly getStatus: () => Effect.Effect<SyncStatus>;
 	readonly getStats: () => Effect.Effect<SyncStats>;
 	readonly pause: () => Effect.Effect<void>;
 	readonly resume: () => Effect.Effect<void>;
 }
 
-export interface SyncResult {
+export interface MountainSyncResult {
 	readonly success: boolean;
 	readonly itemsSynced: number;
 	readonly duration: number;
@@ -66,7 +69,7 @@ const syncNowEffect = (
 	_mountain: MountainService,
 	_ipc: IPCService,
 	telemetry: TelemetryService,
-): Effect.Effect<SyncResult> =>
+): Effect.Effect<MountainSyncResult> =>
 	Effect.gen(function* () {
 		const startTime = Date.now();
 
@@ -82,7 +85,7 @@ const syncNowEffect = (
 			success: true,
 			itemsSynced: 0,
 			duration: Date.now() - startTime,
-		} satisfies SyncResult;
+		} satisfies MountainSyncResult;
 	});
 
 // ============================================================================
@@ -210,7 +213,7 @@ export const makeMockMountainSync = (): MountainSyncService => ({
 				success: true,
 				itemsSynced: 0,
 				duration: 1,
-			} satisfies SyncResult;
+			} satisfies MountainSyncResult;
 		}),
 	getStatus: () => Effect.succeed("idle" as const),
 	getStats: () =>

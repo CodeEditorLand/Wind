@@ -56,7 +56,7 @@ export class TelemetryCollectionError extends Error {
 	readonly _tag = "TelemetryCollectionError";
 	constructor(
 		readonly operation: string,
-		readonly cause: unknown,
+		override readonly cause: unknown,
 	) {
 		super(
 			`Telemetry collection failed for '${operation}': ${String(cause)}`,

@@ -7,8 +7,6 @@
  */
 import { Context, Effect, Layer, Stream } from "effect";
 import { ConfigurationNotReadyError, type ISandboxConfiguration } from "../Types/Sandbox.js";
-import { IPCService } from "./IPC.js";
-import { SandboxService } from "./Sandbox.js";
 export declare class ConfigFetchError extends Error {
     readonly cause: unknown;
     readonly _tag = "ConfigFetchError";
@@ -39,8 +37,13 @@ export interface ConfigurationService {
     /** Force refresh configuration from backend */
     readonly refresh: Effect.Effect<ISandboxConfiguration, ConfigFetchError>;
 }
-export declare const Configuration: Context.Tag<ConfigurationService, ConfigurationService>;
-export declare const ConfigurationLive: Layer.Layer<ConfigurationService, never, IPCService | SandboxService>;
-export declare const ConfigurationWithSyncLive: never;
-export declare const ConfigurationMockLive: Layer.Layer<ConfigurationService, never, never>;
+declare const ConfigurationTag_base: Context.TagClass<ConfigurationTag, "Configuration", ConfigurationService>;
+export declare class ConfigurationTag extends ConfigurationTag_base {
+}
+export declare const Configuration: typeof ConfigurationTag;
+export declare const ConfigurationLive: Layer.Layer<ConfigurationTag, ConfigFetchError, import("./Sandbox.js").SandboxService | import("./IPC.js").IPCTag>;
+export declare const getConfigValue: <T>(config: ISandboxConfiguration, path: string) => T | undefined;
+export declare const makeMockConfiguration: (overrides?: Partial<ISandboxConfiguration>) => ConfigurationService;
+export declare const ConfigurationMock: Layer.Layer<ConfigurationTag, never, never>;
+export {};
 //# sourceMappingURL=Configuration.d.ts.map

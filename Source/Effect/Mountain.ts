@@ -25,6 +25,7 @@ export class MountainConnectionError extends Error {
 		Object.setPrototypeOf(this, MountainConnectionError.prototype);
 	}
 	get cause() { return this._cause; }
+	get name() { return "MountainConnectionError"; }
 }
 
 export class MountainRPCError extends Error {
@@ -39,6 +40,7 @@ export class MountainRPCError extends Error {
 	}
 	get method() { return this._method; }
 	get cause() { return this._cause; }
+	get name() { return "MountainRPCError"; }
 }
 
 export class MountainSyncError extends Error {
@@ -53,6 +55,7 @@ export class MountainSyncError extends Error {
 	}
 	get resource() { return this._resource; }
 	get cause() { return this._cause; }
+	get name() { return "MountainSyncError"; }
 }
 
 export class MountainStateError extends Error {

@@ -7,27 +7,37 @@
  */
 import { Context, Effect, Layer, Stream } from "effect";
 export declare class MountainConnectionError extends Error {
-    readonly cause: unknown;
     readonly _tag = "MountainConnectionError";
+    readonly _cause: unknown;
     constructor(cause: unknown);
+    get cause(): unknown;
+    get name(): string;
 }
 export declare class MountainRPCError extends Error {
-    readonly method: string;
-    readonly cause: unknown;
     readonly _tag = "MountainRPCError";
+    readonly _method: string;
+    readonly _cause: unknown;
     constructor(method: string, cause: unknown);
+    get method(): string;
+    get cause(): unknown;
+    get name(): string;
 }
 export declare class MountainSyncError extends Error {
-    readonly resource: string;
-    readonly cause: unknown;
     readonly _tag = "MountainSyncError";
+    readonly _resource: string;
+    readonly _cause: unknown;
     constructor(resource: string, cause: unknown);
+    get resource(): string;
+    get cause(): unknown;
+    get name(): string;
 }
 export declare class MountainStateError extends Error {
-    readonly expected: string;
-    readonly actual: string;
     readonly _tag = "MountainStateError";
+    readonly _expected: string;
+    readonly _actual: string;
     constructor(expected: string, actual: string);
+    get expected(): string;
+    get actual(): string;
 }
 export type MountainConnectionState = {
     readonly _tag: "Idle";
@@ -77,7 +87,11 @@ export interface MountainService {
     /** Health check */
     readonly healthCheck: Effect.Effect<boolean, MountainConnectionError>;
 }
-export declare const Mountain: Context.Tag<MountainService, MountainService>;
-export declare const MountainLive: Layer.Layer<MountainService, never, unknown>;
-export declare const MountainMockLive: Layer.Layer<MountainService, never, never>;
+declare const MountainTag_base: Context.TagClass<MountainTag, "Mountain", MountainService>;
+export declare class MountainTag extends MountainTag_base {
+}
+export declare const Mountain: typeof MountainTag;
+export declare const MountainLive: Layer.Layer<MountainTag, never, unknown>;
+export declare const MountainMockLive: Layer.Layer<MountainTag, never, never>;
+export {};
 //# sourceMappingURL=Mountain.d.ts.map

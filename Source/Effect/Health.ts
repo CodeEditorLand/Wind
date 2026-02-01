@@ -39,13 +39,13 @@ export interface SystemHealth {
 }
 
 export interface HealthService {
-	readonly checkService: (serviceName: string) => Effect.Effect<ServiceHealth>;
-	readonly checkAllServices: () => Effect.Effect<SystemHealth>;
-	readonly getOverallStatus: () => Effect.Effect<HealthStatus>;
+	readonly checkService: (serviceName: string) => Effect.Effect<ServiceHealth, never>;
+	readonly checkAllServices: () => Effect.Effect<SystemHealth, never>;
+	readonly getOverallStatus: () => Effect.Effect<HealthStatus, never>;
 	readonly monitorService: (
 		serviceName: string,
 		intervalMs: number,
-	) => Effect.Effect<void>;
+	) => Effect.Effect<void, never>;
 }
 
 // ============================================================================
@@ -80,13 +80,13 @@ const createServiceHealthWithNoResponseTime = (
 	name: string,
 	status: HealthStatus,
 	message: string,
-	details?: Readonly<Record<string, unknown>>,
-): Omit<ServiceHealth, "responseTime"> => ({
+): ServiceHealth => ({
 	serviceName: name,
 	status,
 	message,
 	lastChecked: Date.now(),
-	details,
+	responseTime: 0,
+	details: undefined,
 });
 
 const makeHealthChecker = (): HealthService => ({
@@ -101,22 +101,26 @@ const makeHealthChecker = (): HealthService => ({
 				case "environment":
 					// Environment is always available
 					const envTime = Date.now() - startTime;
-					return createServiceHealth(
-						"Environment",
-						"healthy",
-						"Environment service available",
-						envTime,
+					return Effect.succeed(
+						createServiceHealth(
+							"Environment",
+							"healthy",
+							"Environment service available",
+							envTime,
+						),
 					);
 
 				case "telemetry":
 					// Check telemetry by logging a metric
 					yield* telemetry.log("info", "[Health] Telemetry health check");
 					const telemetryTime = Date.now() - startTime;
-					return createServiceHealth(
-						"Telemetry",
-						"healthy",
-						"Telemetry service available",
-						telemetryTime,
+					return Effect.succeed(
+						createServiceHealth(
+							"Telemetry",
+							"healthy",
+							"Telemetry service available",
+							telemetryTime,
+						),
 					);
 
 				case "mountain": {
@@ -134,7 +138,7 @@ const makeHealthChecker = (): HealthService => ({
 						);
 					}).pipe(
 						Effect.catchAll((error) =>
-							Effect.sync(() =>
+							Effect.succeed(
 								createServiceHealth(
 									"Mountain",
 									"unhealthy",
@@ -148,7 +152,7 @@ const makeHealthChecker = (): HealthService => ({
 
 				case "ipc": {
 					// Check IPC by invoking a lightweight command
-					const ipc = yield* IPCTag;
+					const _ipc = yield* IPCTag;
 					const ipcTime = Date.now() - startTime;
 					return yield* Effect.tryPromise({
 						try: async () => {
@@ -160,11 +164,11 @@ const makeHealthChecker = (): HealthService => ({
 								ipcTime,
 							);
 						},
-						catch: (error) =>
+						catch: () =>
 							createServiceHealth(
 								"IPC",
 								"unhealthy",
-								`IPC service error: ${String(error)}`,
+								"IPC service error",
 								Date.now() - startTime,
 							),
 					});
@@ -172,7 +176,7 @@ const makeHealthChecker = (): HealthService => ({
 
 				case "configuration": {
 					// Check Configuration service
-					const config = yield* ConfigurationTag;
+					const _config = yield* ConfigurationTag;
 					const configTime = Date.now() - startTime;
 					return yield* Effect.tryPromise({
 						try: async () => {
@@ -184,18 +188,18 @@ const makeHealthChecker = (): HealthService => ({
 								configTime,
 							);
 						},
-						catch: (error) =>
+						catch: () =>
 							createServiceHealth(
 								"Configuration",
 								"unhealthy",
-								`Configuration service error: ${String(error)}`,
+								"Configuration service error",
 								Date.now() - startTime,
 							),
 					});
 				}
 
 				default:
-					return Effect.sync(() =>
+					return Effect.succeed(
 						createServiceHealthWithNoResponseTime(
 							serviceName,
 							"unknown",
@@ -210,21 +214,13 @@ const makeHealthChecker = (): HealthService => ({
 			const env = yield* EnvironmentTag;
 			const envInfo = yield* env.getInfo;
 			const services = ["environment", "telemetry", "mountain", "ipc", "configuration"] as const;
+			const healthChecker = makeHealthChecker();
 
 			const serviceHealthChecks = services.map((service) =>
-				Effect.all([
-					Effect.succeed(service).pipe(Effect.flatMap((serviceName) =>
-						// Need to pass the service to checkService
-						Effect.succeed(serviceName).pipe(Effect.flatMap((s) =>
-							// Recursively call checkAllServices to simulate the check
-							Effect.succeed(createServiceHealth(s, "healthy", "Service available", 0)),
-						)),
-					)),
-				]),
+				healthChecker.checkService(service),
 			);
 
-			const results = yield* Effect.all(serviceHealthChecks);
-			const healthResults = results.flat();
+			const healthResults = yield* Effect.all(serviceHealthChecks);
 
 			// Determine overall status
 			const unhealthyCount = healthResults.filter((h) => h.status === "unhealthy").length;
@@ -258,7 +254,7 @@ const makeHealthChecker = (): HealthService => ({
 
 	monitorService: (serviceName: string, intervalMs: number) =>
 		Effect.gen(function* () {
-			// Periodic health check using Effect.schedule
+			// Periodic health check using Effect.repeat
 			yield* makeHealthChecker().checkService(serviceName).pipe(
 				Effect.repeat(Schedule.spaced(`${intervalMs} millis`)),
 			);
@@ -317,13 +313,7 @@ export const makeMockHealth = (overrides?: Partial<Record<string, HealthStatus>>
 
 	getOverallStatus: () => Effect.succeed("healthy" as const),
 
-	monitorService: (serviceName: string, intervalMs: number) =>
-		Effect.gen(function* () {
-			yield* Effect.repeat(
-				Effect.succeed(serviceName),
-				Schedule.spaced(`${intervalMs} millis`),
-			);
-		}),
+	monitorService: () => Effect.void,
 });
 
 export const HealthMock = Layer.effect(HealthTag, Effect.succeed(makeMockHealth()));

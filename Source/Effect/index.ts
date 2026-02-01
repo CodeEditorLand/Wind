@@ -12,8 +12,6 @@ export type { SandboxService } from "./Sandbox.js";
 export {
 	Configuration,
 	ConfigurationLive,
-	ConfigurationWithSyncLive,
-	ConfigurationMockLive,
 } from "./Configuration.js";
 export type { ConfigurationService } from "./Configuration.js";
 export {
@@ -29,7 +27,6 @@ export type {
 	MountainService,
 	MountainConnectionState,
 	SyncResource,
-	SyncResult,
 } from "./Mountain.js";
 
 // Environment service (replaces Stage0)
@@ -46,7 +43,7 @@ export type { BootstrapService, BootstrapOptions, StageResult, BootstrapResult }
 
 // MountainSync service (replaces class-based MountainWindSync)
 export { MountainSyncTag, MountainSyncLive, MountainSyncMock } from "./MountainSync.js";
-export type { MountainSyncService, SyncConfig, SyncStats, SyncResult, SyncStatus } from "./MountainSync.js";
+export type { MountainSyncService, SyncConfig, SyncStats, MountainSyncResult, SyncStatus } from "./MountainSync.js";
 
 // Clipboard service
 export { ClipboardServiceTag, LiveClipboardServiceLayer, MockClipboardServiceLayer } from "./Clipboard.js";

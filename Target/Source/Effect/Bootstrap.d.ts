@@ -13,7 +13,13 @@
  * - Stage 5: Initialization (VSCode workbench startup)
  * - Stage 6: Health checks (via Health service)
  */
-import { Effect } from "effect";
+import { Effect, Layer, Context } from "effect";
+import { EnvironmentTag } from "./Environment.js";
+import { TelemetryTag } from "./Telemetry.js";
+import { Sandbox, type SandboxService } from "./Sandbox.js";
+import { ConfigurationTag } from "./Configuration.js";
+import { MountainTag } from "./Mountain.js";
+import { HealthTag } from "./Health.js";
 export interface BootstrapOptions {
     readonly debugMode?: boolean;
     readonly verboseLogging?: boolean;
@@ -25,20 +31,23 @@ export interface StageResult {
     readonly stageName: string;
     readonly success: boolean;
     readonly duration: number;
-    readonly error?: Error;
+    readonly error: Error | undefined;
 }
 export interface BootstrapResult {
     readonly success: boolean;
     readonly totalDuration: number;
     readonly stages: ReadonlyArray<StageResult>;
-    readonly error?: Error;
+    readonly error: Error | undefined;
 }
 export interface BootstrapService {
-    readonly run: (options?: BootstrapOptions) => Effect.Effect<BootstrapResult>;
+    readonly run: (options?: BootstrapOptions) => Effect.Effect<BootstrapResult, never, typeof Sandbox | typeof TelemetryTag | typeof EnvironmentTag | typeof MountainTag | typeof HealthTag | typeof ConfigurationTag>;
 }
-export declare const BootstrapTag: any;
-export declare const BootstrapLive: any;
+declare const BootstrapTag_base: Context.TagClass<BootstrapTag, "Effect/BootstrapService", BootstrapService>;
+export declare class BootstrapTag extends BootstrapTag_base {
+}
+export declare const BootstrapLive: Layer.Layer<BootstrapTag, never, never>;
 export declare const makeMockBootstrap: () => BootstrapService;
-export declare const BootstrapMock: any;
-export declare const runBootstrap: (options?: BootstrapOptions) => Effect.Effect<any, any, any>;
+export declare const BootstrapMock: Layer.Layer<BootstrapTag, never, never>;
+export declare const runBootstrap: (options?: BootstrapOptions) => Effect.Effect<BootstrapResult, never, Context.Tag<SandboxService, SandboxService> | typeof TelemetryTag | typeof EnvironmentTag | typeof MountainTag | typeof HealthTag | typeof ConfigurationTag>;
+export {};
 //# sourceMappingURL=Bootstrap.d.ts.map

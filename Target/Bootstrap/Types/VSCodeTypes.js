@@ -1,0 +1,1 @@
+var n=(r=>(r[r.USER=1]="USER",r[r.WORKSPACE=2]="WORKSPACE",r[r.WORKSPACE_FOLDER=3]="WORKSPACE_FOLDER",r[r.DEFAULT=4]="DEFAULT",r[r.MEMORY=5]="MEMORY",r))(n||{}),t=(e=>(e[e.Trace=0]="Trace",e[e.Debug=1]="Debug",e[e.Info=2]="Info",e[e.Warning=3]="Warning",e[e.Error=4]="Error",e[e.Critical=5]="Critical",e[e.Off=6]="Off",e))(t||{});export{n as ConfigurationTarget,t as LogLevel};

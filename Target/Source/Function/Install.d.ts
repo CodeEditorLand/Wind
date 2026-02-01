@@ -5,7 +5,7 @@ import type { ISandboxNodeProcess } from "@codeeditorland/output/vs/base/parts/s
  * @module Install
  *
  * @description
- * Main entry point for Wind Raleigh polyfill. Creates and attaches Electron API
+ * Main entry point for Wind polyfill. Creates and attaches Electron API
  * shims to window.vscode that Electron workbench expects, using proper Tauri
  * integration and VSCode type compliance.
  *

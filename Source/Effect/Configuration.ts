@@ -300,14 +300,15 @@ export const makeMockConfiguration = (
 	overrides?: Partial<ISandboxConfiguration>,
 ): ConfigurationService => {
 	const mockConfig: ISandboxConfiguration = {
-		zoomLevel: 0,
-		userEnv: {},
-		workspace: {
-			id: "mock-workspace",
-			uri: "mock://workspace",
-		},
-		...overrides,
-	};
+	zoomLevel: 0,
+	userEnv: {},
+	workspace: {
+		id: "mock-workspace",
+		uri: "mock://workspace",
+		name: "Mock Workspace",
+	},
+	...overrides,
+};
 
 	return {
 		get: Effect.succeed(mockConfig),
