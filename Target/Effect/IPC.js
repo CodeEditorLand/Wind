@@ -1,1 +1,205 @@
-import{emit as C,listen as p}from"@tauri-apps/api/event";import{invoke as m}from"@tauri-apps/api/core";import{Context as E,Effect as n,Layer as g,Stream as y}from"effect";import{SandboxNotReadyError as f}from"../Types/Sandbox.js";class l extends Error{_tag="IPCInvokeError";_channel;_cause;constructor(t,a){super(`IPC invoke failed on channel '${t}': ${String(a)}`),this._channel=t,this._cause=a,Object.setPrototypeOf(this,l.prototype)}get name(){return"IPCInvokeError"}get channel(){return this._channel}get cause(){return this._cause}}class c extends Error{_tag="IPCSendError";_channel;_cause;constructor(t,a){super(`IPC send failed on channel '${t}': ${String(a)}`),this._channel=t,this._cause=a,Object.setPrototypeOf(this,c.prototype)}get name(){return"IPCSendError"}get channel(){return this._channel}get cause(){return this._cause}}class d extends Error{_tag="IPCSubscriptionError";_channel;_cause;constructor(t,a){super(`IPC subscription failed on channel '${t}': ${String(a)}`),this._channel=t,this._cause=a,Object.setPrototypeOf(this,d.prototype)}get name(){return"IPCSubscriptionError"}get channel(){return this._channel}get cause(){return this._cause}}class _ extends E.Tag("IPC")(){}const v=_,x=g.effect(v,n.gen(function*(){return typeof window<"u"&&window.__TAURI__!==void 0?{send:o=>e=>n.try({try:()=>C(o,e.length===1?e[0]:e),catch:r=>new c(o,r)}).pipe(n.mapError(r=>new c(o,r))),invoke:o=>e=>n.tryPromise({try:()=>{const r=e.length===1?e[0]:e;return m(o,r)},catch:r=>new l(o,r)}),events:o=>y.async(e=>{let r;return p(o,s=>{e.single({channel:o,args:[s.payload]})}).then(s=>{r=s}).catch(s=>{e.fail(new d(o,s))}),n.sync(()=>r?.())}),once:o=>n.async(e=>{p(o,r=>{e(n.succeed({channel:o,args:[r.payload]}))}).catch(r=>{e(n.fail(new d(o,r)))})}),removeAllListeners:o=>n.log(`[IPC] Remove all listeners for ${o}`).pipe(n.map(()=>{}))}:yield*n.die(new f)})),R=g.effect(v,n.gen(function*(){const i=window.vscode;if(!i?.ipcRenderer)return yield*n.die(new f);const{ipcRenderer:t}=i;return{send:e=>r=>n.sync(()=>{t.send(e,...r)}).pipe(n.mapError(s=>new c(e,s))),invoke:e=>r=>n.tryPromise({try:()=>t.invoke(e,...r),catch:s=>new l(e,s)}),events:e=>y.async(r=>{const s=(w,...u)=>{r.single({channel:e,args:u})};return t.on(e,s),n.sync(()=>{t.removeListener(e,s)})}),once:e=>n.async(r=>{const s=(w,...u)=>{r(n.succeed({channel:e,args:u}))};t.once(e,s)}),removeAllListeners:e=>n.sync(()=>{t.removeAllListeners(e)})}})),L=g.succeed(v,{send:i=>t=>n.void,invoke:i=>t=>n.succeed({}),events:i=>y.empty,once:i=>n.succeed({channel:i,args:[]}),removeAllListeners:i=>n.void});export{v as IPC,R as IPCElectronLive,l as IPCInvokeError,L as IPCMockLive,c as IPCSendError,d as IPCSubscriptionError,_ as IPCTag,x as IPCTauriLive};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { emit, listen } from "@tauri-apps/api/event";
+import { invoke as tauriInvoke } from "@tauri-apps/api/core";
+import { Context, Effect, Layer, Stream } from "effect";
+import { SandboxNotReadyError } from "../Types/Sandbox.js";
+class IPCInvokeError extends Error {
+  static {
+    __name(this, "IPCInvokeError");
+  }
+  _tag = "IPCInvokeError";
+  _channel;
+  _cause;
+  constructor(channel, cause) {
+    super(`IPC invoke failed on channel '${channel}': ${String(cause)}`);
+    this._channel = channel;
+    this._cause = cause;
+    Object.setPrototypeOf(this, IPCInvokeError.prototype);
+  }
+  get name() {
+    return "IPCInvokeError";
+  }
+  get channel() {
+    return this._channel;
+  }
+  get cause() {
+    return this._cause;
+  }
+}
+class IPCSendError extends Error {
+  static {
+    __name(this, "IPCSendError");
+  }
+  _tag = "IPCSendError";
+  _channel;
+  _cause;
+  constructor(channel, cause) {
+    super(`IPC send failed on channel '${channel}': ${String(cause)}`);
+    this._channel = channel;
+    this._cause = cause;
+    Object.setPrototypeOf(this, IPCSendError.prototype);
+  }
+  get name() {
+    return "IPCSendError";
+  }
+  get channel() {
+    return this._channel;
+  }
+  get cause() {
+    return this._cause;
+  }
+}
+class IPCSubscriptionError extends Error {
+  static {
+    __name(this, "IPCSubscriptionError");
+  }
+  _tag = "IPCSubscriptionError";
+  _channel;
+  _cause;
+  constructor(channel, cause) {
+    super(
+      `IPC subscription failed on channel '${channel}': ${String(cause)}`
+    );
+    this._channel = channel;
+    this._cause = cause;
+    Object.setPrototypeOf(this, IPCSubscriptionError.prototype);
+  }
+  get name() {
+    return "IPCSubscriptionError";
+  }
+  get channel() {
+    return this._channel;
+  }
+  get cause() {
+    return this._cause;
+  }
+}
+class IPCTag extends Context.Tag("IPC")() {
+  static {
+    __name(this, "IPCTag");
+  }
+}
+const IPC = IPCTag;
+const IPCTauriLive = Layer.effect(
+  IPC,
+  Effect.gen(function* () {
+    const isTauriAvailable = typeof window !== "undefined" && window.__TAURI__ !== void 0;
+    if (!isTauriAvailable) {
+      return yield* Effect.die(new SandboxNotReadyError());
+    }
+    const send = /* @__PURE__ */ __name((channel) => (args) => Effect.try({
+      try: /* @__PURE__ */ __name(() => emit(channel, args.length === 1 ? args[0] : args), "try"),
+      catch: /* @__PURE__ */ __name((error) => new IPCSendError(channel, error), "catch")
+    }).pipe(
+      Effect.mapError((error) => new IPCSendError(channel, error))
+    ), "send");
+    const invoke_ = /* @__PURE__ */ __name((channel) => (args) => Effect.tryPromise({
+      try: /* @__PURE__ */ __name(() => {
+        const invokeArgs = args.length === 1 ? args[0] : args;
+        return tauriInvoke(channel, invokeArgs);
+      }, "try"),
+      catch: /* @__PURE__ */ __name((error) => new IPCInvokeError(channel, error), "catch")
+    }), "invoke_");
+    const events = /* @__PURE__ */ __name((channel) => Stream.async((emit2) => {
+      let cleanup;
+      listen(channel, (event) => {
+        emit2.single({
+          channel,
+          args: [event.payload]
+        });
+      }).then((unlisten) => {
+        cleanup = unlisten;
+      }).catch((error) => {
+        emit2.fail(new IPCSubscriptionError(channel, error));
+      });
+      return Effect.sync(() => cleanup?.());
+    }), "events");
+    const once = /* @__PURE__ */ __name((channel) => Effect.async((resume) => {
+      listen(channel, (event) => {
+        resume(
+          Effect.succeed({
+            channel,
+            args: [event.payload]
+          })
+        );
+      }).catch((error) => {
+        resume(
+          Effect.fail(new IPCSubscriptionError(channel, error))
+        );
+      });
+    }), "once");
+    const removeAllListeners = /* @__PURE__ */ __name((channel) => Effect.log(`[IPC] Remove all listeners for ${channel}`).pipe(
+      Effect.map(() => void 0)
+    ), "removeAllListeners");
+    return {
+      send,
+      invoke: invoke_,
+      events,
+      once,
+      removeAllListeners
+    };
+  })
+);
+const IPCElectronLive = Layer.effect(
+  IPC,
+  Effect.gen(function* () {
+    const vscode = window.vscode;
+    if (!vscode?.ipcRenderer) {
+      return yield* Effect.die(new SandboxNotReadyError());
+    }
+    const { ipcRenderer } = vscode;
+    const send = /* @__PURE__ */ __name((channel) => (args) => Effect.sync(() => {
+      ipcRenderer.send(channel, ...args);
+    }).pipe(
+      Effect.mapError((error) => new IPCSendError(channel, error))
+    ), "send");
+    const invoke_ = /* @__PURE__ */ __name((channel) => (args) => Effect.tryPromise({
+      try: /* @__PURE__ */ __name(() => ipcRenderer.invoke(channel, ...args), "try"),
+      catch: /* @__PURE__ */ __name((error) => new IPCInvokeError(channel, error), "catch")
+    }), "invoke_");
+    const events = /* @__PURE__ */ __name((channel) => Stream.async((emit2) => {
+      const listener = /* @__PURE__ */ __name((_event, ...args) => {
+        emit2.single({ channel, args });
+      }, "listener");
+      ipcRenderer.on(channel, listener);
+      return Effect.sync(() => {
+        ipcRenderer.removeListener(channel, listener);
+      });
+    }), "events");
+    const once = /* @__PURE__ */ __name((channel) => Effect.async((resume) => {
+      const listener = /* @__PURE__ */ __name((_event, ...args) => {
+        resume(Effect.succeed({ channel, args }));
+      }, "listener");
+      ipcRenderer.once(channel, listener);
+    }), "once");
+    const removeAllListeners = /* @__PURE__ */ __name((channel) => Effect.sync(() => {
+      ipcRenderer.removeAllListeners(channel);
+    }), "removeAllListeners");
+    return {
+      send,
+      invoke: invoke_,
+      events,
+      once,
+      removeAllListeners
+    };
+  })
+);
+const IPCMockLive = Layer.succeed(IPC, {
+  send: /* @__PURE__ */ __name((_channel) => (_args) => Effect.void, "send"),
+  invoke: /* @__PURE__ */ __name((_channel) => (_args) => Effect.succeed({}), "invoke"),
+  events: /* @__PURE__ */ __name((_channel) => Stream.empty, "events"),
+  once: /* @__PURE__ */ __name((_channel) => Effect.succeed({ channel: _channel, args: [] }), "once"),
+  removeAllListeners: /* @__PURE__ */ __name((_channel) => Effect.void, "removeAllListeners")
+});
+export {
+  IPC,
+  IPCElectronLive,
+  IPCInvokeError,
+  IPCMockLive,
+  IPCSendError,
+  IPCSubscriptionError,
+  IPCTag,
+  IPCTauriLive
+};
+//# sourceMappingURL=IPC.js.map

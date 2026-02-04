@@ -11,18 +11,18 @@ import { Layer } from "effect";
  *
  * Use this when you need manual control over configuration sync.
  */
-export declare const ElectronBaseLayer: Layer.Layer<never, never, unknown>;
+export declare const ElectronBaseLayer: Layer.Layer<never, import("../Configuration.js").ConfigFetchError, unknown>;
 /**
  * Full Electron layer stack with automatic configuration sync.
  * Provides: All base services + reactive Mountain-driven config updates
  *
  * This is the standard layer for Sky (Electron) builds.
  */
-export declare const ElectronLiveLayer: Layer.Layer<never, unknown, unknown>;
+export declare const ElectronLiveLayer: Layer.Layer<never, any, unknown>;
 /**
  * Electron layer with maximum telemetry and logging.
  * Useful for debugging and development in Electron environment.
  */
-export declare const ElectronDevLayer: Layer.Layer<never, unknown, unknown>;
+export declare const ElectronDevLayer: Layer.Layer<never, any, unknown>;
 export default ElectronLiveLayer;
 //# sourceMappingURL=Electron.d.ts.map

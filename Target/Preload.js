@@ -1,1 +1,127 @@
-import{emit as d,listen as i}from"@tauri-apps/api/event";import{invoke as s}from"@tauri-apps/api/core";import"@tauri-apps/plugin-dialog";import"@tauri-apps/plugin-fs";const r=new Map,u=typeof window<"u"&&window.__TAURI__!==void 0,a={send:(e,...n)=>{d(e,n.length===1?n[0]:n)},invoke:async(e,...n)=>s(e,n.length===1?n[0]:n),on:(e,n)=>{i(e,o=>{n(o,o.payload)}).then(o=>{const c=()=>o();r.set(e,c)})},once:(e,n)=>{i(e,o=>{n(o,o.payload)},{once:!0})},removeListener:(e,n)=>{const o=r.get(e);o&&(o(),r.delete(e))},removeAllListeners:e=>{const n=r.get(e);n&&(n(),r.delete(e))}},g={acquire:(e,n)=>{setTimeout(()=>{a.send(e,n)},0)}},w={setZoomLevel:e=>{document.documentElement.style.setProperty("--zoom-level",String(e))}},p={platform:(navigator.platform||"unknown").toLowerCase().includes("win")?"win32":(navigator.platform||"unknown").toLowerCase().includes("mac")?"darwin":"linux",arch:"x64",env:{},versions:{node:"20.0.0",chrome:navigator.userAgent.match(/Chrome\/(\d+)/)?.[1]||"unknown",electron:"30.0.0"},cwd:()=>"/app",shellEnv:async()=>({}),getProcessMemoryInfo:async()=>({workingSetSize:0,peakWorkingSetSize:0,privateBytes:0,sharedBytes:0}),on:(e,n)=>{}};let t=null;const l={configuration:async()=>{if(t)return t;try{const e=await s("mountain_get_workbench_configuration");return t=e,e}catch(e){throw e}},resolveConfiguration:async()=>l.configuration()},m={getPathForFile:e=>`file://${e.name}`},v={ipcRenderer:a,ipcMessagePort:g,webFrame:w,process:p,context:l,webUtils:m};u&&(window.vscode=v,window.dispatchEvent(new Event("vscode-wind-preload-ready")));
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { emit, listen } from "@tauri-apps/api/event";
+import { invoke as tauriInvoke } from "@tauri-apps/api/core";
+import { open, save } from "@tauri-apps/plugin-dialog";
+import { readFile, writeFile } from "@tauri-apps/plugin-fs";
+const cleanupMap = /* @__PURE__ */ new Map();
+const isTauri = typeof window !== "undefined" && window.__TAURI__ !== void 0;
+const ipcRenderer = {
+  send: /* @__PURE__ */ __name((channel, ...args) => {
+    emit(channel, args.length === 1 ? args[0] : args);
+  }, "send"),
+  invoke: /* @__PURE__ */ __name(async (channel, ...args) => {
+    return tauriInvoke(channel, args.length === 1 ? args[0] : args);
+  }, "invoke"),
+  on: /* @__PURE__ */ __name((channel, listener) => {
+    listen(channel, (event) => {
+      listener(event, event.payload);
+    }).then((unlisten) => {
+      const cleanup = /* @__PURE__ */ __name(() => unlisten(), "cleanup");
+      cleanupMap.set(channel, cleanup);
+    });
+  }, "on"),
+  once: /* @__PURE__ */ __name((channel, listener) => {
+    listen(
+      channel,
+      (event) => {
+        listener(event, event.payload);
+      },
+      { once: true }
+    );
+  }, "once"),
+  removeListener: /* @__PURE__ */ __name((channel, _listener) => {
+    const cleanup = cleanupMap.get(channel);
+    if (cleanup) {
+      cleanup();
+      cleanupMap.delete(channel);
+    }
+  }, "removeListener"),
+  removeAllListeners: /* @__PURE__ */ __name((channel) => {
+    const cleanup = cleanupMap.get(channel);
+    if (cleanup) {
+      cleanup();
+      cleanupMap.delete(channel);
+    }
+  }, "removeAllListeners")
+};
+const ipcMessagePort = {
+  acquire: /* @__PURE__ */ __name((responseChannel, nonce) => {
+    console.log(
+      `[Preload] MessagePort acquire requested: ${responseChannel}, ${nonce}`
+    );
+    setTimeout(() => {
+      ipcRenderer.send(responseChannel, nonce);
+    }, 0);
+  }, "acquire")
+};
+const webFrame = {
+  setZoomLevel: /* @__PURE__ */ __name((level) => {
+    document.documentElement.style.setProperty(
+      "--zoom-level",
+      String(level)
+    );
+    console.log(`[Preload] Zoom level set to: ${level}`);
+  }, "setZoomLevel")
+};
+const process = {
+  platform: (navigator.platform || "unknown").toLowerCase().includes("win") ? "win32" : (navigator.platform || "unknown").toLowerCase().includes("mac") ? "darwin" : "linux",
+  arch: "x64",
+  // TODO: Detect from Tauri
+  env: {},
+  versions: {
+    node: "20.0.0",
+    // Placeholder
+    chrome: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || "unknown",
+    electron: "30.0.0"
+    // Placeholder for compatibility
+  },
+  cwd: /* @__PURE__ */ __name(() => "/app", "cwd"),
+  shellEnv: /* @__PURE__ */ __name(async () => ({}), "shellEnv"),
+  getProcessMemoryInfo: /* @__PURE__ */ __name(async () => ({
+    workingSetSize: 0,
+    peakWorkingSetSize: 0,
+    privateBytes: 0,
+    sharedBytes: 0
+  }), "getProcessMemoryInfo"),
+  on: /* @__PURE__ */ __name((_type, _callback) => {
+  }, "on")
+};
+let cachedConfiguration = null;
+const context = {
+  configuration: /* @__PURE__ */ __name(async () => {
+    if (cachedConfiguration) return cachedConfiguration;
+    try {
+      const config = await tauriInvoke("mountain_get_workbench_configuration");
+      cachedConfiguration = config;
+      return config;
+    } catch (error) {
+      console.error("[Preload] Failed to fetch configuration:", error);
+      throw error;
+    }
+  }, "configuration"),
+  resolveConfiguration: /* @__PURE__ */ __name(async () => {
+    return context.configuration();
+  }, "resolveConfiguration")
+};
+const webUtils = {
+  getPathForFile: /* @__PURE__ */ __name((file) => {
+    return `file://${file.name}`;
+  }, "getPathForFile")
+};
+const globals = {
+  ipcRenderer,
+  ipcMessagePort,
+  webFrame,
+  process,
+  context,
+  webUtils
+};
+if (isTauri) {
+  window.vscode = globals;
+  console.log("[Preload] \u2705 Sandbox globals exposed to window.vscode");
+  window.dispatchEvent(new Event("vscode-wind-preload-ready"));
+} else {
+  console.error("[Preload] \u274C Tauri not detected - preload failed");
+}
+//# sourceMappingURL=Preload.js.map

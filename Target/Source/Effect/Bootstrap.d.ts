@@ -48,6 +48,6 @@ export declare class BootstrapTag extends BootstrapTag_base {
 export declare const BootstrapLive: Layer.Layer<BootstrapTag, never, never>;
 export declare const makeMockBootstrap: () => BootstrapService;
 export declare const BootstrapMock: Layer.Layer<BootstrapTag, never, never>;
-export declare const runBootstrap: (options?: BootstrapOptions) => Effect.Effect<BootstrapResult, never, Context.Tag<SandboxService, SandboxService> | typeof TelemetryTag | typeof EnvironmentTag | typeof MountainTag | typeof HealthTag | typeof ConfigurationTag>;
+export declare const runBootstrap: (options?: BootstrapOptions) => Effect.Effect<BootstrapResult, never, typeof EnvironmentTag | typeof TelemetryTag | Context.Tag<SandboxService, SandboxService> | typeof ConfigurationTag | typeof MountainTag | typeof HealthTag>;
 export {};
 //# sourceMappingURL=Bootstrap.d.ts.map

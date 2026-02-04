@@ -1,1 +1,106 @@
-import{Effect as e,Context as f,Layer as c}from"effect";class a extends f.Tag("Effect/EnvironmentService")(){}const r=()=>{if(typeof navigator>"u")return"web";const n=navigator.platform?.toLowerCase()||"";return n.includes("win")?"win32":n.includes("mac")?"darwin":n.includes("linux")||n.includes("ubuntu")?"linux":"web"},o=()=>{if(typeof navigator>"u")return"web";const n=navigator.userAgent.toLowerCase();return n.includes("arm")||n.includes("aarch64")?"arm64":"x64"},i=()=>typeof navigator>"u"?"en-US":navigator.language||"en-US",s=()=>{try{return Intl.DateTimeFormat().resolvedOptions().timeZone||"UTC"}catch{return"UTC"}},u=()=>typeof navigator>"u"?"Unknown":navigator.userAgent||"Unknown",l={getInfo:e.sync(()=>({platform:r(),architecture:o(),locale:i(),timezone:s(),userAgent:u(),isSecureContext:typeof window<"u"&&window.isSecureContext,language:i().split("-")[0]||"en"})),getPlatform:e.sync(r),getArchitecture:e.sync(o),isWindows:e.map(e.sync(r),n=>n==="win32"),isMac:e.map(e.sync(r),n=>n==="darwin"),isLinux:e.map(e.sync(r),n=>n==="linux"),isWeb:e.map(e.sync(r),n=>n==="web")},g=c.effect(a,e.succeed(l)),m=n=>{const t={platform:"web",architecture:"x64",locale:"en-US",timezone:"UTC",userAgent:"Mock",isSecureContext:!0,language:"en",...n};return{getInfo:e.sync(()=>t),getPlatform:e.sync(()=>t.platform),getArchitecture:e.sync(()=>t.architecture),isWindows:e.sync(()=>t.platform==="win32"),isMac:e.sync(()=>t.platform==="darwin"),isLinux:e.sync(()=>t.platform==="linux"),isWeb:e.sync(()=>t.platform==="web")}},y=c.effect(a,e.succeed(m()));export{g as EnvironmentLive,y as EnvironmentMock,a as EnvironmentTag,m as makeMockEnvironment};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { Effect, Context, Layer } from "effect";
+class EnvironmentTag extends Context.Tag("Effect/EnvironmentService")() {
+  static {
+    __name(this, "EnvironmentTag");
+  }
+}
+const detectPlatform = /* @__PURE__ */ __name(() => {
+  if (typeof navigator === "undefined") {
+    return "web";
+  }
+  const platform = navigator.platform?.toLowerCase() || "";
+  if (platform.includes("win")) {
+    return "win32";
+  }
+  if (platform.includes("mac")) {
+    return "darwin";
+  }
+  if (platform.includes("linux") || platform.includes("ubuntu")) {
+    return "linux";
+  }
+  return "web";
+}, "detectPlatform");
+const detectArchitecture = /* @__PURE__ */ __name(() => {
+  if (typeof navigator === "undefined") {
+    return "web";
+  }
+  const userAgent = navigator.userAgent.toLowerCase();
+  if (userAgent.includes("arm") || userAgent.includes("aarch64")) {
+    return "arm64";
+  }
+  return "x64";
+}, "detectArchitecture");
+const detectLocale = /* @__PURE__ */ __name(() => {
+  if (typeof navigator === "undefined") {
+    return "en-US";
+  }
+  return navigator.language || "en-US";
+}, "detectLocale");
+const detectTimezone = /* @__PURE__ */ __name(() => {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+  } catch {
+    return "UTC";
+  }
+}, "detectTimezone");
+const getUserAgent = /* @__PURE__ */ __name(() => {
+  if (typeof navigator === "undefined") {
+    return "Unknown";
+  }
+  return navigator.userAgent || "Unknown";
+}, "getUserAgent");
+const makeLiveEnvironment = {
+  getInfo: Effect.sync(() => ({
+    platform: detectPlatform(),
+    architecture: detectArchitecture(),
+    locale: detectLocale(),
+    timezone: detectTimezone(),
+    userAgent: getUserAgent(),
+    isSecureContext: typeof window !== "undefined" && window.isSecureContext,
+    language: detectLocale().split("-")[0] || "en"
+  })),
+  getPlatform: Effect.sync(detectPlatform),
+  getArchitecture: Effect.sync(detectArchitecture),
+  isWindows: Effect.map(Effect.sync(detectPlatform), (p) => p === "win32"),
+  isMac: Effect.map(Effect.sync(detectPlatform), (p) => p === "darwin"),
+  isLinux: Effect.map(Effect.sync(detectPlatform), (p) => p === "linux"),
+  isWeb: Effect.map(Effect.sync(detectPlatform), (p) => p === "web")
+};
+const EnvironmentLive = Layer.effect(
+  EnvironmentTag,
+  Effect.succeed(makeLiveEnvironment)
+);
+const makeMockEnvironment = /* @__PURE__ */ __name((overrides) => {
+  const mockInfo = {
+    platform: "web",
+    architecture: "x64",
+    locale: "en-US",
+    timezone: "UTC",
+    userAgent: "Mock",
+    isSecureContext: true,
+    language: "en",
+    ...overrides
+  };
+  return {
+    getInfo: Effect.sync(() => mockInfo),
+    getPlatform: Effect.sync(() => mockInfo.platform),
+    getArchitecture: Effect.sync(() => mockInfo.architecture),
+    isWindows: Effect.sync(() => mockInfo.platform === "win32"),
+    isMac: Effect.sync(() => mockInfo.platform === "darwin"),
+    isLinux: Effect.sync(() => mockInfo.platform === "linux"),
+    isWeb: Effect.sync(() => mockInfo.platform === "web")
+  };
+}, "makeMockEnvironment");
+const EnvironmentMock = Layer.effect(
+  EnvironmentTag,
+  Effect.succeed(makeMockEnvironment())
+);
+export {
+  EnvironmentLive,
+  EnvironmentMock,
+  EnvironmentTag,
+  makeMockEnvironment
+};
+//# sourceMappingURL=Environment.js.map

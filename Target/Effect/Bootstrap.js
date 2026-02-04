@@ -1,1 +1,235 @@
-import{Effect as t,Layer as f,Context as S}from"effect";import{EnvironmentTag as h}from"./Environment.js";import{Telemetry as r,withSpan as s}from"./Telemetry.js";import{Sandbox as v}from"./Sandbox.js";import{Configuration as b}from"./Configuration.js";import{MountainTag as T}from"./Mountain.js";import{HealthTag as k}from"./Health.js";class g extends S.Tag("Effect/BootstrapService")(){}const E=s("stage0_environment",t.gen(function*(){const e=yield*r,o=yield*h;e.log("info","[Bootstrap] Stage 0: Detecting environment...");const n=yield*o.getInfo;return e.log("info",`[Bootstrap] Environment: ${n.platform}/${n.architecture}`),e.log("info",`[Bootstrap] Locale: ${n.locale}, Timezone: ${n.timezone}`),{stageName:"Environment",success:!0,duration:0,error:void 0}})),C=s("stage1_preload",t.gen(function*(){const e=yield*r,o=yield*v;return e.log("info","[Bootstrap] Stage 1: Waiting for preload..."),yield*o.awaitReady,e.log("info","[Bootstrap] Preload ready, globals available"),{stageName:"Preload",success:!0,duration:0,error:void 0}})),R=s("stage2_configuration",t.gen(function*(){const e=yield*r;return yield*(yield*b).get,e.log("info","[Bootstrap] Stage 2: Loading configuration..."),e.log("info","[Bootstrap] Configuration applied"),{stageName:"Configuration",success:!0,duration:0,error:void 0}})),w=s("stage3_services",t.gen(function*(){const e=yield*r;return e.log("info","[Bootstrap] Stage 3: Connecting to Mountain backend..."),yield*(yield*T).connect,e.log("info","[Bootstrap] Mountain connected"),{stageName:"Services",success:!0,duration:0,error:void 0}})),N=s("stage4_preparation",t.gen(function*(){const e=yield*r;return e.log("info","[Bootstrap] Stage 4: Preparing workbench resources..."),e.log("info","[Bootstrap] Workbench resources prepared"),{stageName:"Preparation",success:!0,duration:0,error:void 0}})),x=s("stage5_initialization",t.gen(function*(){const e=yield*r;return e.log("info","[Bootstrap] Stage 5: Initializing VSCode workbench..."),e.log("info","[Bootstrap] VSCode workbench initialized"),yield*t.sync(()=>{window.dispatchEvent(new CustomEvent("vscode-wind-bootstrap-complete",{detail:{success:!0}}))}),{stageName:"Initialization",success:!0,duration:0,error:void 0}})),_=s("stage6_healthcheck",t.gen(function*(){const e=yield*r,o=yield*k;e.log("info","[Bootstrap] Stage 6: Running health checks...");const n=yield*o.checkAllServices();return e.log("info",`[Bootstrap] Health check result: ${n.overallStatus}`),n.overallStatus==="unhealthy"&&e.log("error","[Bootstrap] Some services are unhealthy!"),{stageName:"HealthCheck",success:n.overallStatus!=="unhealthy",duration:0,error:void 0}})),H=()=>({run:e=>t.gen(function*(){const o=yield*r,n=Date.now(),{skipHealthCheck:p=!1,debugMode:m=!1}=e??{};o.log("info","[Bootstrap] ==============================================="),o.log("info","[Bootstrap] Wind VSCode Workbench Bootstrap"),o.log("info","[Bootstrap] Debug mode: "+m),o.log("info","[Bootstrap] ===============================================");const y=[E,C,R,w,N,x,...p?[]:[_]],l=[];for(const i of y){const a=Date.now(),B=yield*t.suspend(()=>i).pipe(t.map(u=>({...u,duration:Date.now()-a})),t.catchAll(u=>t.succeed({stageName:"Unknown",success:!1,duration:Date.now()-a,error:u})));l.push(B)}const d=Date.now()-n,c=l.every(i=>i.success);if(o.log("info","[Bootstrap] ==============================================="),o.log("info",`[Bootstrap] ${c?"\u2713 Bootstrap completed successfully":"\u2717 Bootstrap failed"}`),o.log("info",`[Bootstrap] Total duration: ${d}ms`),o.log("info","[Bootstrap] ==============================================="),!c){const i=l.filter(a=>!a.success);o.log("error","[Bootstrap] Failed stages:");for(const a of i)o.log("error",`[Bootstrap]   - ${a.stageName}: ${a.error?.message||"Unknown error"}`)}return{success:c,totalDuration:d,stages:l,error:c?void 0:new Error("Bootstrap failed")}})}),D=f.effect(g,t.succeed(H())),M=()=>({run:e=>t.gen(function*(){return yield*t.sleep("1 millis"),{success:!0,totalDuration:1,stages:[{stageName:"Environment",success:!0,duration:0,error:void 0},{stageName:"Preload",success:!0,duration:0,error:void 0},{stageName:"Configuration",success:!0,duration:0,error:void 0},{stageName:"Services",success:!0,duration:0,error:void 0},{stageName:"Preparation",success:!0,duration:0,error:void 0},{stageName:"Initialization",success:!0,duration:0,error:void 0},...e?.skipHealthCheck?[]:[{stageName:"HealthCheck",success:!0,duration:0,error:void 0}]],error:void 0}})}),F=f.effect(g,t.succeed(M())),j=e=>t.gen(function*(){return yield*(yield*g).run(e)}).pipe(t.provide(D));export{D as BootstrapLive,F as BootstrapMock,g as BootstrapTag,M as makeMockBootstrap,j as runBootstrap};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { Effect, Layer, Context } from "effect";
+import { EnvironmentTag } from "./Environment.js";
+import { Telemetry, TelemetryTag, withSpan } from "./Telemetry.js";
+import { Sandbox } from "./Sandbox.js";
+import { Configuration, ConfigurationTag } from "./Configuration.js";
+import { MountainTag } from "./Mountain.js";
+import { HealthTag } from "./Health.js";
+class BootstrapTag extends Context.Tag("Effect/BootstrapService")() {
+  static {
+    __name(this, "BootstrapTag");
+  }
+}
+const stage0_Environment = withSpan(
+  "stage0_environment",
+  Effect.gen(function* () {
+    const telemetry = yield* Telemetry;
+    const environment = yield* EnvironmentTag;
+    telemetry.log("info", "[Bootstrap] Stage 0: Detecting environment...");
+    const envInfo = yield* environment.getInfo;
+    telemetry.log(
+      "info",
+      `[Bootstrap] Environment: ${envInfo.platform}/${envInfo.architecture}`
+    );
+    telemetry.log("info", `[Bootstrap] Locale: ${envInfo.locale}, Timezone: ${envInfo.timezone}`);
+    return {
+      stageName: "Environment",
+      success: true,
+      duration: 0,
+      // Will be set by caller
+      error: void 0
+    };
+  })
+);
+const stage1_Preload = withSpan(
+  "stage1_preload",
+  Effect.gen(function* () {
+    const telemetry = yield* Telemetry;
+    const sandbox = yield* Sandbox;
+    telemetry.log("info", "[Bootstrap] Stage 1: Waiting for preload...");
+    void (yield* sandbox.awaitReady);
+    telemetry.log("info", "[Bootstrap] Preload ready, globals available");
+    return {
+      stageName: "Preload",
+      success: true,
+      duration: 0,
+      error: void 0
+    };
+  })
+);
+const stage2_Configuration = withSpan(
+  "stage2_configuration",
+  Effect.gen(function* () {
+    const telemetry = yield* Telemetry;
+    yield* (yield* Configuration).get;
+    telemetry.log("info", "[Bootstrap] Stage 2: Loading configuration...");
+    telemetry.log("info", "[Bootstrap] Configuration applied");
+    return {
+      stageName: "Configuration",
+      success: true,
+      duration: 0,
+      error: void 0
+    };
+  })
+);
+const stage3_Services = withSpan(
+  "stage3_services",
+  Effect.gen(function* () {
+    const telemetry = yield* Telemetry;
+    telemetry.log("info", "[Bootstrap] Stage 3: Connecting to Mountain backend...");
+    yield* (yield* MountainTag).connect;
+    telemetry.log("info", "[Bootstrap] Mountain connected");
+    return {
+      stageName: "Services",
+      success: true,
+      duration: 0,
+      error: void 0
+    };
+  })
+);
+const stage4_Preparation = withSpan(
+  "stage4_preparation",
+  Effect.gen(function* () {
+    const telemetry = yield* Telemetry;
+    telemetry.log("info", "[Bootstrap] Stage 4: Preparing workbench resources...");
+    telemetry.log("info", "[Bootstrap] Workbench resources prepared");
+    return {
+      stageName: "Preparation",
+      success: true,
+      duration: 0,
+      error: void 0
+    };
+  })
+);
+const stage5_Initialization = withSpan(
+  "stage5_initialization",
+  Effect.gen(function* () {
+    const telemetry = yield* Telemetry;
+    telemetry.log("info", "[Bootstrap] Stage 5: Initializing VSCode workbench...");
+    telemetry.log("info", "[Bootstrap] VSCode workbench initialized");
+    yield* Effect.sync(() => {
+      window.dispatchEvent(
+        new CustomEvent("vscode-wind-bootstrap-complete", {
+          detail: { success: true }
+        })
+      );
+    });
+    return {
+      stageName: "Initialization",
+      success: true,
+      duration: 0,
+      error: void 0
+    };
+  })
+);
+const stage6_HealthCheck = withSpan(
+  "stage6_healthcheck",
+  Effect.gen(function* () {
+    const telemetry = yield* Telemetry;
+    const health = yield* HealthTag;
+    telemetry.log("info", "[Bootstrap] Stage 6: Running health checks...");
+    const systemHealth = yield* health.checkAllServices();
+    telemetry.log(
+      "info",
+      `[Bootstrap] Health check result: ${systemHealth.overallStatus}`
+    );
+    if (systemHealth.overallStatus === "unhealthy") {
+      telemetry.log("error", "[Bootstrap] Some services are unhealthy!");
+    }
+    return {
+      stageName: "HealthCheck",
+      success: systemHealth.overallStatus !== "unhealthy",
+      duration: 0,
+      error: void 0
+    };
+  })
+);
+const makeBootstrap = /* @__PURE__ */ __name(() => ({
+  run: /* @__PURE__ */ __name((options) => Effect.gen(function* () {
+    const telemetry = yield* Telemetry;
+    const startTime = Date.now();
+    const { skipHealthCheck = false, debugMode = false } = options ?? {};
+    telemetry.log("info", "[Bootstrap] ===============================================");
+    telemetry.log("info", "[Bootstrap] Wind VSCode Workbench Bootstrap");
+    telemetry.log("info", "[Bootstrap] Debug mode: " + debugMode);
+    telemetry.log("info", "[Bootstrap] ===============================================");
+    const stages = [
+      stage0_Environment,
+      stage1_Preload,
+      stage2_Configuration,
+      stage3_Services,
+      stage4_Preparation,
+      stage5_Initialization,
+      ...skipHealthCheck ? [] : [stage6_HealthCheck]
+    ];
+    const results = [];
+    for (const stage of stages) {
+      const stageStartTime = Date.now();
+      const result = yield* Effect.suspend(() => stage).pipe(
+        Effect.map((r) => ({ ...r, duration: Date.now() - stageStartTime })),
+        Effect.catchAll(
+          (error) => Effect.succeed({
+            stageName: "Unknown",
+            success: false,
+            duration: Date.now() - stageStartTime,
+            error
+          })
+        )
+      );
+      results.push(result);
+    }
+    const endTime = Date.now();
+    const totalDuration = endTime - startTime;
+    const allSuccess = results.every((r) => r.success);
+    telemetry.log("info", "[Bootstrap] ===============================================");
+    telemetry.log(
+      "info",
+      `[Bootstrap] ${allSuccess ? "\u2713 Bootstrap completed successfully" : "\u2717 Bootstrap failed"}`
+    );
+    telemetry.log("info", `[Bootstrap] Total duration: ${totalDuration}ms`);
+    telemetry.log("info", "[Bootstrap] ===============================================");
+    if (!allSuccess) {
+      const failedStages = results.filter((r) => !r.success);
+      telemetry.log("error", "[Bootstrap] Failed stages:");
+      for (const failed of failedStages) {
+        telemetry.log("error", `[Bootstrap]   - ${failed.stageName}: ${failed.error?.message || "Unknown error"}`);
+      }
+    }
+    return {
+      success: allSuccess,
+      totalDuration,
+      stages: results,
+      error: allSuccess ? void 0 : new Error("Bootstrap failed")
+    };
+  }), "run")
+}), "makeBootstrap");
+const BootstrapLive = Layer.effect(
+  BootstrapTag,
+  Effect.succeed(makeBootstrap())
+);
+const makeMockBootstrap = /* @__PURE__ */ __name(() => ({
+  run: /* @__PURE__ */ __name((options) => Effect.gen(function* () {
+    yield* Effect.sleep("1 millis");
+    return {
+      success: true,
+      totalDuration: 1,
+      stages: [
+        { stageName: "Environment", success: true, duration: 0, error: void 0 },
+        { stageName: "Preload", success: true, duration: 0, error: void 0 },
+        { stageName: "Configuration", success: true, duration: 0, error: void 0 },
+        { stageName: "Services", success: true, duration: 0, error: void 0 },
+        { stageName: "Preparation", success: true, duration: 0, error: void 0 },
+        { stageName: "Initialization", success: true, duration: 0, error: void 0 },
+        ...options?.skipHealthCheck ? [] : [{ stageName: "HealthCheck", success: true, duration: 0, error: void 0 }]
+      ],
+      error: void 0
+    };
+  }), "run")
+}), "makeMockBootstrap");
+const BootstrapMock = Layer.effect(BootstrapTag, Effect.succeed(makeMockBootstrap()));
+const runBootstrap = /* @__PURE__ */ __name((options) => Effect.gen(function* () {
+  const bootstrap = yield* BootstrapTag;
+  return yield* bootstrap.run(options);
+}).pipe(
+  Effect.provide(BootstrapLive)
+), "runBootstrap");
+export {
+  BootstrapLive,
+  BootstrapMock,
+  BootstrapTag,
+  makeMockBootstrap,
+  runBootstrap
+};
+//# sourceMappingURL=Bootstrap.js.map

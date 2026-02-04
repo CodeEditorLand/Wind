@@ -1,1 +1,83 @@
-import{Context as i,Effect as r,Layer as a}from"effect";const l={readText:()=>r.tryPromise({try:async()=>{if(typeof navigator>"u"||!navigator.clipboard)throw{_tag:"ClipboardNotAvailable",reason:"Clipboard API not available in this environment"};return await navigator.clipboard.readText()},catch:e=>({_tag:"ClipboardReadError",error:e})}),writeText:e=>r.tryPromise({try:async()=>{if(typeof navigator>"u"||!navigator.clipboard)throw{_tag:"ClipboardNotAvailable",reason:"Clipboard API not available in this environment"};await navigator.clipboard.writeText(e)},catch:t=>({_tag:"ClipboardWriteError",error:t})}),readHTML:()=>r.fail({_tag:"ClipboardFormatNotSupported",format:"HTML"}),writeHTML:()=>r.fail({_tag:"ClipboardFormatNotSupported",format:"HTML"}),readImage:()=>r.fail({_tag:"ClipboardFormatNotSupported",format:"Image"}),writeImage:()=>r.fail({_tag:"ClipboardFormatNotSupported",format:"Image"}),hasText:()=>r.succeed(!1),clear:()=>r.void};class o extends i.Tag("Application/ClipboardService")(){}const n=a.succeed(o,l),d={readText:()=>r.succeed("mock clipboard text"),writeText:e=>r.void,readHTML:()=>r.succeed(""),writeHTML:()=>r.void,readImage:()=>r.succeed(new Blob),writeImage:()=>r.void,hasText:()=>r.succeed(!0),clear:()=>r.void},p=a.succeed(o,d);export{o as ClipboardServiceTag,n as LiveClipboardServiceLayer,p as MockClipboardServiceLayer};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { Context, Effect, Layer } from "effect";
+const LiveClipboardService = {
+  readText: /* @__PURE__ */ __name(() => Effect.tryPromise({
+    try: /* @__PURE__ */ __name(async () => {
+      if (typeof navigator === "undefined" || !navigator.clipboard) {
+        throw {
+          _tag: "ClipboardNotAvailable",
+          reason: "Clipboard API not available in this environment"
+        };
+      }
+      return await navigator.clipboard.readText();
+    }, "try"),
+    catch: /* @__PURE__ */ __name((error) => ({
+      _tag: "ClipboardReadError",
+      error
+    }), "catch")
+  }), "readText"),
+  writeText: /* @__PURE__ */ __name((text) => Effect.tryPromise({
+    try: /* @__PURE__ */ __name(async () => {
+      if (typeof navigator === "undefined" || !navigator.clipboard) {
+        throw {
+          _tag: "ClipboardNotAvailable",
+          reason: "Clipboard API not available in this environment"
+        };
+      }
+      await navigator.clipboard.writeText(text);
+    }, "try"),
+    catch: /* @__PURE__ */ __name((error) => ({
+      _tag: "ClipboardWriteError",
+      error
+    }), "catch")
+  }), "writeText"),
+  // Placeholder implementations for remaining methods
+  readHTML: /* @__PURE__ */ __name(() => Effect.fail({
+    _tag: "ClipboardFormatNotSupported",
+    format: "HTML"
+  }), "readHTML"),
+  writeHTML: /* @__PURE__ */ __name(() => Effect.fail({
+    _tag: "ClipboardFormatNotSupported",
+    format: "HTML"
+  }), "writeHTML"),
+  readImage: /* @__PURE__ */ __name(() => Effect.fail({
+    _tag: "ClipboardFormatNotSupported",
+    format: "Image"
+  }), "readImage"),
+  writeImage: /* @__PURE__ */ __name(() => Effect.fail({
+    _tag: "ClipboardFormatNotSupported",
+    format: "Image"
+  }), "writeImage"),
+  hasText: /* @__PURE__ */ __name(() => Effect.succeed(false), "hasText"),
+  clear: /* @__PURE__ */ __name(() => Effect.void, "clear")
+};
+class ClipboardServiceTag extends Context.Tag("Application/ClipboardService")() {
+  static {
+    __name(this, "ClipboardServiceTag");
+  }
+}
+const LiveClipboardServiceLayer = Layer.succeed(
+  ClipboardServiceTag,
+  LiveClipboardService
+);
+const MockClipboardService = {
+  readText: /* @__PURE__ */ __name(() => Effect.succeed("mock clipboard text"), "readText"),
+  writeText: /* @__PURE__ */ __name((text) => Effect.void, "writeText"),
+  readHTML: /* @__PURE__ */ __name(() => Effect.succeed(""), "readHTML"),
+  writeHTML: /* @__PURE__ */ __name(() => Effect.void, "writeHTML"),
+  readImage: /* @__PURE__ */ __name(() => Effect.succeed(new Blob()), "readImage"),
+  writeImage: /* @__PURE__ */ __name(() => Effect.void, "writeImage"),
+  hasText: /* @__PURE__ */ __name(() => Effect.succeed(true), "hasText"),
+  clear: /* @__PURE__ */ __name(() => Effect.void, "clear")
+};
+const MockClipboardServiceLayer = Layer.succeed(
+  ClipboardServiceTag,
+  MockClipboardService
+);
+export {
+  ClipboardServiceTag,
+  LiveClipboardServiceLayer,
+  MockClipboardServiceLayer
+};
+//# sourceMappingURL=Clipboard.js.map

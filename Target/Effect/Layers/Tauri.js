@@ -1,1 +1,55 @@
-import{Layer as r}from"effect";import{ConfigurationLive as L,ConfigurationWithSyncLive as a}from"../Configuration.js";import"../IPC.js";import{MountainLive as i}from"../Mountain.js";import{SandboxLive as o}from"../Sandbox.js";import{TelemetryLive as e}from"../Telemetry.js";import{EnvironmentLive as p}from"../Environment.js";import{HealthLive as v}from"../Health.js";import{BootstrapLive as t}from"../Bootstrap.js";import{LiveClipboardServiceLayer as d}from"../Clipboard.js";import{MountainSyncLive as m}from"../MountainSync.js";const h=r.empty.pipe(r.provide(o),r.provide(p),r.provide(d),r.provide(e),r.provide(L),r.provide(i),r.provide(m),r.provide(v),r.provide(t)),n=r.empty.pipe(r.provide(o),r.provide(p),r.provide(d),r.provide(e),r.provide(a),r.provide(i),r.provide(m),r.provide(v),r.provide(t)),B=r.empty.pipe(r.provide(o),r.provide(p),r.provide(d),r.provide(e),r.provide(a),r.provide(i),r.provide(m),r.provide(v),r.provide(t));var M=n;export{h as TauriBaseLayer,B as TauriDevLayer,n as TauriLiveLayer,M as default};
+import { Layer } from "effect";
+import {
+  ConfigurationLive,
+  ConfigurationWithSyncLive
+} from "../Configuration.js";
+import { IPCTauriLive } from "../IPC.js";
+import { MountainLive } from "../Mountain.js";
+import { SandboxLive } from "../Sandbox.js";
+import { TelemetryLive } from "../Telemetry.js";
+import { EnvironmentLive } from "../Environment.js";
+import { HealthLive } from "../Health.js";
+import { BootstrapLive } from "../Bootstrap.js";
+import { LiveClipboardServiceLayer as ClipboardLive } from "../Clipboard.js";
+import { MountainSyncLive } from "../MountainSync.js";
+const TauriBaseLayer = Layer.empty.pipe(
+  Layer.provide(SandboxLive),
+  Layer.provide(EnvironmentLive),
+  Layer.provide(ClipboardLive),
+  Layer.provide(TelemetryLive),
+  Layer.provide(ConfigurationLive),
+  Layer.provide(MountainLive),
+  Layer.provide(MountainSyncLive),
+  Layer.provide(HealthLive),
+  Layer.provide(BootstrapLive)
+);
+const TauriLiveLayer = Layer.empty.pipe(
+  Layer.provide(SandboxLive),
+  Layer.provide(EnvironmentLive),
+  Layer.provide(ClipboardLive),
+  Layer.provide(TelemetryLive),
+  Layer.provide(ConfigurationWithSyncLive),
+  Layer.provide(MountainLive),
+  Layer.provide(MountainSyncLive),
+  Layer.provide(HealthLive),
+  Layer.provide(BootstrapLive)
+);
+const TauriDevLayer = Layer.empty.pipe(
+  Layer.provide(SandboxLive),
+  Layer.provide(EnvironmentLive),
+  Layer.provide(ClipboardLive),
+  Layer.provide(TelemetryLive),
+  Layer.provide(ConfigurationWithSyncLive),
+  Layer.provide(MountainLive),
+  Layer.provide(MountainSyncLive),
+  Layer.provide(HealthLive),
+  Layer.provide(BootstrapLive)
+);
+var Tauri_default = TauriLiveLayer;
+export {
+  TauriBaseLayer,
+  TauriDevLayer,
+  TauriLiveLayer,
+  Tauri_default as default
+};
+//# sourceMappingURL=Tauri.js.map

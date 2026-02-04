@@ -1,1 +1,27 @@
-import{Layer as e}from"effect";import{ConfigurationMockLive as o}from"../Configuration.js";import{IPCMockLive as r}from"../IPC.js";import{MountainMockLive as i}from"../Mountain.js";import{SandboxMockLive as p}from"../Sandbox.js";import{TelemetryLive as t,TelemetryMockLive as m}from"../Telemetry.js";const v=e.empty.pipe(e.provide(p),e.provide(r),e.provide(o),e.provide(m),e.provide(i)),n=e.empty.pipe(e.provide(p),e.provide(r),e.provide(o),e.provide(t),e.provide(i));var M=v;export{v as TestLayer,n as TestWithTelemetryLayer,M as default};
+import { Layer } from "effect";
+import { ConfigurationMockLive } from "../Configuration.js";
+import { IPCMockLive } from "../IPC.js";
+import { MountainMockLive } from "../Mountain.js";
+import { SandboxMockLive } from "../Sandbox.js";
+import { TelemetryLive, TelemetryMockLive } from "../Telemetry.js";
+const TestLayer = Layer.empty.pipe(
+  Layer.provide(SandboxMockLive),
+  Layer.provide(IPCMockLive),
+  Layer.provide(ConfigurationMockLive),
+  Layer.provide(TelemetryMockLive),
+  Layer.provide(MountainMockLive)
+);
+const TestWithTelemetryLayer = Layer.empty.pipe(
+  Layer.provide(SandboxMockLive),
+  Layer.provide(IPCMockLive),
+  Layer.provide(ConfigurationMockLive),
+  Layer.provide(TelemetryLive),
+  Layer.provide(MountainMockLive)
+);
+var Test_default = TestLayer;
+export {
+  TestLayer,
+  TestWithTelemetryLayer,
+  Test_default as default
+};
+//# sourceMappingURL=Test.js.map

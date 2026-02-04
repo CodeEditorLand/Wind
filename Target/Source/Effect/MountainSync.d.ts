@@ -41,7 +41,7 @@ export interface MountainSyncResult {
 declare const MountainSyncTag_base: Context.TagClass<MountainSyncTag, "Effect/MountainSyncService", MountainSyncService>;
 export declare class MountainSyncTag extends MountainSyncTag_base {
 }
-export declare const MountainSyncLive: Layer.Layer<MountainSyncTag, never, TelemetryTag | MountainTag | IPCTag>;
+export declare const MountainSyncLive: Layer.Layer<MountainSyncTag, never, TelemetryTag | IPCTag | MountainTag>;
 export declare const makeMockMountainSync: () => MountainSyncService;
 export declare const MountainSyncMock: Layer.Layer<MountainSyncTag, never, never>;
 export {};

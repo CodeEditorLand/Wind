@@ -1,1 +1,228 @@
-import{Context as v,Effect as n,Layer as d,Stream as g,SubscriptionRef as c}from"effect";import{ConfigurationNotReadyError as x}from"../Types/Sandbox.js";import{IPC as w}from"./IPC.js";import{Sandbox as S}from"./Sandbox.js";class k extends Error{constructor(e){super(`Failed to fetch configuration: ${String(e)}`);this.cause=e}_tag="ConfigFetchError"}class p extends Error{constructor(e){super(`Configuration validation failed: ${e.join(", ")}`);this.issues=e}_tag="ConfigValidationError"}class u extends Error{constructor(e,r){super(`Failed to apply configuration for '${e}': ${String(r)}`);this.key=e;this.cause=r}_tag="ConfigApplyError"}const l=i=>{const o=[];if(!i||typeof i!="object")return o.push({path:"",message:"Configuration must be an object"}),o;const e=i;if(e.zoomLevel!==void 0&&(typeof e.zoomLevel!="number"?o.push({path:"zoomLevel",message:"Must be a number"}):(e.zoomLevel<-10||e.zoomLevel>10)&&o.push({path:"zoomLevel",message:"Must be between -10 and 10"})),e.userEnv!==void 0&&typeof e.userEnv!="object"&&o.push({path:"userEnv",message:"Must be an object"}),e.workspace!==void 0)if(typeof e.workspace!="object"||e.workspace===null)o.push({path:"workspace",message:"Must be an object"});else{const r=e.workspace;r.id!==void 0&&typeof r.id!="string"&&o.push({path:"workspace.id",message:"Must be a string"}),r.uri!==void 0&&typeof r.uri!="string"&&o.push({path:"workspace.uri",message:"Must be a string"})}return o};class I extends v.Tag("Configuration")(){}const y=I,F=d.effect(y,n.gen(function*(){const i=yield*S,o=yield*w,e=yield*c.make(null),r=n.gen(function*(){const t=yield*i.resolveConfiguration.pipe(n.either);return t._tag==="Right"?t.right:yield*o.invoke("mountain_get_workbench_configuration")([]).pipe(n.mapError(a=>new k(a)))}),s=t=>n.sync(()=>l(t)).pipe(n.flatMap(a=>a.length>0?n.fail(new p(a.map(f=>`${f.path}: ${f.message}`))):n.succeed(t))),C=t=>n.gen(function*(){if(t.zoomLevel!==void 0&&(yield*n.try({try:()=>{window&&window.vscode&&window.vscode.postMessage({type:"setZoomLevel",payload:t.zoomLevel})},catch:a=>new u("zoomLevel",a)})),t.userEnv)for(const[a,f]of Object.entries(t.userEnv||{}))yield*n.try({try:()=>{typeof process<"u"&&process.env&&(process.env[a]=f)},catch:b=>new u(a,b)})}),m=e.changes.pipe(g.filter(t=>t!==null)),E=n.gen(function*(){const t=yield*e.get;return t||(yield*n.fail(new x))}),h=n.gen(function*(){const t=yield*r;return yield*c.set(e,t),t});return yield*r.pipe(n.flatMap(t=>c.set(e,t))),yield*n.log("[Configuration] Configuration service initialized"),{get:E,fetch:r,validate:s,apply:C,changes:m,refresh:h}})),$=(i,o)=>{const e=o.split(".");let r=i;for(const s of e)if(r&&typeof r=="object"&&s in r)r=r[s];else return;return r},L=i=>{const o={zoomLevel:0,userEnv:{},workspace:{id:"mock-workspace",uri:"mock://workspace",name:"Mock Workspace"},...i};return{get:n.succeed(o),fetch:n.succeed(o),validate:e=>n.sync(()=>{const r=l(e);return r.length>0?n.fail(new p(r.map(s=>`${s.path}: ${s.message}`))):n.succeed(e)}).pipe(n.flatten),apply:()=>n.void,changes:g.empty,refresh:n.succeed(o)}},_=d.succeed(y,L());export{u as ConfigApplyError,k as ConfigFetchError,p as ConfigValidationError,y as Configuration,F as ConfigurationLive,_ as ConfigurationMock,I as ConfigurationTag,$ as getConfigValue,L as makeMockConfiguration};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import {
+  Context,
+  Effect,
+  Layer,
+  Stream,
+  SubscriptionRef
+} from "effect";
+import {
+  ConfigurationNotReadyError
+} from "../Types/Sandbox.js";
+import { IPC } from "./IPC.js";
+import { Sandbox } from "./Sandbox.js";
+class ConfigFetchError extends Error {
+  constructor(cause) {
+    super(`Failed to fetch configuration: ${String(cause)}`);
+    this.cause = cause;
+  }
+  static {
+    __name(this, "ConfigFetchError");
+  }
+  _tag = "ConfigFetchError";
+}
+class ConfigValidationError extends Error {
+  constructor(issues) {
+    super(`Configuration validation failed: ${issues.join(", ")}`);
+    this.issues = issues;
+  }
+  static {
+    __name(this, "ConfigValidationError");
+  }
+  _tag = "ConfigValidationError";
+}
+class ConfigApplyError extends Error {
+  constructor(key, cause) {
+    super(`Failed to apply configuration for '${key}': ${String(cause)}`);
+    this.key = key;
+    this.cause = cause;
+  }
+  static {
+    __name(this, "ConfigApplyError");
+  }
+  _tag = "ConfigApplyError";
+}
+const validateConfig = /* @__PURE__ */ __name((config) => {
+  const issues = [];
+  if (!config || typeof config !== "object") {
+    issues.push({ path: "", message: "Configuration must be an object" });
+    return issues;
+  }
+  const cfg = config;
+  if (cfg["zoomLevel"] !== void 0) {
+    if (typeof cfg["zoomLevel"] !== "number") {
+      issues.push({ path: "zoomLevel", message: "Must be a number" });
+    } else if (cfg["zoomLevel"] < -10 || cfg["zoomLevel"] > 10) {
+      issues.push({
+        path: "zoomLevel",
+        message: "Must be between -10 and 10"
+      });
+    }
+  }
+  if (cfg["userEnv"] !== void 0 && typeof cfg["userEnv"] !== "object") {
+    issues.push({ path: "userEnv", message: "Must be an object" });
+  }
+  if (cfg["workspace"] !== void 0) {
+    if (typeof cfg["workspace"] !== "object" || cfg["workspace"] === null) {
+      issues.push({ path: "workspace", message: "Must be an object" });
+    } else {
+      const ws = cfg["workspace"];
+      if (ws["id"] !== void 0 && typeof ws["id"] !== "string") {
+        issues.push({
+          path: "workspace.id",
+          message: "Must be a string"
+        });
+      }
+      if (ws["uri"] !== void 0 && typeof ws["uri"] !== "string") {
+        issues.push({
+          path: "workspace.uri",
+          message: "Must be a string"
+        });
+      }
+    }
+  }
+  return issues;
+}, "validateConfig");
+class ConfigurationTag extends Context.Tag("Configuration")() {
+  static {
+    __name(this, "ConfigurationTag");
+  }
+}
+const Configuration = ConfigurationTag;
+const ConfigurationLive = Layer.effect(
+  Configuration,
+  Effect.gen(function* () {
+    const sandbox = yield* Sandbox;
+    const ipc = yield* IPC;
+    const configRef = yield* SubscriptionRef.make(null);
+    const fetch = Effect.gen(function* () {
+      const fromSandbox = yield* sandbox.resolveConfiguration.pipe(
+        Effect.either
+      );
+      if (fromSandbox._tag === "Right") {
+        return fromSandbox.right;
+      }
+      return yield* ipc.invoke("mountain_get_workbench_configuration")([]).pipe(Effect.mapError((error) => new ConfigFetchError(error)));
+    });
+    const validate = /* @__PURE__ */ __name((config) => Effect.sync(() => validateConfig(config)).pipe(
+      Effect.flatMap(
+        (issues) => issues.length > 0 ? Effect.fail(
+          new ConfigValidationError(
+            issues.map(
+              (i) => `${i.path}: ${i.message}`
+            )
+          )
+        ) : Effect.succeed(config)
+      )
+    ), "validate");
+    const apply = /* @__PURE__ */ __name((config) => Effect.gen(function* () {
+      if (config.zoomLevel !== void 0) {
+        yield* Effect.try({
+          try: /* @__PURE__ */ __name(() => {
+            if (window && window.vscode) {
+              window.vscode.postMessage({
+                type: "setZoomLevel",
+                payload: config.zoomLevel
+              });
+            }
+          }, "try"),
+          catch: /* @__PURE__ */ __name((error) => new ConfigApplyError("zoomLevel", error), "catch")
+        });
+      }
+      if (config.userEnv) {
+        for (const [key, value] of Object.entries(config.userEnv || {})) {
+          yield* Effect.try({
+            try: /* @__PURE__ */ __name(() => {
+              if (typeof process !== "undefined" && process.env) {
+                process.env[key] = value;
+              }
+            }, "try"),
+            catch: /* @__PURE__ */ __name((error) => new ConfigApplyError(key, error), "catch")
+          });
+        }
+      }
+    }), "apply");
+    const changes = configRef.changes.pipe(
+      Stream.filter((config) => config !== null)
+    );
+    const get = Effect.gen(function* () {
+      const current = yield* configRef.get;
+      if (!current) {
+        return yield* Effect.fail(
+          new ConfigurationNotReadyError()
+        );
+      }
+      return current;
+    });
+    const refresh = Effect.gen(function* () {
+      const config = yield* fetch;
+      yield* SubscriptionRef.set(configRef, config);
+      return config;
+    });
+    yield* fetch.pipe(Effect.flatMap((config) => SubscriptionRef.set(configRef, config)));
+    yield* Effect.log("[Configuration] Configuration service initialized");
+    return {
+      get,
+      fetch,
+      validate,
+      apply,
+      changes,
+      refresh
+    };
+  })
+);
+const getConfigValue = /* @__PURE__ */ __name((config, path) => {
+  const parts = path.split(".");
+  let current = config;
+  for (const part of parts) {
+    if (current && typeof current === "object" && part in current) {
+      current = current[part];
+    } else {
+      return void 0;
+    }
+  }
+  return current;
+}, "getConfigValue");
+const makeMockConfiguration = /* @__PURE__ */ __name((overrides) => {
+  const mockConfig = {
+    zoomLevel: 0,
+    userEnv: {},
+    workspace: {
+      id: "mock-workspace",
+      uri: "mock://workspace",
+      name: "Mock Workspace"
+    },
+    ...overrides
+  };
+  return {
+    get: Effect.succeed(mockConfig),
+    fetch: Effect.succeed(mockConfig),
+    validate: /* @__PURE__ */ __name((config) => Effect.sync(() => {
+      const issues = validateConfig(config);
+      if (issues.length > 0) {
+        return Effect.fail(new ConfigValidationError(issues.map((i) => `${i.path}: ${i.message}`)));
+      }
+      return Effect.succeed(config);
+    }).pipe(Effect.flatten), "validate"),
+    apply: /* @__PURE__ */ __name(() => Effect.void, "apply"),
+    changes: Stream.empty,
+    refresh: Effect.succeed(mockConfig)
+  };
+}, "makeMockConfiguration");
+const ConfigurationMock = Layer.succeed(
+  Configuration,
+  makeMockConfiguration()
+);
+export {
+  ConfigApplyError,
+  ConfigFetchError,
+  ConfigValidationError,
+  Configuration,
+  ConfigurationLive,
+  ConfigurationMock,
+  ConfigurationTag,
+  getConfigValue,
+  makeMockConfiguration
+};
+//# sourceMappingURL=Configuration.js.map
