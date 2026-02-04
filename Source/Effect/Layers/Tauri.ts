@@ -11,7 +11,6 @@ import {
 	ConfigurationLive,
 	ConfigurationWithSyncLive,
 } from "../Configuration.js";
-import { IPCTauriLive } from "../IPC.js";
 import { MountainLive } from "../Mountain.js";
 import { SandboxLive } from "../Sandbox.js";
 import { TelemetryLive } from "../Telemetry.js";

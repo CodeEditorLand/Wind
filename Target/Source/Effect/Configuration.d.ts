@@ -7,6 +7,7 @@
  */
 import { Context, Effect, Layer, Stream } from "effect";
 import { ConfigurationNotReadyError, type ISandboxConfiguration } from "../Types/Sandbox.js";
+import { MountainTag } from "./Mountain.js";
 export declare class ConfigFetchError extends Error {
     readonly cause: unknown;
     readonly _tag = "ConfigFetchError";
@@ -42,6 +43,7 @@ export declare class ConfigurationTag extends ConfigurationTag_base {
 }
 export declare const Configuration: typeof ConfigurationTag;
 export declare const ConfigurationLive: Layer.Layer<ConfigurationTag, ConfigFetchError, import("./Sandbox.js").SandboxService | import("./IPC.js").IPCTag>;
+export declare const ConfigurationWithSyncLive: Layer.Layer<ConfigurationTag, ConfigFetchError, import("./Sandbox.js").SandboxService | import("./IPC.js").IPCTag | MountainTag>;
 export declare const getConfigValue: <T>(config: ISandboxConfiguration, path: string) => T | undefined;
 export declare const makeMockConfiguration: (overrides?: Partial<ISandboxConfiguration>) => ConfigurationService;
 export declare const ConfigurationMock: Layer.Layer<ConfigurationTag, never, never>;

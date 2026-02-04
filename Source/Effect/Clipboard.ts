@@ -193,7 +193,7 @@ export const LiveClipboardServiceLayer = Layer.succeed(
  */
 const MockClipboardService: ClipboardService = {
 	readText: () => Effect.succeed("mock clipboard text"),
-	writeText: (text: string) => Effect.void,
+	writeText: (_text: string) => Effect.void,
 	readHTML: () => Effect.succeed(""),
 	writeHTML: () => Effect.void,
 	readImage: () => Effect.succeed(new Blob()),

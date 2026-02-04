@@ -9,11 +9,11 @@ import { Layer } from "effect";
  * Complete test layer with all services mocked.
  * No real backend connections, all effects succeed with dummy data.
  */
-export declare const TestLayer: Layer.Layer<never, any, any>;
+export declare const TestLayer: Layer.Layer<never, never, never>;
 /**
  * Test layer with real telemetry but mocked services.
  * Useful for testing performance monitoring.
  */
-export declare const TestWithTelemetryLayer: Layer.Layer<never, any, any>;
+export declare const TestWithTelemetryLayer: Layer.Layer<never, never, never>;
 export default TestLayer;
 //# sourceMappingURL=Test.d.ts.map

@@ -71,15 +71,15 @@ export interface IVSCodeWorkbenchOptions {
  * VSCode Service Collection Interface
  */
 export interface IVSCodeServiceCollection {
-	set<T>(id: IVSCodeServiceIdentifier<T>, instance: T): void;
-	get<T>(id: IVSCodeServiceIdentifier<T>): T;
-	has<T>(id: IVSCodeServiceIdentifier<T>): boolean;
+	set<T>(id: IVSCodeServiceIdentifier, instance: T): void;
+	get<T>(id: IVSCodeServiceIdentifier): T;
+	has(id: IVSCodeServiceIdentifier): boolean;
 }
 
 /**
  * VSCode Service Identifier
  */
-export interface IVSCodeServiceIdentifier<T> {
+export interface IVSCodeServiceIdentifier {
 	_serviceBrand: undefined;
 	toString(): string;
 }

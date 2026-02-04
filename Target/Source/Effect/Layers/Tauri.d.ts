@@ -18,11 +18,11 @@ export declare const TauriBaseLayer: Layer.Layer<never, import("../Configuration
  *
  * This is the standard layer for Wind production builds.
  */
-export declare const TauriLiveLayer: Layer.Layer<never, any, unknown>;
+export declare const TauriLiveLayer: Layer.Layer<never, import("../Configuration.js").ConfigFetchError, unknown>;
 /**
  * Tauri layer with maximum telemetry and logging.
  * Useful for debugging and development.
  */
-export declare const TauriDevLayer: Layer.Layer<never, any, unknown>;
+export declare const TauriDevLayer: Layer.Layer<never, import("../Configuration.js").ConfigFetchError, unknown>;
 export default TauriLiveLayer;
 //# sourceMappingURL=Tauri.d.ts.map

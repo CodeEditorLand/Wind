@@ -27,5 +27,5 @@ export declare function validateIPCChannel(channel: string): boolean;
 /**
  * Implements graceful degradation with fallback support
  */
-export declare function fallback(error: unknown): void;
+export declare function fallback(): void;
 //# sourceMappingURL=Install.d.ts.map

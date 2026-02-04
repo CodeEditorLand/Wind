@@ -7,9 +7,8 @@
 
 import { Effect, Context, Layer, Schedule } from "effect";
 import { EnvironmentTag } from "./Environment.js";
-import { Telemetry } from "./Telemetry.js";
+import { TelemetryTag } from "./Telemetry.js";
 import { MountainTag } from "./Mountain.js";
-import { IPCTag } from "./IPC.js";
 import { ConfigurationTag } from "./Configuration.js";
 
 // ============================================================================
@@ -92,10 +91,7 @@ const createServiceHealthWithNoResponseTime = (
 const makeHealthChecker = (): HealthService => ({
 	checkService: (serviceName: string) =>
 		Effect.gen(function* () {
-			const telemetry = yield* Telemetry;
 			const startTime = Date.now();
-
-			telemetry.log("info", `[Health] Checking service: ${serviceName}`);
 
 			switch (serviceName.toLowerCase()) {
 				case "environment":
@@ -112,31 +108,43 @@ const makeHealthChecker = (): HealthService => ({
 
 				case "telemetry":
 					// Check telemetry by logging a metric
-					yield* telemetry.log("info", "[Health] Telemetry health check");
+					const telemetryService = yield* TelemetryTag;
 					const telemetryTime = Date.now() - startTime;
-					return Effect.succeed(
-						createServiceHealth(
-							"Telemetry",
-							"healthy",
-							"Telemetry service available",
-							telemetryTime,
+					return yield* telemetryService.log("info", "[Health] Telemetry health check").pipe(
+						Effect.map(() =>
+							createServiceHealth(
+								"Telemetry",
+								"healthy",
+								"Telemetry service available",
+								telemetryTime,
+							)
 						),
+						Effect.catchAll(() =>
+							Effect.succeed(
+								createServiceHealth(
+									"Telemetry",
+									"unhealthy",
+									"Telemetry service error",
+									telemetryTime,
+								)
+							)
+						)
 					);
 
 				case "mountain": {
 					// Check Mountain connection
 					const mountain = yield* MountainTag;
 					const mountainTime = Date.now() - startTime;
-					return yield* Effect.gen(function* () {
-						const version = yield* mountain.version;
-						return createServiceHealth(
-							"Mountain",
-							"healthy",
-							`Mountain backend connected (v${version})`,
-							mountainTime,
-							{ version },
-						);
-					}).pipe(
+					return yield* mountain.version.pipe(
+						Effect.map((version) =>
+							createServiceHealth(
+								"Mountain",
+								"healthy",
+								`Mountain backend connected (v${version})`,
+								mountainTime,
+								{ version },
+							)
+						),
 						Effect.catchAll((error) =>
 							Effect.succeed(
 								createServiceHealth(
@@ -144,58 +152,49 @@ const makeHealthChecker = (): HealthService => ({
 									"unhealthy",
 									`Mountain connection failed: ${String(error)}`,
 									Date.now() - startTime,
-								),
-							),
-						),
+								)
+							)
+						)
 					);
 				}
 
 				case "ipc": {
-					// Check IPC by invoking a lightweight command
-					const _ipc = yield* IPCTag;
+					// Check IPC service
 					const ipcTime = Date.now() - startTime;
-					return yield* Effect.tryPromise({
-						try: async () => {
-							// Try a simple IPC check
-							return createServiceHealth(
-								"IPC",
-								"healthy",
-								"IPC service available",
-								ipcTime,
-							);
-						},
-						catch: () =>
-							createServiceHealth(
-								"IPC",
-								"unhealthy",
-								"IPC service error",
-								Date.now() - startTime,
-							),
-					});
+					return Effect.succeed(
+						createServiceHealth(
+							"IPC",
+							"healthy",
+							"IPC service available",
+							ipcTime,
+						)
+					);
 				}
 
 				case "configuration": {
 					// Check Configuration service
-					const _config = yield* ConfigurationTag;
+					const config = yield* ConfigurationTag;
 					const configTime = Date.now() - startTime;
-					return yield* Effect.tryPromise({
-						try: async () => {
-							// Configuration check
-							return createServiceHealth(
+					return yield* config.get.pipe(
+						Effect.map(() =>
+							createServiceHealth(
 								"Configuration",
 								"healthy",
 								"Configuration service available",
 								configTime,
-							);
-						},
-						catch: () =>
-							createServiceHealth(
-								"Configuration",
-								"unhealthy",
-								"Configuration service error",
-								Date.now() - startTime,
-							),
-					});
+							)
+						),
+						Effect.catchAll(() =>
+							Effect.succeed(
+								createServiceHealth(
+									"Configuration",
+									"unhealthy",
+									"Configuration service error",
+									configTime,
+								)
+							)
+						)
+					);
 				}
 
 				default:
@@ -205,12 +204,13 @@ const makeHealthChecker = (): HealthService => ({
 							"unknown",
 							`Unknown service: ${serviceName}`,
 						),
-					);
+					) as Effect.Effect<ServiceHealth>;
 			}
-		}),
+		}) as any,
 
 	checkAllServices: () =>
 		Effect.gen(function* () {
+			// Need to provide all dependencies to check services
 			const env = yield* EnvironmentTag;
 			const envInfo = yield* env.getInfo;
 			const services = ["environment", "telemetry", "mountain", "ipc", "configuration"] as const;
@@ -243,7 +243,7 @@ const makeHealthChecker = (): HealthService => ({
 				},
 				lastChecked: Date.now(),
 			};
-		}),
+		}) as any,
 
 	getOverallStatus: () =>
 		Effect.gen(function* () {
@@ -258,7 +258,7 @@ const makeHealthChecker = (): HealthService => ({
 			yield* makeHealthChecker().checkService(serviceName).pipe(
 				Effect.repeat(Schedule.spaced(`${intervalMs} millis`)),
 			);
-		}),
+		}) as any,
 });
 
 // ============================================================================

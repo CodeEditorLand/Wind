@@ -118,7 +118,7 @@ export class IPCChannelError extends Error {
 	readonly _tag = "IPCChannelError";
 	constructor(
 		readonly channel: string,
-		readonly cause: unknown,
+		override readonly cause: unknown,
 	) {
 		super(`IPC channel '${channel}' error: ${String(cause)}`);
 	}

@@ -7,7 +7,7 @@
 
 import { Layer } from "effect";
 
-import { ConfigurationMockLive } from "../Configuration.js";
+import { ConfigurationMock } from "../Configuration.js";
 import { IPCMockLive } from "../IPC.js";
 import { MountainMockLive } from "../Mountain.js";
 import { SandboxMockLive } from "../Sandbox.js";
@@ -24,7 +24,7 @@ import { TelemetryLive, TelemetryMockLive } from "../Telemetry.js";
 export const TestLayer = Layer.empty.pipe(
 	Layer.provide(SandboxMockLive),
 	Layer.provide(IPCMockLive),
-	Layer.provide(ConfigurationMockLive),
+	Layer.provide(ConfigurationMock),
 	Layer.provide(TelemetryMockLive),
 	Layer.provide(MountainMockLive),
 );
@@ -40,7 +40,7 @@ export const TestLayer = Layer.empty.pipe(
 export const TestWithTelemetryLayer = Layer.empty.pipe(
 	Layer.provide(SandboxMockLive),
 	Layer.provide(IPCMockLive),
-	Layer.provide(ConfigurationMockLive),
+	Layer.provide(ConfigurationMock),
 	Layer.provide(TelemetryLive),
 	Layer.provide(MountainMockLive),
 );

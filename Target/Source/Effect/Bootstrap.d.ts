@@ -14,12 +14,6 @@
  * - Stage 6: Health checks (via Health service)
  */
 import { Effect, Layer, Context } from "effect";
-import { EnvironmentTag } from "./Environment.js";
-import { TelemetryTag } from "./Telemetry.js";
-import { Sandbox, type SandboxService } from "./Sandbox.js";
-import { ConfigurationTag } from "./Configuration.js";
-import { MountainTag } from "./Mountain.js";
-import { HealthTag } from "./Health.js";
 export interface BootstrapOptions {
     readonly debugMode?: boolean;
     readonly verboseLogging?: boolean;
@@ -40,7 +34,7 @@ export interface BootstrapResult {
     readonly error: Error | undefined;
 }
 export interface BootstrapService {
-    readonly run: (options?: BootstrapOptions) => Effect.Effect<BootstrapResult, never, typeof Sandbox | typeof TelemetryTag | typeof EnvironmentTag | typeof MountainTag | typeof HealthTag | typeof ConfigurationTag>;
+    readonly run: (options?: BootstrapOptions) => any;
 }
 declare const BootstrapTag_base: Context.TagClass<BootstrapTag, "Effect/BootstrapService", BootstrapService>;
 export declare class BootstrapTag extends BootstrapTag_base {
@@ -48,6 +42,6 @@ export declare class BootstrapTag extends BootstrapTag_base {
 export declare const BootstrapLive: Layer.Layer<BootstrapTag, never, never>;
 export declare const makeMockBootstrap: () => BootstrapService;
 export declare const BootstrapMock: Layer.Layer<BootstrapTag, never, never>;
-export declare const runBootstrap: (options?: BootstrapOptions) => Effect.Effect<BootstrapResult, never, typeof EnvironmentTag | typeof TelemetryTag | Context.Tag<SandboxService, SandboxService> | typeof ConfigurationTag | typeof MountainTag | typeof HealthTag>;
+export declare const runBootstrap: (options?: BootstrapOptions) => Effect.Effect<any, unknown, unknown>;
 export {};
 //# sourceMappingURL=Bootstrap.d.ts.map

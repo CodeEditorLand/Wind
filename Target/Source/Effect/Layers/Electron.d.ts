@@ -18,11 +18,11 @@ export declare const ElectronBaseLayer: Layer.Layer<never, import("../Configurat
  *
  * This is the standard layer for Sky (Electron) builds.
  */
-export declare const ElectronLiveLayer: Layer.Layer<never, any, unknown>;
+export declare const ElectronLiveLayer: Layer.Layer<never, import("../Configuration.js").ConfigFetchError, unknown>;
 /**
  * Electron layer with maximum telemetry and logging.
  * Useful for debugging and development in Electron environment.
  */
-export declare const ElectronDevLayer: Layer.Layer<never, any, unknown>;
+export declare const ElectronDevLayer: Layer.Layer<never, import("../Configuration.js").ConfigFetchError, unknown>;
 export default ElectronLiveLayer;
 //# sourceMappingURL=Electron.d.ts.map

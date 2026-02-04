@@ -10,7 +10,7 @@ import { Context, Effect, Fiber, Layer, Schedule, Stream, SubscriptionRef } from
 
 import { Configuration } from "./Configuration.js";
 import { IPC } from "./IPC.js";
-import { Telemetry, withSpan } from "./Telemetry.js";
+import { Telemetry } from "./Telemetry.js";
 
 // ============================================================================
 // Mountain Error Types
@@ -18,58 +18,41 @@ import { Telemetry, withSpan } from "./Telemetry.js";
 
 export class MountainConnectionError extends Error {
 	readonly _tag = "MountainConnectionError";
-	readonly _cause: unknown;
+	override readonly cause: unknown;
 	constructor(cause: unknown) {
 		super(`Failed to connect to Mountain backend: ${String(cause)}`);
-		this._cause = cause;
-		Object.setPrototypeOf(this, MountainConnectionError.prototype);
 	}
-	get cause() { return this._cause; }
-	get name() { return "MountainConnectionError"; }
 }
 
 export class MountainRPCError extends Error {
 	readonly _tag = "MountainRPCError";
-	readonly _method: string;
-	readonly _cause: unknown;
+	readonly method: string;
+	override readonly cause: unknown;
 	constructor(method: string, cause: unknown) {
 		super(`Mountain RPC '${method}' failed: ${String(cause)}`);
-		this._method = method;
-		this._cause = cause;
-		Object.setPrototypeOf(this, MountainRPCError.prototype);
+		this.method = method;
 	}
-	get method() { return this._method; }
-	get cause() { return this._cause; }
-	get name() { return "MountainRPCError"; }
 }
 
 export class MountainSyncError extends Error {
 	readonly _tag = "MountainSyncError";
-	readonly _resource: string;
-	readonly _cause: unknown;
+	readonly resource: string;
+	override readonly cause: unknown;
 	constructor(resource: string, cause: unknown) {
 		super(`Mountain sync for '${resource}' failed: ${String(cause)}`);
-		this._resource = resource;
-		this._cause = cause;
-		Object.setPrototypeOf(this, MountainSyncError.prototype);
+		this.resource = resource;
 	}
-	get resource() { return this._resource; }
-	get cause() { return this._cause; }
-	get name() { return "MountainSyncError"; }
 }
 
 export class MountainStateError extends Error {
 	readonly _tag = "MountainStateError";
-	readonly _expected: string;
-	readonly _actual: string;
+	readonly expected: string;
+	readonly actual: string;
 	constructor(expected: string, actual: string) {
 		super(`Mountain state error: expected ${expected}, got ${actual}`);
-		this._expected = expected;
-		this._actual = actual;
-		Object.setPrototypeOf(this, MountainStateError.prototype);
+		this.expected = expected;
+		this.actual = actual;
 	}
-	get expected() { return this._expected; }
-	get actual() { return this._actual; }
 }
 
 // ============================================================================
@@ -173,6 +156,25 @@ export const MountainLive = Layer.effect(
 			Schedule.intersect(Schedule.recurs(10)),
 		);
 
+		// Helper: withSpan using captured telemetry (no external dependencies)
+		const withSpanLocal = <A, E>(
+			name: string,
+			effect: Effect.Effect<A, E, never>,
+		): Effect.Effect<A, E, never> =>
+			Effect.gen(function* () {
+				const span = yield* telemetry.startSpan(name);
+				return yield* effect.pipe(
+					Effect.tap(() => span.end(true)),
+					Effect.catchAll((error) =>
+						Effect.gen(function* () {
+							const errorMsg = error instanceof Error ? error.message : String(error);
+							yield* span.end(false, errorMsg);
+							return yield* Effect.fail(error);
+						}),
+					),
+				);
+			});
+
 		// Atom: Update connection state
 		const setState = (state: MountainConnectionState) =>
 			Effect.gen(function* () {
@@ -188,45 +190,55 @@ export const MountainLive = Layer.effect(
 		const connect = Effect.gen(function* () {
 			yield* setState({ _tag: "Connecting", attempt: 1 });
 
-			return yield* Effect.retry(
-				Effect.gen(function* () {
-					const status = yield* ipc
-						.invoke("mountain_get_status")([])
-						.pipe(
-							Effect.mapError(
-								(error) => new MountainConnectionError(error),
-							),
-						) as { connected: boolean; version: string };
-
-					if (!status.connected) {
-						return yield* Effect.fail(
-							new MountainConnectionError("Mountain not ready"),
-						);
-					}
-
-					yield* setState({
-						_tag: "Connected",
-						version: status.version,
-					});
-					yield* telemetry.log(
-						"info",
-						`Connected to Mountain v${status.version}`,
+			const connectionEffect = Effect.gen(function* () {
+				const status = yield* ipc
+					.invoke("mountain_get_status")([])
+					.pipe(
+						Effect.map((result): { connected: boolean; version: string } => {
+							const apiStatus = result as { connected?: boolean; version?: string };
+							return {
+								connected: apiStatus.connected ?? false,
+								version: apiStatus.version ?? "unknown",
+							};
+						}),
+						Effect.mapError(
+							(error) => new MountainConnectionError(error),
+						),
 					);
-				}).pipe(withSpan("mountain_connect")),
+
+				if (!status.connected) {
+					yield* Effect.fail(
+						new MountainConnectionError("Mountain not ready"),
+					);
+				}
+
+				yield* setState({
+					_tag: "Connected",
+					version: status.version,
+				});
+				yield* telemetry.log(
+					"info",
+					`Connected to Mountain v${status.version}`,
+				);
+			}) satisfies Effect.Effect<void, MountainConnectionError, never>;
+
+			return yield* Effect.retry(
+				withSpanLocal("mountain_connect", connectionEffect),
 				retrySchedule,
 			).pipe(
 				Effect.catchAll((error) =>
 					Effect.gen(function* () {
-						yield* setState({ _tag: "Error", error });
+						const errorObj = error instanceof Error ? error : new Error(String(error));
+						yield* setState({ _tag: "Error", error: errorObj });
 						yield* telemetry.log(
 							"error",
-							`Failed to connect: ${error.message}`,
+							`Failed to connect: ${errorObj.message}`,
 						);
-						return yield* Effect.fail(error);
+						yield* Effect.fail(error as MountainConnectionError);
 					}),
 				),
 			);
-		});
+		}) satisfies Effect.Effect<void, MountainConnectionError, never>;
 
 		// Atom: Disconnect
 		const disconnect = Effect.gen(function* () {
@@ -235,46 +247,45 @@ export const MountainLive = Layer.effect(
 		});
 
 		// Atom: RPC with telemetry
-		const rpc =
-			<T>(method: string) =>
-			(args?: Record<string, unknown>) =>
-				Effect.gen(function* () {
-					const currentState = yield* stateRef.get;
+		const rpc: MountainService["rpc"] = (method) => (args) =>
+			Effect.gen(function* () {
+				const currentState = yield* stateRef.get;
 
-					if (currentState._tag !== "Connected") {
-						// Auto-connect if not connected
-						yield* connect;
-					}
+				if (currentState._tag !== "Connected") {
+					// Auto-connect if not connected
+					yield* connect;
+				}
 
-					const span = yield* telemetry.startSpan(`rpc_${method}`);
+				const span = yield* telemetry.startSpan(`rpc_${method}`);
 
-					return yield* ipc
-						.invoke(method)(args ? [args] : [])
-						.pipe(
-							Effect.mapError(
-								(error) => new MountainRPCError(method, error),
-							),
-							Effect.tap(() => span.end(true)),
-							Effect.catchAll((error) =>
-								Effect.gen(function* () {
-									yield* span.end(false, error.message);
+				return yield* ipc
+					.invoke(method)(args ? [args] : [])
+					.pipe(
+						Effect.mapError(
+							(error) => new MountainRPCError(method, error),
+						),
+						Effect.tap(() => span.end(true)),
+						Effect.catchAll((error) =>
+							Effect.gen(function* () {
+								const errorMessage = error instanceof Error ? error.message : String(error);
+								yield* span.end(false, errorMessage);
 
-									// Check if connection lost
-									if (
-										String(error).includes("connection") ||
-										String(error).includes("network")
-									) {
-										yield* setState({
-											_tag: "Disconnected",
-											reason: "connection_lost",
-										});
-									}
+								// Check if connection lost
+								if (
+									errorMessage.includes("connection") ||
+									errorMessage.includes("network")
+								) {
+									yield* setState({
+										_tag: "Disconnected",
+										reason: "connection_lost",
+									});
+								}
 
-									return yield* Effect.fail(error);
-								}),
-							),
-						) as Effect.Effect<T, MountainRPCError>;
-				});
+								yield* Effect.fail(error as MountainRPCError);
+							}),
+						),
+					) as any;
+			}) as any;
 
 		// Atom: Sync resource
 		const sync = (resourceType: SyncResource["type"]) =>
@@ -290,9 +301,7 @@ export const MountainLive = Layer.effect(
 				const result = yield* Effect.gen(function* () {
 					switch (resourceType) {
 						case "configuration": {
-							const mountainConfig = yield* rpc<
-								Record<string, unknown>
-							>("mountain_get_configuration")();
+							const mountainConfig = (yield* rpc("mountain_get_configuration")()) as any;
 							const localConfig = yield* config.get;
 
 							// Detect changes
@@ -321,9 +330,7 @@ export const MountainLive = Layer.effect(
 						}
 
 						case "services": {
-							const services = yield* rpc<
-								Record<string, unknown>
-							>("mountain_get_services_status")();
+							const services = (yield* rpc("mountain_get_services_status")()) as any;
 
 							const resource: SyncResource = {
 								type: "services",
@@ -343,10 +350,7 @@ export const MountainLive = Layer.effect(
 						}
 
 						case "state": {
-							const state =
-								yield* rpc<Record<string, unknown>>(
-									"mountain_get_state",
-								)();
+							const state = (yield* rpc("mountain_get_state")()) as any;
 
 							const resource: SyncResource = {
 								type: "state",
@@ -380,8 +384,9 @@ export const MountainLive = Layer.effect(
 					),
 					Effect.catchAll((error) =>
 						Effect.gen(function* () {
-							yield* span.end(false, error.message);
-							return yield* Effect.fail(
+							const errorMessage = error instanceof Error ? error.message : String(error);
+							yield* span.end(false, errorMessage);
+							yield* Effect.fail(
 								new MountainSyncError(resourceType, error),
 							);
 						}),
@@ -401,11 +406,17 @@ export const MountainLive = Layer.effect(
 			Stream.flatMap((events) => Stream.fromIterable(events)),
 		);
 
-		// Atom: Get version
-		const version = Effect.gen(function* () {
-			const status = yield* rpc<{ version: string }>(
-				"mountain_get_status",
-			)();
+		// Atom: Get version - using raw IPC to avoid error type issues
+		const version: MountainService["version"] = Effect.gen(function* () {
+			const status = yield* ipc
+				.invoke("mountain_get_status")([])
+				.pipe(
+					Effect.map((result): { version: string } => {
+						const apiStatus = result as { connected?: boolean; version?: string };
+						return { version: apiStatus.version ?? "unknown" };
+					}),
+					Effect.mapError((error) => new MountainConnectionError(error)),
+				);
 			return status.version;
 		});
 
@@ -502,7 +513,7 @@ export const MountainMockLive = Layer.succeed(Mountain, {
 	connectionChanges: Stream.empty,
 	connect: Effect.void,
 	disconnect: Effect.void,
-	rpc: () => () => Effect.succeed({}),
+	rpc: () => () => Effect.succeed({} as any),
 	sync: () =>
 		Effect.succeed({
 			success: true,

@@ -71,13 +71,13 @@ export default async function Install(): Promise<void> {
 		);
 	} catch (error: unknown) {
 		console.error(`[Wind] Install error:`, error);
-		fallback(error);
+		fallback();
 	}
 }
 
 // IpcRenderer factory with proper VSCode typing
 export function createIpcRenderer(): IpcRenderer {
-	return {
+	const self: IpcRenderer = {
 		send: (channel: string): void => {
 			if (!validateIPCChannel(channel)) return;
 		},
@@ -88,26 +88,25 @@ export function createIpcRenderer(): IpcRenderer {
 			return {};
 		},
 		on: (
-			channel: string,
-			listener: (event: IpcRendererEvent) => void,
+			_channel: string,
+			_listener: (event: IpcRendererEvent) => void,
 		): IpcRenderer => {
-			if (!validateIPCChannel(channel)) return this;
-			return this;
+			return self;
 		},
 		once: (
-			channel: string,
-			listener: (event: IpcRendererEvent) => void,
+			_channel: string,
+			_listener: (event: IpcRendererEvent) => void,
 		): IpcRenderer => {
-			if (!validateIPCChannel(channel)) return this;
-			return this;
+			return self;
 		},
 		removeListener: (
-			channel: string,
-			listener: (event: IpcRendererEvent) => void,
+			_channel: string,
+			_listener: (event: IpcRendererEvent) => void,
 		): IpcRenderer => {
-			return this;
+			return self;
 		},
 	};
+	return self;
 }
 
 // Process factory with proper VSCode typing
@@ -118,15 +117,21 @@ export function createProcess(
 		platform: "web",
 		arch: "web",
 		type: "renderer",
-		versions: { webview_runtime: navigator.userAgent },
-		env: configuration.userEnv,
+		execPath: "/",
+		env: configuration.userEnv ?? {},
 		cwd: () => "/",
-		sandboxed: true,
-		execPath: "/app/vscode-wind",
-		resourcesPath: "/app/resources",
-		on: (type: string, callback: Function) => {},
-		getProcessMemoryInfo: async () => CrossFunctions.CrossFunctions,
-		shellEnv: async () => Promise.resolve({ PATH: "/usr/bin:/bin" }),
+		versions: {
+			node: "20.0.0",
+			chrome: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || "0",
+			electron: "0.0.0",
+		},
+		on: (_type: string, _callback: Function): void => {},
+		getProcessMemoryInfo: async () => ({
+			private: 0,
+			residentSet: 0,
+			shared: 0,
+		}),
+		shellEnv: async () => ({}),
 	};
 }
 
@@ -136,7 +141,56 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 		windowId: 1,
 		appRoot: "file:///app",
 		userEnv: { PATH: "/usr/bin:/bin", HOME: "/" },
-		product: { nameShort: "VSCode Wind", applicationName: "vscode-wind" },
+		product: {
+			nameShort: "VSCode Wind",
+			nameLong: "VSCode Wind",
+			applicationName: "vscode-wind",
+			version: "0.0.1",
+			commit: "dev",
+			date: new Date().toISOString(),
+			urlProtocol: "vscode-wind",
+			dataFolderName: "vscode-wind",
+			serverApplicationName: "vscode-wind-server",
+			extensionProperties: {},
+			defaultChatAgent: {
+				extensionId: "vscode",
+				chatExtensionId: "vscode",
+				chatExtensionOutputId: "vscode",
+				documentationUrl: "https://code.visualstudio.com/docs",
+				skusDocumentationUrl: "https://code.visualstudio.com/docs",
+				publicCodeMatchesUrl: "https://code.visualstudio.com/docs",
+				manageSettingsUrl: "https://code.visualstudio.com/docs",
+				managePlanUrl: "https://code.visualstudio.com/docs",
+				manageOverageUrl: "https://code.visualstudio.com/docs",
+				upgradePlanUrl: "https://code.visualstudio.com/docs",
+				signUpUrl: "https://code.visualstudio.com/docs",
+				termsStatementUrl: "https://code.visualstudio.com/terms",
+				privacyStatementUrl: "https://privacy.microsoft.com",
+				provider: {
+					default: { id: "default", name: "Default" },
+					enterprise: { id: "enterprise", name: "Enterprise" },
+					google: { id: "google", name: "Google" },
+					apple: { id: "apple", name: "Apple" },
+				},
+				providerUriSetting: "ai.provider.uri",
+				providerScopes: [["read"], ["write"]],
+				entitlementUrl: "https://code.visualstudio.com/docs",
+				entitlementSignupLimitedUrl: "https://code.visualstudio.com/docs",
+				tokenEntitlementUrl: "https://code.visualstudio.com/docs",
+				mcpRegistryDataUrl: "https://code.visualstudio.com/docs",
+				chatQuotaExceededContext: "",
+				completionsQuotaExceededContext: "",
+				walkthroughCommand: "",
+				completionsMenuCommand: "",
+				completionsRefreshTokenCommand: "",
+				chatRefreshTokenCommand: "",
+				generateCommitMessageCommand: "",
+				resolveMergeConflictsCommand: "",
+				completionsAdvancedSetting: "",
+				completionsEnablementSetting: "",
+				nextEditSuggestionsSetting: "",
+			},
+		},
 		zoomLevel: 0,
 		nls: { messages: [], language: "en" },
 	};
@@ -155,7 +209,7 @@ export function validateIPCChannel(channel: string): boolean {
 /**
  * Implements graceful degradation with fallback support
  */
-export function fallback(error: unknown): void {
+export function fallback(): void {
 	if (typeof (window as any).legacyBridge !== "undefined") {
 		(window as any).vscode = (window as any).legacyBridge;
 		return;
@@ -163,7 +217,14 @@ export function fallback(error: unknown): void {
 	if (typeof (window as any).vscode === "undefined") {
 		(window as any).vscode = {
 			process: { platform: "web" },
-			ipcRenderer: { send: () => {} },
+			ipcRenderer: {
+				send: () => {},
+				invoke: async () => ({}),
+				on: () => ({}),
+				once: () => ({}),
+				removeListener: () => ({}),
+				removeAllListeners: () => {}
+			},
 		};
 	}
 }

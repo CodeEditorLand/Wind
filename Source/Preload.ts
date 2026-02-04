@@ -7,8 +7,6 @@
 
 import { emit, listen } from "@tauri-apps/api/event";
 import { invoke as tauriInvoke } from "@tauri-apps/api/core";
-import { open, save } from "@tauri-apps/plugin-dialog";
-import { readFile, writeFile } from "@tauri-apps/plugin-fs";
 
 // ============================================================================
 // Atom: Cleanup registry for event listeners
@@ -33,7 +31,8 @@ const ipcRenderer = {
 	},
 
 	invoke: async (channel: string, ...args: unknown[]): Promise<unknown> => {
-		return tauriInvoke(channel, args.length === 1 ? args[0] : args);
+		const invokeArgs: any = args.length === 0 ? undefined : (args.length === 1 ? args[0] : args);
+		return tauriInvoke(channel, invokeArgs) as Promise<unknown>;
 	},
 
 	on: (
@@ -52,13 +51,13 @@ const ipcRenderer = {
 		channel: string,
 		listener: (event: unknown, ...args: unknown[]) => void,
 	) => {
-		listen(
-			channel,
-			(event) => {
-				listener(event, event.payload);
-			},
-			{ once: true },
-		);
+		const wrappedListener = (event: unknown) => {
+			listener(event, (event as any).payload || event);
+		};
+		listen(channel, wrappedListener as any).then((unlisten) => {
+			// Remove after first call
+			setTimeout(() => unlisten(), 0);
+		});
 	},
 
 	removeListener: (
