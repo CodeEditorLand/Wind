@@ -11,18 +11,18 @@ import { Layer } from "effect";
  *
  * Use this when you need manual control over configuration sync.
  */
-export declare const TauriBaseLayer: Layer.Layer<never, import("../Configuration.js").ConfigFetchError, unknown>;
+export declare const TauriBaseLayer: Layer.Layer<never, import("../Configuration.js").ConfigFetchError, import("../Telemetry.js").TelemetryTag | import("../Sandbox.js").SandboxService | import("../IPC.js").IPCTag | import("../Mountain.js").MountainTag | import("../Configuration.js").ConfigurationTag>;
 /**
  * Full Tauri layer stack with automatic configuration sync.
  * Provides: All base services + reactive Mountain-driven config updates
  *
  * This is the standard layer for Wind production builds.
  */
-export declare const TauriLiveLayer: Layer.Layer<never, import("../Configuration.js").ConfigFetchError, unknown>;
+export declare const TauriLiveLayer: Layer.Layer<never, import("../Configuration.js").ConfigFetchError, import("../Telemetry.js").TelemetryTag | import("../Sandbox.js").SandboxService | import("../IPC.js").IPCTag | import("../Mountain.js").MountainTag | import("../Configuration.js").ConfigurationTag>;
 /**
  * Tauri layer with maximum telemetry and logging.
  * Useful for debugging and development.
  */
-export declare const TauriDevLayer: Layer.Layer<never, import("../Configuration.js").ConfigFetchError, unknown>;
+export declare const TauriDevLayer: Layer.Layer<never, import("../Configuration.js").ConfigFetchError, import("../Telemetry.js").TelemetryTag | import("../Sandbox.js").SandboxService | import("../IPC.js").IPCTag | import("../Mountain.js").MountainTag | import("../Configuration.js").ConfigurationTag>;
 export default TauriLiveLayer;
 //# sourceMappingURL=Tauri.d.ts.map

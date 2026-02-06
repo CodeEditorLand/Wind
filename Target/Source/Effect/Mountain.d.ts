@@ -81,7 +81,7 @@ declare const MountainTag_base: Context.TagClass<MountainTag, "Mountain", Mounta
 export declare class MountainTag extends MountainTag_base {
 }
 export declare const Mountain: typeof MountainTag;
-export declare const MountainLive: Layer.Layer<MountainTag, never, import("./IPC.js").IPCTag | import("./Telemetry.js").TelemetryTag | import("./Configuration.js").ConfigurationTag>;
+export declare const MountainLive: Layer.Layer<MountainTag, never, import("./Telemetry.js").TelemetryTag | import("./IPC.js").IPCTag | import("./Configuration.js").ConfigurationTag>;
 export declare const MountainMockLive: Layer.Layer<MountainTag, never, never>;
 export {};
 //# sourceMappingURL=Mountain.d.ts.map
