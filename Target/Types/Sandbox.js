@@ -1,8 +1,6 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-
-// Source/Types/Sandbox.ts
-var SandboxNotReadyError = class extends Error {
+class SandboxNotReadyError extends Error {
   static {
     __name(this, "SandboxNotReadyError");
   }
@@ -10,8 +8,8 @@ var SandboxNotReadyError = class extends Error {
   constructor() {
     super("window.vscode is not initialized. Preload script not executed.");
   }
-};
-var IPCChannelError = class extends Error {
+}
+class IPCChannelError extends Error {
   constructor(channel, cause) {
     super(`IPC channel '${channel}' error: ${String(cause)}`);
     this.channel = channel;
@@ -21,8 +19,8 @@ var IPCChannelError = class extends Error {
     __name(this, "IPCChannelError");
   }
   _tag = "IPCChannelError";
-};
-var ConfigurationNotReadyError = class extends Error {
+}
+class ConfigurationNotReadyError extends Error {
   static {
     __name(this, "ConfigurationNotReadyError");
   }
@@ -30,7 +28,7 @@ var ConfigurationNotReadyError = class extends Error {
   constructor() {
     super("Configuration not yet resolved from preload");
   }
-};
+}
 export {
   ConfigurationNotReadyError,
   IPCChannelError,

@@ -1,4 +1,3 @@
-// Source/Bootstrap/Types/VSCodeTypes.ts
 var ConfigurationTarget = /* @__PURE__ */ ((ConfigurationTarget2) => {
   ConfigurationTarget2[ConfigurationTarget2["USER"] = 1] = "USER";
   ConfigurationTarget2[ConfigurationTarget2["WORKSPACE"] = 2] = "WORKSPACE";

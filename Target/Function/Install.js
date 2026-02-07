@@ -1,7 +1,5 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-
-// Source/Function/Install.ts
 async function Install() {
   try {
     if (typeof window === "undefined") {

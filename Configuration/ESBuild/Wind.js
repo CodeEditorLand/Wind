@@ -1,8 +1,7 @@
-// Source/Configuration/ESBuild/Wind.ts
-var On = process.env["NODE_ENV"] === "development" || process.env["TAURI_ENV_DEBUG"] === "true";
-var Clean = process.env["Clean"] === "true";
-var Bundle = process.env["Bundle"] === "true";
-var Compile = process.env["Compile"] === "true";
+const On = process.env["NODE_ENV"] === "development" || process.env["TAURI_ENV_DEBUG"] === "true";
+const Clean = process.env["Clean"] === "true";
+const Bundle = process.env["Bundle"] === "true";
+const Compile = process.env["Compile"] === "true";
 var Wind_default = {
   color: true,
   format: "esm",
@@ -50,7 +49,7 @@ var Wind_default = {
     ".sh": "copy"
   }
 };
-var { sep, posix } = await import("node:path");
+const { sep, posix } = await import("node:path");
 export {
   Bundle,
   Clean,
