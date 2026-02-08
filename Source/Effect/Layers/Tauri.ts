@@ -19,6 +19,10 @@ import { HealthLive } from "../Health.js";
 import { BootstrapLive } from "../Bootstrap.js";
 import { LiveClipboardServiceLayer as ClipboardLive } from "../Clipboard.js";
 import { MountainSyncLive } from "../MountainSync.js";
+import { ActivityBarLive } from "../ActivityBar.js";
+import { PanelLive } from "../Panel.js";
+import { SidebarLive } from "../Sidebar.js";
+import { StatusBarLive } from "../StatusBar.js";
 
 // ============================================================================
 // Base Tauri Layer (without config sync)
@@ -26,7 +30,7 @@ import { MountainSyncLive } from "../MountainSync.js";
 
 /**
  * Base Tauri layer stack.
- * Provides: Sandbox + IPC + Configuration + Telemetry + Mountain
+ * Provides: Sandbox + IPC + Configuration + Telemetry + Mountain + UI Services
  *
  * Use this when you need manual control over configuration sync.
  */
@@ -40,6 +44,10 @@ export const TauriBaseLayer = Layer.empty.pipe(
 	Layer.provide(MountainSyncLive),
 	Layer.provide(HealthLive),
 	Layer.provide(BootstrapLive),
+	Layer.provide(ActivityBarLive),
+	Layer.provide(PanelLive),
+	Layer.provide(SidebarLive),
+	Layer.provide(StatusBarLive),
 );
 
 // ============================================================================
@@ -48,7 +56,7 @@ export const TauriBaseLayer = Layer.empty.pipe(
 
 /**
  * Full Tauri layer stack with automatic configuration sync.
- * Provides: All base services + reactive Mountain-driven config updates
+ * Provides: All base services + reactive Mountain-driven config updates + UI Services
  *
  * This is the standard layer for Wind production builds.
  */
@@ -62,6 +70,10 @@ export const TauriLiveLayer = Layer.empty.pipe(
 	Layer.provide(MountainSyncLive),
 	Layer.provide(HealthLive),
 	Layer.provide(BootstrapLive),
+	Layer.provide(ActivityBarLive),
+	Layer.provide(PanelLive),
+	Layer.provide(SidebarLive),
+	Layer.provide(StatusBarLive),
 );
 
 // ============================================================================
@@ -82,6 +94,10 @@ export const TauriDevLayer = Layer.empty.pipe(
 	Layer.provide(MountainSyncLive),
 	Layer.provide(HealthLive),
 	Layer.provide(BootstrapLive),
+	Layer.provide(ActivityBarLive),
+	Layer.provide(PanelLive),
+	Layer.provide(SidebarLive),
+	Layer.provide(StatusBarLive),
 );
 
 // Export default for convenience

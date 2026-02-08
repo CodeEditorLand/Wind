@@ -46,10 +46,23 @@ export default async function Install(): Promise<void> {
 			window as unknown as { polyfillInstalled: boolean }
 		).polyfillInstalled = true;
 
+		console.log("[Wind] Starting Wind preload installation...");
+
 		// Initialize core components
 		const Configuration = await ResolveConfiguration();
 		const IPCRenderer = createIpcRenderer();
 		const Process = createProcess(Configuration);
+
+		// Create preload globals object that will be enhanced by Effect-TS
+		const preloadGlobals = {
+			ipcRenderer: IPCRenderer,
+			process: Process,
+			configuration: Configuration,
+		};
+
+		// Attach preloadGlobals to window for Effect-TS services to access
+		(window as any).preloadGlobals = preloadGlobals;
+		console.log("[Wind] preloadGlobals attached to window");
 
 		// Construct compliant VSCode API object
 		const Globals: IMainWindowSandboxGlobals = {
@@ -69,6 +82,10 @@ export default async function Install(): Promise<void> {
 		console.info(
 			"[Wind] Successfully installed Electron API polyfill for workbench.",
 		);
+
+		// Signal that preload is ready for Effect-TS bootstrap
+		(window as any).__WIND_PRELOAD_READY__ = true;
+		console.log("[Wind] Preload ready, Effect-TS bootstrap can proceed");
 	} catch (error: unknown) {
 		console.error(`[Wind] Install error:`, error);
 		fallback();

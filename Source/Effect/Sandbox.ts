@@ -65,44 +65,29 @@ export const SandboxLive = Layer.effect(
 			return vscode;
 		}).pipe(Effect.mapError(() => new SandboxNotReadyError()));
 
-		// Await ready using browser event (replaces setInterval polling)
-		const awaitReady = Effect.async<SandboxGlobals, SandboxNotReadyError>(
-			(resume) => {
-				const vscode = (window as any).vscode;
-
-				if (vscode) {
-					resume(Effect.succeed(vscode));
-					return;
-				}
-
-				// Listen for preload ready event
-				const handler = () => {
+		// Await ready using polling (reliable across all environments)
+		const awaitReady = Effect.gen(function* () {
+			let attempts = 0;
+			const maxAttempts = 300; // 30 seconds at 100ms intervals
+			
+			while (attempts < maxAttempts) {
+				// Check if preloadGlobals exists (from Install.ts)
+				const preloadGlobals = (window as any).preloadGlobals;
+				if (preloadGlobals && preloadGlobals.process && preloadGlobals.ipcRenderer) {
+					// Now check for window.vscode
 					const vscode = (window as any).vscode;
 					if (vscode) {
-						resume(Effect.succeed(vscode));
-					} else {
-						resume(Effect.fail(new SandboxNotReadyError()));
+						console.log("[Sandbox] Preload globals and window.vscode ready");
+						return vscode;
 					}
-				};
-
-				window.addEventListener("vscode-wind-preload-ready", handler, {
-					once: true,
-				});
-
-				// Timeout after 30 seconds
-				setTimeout(() => {
-					resume(Effect.fail(new SandboxNotReadyError()));
-				}, 30000);
-
-				// Cleanup function
-				return Effect.sync(() => {
-					window.removeEventListener(
-						"vscode-wind-preload-ready",
-						handler,
-					);
-				});
-			},
-		).pipe(
+				}
+				
+				attempts++;
+				yield* Effect.sleep("100 millis");
+			}
+			
+			throw new SandboxNotReadyError();
+		}).pipe(
 			Effect.timeout("30 seconds"),
 			Effect.mapError(() => new SandboxNotReadyError()),
 		);

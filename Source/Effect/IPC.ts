@@ -131,9 +131,7 @@ export const IPCTauriLive = Layer.effect(
 			Effect.try({
 				try: () => emit(channel, args.length === 1 ? args[0] : args),
 				catch: (error) => new IPCSendError(channel, error),
-			}).pipe(
-				Effect.mapError((error) => new IPCSendError(channel, error)),
-			);
+			});
 
 		// Atom: invoke
 		const invoke_ = (channel: string) => (args: ReadonlyArray<unknown>) =>
