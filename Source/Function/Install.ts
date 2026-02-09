@@ -1,8 +1,8 @@
 // Type imports for VSCode compatibility
 import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes";
 import type {
-	IpcRenderer,
-	IpcRendererEvent,
+	IPCRenderer,
+	IPCRendererEvent,
 } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/electronTypes";
 import type {
 	IMainWindowSandboxGlobals,
@@ -50,7 +50,7 @@ export default async function Install(): Promise<void> {
 
 		// Initialize core components
 		const Configuration = await ResolveConfiguration();
-		const IPCRenderer = createIpcRenderer();
+		const IPCRenderer = createIPCRenderer();
 		const Process = createProcess(Configuration);
 
 		// Create preload globals object that will be enhanced by Effect-TS
@@ -92,9 +92,9 @@ export default async function Install(): Promise<void> {
 	}
 }
 
-// IpcRenderer factory with proper VSCode typing
-export function createIpcRenderer(): IpcRenderer {
-	const self: IpcRenderer = {
+// IPCRenderer factory with proper VSCode typing
+export function createIPCRenderer(): IPCRenderer {
+	const self: IPCRenderer = {
 		send: (channel: string): void => {
 			if (!validateIPCChannel(channel)) return;
 		},
@@ -106,20 +106,20 @@ export function createIpcRenderer(): IpcRenderer {
 		},
 		on: (
 			_channel: string,
-			_listener: (event: IpcRendererEvent) => void,
-		): IpcRenderer => {
+			_listener: (event: IPCRendererEvent) => void,
+		): IPCRenderer => {
 			return self;
 		},
 		once: (
 			_channel: string,
-			_listener: (event: IpcRendererEvent) => void,
-		): IpcRenderer => {
+			_listener: (event: IPCRendererEvent) => void,
+		): IPCRenderer => {
 			return self;
 		},
 		removeListener: (
 			_channel: string,
-			_listener: (event: IpcRendererEvent) => void,
-		): IpcRenderer => {
+			_listener: (event: IPCRendererEvent) => void,
+		): IPCRenderer => {
 			return self;
 		},
 	};
