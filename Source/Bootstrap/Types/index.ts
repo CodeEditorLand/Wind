@@ -1,24 +1,24 @@
 /**
  * @module Bootstrap/Types
  * @description
- * Type definitions for the bootstrap system.
+ * Main re-export module for type definitions in the bootstrap system.
  */
 
-export type {
-	Platform,
-	Mode,
-	StageName,
-	ErrorSeverity,
-	StageResult,
-	BootstrapResult,
-	BootstrapConfig,
-	StatusUpdate,
-	EnvironmentData,
-	ConfigurationData,
-	ServiceData,
-	WorkbenchData,
-} from "./BootstrapTypes.js";
+// Bootstrap-specific types
+export type { Platform } from "./Type/Platform.js";
+export type { Mode } from "./Type/Mode.js";
+export type { StageName } from "./Type/StageName.js";
+export type { ErrorSeverity } from "./Type/ErrorSeverity.js";
+export type { StageResult } from "./Type/StageResult.js";
+export type { BootstrapResult } from "./Type/BootstrapResult.js";
+export type { BootstrapConfig } from "./Type/BootstrapConfig.js";
+export type { StatusUpdate } from "./Type/StatusUpdate.js";
+export type { EnvironmentData } from "./Type/EnvironmentData.js";
+export type { ConfigurationData } from "./Type/ConfigurationData.js";
+export type { ServiceData } from "./Type/ServiceData.js";
+export type { WorkbenchData } from "./Type/WorkbenchData.js";
 
+// VSCode-related types
 export type {
 	IVSCodeWorkbenchOptions,
 	IVSCodeServiceCollection,
@@ -26,4 +26,4 @@ export type {
 	IVSCodeEnvironmentService,
 	IVSCodeConfigurationService,
 	IVSCodeLoggerService,
-} from "./VSCodeTypes.js";
+} from "./VSCode/index.js";

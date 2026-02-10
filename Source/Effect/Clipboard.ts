@@ -28,184 +28,63 @@
  * - vs/platform/clipboard/common/clipboardService.ts - Clipboard operations
  * - vs/platform/clipboard/browser/clipboardService.ts - Web clipboard implementation
  *
- * TODO:
- * - Implement image/HTML clipboard support
- * - Add clipboard history tracking (opt-in)
- * - Implement clipboard watching for content changes
- * - Add clipboard format conversion (text, HTML, images)
- * - Implement clipboard permission handling improvements
- * - Add clipboard operation throttling/debouncing
- * - Implement clipboard sanitization for security
- * - Add clipboard analytics and telemetry
- * - Support custom clipboard formats via custom data types
- * - Implement clipboard encryption for sensitive data
- * - Add clipboard cross-origin message passing
- * - Implement clipboard fallback when permissions denied
- * - Add clipboard operation performance metrics
- * - Support clipboard in iframe contexts
- * - Implement clipboard paste event interception
- * - Add clipboard drag-and-drop integration
- *
- * VERSION: 2.0.0
- * LAST UPDATED: January 31, 2026
+ * @see {@link Effect/Clipboard/Interface/ClipboardService} Service interface
+ * @see {@link Effect/Clipboard/Live} Live implementation
+ * @see {@link Effect/Clipboard/Tag/ClipboardServiceTag} Service tag
+ * @category Service
+ * @example
+ * ```typescript
+ * import Clipboard from "./Effect/Clipboard.js";
+ * import { Effect } from "effect";
+ * 
+ * const program = Effect.gen(function* () {
+ *   const clipboardService = yield* Clipboard.ClipboardServiceTag;
+ *   yield* clipboardService.writeText("Hello, World!");
+ *   const text = yield* clipboardService.readText();
+ *   return text;
+ * });
+ * 
+ * Effect.runPromise(program.pipe(Effect.provide(Clipboard)));
+ * ```
  */
 
-import { Context, Effect, Layer } from "effect";
-
 // ============================================================================
-// TYPES
+// Re-exports from atomic modules
 // ============================================================================
 
-/**
- * Clipboard service interface
- * Microsoft VSCode Reference: IClipboardService from vs/platform/clipboard/common/clipboardService.ts
- */
-export interface ClipboardService {
-	readonly readText: () => Effect.Effect<string, ClipboardProblem>;
-	readonly writeText: (text: string) => Effect.Effect<void, ClipboardProblem>;
-	readonly readHTML: () => Effect.Effect<string, ClipboardProblem>;
-	readonly writeHTML: (
-		html: string,
-		text: string,
-	) => Effect.Effect<void, ClipboardProblem>;
-	readonly readImage: () => Effect.Effect<Blob, ClipboardProblem>;
-	readonly writeImage: (blob: Blob) => Effect.Effect<void, ClipboardProblem>;
-	readonly hasText: () => Effect.Effect<boolean, ClipboardProblem>;
-	readonly clear: () => Effect.Effect<void, ClipboardProblem>;
-}
+// Types
+export type { ClipboardProblem } from "./Clipboard/Type/ClipboardProblem.js";
 
-/**
- * Clipboard error types with categorization
- * Microsoft VSCode Reference: Clipboard error handling patterns
- */
-export type ClipboardProblem =
-	| { readonly _tag: "ClipboardNotAvailable"; readonly reason: string }
-	| { readonly _tag: "ClipboardReadError"; readonly error: Error }
-	| { readonly _tag: "ClipboardWriteError"; readonly error: Error }
-	| { readonly _tag: "ClipboardPermissionDenied"; readonly reason: string }
-	| { readonly _tag: "ClipboardFormatNotSupported"; readonly format: string }
-	| {
-			readonly _tag: "ClipboardSizeExceeded";
-			readonly size: number;
-			readonly limit: number;
-	  };
+// Interface
+export type { ClipboardService } from "./Clipboard/Interface/ClipboardService.js";
 
-// ============================================================================
-// SERVICE IMPLEMENTATION
-// ============================================================================
+// Tag
+export { ClipboardServiceTag, Clipboard } from "./Clipboard/Tag/ClipboardServiceTag.js";
 
-/**
- * Live clipboard service implementation
- */
-const LiveClipboardService: ClipboardService = {
-	readText: () =>
-		Effect.tryPromise({
-			try: async () => {
-				if (typeof navigator === "undefined" || !navigator.clipboard) {
-					throw {
-						_tag: "ClipboardNotAvailable",
-						reason: "Clipboard API not available in this environment",
-					} as ClipboardProblem;
-				}
-				return await navigator.clipboard.readText();
-			},
-			catch: (error) =>
-				({
-					_tag: "ClipboardReadError",
-					error: error as Error,
-				}) as ClipboardProblem,
-		}),
+// Implementations
+export { LiveBrowserClipboardService } from "./Clipboard/Implementation/BrowserClipboard.js";
+export { MockClipboardService } from "./Clipboard/Implementation/MockClipboard.js";
 
-	writeText: (text: string) =>
-		Effect.tryPromise({
-			try: async () => {
-				if (typeof navigator === "undefined" || !navigator.clipboard) {
-					throw {
-						_tag: "ClipboardNotAvailable",
-						reason: "Clipboard API not available in this environment",
-					} as ClipboardProblem;
-				}
-				await navigator.clipboard.writeText(text);
-			},
-			catch: (error) =>
-				({
-					_tag: "ClipboardWriteError",
-					error: error as Error,
-				}) as ClipboardProblem,
-		}),
+// Layers - import and re-export both layers
+import { LiveClipboardServiceLayer as LiveLayer } from "./Clipboard/Live.js";
+import { MockClipboardServiceLayer as MockLayer } from "./Clipboard/Mock.js";
 
-	// Placeholder implementations for remaining methods
-	readHTML: () =>
-		Effect.fail({
-			_tag: "ClipboardFormatNotSupported",
-			format: "HTML",
-		} as ClipboardProblem),
+export { LiveLayer, MockLayer };
 
-	writeHTML: () =>
-		Effect.fail({
-			_tag: "ClipboardFormatNotSupported",
-			format: "HTML",
-		} as ClipboardProblem),
+// Backward compatibility aliases - match old naming convention
+export const LiveClipboardServiceLayer = LiveLayer;
+export const MockClipboardServiceLayer = MockLayer;
 
-	readImage: () =>
-		Effect.fail({
-			_tag: "ClipboardFormatNotSupported",
-			format: "Image",
-		} as ClipboardProblem),
+// Short aliases
+export const LiveClipboard = LiveLayer;
+export const MockClipboard = MockLayer;
 
-	writeImage: () =>
-		Effect.fail({
-			_tag: "ClipboardFormatNotSupported",
-			format: "Image",
-		} as ClipboardProblem),
-
-	hasText: () => Effect.succeed(false),
-
-	clear: () => Effect.void,
-};
-
-// ============================================================================
-// SERVICE TAGS AND LAYERS
-// ============================================================================
-
-/**
- * Clipboard service tag
- */
-export class ClipboardServiceTag extends Context.Tag("Application/ClipboardService")<
-	ClipboardServiceTag,
-	ClipboardService
->() {}
-
-/**
- * Live clipboard service layer
- */
-export const LiveClipboardServiceLayer = Layer.succeed(
-	ClipboardServiceTag,
-	LiveClipboardService,
-);
-
-// ============================================================================
-// MOCK IMPLEMENTATION FOR TESTING
-// ============================================================================
-
-/**
- * Mock clipboard service for testing
- */
-const MockClipboardService: ClipboardService = {
-	readText: () => Effect.succeed("mock clipboard text"),
-	writeText: (_text: string) => Effect.void,
-	readHTML: () => Effect.succeed(""),
-	writeHTML: () => Effect.void,
-	readImage: () => Effect.succeed(new Blob()),
-	writeImage: () => Effect.void,
-	hasText: () => Effect.succeed(true),
-	clear: () => Effect.void,
-};
-
-/**
- * Mock clipboard service layer
- */
-export const MockClipboardServiceLayer = Layer.succeed(
-	ClipboardServiceTag,
-	MockClipboardService,
-);
+// Error helpers
+export {
+	createNotAvailableError,
+	createReadError,
+	createWriteError,
+	createPermissionDeniedError,
+	createFormatNotSupportedError,
+	createSizeExceededError,
+} from "./Clipboard/Implementation/ClipboardHelper.js";

@@ -3,6 +3,7 @@
  * @description
  * Atomic Effect-TS services for Wind.
  * This module exports all Effect services and composed layer stacks.
+ * All services now use atomic file structure for better organization and maintainability.
  */
 
 // ============================================================================
@@ -10,12 +11,12 @@
 // ============================================================================
 
 // IPC (Inter-Process Communication)
-export { IPC, IPCTauriLive, IPCElectronLive, IPCMockLive } from "./IPC.js";
+export { IPCTag as IPC, IPCTauriLive, IPCElectronLive, IPCMockLive } from "./IPC.js";
 export type { IPCService } from "./IPC.js";
 
 // Sandbox (Preload globals)
-export { Sandbox, SandboxLive, SandboxMockLive } from "./Sandbox.js";
-export type { SandboxService } from "./Sandbox.js";
+export { Sandbox, SandboxLive, SandboxMockLive } from "./Sandbox/index.js";
+export type { SandboxService } from "./Sandbox/index.js";
 
 // Configuration
 export {
@@ -32,52 +33,54 @@ export {
 	TelemetryMockLive,
 	withSpan,
 	withMetric,
-} from "./Telemetry.js";
-export type { TelemetryService } from "./Telemetry.js";
+} from "./Telemetry/index.js";
+export type { TelemetryService } from "./Telemetry/index.js";
 
 // Mountain (Backend connection & RPC)
-export { Mountain, MountainLive, MountainMockLive } from "./Mountain.js";
+export { Mountain, MountainLive, MountainMockLive } from "./Mountain/index.js";
 export type {
 	MountainService,
 	MountainConnectionState,
 	SyncResource,
-} from "./Mountain.js";
+} from "./Mountain/index.js";
 
 // MountainSync (Background synchronization)
-export { MountainSyncTag, MountainSyncLive, MountainSyncMock } from "./MountainSync.js";
-export type { MountainSyncService, SyncConfig, SyncStats, MountainSyncResult, SyncStatus } from "./MountainSync.js";
+export { MountainSyncTag, MountainSyncLive, MountainSyncMock } from "./MountainSync/index.js";
+export type { MountainSyncService, SyncConfig, SyncStats, MountainSyncResult, SyncStatus } from "./MountainSync/index.js";
 
 // Environment (System detection)
-export { EnvironmentTag, EnvironmentLive, EnvironmentMock } from "./Environment.js";
-export type { EnvironmentService, EnvironmentInfo, Platform, Architecture } from "./Environment.js";
+export { EnvironmentTag } from "./Environment/index.js";
+export { EnvironmentLive } from "./Environment/index.js";
+export { EnvironmentMock } from "./Environment/index.js";
+export type { EnvironmentService, EnvironmentInfo, Platform, Architecture } from "./Environment/index.js";
 
 // Health (Service health checks)
-export { HealthTag, HealthLive, HealthMock } from "./Health.js";
-export type { HealthService, ServiceHealth, SystemHealth, HealthStatus } from "./Health.js";
+export { HealthTag, HealthLive, HealthMock } from "./Health/index.js";
+export type { HealthService, ServiceHealth, SystemHealth, HealthStatus } from "./Health/index.js";
 
 // Bootstrap (Orchestration of all stages)
-export { BootstrapTag, BootstrapLive, BootstrapMock, runBootstrap } from "./Bootstrap.js";
-export type { BootstrapService, BootstrapOptions, StageResult, BootstrapResult } from "./Bootstrap.js";
+export { BootstrapTag, BootstrapLive, BootstrapMock, runBootstrap } from "./Bootstrap/index.js";
+export type { BootstrapService, BootstrapOptions, StageResult, BootstrapResult } from "./Bootstrap/index.js";
 
 // Clipboard (System clipboard access)
 export { ClipboardServiceTag, LiveClipboardServiceLayer, MockClipboardServiceLayer } from "./Clipboard.js";
 export type { ClipboardService, ClipboardProblem } from "./Clipboard.js";
 
 // ActivityBar (VSCode activity bar management)
-export { ActivityBar, ActivityBarLive, ActivityBarMockLive } from "./ActivityBar.js";
-export type { ActivityBarService, ActivityBarItem, CreateActivityBarItem, ActivityBarBadge } from "./ActivityBar.js";
+export { ActivityBar, ActivityBarLive, ActivityBarMockLive } from "./ActivityBar/index.js";
+export type { ActivityBarService, ActivityBarItem, CreateActivityBarItem, ActivityBarBadge } from "./ActivityBar/index.js";
 
 // Panel (VSCode bottom panel management)
-export { Panel, PanelLive, PanelMockLive } from "./Panel.js";
-export type { PanelService, PanelView, CreatePanelView, PanelViewType } from "./Panel.js";
+export { Panel, PanelLive, PanelMockLive } from "./Panel/index.js";
+export type { PanelService, PanelView, CreatePanelView, PanelViewType } from "./Panel/index.js";
 
 // Sidebar (VSCode sidebar management)
-export { Sidebar, SidebarLive, SidebarMockLive } from "./Sidebar.js";
-export type { SidebarService, SidebarPanel, CreateSidebarPanel } from "./Sidebar.js";
+export { Sidebar, SidebarLive, SidebarMockLive } from "./Sidebar/index.js";
+export type { SidebarService, SidebarPanel, CreateSidebarPanel } from "./Sidebar/index.js";
 
 // StatusBar (VSCode status bar management)
-export { StatusBar, StatusBarLive, StatusBarMockLive } from "./StatusBar.js";
-export type { StatusBarService, StatusBarItem, CreateStatusBarItem } from "./StatusBar.js";
+export { StatusBar, StatusBarLive, StatusBarMockLive } from "./StatusBar/index.js";
+export type { StatusBarService, StatusBarItem, CreateStatusBarItem } from "./StatusBar/index.js";
 
 // ============================================================================
 // LAYERS (For runtime composition)
@@ -100,7 +103,7 @@ export {
 } from "./Configuration.js";
 
 // Telemetry errors
-export { TelemetryCollectionError } from "./Telemetry.js";
+export { TelemetryCollectionError } from "./Telemetry/index.js";
 
 // Mountain errors
 export {
@@ -108,16 +111,16 @@ export {
 	MountainRPCError,
 	MountainSyncError,
 	MountainStateError,
-} from "./Mountain.js";
+} from "./Mountain/index.js";
 
 // ActivityBar errors
-export { ActivityBarItemNotFoundError, ActivityBarUpdateError } from "./ActivityBar.js";
+export { ActivityBarItemNotFoundError, ActivityBarUpdateError } from "./ActivityBar/index.js";
 
 // Panel errors
-export { PanelViewNotFoundError, PanelUpdateError } from "./Panel.js";
+export { PanelViewNotFoundError, PanelUpdateError } from "./Panel/index.js";
 
 // Sidebar errors
-export { SidebarPanelNotFoundError, SidebarUpdateError } from "./Sidebar.js";
+export { SidebarPanelNotFoundError, SidebarUpdateError } from "./Sidebar/index.js";
 
 // StatusBar errors
-export { StatusBarItemNotFoundError, StatusBarUpdateError } from "./StatusBar.js";
+export { StatusBarItemNotFoundError, StatusBarUpdateError } from "./StatusBar/index.js";

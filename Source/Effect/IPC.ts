@@ -3,27 +3,20 @@
  * @description
  * Atomic IPC service using Effect-TS.
  * Wraps Tauri IPC with typed effects and streams.
+ * 
+ * @category Service
  */
 
-import { emit, listen } from "@tauri-apps/api/event";
-import { invoke as tauriInvoke } from "@tauri-apps/api/core";
-import type { InvokeArgs } from "@tauri-apps/api/core";
-import { Context, Effect, Layer, Stream } from "effect";
-
-import { SandboxNotReadyError, type IPCMessage } from "../Types/Sandbox.js";
-
 // ============================================================================
-// IPC Error Types
+// Re-exports from atomic modules
 // ============================================================================
 
+// Error types for backward compatibility
 export class IPCInvokeError extends Error {
 	readonly _tag = "IPCInvokeError";
 	readonly _channel: string;
 	readonly _cause: unknown;
-	constructor(
-		channel: string,
-		cause: unknown,
-	) {
+	constructor(channel: string, cause: unknown) {
 		super(`IPC invoke failed on channel '${channel}': ${String(cause)}`);
 		this._channel = channel;
 		this._cause = cause;
@@ -38,10 +31,7 @@ export class IPCSendError extends Error {
 	readonly _tag = "IPCSendError";
 	readonly _channel: string;
 	readonly _cause: unknown;
-	constructor(
-		channel: string,
-		cause: unknown,
-	) {
+	constructor(channel: string, cause: unknown) {
 		super(`IPC send failed on channel '${channel}': ${String(cause)}`);
 		this._channel = channel;
 		this._cause = cause;
@@ -56,13 +46,8 @@ export class IPCSubscriptionError extends Error {
 	readonly _tag = "IPCSubscriptionError";
 	readonly _channel: string;
 	readonly _cause: unknown;
-	constructor(
-		channel: string,
-			cause: unknown,
-	) {
-		super(
-			`IPC subscription failed on channel '${channel}': ${String(cause)}`,
-		);
+	constructor(channel: string, cause: unknown) {
+		super(`IPC subscription failed on channel '${channel}': ${String(cause)}`);
 		this._channel = channel;
 		this._cause = cause;
 		Object.setPrototypeOf(this, IPCSubscriptionError.prototype);
@@ -72,216 +57,19 @@ export class IPCSubscriptionError extends Error {
 	override get cause() { return this._cause; }
 }
 
-// ============================================================================
-// IPC Service Interface
-// ============================================================================
+// Service interface
+export type { IPCService } from "./IPC/Interface/IPCService.js";
 
-export interface IPCService {
-	/** Send a message without expecting a response */
-	readonly send: (
-		channel: string,
-	) => (args: ReadonlyArray<unknown>) => Effect.Effect<void, IPCSendError>;
+// Tag
+export { IPCTag, IPC } from "./IPC/Tag/IPCTag.js";
 
-	/** Invoke a method and await response */
-	readonly invoke: (
-		channel: string,
-	) => (
-		args: ReadonlyArray<unknown>,
-	) => Effect.Effect<unknown, IPCInvokeError>;
+// Implementations
+export { TauriIPCLive } from "./IPC/Implementation/TauriIPC.js";
 
-	/** Subscribe to events on a channel as a Stream */
-	readonly events: (
-		channel: string,
-	) => Stream.Stream<IPCMessage, IPCSubscriptionError>;
+// Layers - import from index
+import { default as IPCTauriLiveLayer, MockIPCLive } from "./IPC/index.js";
+export { IPCTauriLiveLayer, MockIPCLive };
 
-	/** One-shot event listener */
-	readonly once: (
-		channel: string,
-	) => Effect.Effect<IPCMessage, IPCSubscriptionError>;
-
-	/** Remove all listeners for a channel */
-	readonly removeAllListeners: (
-		channel: string,
-	) => Effect.Effect<void, never>;
-}
-
-// Tag for dependency injection
-export class IPCTag extends Context.Tag("IPC")<IPCTag, IPCService>() {}
-
-export const IPC = IPCTag;
-
-// ============================================================================
-// Tauri Implementation
-// ============================================================================
-
-export const IPCTauriLive = Layer.effect(
-	IPC,
-	Effect.gen(function* () {
-		// Verify Tauri is available
-		const isTauriAvailable =
-			typeof window !== "undefined" &&
-			(window as any).__TAURI__ !== undefined;
-
-		if (!isTauriAvailable) {
-			return yield* Effect.die(new SandboxNotReadyError());
-		}
-
-		// Atom: send
-		const send = (channel: string) => (args: ReadonlyArray<unknown>) =>
-			Effect.try({
-				try: () => emit(channel, args.length === 1 ? args[0] : args),
-				catch: (error) => new IPCSendError(channel, error),
-			});
-
-		// Atom: invoke
-		const invoke_ = (channel: string) => (args: ReadonlyArray<unknown>) =>
-			Effect.tryPromise({
-				try: () => {
-					const invokeArgs: InvokeArgs | undefined = args.length === 1
-						? (args[0] as InvokeArgs)
-						: (args as unknown as InvokeArgs);
-					return tauriInvoke(channel, invokeArgs);
-				},
-				catch: (error) => new IPCInvokeError(channel, error),
-			});
-
-		// Atom: events as Stream
-		const events = (
-			channel: string,
-		): Stream.Stream<IPCMessage, IPCSubscriptionError> =>
-			Stream.async((emit) => {
-				let cleanup: (() => void) | undefined;
-
-				listen(channel, (event) => {
-					emit.single({
-						channel,
-						args: [event.payload],
-					});
-				})
-					.then((unlisten) => {
-						cleanup = unlisten;
-					})
-					.catch((error) => {
-						emit.fail(new IPCSubscriptionError(channel, error));
-					});
-
-				return Effect.sync(() => cleanup?.());
-			});
-
-		// Atom: once
-		const once = (
-			channel: string,
-		): Effect.Effect<IPCMessage, IPCSubscriptionError> =>
-			Effect.async((resume) => {
-				listen(channel, (event) => {
-					resume(
-						Effect.succeed({
-							channel,
-							args: [event.payload],
-						}),
-					);
-				}).catch((error) => {
-					resume(
-						Effect.fail(new IPCSubscriptionError(channel, error)),
-					);
-				});
-			});
-
-		// Atom: remove all listeners
-		const removeAllListeners = (channel: string) =>
-			Effect.log(`[IPC] Remove all listeners for ${channel}`).pipe(
-				Effect.map(() => undefined),
-			);
-
-		return {
-			send,
-			invoke: invoke_,
-			events,
-			once,
-			removeAllListeners,
-		};
-	}),
-);
-
-// ============================================================================
-// Electron Implementation (for Sky)
-// ============================================================================
-
-export const IPCElectronLive = Layer.effect(
-	IPC,
-	Effect.gen(function* () {
-		// Access Electron's ipcRenderer from preload
-		const vscode = (window as any).vscode;
-
-		if (!vscode?.ipcRenderer) {
-			return yield* Effect.die(new SandboxNotReadyError());
-		}
-
-		const { ipcRenderer } = vscode;
-
-		const send = (channel: string) => (args: ReadonlyArray<unknown>) =>
-			Effect.sync(() => {
-				ipcRenderer.send(channel, ...args);
-			}).pipe(
-				Effect.mapError((error) => new IPCSendError(channel, error)),
-			);
-
-		const invoke_ = (channel: string) => (args: ReadonlyArray<unknown>) =>
-			Effect.tryPromise({
-				try: () => ipcRenderer.invoke(channel, ...args),
-				catch: (error) => new IPCInvokeError(channel, error),
-			});
-
-		const events = (
-			channel: string,
-		): Stream.Stream<IPCMessage, IPCSubscriptionError> =>
-			Stream.async((emit) => {
-				const listener = (_event: unknown, ...args: unknown[]) => {
-					emit.single({ channel, args });
-				};
-
-				ipcRenderer.on(channel, listener);
-
-				return Effect.sync(() => {
-					ipcRenderer.removeListener(channel, listener);
-				});
-			});
-
-		const once = (
-			channel: string,
-		): Effect.Effect<IPCMessage, IPCSubscriptionError> =>
-			Effect.async((resume) => {
-				const listener = (_event: unknown, ...args: unknown[]) => {
-					resume(Effect.succeed({ channel, args }));
-				};
-
-				ipcRenderer.once(channel, listener);
-			});
-
-		const removeAllListeners = (channel: string) =>
-			Effect.sync(() => {
-				ipcRenderer.removeAllListeners(channel);
-			});
-
-		return {
-			send,
-			invoke: invoke_,
-			events,
-			once,
-			removeAllListeners,
-		};
-	}),
-);
-
-// ============================================================================
-// Mock Implementation (for testing)
-// ============================================================================
-
-export const IPCMockLive = Layer.succeed(IPC, {
-	send: (_channel: string) => (_args: ReadonlyArray<unknown>) => Effect.void,
-	invoke: (_channel: string) => (_args: ReadonlyArray<unknown>) =>
-		Effect.succeed({}),
-	events: (_channel: string) => Stream.empty,
-	once: (_channel: string) => Effect.succeed({ channel: _channel, args: [] }),
-	removeAllListeners: (_channel: string) => Effect.void,
-});
+// Backward compatibility - export as IPCTauriLive
+export { IPCTauriLiveLayer as IPCTauriLive };
+export { MockIPCLive as IPCMockLive };
