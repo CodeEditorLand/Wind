@@ -15,7 +15,7 @@ import type { SyncConfig, SyncStats, SyncStatus } from "../Type/MountainSyncType
 import type { MountainService } from "../../Mountain.js";
 import type { IPCService } from "../../IPC.js";
 import type { TelemetryService } from "../../Telemetry.js";
-import syncNowEffect from "./MountainSyncHelper.js";
+import SyncNowEffect from "./MountainSyncHelper.js";
 
 /**
  * Default sync configuration values.
@@ -39,107 +39,107 @@ const defaultSyncConfig: SyncConfig = {
  * @returns MountainSync service instance
  */
 const makeMountainSync = (
-	mountain: MountainService,
-	ipc: IPCService,
-	telemetry: TelemetryService,
+	Mountain: MountainService,
+	IPC: IPCService,
+	TelemetryService: TelemetryService,
 ): MountainSyncService => {
 	// Internal state management
-	let syncFiber: Fiber.Fiber<void, never> | null = null;
-	let syncStatus: SyncStatus = "idle";
-	let lastSyncTime = 0;
-	let syncCount = 0;
-	let successCount = 0;
-	let errorCount = 0;
-	let itemsSynced = 0;
+	let SyncFiber: Fiber.Fiber<void, never> | null = null;
+	let SyncStatus: SyncStatus = "idle";
+	let LastSyncTime = 0;
+	let SyncCount = 0;
+	let SuccessCount = 0;
+	let ErrorCount = 0;
+	let ItemsSynced = 0;
 
 	return {
-		start: (config?: Partial<SyncConfig>) =>
+		start: (Config?: Partial<SyncConfig>) =>
 			Effect.gen(function* () {
-				const fullConfig: SyncConfig = {
+				const FullConfig: SyncConfig = {
 					...defaultSyncConfig,
-					...config,
+					...Config,
 				};
 
-				if (!fullConfig.enabled) {
-					yield* telemetry.log("info", "[MountainSync] Sync disabled in config");
+				if (!FullConfig.enabled) {
+					yield* TelemetryService.log("info", "[MountainSync] Sync disabled in config");
 					return;
 				}
 
-				yield* telemetry.log(
+				yield* TelemetryService.log(
 					"info",
-					`[MountainSync] Starting sync with ${fullConfig.syncIntervalMs}ms interval`,
+					`[MountainSync] Starting sync with ${FullConfig.syncIntervalMs}ms interval`,
 				);
 
-				syncStatus = "syncing";
+				SyncStatus = "syncing";
 
-				const startSyncing = Effect.gen(function* () {
+				const StartSyncing = Effect.gen(function* () {
 					// Main sync loop
 					yield* Effect.forever(
 						Effect.gen(function* () {
-							yield* Effect.sleep(`${fullConfig.syncIntervalMs} millis`);
+							yield* Effect.sleep(`${FullConfig.syncIntervalMs} millis`);
 
-							const result = yield* syncNowEffect(mountain, ipc, telemetry);
+							const Result = yield* SyncNowEffect(Mountain, IPC, TelemetryService);
 
 							// Update stats
-							lastSyncTime = Date.now();
-							syncCount++;
-							itemsSynced += result.itemsSynced;
+							LastSyncTime = Date.now();
+							SyncCount++;
+							ItemsSynced += Result.itemsSynced;
 
-							if (result.success) {
-								successCount++;
-								yield* telemetry.log(
+							if (Result.success) {
+								SuccessCount++;
+								yield* TelemetryService.log(
 									"info",
-									`[MountainSync] Synced ${result.itemsSynced} items in ${result.duration}ms`,
+									`[MountainSync] Synced ${Result.itemsSynced} items in ${Result.duration}ms`,
 								);
-							} else if (fullConfig.autoRetry) {
-								errorCount++;
-								yield* telemetry.log(
+							} else if (FullConfig.autoRetry) {
+								ErrorCount++;
+								yield* TelemetryService.log(
 									"warn",
-									`[MountainSync] Sync failed, will retry: ${result.error?.message}`,
+									`[MountainSync] Sync failed, will retry: ${Result.error?.message}`,
 								);
 							}
 						}),
 					);
 				});
 
-				syncFiber = yield* startSyncing.pipe(Effect.fork);
+				SyncFiber = yield* StartSyncing.pipe(Effect.fork);
 			}),
 
 		stop: () =>
 			Effect.gen(function* () {
-				if (syncFiber) {
-					yield* Fiber.interrupt(syncFiber);
-					syncFiber = null;
-					syncStatus = "idle";
-					yield* telemetry.log("info", "[MountainSync] Stopped");
+				if (SyncFiber) {
+					yield* Fiber.interrupt(SyncFiber);
+					SyncFiber = null;
+					SyncStatus = "idle";
+					yield* TelemetryService.log("info", "[MountainSync] Stopped");
 				}
 			}),
 
-		syncNow: () => syncNowEffect(mountain, ipc, telemetry),
+		syncNow: () => SyncNowEffect(Mountain, IPC, TelemetryService),
 
-		getStatus: () => Effect.sync(() => syncStatus),
+		getStatus: () => Effect.sync(() => SyncStatus),
 
 		getStats: () =>
 			Effect.gen(function* () {
 				return {
-					lastSyncTime,
-					syncCount,
-					successCount,
-					errorCount,
-					itemsSynced,
+					lastSyncTime: LastSyncTime,
+					syncCount: SyncCount,
+					successCount: SuccessCount,
+					errorCount: ErrorCount,
+					itemsSynced: ItemsSynced,
 				};
 			}),
 
 		pause: () =>
 			Effect.gen(function* () {
-				syncStatus = "paused";
-				yield* telemetry.log("info", "[MountainSync] Pausing...");
+				SyncStatus = "paused";
+				yield* TelemetryService.log("info", "[MountainSync] Pausing...");
 			}),
 
 		resume: () =>
 			Effect.gen(function* () {
-				syncStatus = "syncing";
-				yield* telemetry.log("info", "[MountainSync] Resuming...");
+				SyncStatus = "syncing";
+				yield* TelemetryService.log("info", "[MountainSync] Resuming...");
 			}),
 	};
 };

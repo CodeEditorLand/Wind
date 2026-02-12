@@ -1,9 +1,9 @@
 /**
  * @module Configuration/ESBuild/Constant/BoundConstant
  * @description
- * Path-related constants from Node.js path module.
- * Used for file path handling in build configuration.
- * @category Constant
+ * DEPRECATED: Use PathConstant instead.
+ * Kept for backward compatibility.
+ * @deprecated
  */
 
 export const { sep, posix } = await import("node:path");

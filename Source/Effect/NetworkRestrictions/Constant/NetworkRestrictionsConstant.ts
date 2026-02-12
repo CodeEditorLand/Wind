@@ -57,7 +57,7 @@ export const DEFAULT_NETWORK_RESTRICTIONS = {
 /**
  * Common telemetry endpoints that should always be blocked
  */
-export const TELEMETRY_ENDP = [
+export const TelemetryEndpoint = [
 	"vortex.data.microsoft.com",
 	"vortex.data.microsoft.com/collect/v1",
 	"*.telemetry.vscode.azure.net",
@@ -68,7 +68,7 @@ export const TELEMETRY_ENDP = [
 /**
  * Marketplace and extension endpoints that should be blocked
  */
-export const MARKETPLACE_ENDP = [
+export const MarketplaceEndpoint = [
 	"*.marketplace.visualstudio.com",
 	"*.marketplace.extensions.visualstudio.com",
 	"*.gallery.vsassets.io",
@@ -77,7 +77,7 @@ export const MARKETPLACE_ENDP = [
 /**
  * Update server endpoints that should be blocked
  */
-export const UPDATE_ENDP = [
+export const UpdateEndpoint = [
 	"*.update.code.visualstudio.com",
 	"*.vscode-update.azurewebsites.net",
 ];
@@ -85,7 +85,7 @@ export const UPDATE_ENDP = [
 /**
  * AI and Copilot endpoints that should be blocked
  */
-export const AI_ENDPOINTP = [
+export const AiEndpoint = [
 	"*.api.githubcopilot.com",
 	"*.copilot.githubusercontent.com",
 ];
@@ -121,10 +121,10 @@ export const BLOCKED_IPC_CHANNELS = [
 
 const constants = {
 	DEFAULT_NETWORK_RESTRICTIONS,
-	TELEMETRY_ENDP,
-	MARKETPLACE_ENDP,
-	UPDATE_ENDP,
-	AI_ENDPOINTP,
+	TelemetryEndpoint,
+	MarketplaceEndpoint,
+	UpdateEndpoint,
+	AiEndpoint,
 	ALLOWED_IPC_CHANNELS,
 	BLOCKED_IPC_CHANNELS,
 } as const;

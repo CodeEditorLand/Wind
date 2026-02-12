@@ -81,10 +81,10 @@ export const MockClipboard = MockLayer;
 
 // Error helpers
 export {
-	createNotAvailableError,
-	createReadError,
-	createWriteError,
-	createPermissionDeniedError,
-	createFormatNotSupportedError,
-	createSizeExceededError,
+	CreateNotAvailableError,
+	CreateReadError,
+	CreateWriteError,
+	CreatePermissionDeniedError,
+	CreateFormatNotSupportedError,
+	CreateSizeExceededError,
 } from "./Clipboard/Implementation/ClipboardHelper.js";

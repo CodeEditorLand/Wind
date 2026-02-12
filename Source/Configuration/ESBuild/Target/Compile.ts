@@ -8,10 +8,11 @@
 
 import type { BuildOptions } from "esbuild";
 
+// Import from the main Wind module (dynamic)
 export const On = (await import("../Wind.js")).On;
-
 export const Bundle = (await import("../Wind.js")).Bundle;
 
+// Import custom merge function
 export const Merge = (await import("deepmerge-ts")).deepmergeCustom({
 	mergeArrays: false,
 });
@@ -20,19 +21,17 @@ export const Merge = (await import("deepmerge-ts")).deepmergeCustom({
  * @module ESBuild
  *
  */
-export default async (Current: BuildOptions): Promise<BuildOptions> =>
-	Merge<[BuildOptions, BuildOptions]>(
-		await (await import("../Target.js")).default(Current),
+export default async (Current: BuildOptions): Promise<BuildOptions> => {
+	// Import the Target config (which is an async function)
+	const TargetConfigModule = await import("../Target.js");
+	const TargetResult = await TargetConfigModule.default(Current);
 
-		{
-			bundle: true,
-
-			outbase: "Target",
-
-			tsconfig: "Configuration/tsconfig/Target/Compile.json",
-
-			plugins: [],
-
-			allowOverwrite: true,
-		},
-	);
+	// Merge with compile-specific settings
+	return Merge(TargetResult, {
+		bundle: true,
+		outbase: "Target",
+		tsconfig: "Configuration/tsconfig/Target/Compile.json",
+		plugins: [],
+		allowOverwrite: true,
+	}) as BuildOptions;
+};

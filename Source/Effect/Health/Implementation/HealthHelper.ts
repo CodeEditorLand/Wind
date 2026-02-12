@@ -7,31 +7,31 @@
 
 import type { ServiceHealth, HealthStatus } from "../Type/HealthType.js";
 
-export const createServiceHealth = (
-	name: string,
-	status: HealthStatus,
-	message: string,
-	responseTime: number,
-	details?: Readonly<Record<string, unknown>>,
-) => ({
-	serviceName: name,
-	status,
-	message,
-	lastChecked: Date.now(),
-	responseTime,
-	...((details !== undefined) ? { details } : {}),
+export const CreateServiceHealth = (
+  Name: string,
+  Status: HealthStatus,
+  Message: string,
+  ResponseTime: number,
+  Details?: Readonly<Record<string, unknown>>,
+): ServiceHealth => ({
+  serviceName: Name,
+  status: Status,
+  message: Message,
+  lastChecked: Date.now(),
+  responseTime: ResponseTime,
+  ...(Details !== undefined ? { details: Details } : {}),
 }) satisfies ServiceHealth;
 
-export const createServiceHealthWithNoResponseTime = (
-	name: string,
-	status: HealthStatus,
-	message: string,
-) => ({
-	serviceName: name,
-	status,
-	message,
-	lastChecked: Date.now(),
-	responseTime: 0,
+export const CreateServiceHealthWithNoResponseTime = (
+  Name: string,
+  Status: HealthStatus,
+  Message: string,
+): ServiceHealth => ({
+  serviceName: Name,
+  status: Status,
+  message: Message,
+  lastChecked: Date.now(),
+  responseTime: 0,
 }) satisfies ServiceHealth;
 
-export default { createServiceHealth, createServiceHealthWithNoResponseTime };
+export default { CreateServiceHealth, CreateServiceHealthWithNoResponseTime };

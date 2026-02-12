@@ -20,172 +20,167 @@ import type { TelemetryService } from "../../Telemetry.js";
 /**
  * Generates a unique ID for activity bar items.
  */
-export const generateItemId = (): string =>
-	`activitybar-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+export const GenerateItemId = (): string =>
+  `activitybar-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 
 /**
  * Creates the createItem effect implementation.
  */
-export const makeCreateItem = (
-	itemsRef: SubscriptionRef.SubscriptionRef<ReadonlyArray<ActivityBarItem>>,
-	telemetry: TelemetryService,
+export const MakeCreateItem = (
+  ItemsRef: SubscriptionRef.SubscriptionRef<ReadonlyArray<ActivityBarItem>>,
+  Telemetry: TelemetryService,
 ) => {
-	return (item: CreateActivityBarItem): Effect.Effect<ActivityBarItem, never> =>
-		Effect.gen(function* () {
-			const id = generateItemId();
-			const newItem: ActivityBarItem = { ...item, id };
+  return (Item: CreateActivityBarItem): Effect.Effect<ActivityBarItem, never> =>
+    Effect.gen(function* () {
+      const Id = GenerateItemId();
+      const NewItem: ActivityBarItem = { ...Item, id: Id };
 
-			yield* SubscriptionRef.modify(itemsRef, (items) => [
-				undefined,
-				[...items, newItem].sort((a, b) => a.position - b.position),
-			]);
+      yield* SubscriptionRef.modify(ItemsRef, (Items) =>
+        [undefined, [...Items, NewItem].sort((a, b) => a.position - b.position)],
+      );
 
-			yield* telemetry.log("info", `Created activity bar item: ${id}`);
-			return newItem;
-		});
+      yield* Telemetry.log("info", `Created activity bar item: ${Id}`);
+      return NewItem;
+    });
 };
 
 /**
  * Creates the updateItem effect implementation.
  */
-export const makeUpdateItem = (
-	itemsRef: SubscriptionRef.SubscriptionRef<ReadonlyArray<ActivityBarItem>>,
-	getItem: (id: string) => Effect.Effect<ActivityBarItem | undefined, never>,
-	telemetry: TelemetryService,
+export const MakeUpdateItem = (
+  ItemsRef: SubscriptionRef.SubscriptionRef<ReadonlyArray<ActivityBarItem>>,
+  GetItem: (Id: string) => Effect.Effect<ActivityBarItem | undefined, never>,
+  Telemetry: TelemetryService,
 ) => {
-	return (
-		id: string,
-		updates: Partial<Omit<ActivityBarItem, "id">>,
-	): Effect.Effect<void, ActivityBarItemNotFoundError | ActivityBarUpdateError> =>
-		Effect.gen(function* () {
-			const existing = yield* getItem(id);
+  return (
+    Id: string,
+    Updates: Partial<Omit<ActivityBarItem, "id">>,
+  ): Effect.Effect<void, ActivityBarItemNotFoundError | ActivityBarUpdateError> =>
+    Effect.gen(function* () {
+      const Existing = yield* GetItem(Id);
 
-			if (!existing) {
-				return yield* Effect.fail(new ActivityBarItemNotFoundError(id));
-			}
+      if (!Existing) {
+        return yield* Effect.fail(new ActivityBarItemNotFoundError(Id));
+      }
 
-			try {
-				// Remove badge if explicitly set to undefined
-				const cleanUpdatesMap = new Map<string, unknown>();
-				Object.entries(updates).forEach(([key, value]) => {
-					if (key !== "badge" || value !== undefined) {
-						cleanUpdatesMap.set(key, value);
-					}
-				});
-				const cleanUpdates: Partial<Omit<ActivityBarItem, "id">> = Object.fromEntries(cleanUpdatesMap);
+      try {
+        // Remove badge if explicitly set to undefined
+        const CleanUpdatesMap = new Map<string, unknown>();
+        Object.entries(Updates).forEach(([Key, Value]) => {
+          if (Key !== "badge" || Value !== undefined) {
+            CleanUpdatesMap.set(Key, Value);
+          }
+        });
+        const CleanUpdates: Partial<Omit<ActivityBarItem, "id">> = Object.fromEntries(CleanUpdatesMap);
 
-				yield* SubscriptionRef.modify(itemsRef, (items) => [
-					undefined,
-					items.map((item) =>
-						item.id === id ? { ...item, ...cleanUpdates } : item,
-					).sort((a, b) => a.position - b.position),
-				]);
+        yield* SubscriptionRef.modify(ItemsRef, (Items) =>
+          [undefined, Items.map((Item) => Item.id === Id ? { ...Item, ...CleanUpdates } : Item).sort((a, b) => a.position - b.position)],
+        );
 
-				yield* telemetry.log("info", `Updated activity bar item: ${id}`);
-			} catch (error) {
-				return yield* Effect.fail(new ActivityBarUpdateError(id, error));
-			}
-		});
+        yield* Telemetry.log("info", `Updated activity bar item: ${Id}`);
+      } catch (Error) {
+        return yield* Effect.fail(new ActivityBarUpdateError(Id, Error));
+      }
+    });
 };
 
 /**
  * Creates the removeItem effect implementation.
  */
-export const makeRemoveItem = (
-	itemsRef: SubscriptionRef.SubscriptionRef<ReadonlyArray<ActivityBarItem>>,
-	activeItemRef: SubscriptionRef.SubscriptionRef<string | undefined>,
-	getItem: (id: string) => Effect.Effect<ActivityBarItem | undefined, never>,
-	telemetry: TelemetryService,
+export const MakeRemoveItem = (
+  ItemsRef: SubscriptionRef.SubscriptionRef<ReadonlyArray<ActivityBarItem>>,
+  ActiveItemRef: SubscriptionRef.SubscriptionRef<string | undefined>,
+  GetItem: (Id: string) => Effect.Effect<ActivityBarItem | undefined, never>,
+  Telemetry: TelemetryService,
 ) => {
-	return (id: string): Effect.Effect<void, ActivityBarItemNotFoundError> =>
-		Effect.gen(function* () {
-			const existing = yield*getItem(id);
+  return (Id: string): Effect.Effect<void, ActivityBarItemNotFoundError> =>
+    Effect.gen(function* () {
+      const Existing = yield* GetItem(Id);
 
-			if (!existing) {
-				return yield* Effect.fail(new ActivityBarItemNotFoundError(id));
-			}
+      if (!Existing) {
+        return yield* Effect.fail(new ActivityBarItemNotFoundError(Id));
+      }
 
-			yield* SubscriptionRef.modify(itemsRef, (items) => [
-				undefined,
-				items.filter((item) => item.id !== id),
-			]);
+      yield* SubscriptionRef.modify(ItemsRef, (Items) =>
+        [undefined, Items.filter((Item) => Item.id !== Id)],
+      );
 
-			// Clear active state if this was the active item
-			const currentActive = yield* activeItemRef.get;
-			if (currentActive === id) {
-				yield* SubscriptionRef.set(activeItemRef, undefined);
-			}
+      // Clear active state if this was the active item
+      const CurrentActive = yield* ActiveItemRef.get;
+      if (CurrentActive === Id) {
+        yield* SubscriptionRef.set(ActiveItemRef, undefined);
+      }
 
-			yield* telemetry.log("info", `Removed activity bar item: ${id}`);
-		});
+      yield* Telemetry.log("info", `Removed activity bar item: ${Id}`);
+    });
 };
 
 /**
  * Creates the getItem effect implementation.
  */
-export const makeGetItem = (
-	itemsRef: SubscriptionRef.SubscriptionRef<ReadonlyArray<ActivityBarItem>>,
+export const MakeGetItem = (
+  ItemsRef: SubscriptionRef.SubscriptionRef<ReadonlyArray<ActivityBarItem>>,
 ) => {
-	return (id: string): Effect.Effect<ActivityBarItem | undefined, never> =>
-		Effect.map(itemsRef.get, (items) => items.find((item) => item.id === id));
+  return (Id: string): Effect.Effect<ActivityBarItem | undefined, never> =>
+    Effect.map(ItemsRef.get, (Items) => Items.find((Item) => Item.id === Id));
 };
 
 /**
  * Creates the setActiveItem effect implementation.
  */
-export const makeSetActiveItem = (
-	activeItemRef: SubscriptionRef.SubscriptionRef<string | undefined>,
-	getItem: (id: string) => Effect.Effect<ActivityBarItem | undefined, never>,
-	telemetry: TelemetryService,
+export const MakeSetActiveItem = (
+  ActiveItemRef: SubscriptionRef.SubscriptionRef<string | undefined>,
+  GetItem: (Id: string) => Effect.Effect<ActivityBarItem | undefined, never>,
+  Telemetry: TelemetryService,
 ) => {
-	return (id: string): Effect.Effect<void, ActivityBarItemNotFoundError> =>
-		Effect.gen(function* () {
-			const existing = yield* getItem(id);
+  return (Id: string): Effect.Effect<void, ActivityBarItemNotFoundError> =>
+    Effect.gen(function* () {
+      const Existing = yield* GetItem(Id);
 
-			if (!existing) {
-				return yield* Effect.fail(new ActivityBarItemNotFoundError(id));
-			}
+      if (!Existing) {
+        return yield* Effect.fail(new ActivityBarItemNotFoundError(Id));
+      }
 
-			yield* SubscriptionRef.set(activeItemRef, id);
-			yield* telemetry.log("info", `Set active activity bar item: ${id}`);
-		});
+      yield* SubscriptionRef.set(ActiveItemRef, Id);
+      yield* Telemetry.log("info", `Set active activity bar item: ${Id}`);
+    });
 };
 
 /**
  * Creates the setBadge effect implementation.
  */
-export const makeSetBadge = (
-	updateItem: (
-		id: string,
-		updates: Partial<Omit<ActivityBarItem, "id">>,
-	) => Effect.Effect<void, ActivityBarItemNotFoundError | ActivityBarUpdateError>,
+export const MakeSetBadge = (
+  UpdateItem: (
+    Id: string,
+    Updates: Partial<Omit<ActivityBarItem, "id">>,
+  ) => Effect.Effect<void, ActivityBarItemNotFoundError | ActivityBarUpdateError>,
 ) => {
-	return (
-		id: string,
-		badge: ActivityBarBadge | undefined,
-	): Effect.Effect<void, ActivityBarItemNotFoundError | ActivityBarUpdateError> =>
-		badge === undefined
-			? updateItem(id, {} as Partial<Omit<ActivityBarItem, "id">>) // badge removed by helper
-			: updateItem(id, { badge });
+  return (
+    Id: string,
+    Badge: ActivityBarBadge | undefined,
+  ): Effect.Effect<void, ActivityBarItemNotFoundError | ActivityBarUpdateError> =>
+    Badge === undefined
+      ? UpdateItem(Id, {} as Partial<Omit<ActivityBarItem, "id">>) // badge removed by helper
+      : UpdateItem(Id, { badge: Badge });
 };
 
 /**
  * Creates the getBadge effect implementation.
  */
-export const makeGetBadge = (
-	getItem: (id: string) => Effect.Effect<ActivityBarItem | undefined, never>,
+export const MakeGetBadge = (
+  GetItem: (Id: string) => Effect.Effect<ActivityBarItem | undefined, never>,
 ) => {
-	return (id: string): Effect.Effect<ActivityBarBadge | undefined, never> =>
-		Effect.map(getItem(id), (item) => item?.badge);
+  return (Id: string): Effect.Effect<ActivityBarBadge | undefined, never> =>
+    Effect.map(GetItem(Id), (Item) => Item?.badge);
 };
 
 export default {
-	makeCreateItem,
-	makeUpdateItem,
-	makeRemoveItem,
-	makeGetItem,
-	makeSetActiveItem,
-	makeSetBadge,
-	makeGetBadge,
-	generateItemId,
+  MakeCreateItem,
+  MakeUpdateItem,
+  MakeRemoveItem,
+  MakeGetItem,
+  MakeSetActiveItem,
+  MakeSetBadge,
+  MakeGetBadge,
+  GenerateItemId,
 };

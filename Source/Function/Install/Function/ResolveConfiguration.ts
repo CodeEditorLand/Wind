@@ -13,7 +13,7 @@ import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts
 /**
  * Resolves the VSCode sandbox configuration
  */
-export async function resolveConfiguration(): Promise<ISandboxConfiguration> {
+export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 	return {
 		windowId: 1,
 		appRoot: "file:///app",

@@ -17,88 +17,88 @@ import type { Platform, Architecture } from "../Type/EnvironmentType.js";
  * Detect the current platform
  * @returns The detected platform type
  */
-export const detectPlatform = (): Platform => {
-	if (typeof navigator === "undefined") {
-		return "web";
-	}
+export const DetectPlatform = (): Platform => {
+  if (typeof navigator === "undefined") {
+    return "web";
+  }
 
-	const platform = navigator.platform?.toLowerCase() || "";
+  const PlatformStr = navigator.platform?.toLowerCase() || "";
 
-	if (platform.includes("win")) {
-		return "win32";
-	}
-	if (platform.includes("mac")) {
-		return "darwin";
-	}
-	if (platform.includes("linux") || platform.includes("ubuntu")) {
-		return "linux";
-	}
+  if (PlatformStr.includes("win")) {
+    return "win32";
+  }
+  if (PlatformStr.includes("mac")) {
+    return "darwin";
+  }
+  if (PlatformStr.includes("linux") || PlatformStr.includes("ubuntu")) {
+    return "linux";
+  }
 
-	return "web";
+  return "web";
 };
 
 /**
  * Detect the current CPU architecture
  * @returns The detected architecture type
  */
-export const detectArchitecture = (): Architecture => {
-	// Web platform doesn't expose architecture
-	if (typeof navigator === "undefined") {
-		return "web";
-	}
+export const DetectArchitecture = (): Architecture => {
+  // Web platform doesn't expose architecture
+  if (typeof navigator === "undefined") {
+    return "web";
+  }
 
-	// Try to detect from user agent
-	const userAgent = navigator.userAgent.toLowerCase();
-	if (userAgent.includes("arm") || userAgent.includes("aarch64")) {
-		return "arm64";
-	}
+  // Try to detect from user agent
+  const UserAgent = navigator.userAgent.toLowerCase();
+  if (UserAgent.includes("arm") || UserAgent.includes("aarch64")) {
+    return "arm64";
+  }
 
-	// Default to x64 for web
-	return "x64";
+  // Default to x64 for web
+  return "x64";
 };
 
 /**
  * Detect the current locale
  * @returns The detected locale string
  */
-export const detectLocale = (): string => {
-	if (typeof navigator === "undefined") {
-		return "en-US";
-	}
+export const DetectLocale = (): string => {
+  if (typeof navigator === "undefined") {
+    return "en-US";
+  }
 
-	return navigator.language || "en-US";
+  return navigator.language || "en-US";
 };
 
 /**
  * Detect the current timezone
  * @returns The detected timezone string
  */
-export const detectTimezone = (): string => {
-	try {
-		return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
-	} catch {
-		return "UTC";
-	}
+export const DetectTimezone = (): string => {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+  } catch {
+    return "UTC";
+  }
 };
 
 /**
  * Get the user agent string
  * @returns The user agent string
  */
-export const getUserAgent = (): string => {
-	if (typeof navigator === "undefined") {
-		return "Unknown";
-	}
+export const GetUserAgent = (): string => {
+  if (typeof navigator === "undefined") {
+    return "Unknown";
+  }
 
-	return navigator.userAgent || "Unknown";
+  return navigator.userAgent || "Unknown";
 };
 
 const helpers = {
-	detectPlatform,
-	detectArchitecture,
-	detectLocale,
-	detectTimezone,
-	getUserAgent,
+  DetectPlatform,
+  DetectArchitecture,
+  DetectLocale,
+  DetectTimezone,
+  GetUserAgent,
 };
 
 export default helpers;

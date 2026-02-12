@@ -32,76 +32,76 @@ import {
  * Creates the main bootstrap orchestration function.
  */
 const makeBootstrap = (): BootstrapService => ({
-	run: (options) =>
-		Effect.gen(function* () {
-			const telemetry = yield* Telemetry;
+	run: (Options) =>
+	Effect.gen(function* () {
+		const TelemetryService = yield* Telemetry;
 
-			const startTime = Date.now();
-			const { skipHealthCheck = false, debugMode = false } = options ?? {};
+		const StartTime = Date.now();
+		const { skipHealthCheck = false, debugMode = false } = Options ?? {};
 
-			telemetry.log("info", "[Bootstrap] ===============================================");
-			telemetry.log("info", "[Bootstrap] Wind VSCode Workbench Bootstrap");
-			telemetry.log("info", "[Bootstrap] Debug mode: " + debugMode);
-			telemetry.log("info", "[Bootstrap] ===============================================");
+		TelemetryService.log("info", "[Bootstrap] ===============================================");
+		TelemetryService.log("info", "[Bootstrap] Wind VSCode Workbench Bootstrap");
+		TelemetryService.log("info", "[Bootstrap] Debug mode: " + debugMode);
+		TelemetryService.log("info", "[Bootstrap] ===============================================");
 
-			const stages = [
-				stage0_Environment,
-				stage1_Preload,
-				stage2_Configuration,
-				stage3_Services,
-				stage4_Preparation,
-				stage5_Initialization,
-				...(skipHealthCheck ? [] : [stage6_HealthCheck]),
-			];
+		const Stages = [
+			stage0_Environment,
+			stage1_Preload,
+			stage2_Configuration,
+			stage3_Services,
+			stage4_Preparation,
+			stage5_Initialization,
+			...(skipHealthCheck ? [] : [stage6_HealthCheck]),
+		];
 
-			const results: StageResult[] = [];
+		const Results: StageResult[] = [];
 
-			for (const stage of stages) {
-				const stageStartTime = Date.now();
-				let result: StageResult;
-				try {
-					// @ts-expect-error - Effect stages have different requirements that runtime handles correctly
-					const stageResult = yield* Effect.suspend(() => stage) as any;
-					result = { ...stageResult, duration: Date.now() - stageStartTime };
-				} catch (e) {
-					const error = e instanceof Error ? e : new Error(String(e));
-					result = {
-						stageName: "Unknown",
-						success: false as boolean,
-						duration: Date.now() - stageStartTime,
-						error,
-					} satisfies StageResult;
-				}
-				results.push(result);
+		for (const Stage of Stages) {
+			const StageStartTime = Date.now();
+			let Result: StageResult;
+			try {
+				// @ts-expect-error - Effect stages have different requirements that runtime handles correctly
+				const StageResult = yield* Effect.suspend(() => Stage) as any;
+				Result = { ...StageResult, duration: Date.now() - StageStartTime };
+			} catch (E) {
+				const Error = E instanceof Error ? E : new Error(String(E));
+				Result = {
+					stageName: "Unknown",
+					success: false as boolean,
+					duration: Date.now() - StageStartTime,
+					error: Error,
+				} satisfies StageResult;
 			}
+			Results.push(Result);
+		}
 
-			const endTime = Date.now();
-			const totalDuration = endTime - startTime;
-			const allSuccess = results.every((r) => r.success);
+		const EndTime = Date.now();
+		const TotalDuration = EndTime - StartTime;
+		const AllSuccess = Results.every((R) => R.success);
 
-			telemetry.log("info", "[Bootstrap] ===============================================");
-			telemetry.log(
-				"info",
-				`[Bootstrap] ${allSuccess ? "✓ Bootstrap completed successfully" : "✗ Bootstrap failed"}`,
-			);
-			telemetry.log("info", `[Bootstrap] Total duration: ${totalDuration}ms`);
-			telemetry.log("info", "[Bootstrap] ===============================================");
+		TelemetryService.log("info", "[Bootstrap] ===============================================");
+		TelemetryService.log(
+			"info",
+			`[Bootstrap] ${AllSuccess ? "✓ Bootstrap completed successfully" : "✗ Bootstrap failed"}`,
+		);
+		TelemetryService.log("info", `[Bootstrap] Total duration: ${TotalDuration}ms`);
+		TelemetryService.log("info", "[Bootstrap] ===============================================");
 
-			if (!allSuccess) {
-				const failedStages = results.filter((r) => !r.success);
-				telemetry.log("error", "[Bootstrap] Failed stages:");
-				for (const failed of failedStages) {
-					telemetry.log("error", `[Bootstrap]   - ${failed.stageName}: ${failed.error?.message || "Unknown error"}`);
-				}
+		if (!AllSuccess) {
+			const FailedStages = Results.filter((R) => !R.success);
+			TelemetryService.log("error", "[Bootstrap] Failed stages:");
+			for (const Failed of FailedStages) {
+				TelemetryService.log("error", `[Bootstrap]   - ${Failed.stageName}: ${Failed.error?.message || "Unknown error"}`);
 			}
+		}
 
-			return {
-				success: allSuccess,
-				totalDuration,
-				stages: results,
-				error: allSuccess ? undefined : new Error("Bootstrap failed"),
-			} satisfies BootstrapResult;
-		}),
+		return {
+			success: AllSuccess,
+			totalDuration: TotalDuration,
+			stages: Results,
+			error: AllSuccess ? undefined : new Error("Bootstrap failed"),
+		} satisfies BootstrapResult;
+	}),
 });
 
 /**

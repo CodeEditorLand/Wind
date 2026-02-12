@@ -12,13 +12,13 @@ import { invoke as tauriInvoke } from "@tauri-apps/api/core";
 // Atom: Cleanup registry for event listeners
 // ============================================================================
 
-const cleanupMap = new Map<string, () => void>();
+const CleanupMap = new Map<string, () => void>();
 
 // ============================================================================
 // Atom: Tauri Availability Check
 // ============================================================================
 
-const isTauri =
+const IsTauri =
 	typeof window !== "undefined" && (window as any).__TAURI__ !== undefined;
 
 // ============================================================================
@@ -42,8 +42,8 @@ const ipcRenderer = {
 		listen(channel, (event) => {
 			listener(event, event.payload);
 		}).then((unlisten) => {
-			const cleanup = () => unlisten();
-			cleanupMap.set(channel, cleanup);
+			const Cleanup = () => unlisten();
+			CleanupMap.set(channel, Cleanup);
 		});
 	},
 
@@ -54,9 +54,9 @@ const ipcRenderer = {
 		const wrappedListener = (event: unknown) => {
 			listener(event, (event as any).payload || event);
 		};
-		listen(channel, wrappedListener as any).then((unlisten) => {
+		listen(channel, wrappedListener as any).then((Unlisten) => {
 			// Remove after first call
-			setTimeout(() => unlisten(), 0);
+			setTimeout(() => Unlisten(), 0);
 		});
 	},
 
@@ -64,18 +64,18 @@ const ipcRenderer = {
 		channel: string,
 		_listener: (event: unknown, ...args: unknown[]) => void,
 	) => {
-		const cleanup = cleanupMap.get(channel);
-		if (cleanup) {
-			cleanup();
-			cleanupMap.delete(channel);
+		const Cleanup = CleanupMap.get(channel);
+		if (Cleanup) {
+			Cleanup();
+			CleanupMap.delete(channel);
 		}
 	},
 
 	removeAllListeners: (channel: string) => {
-		const cleanup = cleanupMap.get(channel);
-		if (cleanup) {
-			cleanup();
-			cleanupMap.delete(channel);
+		const Cleanup = CleanupMap.get(channel);
+		if (Cleanup) {
+			Cleanup();
+			CleanupMap.delete(channel);
 		}
 	},
 };
@@ -148,16 +148,16 @@ const process = {
 // Atom: Configuration (fetched from Mountain)
 // ============================================================================
 
-let cachedConfiguration: any = null;
+let CachedConfiguration: any = null;
 
 const context = {
 	configuration: async () => {
-		if (cachedConfiguration) return cachedConfiguration;
+		if (CachedConfiguration) return CachedConfiguration;
 
 		try {
-			const config = await tauriInvoke("mountain_get_workbench_configuration");
-			cachedConfiguration = config;
-			return config;
+			const Config = await tauriInvoke("mountain_get_workbench_configuration");
+			CachedConfiguration = Config;
+			return Config;
 		} catch (error) {
 			console.error("[Preload] Failed to fetch configuration:", error);
 			throw error;
@@ -185,7 +185,7 @@ const webUtils = {
 // Atom: Globals Assembly
 // ============================================================================
 
-const globals = {
+const Globals = {
 	ipcRenderer,
 	ipcMessagePort,
 	webFrame,
@@ -198,8 +198,8 @@ const globals = {
 // Atom: Expose to window
 // ============================================================================
 
-if (isTauri) {
-	(window as any).vscode = globals;
+if (IsTauri) {
+	(window as any).vscode = Globals;
 	console.log("[Preload] ✅ Sandbox globals exposed to window.vscode");
 
 	// Dispatch ready event

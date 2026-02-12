@@ -1,92 +1,15 @@
-import type { BuildOptions } from "esbuild";
-
-export const On =
-	process.env["NODE_ENV"] === "development" ||
-	process.env["TAURI_ENV_DEBUG"] === "true";
-
-export const Clean = process.env["Clean"] === "true";
-
-export const Bundle = process.env["Bundle"] === "true";
-
-export const Compile = process.env["Compile"] === "true";
-
 /**
- * @module ESBuild
- *
+ * @module Configuration/ESBuild/Wind
+ * @description
+ * ESBuild Wind configuration with all build targets.
+ * This is the main configuration entry point.
  */
-export default {
-	color: true,
 
-	format: "esm",
+import BaseConfig from "./Config/BaseConfig.js";
+import TargetConfig from "./Config/TargetConfig.js";
+import CompileConfig from "./Config/CompileConfig.js";
 
-	logLevel: "debug",
+export * from "./Constant/EnvironmentConstant.js";
+export { sep, posix } from "./Constant/BoundConstant.js";
 
-	metafile: true,
-
-	minify: !On,
-
-	outdir: "Configuration",
-
-	platform: "node",
-
-	target: "esnext",
-
-	tsconfig: "tsconfig.json",
-
-	write: true,
-
-	legalComments: On ? "inline" : "none",
-
-	bundle: Bundle,
-
-	assetNames: "Asset/[name]-[hash]",
-
-	sourcemap: On,
-
-	drop: On ? [] : ["debugger"],
-
-	ignoreAnnotations: !On,
-
-	keepNames: On,
-
-	plugins: [
-		{
-			name: "Target",
-
-			// @ts-ignore
-			setup({ onStart, initialOptions: { outdir } }) {
-				switch (true) {
-					case Clean === true:
-						onStart(async () => {
-							try {
-								outdir
-									? await (
-											await import("node:fs/promises")
-										).rm(outdir, {
-											recursive: true,
-										})
-									: {};
-							} catch (_Error) {
-								console.log(_Error);
-							}
-						});
-
-						break;
-
-					default:
-						break;
-				}
-			},
-		},
-	],
-
-	outbase: "Source/Configuration",
-
-	loader: {
-		".json": "copy",
-
-		".sh": "copy",
-	},
-} satisfies BuildOptions as BuildOptions;
-
-export const { sep, posix } = await import("node:path");
+export { BaseConfig, TargetConfig, CompileConfig };

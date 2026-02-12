@@ -50,7 +50,7 @@ export interface IPCSubscriptionError {
 /**
  * Creates an IPCInvokeError instance
  */
-const createIPCInvokeError = (channel: string, cause: unknown): IPCInvokeError => ({
+const CreateIPCInvokeError = (channel: string, cause: unknown): IPCInvokeError => ({
 	_tag: "IPCInvokeError",
 	channel,
 	cause,
@@ -61,7 +61,7 @@ const createIPCInvokeError = (channel: string, cause: unknown): IPCInvokeError =
 /**
  * Creates an IPCSendError instance
  */
-const createIPCSendError = (channel: string, cause: unknown): IPCSendError => ({
+const CreateIPCSendError = (channel: string, cause: unknown): IPCSendError => ({
 	_tag: "IPCSendError",
 	channel,
 	cause,
@@ -72,7 +72,7 @@ const createIPCSendError = (channel: string, cause: unknown): IPCSendError => ({
 /**
  * Creates an IPCSubscriptionError instance
  */
-const createIPCSubscriptionError = (channel: string, cause: unknown): IPCSubscriptionError => ({
+const CreateIPCSubscriptionError = (channel: string, cause: unknown): IPCSubscriptionError => ({
 	_tag: "IPCSubscriptionError",
 	channel,
 	cause,
@@ -81,13 +81,13 @@ const createIPCSubscriptionError = (channel: string, cause: unknown): IPCSubscri
 });
 
 export {
-	createIPCInvokeError,
-	createIPCSendError,
-	createIPCSubscriptionError,
+	CreateIPCInvokeError,
+	CreateIPCSendError,
+	CreateIPCSubscriptionError,
 };
 
 export default {
-	createIPCInvokeError,
-	createIPCSendError,
-	createIPCSubscriptionError,
+	CreateIPCInvokeError,
+	CreateIPCSendError,
+	CreateIPCSubscriptionError,
 };

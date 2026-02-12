@@ -10,9 +10,9 @@ import { Effect, Stream } from "effect";
 import type { IPCService } from "../Interface/IPCService.js";
 import type { IPCInvokeError, IPCSendError, IPCSubscriptionError } from "../Error/IPCError.js";
 import {
-	createIPCInvokeError,
-	createIPCSendError,
-	createIPCSubscriptionError,
+	CreateIPCInvokeError,
+	CreateIPCSendError,
+	CreateIPCSubscriptionError,
 } from "../Error/IPCError.js";
 import { emit, listen } from "@tauri-apps/api/event";
 import { invoke as tauriInvoke } from "@tauri-apps/api/core";
@@ -40,7 +40,7 @@ export const TauriIPCLive = Effect.gen(function* () {
 		send: (channel: string) => (args: ReadonlyArray<unknown>) =>
 			Effect.try({
 				try: () => emit(channel, args.length === 1 ? args[0] : args),
-				catch: (error) => createIPCSendError(channel, error),
+				catch: (error) => CreateIPCSendError(channel, error),
 			}),
 
 		invoke: (channel: string) => (args: ReadonlyArray<unknown>) =>
@@ -51,7 +51,7 @@ export const TauriIPCLive = Effect.gen(function* () {
 						: (args as unknown as InvokeArgs);
 					return tauriInvoke(channel, invokeArgs);
 				},
-				catch: (error) => createIPCInvokeError(channel, error),
+				catch: (error) => CreateIPCInvokeError(channel, error),
 			}),
 
 		events: (channel: string): Stream.Stream<
@@ -71,7 +71,7 @@ export const TauriIPCLive = Effect.gen(function* () {
 						cleanup = unlisten;
 					})
 					.catch((error) => {
-						emit.fail(createIPCSubscriptionError(channel, error));
+						emit.fail(CreateIPCSubscriptionError(channel, error));
 					});
 
 				return Effect.sync(() => cleanup?.());
@@ -91,7 +91,7 @@ export const TauriIPCLive = Effect.gen(function* () {
 					);
 				}).catch((error) => {
 					resume(
-						Effect.fail(createIPCSubscriptionError(channel, error)),
+						Effect.fail(CreateIPCSubscriptionError(channel, error)),
 					);
 				});
 			}),

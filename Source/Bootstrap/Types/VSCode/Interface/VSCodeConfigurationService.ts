@@ -1,5 +1,6 @@
-import type { ConfigurationTarget, Event, IDisposable, IConfigurationChangeEvent } from "../Type/VSCodeConfigurationType.js";
+import type { ConfigurationTarget, IConfigurationChangeEvent } from "../Type/VSCodeConfigurationType.js";
 import type { URI } from "../Type/VSCodeUtilityType.js";
+import type { Event, IDisposable } from "../Type/VSCodeCommonType.js";
 
 /**
  * VSCode Configuration Service interface

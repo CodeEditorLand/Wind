@@ -40,14 +40,14 @@ export { ActivityBarTag } from "./Tag/ActivityBarTag.js";
 
 // Helper functions
 export {
-	makeCreateItem,
-	makeUpdateItem,
-	makeRemoveItem,
-	makeGetItem,
-	makeSetActiveItem,
-	makeSetBadge,
-	makeGetBadge,
-	generateItemId,
+	MakeCreateItem,
+	MakeUpdateItem,
+	MakeRemoveItem,
+	MakeGetItem,
+	MakeSetActiveItem,
+	MakeSetBadge,
+	MakeGetBadge,
+	GenerateItemId,
 } from "./Implementation/ActivityBarHelper.js";
 
 // Live implementation layer

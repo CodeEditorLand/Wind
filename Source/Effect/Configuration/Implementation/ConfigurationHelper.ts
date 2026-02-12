@@ -23,55 +23,55 @@ import type { TelemetryService } from "../../Telemetry.js";
 /**
  * Validates configuration structure and returns schema issues if any.
  */
-const validateConfig = (config: unknown): ReadonlyArray<ConfigSchemaIssue> => {
-	const issues: ConfigSchemaIssue[] = [];
+const ValidateConfiguration = (Config: unknown): ReadonlyArray<ConfigSchemaIssue> => {
+  const Issues: ConfigSchemaIssue[] = [];
 
-	if (!config || typeof config !== "object") {
-		issues.push({ path: "", message: "Configuration must be an object" });
-		return issues;
-	}
+  if (!Config || typeof Config !== "object") {
+    Issues.push({ path: "", message: "Configuration must be an object" });
+    return Issues;
+  }
 
-	const cfg = config as Record<string, unknown>;
+  const ConfigData = Config as Record<string, unknown>;
 
-	// Validate zoomLevel if present
-	if (cfg["zoomLevel"] !== undefined) {
-		if (typeof cfg["zoomLevel"] !== "number") {
-			issues.push({ path: "zoomLevel", message: "Must be a number" });
-		} else if (cfg["zoomLevel"] < -10 || cfg["zoomLevel"] > 10) {
-			issues.push({
-				path: "zoomLevel",
-				message: "Must be between -10 and 10",
-			});
-		}
-	}
+  // Validate zoomLevel if present
+  if (ConfigData["zoomLevel"] !== undefined) {
+    if (typeof ConfigData["zoomLevel"] !== "number") {
+      Issues.push({ path: "zoomLevel", message: "Must be a number" });
+    } else if (ConfigData["zoomLevel"] < -10 || ConfigData["zoomLevel"] > 10) {
+      Issues.push({
+        path: "zoomLevel",
+        message: "Must be between -10 and 10",
+      });
+    }
+  }
 
-	// Validate userEnv if present
-	if (cfg["userEnv"] !== undefined && typeof cfg["userEnv"] !== "object") {
-		issues.push({ path: "userEnv", message: "Must be an object" });
-	}
+  // Validate userEnv if present
+  if (ConfigData["userEnv"] !== undefined && typeof ConfigData["userEnv"] !== "object") {
+    Issues.push({ path: "userEnv", message: "Must be an object" });
+  }
 
-	// Validate workspace if present
-	if (cfg["workspace"] !== undefined) {
-		if (typeof cfg["workspace"] !== "object" || cfg["workspace"] === null) {
-			issues.push({ path: "workspace", message: "Must be an object" });
-		} else {
-			const ws = cfg["workspace"] as Record<string, unknown>;
-			if (ws["id"] !== undefined && typeof ws["id"] !== "string") {
-				issues.push({
-					path: "workspace.id",
-					message: "Must be a string",
-				});
-			}
-			if (ws["uri"] !== undefined && typeof ws["uri"] !== "string") {
-				issues.push({
-					path: "workspace.uri",
-					message: "Must be a string",
-				});
-			}
-		}
-	}
+  // Validate workspace if present
+  if (ConfigData["workspace"] !== undefined) {
+    if (typeof ConfigData["workspace"] !== "object" || ConfigData["workspace"] === null) {
+      Issues.push({ path: "workspace", message: "Must be an object" });
+    } else {
+      const Workspace = ConfigData["workspace"] as Record<string, unknown>;
+      if (Workspace["id"] !== undefined && typeof Workspace["id"] !== "string") {
+        Issues.push({
+          path: "workspace.id",
+          message: "Must be a string",
+        });
+      }
+      if (Workspace["uri"] !== undefined && typeof Workspace["uri"] !== "string") {
+        Issues.push({
+          path: "workspace.uri",
+          message: "Must be a string",
+        });
+      }
+    }
+  }
 
-	return issues;
+  return Issues;
 };
 
 // ============================================================================
@@ -81,86 +81,86 @@ const validateConfig = (config: unknown): ReadonlyArray<ConfigSchemaIssue> => {
 /**
  * Creates the validate effect implementation.
  */
-const makeValidate = () => {
-	return (
-		config: unknown,
-	): Effect.Effect<ISandboxConfiguration, ConfigValidationError> =>
-		Effect.sync(() => validateConfig(config)).pipe(
-			Effect.flatMap((issues) =>
-				issues.length > 0
-					? Effect.fail(
-							new ConfigValidationError(
-								issues.map((i) => `${i.path}: ${i.message}`),
-							),
-						)
-					: Effect.succeed(config as ISandboxConfiguration),
-			),
-		);
+const MakeValidate = () => {
+  return (
+    Config: unknown,
+  ): Effect.Effect<ISandboxConfiguration, ConfigValidationError> =>
+    Effect.sync(() => ValidateConfiguration(Config)).pipe(
+      Effect.flatMap((Issues) =>
+        Issues.length > 0
+          ? Effect.fail(
+              new ConfigValidationError(
+                Issues.map((Issue) => `${Issue.path}: ${Issue.message}`),
+              ),
+            )
+          : Effect.succeed(Config as ISandboxConfiguration),
+      ),
+    );
 };
 
 /**
  * Creates the apply effect implementation.
  */
-const makeApply = () => {
-	return (
-		config: ISandboxConfiguration,
-	): Effect.Effect<void, ConfigApplyError> =>
-		Effect.gen(function* () {
-			// Apply zoom level
-			if (config.zoomLevel !== undefined) {
-				yield* Effect.try({
-					try: () => {
-						if (window && (window as any).vscode) {
-							(window as any).vscode.postMessage({
-								type: "setZoomLevel",
-								payload: config.zoomLevel,
-							});
-						}
-					},
-					catch: (error) => new ConfigApplyError("zoomLevel", error),
-				});
-			}
+const MakeApply = () => {
+  return (
+    Config: ISandboxConfiguration,
+  ): Effect.Effect<void, ConfigApplyError> =>
+    Effect.gen(function* () {
+      // Apply zoom level
+      if (Config.zoomLevel !== undefined) {
+        yield* Effect.try({
+          try: () => {
+            if (window && (window as any).vscode) {
+              (window as any).vscode.postMessage({
+                type: "setZoomLevel",
+                payload: Config.zoomLevel,
+              });
+            }
+          },
+          catch: (Error) => new ConfigApplyError("zoomLevel", Error),
+        });
+      }
 
-			// Apply user environment variables
-			if (config.userEnv) {
-				for (const [key, value] of Object.entries(config.userEnv || {})) {
-					yield* Effect.try({
-						try: () => {
-							if (typeof process !== "undefined" && process.env) {
-								process.env[key] = value as string;
-							}
-						},
-						catch: (error) => new ConfigApplyError(key, error),
-					});
-				}
-			}
-		});
+      // Apply user environment variables
+      if (Config.userEnv) {
+        for (const [Key, Value] of Object.entries(Config.userEnv || {})) {
+          yield* Effect.try({
+            try: () => {
+              if (typeof process !== "undefined" && process.env) {
+                process.env[Key] = Value as string;
+              }
+            },
+            catch: (Error) => new ConfigApplyError(Key, Error),
+          });
+        }
+      }
+    });
 };
 
 /**
  * Get configuration value with path (dot notation).
  */
-const getConfigValue = <T>(
-	config: ISandboxConfiguration,
-	path: string,
+const GetConfigValue = <T>(
+  Config: ISandboxConfiguration,
+  Path: string,
 ): T | undefined => {
-	const parts = path.split(".");
-	let current: unknown = config;
+  const Parts = Path.split(".");
+  let Current: unknown = Config;
 
-	for (const part of parts) {
-		if (current && typeof current === "object" && part in current) {
-			current = (current as Record<string, unknown>)[part];
-		} else {
-			return undefined;
-		}
-	}
+  for (const Part of Parts) {
+    if (Current && typeof Current === "object" && Part in Current) {
+      Current = (Current as Record<string, unknown>)[Part];
+    } else {
+      return undefined;
+    }
+  }
 
-	return current as T | undefined;
+  return Current as T | undefined;
 };
 
 export {
-	validateConfig,
-	makeValidate,
-	makeApply,
-	getConfigValue,
+  ValidateConfiguration,
+  MakeValidate,
+  MakeApply,
+  GetConfigValue,
 };

@@ -16,7 +16,7 @@ export type { HealthService } from "./Interface/HealthService.js";
 export { HealthTag } from "./Tag/HealthTag.js";
 
 // Implementation helpers
-export { createServiceHealth, createServiceHealthWithNoResponseTime } from "./Implementation/HealthHelper.js";
+export { CreateServiceHealth, CreateServiceHealthWithNoResponseTime } from "./Implementation/HealthHelper.js";
 
 // Implementations
 export { makeHealthChecker, makeMockHealth } from "./Implementation/HealthImplementation.js";

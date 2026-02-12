@@ -47,9 +47,9 @@ export {
 
 // Helpers
 export {
-	detectPlatform,
-	detectArchitecture,
-	detectLocale,
-	detectTimezone,
-	getUserAgent,
+	DetectPlatform,
+	DetectArchitecture,
+	DetectLocale,
+	DetectTimezone,
+	GetUserAgent,
 } from "./Implementation/EnvironmentHelper.js";

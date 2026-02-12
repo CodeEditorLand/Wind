@@ -14,37 +14,37 @@ import type {
 	IpcRendererEvent,
 } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/electronTypes";
 
-import { validateIPCChannel } from "./ValidateIPCChannel.js";
+import { ValidateIPCChannel } from "./ValidateIPCChannel.js";
 
 /**
  * Creates an IPC renderer interface
  */
-export function createIPCRenderer(): IpcRenderer {
+export function CreateIPCRenderer(): IpcRenderer {
 	const self: IpcRenderer = {
-		send: (channel: string): void => {
-			if (!validateIPCChannel(channel)) return;
+		send: (Channel: string): void => {
+			if (!ValidateIPCChannel(Channel)) return;
 		},
-		invoke: async (channel: string): Promise<unknown> => {
-			if (!validateIPCChannel(channel)) {
-				throw new Error(`Invalid IPC channel: ${channel}`);
+		invoke: async (Channel: string): Promise<unknown> => {
+			if (!ValidateIPCChannel(Channel)) {
+				throw new Error(`Invalid IPC channel: ${Channel}`);
 			}
 			return {};
 		},
 		on: (
-			_channel: string,
-			_listener: (event: IpcRendererEvent) => void,
+			_Channel: string,
+			_Listener: (event: IpcRendererEvent) => void,
 		): IpcRenderer => {
 			return self;
 		},
 		once: (
-			_channel: string,
-			_listener: (event: IpcRendererEvent) => void,
+			_Channel: string,
+			_Listener: (event: IpcRendererEvent) => void,
 		): IpcRenderer => {
 			return self;
 		},
 		removeListener: (
-			_channel: string,
-			_listener: (event: IpcRendererEvent) => void,
+			_Channel: string,
+			_Listener: (event: IpcRendererEvent) => void,
 		): IpcRenderer => {
 			return self;
 		},

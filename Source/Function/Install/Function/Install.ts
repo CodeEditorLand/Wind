@@ -17,10 +17,10 @@
  * @category Function
  */
 
-import { createIPCRenderer } from "./CreateIPCRenderer.js";
-import { createProcess } from "./CreateProcess.js";
-import { resolveConfiguration } from "./ResolveConfiguration.js";
-import { fallback } from "./Fallback.js";
+import { CreateIPCRenderer } from "./CreateIPCRenderer.js";
+import { CreateProcess } from "./CreateProcess.js";
+import { ResolveConfiguration } from "./ResolveConfiguration.js";
+import { Fallback } from "./Fallback.js";
 
 import type { IMainWindowSandboxGlobals } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/globals";
 
@@ -52,9 +52,9 @@ export default async function Install(): Promise<void> {
 		console.log("[Wind] Starting Wind preload installation...");
 
 		// Initialize core components
-		const Configuration = await resolveConfiguration();
-		const IPCRenderer = createIPCRenderer();
-		const Process = createProcess(Configuration);
+		const Configuration = await ResolveConfiguration();
+		const IPCRenderer = CreateIPCRenderer();
+		const Process = CreateProcess(Configuration);
 
 		// Create preload globals object that will be enhanced by Effect-TS
 		const preloadGlobals = {
@@ -91,6 +91,6 @@ export default async function Install(): Promise<void> {
 		console.log("[Wind] Preload ready, Effect-TS bootstrap can proceed");
 	} catch (error: unknown) {
 		console.error(`[Wind] Install error:`, error);
-		fallback();
+		Fallback();
 	}
 }

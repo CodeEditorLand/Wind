@@ -40,7 +40,7 @@ export type { ConfigurationService } from "./Interface/ConfigurationService.js";
 export { ConfigurationTag } from "./Tag/ConfigurationTag.js";
 
 // Helper functions
-export { validateConfig, makeValidate, makeApply, getConfigValue } from "./Implementation/ConfigurationHelper.js";
+export { ValidateConfiguration, MakeValidate, MakeApply, GetConfigValue } from "./Implementation/ConfigurationHelper.js";
 
 // Live implementation layer
 export { ConfigurationLive, ConfigurationWithSyncLive } from "./Implementation/ConfigurationImplementation.js";

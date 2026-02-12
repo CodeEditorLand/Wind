@@ -13,7 +13,7 @@ import { Effect, Layer, Stream } from "effect";
 import { ConfigurationTag } from "../Tag/ConfigurationTag.js";
 import type { ConfigurationService } from "../Interface/ConfigurationService.js";
 import type { ISandboxConfiguration } from "../../../Types/Sandbox.js";
-import { makeValidate } from "../Implementation/ConfigurationHelper.js";
+import { MakeValidate } from "../Implementation/ConfigurationHelper.js";
 
 // ============================================================================
 // Mock Implementation
@@ -25,7 +25,7 @@ import { makeValidate } from "../Implementation/ConfigurationHelper.js";
 export const makeMockConfiguration = (
 	overrides?: Partial<ISandboxConfiguration>,
 ): ConfigurationService => {
-	const validate = makeValidate();
+	const validate = MakeValidate();
 	const mockConfig: ISandboxConfiguration = {
 	zoomLevel: 0,
 	userEnv: {},

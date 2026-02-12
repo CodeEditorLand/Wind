@@ -44,12 +44,12 @@ export { MockClipboardService } from "./Implementation/MockClipboard.js";
 
 // Helpers
 export {
-	createNotAvailableError,
-	createReadError,
-	createWriteError,
-	createPermissionDeniedError,
-	createFormatNotSupportedError,
-	createSizeExceededError,
+	CreateNotAvailableError,
+	CreateReadError,
+	CreateWriteError,
+	CreatePermissionDeniedError,
+	CreateFormatNotSupportedError,
+	CreateSizeExceededError,
 } from "./Implementation/ClipboardHelper.js";
 
 // Layers

@@ -26,16 +26,16 @@ import { Telemetry } from "../../Telemetry.js";
 import { NetworkRestrictions } from "../Tag/NetworkRestrictionsTag.js";
 import type { NetworkRestrictionsService, BlockedRequest, TelemetryLevel } from "../Interface/NetworkRestrictionsService.js";
 import type { NetworkRestrictionConfig } from "../Type/NetworkRestrictionConfig.js";
-import createNetworkBlockError from "../Error/NetworkBlockError.js";
-import createIPCBlockError from "../Error/IPCBlockError.js";
+import CreateNetworkBlockError from "../Error/NetworkBlockError.js";
+import CreateIPCBlockError from "../Error/IPCBlockError.js";
 import {
 	DEFAULT_NETWORK_RESTRICTIONS,
 } from "../Constant/NetworkRestrictionsConstant.js";
 import {
-	isInternalURL,
-	isBlockedURL,
-	isAllowedURL,
-	isIPCAllowed,
+	IsInternalURL,
+	IsBlockedURL,
+	IsAllowedURL,
+	IsIPCAllowed,
 } from "./NetworkRestrictionsHelper.js";
 
 // ============================================================================
@@ -49,129 +49,129 @@ import {
 export const NetworkRestrictionsLive = Layer.effect(
 	NetworkRestrictions,
 	Effect.gen(function* () {
-		const telemetry = yield* Telemetry;
+		const TelemetryService = yield* Telemetry;
 
-		// Current configuration as ref
-		const configRef = yield* Ref.make<NetworkRestrictionConfig>(
-			JSON.parse(JSON.stringify(DEFAULT_NETWORK_RESTRICTIONS)),
-		);
+	// Current configuration as ref
+	const ConfigRef = yield* Ref.make<NetworkRestrictionConfig>(
+		JSON.parse(JSON.stringify(DEFAULT_NETWORK_RESTRICTIONS)),
+	);
 
-		// Blocked requests log (for internal debugging only)
-		const blockedRequestsRef = yield* Ref.make<ReadonlyArray<BlockedRequest>>([]);
+	// Blocked requests log (for internal debugging only)
+	const BlockedRequestsRef = yield* Ref.make<ReadonlyArray<BlockedRequest>>([]);
 
-		// Telemetry level ref
-		const telemetryLevelRef = yield* Ref.make<TelemetryLevel>("NONE");
+	// Telemetry level ref
+	const TelemetryLevelRef = yield* Ref.make<TelemetryLevel>("NONE");
 
-		// Atom: Check if URL is allowed
-		const checkURL: NetworkRestrictionsService["checkURL"] = (url: string) =>
-			Effect.gen(function* () {
-				const currentConfig = yield* configRef.get;
+	// Atom: Check if URL is allowed
+	const CheckURL: NetworkRestrictionsService["checkURL"] = (Url: string) =>
+		Effect.gen(function* () {
+			const CurrentConfig = yield* ConfigRef.get;
 
-				// Check if internal URL
-				if (currentConfig.allowInternal && isInternalURL(currentConfig, url)) {
-					return true;
-				}
-
-				// Check if in whitelist
-				if (isAllowedURL(currentConfig, url)) {
-					return true;
-				}
-
-				// Check if blocked
-				if (isBlockedURL(currentConfig, url)) {
-					return yield* Effect.fail(createNetworkBlockError(url, "URL is blocked by network restrictions"));
-				}
-
-				// Default to block for safety
-				if (currentConfig.blockHTTP || currentConfig.blockHTTPS) {
-					const urlObj = new URL(url);
-					if (urlObj.protocol === 'http:' && currentConfig.blockHTTP) {
-						return yield* Effect.fail(createNetworkBlockError(url, "HTTP requests are blocked"));
-					}
-					if (urlObj.protocol === 'https:' && currentConfig.blockHTTPS) {
-						return yield* Effect.fail(createNetworkBlockError(url, "HTTPS requests are blocked"));
-					}
-				}
-
-				return false;
-			});
-
-		// Atom: Block a URL
-		const blockURL: NetworkRestrictionsService["blockURL"] = (url: string, reason: string) =>
-			Effect.gen(function* () {
-				const currentConfig = yield* configRef.get;
-				
-				if (currentConfig.logBlocked) {
-					yield* telemetry.log("warn", `[NetworkRestrictions] Blocked URL: ${url} - ${reason}`);
-					
-					// Add to blocked requests log
-					yield* Ref.update(blockedRequestsRef, (logs) => [
-						...logs,
-						{
-							timestamp: Date.now(),
-							type: url.startsWith('https:') ? 'https' : 'http',
-							target: url,
-							reason,
-						} satisfies BlockedRequest,
-					]);
-				}
-			});
-
-		// Atom: Check if IPC channel is allowed
-		const checkIPCChannel: NetworkRestrictionsService["checkIPCChannel"] = (channel: string) =>
-			Effect.gen(function* () {
-				if (!isIPCAllowed(channel)) {
-					return yield* Effect.fail(createIPCBlockError(
-						channel,
-						"IPC channel is blocked by network restrictions"
-					));
-				}
+			// Check if internal URL
+			if (CurrentConfig.allowInternal && IsInternalURL(CurrentConfig, Url)) {
 				return true;
-			});
+			}
 
-		// Atom: Get current configuration
-		const config: NetworkRestrictionsService["config"] = configRef.get;
+			// Check if in whitelist
+			if (IsAllowedURL(CurrentConfig, Url)) {
+				return true;
+			}
 
-		// Atom: Update configuration
-		const updateConfig: NetworkRestrictionsService["updateConfig"] = (updates: Partial<NetworkRestrictionConfig>) =>
-			Effect.gen(function* () {
-				const current = yield* configRef.get;
-				yield* Ref.set(configRef, { ...current, ...updates } as NetworkRestrictionConfig);
-				yield* telemetry.log("info", `[NetworkRestrictions] Configuration updated`);
-			});
+			// Check if blocked
+			if (IsBlockedURL(CurrentConfig, Url)) {
+				return yield* Effect.fail(CreateNetworkBlockError(Url, "URL is blocked by network restrictions"));
+			}
 
-		// Atom: Get blocked requests log
-		const getBlockedRequests: NetworkRestrictionsService["getBlockedRequests"] = blockedRequestsRef.get;
+			// Default to block for safety
+			if (CurrentConfig.blockHTTP || CurrentConfig.blockHTTPS) {
+				const UrlObj = new URL(Url);
+				if (UrlObj.protocol === 'http:' && CurrentConfig.blockHTTP) {
+					return yield* Effect.fail(CreateNetworkBlockError(Url, "HTTP requests are blocked"));
+				}
+				if (UrlObj.protocol === 'https:' && CurrentConfig.blockHTTPS) {
+					return yield* Effect.fail(CreateNetworkBlockError(Url, "HTTPS requests are blocked"));
+				}
+			}
 
-		// Atom: Clear blocked requests log
-		const clearBlockedRequests: NetworkRestrictionsService["clearBlockedRequests"] = Ref.set(blockedRequestsRef, []);
+			return false;
+		});
 
-		// Atom: Set telemetry level
-		const setTelemetryLevel: NetworkRestrictionsService["setTelemetryLevel"] = (level: TelemetryLevel) =>
-			Effect.gen(function* () {
-				yield* Ref.set(telemetryLevelRef, level);
-				yield* telemetry.log("info", `[NetworkRestrictions] Telemetry level set to: ${level}`);
-			});
+	// Atom: Block a URL
+	const BlockURL: NetworkRestrictionsService["blockURL"] = (Url: string, Reason: string) =>
+		Effect.gen(function* () {
+			const CurrentConfig = yield* ConfigRef.get;
+			
+			if (CurrentConfig.logBlocked) {
+				yield* TelemetryService.log("warn", `[NetworkRestrictions] Blocked URL: ${Url} - ${Reason}`);
+				
+				// Add to blocked requests log
+				yield* Ref.update(BlockedRequestsRef, (Logs) => [
+					...Logs,
+					{
+						timestamp: Date.now(),
+						type: Url.startsWith('https:') ? 'https' : 'http',
+						target: Url,
+						reason: Reason,
+					} satisfies BlockedRequest,
+				]);
+			}
+		});
 
-		// Atom: Get telemetry level
-		const getTelemetryLevel: NetworkRestrictionsService["getTelemetryLevel"] = telemetryLevelRef.get;
+	// Atom: Check if IPC channel is allowed
+	const CheckIPCChannel: NetworkRestrictionsService["checkIPCChannel"] = (Channel: string) =>
+		Effect.gen(function* () {
+			if (!IsIPCAllowed(Channel)) {
+				return yield* Effect.fail(CreateIPCBlockError(
+					Channel,
+					"IPC channel is blocked by network restrictions"
+				));
+			}
+			return true;
+		});
 
-		yield* telemetry.log("info", "[NetworkRestrictions] Network restrictions service initialized");
+	// Atom: Get current configuration
+	const Config: NetworkRestrictionsService["config"] = ConfigRef.get;
 
-		const service: NetworkRestrictionsService = {
-			checkURL,
-			blockURL,
-			checkIPCChannel,
-			config,
-			updateConfig,
-			getBlockedRequests,
-			clearBlockedRequests,
-			setTelemetryLevel,
-			getTelemetryLevel,
-		};
+	// Atom: Update configuration
+	const UpdateConfig: NetworkRestrictionsService["updateConfig"] = (Updates: Partial<NetworkRestrictionConfig>) =>
+		Effect.gen(function* () {
+			const Current = yield* ConfigRef.get;
+			yield* Ref.set(ConfigRef, { ...Current, ...Updates } as NetworkRestrictionConfig);
+			yield* TelemetryService.log("info", `[NetworkRestrictions] Configuration updated`);
+		});
 
-		return service;
-	}),
+	// Atom: Get blocked requests log
+	const GetBlockedRequests: NetworkRestrictionsService["getBlockedRequests"] = BlockedRequestsRef.get;
+
+	// Atom: Clear blocked requests log
+	const ClearBlockedRequests: NetworkRestrictionsService["clearBlockedRequests"] = Ref.set(BlockedRequestsRef, []);
+
+	// Atom: Set telemetry level
+	const SetTelemetryLevel: NetworkRestrictionsService["setTelemetryLevel"] = (Level: TelemetryLevel) =>
+		Effect.gen(function* () {
+			yield* Ref.set(TelemetryLevelRef, Level);
+			yield* TelemetryService.log("info", `[NetworkRestrictions] Telemetry level set to: ${Level}`);
+		});
+
+	// Atom: Get telemetry level
+	const GetTelemetryLevel: NetworkRestrictionsService["getTelemetryLevel"] = TelemetryLevelRef.get;
+
+	yield* TelemetryService.log("info", "[NetworkRestrictions] Network restrictions service initialized");
+
+	const service: NetworkRestrictionsService = {
+		checkURL: CheckURL,
+		blockURL: BlockURL,
+		checkIPCChannel: CheckIPCChannel,
+		config: Config,
+		updateConfig: UpdateConfig,
+		getBlockedRequests: GetBlockedRequests,
+		clearBlockedRequests: ClearBlockedRequests,
+		setTelemetryLevel: SetTelemetryLevel,
+		getTelemetryLevel: GetTelemetryLevel,
+	};
+
+	return service;
+}),
 );
 
 export default NetworkRestrictionsLive;

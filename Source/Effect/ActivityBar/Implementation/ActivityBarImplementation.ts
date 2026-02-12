@@ -17,13 +17,13 @@ import type { CreateActivityBarItem } from "../Type/ActivityBarType.js";
 import type { ActivityBarBadge } from "../Type/ActivityBarType.js";
 import { Telemetry } from "../../Telemetry.js";
 import {
-	makeCreateItem,
-	makeUpdateItem,
-	makeRemoveItem,
-	makeGetItem,
-	makeSetActiveItem,
-	makeSetBadge,
-	makeGetBadge,
+  MakeCreateItem,
+  MakeUpdateItem,
+  MakeRemoveItem,
+  MakeGetItem,
+  MakeSetActiveItem,
+  MakeSetBadge,
+  MakeGetBadge,
 } from "./ActivityBarHelper.js";
 
 // ============================================================================
@@ -35,54 +35,54 @@ import {
  * Provides in-memory storage with reactive state management.
  */
 export const ActivityBarLive = Layer.effect(
-	ActivityBarTag,
-	Effect.gen(function* () {
-		const telemetry = yield* Telemetry;
+  ActivityBarTag,
+  Effect.gen(function* () {
+    const TelemetryService = yield* Telemetry;
 
-		// In-memory storage of activity bar items as reactive ref
-		const itemsRef = yield* SubscriptionRef.make<ReadonlyArray<ActivityBarItem>>([]);
+    // In-memory storage of activity bar items as reactive ref
+    const ItemsRef = yield* SubscriptionRef.make<ReadonlyArray<ActivityBarItem>>([]);
 
-		// Active item state as reactive ref
-		const activeItemRef = yield* SubscriptionRef.make<string | undefined>(undefined);
+    // Active item state as reactive ref
+    const ActiveItemRef = yield* SubscriptionRef.make<string | undefined>(undefined);
 
-		// Atom: Get a specific activity bar item
-		const getItem = makeGetItem(itemsRef);
+    // Atom: Get a specific activity bar item
+    const GetItem = MakeGetItem(ItemsRef);
 
-		// Atom: Create a new activity bar item
-		const createItem = makeCreateItem(itemsRef, telemetry);
+    // Atom: Create a new activity bar item
+    const CreateItem = MakeCreateItem(ItemsRef, TelemetryService);
 
-		// Atom: Update an existing activity bar item
-		const updateItem = makeUpdateItem(itemsRef, getItem, telemetry);
+    // Atom: Update an existing activity bar item
+    const UpdateItem = MakeUpdateItem(ItemsRef, GetItem, TelemetryService);
 
-		// Atom: Remove an activity bar item
-		const removeItem = makeRemoveItem(itemsRef, activeItemRef, getItem, telemetry);
+    // Atom: Remove an activity bar item
+    const RemoveItem = MakeRemoveItem(ItemsRef, ActiveItemRef, GetItem, TelemetryService);
 
-		// Atom: Set active item
-		const setActiveItem = makeSetActiveItem(activeItemRef, getItem, telemetry);
+    // Atom: Set active item
+    const SetActiveItem = MakeSetActiveItem(ActiveItemRef, GetItem, TelemetryService);
 
-		// Atom: Set badge
-		const setBadge = makeSetBadge(updateItem);
+    // Atom: Set badge
+    const SetBadge = MakeSetBadge(UpdateItem);
 
-		// Atom: Get badge
-		const getBadge = makeGetBadge(getItem);
+    // Atom: Get badge
+    const GetBadge = MakeGetBadge(GetItem);
 
-		yield* telemetry.log("info", "ActivityBar service initialized");
+    yield* TelemetryService.log("info", "ActivityBar service initialized");
 
-		return {
-			createItem,
-			updateItem,
-			removeItem,
-			getItem,
-			items: itemsRef.get,
-			itemsChanges: itemsRef.changes,
-			setActiveItem,
-			getActiveItem: activeItemRef.get,
-			activeItemChanges: activeItemRef.changes,
-			setBadge,
-			getBadge,
-			clearBadge: (id: string) => setBadge(id, undefined),
-		} satisfies ActivityBarService;
-	}),
+    return {
+      createItem: CreateItem,
+      updateItem: UpdateItem,
+      removeItem: RemoveItem,
+      getItem: GetItem,
+      items: ItemsRef.get,
+      itemsChanges: ItemsRef.changes,
+      setActiveItem: SetActiveItem,
+      getActiveItem: ActiveItemRef.get,
+      activeItemChanges: ActiveItemRef.changes,
+      setBadge: SetBadge,
+      getBadge: GetBadge,
+      clearBadge: (Id: string) => SetBadge(Id, undefined),
+    } satisfies ActivityBarService;
+  }),
 );
 
 export default ActivityBarLive;

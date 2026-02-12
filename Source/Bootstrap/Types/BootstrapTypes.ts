@@ -2,83 +2,41 @@
  * @module Bootstrap/Types/BootstrapTypes
  * @description
  * Bootstrap-specific type definitions.
+ * Re-exports from atomic type files.
  */
 
-export type Platform = "tauri" | "browser";
-export type Mode = "development" | "production";
-export type StageName =
-	| "Environment"
-	| "Preload"
-	| "Configuration"
-	| "Services"
-	| "Preparation"
-	| "Initialization"
-	| "HealthCheck";
+// Platform type
+export type { Platform } from "./Type/Platform.js";
 
-export type ErrorSeverity = "critical" | "warning" | "info";
+// Mode type
+export type { Mode } from "./Type/Mode.js";
 
-export interface StageResult {
-	success: boolean;
-	stage: StageName;
-	duration: number;
-	data?: any;
-	error?: Error;
-	critical?: boolean;
-	warnings?: string[];
-}
+// StageName type
+export type { StageName } from "./Type/StageName.js";
 
-export interface BootstrapResult {
-	success: boolean;
-	results: StageResult[];
-	totalDuration: number;
-}
+// ErrorSeverity type
+export type { ErrorSeverity } from "./Type/ErrorSeverity.js";
 
-export interface BootstrapConfig {
-	debugMode: boolean;
-	verboseLogging: boolean;
-	showStatusUI: boolean;
-	pauseBetweenStages: boolean;
-	enablePerformanceTracking: boolean;
-}
+// StageResult interface
+export type { StageResult } from "./Type/StageResult.js";
 
-export interface StatusUpdate {
-	stage: StageName;
-	status: "pending" | "running" | "success" | "error" | "warning";
-	message: string;
-	progress: number;
-	duration?: number;
-	error?: Error;
-}
+// BootstrapResult interface
+export type { BootstrapResult } from "./Type/BootstrapResult.js";
 
-export interface EnvironmentData {
-	platform: Platform;
-	mode: Mode;
-	userAgent: string;
-	language: string;
-	timezone: string;
-}
+// BootstrapConfig interface
+export type { BootstrapConfig } from "./Type/BootstrapConfig.js";
 
-export interface ConfigurationData {
-	windowId: string;
-	machineId: string;
-	sessionId: string;
-	appRoot: string;
-	userDataPath: string;
-	platform: string;
-	arch: string;
-	logLevel: number;
-	[key: string]: any;
-}
+// StatusUpdate interface
+export type { StatusUpdate } from "./Type/StatusUpdate.js";
 
-export interface ServiceData {
-	servicesRegistered: string[];
-	servicesFailed: string[];
-	serviceCount: number;
-}
+// EnvironmentData interface
+export type { EnvironmentData } from "./Type/EnvironmentData.js";
 
-export interface WorkbenchData {
-	initialized: boolean;
-	running: boolean;
-	servicesReady: boolean;
-	error?: Error;
-}
+// ConfigurationData interface
+export type { ConfigurationData } from "./Type/ConfigurationData.js";
+
+// ServiceData interface
+export type { ServiceData } from "./Type/ServiceData.js";
+
+// WorkbenchData interface
+export type { WorkbenchData } from "./Type/WorkbenchData.js";

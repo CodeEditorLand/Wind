@@ -25,6 +25,3 @@ export interface IWebSocket {
 	send(data: ArrayBuffer): void;
 	close(): void;
 }
-
-// Re-export common types for convenience
-export type { Event, IDisposable };

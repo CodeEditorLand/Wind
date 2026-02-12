@@ -45,11 +45,11 @@ export type {
 
 // Re-export helper functions
 export {
-	detectPlatform,
-	detectArchitecture,
-	detectLocale,
-	detectTimezone,
-	getUserAgent,
+	DetectPlatform,
+	DetectArchitecture,
+	DetectLocale,
+	DetectTimezone,
+	GetUserAgent,
 } from "./Environment/index.js";
 
 // Backward compatibility - re-export as Environment

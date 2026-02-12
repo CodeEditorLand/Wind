@@ -21,8 +21,8 @@ export { HealthTag } from "./Health/index.js";
 
 // Implementation helpers
 export {
-	createServiceHealth,
-	createServiceHealthWithNoResponseTime,
+	CreateServiceHealth,
+	CreateServiceHealthWithNoResponseTime,
 } from "./Health/index.js";
 
 // Import and re-export layers

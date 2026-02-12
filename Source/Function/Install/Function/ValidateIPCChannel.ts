@@ -11,9 +11,9 @@
 /**
  * Validates IPC channel names
  */
-export function validateIPCChannel(channel: string): boolean {
-	if (!channel || typeof channel !== "string") return false;
-	if (typeof navigator !== "undefined" && !channel.startsWith("vscode:"))
+export function ValidateIPCChannel(Channel: string): boolean {
+	if (!Channel || typeof Channel !== "string") return false;
+	if (typeof navigator !== "undefined" && !Channel.startsWith("vscode:"))
 		return false;
 	return true;
 }

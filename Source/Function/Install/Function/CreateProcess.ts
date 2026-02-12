@@ -12,27 +12,27 @@ import type {
 	ISandboxNodeProcess,
 } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/globals";
 
-import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes';
+import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes";
 
 /**
  * Creates a sandbox node process interface
  */
-export function createProcess(
-	configuration: ISandboxConfiguration,
+export function CreateProcess(
+	Configuration: ISandboxConfiguration,
 ): ISandboxNodeProcess {
 	return {
 		platform: "web",
 		arch: "web",
 		type: "renderer",
 		execPath: "/",
-		env: configuration.userEnv ?? {},
+		env: Configuration.userEnv ?? {},
 		cwd: () => "/",
 		versions: {
 			node: "20.0.0",
 			chrome: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || "0",
 			electron: "0.0.0",
 		},
-		on: (_type: string, _callback: Function): void => {},
+		on: (_Type: string, _Callback: Function): void => {},
 		getProcessMemoryInfo: async () => ({
 			private: 0,
 			residentSet: 0,

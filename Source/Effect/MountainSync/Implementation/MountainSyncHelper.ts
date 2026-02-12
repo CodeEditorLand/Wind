@@ -23,27 +23,27 @@ import type { TelemetryService } from "../../Telemetry.js";
  * @param telemetry - Telemetry service for logging
  * @returns Effect that produces MountainSyncResult
  */
-const syncNowEffect = (
+const SyncNowEffect = (
 	_mountain: MountainService,
 	_ipc: IPCService,
 	telemetry: TelemetryService,
 ): Effect.Effect<MountainSyncResult> =>
 	Effect.gen(function* () {
-		const startTime = Date.now();
+	const StartTime = Date.now();
 
-		// TODO: Implement actual sync logic
-		// This would fetch changes from Mountain, sync state, etc.
+	// TODO: Implement actual sync logic
+	// This would fetch changes from Mountain, sync state, etc.
 
-		yield* telemetry.log("info", "[MountainSync] Performing sync...");
+	yield* telemetry.log("info", "[MountainSync] Performing sync...");
 
-		// Mock sync for now
-		yield* Effect.sleep(10);
+	// Mock sync for now
+	yield* Effect.sleep(10);
 
-		return {
-			success: true,
-			itemsSynced: 0,
-			duration: Date.now() - startTime,
-		} satisfies MountainSyncResult;
-	});
+	return {
+		success: true,
+		itemsSynced: 0,
+		duration: Date.now() - StartTime,
+	} satisfies MountainSyncResult;
+});
 
-export default syncNowEffect;
+export default SyncNowEffect;

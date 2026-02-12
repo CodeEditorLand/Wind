@@ -9,8 +9,8 @@ export { default } from "./Function/Install.js";
 export { default as Install } from "./Function/Install.js";
 
 // Helper functions
-export { createIPCRenderer } from "./Function/CreateIPCRenderer.js";
-export { createProcess } from "./Function/CreateProcess.js";
-export { resolveConfiguration } from "./Function/ResolveConfiguration.js";
-export { validateIPCChannel } from "./Function/ValidateIPCChannel.js";
-export { fallback } from "./Function/Fallback.js";
+export { CreateIPCRenderer } from "./Function/CreateIPCRenderer.js";
+export { CreateProcess } from "./Function/CreateProcess.js";
+export { ResolveConfiguration } from "./Function/ResolveConfiguration.js";
+export { ValidateIPCChannel } from "./Function/ValidateIPCChannel.js";
+export { Fallback } from "./Function/Fallback.js";

@@ -32,149 +32,149 @@ import { Telemetry } from "../../Telemetry.js";
 const SidebarLive = Layer.effect(
 	SidebarTag,
 	Effect.gen(function* () {
-		const telemetry = yield* Telemetry;
+		const TelemetryService = yield* Telemetry;
 
 		// In-memory storage of sidebar panels as reactive ref
-		const panelsRef = yield* SubscriptionRef.make<ReadonlyArray<SidebarPanel>>([]);
+		const PanelsRef = yield* SubscriptionRef.make<ReadonlyArray<SidebarPanel>>([]);
 
 		// Active panel state as reactive ref
-		const activePanelRef = yield* SubscriptionRef.make<string | undefined>(undefined);
+		const ActivePanelRef = yield* SubscriptionRef.make<string | undefined>(undefined);
 
 		// Atom: Create a new sidebar panel
-		const createPanel = (panel: CreateSidebarPanel): Effect.Effect<SidebarPanel, never> =>
+		const CreatePanel = (Panel: CreateSidebarPanel): Effect.Effect<SidebarPanel, never> =>
 			Effect.gen(function* () {
-				const id = `sidebar-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-				const newPanel: SidebarPanel = { ...panel, id };
+				const Id = `sidebar-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+				const NewPanel: SidebarPanel = { ...Panel, id: Id };
 
-				yield* SubscriptionRef.modify(panelsRef, (panels) => [undefined, [...panels, newPanel].sort((a, b) => a.priority - b.priority)]);
+				yield* SubscriptionRef.modify(PanelsRef, (Panels) => [undefined, [...Panels, NewPanel].sort((a, b) => a.priority - b.priority)]);
 
-				yield* telemetry.log("info", `Created sidebar panel: ${id}`);
-				return newPanel;
+				yield* TelemetryService.log("info", `Created sidebar panel: ${Id}`);
+				return NewPanel;
 			});
 
 		// Atom: Update an existing sidebar panel
-		const updatePanel = (
-			id: string,
+		const UpdatePanel = (
+			Id: string,
 			updates: Partial<Omit<SidebarPanel, "id">>,
 		): Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError> =>
 			Effect.gen(function* () {
-				const existing = yield* getPanel(id);
+				const Existing = yield* GetPanel(Id);
 
-				if (!existing) {
-					return yield* Effect.fail(new SidebarPanelNotFoundError(id));
+				if (!Existing) {
+					return yield* Effect.fail(new SidebarPanelNotFoundError(Id));
 				}
 
 				try {
-					yield* SubscriptionRef.modify(panelsRef, (panels) => [
+					yield* SubscriptionRef.modify(PanelsRef, (Panels) => [
 						undefined,
-						panels.map((panel) => (panel.id === id ? { ...panel, ...updates } : panel)).sort((a, b) => a.priority - b.priority),
+						Panels.map((Panel) => (Panel.id === Id ? { ...Panel, ...updates } : Panel)).sort((a, b) => a.priority - b.priority),
 					]);
 
-					yield* telemetry.log("info", `Updated sidebar panel: ${id}`);
+					yield* TelemetryService.log("info", `Updated sidebar panel: ${Id}`);
 				} catch (error) {
-					return yield* Effect.fail(new SidebarUpdateError(id, error));
+					return yield* Effect.fail(new SidebarUpdateError(Id, error));
 				}
 			});
 
 		// Atom: Remove a sidebar panel
-		const removePanel = (id: string): Effect.Effect<void, SidebarPanelNotFoundError> =>
+		const RemovePanel = (Id: string): Effect.Effect<void, SidebarPanelNotFoundError> =>
 			Effect.gen(function* () {
-				const existing = yield* getPanel(id);
+				const Existing = yield* GetPanel(Id);
 
-				if (!existing) {
-					return yield* Effect.fail(new SidebarPanelNotFoundError(id));
+				if (!Existing) {
+					return yield* Effect.fail(new SidebarPanelNotFoundError(Id));
 				}
 
-				yield* SubscriptionRef.modify(panelsRef, (panels) => [undefined, panels.filter((panel) => panel.id !== id)]);
+				yield* SubscriptionRef.modify(PanelsRef, (Panels) => [undefined, Panels.filter((Panel) => Panel.id !== Id)]);
 
 				// Clear active state if this was the active panel
-				const currentActive = yield* activePanelRef.get;
-				if (currentActive === id) {
-					yield* SubscriptionRef.set(activePanelRef, undefined);
+				const CurrentActive = yield* ActivePanelRef.get;
+				if (CurrentActive === Id) {
+					yield* SubscriptionRef.set(ActivePanelRef, undefined);
 				}
 
-				yield* telemetry.log("info", `Removed sidebar panel: ${id}`);
+				yield* TelemetryService.log("info", `Removed sidebar panel: ${Id}`);
 			});
 
 		// Atom: Get a specific sidebar panel
-		const getPanel = (id: string): Effect.Effect<SidebarPanel | undefined, never> =>
-			Effect.map(panelsRef.get, (panels) => panels.find((panel) => panel.id === id));
+		const GetPanel = (Id: string): Effect.Effect<SidebarPanel | undefined, never> =>
+			Effect.map(PanelsRef.get, (Panels) => Panels.find((Panel) => Panel.id === Id));
 
 		// Atom: Get all sidebar panels
-		const panels = panelsRef.get;
+		const Panels = PanelsRef.get;
 
 		// Atom: Stream of panels changes
-		const panelsChanges = panelsRef.changes;
+		const PanelsChanges = PanelsRef.changes;
 
 		// Atom: Set active panel
-		const setActivePanel = (id: string): Effect.Effect<void, SidebarPanelNotFoundError> =>
+		const SetActivePanel = (Id: string): Effect.Effect<void, SidebarPanelNotFoundError> =>
 			Effect.gen(function* () {
-				const existing = yield* getPanel(id);
+				const Existing = yield* GetPanel(Id);
 
-				if (!existing) {
-					return yield* Effect.fail(new SidebarPanelNotFoundError(id));
+				if (!Existing) {
+					return yield* Effect.fail(new SidebarPanelNotFoundError(Id));
 				}
 
 				// Expand the panel when setting it as active
-				yield* SubscriptionRef.modify(panelsRef, (panels) => [undefined, panels.map((panel) => (panel.id === id ? { ...panel, collapsed: false } : panel))]);
+				yield* SubscriptionRef.modify(PanelsRef, (Panels) => [undefined, Panels.map((Panel) => (Panel.id === Id ? { ...Panel, collapsed: false } : Panel))]);
 
-				yield* SubscriptionRef.set(activePanelRef, id);
-				yield* telemetry.log("info", `Set active sidebar panel: ${id}`);
+				yield* SubscriptionRef.set(ActivePanelRef, Id);
+				yield* TelemetryService.log("info", `Set active sidebar panel: ${Id}`);
 			});
 
 		// Atom: Get active panel
-		const getActivePanel = activePanelRef.get;
+		const GetActivePanel = ActivePanelRef.get;
 
 		// Atom: Stream of active panel changes
-		const activePanelChanges = activePanelRef.changes;
+		const ActivePanelChanges = ActivePanelRef.changes;
 
 		// Atom: Toggle panel
-		const togglePanel = (id: string): Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError> =>
+		const TogglePanel = (Id: string): Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError> =>
 			Effect.gen(function* () {
-				const existing = yield* getPanel(id);
+				const Existing = yield* GetPanel(Id);
 
-				if (!existing) {
-					return yield* Effect.fail(new SidebarPanelNotFoundError(id));
+				if (!Existing) {
+					return yield* Effect.fail(new SidebarPanelNotFoundError(Id));
 				}
 
-				yield* updatePanel(id, { collapsed: !existing.collapsed });
-				yield* telemetry.log("info", `Toggled sidebar panel: ${id}`);
+				yield* UpdatePanel(Id, { collapsed: !Existing.collapsed });
+				yield* TelemetryService.log("info", `Toggled sidebar panel: ${Id}`);
 			});
 
 		// Atom: Collapse panel
-		const collapsePanel = (id: string): Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError> =>
+		const CollapsePanel = (Id: string): Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError> =>
 			Effect.gen(function* () {
-				yield* updatePanel(id, { collapsed: true });
-				yield* telemetry.log("info", `Collapsed sidebar panel: ${id}`);
+				yield* UpdatePanel(Id, { collapsed: true });
+				yield* TelemetryService.log("info", `Collapsed sidebar panel: ${Id}`);
 			});
 
 		// Atom: Expand panel
-		const expandPanel = (id: string): Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError> =>
+		const ExpandPanel = (Id: string): Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError> =>
 			Effect.gen(function* () {
-				yield* updatePanel(id, { collapsed: false });
-				yield* telemetry.log("info", `Expanded sidebar panel: ${id}`);
+				yield* UpdatePanel(Id, { collapsed: false });
+				yield* TelemetryService.log("info", `Expanded sidebar panel: ${Id}`);
 			});
 
 		// Atom: Get panels by position
-		const getPanelsByPosition = (position: "left" | "right"): Effect.Effect<ReadonlyArray<SidebarPanel>, never> =>
-			Effect.map(panels, (panels) => panels.filter((panel) => panel.position === position));
+		const GetPanelsByPosition = (Position: "left" | "right"): Effect.Effect<ReadonlyArray<SidebarPanel>, never> =>
+			Effect.map(Panels, (Panels) => Panels.filter((Panel) => Panel.position === Position));
 
-		yield* telemetry.log("info", "Sidebar service initialized");
+		yield* TelemetryService.log("info", "Sidebar service initialized");
 
 		const service: SidebarService = {
-			createPanel,
-			updatePanel,
-			removePanel,
-			getPanel,
-			panels,
-			panelsChanges,
-			setActivePanel,
-			getActivePanel,
-			activePanelChanges,
-			togglePanel,
-			collapsePanel,
-			expandPanel,
-			getPanelsByPosition,
+			createPanel: CreatePanel,
+			updatePanel: UpdatePanel,
+			removePanel: RemovePanel,
+			getPanel: GetPanel,
+			panels: Panels,
+			panelsChanges: PanelsChanges,
+			setActivePanel: SetActivePanel,
+			getActivePanel: GetActivePanel,
+			activePanelChanges: ActivePanelChanges,
+			togglePanel: TogglePanel,
+			collapsePanel: CollapsePanel,
+			expandPanel: ExpandPanel,
+			getPanelsByPosition: GetPanelsByPosition,
 		};
 
 		return service;

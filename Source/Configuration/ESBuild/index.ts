@@ -6,7 +6,7 @@
 
 // Environment constants
 export * from "./Constant/EnvironmentConstant.js";
-export { sep, posix } from "./Constant/BoundConstant.js";
+export { sep, posix } from "./Constant/PathConstant.js";
 
 // Configuration objects
 export { default as BaseConfig } from "./Config/BaseConfig.js";

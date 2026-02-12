@@ -32,83 +32,83 @@ import { Telemetry } from "../../Telemetry.js";
 const StatusBarLive = Layer.effect(
 	StatusBarTag,
 	Effect.gen(function* () {
-		const telemetry = yield* Telemetry;
+		const TelemetryService = yield* Telemetry;
 
 		// In-memory storage of status bar items as reactive ref
-		const itemsRef = yield* SubscriptionRef.make<ReadonlyArray<StatusBarItem>>([]);
+		const ItemsRef = yield* SubscriptionRef.make<ReadonlyArray<StatusBarItem>>([]);
 
 		// Atom: Create a new status bar item
-		const createItem = (item: CreateStatusBarItem): Effect.Effect<StatusBarItem, never> =>
+		const CreateItem = (Item: CreateStatusBarItem): Effect.Effect<StatusBarItem, never> =>
 			Effect.gen(function* () {
-				const id = `statusbar-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-				const newItem: StatusBarItem = { ...item, id };
+				const Id = `statusbar-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+				const NewItem: StatusBarItem = { ...Item, id: Id };
 
-				yield* SubscriptionRef.modify(itemsRef, (items) => [undefined, [...items, newItem].sort((a, b) => a.priority - b.priority)]);
+				yield* SubscriptionRef.modify(ItemsRef, (Items) => [undefined, [...Items, NewItem].sort((a, b) => a.priority - b.priority)]);
 
-				yield* telemetry.log("info", `Created status bar item: ${id}`);
-				return newItem;
+				yield* TelemetryService.log("info", `Created status bar item: ${Id}`);
+				return NewItem;
 			});
 
 		// Atom: Update an existing status bar item
-		const updateItem = (
-			id: string,
+		const UpdateItem = (
+			Id: string,
 			updates: Partial<Omit<StatusBarItem, "id">>,
 		): Effect.Effect<void, StatusBarItemNotFoundError | StatusBarUpdateError> =>
 			Effect.gen(function* () {
-				const existing = yield* getItem(id);
+				const Existing = yield* GetItem(Id);
 
-				if (!existing) {
-					return yield* Effect.fail(new StatusBarItemNotFoundError(id));
+				if (!Existing) {
+					return yield* Effect.fail(new StatusBarItemNotFoundError(Id));
 				}
 
 				try {
-					yield* SubscriptionRef.modify(itemsRef, (items) => [
+					yield* SubscriptionRef.modify(ItemsRef, (Items) => [
 						undefined,
-						items.map((item) => (item.id === id ? { ...item, ...updates } : item)).sort((a, b) => a.priority - b.priority),
+						Items.map((Item) => (Item.id === Id ? { ...Item, ...updates } : Item)).sort((a, b) => a.priority - b.priority),
 					]);
 
-					yield* telemetry.log("info", `Updated status bar item: ${id}`);
+					yield* TelemetryService.log("info", `Updated status bar item: ${Id}`);
 				} catch (error) {
-					return yield* Effect.fail(new StatusBarUpdateError(id, error));
+					return yield* Effect.fail(new StatusBarUpdateError(Id, error));
 				}
 			});
 
 		// Atom: Remove a status bar item
-		const removeItem = (id: string): Effect.Effect<void, StatusBarItemNotFoundError> =>
+		const RemoveItem = (Id: string): Effect.Effect<void, StatusBarItemNotFoundError> =>
 			Effect.gen(function* () {
-				const existing = yield* getItem(id);
+				const Existing = yield* GetItem(Id);
 
-				if (!existing) {
-					return yield* Effect.fail(new StatusBarItemNotFoundError(id));
+				if (!Existing) {
+					return yield* Effect.fail(new StatusBarItemNotFoundError(Id));
 				}
 
-				yield* SubscriptionRef.modify(itemsRef, (items) => [undefined, items.filter((item) => item.id !== id)]);
+				yield* SubscriptionRef.modify(ItemsRef, (Items) => [undefined, Items.filter((Item) => Item.id !== Id)]);
 
-				yield* telemetry.log("info", `Removed status bar item: ${id}`);
+				yield* TelemetryService.log("info", `Removed status bar item: ${Id}`);
 			});
 
 		// Atom: Get a specific status bar item
-		const getItem = (id: string): Effect.Effect<StatusBarItem | undefined, never> =>
-			Effect.map(itemsRef.get, (items) => items.find((item) => item.id === id));
+		const GetItem = (Id: string): Effect.Effect<StatusBarItem | undefined, never> =>
+			Effect.map(ItemsRef.get, (Items) => Items.find((Item) => Item.id === Id));
 
 		// Atom: Get all status bar items
-		const items = itemsRef.get;
+		const Items = ItemsRef.get;
 
 		// Atom: Stream of items changes
-		const itemsChanges = itemsRef.changes;
+		const ItemsChanges = ItemsRef.changes;
 
 		// Atom: Set item visibility
-		const setItemVisibility = (id: string, visible: boolean): Effect.Effect<void, StatusBarItemNotFoundError> =>
+		const SetItemVisibility = (Id: string, visible: boolean): Effect.Effect<void, StatusBarItemNotFoundError> =>
 			Effect.gen(function* () {
-				const existing = yield* getItem(id);
+				const Existing = yield* GetItem(Id);
 
-				if (!existing) {
-					return yield* Effect.fail(new StatusBarItemNotFoundError(id));
+				if (!Existing) {
+					return yield* Effect.fail(new StatusBarItemNotFoundError(Id));
 				}
 
 				// Visibility is managed via presence in the items array
 				if (!visible) {
-					yield* removeItem(id);
+					yield* RemoveItem(Id);
 				} else {
 					// Item is already visible if it exists
 					yield* Effect.void;
@@ -116,23 +116,23 @@ const StatusBarLive = Layer.effect(
 			});
 
 		// Atom: Get item text
-		const getItemText = (id: string): Effect.Effect<string | undefined, never> => Effect.map(getItem(id), (item) => item?.text);
+		const GetItemText = (Id: string): Effect.Effect<string | undefined, never> => Effect.map(GetItem(Id), (Item) => Item?.text);
 
 		// Atom: Set item text
-		const setItemText = (id: string, text: string): Effect.Effect<void, StatusBarItemNotFoundError | StatusBarUpdateError> => updateItem(id, { text });
+		const SetItemText = (Id: string, text: string): Effect.Effect<void, StatusBarItemNotFoundError | StatusBarUpdateError> => UpdateItem(Id, { text });
 
-		yield* telemetry.log("info", "StatusBar service initialized");
+		yield* TelemetryService.log("info", "StatusBar service initialized");
 
 		const service: StatusBarService = {
-			createItem,
-			updateItem,
-			removeItem,
-			getItem,
-			items,
-			itemsChanges,
-			setItemVisibility,
-			getItemText,
-			setItemText,
+			createItem: CreateItem,
+			updateItem: UpdateItem,
+			removeItem: RemoveItem,
+			getItem: GetItem,
+			items: Items,
+			itemsChanges: ItemsChanges,
+			setItemVisibility: SetItemVisibility,
+			getItemText: GetItemText,
+			setItemText: SetItemText,
 		};
 
 		return service;

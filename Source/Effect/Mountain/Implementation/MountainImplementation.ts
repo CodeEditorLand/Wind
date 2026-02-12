@@ -32,190 +32,191 @@ import { Telemetry } from "../../Telemetry.js";
 export const MountainLive = Layer.effect(
 	MountainTag,
 	Effect.gen(function* () {
-		const ipc = yield* IPC;
-		const config = yield* Configuration;
-		const telemetry = yield* Telemetry;
+		const IPCService = yield* IPC;
+		const ConfigurationService = yield* Configuration;
+		const TelemetryService = yield* Telemetry;
 
 		// Connection state as reactive ref
-		const stateRef = yield* SubscriptionRef.make<MountainConnectionState>({
+		const StateRef = yield* SubscriptionRef.make<MountainConnectionState>({
 			_tag: "Idle",
 		});
 
 		// Sync events stream
-		const syncEventsRef = yield* SubscriptionRef.make<
+		const SyncEventsRef = yield* SubscriptionRef.make<
 			ReadonlyArray<SyncResource>
 		>([]);
 
 		// Retry schedule: exponential backoff with max 30s
-		const retrySchedule = Schedule.exponential("100 millis").pipe(
+		const RetrySchedule = Schedule.exponential("100 millis").pipe(
 			Schedule.union(Schedule.spaced("5 seconds")),
 			Schedule.intersect(Schedule.recurs(10)),
 		);
 
 		// Helper: withSpan using captured telemetry (no external dependencies)
-		const withSpanLocal = <A, E>(
-			name: string,
-			effect: Effect.Effect<A, E, never>,
+		const WithSpanLocal = <A, E>(
+			Name: string,
+			EffectPayload: Effect.Effect<A, E, never>,
 		): Effect.Effect<A, E, never> =>
 			Effect.gen(function* () {
-				const span = yield* telemetry.startSpan(name);
-				return yield* effect.pipe(
-					Effect.tap(() => span.end(true)),
-					Effect.catchAll((error) =>
+				const Span = yield* TelemetryService.startSpan(Name);
+				return yield* EffectPayload.pipe(
+					Effect.tap(() => Span.end(true)),
+					Effect.catchAll((Error) =>
 						Effect.gen(function* () {
-							const errorMsg = error instanceof Error ? error.message : String(error);
-							yield* span.end(false, errorMsg);
-							return yield* Effect.fail(error);
-						}),
-					),
+						const ErrorValue = Error as Error;
+						const ErrorMsg = ErrorValue.message;
+						yield* Span.end(false, ErrorMsg);
+						return yield* Effect.fail(ErrorValue);
+					}),
+				),
 				);
 			});
 
 		// Atom: Update connection state
-		const setState = (state: MountainConnectionState) =>
+		const SetState = (State: MountainConnectionState) =>
 			Effect.gen(function* () {
-				yield* SubscriptionRef.modify(stateRef, () => [undefined, state]);
-				yield* telemetry.log("info", `Mountain state: ${state._tag}`);
+				yield* SubscriptionRef.modify(StateRef, () => [undefined, State]);
+				yield* TelemetryService.log("info", `Mountain state: ${State._tag}`);
 			});
 
 		// Atom: Get current state
-		const connectionState = stateRef.get;
-		const connectionChanges = stateRef.changes;
+		const ConnectionState = StateRef.get;
+		const ConnectionChanges = StateRef.changes;
 
 		// Atom: Connect to Mountain
-		const connect = Effect.gen(function* () {
-			yield* setState({ _tag: "Connecting", attempt: 1 });
+		const Connect = Effect.gen(function* () {
+			yield* SetState({ _tag: "Connecting", attempt: 1 });
 
-			const connectionEffect = Effect.gen(function* () {
-				const status = yield* ipc
+			const ConnectionEffect = Effect.gen(function* () {
+				const Status = yield* IPCService
 					.invoke("mountain_get_status")([])
 					.pipe(
-						Effect.map((result): { connected: boolean; version: string } => {
-							const apiStatus = result as { connected?: boolean; version?: string };
+						Effect.map((Result): { connected: boolean; version: string } => {
+							const APIStatus = Result as { connected?: boolean; version?: string };
 							return {
-								connected: apiStatus.connected ?? false,
-								version: apiStatus.version ?? "unknown",
+								connected: APIStatus.connected ?? false,
+								version: APIStatus.version ?? "unknown",
 							};
 						}),
 						Effect.mapError(
-							(error) => new MountainConnectionError(error),
+							(Error) => new MountainConnectionError(Error),
 						),
 					);
 
-				if (!status.connected) {
+				if (!Status.connected) {
 					yield* Effect.fail(
 						new MountainConnectionError("Mountain not ready"),
 					);
 				}
 
-				yield* setState({
+				yield* SetState({
 					_tag: "Connected",
-					version: status.version,
+					version: Status.version,
 				});
-				yield* telemetry.log(
+				yield* TelemetryService.log(
 					"info",
-					`Connected to Mountain v${status.version}`,
+					`Connected to Mountain v${Status.version}`,
 				);
 			}) satisfies Effect.Effect<void, MountainConnectionError, never>;
 
 			return yield* Effect.retry(
-				withSpanLocal("mountain_connect", connectionEffect),
-				retrySchedule,
+				WithSpanLocal("mountain_connect", ConnectionEffect),
+				RetrySchedule,
 			).pipe(
-				Effect.catchAll((error) =>
+				Effect.catchAll((Error) =>
 					Effect.gen(function* () {
-						const errorObj = error instanceof Error ? error : new Error(String(error));
-						yield* setState({ _tag: "Error", error: errorObj });
-						yield* telemetry.log(
+						const ErrorObj = Error instanceof Error ? Error : new Error(String(Error));
+						yield* SetState({ _tag: "Error", error: ErrorObj });
+						yield* TelemetryService.log(
 							"error",
-							`Failed to connect: ${errorObj.message}`,
+							`Failed to connect: ${ErrorObj.message}`,
 						);
-						yield* Effect.fail(error as MountainConnectionError);
+						yield* Effect.fail(Error as MountainConnectionError);
 					}),
 				),
 			);
 		}) satisfies Effect.Effect<void, MountainConnectionError, never>;
 
 		// Atom: Disconnect
-		const disconnect = Effect.gen(function* () {
-			yield* setState({ _tag: "Disconnected", reason: "manual" });
-			yield* telemetry.log("info", "Disconnected from Mountain");
+		const Disconnect = Effect.gen(function* () {
+			yield* SetState({ _tag: "Disconnected", reason: "manual" });
+			yield* TelemetryService.log("info", "Disconnected from Mountain");
 		});
 
 		// Atom: RPC with telemetry
-		const rpc: MountainService["rpc"] = (method) => (args) =>
+		const RPC: MountainService["rpc"] = (Method) => (Args) =>
 			Effect.gen(function* () {
-				const currentState = yield* stateRef.get;
+				const CurrentState = yield* StateRef.get;
 
-				if (currentState._tag !== "Connected") {
+				if (CurrentState._tag !== "Connected") {
 					// Auto-connect if not connected
-					yield* connect;
+					yield* Connect;
 				}
 
-				const span = yield* telemetry.startSpan(`rpc_${method}`);
+				const Span = yield* TelemetryService.startSpan(`rpc_${Method}`);
 
-				return yield* ipc
-					.invoke(method)(args ? [args] : [])
+				return yield* IPCService
+					.invoke(Method)(Args ? [Args] : [])
 					.pipe(
 						Effect.mapError(
-							(error) => new MountainRPCError(method, error),
+							(Error) => new MountainRPCError(Method, Error),
 						),
-						Effect.tap(() => span.end(true)),
-						Effect.catchAll((error) =>
+						Effect.tap(() => Span.end(true)),
+						Effect.catchAll((Error) =>
 							Effect.gen(function* () {
-								const errorMessage = error instanceof Error ? error.message : String(error);
-								yield* span.end(false, errorMessage);
+								const ErrorMessage = Error instanceof Error ? Error.message : String(Error);
+								yield* Span.end(false, ErrorMessage);
 
 								// Check if connection lost
 								if (
-									errorMessage.includes("connection") ||
-									errorMessage.includes("network")
+									ErrorMessage.includes("connection") ||
+									ErrorMessage.includes("network")
 								) {
-									yield* setState({
+									yield* SetState({
 										_tag: "Disconnected",
 										reason: "connection_lost",
 									});
 								}
 
-								yield* Effect.fail(error as MountainRPCError);
+								yield* Effect.fail(Error as MountainRPCError);
 							}),
 						),
 					) as any;
 			}) as any;
 
 		// Atom: Sync resource
-		const sync = (resourceType: SyncResource["type"]) =>
+		const Sync = (ResourceType: SyncResource["type"]) =>
 			Effect.gen(function* () {
-				const span = yield* telemetry.startSpan(`sync_${resourceType}`);
-				const startTime = Date.now();
+				const Span = yield* TelemetryService.startSpan(`sync_${ResourceType}`);
+				const StartTime = Date.now();
 
-				yield* telemetry.log(
+				yield* TelemetryService.log(
 					"info",
-					`Starting sync for ${resourceType}`,
+					`Starting sync for ${ResourceType}`,
 				);
 
-				const result = yield* Effect.gen(function* () {
-					switch (resourceType) {
+				const Result = yield* Effect.gen(function* () {
+					switch (ResourceType) {
 						case "configuration": {
-							const mountainConfig = (yield* rpc("mountain_get_configuration")()) as any;
-							const localConfig = yield* config.get;
+							const MountainConfig = (yield* RPC("mountain_get_configuration")()) as any;
+							const LocalConfig = yield* ConfigurationService.get;
 
 							// Detect changes
-							const mountainHash = JSON.stringify(mountainConfig);
-							const localHash = JSON.stringify(localConfig);
+							const MountainHash = JSON.stringify(MountainConfig);
+							const LocalHash = JSON.stringify(LocalConfig);
 
-							if (mountainHash !== localHash) {
-								yield* config.apply(mountainConfig as any);
+							if (MountainHash !== LocalHash) {
+								yield* ConfigurationService.apply(MountainConfig as any);
 
-								const resource: SyncResource = {
+								const Resource: SyncResource = {
 									type: "configuration",
 									id: "main",
-									data: mountainConfig,
+									data: MountainConfig,
 									timestamp: Date.now(),
-									hash: mountainHash,
+									hash: MountainHash,
 								};
 
-								yield* SubscriptionRef.modify(syncEventsRef, (events) => [undefined, [...events, resource].slice(-1000)]);
+								yield* SubscriptionRef.modify(SyncEventsRef, (Events) => [undefined, [...Events, Resource].slice(-1000)]);
 							}
 
 							return {
@@ -226,37 +227,37 @@ export const MountainLive = Layer.effect(
 						}
 
 						case "services": {
-							const services = (yield* rpc("mountain_get_services_status")()) as any;
+							const Services = (yield* RPC("mountain_get_services_status")()) as any;
 
-							const resource: SyncResource = {
+							const Resource: SyncResource = {
 								type: "services",
 								id: "all",
-								data: services,
+								data: Services,
 								timestamp: Date.now(),
-								hash: JSON.stringify(services),
+								hash: JSON.stringify(Services),
 							};
 
-							yield* SubscriptionRef.modify(syncEventsRef, (events) => [undefined, [...events, resource].slice(-1000)]);
+							yield* SubscriptionRef.modify(SyncEventsRef, (Events) => [undefined, [...Events, Resource].slice(-1000)]);
 
 							return {
 								success: true,
-								resourcesSynced: Object.keys(services).length,
+								resourcesSynced: Object.keys(Services).length,
 								errors: [],
 							};
 						}
 
 						case "state": {
-							const state = (yield* rpc("mountain_get_state")()) as any;
+							const State = (yield* RPC("mountain_get_state")()) as any;
 
-							const resource: SyncResource = {
+							const Resource: SyncResource = {
 								type: "state",
 								id: "main",
-								data: state,
+								data: State,
 								timestamp: Date.now(),
-								hash: JSON.stringify(state),
+								hash: JSON.stringify(State),
 							};
 
-							yield* SubscriptionRef.modify(syncEventsRef, (events) => [undefined, [...events, resource].slice(-1000)]);
+							yield* SubscriptionRef.modify(SyncEventsRef, (Events) => [undefined, [...Events, Resource].slice(-1000)]);
 
 							return {
 								success: true,
@@ -270,92 +271,92 @@ export const MountainLive = Layer.effect(
 								success: false,
 								resourcesSynced: 0,
 								errors: [
-									`Unknown resource type: ${resourceType}`,
+									`Unknown resource type: ${ResourceType}`,
 								],
 							};
 					}
 				}).pipe(
-					Effect.tap((result) =>
-						span.end(result.success, result.errors[0]),
+					Effect.tap((InnerResult) =>
+						Span.end(InnerResult.success, InnerResult.errors[0]),
 					),
-					Effect.catchAll((error) =>
+					Effect.catchAll((Error) =>
 						Effect.gen(function* () {
-							const errorMessage = error instanceof Error ? error.message : String(error);
-							yield* span.end(false, errorMessage);
+							const ErrorMessage = Error instanceof Error ? Error.message : String(Error);
+							yield* Span.end(false, ErrorMessage);
 							yield* Effect.fail(
-								new MountainSyncError(resourceType, error),
+								new MountainSyncError(ResourceType, Error),
 							);
 						}),
 					),
 				);
 
-				const duration = Date.now() - startTime;
+				const Duration = Date.now() - StartTime;
 
 				return {
-					...result,
-					duration,
+					...Result,
+					duration: Duration,
 				} as SyncResult;
 			});
 
 		// Stream of sync events
-		const syncEvents = syncEventsRef.changes.pipe(
-			Stream.flatMap((events) => Stream.fromIterable(events)),
+		const SyncEvents = SyncEventsRef.changes.pipe(
+			Stream.flatMap((Events) => Stream.fromIterable(Events)),
 		);
 
 		// Atom: Get version - using raw IPC to avoid error type issues
-		const version: MountainService["version"] = Effect.gen(function* () {
-			const status = yield* ipc
+		const Version: MountainService["version"] = Effect.gen(function* () {
+			const Status = yield* IPCService
 				.invoke("mountain_get_status")([])
 				.pipe(
-					Effect.map((result): { version: string } => {
-						const apiStatus = result as { connected?: boolean; version?: string };
-						return { version: apiStatus.version ?? "unknown" };
+					Effect.map((Result): { version: string } => {
+						const APIStatus = Result as { connected?: boolean; version?: string };
+						return { version: APIStatus.version ?? "unknown" };
 					}),
-					Effect.mapError((error) => new MountainConnectionError(error)),
+					Effect.mapError((Error) => new MountainConnectionError(Error)),
 				);
-			return status.version;
+			return Status.version;
 		});
 
 		// Atom: Health check
-		const healthCheck = Effect.gen(function* () {
+		const HealthCheck = Effect.gen(function* () {
 			return yield* Effect.orElse(
-				rpc("mountain_get_status")().pipe(
-					Effect.map((status: any) => status.connected === true),
+				RPC("mountain_get_status")().pipe(
+					Effect.map((Status: any) => Status.connected === true),
 				),
 				() => Effect.succeed(false),
 			);
 		});
 
 		// Set up background sync on connection
-		const setupBackgroundSync = Effect.gen(function* () {
-			yield* Stream.runForEach(connectionChanges, (state) =>
-				state._tag === "Connected"
+		const SetupBackgroundSync = Effect.gen(function* () {
+			yield* Stream.runForEach(ConnectionChanges, (State) =>
+				State._tag === "Connected"
 					? Effect.gen(function* () {
-							yield* telemetry.log(
+							yield* TelemetryService.log(
 								"info",
 								"Starting background sync",
 							);
 
 							// Initial sync
-							yield* sync("configuration").pipe(
-								Effect.catchAll((error) =>
-									telemetry.log(
+							yield* Sync("configuration").pipe(
+								Effect.catchAll((Error) =>
+									TelemetryService.log(
 										"error",
-										`Initial config sync failed: ${error.message}`,
+										`Initial config sync failed: ${Error.message}`,
 									),
 								),
 							);
 
 							// Periodic sync every 5 seconds
-							const syncFiber = yield* Stream.fromSchedule(
+							const SyncFiber = yield* Stream.fromSchedule(
 								Schedule.spaced("5 seconds"),
 							).pipe(
 								Stream.runForEach(() =>
-									sync("configuration").pipe(
-										Effect.catchAll((error) =>
-											telemetry.log(
+									Sync("configuration").pipe(
+										Effect.catchAll((Error) =>
+											TelemetryService.log(
 												"error",
-												`Periodic sync failed: ${error.message}`,
+												`Periodic sync failed: ${Error.message}`,
 											),
 										),
 									),
@@ -364,35 +365,36 @@ export const MountainLive = Layer.effect(
 							);
 
 							// Stop sync on disconnect
-							yield* connectionChanges.pipe(
+							yield* ConnectionChanges.pipe(
 								Stream.filter(
-									(s) =>
-										s._tag === "Disconnected" ||
-										s._tag === "Error",
+									(S) =>
+										S._tag === "Disconnected" ||
+										S._tag === "Error",
 								),
 								Stream.runForEach(() =>
-									Fiber.interrupt(syncFiber),
+									Fiber.interrupt(SyncFiber),
 								),
 							);
 						})
 					: Effect.void,
-			);
+				);
+			});
 		}).pipe(Effect.fork);
 
-		yield* setupBackgroundSync;
+		yield* SetupBackgroundSync;
 
-		yield* telemetry.log("info", "Mountain service initialized");
+		yield* TelemetryService.log("info", "Mountain service initialized");
 
 		return {
-			connectionState,
-			connectionChanges,
-			connect,
-			disconnect,
-			rpc,
-			sync,
-			syncEvents,
-			version,
-			healthCheck,
+			connectionState: ConnectionState,
+			connectionChanges: ConnectionChanges,
+			connect: Connect,
+			disconnect: Disconnect,
+			rpc: RPC,
+			sync: Sync,
+			syncEvents: SyncEvents,
+			version: Version,
+			healthCheck: HealthCheck,
 		};
 	}),
 );

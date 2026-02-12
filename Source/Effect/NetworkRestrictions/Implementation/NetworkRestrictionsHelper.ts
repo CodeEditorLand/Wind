@@ -9,12 +9,12 @@
 
 import type { NetworkRestrictionConfig } from "../Type/NetworkRestrictionConfig.js";
 import {
-	TELEMETRY_ENDP,
-	MARKETPLACE_ENDP,
-	UPDATE_ENDP,
-	AI_ENDPOINTP,
-	ALLOWED_IPC_CHANNELS,
-	BLOCKED_IPC_CHANNELS,
+  TelemetryEndpoint,
+  MarketplaceEndpoint,
+  UpdateEndpoint,
+  AiEndpoint,
+  ALLOWED_IPC_CHANNELS,
+  BLOCKED_IPC_CHANNELS,
 } from "../Constant/NetworkRestrictionsConstant.js";
 
 // ============================================================================
@@ -27,31 +27,31 @@ import {
  * @param url - The URL to check
  * @returns true if the URL is internal and should be allowed
  */
-export const isInternalURL = (config: NetworkRestrictionConfig, url: string): boolean => {
-	try {
-		const urlObj = new URL(url);
-		
-		// Allow localhost
-		if (
-			urlObj.hostname === 'localhost' ||
-			urlObj.hostname === '127.0.0.1' ||
-			urlObj.hostname === '::1'
-		) {
-			return true;
-		}
+export const IsInternalURL = (Config: NetworkRestrictionConfig, Url: string): boolean => {
+  try {
+    const UrlObj = new URL(Url);
 
-		// Check if Mountain backend
-		if (config.allowMountain &&
-		    (urlObj.hostname.includes('localhost') ||
-		     urlObj.hostname === '127.0.0.1' ||
-		     urlObj.port !== undefined)) {
-			return true;
-		}
+    // Allow localhost
+    if (
+      UrlObj.hostname === 'localhost' ||
+      UrlObj.hostname === '127.0.0.1' ||
+      UrlObj.hostname === '::1'
+    ) {
+      return true;
+    }
 
-		return false;
-	} catch {
-		return false;
-	}
+    // Check if Mountain backend
+    if (Config.allowMountain &&
+        (UrlObj.hostname.includes('localhost') ||
+         UrlObj.hostname === '127.0.0.1' ||
+         UrlObj.port !== undefined)) {
+      return true;
+    }
+
+    return false;
+  } catch {
+    return false;
+  }
 };
 
 /**
@@ -60,58 +60,58 @@ export const isInternalURL = (config: NetworkRestrictionConfig, url: string): bo
  * @param url - The URL to check
  * @returns true if the URL should be blocked
  */
-export const isBlockedURL = (config: NetworkRestrictionConfig, url: string): boolean => {
-	// Check telemetry endpoints
-	if (config.blockTelemetry) {
-		for (const pattern of TELEMETRY_ENDP) {
-			if (url.includes(pattern)) {
-				return true;
-			}
-		}
-	}
+export const IsBlockedURL = (Config: NetworkRestrictionConfig, Url: string): boolean => {
+  // Check telemetry endpoints
+  if (Config.blockTelemetry) {
+    for (const Pattern of TelemetryEndpoint) {
+      if (Url.includes(Pattern)) {
+        return true;
+      }
+    }
+  }
 
-	// Check blocked domains
-	if (config.blockedDomains.length > 0) {
-		for (const pattern of config.blockedDomains) {
-			if (url.includes(pattern)) {
-				return true;
-			}
-		}
-	}
+  // Check blocked domains
+  if (Config.blockedDomains.length > 0) {
+    for (const Pattern of Config.blockedDomains) {
+      if (Url.includes(Pattern)) {
+        return true;
+      }
+    }
+  }
 
-	// Check specific patterns manually
-	if (url.includes('telemetry') ||
-	    url.includes('telemetryAppender') ||
-	    url.includes('vortex')) {
-		return true;
-	}
+  // Check specific patterns manually
+  if (Url.includes('telemetry') ||
+      Url.includes('telemetryAppender') ||
+      Url.includes('vortex')) {
+    return true;
+  }
 
-	// Check marketplace
-	if (config.blockMarketplace) {
-		for (const pattern of MARKETPLACE_ENDP) {
-			if (url.includes('marketplace') || url.includes('extensions')) {
-				return true;
-			}
-		}
-	}
+  // Check marketplace
+  if (Config.blockMarketplace) {
+    for (const Pattern of MarketplaceEndpoint) {
+      if (Url.includes('marketplace') || Url.includes('extensions')) {
+        return true;
+      }
+    }
+  }
 
-	// Check updates
-	if (config.blockExtensionUpdates) {
-		for (const pattern of UPDATE_ENDP) {
-			if (url.includes('update') || url.includes('vscode-update')) {
-				return true;
-			}
-		}
-	}
+  // Check updates
+  if (Config.blockExtensionUpdates) {
+    for (const Pattern of UpdateEndpoint) {
+      if (Url.includes('update') || Url.includes('vscode-update')) {
+        return true;
+      }
+    }
+  }
 
-	// Check AI endpoints
-	for (const pattern of AI_ENDPOINTP) {
-		if (url.includes('github.com') || url.includes('copilot')) {
-			return true;
-		}
-	}
+  // Check AI endpoints
+  for (const Pattern of AiEndpoint) {
+    if (Url.includes('github.com') || Url.includes('copilot')) {
+      return true;
+    }
+  }
 
-	return false;
+  return false;
 };
 
 /**
@@ -120,18 +120,18 @@ export const isBlockedURL = (config: NetworkRestrictionConfig, url: string): boo
  * @param url - The URL to check
  * @returns true if the URL is in the whitelist
  */
-export const isAllowedURL = (config: NetworkRestrictionConfig, url: string): boolean => {
-	if (config.allowedDomains.length === 0) {
-		return false;
-	}
+export const IsAllowedURL = (Config: NetworkRestrictionConfig, Url: string): boolean => {
+  if (Config.allowedDomains.length === 0) {
+    return false;
+  }
 
-	for (const pattern of config.allowedDomains) {
-		if (url.includes(pattern)) {
-			return true;
-		}
-	}
+  for (const Pattern of Config.allowedDomains) {
+    if (Url.includes(Pattern)) {
+      return true;
+    }
+  }
 
-	return false;
+  return false;
 };
 
 /**
@@ -139,34 +139,34 @@ export const isAllowedURL = (config: NetworkRestrictionConfig, url: string): boo
  * @param channel - The IPC channel to check
  * @returns true if the IPC channel is allowed
  */
-export const isIPCAllowed = (channel: string): boolean => {
-	// Must start with vscode:
-	if (!channel.startsWith('vscode:')) {
-		return false;
-	}
+export const IsIPCAllowed = (Channel: string): boolean => {
+  // Must start with vscode:
+  if (!Channel.startsWith('vscode:')) {
+    return false;
+  }
 
-	// Check if in explicitly blocked list
-	for (const pattern of BLOCKED_IPC_CHANNELS) {
-		if (channel.startsWith(pattern)) {
-			return false;
-		}
-	}
+  // Check if in explicitly blocked list
+  for (const Pattern of BLOCKED_IPC_CHANNELS) {
+    if (Channel.startsWith(Pattern)) {
+      return false;
+    }
+  }
 
-	// Allow internal VSCode channels
-	for (const allowed of ALLOWED_IPC_CHANNELS) {
-		if (channel.startsWith(allowed)) {
-			return true;
-		}
-	}
+  // Allow internal VSCode channels
+  for (const Allowed of ALLOWED_IPC_CHANNELS) {
+    if (Channel.startsWith(Allowed)) {
+      return true;
+    }
+  }
 
-	return false;
+  return false;
 };
 
 const helpers = {
-	isInternalURL,
-	isBlockedURL,
-	isAllowedURL,
-	isIPCAllowed,
+  IsInternalURL,
+  IsBlockedURL,
+  IsAllowedURL,
+  IsIPCAllowed,
 };
 
 export default helpers;

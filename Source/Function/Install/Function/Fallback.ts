@@ -11,7 +11,7 @@
 /**
  * Implements graceful degradation with fallback support
  */
-export function fallback(): void {
+export function Fallback(): void {
 	if (typeof (window as any).legacyBridge !== "undefined") {
 		(window as any).vscode = (window as any).legacyBridge;
 		return;

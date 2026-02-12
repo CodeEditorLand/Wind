@@ -29,7 +29,7 @@ export { MockIPCLive } from "./Mock.js";
 
 // Error helpers
 export {
-	createIPCInvokeError,
-	createIPCSendError,
-	createIPCSubscriptionError,
+	CreateIPCInvokeError,
+	CreateIPCSendError,
+	CreateIPCSubscriptionError,
 } from "./Error/IPCError.js";

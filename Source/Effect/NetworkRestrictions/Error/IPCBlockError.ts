@@ -33,7 +33,7 @@ export interface IPCBlockError {
  * @param reason - The reason for blocking
  * @returns An IPCBlockError instance
  */
-const createIPCBlockError = (channel: string, reason: string): IPCBlockError => ({
+const CreateIPCBlockError = (channel: string, reason: string): IPCBlockError => ({
 	_tag: "IPCBlockError",
 	channel,
 	reason,
@@ -42,4 +42,4 @@ const createIPCBlockError = (channel: string, reason: string): IPCBlockError => 
 	cause: channel,
 });
 
-export default createIPCBlockError;
+export default CreateIPCBlockError;

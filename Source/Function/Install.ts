@@ -1,8 +1,8 @@
 // Type imports for VSCode compatibility
 import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes";
 import type {
-	IPCRenderer,
-	IPCRendererEvent,
+	IpcRenderer,
+	IpcRendererEvent,
 } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/electronTypes";
 import type {
 	IMainWindowSandboxGlobals,
@@ -50,8 +50,8 @@ export default async function Install(): Promise<void> {
 
 		// Initialize core components
 		const Configuration = await ResolveConfiguration();
-		const IPCRenderer = createIPCRenderer();
-		const Process = createProcess(Configuration);
+		const IPCRenderer = CreateIPCRenderer();
+		const Process = CreateProcess(Configuration);
 
 		// Create preload globals object that will be enhanced by Effect-TS
 		const preloadGlobals = {
@@ -88,38 +88,38 @@ export default async function Install(): Promise<void> {
 		console.log("[Wind] Preload ready, Effect-TS bootstrap can proceed");
 	} catch (error: unknown) {
 		console.error(`[Wind] Install error:`, error);
-		fallback();
+		Fallback();
 	}
 }
 
 // IPCRenderer factory with proper VSCode typing
-export function createIPCRenderer(): IPCRenderer {
-	const self: IPCRenderer = {
-		send: (channel: string): void => {
-			if (!validateIPCChannel(channel)) return;
+export function CreateIPCRenderer(): IpcRenderer {
+	const self: IpcRenderer = {
+		send: (Channel: string): void => {
+			if (!ValidateIPCChannel(Channel)) return;
 		},
-		invoke: async (channel: string): Promise<unknown> => {
-			if (!validateIPCChannel(channel)) {
-				throw new Error(`Invalid IPC channel: ${channel}`);
+		invoke: async (Channel: string): Promise<unknown> => {
+			if (!ValidateIPCChannel(Channel)) {
+				throw new Error(`Invalid IPC channel: ${Channel}`);
 			}
 			return {};
 		},
 		on: (
-			_channel: string,
-			_listener: (event: IPCRendererEvent) => void,
-		): IPCRenderer => {
+			_Channel: string,
+			_Listener: (event: IpcRendererEvent) => void,
+		): IpcRenderer => {
 			return self;
 		},
 		once: (
-			_channel: string,
-			_listener: (event: IPCRendererEvent) => void,
-		): IPCRenderer => {
+			_Channel: string,
+			_Listener: (event: IpcRendererEvent) => void,
+		): IpcRenderer => {
 			return self;
 		},
 		removeListener: (
-			_channel: string,
-			_listener: (event: IPCRendererEvent) => void,
-		): IPCRenderer => {
+			_Channel: string,
+			_Listener: (event: IpcRendererEvent) => void,
+		): IpcRenderer => {
 			return self;
 		},
 	};
@@ -127,22 +127,22 @@ export function createIPCRenderer(): IPCRenderer {
 }
 
 // Process factory with proper VSCode typing
-export function createProcess(
-	configuration: ISandboxConfiguration,
+export function CreateProcess(
+	Configuration: ISandboxConfiguration,
 ): ISandboxNodeProcess {
 	return {
 		platform: "web",
 		arch: "web",
 		type: "renderer",
 		execPath: "/",
-		env: configuration.userEnv ?? {},
+		env: Configuration.userEnv ?? {},
 		cwd: () => "/",
 		versions: {
 			node: "20.0.0",
 			chrome: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || "0",
 			electron: "0.0.0",
 		},
-		on: (_type: string, _callback: Function): void => {},
+		on: (_Type: string, _Callback: Function): void => {},
 		getProcessMemoryInfo: async () => ({
 			private: 0,
 			residentSet: 0,
@@ -216,9 +216,9 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 /**
  * Validates IPC channels with proper guard clauses
  */
-export function validateIPCChannel(channel: string): boolean {
-	if (!channel || typeof channel !== "string") return false;
-	if (typeof navigator !== "undefined" && !channel.startsWith("vscode:"))
+export function ValidateIPCChannel(Channel: string): boolean {
+	if (!Channel || typeof Channel !== "string") return false;
+	if (typeof navigator !== "undefined" && !Channel.startsWith("vscode:"))
 		return false;
 	return true;
 }
@@ -226,7 +226,7 @@ export function validateIPCChannel(channel: string): boolean {
 /**
  * Implements graceful degradation with fallback support
  */
-export function fallback(): void {
+export function Fallback(): void {
 	if (typeof (window as any).legacyBridge !== "undefined") {
 		(window as any).vscode = (window as any).legacyBridge;
 		return;

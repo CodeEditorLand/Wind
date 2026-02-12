@@ -28,9 +28,9 @@
 // ============================================================================
 
 // Error types
-export { default as createNetworkBlockError } from "./NetworkRestrictions/Error/NetworkBlockError.js";
+export { default as CreateNetworkBlockError } from "./NetworkRestrictions/Error/NetworkBlockError.js";
 export type { NetworkBlockError } from "./NetworkRestrictions/Error/NetworkBlockError.js";
-export { default as createIPCBlockError } from "./NetworkRestrictions/Error/IPCBlockError.js";
+export { default as CreateIPCBlockError } from "./NetworkRestrictions/Error/IPCBlockError.js";
 export type { IPCBlockError } from "./NetworkRestrictions/Error/IPCBlockError.js";
 
 // Types
@@ -39,10 +39,10 @@ export type { NetworkRestrictionConfig } from "./NetworkRestrictions/Type/Networ
 // Constants
 export {
 	DEFAULT_NETWORK_RESTRICTIONS,
-	TELEMETRY_ENDP,
-	MARKETPLACE_ENDP,
-	UPDATE_ENDP,
-	AI_ENDPOINTP,
+	TelemetryEndpoint,
+	MarketplaceEndpoint,
+	UpdateEndpoint,
+	AiEndpoint,
 	ALLOWED_IPC_CHANNELS,
 	BLOCKED_IPC_CHANNELS,
 } from "./NetworkRestrictions/Constant/NetworkRestrictionsConstant.js";
@@ -55,10 +55,10 @@ export { NetworkRestrictions, NetworkRestrictionsTag } from "./NetworkRestrictio
 
 // Implementation
 export {
-	isInternalURL,
-	isBlockedURL,
-	isAllowedURL,
-	isIPCAllowed,
+	IsInternalURL,
+	IsBlockedURL,
+	IsAllowedURL,
+	IsIPCAllowed,
 } from "./NetworkRestrictions/Implementation/NetworkRestrictionsHelper.js";
 
 export { NetworkRestrictionsLive as default } from "./NetworkRestrictions/Implementation/NetworkRestrictionsImplementation.js";

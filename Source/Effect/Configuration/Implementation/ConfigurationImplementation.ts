@@ -21,7 +21,7 @@ import { IPC } from "../../IPC.js";
 import { Sandbox } from "../../Sandbox.js";
 import { MountainTag } from "../../Mountain.js";
 import { Telemetry } from "../../Telemetry.js";
-import { makeValidate, makeApply } from "./ConfigurationHelper.js";
+import { MakeValidate, MakeApply } from "./ConfigurationHelper.js";
 
 // ============================================================================
 // Live Implementation
@@ -32,73 +32,73 @@ import { makeValidate, makeApply } from "./ConfigurationHelper.js";
  * Provides reactive configuration management with fetch and sync capabilities.
  */
 export const ConfigurationLive = Layer.effect(
-	ConfigurationTag,
-	Effect.gen(function* () {
-		const sandbox = yield* Sandbox;
-		const ipc = yield* IPC;
-		const validate = makeValidate();
+  ConfigurationTag,
+  Effect.gen(function* () {
+    const SandboxService = yield* Sandbox;
+    const IPCService = yield* IPC;
+    const Validate = MakeValidate();
 
-		// Create subscription ref for reactive configuration
-		const configRef =
-			yield* SubscriptionRef.make<ISandboxConfiguration | null>(null);
+    // Create subscription ref for reactive configuration
+    const ConfigRef =
+      yield* SubscriptionRef.make<ISandboxConfiguration | null>(null);
 
-		// Atom: Fetch configuration from backend
-		const fetch = Effect.gen(function* () {
-			// First try to get from sandbox context (already loaded by preload)
-			const fromSandbox = yield* sandbox.resolveConfiguration.pipe(
-				Effect.either,
-			);
+    // Atom: Fetch configuration from backend
+    const Fetch = Effect.gen(function* () {
+      // First try to get from sandbox context (already loaded by preload)
+      const FromSandbox = yield* SandboxService.resolveConfiguration.pipe(
+        Effect.either,
+      );
 
-			if (fromSandbox._tag === "Right") {
-				return fromSandbox.right as ISandboxConfiguration;
-			}
+      if (FromSandbox._tag === "Right") {
+        return FromSandbox.right as ISandboxConfiguration;
+      }
 
-			// Fallback: fetch directly via IPC
-			return yield* ipc
-				.invoke("mountain_get_workbench_configuration")([])
-				.pipe(Effect.mapError((error) => new ConfigFetchError(error)));
-		}) as Effect.Effect<ISandboxConfiguration, ConfigFetchError>;
+      // Fallback: fetch directly via IPC
+      return yield* IPCService
+        .invoke("mountain_get_workbench_configuration")([])
+        .pipe(Effect.mapError((error) => new ConfigFetchError(error)));
+    }) as Effect.Effect<ISandboxConfiguration, ConfigFetchError>;
 
-		// Atom: Apply configuration (zoom, userEnv)
-		const apply = makeApply();
+    // Atom: Apply configuration (zoom, userEnv)
+    const Apply = MakeApply();
 
-		// Stream of configuration changes
-		const changes = configRef.changes.pipe(
-			Stream.filter((config): config is ISandboxConfiguration => config !== null),
-		);
+    // Stream of configuration changes
+    const Changes = ConfigRef.changes.pipe(
+      Stream.filter((Config): Config is ISandboxConfiguration => Config !== null),
+    );
 
-		// Atom: Get current configuration
-		const get = Effect.gen(function* () {
-			const current = yield* configRef.get;
-			if (!current) {
-				return yield* Effect.fail<ConfigurationNotReadyError>(
-					new ConfigurationNotReadyError(),
-				);
-			}
-			return current;
-		});
+    // Atom: Get current configuration
+    const Get = Effect.gen(function* () {
+      const Current = yield* ConfigRef.get;
+      if (!Current) {
+        return yield* Effect.fail<ConfigurationNotReadyError>(
+          new ConfigurationNotReadyError(),
+        );
+      }
+      return Current;
+    });
 
-		// Atom: Refresh configuration from backend
-		const refresh: Effect.Effect<ISandboxConfiguration, ConfigFetchError> = Effect.gen(function* () {
-			const config = yield* fetch;
-			yield* SubscriptionRef.set(configRef, config);
-			return config;
-		});
+    // Atom: Refresh configuration from backend
+    const Refresh: Effect.Effect<ISandboxConfiguration, ConfigFetchError> = Effect.gen(function* () {
+      const Config = yield* Fetch;
+      yield* SubscriptionRef.set(ConfigRef, Config);
+      return Config;
+    });
 
-		// Initial fetch and set
-		yield* fetch.pipe(Effect.flatMap((config) => SubscriptionRef.set(configRef, config)));
+    // Initial fetch and set
+    yield* Fetch.pipe(Effect.flatMap((Config) => SubscriptionRef.set(ConfigRef, Config)));
 
-		yield* Effect.log("[Configuration] Configuration service initialized");
+    yield* Effect.log("[Configuration] Configuration service initialized");
 
-		return {
-			get,
-			fetch,
-			validate,
-			apply,
-			changes,
-			refresh,
-		} satisfies ConfigurationService;
-	}),
+    return {
+      get: Get,
+      fetch: Fetch,
+      validate: Validate,
+      apply: Apply,
+      changes: Changes,
+      refresh: Refresh,
+    } satisfies ConfigurationService;
+  }),
 );
 
 /**
@@ -106,107 +106,107 @@ export const ConfigurationLive = Layer.effect(
  * Includes periodic sync with the Mountain backend.
  */
 export const ConfigurationWithSyncLive = Layer.effect(
-	ConfigurationTag,
-	Effect.gen(function* () {
-		const sandbox = yield* Sandbox;
-		const ipc = yield* IPC;
-		const mountain = yield* MountainTag;
-		const validate = makeValidate();
-		const apply = makeApply();
+  ConfigurationTag,
+  Effect.gen(function* () {
+    const SandboxService = yield* Sandbox;
+    const IPCService = yield* IPC;
+    const Mountain = yield* MountainTag;
+    const Validate = MakeValidate();
+    const Apply = MakeApply();
 
-		// Create subscription ref for reactive configuration
-		const configRef =
-			yield* SubscriptionRef.make<ISandboxConfiguration | null>(null);
+    // Create subscription ref for reactive configuration
+    const ConfigRef =
+      yield* SubscriptionRef.make<ISandboxConfiguration | null>(null);
 
-		// Atom: Fetch configuration from backend
-		const fetch = Effect.gen(function* () {
-			// First try to get from sandbox context (already loaded by preload)
-			const fromSandbox = yield* sandbox.resolveConfiguration.pipe(
-				Effect.either,
-			);
+    // Atom: Fetch configuration from backend
+    const Fetch = Effect.gen(function* () {
+      // First try to get from sandbox context (already loaded by preload)
+      const FromSandbox = yield* SandboxService.resolveConfiguration.pipe(
+        Effect.either,
+      );
 
-			if (fromSandbox._tag === "Right") {
-				return fromSandbox.right as ISandboxConfiguration;
-			}
+      if (FromSandbox._tag === "Right") {
+        return FromSandbox.right as ISandboxConfiguration;
+      }
 
-			// Fallback: fetch directly via IPC
-			return yield* ipc
-				.invoke("mountain_get_workbench_configuration")([])
-				.pipe(Effect.mapError((error) => new ConfigFetchError(error)));
-		}) as Effect.Effect<ISandboxConfiguration, ConfigFetchError>;
+      // Fallback: fetch directly via IPC
+      return yield* IPCService
+        .invoke("mountain_get_workbench_configuration")([])
+        .pipe(Effect.mapError((error) => new ConfigFetchError(error)));
+    }) as Effect.Effect<ISandboxConfiguration, ConfigFetchError>;
 
-		// Stream of configuration changes
-		const changes = configRef.changes.pipe(
-			Stream.filter((config): config is ISandboxConfiguration => config !== null),
-		);
+    // Stream of configuration changes
+    const Changes = ConfigRef.changes.pipe(
+      Stream.filter((Config): Config is ISandboxConfiguration => Config !== null),
+    );
 
-		// Atom: Get current configuration
-		const get = Effect.gen(function* () {
-			const current = yield* configRef.get;
-			if (!current) {
-				return yield* Effect.fail<ConfigurationNotReadyError>(
-					new ConfigurationNotReadyError(),
-				);
-			}
-			return current;
-		});
+    // Atom: Get current configuration
+    const Get = Effect.gen(function* () {
+      const Current = yield* ConfigRef.get;
+      if (!Current) {
+        return yield* Effect.fail<ConfigurationNotReadyError>(
+          new ConfigurationNotReadyError(),
+        );
+      }
+      return Current;
+    });
 
-		// Atom: Refresh configuration from backend
-		const refresh: Effect.Effect<ISandboxConfiguration, ConfigFetchError> = Effect.gen(function* () {
-			const config = yield* fetch;
-			yield* SubscriptionRef.set(configRef, config);
-			return config;
-		});
+    // Atom: Refresh configuration from backend
+    const Refresh: Effect.Effect<ISandboxConfiguration, ConfigFetchError> = Effect.gen(function* () {
+      const Config = yield* Fetch;
+      yield* SubscriptionRef.set(ConfigRef, Config);
+      return Config;
+    });
 
-		// Initial fetch and set
-		yield* fetch.pipe(Effect.flatMap((config) => SubscriptionRef.set(configRef, config)));
+    // Initial fetch and set
+    yield* Fetch.pipe(Effect.flatMap((Config) => SubscriptionRef.set(ConfigRef, Config)));
 
-		// Set up Mountain sync for reactive configuration updates
-		yield* Effect.fork(
-			Effect.gen(function* () {
-				// Subscribe to Mountain connection changes
-				const connectionState = yield* mountain.connectionState;
-				if (connectionState._tag === "Connected") {
-					// Start periodic sync
-					yield* Effect.repeat(
-						Effect.gen(function* () {
-							const config = yield* mountain.rpc("mountain_get_configuration")();
-							if (config) {
-								yield* validate(config).pipe(
-									Effect.flatMap((validatedConfig) => {
-										return Effect.gen(function* () {
-											const current = yield* configRef.get;
-											if (!current || JSON.stringify(current) !== JSON.stringify(validatedConfig)) {
-												yield* SubscriptionRef.set(configRef, validatedConfig);
-												yield* apply(validatedConfig);
-											}
-										});
-									}),
-									Effect.catchAll((error) =>
-										Effect.sync(() => {
-											console.error("[Configuration] Sync error:", error);
-										})
-									)
-								);
-							}
-						}),
-						Schedule.spaced("5 seconds")
-					);
-				}
-			})
-		);
+    // Set up Mountain sync for reactive configuration updates
+    yield* Effect.fork(
+      Effect.gen(function* () {
+        // Subscribe to Mountain connection changes
+        const ConnectionState = yield* Mountain.connectionState;
+        if (ConnectionState._tag === "Connected") {
+          // Start periodic sync
+          yield* Effect.repeat(
+            Effect.gen(function* () {
+              const Config = yield* Mountain.rpc("mountain_get_configuration")();
+              if (Config) {
+                yield* Validate(Config).pipe(
+                  Effect.flatMap((ValidatedConfig) => {
+                    return Effect.gen(function* () {
+                      const Current = yield* ConfigRef.get;
+                      if (!Current || JSON.stringify(Current) !== JSON.stringify(ValidatedConfig)) {
+                        yield* SubscriptionRef.set(ConfigRef, ValidatedConfig);
+                        yield* Apply(ValidatedConfig);
+                      }
+                    });
+                  }),
+                  Effect.catchAll((error) =>
+                    Effect.sync(() => {
+                      console.error("[Configuration] Sync error:", error);
+                    })
+                  )
+                );
+              }
+            }),
+            Schedule.spaced("5 seconds")
+          );
+        }
+      })
+    );
 
-		yield* Effect.log("[Configuration] Configuration service with sync initialized");
+    yield* Effect.log("[Configuration] Configuration service with sync initialized");
 
-		return {
-			get,
-			fetch,
-			validate,
-			apply,
-			changes,
-			refresh,
-		} satisfies ConfigurationService;
-	}),
+    return {
+      get: Get,
+      fetch: Fetch,
+      validate: Validate,
+      apply: Apply,
+      changes: Changes,
+      refresh: Refresh,
+    } satisfies ConfigurationService;
+  }),
 );
 
 export default ConfigurationLive;

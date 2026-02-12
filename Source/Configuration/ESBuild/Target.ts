@@ -1,85 +1,14 @@
-import type { BuildOptions } from "esbuild";
-
-export const On = (await import("./Wind.js")).On;
-
-export const Bundle = (await import("./Wind.js")).Bundle;
-
-export const Compile = (await import("./Wind.js")).Compile;
-
-export const Merge = (await import("deepmerge-ts")).deepmerge;
-
 /**
- * @module ESBuild
- *
+ * @module Configuration/ESBuild/Target
+ * @description
+ * ESBuild target configuration.
+ * Re-exports from atomic configuration modules.
  */
-export default async (Current: BuildOptions): Promise<BuildOptions> =>
-	Merge<[BuildOptions, BuildOptions]>(
-		(await import("./Wind.js")).default,
 
-		{
-			outdir: "Target",
+import * as Environment from "./Constant/EnvironmentConstant.js";
+export { Environment };
 
-			drop: On ? [] : ["debugger", "console"],
-
-			define: {
-				__DEV__: On ? "true" : "false",
-
-				__INCREMENT__: `"${`${On ? "DEVELOPMENT" : "PRODUCTION"}-${(await import("ulid")).ulid()}`}"`,
-			},
-
-			treeShaking: !On,
-
-			entryPoints: (
-				await import("@playform/build/Target/Function/Entry.js")
-			).default(Current, ["Source/Configuration/*"]),
-
-			platform: "browser",
-
-			outbase: "Source",
-
-			// external: [
-			// 	"@tauri-apps/api",
-			// 	"@tauri-apps/api/core",
-			// 	"@tauri-apps/api/event",
-			// 	"@codeeditorland/output",
-			// ],
-
-			plugins: Compile
-				? Merge<[BuildOptions["plugins"], BuildOptions["plugins"]]>(
-						Current.plugins,
-
-						[
-							{
-								name: "Compile",
-
-								setup({ onEnd }) {
-									onEnd(async ({ metafile }) => {
-										const _Output = metafile?.outputs;
-
-										for (const Output in _Output) {
-											if (
-												Object.prototype.hasOwnProperty.call(
-													_Output,
-
-													Output,
-												)
-											) {
-												if (Output.endsWith(".js")) {
-													(
-														await import("@playform/build/Target/Function/Exec.js")
-													).default(
-														`Build '${Output}' \
-													--ESBuild Configuration/ESBuild/Target/Compile.js \
-													--TypeScript Configuration/tsconfig/Target/Compile.json`,
-													);
-												}
-											}
-										}
-									});
-								},
-							},
-						],
-					)
-				: [],
-		},
-	);
+export { default as BaseConfig } from "./Config/BaseConfig.js";
+export { default as TargetConfig } from "./Config/TargetConfig.js";
+export { default as CompileConfig } from "./Config/CompileConfig.js";
+export { sep, posix } from "./Constant/BoundConstant.js";

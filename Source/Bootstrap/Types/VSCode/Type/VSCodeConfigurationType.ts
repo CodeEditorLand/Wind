@@ -1,7 +1,9 @@
 /**
  * @module Bootstrap/Types/VSCode/Type/VSCodeConfigurationType
  * @description
- * Configuration-related types for VSCode.
+ * Configuration-related types for VSCode service.
+ * Includes event types and configuration target enum.
+ * @see {@link Bootstrap/Types/VSCode/Interface/VSCodeConfigurationService} Related service interface
  * @category Type
  */
 
@@ -19,6 +21,13 @@ export interface Event<T> {
  */
 export interface IDisposable {
 	dispose(): void;
+}
+
+/**
+ * Configuration change event interface
+ */
+export interface IConfigurationChangeEvent {
+	affectsConfiguration(section: string, resource?: URI): boolean;
 }
 
 /**
