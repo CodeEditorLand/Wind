@@ -82,6 +82,17 @@ export type { SidebarService, SidebarPanel, CreateSidebarPanel } from "./Sidebar
 export { StatusBar, StatusBarLive, StatusBarMockLive } from "./StatusBar/index.js";
 export type { StatusBarService, StatusBarItem, CreateStatusBarItem } from "./StatusBar/index.js";
 
+// Workbench (VSCode browser workbench integration)
+export { WorkbenchIntegrationTag as Workbench, WorkbenchIntegrationLiveLayer as WorkbenchLive } from "../Workbench/index.js";
+export type { WorkbenchIntegrationService,
+	WorkbenchState,
+	WorkbenchInitState,
+	WorkbenchIntegrationConfig,
+	ProviderRegistrationResult,
+	WorkspaceContext,
+	WorkbenchDiagnostics } from "../Workbench/index.js";
+export { WorkbenchIntegrationErrorCode } from "../Workbench/index.js";
+
 // ============================================================================
 // LAYERS (For runtime composition)
 // ============================================================================
@@ -124,3 +135,7 @@ export { SidebarPanelNotFoundError, SidebarUpdateError } from "./Sidebar/index.j
 
 // StatusBar errors
 export { StatusBarItemNotFoundError, StatusBarUpdateError } from "./StatusBar/index.js";
+
+// FileSystem (VSCode-like file system access)
+export { FileSystemProviderTag, FileSystemProviderLive } from "../FileSystem/index.js";
+export type { FileSystemProviderService } from "../FileSystem/index.js";

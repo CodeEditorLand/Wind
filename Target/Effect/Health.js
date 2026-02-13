@@ -1,18 +1,1 @@
-import { HealthTag } from "./Health/index.js";
-import {
-  CreateServiceHealth,
-  CreateServiceHealthWithNoResponseTime
-} from "./Health/index.js";
-import { HealthLive as LiveLayer, HealthMock as MockLayer } from "./Health/Implementation/HealthImplementation.js";
-const HealthLive = LiveLayer;
-const HealthMock = MockLayer;
-export {
-  CreateServiceHealth,
-  CreateServiceHealthWithNoResponseTime,
-  HealthLive,
-  HealthMock,
-  HealthTag,
-  LiveLayer,
-  MockLayer
-};
-//# sourceMappingURL=Health.js.map
+import{HealthTag as H}from"./Health/index.js";import{CreateServiceHealth as c,CreateServiceHealthWithNoResponseTime as p}from"./Health/index.js";import{HealthLive as e,HealthMock as t}from"./Health/Implementation/HealthImplementation.js";const r=e,o=t;export{c as CreateServiceHealth,p as CreateServiceHealthWithNoResponseTime,r as HealthLive,o as HealthMock,H as HealthTag,e as LiveLayer,t as MockLayer};

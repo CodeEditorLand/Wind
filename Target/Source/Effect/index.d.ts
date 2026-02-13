@@ -35,6 +35,9 @@ export { Sidebar, SidebarLive, SidebarMockLive } from "./Sidebar/index.js";
 export type { SidebarService, SidebarPanel, CreateSidebarPanel } from "./Sidebar/index.js";
 export { StatusBar, StatusBarLive, StatusBarMockLive } from "./StatusBar/index.js";
 export type { StatusBarService, StatusBarItem, CreateStatusBarItem } from "./StatusBar/index.js";
+export { WorkbenchIntegrationTag as Workbench, WorkbenchIntegrationLiveLayer as WorkbenchLive } from "../Workbench/index.js";
+export type { WorkbenchIntegrationService, WorkbenchState, WorkbenchInitState, WorkbenchIntegrationConfig, ProviderRegistrationResult, WorkspaceContext, WorkbenchDiagnostics } from "../Workbench/index.js";
+export { WorkbenchIntegrationErrorCode } from "../Workbench/index.js";
 export { TauriBaseLayer, TauriLiveLayer, TauriDevLayer } from "./Layers/Tauri.js";
 export { IPCInvokeError, IPCSendError, IPCSubscriptionError } from "./IPC.js";
 export { ConfigFetchError, ConfigValidationError, ConfigApplyError, } from "./Configuration.js";
@@ -44,4 +47,6 @@ export { ActivityBarItemNotFoundError, ActivityBarUpdateError } from "./Activity
 export { PanelViewNotFoundError, PanelUpdateError } from "./Panel/index.js";
 export { SidebarPanelNotFoundError, SidebarUpdateError } from "./Sidebar/index.js";
 export { StatusBarItemNotFoundError, StatusBarUpdateError } from "./StatusBar/index.js";
+export { FileSystemProviderTag, FileSystemProviderLive } from "../FileSystem/index.js";
+export type { FileSystemProviderService } from "../FileSystem/index.js";
 //# sourceMappingURL=index.d.ts.map
