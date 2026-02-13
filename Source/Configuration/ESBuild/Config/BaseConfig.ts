@@ -64,4 +64,4 @@ export default {
 		".json": "copy",
 		".sh": "copy",
 	},
-} as unknown as BuildOptions);
+} as unknown as BuildOptions;

@@ -378,7 +378,6 @@ export const MountainLive = Layer.effect(
 						})
 					: Effect.void,
 				);
-			});
 		}).pipe(Effect.fork);
 
 		yield* SetupBackgroundSync;
