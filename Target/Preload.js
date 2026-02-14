@@ -1,1 +1,125 @@
-import{emit as d,listen as s}from"@tauri-apps/api/event";import{invoke as a}from"@tauri-apps/api/core";const r=new Map,u=typeof window<"u"&&window.__TAURI__!==void 0,l={send:(n,...e)=>{d(n,e.length===1?e[0]:e)},invoke:async(n,...e)=>{const o=e.length===0?void 0:e.length===1?e[0]:e;return a(n,o)},on:(n,e)=>{s(n,o=>{e(o,o.payload)}).then(o=>{const t=()=>o();r.set(n,t)})},once:(n,e)=>{s(n,t=>{e(t,t.payload||t)}).then(t=>{setTimeout(()=>t(),0)})},removeListener:(n,e)=>{const o=r.get(n);o&&(o(),r.delete(n))},removeAllListeners:n=>{const e=r.get(n);e&&(e(),r.delete(n))}},w={acquire:(n,e)=>{console.log(`[Preload] MessagePort acquire requested: ${n}, ${e}`),setTimeout(()=>{l.send(n,e)},0)}},g={setZoomLevel:n=>{document.documentElement.style.setProperty("--zoom-level",String(n)),console.log(`[Preload] Zoom level set to: ${n}`)}},p={platform:(navigator.platform||"unknown").toLowerCase().includes("win")?"win32":(navigator.platform||"unknown").toLowerCase().includes("mac")?"darwin":"linux",arch:"x64",env:{},versions:{node:"20.0.0",chrome:navigator.userAgent.match(/Chrome\/(\d+)/)?.[1]||"unknown",electron:"30.0.0"},cwd:()=>"/app",shellEnv:async()=>({}),getProcessMemoryInfo:async()=>({workingSetSize:0,peakWorkingSetSize:0,privateBytes:0,sharedBytes:0}),on:(n,e)=>{}};let i=null;const c={configuration:async()=>{if(i)return i;try{const n=await a("mountain_get_workbench_configuration");return i=n,n}catch(n){throw console.error("[Preload] Failed to fetch configuration:",n),n}},resolveConfiguration:async()=>c.configuration()},m={getPathForFile:n=>`file://${n.name}`},v={ipcRenderer:l,ipcMessagePort:w,webFrame:g,process:p,context:c,webUtils:m};u?(window.vscode=v,console.log("[Preload] \u2705 Sandbox globals exposed to window.vscode"),window.dispatchEvent(new Event("vscode-wind-preload-ready"))):console.error("[Preload] \u274C Tauri not detected - preload failed");
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { emit, listen } from "@tauri-apps/api/event";
+import { invoke as tauriInvoke } from "@tauri-apps/api/core";
+const CleanupMap = /* @__PURE__ */ new Map();
+const IsTauri = typeof window !== "undefined" && window.__TAURI__ !== void 0;
+const ipcRenderer = {
+  send: /* @__PURE__ */ __name((channel, ...args) => {
+    emit(channel, args.length === 1 ? args[0] : args);
+  }, "send"),
+  invoke: /* @__PURE__ */ __name(async (channel, ...args) => {
+    const invokeArgs = args.length === 0 ? void 0 : args.length === 1 ? args[0] : args;
+    return tauriInvoke(channel, invokeArgs);
+  }, "invoke"),
+  on: /* @__PURE__ */ __name((channel, listener) => {
+    listen(channel, (event) => {
+      listener(event, event.payload);
+    }).then((unlisten) => {
+      const Cleanup = /* @__PURE__ */ __name(() => unlisten(), "Cleanup");
+      CleanupMap.set(channel, Cleanup);
+    });
+  }, "on"),
+  once: /* @__PURE__ */ __name((channel, listener) => {
+    const wrappedListener = /* @__PURE__ */ __name((event) => {
+      listener(event, event.payload || event);
+    }, "wrappedListener");
+    listen(channel, wrappedListener).then((Unlisten) => {
+      setTimeout(() => Unlisten(), 0);
+    });
+  }, "once"),
+  removeListener: /* @__PURE__ */ __name((channel, _listener) => {
+    const Cleanup = CleanupMap.get(channel);
+    if (Cleanup) {
+      Cleanup();
+      CleanupMap.delete(channel);
+    }
+  }, "removeListener"),
+  removeAllListeners: /* @__PURE__ */ __name((channel) => {
+    const Cleanup = CleanupMap.get(channel);
+    if (Cleanup) {
+      Cleanup();
+      CleanupMap.delete(channel);
+    }
+  }, "removeAllListeners")
+};
+const ipcMessagePort = {
+  acquire: /* @__PURE__ */ __name((responseChannel, nonce) => {
+    console.log(
+      `[Preload] MessagePort acquire requested: ${responseChannel}, ${nonce}`
+    );
+    setTimeout(() => {
+      ipcRenderer.send(responseChannel, nonce);
+    }, 0);
+  }, "acquire")
+};
+const webFrame = {
+  setZoomLevel: /* @__PURE__ */ __name((level) => {
+    document.documentElement.style.setProperty(
+      "--zoom-level",
+      String(level)
+    );
+    console.log(`[Preload] Zoom level set to: ${level}`);
+  }, "setZoomLevel")
+};
+const process = {
+  platform: (navigator.platform || "unknown").toLowerCase().includes("win") ? "win32" : (navigator.platform || "unknown").toLowerCase().includes("mac") ? "darwin" : "linux",
+  arch: "x64",
+  // TODO: Detect from Tauri
+  env: {},
+  versions: {
+    node: "20.0.0",
+    // Placeholder
+    chrome: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || "unknown",
+    electron: "30.0.0"
+    // Placeholder for compatibility
+  },
+  cwd: /* @__PURE__ */ __name(() => "/app", "cwd"),
+  shellEnv: /* @__PURE__ */ __name(async () => ({}), "shellEnv"),
+  getProcessMemoryInfo: /* @__PURE__ */ __name(async () => ({
+    workingSetSize: 0,
+    peakWorkingSetSize: 0,
+    privateBytes: 0,
+    sharedBytes: 0
+  }), "getProcessMemoryInfo"),
+  on: /* @__PURE__ */ __name((_type, _callback) => {
+  }, "on")
+};
+let CachedConfiguration = null;
+const context = {
+  configuration: /* @__PURE__ */ __name(async () => {
+    if (CachedConfiguration) return CachedConfiguration;
+    try {
+      const Config = await tauriInvoke("mountain_get_workbench_configuration");
+      CachedConfiguration = Config;
+      return Config;
+    } catch (error) {
+      console.error("[Preload] Failed to fetch configuration:", error);
+      throw error;
+    }
+  }, "configuration"),
+  resolveConfiguration: /* @__PURE__ */ __name(async () => {
+    return context.configuration();
+  }, "resolveConfiguration")
+};
+const webUtils = {
+  getPathForFile: /* @__PURE__ */ __name((file) => {
+    return `file://${file.name}`;
+  }, "getPathForFile")
+};
+const Globals = {
+  ipcRenderer,
+  ipcMessagePort,
+  webFrame,
+  process,
+  context,
+  webUtils
+};
+if (IsTauri) {
+  window.vscode = Globals;
+  console.log("[Preload] \u2705 Sandbox globals exposed to window.vscode");
+  window.dispatchEvent(new Event("vscode-wind-preload-ready"));
+} else {
+  console.error("[Preload] \u274C Tauri not detected - preload failed");
+}
+//# sourceMappingURL=Preload.js.map

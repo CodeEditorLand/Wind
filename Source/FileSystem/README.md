@@ -193,7 +193,7 @@ vscode.workspace.registerFileSystemProvider('file', fs);
 
 ## Related Documentation
 
-- [Mountain IPC Handlers](../../Mountain/Source/IPC/WindServiceHandlers.rs)
-- [Wind IPC Service](../../Effect/IPC.ts)
+- [Mountain IPC Handlers](https://github.com/CodeEditorLand/Wind/tree/Current/Mountain/Source/IPC/WindServiceHandlers.rs)
+- [Wind IPC Service](https://github.com/CodeEditorLand/Wind/tree/Current/Effect/IPC.ts)
 - [Effect-TS Services](https://effect.website/docs/guide/context)
-- [Sky Browser Workbench](../../Sky/Source/Workbench/Tauri.astro)
+- [Sky Browser Workbench](https://github.com/CodeEditorLand/Wind/tree/Current/Sky/Source/Workbench/Tauri.astro)

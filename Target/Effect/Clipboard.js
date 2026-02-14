@@ -1,1 +1,36 @@
-import{ClipboardServiceTag as l,Clipboard as b}from"./Clipboard/Tag/ClipboardServiceTag.js";import{LiveBrowserClipboardService as m}from"./Clipboard/Implementation/BrowserClipboard.js";import{MockClipboardService as s}from"./Clipboard/Implementation/MockClipboard.js";import{LiveClipboardServiceLayer as r}from"./Clipboard/Live.js";import{MockClipboardServiceLayer as e}from"./Clipboard/Mock.js";const a=r,p=e,t=r,C=e;import{CreateNotAvailableError as S,CreateReadError as f,CreateWriteError as y,CreatePermissionDeniedError as n,CreateFormatNotSupportedError as E,CreateSizeExceededError as k}from"./Clipboard/Implementation/ClipboardHelper.js";export{b as Clipboard,l as ClipboardServiceTag,E as CreateFormatNotSupportedError,S as CreateNotAvailableError,n as CreatePermissionDeniedError,f as CreateReadError,k as CreateSizeExceededError,y as CreateWriteError,m as LiveBrowserClipboardService,t as LiveClipboard,a as LiveClipboardServiceLayer,r as LiveLayer,C as MockClipboard,s as MockClipboardService,p as MockClipboardServiceLayer,e as MockLayer};
+import { ClipboardServiceTag, Clipboard } from "./Clipboard/Tag/ClipboardServiceTag.js";
+import { LiveBrowserClipboardService } from "./Clipboard/Implementation/BrowserClipboard.js";
+import { MockClipboardService } from "./Clipboard/Implementation/MockClipboard.js";
+import { LiveClipboardServiceLayer as LiveLayer } from "./Clipboard/Live.js";
+import { MockClipboardServiceLayer as MockLayer } from "./Clipboard/Mock.js";
+const LiveClipboardServiceLayer = LiveLayer;
+const MockClipboardServiceLayer = MockLayer;
+const LiveClipboard = LiveLayer;
+const MockClipboard = MockLayer;
+import {
+  CreateNotAvailableError,
+  CreateReadError,
+  CreateWriteError,
+  CreatePermissionDeniedError,
+  CreateFormatNotSupportedError,
+  CreateSizeExceededError
+} from "./Clipboard/Implementation/ClipboardHelper.js";
+export {
+  Clipboard,
+  ClipboardServiceTag,
+  CreateFormatNotSupportedError,
+  CreateNotAvailableError,
+  CreatePermissionDeniedError,
+  CreateReadError,
+  CreateSizeExceededError,
+  CreateWriteError,
+  LiveBrowserClipboardService,
+  LiveClipboard,
+  LiveClipboardServiceLayer,
+  LiveLayer,
+  MockClipboard,
+  MockClipboardService,
+  MockClipboardServiceLayer,
+  MockLayer
+};
+//# sourceMappingURL=Clipboard.js.map

@@ -335,7 +335,7 @@ window.vscode
 
 ## Resources
 
-- [VSCode Source Code](../Dependency/Microsoft/Dependency/Editor/src/)
-- [Wind README](../../README.md)
+- [VSCode Source Code](https://github.com/CodeEditorLand/Wind/tree/main/Dependency/Microsoft/Dependency/Editor/src)
+- [Wind README](https://github.com/CodeEditorLand/Land/tree/main/Element/README.md)
 - [Tauri Documentation](https://tauri.app/v1/guides/)
 - [Effect-TS Documentation](https://effect.website/)
