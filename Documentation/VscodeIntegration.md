@@ -2,7 +2,8 @@
 
 ## Overview
 
-This guide explains how to run the native VSCode workbench inside Tauri through the Wind element.
+This guide explains how to run the native VSCode workbench inside Tauri through
+the Wind element.
 
 ## Architecture
 
@@ -55,6 +56,7 @@ NODE_ENV=development pnpm exec esbuild Source/Configuration/ESBuild/Wind.ts
 ```
 
 This will generate:
+
 - `Configuration/Preload.js` - The preload script for Tauri
 - `Configuration/Bootstrap.js` - The workbench bootstrap script
 
@@ -80,18 +82,19 @@ cargo build
 ```bash
 cd Application/CodeEditorLand/Land
 pnpm cross-env \
-  Browser=false \
-  Bundle=true \
-  Clean=true \
-  Compile=false \
-  Dependency=Microsoft/VSCode \
-  NODE_ENV=development \
-  NODE_VERSION=22 \
-  NODE_OPTIONS=--max-old-space-size=16384 \
-  ./Target/release/Maintain -- pnpm tauri dev
+	Browser=false \
+	Bundle=true \
+	Clean=true \
+	Compile=false \
+	Dependency=Microsoft/VSCode \
+	NODE_ENV=development \
+	NODE_VERSION=22 \
+	NODE_OPTIONS=--max-old-space-size=16384 \
+	./Target/release/Maintain -- pnpm tauri dev
 ```
 
 Or use the debug script:
+
 ```bash
 cd Application/CodeEditorLand/Land
 bash Maintain/Debug.sh
@@ -105,17 +108,19 @@ Key settings for VSCode integration:
 
 ```json
 {
-  "app": {
-    "windows": [{
-      "webview": {
-        "preload": "../Wind/Configuration/Preload.js"
-      }
-    }]
-  },
-  "build": {
-    "frontendDist": "../Sky/Target",
-    "beforeDevCommand": "pnpm run Run --filter=@codeeditorland/sky --force"
-  }
+	"app": {
+		"windows": [
+			{
+				"webview": {
+					"preload": "../Wind/Configuration/Preload.js"
+				}
+			}
+		]
+	},
+	"build": {
+		"frontendDist": "../Sky/Target",
+		"beforeDevCommand": "pnpm run Run --filter=@codeeditorland/sky --force"
+	}
 }
 ```
 
@@ -125,12 +130,12 @@ The configuration includes VSCode-specific CSP directives:
 
 ```json
 {
-  "csp": {
-    "script-src": "'self' 'unsafe-inline' 'unsafe-eval' blob: http://localhost:* https://tauri.localhost",
-    "frame-src": "'self' vscode-webview: http://localhost:* https://tauri.localhost",
-    "font-src": "'self' vscode-remote-resource: vscode-managed-remote-resource: http://localhost:* https://tauri.localhost",
-    "img-src": "'self' data: blob: vscode-remote-resource: vscode-managed-remote-resource: http://localhost:* https://tauri.localhost https:"
-  }
+	"csp": {
+		"script-src": "'self' 'unsafe-inline' 'unsafe-eval' blob: http://localhost:* https://tauri.localhost",
+		"frame-src": "'self' vscode-webview: http://localhost:* https://tauri.localhost",
+		"font-src": "'self' vscode-remote-resource: vscode-managed-remote-resource: http://localhost:* https://tauri.localhost",
+		"img-src": "'self' data: blob: vscode-remote-resource: vscode-managed-remote-resource: http://localhost:* https://tauri.localhost https:"
+	}
 }
 ```
 
@@ -204,13 +209,15 @@ To debug the webview, enable devtools in Tauri configuration:
 
 ```json
 {
-  "app": {
-    "windows": [{
-      "webview": {
-        "devtools": true
-      }
-    }]
-  }
+	"app": {
+		"windows": [
+			{
+				"webview": {
+					"devtools": true
+				}
+			}
+		]
+	}
 }
 ```
 
@@ -219,8 +226,8 @@ To debug the webview, enable devtools in Tauri configuration:
 The preload and bootstrap scripts include extensive logging:
 
 ```javascript
-console.log('[Wind Preload] Initializing Wind environment...');
-console.log('[Wind Bootstrap] VSCode Workbench initialized');
+console.log("[Wind Preload] Initializing Wind environment...");
+console.log("[Wind Bootstrap] VSCode Workbench initialized");
 ```
 
 ### Check window.vscode
@@ -228,7 +235,7 @@ console.log('[Wind Bootstrap] VSCode Workbench initialized');
 Open DevTools console and verify:
 
 ```javascript
-window.vscode
+window.vscode;
 // Should show: { ipcRenderer: {...}, process: {...}, context: {...}, ... }
 ```
 
@@ -237,48 +244,48 @@ window.vscode
 ### ✅ Implemented
 
 1. **Preload Script** (`Source/Preload.ts`)
-   - IPC renderer shim with Tauri integration
-   - Process shim with platform detection
-   - Configuration resolution with fallback
-   - Event listener management
+    - IPC renderer shim with Tauri integration
+    - Process shim with platform detection
+    - Configuration resolution with fallback
+    - Event listener management
 
 2. **Bootstrap Script** (`Source/Bootstrap.ts`)
-   - Workbench initialization framework
-   - Configuration loading
-   - Service collection setup (placeholder)
-   - Debug UI status display
+    - Workbench initialization framework
+    - Configuration loading
+    - Service collection setup (placeholder)
+    - Debug UI status display
 
 3. **Build Configuration** (`Source/Configuration/ESBuild/Wind.ts`)
-   - ESBuild configuration for both scripts
-   - Environment aware (dev vs production)
-   - Automatic cleanup support
+    - ESBuild configuration for both scripts
+    - Environment aware (dev vs production)
+    - Automatic cleanup support
 
 4. **Tauri Integration** (`Element/Mountain/tauri.conf.json`)
-   - Preload script configured
-   - Window configuration for VSCode
-   - CSP policies for VSCode resources
+    - Preload script configured
+    - Window configuration for VSCode
+    - CSP policies for VSCode resources
 
 ### ⚠️ TODO
 
 1. **Complete Service Layer Integration**
-   - Introduce Wind's Effect-TS services into Bootstrap.ts
-   - Register ILogService, IFileDialogService, etc.
-   - Connect to Mountain backend commands
+    - Introduce Wind's Effect-TS services into Bootstrap.ts
+    - Register ILogService, IFileDialogService, etc.
+    - Connect to Mountain backend commands
 
 2. **Implement Rust Backend Commands**
-   - `mountain_get_workbench_configuration`
-   - `mountain_ipc_send`
-   - `mountain_fetch_shell_env`
+    - `mountain_get_workbench_configuration`
+    - `mountain_ipc_send`
+    - `mountain_fetch_shell_env`
 
 3. **Full Workbench Loading**
-   - Load actual VSCode workbench code
-   - Register all required VSCode services
-   - Initialize workbench with proper configuration
+    - Load actual VSCode workbench code
+    - Register all required VSCode services
+    - Initialize workbench with proper configuration
 
 4. **Testing & Validation**
-   - Test with real VSCode source code
-   - Validate all Electron API shims
-   - Performance optimization
+    - Test with real VSCode source code
+    - Validate all Electron API shims
+    - Performance optimization
 
 ## Troubleshooting
 
@@ -287,6 +294,7 @@ window.vscode
 **Symptoms**: `window.vscode` is undefined
 
 **Solutions**:
+
 1. Verify `Preload.js` exists at `Wind/Configuration/Preload.js`
 2. Check Tauri configuration `preload` path is correct
 3. Enable devtools to see preload errors
@@ -297,6 +305,7 @@ window.vscode
 **Symptoms**: Configuration errors or fallback mode
 
 **Solutions**:
+
 1. Implement `mountain_get_workbench_configuration` in Rust
 2. Check console for Mountain connection errors
 3. Verify IPC communication is working
@@ -307,6 +316,7 @@ window.vscode
 **Symptoms**: No VSCode UI appears
 
 **Solutions**:
+
 1. Check Bootstrap.ts logs in console
 2. Verify VSCode dependencies are available
 3. Ensure all services are registered
@@ -315,23 +325,21 @@ window.vscode
 ## Next Steps
 
 1. **Build Wind**:
-   ```bash
-   cd Element/Wind
-   pnpm install
-   node -e "import('./Source/Configuration/ESBuild/Wind.js').then(m => m.default())"
-   ```
 
-2. **Verify Preload Output**:
-   Check that `Element/Wind/Configuration/Preload.js` exists
+    ```bash
+    cd Element/Wind
+    pnpm install
+    node -e "import('./Source/Configuration/ESBuild/Wind.js').then(m => m.default())"
+    ```
 
-3. **Test Tauri Integration**:
-   Run `Maintain/Debug.sh` and check console logs
+2. **Verify Preload Output**: Check that `Element/Wind/Configuration/Preload.js`
+   exists
 
-4. **Implement Backend Commands**:
-   Add the required Rust commands in Mountain
+3. **Test Tauri Integration**: Run `Maintain/Debug.sh` and check console logs
 
-5. **Introduce Services**:
-   Connect Wind's Effect-TS services to the workbench
+4. **Implement Backend Commands**: Add the required Rust commands in Mountain
+
+5. **Introduce Services**: Connect Wind's Effect-TS services to the workbench
 
 ## Resources
 
