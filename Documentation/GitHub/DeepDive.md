@@ -312,27 +312,30 @@ Wind enables sophisticated custom service implementations:
 
 ```typescript
 // Advanced service implementation pattern
-import { Effect, Context, Layer } from "effect"
-import { DialogServiceTag } from "./Application/Dialog/Tag"
+import { Context, Effect, Layer } from "effect";
+
+import { DialogServiceTag } from "./Application/Dialog/Tag";
 
 // Custom service implementation
 class CustomDialogService {
-  async showCustomDialog(options: CustomDialogOptions): Promise<URI[] | undefined> {
-    return Effect.runPromise(
-      Effect.flatMap(DialogServiceTag, (dialogService) =>
-        Effect.tryPromise(() =>
-          dialogService.showCustomDialog(options)
-        )
-      )
-    )
-  }
+	async showCustomDialog(
+		options: CustomDialogOptions,
+	): Promise<URI[] | undefined> {
+		return Effect.runPromise(
+			Effect.flatMap(DialogServiceTag, (dialogService) =>
+				Effect.tryPromise(() =>
+					dialogService.showCustomDialog(options),
+				),
+			),
+		);
+	}
 }
 
 // Service layer composition
 const CustomDialogLayer = Layer.effect(
-  DialogServiceTag,
-  Effect.succeed(new CustomDialogService())
-)
+	DialogServiceTag,
+	Effect.succeed(new CustomDialogService()),
+);
 ```
 
 ### Performance Monitoring Integration
@@ -341,18 +344,18 @@ Wind supports comprehensive performance monitoring:
 
 ```typescript
 // Performance monitoring integration
-import { Metric, Effect } from "effect"
+import { Effect, Metric } from "effect";
 
-const apiCallTimer = Metric.timer("wind_api_call_duration")
+const apiCallTimer = Metric.timer("wind_api_call_duration");
 
 async function monitoredApiCall() {
-  return Effect.runPromise(
-    apiCallTimer(
-      Effect.flatMap(DialogServiceTag, (service) =>
-        Effect.tryPromise(() => service.showOpenDialog(options))
-      )
-    )
-  )
+	return Effect.runPromise(
+		apiCallTimer(
+			Effect.flatMap(DialogServiceTag, (service) =>
+				Effect.tryPromise(() => service.showOpenDialog(options)),
+			),
+		),
+	);
 }
 ```
 
@@ -362,25 +365,26 @@ Sophisticated error handling with Effect-TS:
 
 ```typescript
 // Comprehensive error handling pattern
-import { Effect, Either } from "effect"
-import { DialogProblem } from "./Application/Dialog/Error"
+import { Effect, Either } from "effect";
+
+import { DialogProblem } from "./Application/Dialog/Error";
 
 async function robustDialogOperation() {
-  const result = await Effect.runPromise(
-    Effect.either(
-      Effect.flatMap(DialogServiceTag, (service) =>
-        Effect.tryPromise({
-          try: () => service.showOpenDialog(options),
-          catch: (error) => new DialogProblem({ cause: error })
-        })
-      )
-    )
-  )
+	const result = await Effect.runPromise(
+		Effect.either(
+			Effect.flatMap(DialogServiceTag, (service) =>
+				Effect.tryPromise({
+					try: () => service.showOpenDialog(options),
+					catch: (error) => new DialogProblem({ cause: error }),
+				}),
+			),
+		),
+	);
 
-  return Either.match(result, {
-    onLeft: (error) => handleError(error),
-    onRight: (uris) => handleSuccess(uris)
-  })
+	return Either.match(result, {
+		onLeft: (error) => handleError(error),
+		onRight: (uris) => handleSuccess(uris),
+	});
 }
 ```
 
@@ -436,18 +440,20 @@ Sophisticated API security patterns:
 
 ```typescript
 // Secure API pattern implementation
-import { Effect } from "effect"
+import { Effect } from "effect";
 
 class SecureAPIService {
-  async secureOperation(input: unknown): Promise<Result> {
-    return Effect.runPromise(
-      Effect.flatMap(ValidationServiceTag, (validator) =>
-        Effect.flatMap(validator.validateInput(input), (validated) =>
-          Effect.tryPromise(() => this.executeSecureOperation(validated))
-        )
-      )
-    )
-  }
+	async secureOperation(input: unknown): Promise<Result> {
+		return Effect.runPromise(
+			Effect.flatMap(ValidationServiceTag, (validator) =>
+				Effect.flatMap(validator.validateInput(input), (validated) =>
+					Effect.tryPromise(() =>
+						this.executeSecureOperation(validated),
+					),
+				),
+			),
+		);
+	}
 }
 ```
 
