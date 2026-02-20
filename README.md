@@ -13,8 +13,8 @@
 
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://github.com/CodeEditorLand/Wind/tree/Current/LICENSE)
 [![NPM Version](https://img.shields.io/npm/v/@codeeditorland/wind.svg)](https://www.npmjs.com/package/@codeeditorland/wind)
-[![Tauri API Version](https://img.shields.io/badge/Tauri_API-v2-blue.svg)](https://www.npmjs.com/package/@tauri-apps/api)
-[![Effect Version](https://img.shields.io/badge/Effect-v3-blueviolet.svg)](https://www.npmjs.com/package/effect)
+[![Tauri API Version](https://img.shields.io/badge/Tauri_API-v2.10.1-blue.svg)](https://www.npmjs.com/package/@tauri-apps/api)
+[![Effect Version](https://img.shields.io/badge/Effect-v3.19.18-blueviolet.svg)](https://www.npmjs.com/package/effect)
 
 Welcome to **Wind**! This element is the vital **Effect-TS native service
 layer** that allows `Sky` (Land's VSCode-based UI) to breathe and function
@@ -27,33 +27,36 @@ implementations with high-performance, OS-native equivalents, all underpinned by
 
 **Wind** is engineered to:
 
-1.  **Emulate the VSCode Sandbox:** Through a sophisticated `Preload.ts` script,
-    it shims critical Electron and Node.js APIs that VSCode's workbench code
-    expects, creating a compatible execution context.
-2.  **Implement Core VSCode Services:** It provides frontend implementations for
-    key VSCode services (e.g., `IFileDialogService`), leveraging `Effect-TS` for
-    highly reliable, composable, and maintainable logic.
-3.  **Integrate with Tauri & Native Capabilities:** It offers a clean
-    abstraction layer over Tauri APIs for file operations, dialogs, and OS
-    information, making them accessible in a type-safe way through Effect-based
-    wrappers.
+1. **Emulate the VSCode Sandbox:** Through a sophisticated
+   [`Preload.ts`](Source/Preload.ts) script, it shims critical Electron and
+   Node.js APIs that VSCode's workbench code expects, creating a compatible
+   execution context.
+2. **Implement Core VSCode Services:** It provides frontend implementations for
+   key VSCode services via
+   [`Polyfills/NativeModulePolyfill.ts`](Source/Polyfills/NativeModulePolyfill.ts),
+   leveraging `Effect-TS` for highly reliable, composable, and maintainable
+   logic.
+3. **Integrate with Tauri & Native Capabilities:** It offers a clean abstraction
+   layer over Tauri APIs for file operations, dialogs, and OS information,
+   making them accessible in a type-safe way through Effect-based wrappers.
 
 ---
 
 ## Key Features 🔐
 
-- **Native Dialog Experience:** Implements VSCode's `IFileDialogService` for
-  File Open/Save dialogs using Tauri's native OS dialogs.
-- **VSCode Environment Compliance:** A sophisticated `Preload.ts` script
-  establishes the crucial `window.vscode` global object, shimming `ipcRenderer`
-  and `process` to bridge the gap between the VSCode workbench code and the
-  Tauri runtime.
+- **Native Dialog Experience:** Implements dialog services for File Open/Save
+  dialogs using Tauri's native OS dialogs via
+  [`Polyfills/NativeModulePolyfill.ts`](Source/Polyfills/NativeModulePolyfill.ts).
+- **VSCode Environment Compliance:** A sophisticated
+  [`Preload.ts`](Source/Preload.ts) script establishes the crucial
+  `window.vscode` global object, shimming `ipcRenderer` and `process` to bridge
+  the gap between the VSCode workbench code and the Tauri runtime.
 - **Effect-TS Powered Architecture:** Employs `Effect` for all asynchronous
   operations and service logic, ensuring that all potential failures are
   explicitly handled as typed, tagged errors for maximum robustness.
 - **Declarative Dependency Management:** Uses `Layer` and `Context.Tag` from
-  `Effect-TS` for clean dependency injection and composable service construction
-  via a single master `AppLayer`.
+  `Effect-TS` for clean dependency injection and composable service
+  construction.
 - **Clean Integration Layer:** Provides a clear abstraction layer over Tauri
   APIs, isolating platform specifics and simplifying their usage within the
   application.
@@ -62,23 +65,23 @@ implementations with high-performance, OS-native equivalents, all underpinned by
 
 ## Core Architecture Principles 🏗️
 
-| Principle         | Description                                                                                                                               | Key Components Involved                           |
-| :---------------- | :---------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------ |
-| **Compatibility** | Provide a high-fidelity VSCode renderer environment to maximize `Sky`'s reusability and minimize changes needed for VSCode UI components. | `Preload.ts`, `Platform/VSCode/*`                 |
-| **Modularity**    | Components (preload, services, integrations) are organized into distinct, cohesive modules for clarity and maintainability.               | `Application/*`, `Integration/*`, `Platform/*`    |
-| **Robustness**    | Leverage `Effect-TS` for all service implementations and asynchronous operations, ensuring predictable error handling and composability.  | All `Effect`-based modules                        |
-| **Abstraction**   | Create a clean `Integration` layer over Tauri APIs, isolating platform specifics and simplifying their usage within the application.      | `Integration/Tauri/Wrap/*`, `Preload.ts`          |
-| **Integration**   | Seamlessly connect `Sky`'s frontend requests with `Mountain`'s backend capabilities through Tauri's `invoke`/event system.                | `Preload.ts` (ipcRenderer shim), `HostServiceTag` |
+| Principle         | Description                                                                                                                               | Key Components Involved                                                                                               |
+| :---------------- | :---------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------- |
+| **Compatibility** | Provide a high-fidelity VSCode renderer environment to maximize `Sky`'s reusability and minimize changes needed for VSCode UI components. | [`Preload.ts`](Source/Preload.ts), [`Polyfills/`](Source/Polyfills/)                                                  |
+| **Modularity**    | Components (preload, services, integrations) are organized into distinct, cohesive modules for clarity and maintainability.               | [`Effect/`](Source/Effect/), [`Types/`](Source/Types/), [`Bootstrap/`](Source/Bootstrap/)                             |
+| **Robustness**    | Leverage `Effect-TS` for all service implementations and asynchronous operations, ensuring predictable error handling and composability.  | All [`Effect/`](Source/Effect/) services with `Layer` and `Tag` patterns                                              |
+| **Abstraction**   | Create a clean layer over Tauri APIs, isolating platform specifics and simplifying their usage within the application.                    | [`Preload.ts`](Source/Preload.ts), [`Effect/IPC/`](Source/Effect/IPC/), [`Effect/Mountain/`](Source/Effect/Mountain/) |
+| **Integration**   | Seamlessly connect `Sky`'s frontend requests with `Mountain`'s backend capabilities through Tauri's `invoke`/event system.                | [`Preload.ts`](Source/Preload.ts) (ipcRenderer shim), [`Effect/Mountain/`](Source/Effect/Mountain/)                   |
 
 ---
 
 ## Deep Dive & Component Breakdown 🔬
 
-To understand how `Wind`'s internal components interact to provide these
-services, please refer to the detailed technical breakdown in
-[`Documentation/GitHub/DeepDive.md`](https://github.com/CodeEditorLand/Wind/tree/Current/Documentation/GitHub/DeepDive.md). This document explains the role of
-the `Preload` script, the `Integration` layer, and how the `Application`
-services are constructed with Effect-TS.
+The `Wind` architecture centers around the [`Preload.ts`](Source/Preload.ts)
+script which sets up the VSCode compatibility layer, and the
+[`Effect/`](Source/Effect/) directory which contains all Effect-TS based
+services. See the [`Effect/index.ts`](Source/Effect/index.ts) for the complete
+module exports and layer compositions.
 
 ---
 
@@ -89,36 +92,36 @@ Tauri/`Mountain` (backend) environment.
 
 ```mermaid
 graph LR
-	classDef sky fill:#9cf,stroke:#333,stroke-width:2px;
-	classDef wind fill:#ffc,stroke:#333,stroke-width:2px;
-	classDef tauri fill:#f9d,stroke:#333,stroke-width:2px;
-	classDef mountain fill:#f9f,stroke:#333,stroke-width:2px;
-	classDef effectts fill:#cfc,stroke:#333,stroke-width:1px;
+classDef sky fill:#9cf,stroke:#333,stroke-width:2px;
+classDef wind fill:#ffc,stroke:#333,stroke-width:2px;
+classDef tauri fill:#f9d,stroke:#333,stroke-width:2px;
+classDef mountain fill:#f9f,stroke:#333,stroke-width:2px;
+classDef effectts fill:#cfc,stroke:#333,stroke-width:1px;
 
 
-	subgraph "Sky (Frontend UI - Tauri Webview)"
-		SkyApp["Sky Application Code (VSCode UI Components)"]:::sky
-	end
+subgraph "Sky (Frontend UI - Tauri Webview)"
+SkyApp["Sky Application Code (VSCode UI Components)"]:::sky
+end
 
-	subgraph "Wind (VSCode Env & Services Layer - Runs in Webview)"
-		PreloadJS["Preload.js (Environment Shim)"]:::wind
-		WindEffectTSRuntime["Wind Effect-TS Runtime & Service Layers"]:::effectts
-		TauriIntegrations["Wind/Integration/Tauri (Tauri API Wrappers)"]:::wind
+subgraph "Wind (VSCode Env & Services Layer - Runs in Webview)"
+PreloadJS["Preload.js (Environment Shim)"]:::wind
+WindEffectTSRuntime["Wind Effect-TS Runtime & Service Layers"]:::effectts
+TauriIntegrations["Wind Effect Services (Tauri API Wrappers)"]:::wind
 
-		SkyApp -- Consumes services from --> WindEffectTSRuntime;
-		WindEffectTSRuntime -- Executes side-effects via --> TauriIntegrations;
-	end
+SkyApp -- Consumes services from --> WindEffectTSRuntime;
+WindEffectTSRuntime -- Executes side-effects via --> TauriIntegrations;
+end
 
-	subgraph "Tauri Core & Mountain (Rust Backend)"
-		TauriAPIs["Tauri JS API & Plugins"]:::tauri
-		MountainBackend["Mountain Rust Core (Command Handlers)"]:::mountain
-	end
+subgraph "Tauri Core & Mountain (Rust Backend)"
+TauriAPIs["Tauri JS API & Plugins"]:::tauri
+MountainBackend["Mountain Rust Core (Command Handlers)"]:::mountain
+end
 
-    TauriWindow["Tauri Window"] -- Loads --> PreloadJS
-    PreloadJS -- Prepares environment for --> SkyApp
+TauriWindow["Tauri Window"] -- Loads --> PreloadJS
+PreloadJS -- Prepares environment for --> SkyApp
 
-	TauriIntegrations -- Calls --> TauriAPIs;
-    TauriAPIs -- Communicates with --> MountainBackend;
+TauriIntegrations -- Calls --> TauriAPIs;
+TauriAPIs -- Communicates with --> MountainBackend;
 ```
 
 ---
@@ -130,16 +133,31 @@ The `Wind` repository is organized to clearly separate concerns:
 ```
 Wind/
 └── Source/
-├── Preload.ts			# Core script for VSCode environment emulation in Tauri.
-├── Application/		# Core frontend service implementations (e.g., Dialog, Editor).
-├── Integration/
-│ └── Tauri/			# Bridge to Tauri APIs, wrapped in Effect-TS.
-├── Platform/
-│ └── VSCode/			# Definitions of core VSCode types and service Tags.
-├── Effect/
-│ └── Produce/			# Utilities for creating Effects from async code.
-└── Configuration/
-└── ESBuild/			# ESBuild configurations for bundling the project.
+    ├── Preload.ts              # Core script for VSCode environment emulation in Tauri.
+    ├── Effect/                 # Effect-TS services (atomic structure).
+    │   ├── IPC/                # Inter-process communication service.
+    │   ├── Sandbox/            # Preload globals service.
+    │   ├── Configuration/      # Configuration service.
+    │   ├── Telemetry/          # Logging, spans, metrics service.
+    │   ├── Mountain/           # Backend connection & RPC service.
+    │   ├── MountainSync/       # Background synchronization service.
+    │   ├── Environment/        # System detection service.
+    │   ├── Health/             # Service health checks.
+    │   ├── Bootstrap/          # Orchestration of all stages.
+    │   ├── Clipboard/          # System clipboard service.
+    │   ├── ActivityBar/        # VSCode activity bar management.
+    │   ├── Panel/              # VSCode bottom panel management.
+    │   ├── Sidebar/            # VSCode sidebar management.
+    │   ├── StatusBar/          # VSCode status bar management.
+    │   └── Layers/             # Layer compositions (Tauri, Electron).
+    ├── Bootstrap/              # Bootstrap type definitions.
+    ├── Configuration/          # ESBuild bundling configurations.
+    │   └── ESBuild/
+    ├── FileSystem/             # VSCode-like file system provider.
+    ├── Function/               # Install helper functions.
+    ├── Polyfills/              # Polyfills for Electron/Node APIs.
+    ├── Types/                  # Shared type definitions.
+    └── Workbench/              # VSCode workbench integration.
 ```
 
 ---
@@ -154,68 +172,75 @@ pnpm add @codeeditorland/wind
 
 **Key Dependencies:**
 
-- `@tauri-apps/api`: `^2.x`
-- `@tauri-apps/plugin-dialog`: `^2.x`
-- `effect`: `^3.x`
+- `@tauri-apps/api`: `2.10.1`
+- `@tauri-apps/plugin-dialog`: `2.6.0`
+- `effect`: `3.19.18`
+- `@effect/platform`: `0.94.5`
 - VSCode platform code (e.g., `vs/base`, `vs/platform`), typically sourced from
   the `Land/Dependency` submodule.
 
 ### Usage
 
-`Wind` is primarily integrated via its `Preload.ts` script and its `Effect-TS`
-layers.
+`Wind` is primarily integrated via its [`Preload.ts`](Source/Preload.ts) script
+and its `Effect-TS` layers.
 
-1.  **Integrate the Preload Script:** Configure your `tauri.config.json` to
-    include the bundled `Preload.js` from `Wind` in your main window's preload
-    scripts. This is essential for setting up the `window.vscode` environment.
+1. **Integrate the Preload Script:** Configure your `tauri.config.json` to
+   include the bundled `Preload.js` from `Wind` in your main window's preload
+   scripts. This is essential for setting up the `window.vscode` environment.
 
-2.  **Use Services with Effect-TS:** If your `Sky` frontend uses `Effect-TS`,
-    you can provide and use `Wind`'s services in your application's main entry
-    point.
+2. **Use Services with Effect-TS:** If your `Sky` frontend uses `Effect-TS`, you
+   can provide and use `Wind`'s services in your application's main entry point.
 
 ```ts
 // In your main UI startup file (e.g., DesktopMain.ts)
 
-import { DialogServiceTag } from "@codeeditorland/wind/Application/Dialog";
-import { AppLayer } from "@codeeditorland/wind/Application/Instantiation/Layer";
+import { IPC } from "@codeeditorland/wind/Effect";
+import { TauriLiveLayer } from "@codeeditorland/wind/Effect/Layers/Tauri";
 import { Effect, Layer, Runtime } from "effect";
 
-// Build the full application runtime from Wind's master AppLayer.
-
-const AppRuntime = Layer.toRuntime(AppLayer).pipe(
+// Build the application runtime with Tauri live layer
+const AppRuntime = Layer.toRuntime(TauriLiveLayer).pipe(
 	Effect.scoped,
 	Effect.runSync,
 );
 
-// Example of using the dialog service within an Effect
+// Example of using IPC within an Effect
+const invokeEffect = Effect.gen(function* (_) {
+	const ipcService = yield* _(IPC);
 
-const openFileEffect = Effect.gen(function* (_) {
-	const dialogService = yield* _(DialogServiceTag);
-
-	const uris = yield* _(
-		Effect.tryPromise(() =>
-			dialogService.showOpenDialog({
-				canSelectFiles: true,
-				title: "Open a File",
-			}),
-		),
+	const result = yield* _(
+		ipcService.invoke("mountain_get_workbench_configuration"),
 	);
 
-	if (uris && uris.length > 0) {
-		yield* _(Effect.log(`Selected file: ${uris[0].toString()}`));
-	} else {
-		yield* _(Effect.log("Dialog was cancelled."));
-	}
+	yield* _(Effect.log(`Configuration received: ${JSON.stringify(result)}`));
 });
 
 // Run the effect using the configured runtime
-
-Runtime.runPromise(AppRuntime, openFileEffect);
+Runtime.runPromise(AppRuntime, invokeEffect);
 ```
+
+3. **Available Effect Services:**
+
+| Service         | Import Path                                                                       | Description                           |
+| --------------- | --------------------------------------------------------------------------------- | ------------------------------------- |
+| `IPC`           | [`@codeeditorland/wind/Effect`](Source/Effect/index.ts)                           | Inter-process communication via Tauri |
+| `Sandbox`       | [`@codeeditorland/wind/Effect/Sandbox`](Source/Effect/Sandbox/index.ts)           | Preload globals and environment       |
+| `Configuration` | [`@codeeditorland/wind/Effect/Configuration`](Source/Effect/Configuration.ts)     | Workbench configuration management    |
+| `Telemetry`     | [`@codeeditorland/wind/Effect/Telemetry`](Source/Effect/Telemetry/index.ts)       | Logging, spans, and metrics           |
+| `Mountain`      | [`@codeeditorland/wind/Effect/Mountain`](Source/Effect/Mountain/index.ts)         | Backend RPC connection                |
+| `MountainSync`  | [`@codeeditorland/wind/Effect/MountainSync`](Source/Effect/MountainSync/index.ts) | Background synchronization            |
+| `Environment`   | [`@codeeditorland/wind/Effect/Environment`](Source/Effect/Environment/index.ts)   | System/platform detection             |
+| `Health`        | [`@codeeditorland/wind/Effect/Health`](Source/Effect/Health/index.ts)             | Service health checks                 |
+| `Bootstrap`     | [`@codeeditorland/wind/Effect/Bootstrap`](Source/Effect/Bootstrap/index.ts)       | Multi-stage bootstrap orchestration   |
+| `Clipboard`     | [`@codeeditorland/wind/Effect/Clipboard`](Source/Effect/Clipboard.ts)             | System clipboard access               |
+| `ActivityBar`   | [`@codeeditorland/wind/Effect/ActivityBar`](Source/Effect/ActivityBar/index.ts)   | VSCode activity bar management        |
+| `Panel`         | [`@codeeditorland/wind/Effect/Panel`](Source/Effect/Panel/index.ts)               | VSCode panel management               |
+| `Sidebar`       | [`@codeeditorland/wind/Effect/Sidebar`](Source/Effect/Sidebar/index.ts)           | VSCode sidebar management             |
+| `StatusBar`     | [`@codeeditorland/wind/Effect/StatusBar`](Source/Effect/StatusBar/index.ts)       | VSCode status bar management          |
 
 ---
 
-## License ⚖️
+## License ⚖️
 
 This project is released into the public domain under the **Creative Commons CC0
 Universal** license. You are free to use, modify, distribute, and build upon
@@ -226,8 +251,9 @@ see the [`LICENSE`](https://github.com/CodeEditorLand/Wind/tree/Current/) file.
 
 ## Changelog 📜
 
-Stay updated with our progress! See [`CHANGELOG.md`](https://github.com/CodeEditorLand/Wind/tree/Current/) for a history
-of changes specific to **Wind**.
+Stay updated with our progress! See
+[`CHANGELOG.md`](https://github.com/CodeEditorLand/Wind/tree/Current/) for a
+history of changes specific to **Wind**.
 
 ---
 
