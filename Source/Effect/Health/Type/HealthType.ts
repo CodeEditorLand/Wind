@@ -31,3 +31,6 @@ export interface SystemHealth {
 	};
 	readonly lastChecked: number;
 }
+
+// Re-export HealthService interface for convenience
+export type { HealthService } from "../Interface/HealthService.js";

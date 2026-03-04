@@ -67,8 +67,8 @@ export { IPCTag, IPC } from "./IPC/Tag/IPCTag.js";
 export { TauriIPCLive } from "./IPC/Implementation/TauriIPC.js";
 
 // Layers - import from index
-import { default as IPCTauriLiveLayer, MockIPCLive } from "./IPC/index.js";
-export { IPCTauriLiveLayer, MockIPCLive };
+import { default as IPCTauriLiveLayer, IPCElectronLive, MockIPCLive } from "./IPC/index.js";
+export { IPCTauriLiveLayer, IPCElectronLive, MockIPCLive };
 
 // Backward compatibility - export as IPCTauriLive
 export { IPCTauriLiveLayer as IPCTauriLive };
