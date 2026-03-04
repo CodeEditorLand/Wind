@@ -81,13 +81,13 @@ const ipcRenderer = {
 };
 
 // ============================================================================
-// Atom: MessagePort (placeholder - TODO: implement with MessageChannel)
+// Atom: MessagePort (placeholder - FUTURE: implement with MessageChannel)
 // ============================================================================
 
 const ipcMessagePort = {
-	acquire: (responseChannel: string, nonce: string) => {
-		// TODO: Implement proper MessageChannel for VSCode SharedProcessWorker
-		console.log(
+acquire: (responseChannel: string, nonce: string) => {
+	// FUTURE: Implement proper MessageChannel for VSCode SharedProcessWorker
+	console.log(
 			`[Preload] MessagePort acquire requested: ${responseChannel}, ${nonce}`,
 		);
 
@@ -124,8 +124,8 @@ const process = {
 		: (navigator.platform || "unknown").toLowerCase().includes("mac")
 			? "darwin"
 			: "linux",
-	arch: "x64", // TODO: Detect from Tauri
-	env: {},
+			arch: "x64", // FUTURE: Detect from Tauri - arch detection requires Tauri platform info
+			env: {},
 	versions: {
 		node: "20.0.0", // Placeholder
 		chrome: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || "unknown",

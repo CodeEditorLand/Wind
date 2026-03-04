@@ -36,7 +36,7 @@ Element/Wind/
 │   ├── Preload.ts              # Preload script for Tauri
 │   ├── Bootstrap.ts            # VSCode workbench bootstrap
 │   ├── Archive/                # Legacy service implementations
-│   │   ├── Bridge.ts           # TODO: Can be deprecated
+│   │   ├── Bridge.ts           # DEPRECATED: Will be removed in future refactor
 │   │   └── Application/        # Effect-TS service implementations
 │   └── Configuration/
 │       └── ESBuild/
@@ -265,7 +265,7 @@ window.vscode;
     - Window configuration for VSCode
     - CSP policies for VSCode resources
 
-### ⚠️ TODO
+### ⚠️ DEPRECATED
 
 1. **Complete Service Layer Integration**
     - Introduce Wind's Effect-TS services into Bootstrap.ts
