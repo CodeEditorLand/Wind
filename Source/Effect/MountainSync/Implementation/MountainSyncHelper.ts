@@ -31,7 +31,7 @@ const SyncNowEffect = (
 	Effect.gen(function* () {
 	const StartTime = Date.now();
 
-	// TODO: Implement actual sync logic
+	// DEPENDENCY: Requires Mountain service integration to fetch/sync state
 	// This would fetch changes from Mountain, sync state, etc.
 
 	yield* telemetry.log("info", "[MountainSync] Performing sync...");
