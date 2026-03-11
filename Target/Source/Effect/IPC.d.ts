@@ -36,8 +36,8 @@ export declare class IPCSubscriptionError extends Error {
 export type { IPCService } from "./IPC/Interface/IPCService.js";
 export { IPCTag, IPC } from "./IPC/Tag/IPCTag.js";
 export { TauriIPCLive } from "./IPC/Implementation/TauriIPC.js";
-import { default as IPCTauriLiveLayer, MockIPCLive } from "./IPC/index.js";
-export { IPCTauriLiveLayer, MockIPCLive };
+import { default as IPCTauriLiveLayer, IPCElectronLive, MockIPCLive } from "./IPC/index.js";
+export { IPCTauriLiveLayer, IPCElectronLive, MockIPCLive };
 export { IPCTauriLiveLayer as IPCTauriLive };
 export { MockIPCLive as IPCMockLive };
 //# sourceMappingURL=IPC.d.ts.map

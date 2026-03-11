@@ -240,7 +240,7 @@ Runtime.runPromise(AppRuntime, invokeEffect);
 
 ---
 
-## License ⚖️
+## License ⚖️
 
 This project is released into the public domain under the **Creative Commons CC0
 Universal** license. You are free to use, modify, distribute, and build upon

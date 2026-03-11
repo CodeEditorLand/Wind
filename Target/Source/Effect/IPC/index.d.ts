@@ -10,7 +10,7 @@ export type { IPCInvokeError, IPCSendError, IPCSubscriptionError } from "./Error
 export type { IPCService } from "./Interface/IPCService.js";
 export { IPCTag, IPC } from "./Tag/IPCTag.js";
 export { TauriIPCLive } from "./Implementation/TauriIPC.js";
-export { IPCTauriLive as default } from "./Live.js";
+export { IPCTauriLive as default, IPCTauriLive as IPCElectronLive } from "./Live.js";
 export { MockIPCLive } from "./Mock.js";
 export { CreateIPCInvokeError, CreateIPCSendError, CreateIPCSubscriptionError, } from "./Error/IPCError.js";
 //# sourceMappingURL=index.d.ts.map

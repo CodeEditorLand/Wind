@@ -24,4 +24,5 @@ export interface SystemHealth {
     };
     readonly lastChecked: number;
 }
+export type { HealthService } from "../Interface/HealthService.js";
 //# sourceMappingURL=HealthType.d.ts.map
