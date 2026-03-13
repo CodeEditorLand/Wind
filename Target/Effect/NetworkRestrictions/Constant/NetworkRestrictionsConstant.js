@@ -1,1 +1,89 @@
-const e={blockHTTP:!0,blockHTTPS:!0,blockWebSocket:!0,blockMarketplace:!0,blockExtensionUpdates:!0,blockTelemetry:!0,blockExtensionTelemetry:!0,allowInternal:!0,allowLocalhost:!0,allowMountain:!0,logBlocked:!0,allowedDomains:[],blockedDomains:["*.microsoft.com","*.azureedge.net","*.vscode.azure.net","*.vscode-remote.azureedge.net","*.vscode-remote.azureedge-extentions.azureedge.net","*.vscode-extensions.azureedge.net","*.marketplace.visualstudio.com","*.marketplace.extensions.visualstudio.com","*.gallery.vsassets.io","*.update.code.visualstudio.com","*.vscode-update.azurewebsites.net"]},o=["vortex.data.microsoft.com","vortex.data.microsoft.com/collect/v1","*.telemetry.vscode.azure.net","*.vscode-extensions.azureedge.net","*.vscode-telemetry.microsoft.com"],t=["*.marketplace.visualstudio.com","*.marketplace.extensions.visualstudio.com","*.gallery.vsassets.io"],s=["*.update.code.visualstudio.com","*.vscode-update.azurewebsites.net"],c=["*.api.githubcopilot.com","*.copilot.githubusercontent.com"],r=["vscode:","vscode:workspace","vscode:file","vscode:editor","vscode:terminal","vscode:debug","vscode:sandbox","vscode:mountain","vscode:ipc"],n=["vscode:telemetryAppender","vscode:telemetryLog","vscode:customEndpointTelemetry","vscode:extensions.*"],a={DEFAULT_NETWORK_RESTRICTIONS:e,TelemetryEndpoint:o,MarketplaceEndpoint:t,UpdateEndpoint:s,AiEndpoint:c,ALLOWED_IPC_CHANNELS:r,BLOCKED_IPC_CHANNELS:n};var i=a;export{r as ALLOWED_IPC_CHANNELS,c as AiEndpoint,n as BLOCKED_IPC_CHANNELS,e as DEFAULT_NETWORK_RESTRICTIONS,t as MarketplaceEndpoint,o as TelemetryEndpoint,s as UpdateEndpoint,i as default};
+const DEFAULT_NETWORK_RESTRICTIONS = {
+  blockHTTP: true,
+  blockHTTPS: true,
+  blockWebSocket: true,
+  blockMarketplace: true,
+  blockExtensionUpdates: true,
+  blockTelemetry: true,
+  blockExtensionTelemetry: true,
+  allowInternal: true,
+  allowLocalhost: true,
+  allowMountain: true,
+  logBlocked: true,
+  allowedDomains: [],
+  blockedDomains: [
+    // Microsoft telemetry endpoints
+    "*.microsoft.com",
+    "*.azureedge.net",
+    "*.vscode.azure.net",
+    "*.vscode-remote.azureedge.net",
+    "*.vscode-remote.azureedge-extentions.azureedge.net",
+    "*.vscode-extensions.azureedge.net",
+    // Microsoft marketplace
+    "*.marketplace.visualstudio.com",
+    "*.marketplace.extensions.visualstudio.com",
+    // Extension telemetry
+    "*.gallery.vsassets.io",
+    // Update servers
+    "*.update.code.visualstudio.com",
+    "*.vscode-update.azurewebsites.net"
+  ]
+};
+const TelemetryEndpoint = [
+  "vortex.data.microsoft.com",
+  "vortex.data.microsoft.com/collect/v1",
+  "*.telemetry.vscode.azure.net",
+  "*.vscode-extensions.azureedge.net",
+  "*.vscode-telemetry.microsoft.com"
+];
+const MarketplaceEndpoint = [
+  "*.marketplace.visualstudio.com",
+  "*.marketplace.extensions.visualstudio.com",
+  "*.gallery.vsassets.io"
+];
+const UpdateEndpoint = [
+  "*.update.code.visualstudio.com",
+  "*.vscode-update.azurewebsites.net"
+];
+const AiEndpoint = [
+  "*.api.githubcopilot.com",
+  "*.copilot.githubusercontent.com"
+];
+const ALLOWED_IPC_CHANNELS = [
+  "vscode:",
+  "vscode:workspace",
+  "vscode:file",
+  "vscode:editor",
+  "vscode:terminal",
+  "vscode:debug",
+  "vscode:sandbox",
+  "vscode:mountain",
+  "vscode:ipc"
+];
+const BLOCKED_IPC_CHANNELS = [
+  "vscode:telemetryAppender",
+  "vscode:telemetryLog",
+  "vscode:customEndpointTelemetry",
+  "vscode:extensions.*"
+];
+const constants = {
+  DEFAULT_NETWORK_RESTRICTIONS,
+  TelemetryEndpoint,
+  MarketplaceEndpoint,
+  UpdateEndpoint,
+  AiEndpoint,
+  ALLOWED_IPC_CHANNELS,
+  BLOCKED_IPC_CHANNELS
+};
+var NetworkRestrictionsConstant_default = constants;
+export {
+  ALLOWED_IPC_CHANNELS,
+  AiEndpoint,
+  BLOCKED_IPC_CHANNELS,
+  DEFAULT_NETWORK_RESTRICTIONS,
+  MarketplaceEndpoint,
+  TelemetryEndpoint,
+  UpdateEndpoint,
+  NetworkRestrictionsConstant_default as default
+};
+//# sourceMappingURL=NetworkRestrictionsConstant.js.map

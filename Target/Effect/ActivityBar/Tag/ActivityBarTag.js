@@ -1,1 +1,14 @@
-import{Context as t}from"effect";class i extends t.Tag("ActivityBar")(){}var a=i;export{i as ActivityBarTag,a as default};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { Context } from "effect";
+class ActivityBarTag extends Context.Tag("ActivityBar")() {
+  static {
+    __name(this, "ActivityBarTag");
+  }
+}
+var ActivityBarTag_default = ActivityBarTag;
+export {
+  ActivityBarTag,
+  ActivityBarTag_default as default
+};
+//# sourceMappingURL=ActivityBarTag.js.map

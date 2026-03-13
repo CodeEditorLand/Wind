@@ -1,1 +1,44 @@
-import*as t from"../Constant/EnvironmentConstant.js";import a from"./BaseConfig.js";import{deepmerge as n}from"deepmerge-ts";async function p(i){return n(a,{outdir:"Target",drop:t.On?[]:["debugger","console"],define:{__DEV__:t.On?"true":"false",__INCREMENT__:`"${`${t.On?"DEVELOPMENT":"PRODUCTION"}-${(await import("ulid")).ulid()}`}"`},treeShaking:!t.On,entryPoints:(await import("@playform/build/Target/Function/Entry.js")).default(i,["Source/Configuration/*"]),platform:"browser",outbase:"Source",plugins:t.Compile?n(i.plugins||[],[{name:"Compile",setup({onEnd:r}){r(async({metafile:u})=>{const e=u?.outputs;for(const o in e)Object.prototype.hasOwnProperty.call(e,o)&&o.endsWith(".js")&&(await import("@playform/build/Target/Function/Exec.js")).default(`Build '${o}' 											--ESBuild Configuration/ESBuild/Target/Compile.js 											--TypeScript Configuration/tsconfig/Target/Compile.json`)})}}]):[]})}export{p as default};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import * as Environment from "../Constant/EnvironmentConstant.js";
+import BaseConfig from "./BaseConfig.js";
+import { deepmerge } from "deepmerge-ts";
+async function targetConfig(Current) {
+  const merged = deepmerge(BaseConfig, {
+    outdir: "Target",
+    drop: Environment.On ? [] : ["debugger", "console"],
+    define: {
+      __DEV__: Environment.On ? "true" : "false",
+      __INCREMENT__: `"${`${Environment.On ? "DEVELOPMENT" : "PRODUCTION"}-${(await import("ulid")).ulid()}`}"`
+    },
+    treeShaking: !Environment.On,
+    entryPoints: (await import("@playform/build/Target/Function/Entry.js")).default(Current, ["Source/Configuration/*"]),
+    platform: "browser",
+    outbase: "Source",
+    plugins: Environment.Compile ? deepmerge(Current.plugins || [], [
+      {
+        name: "Compile",
+        setup({ onEnd }) {
+          onEnd(async ({ metafile }) => {
+            const _Output = metafile?.outputs;
+            for (const Output in _Output) {
+              if (Object.prototype.hasOwnProperty.call(_Output, Output)) {
+                if (Output.endsWith(".js")) {
+                  (await import("@playform/build/Target/Function/Exec.js")).default(
+                    `Build '${Output}' 											--ESBuild Configuration/ESBuild/Target/Compile.js 											--TypeScript Configuration/tsconfig/Target/Compile.json`
+                  );
+                }
+              }
+            }
+          });
+        }
+      }
+    ]) : []
+  });
+  return merged;
+}
+__name(targetConfig, "targetConfig");
+export {
+  targetConfig as default
+};
+//# sourceMappingURL=TargetConfig.js.map

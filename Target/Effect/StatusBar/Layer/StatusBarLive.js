@@ -1,1 +1,78 @@
-import{Effect as r,Layer as I,SubscriptionRef as m}from"effect";import v from"../Tag/StatusBarTag.js";import d from"../Error/StatusBarItemNotFoundError.js";import x from"../Error/StatusBarUpdateError.js";import{Telemetry as b}from"../../Telemetry.js";const T=I.effect(v,r.gen(function*(){const f=yield*b,o=yield*m.make([]),y=t=>r.gen(function*(){const e=`statusbar-${Date.now()}-${Math.random().toString(36).substring(2,9)}`,i={...t,id:e};return yield*m.modify(o,n=>[void 0,[...n,i].sort((a,c)=>a.priority-c.priority)]),yield*f.log("info",`Created status bar item: ${e}`),i}),u=(t,e)=>r.gen(function*(){if(!(yield*s(t)))return yield*r.fail(new d(t));try{yield*m.modify(o,n=>[void 0,n.map(a=>a.id===t?{...a,...e}:a).sort((a,c)=>a.priority-c.priority)]),yield*f.log("info",`Updated status bar item: ${t}`)}catch(n){return yield*r.fail(new x(t,n))}}),l=t=>r.gen(function*(){if(!(yield*s(t)))return yield*r.fail(new d(t));yield*m.modify(o,i=>[void 0,i.filter(n=>n.id!==t)]),yield*f.log("info",`Removed status bar item: ${t}`)}),s=t=>r.map(o.get,e=>e.find(i=>i.id===t)),g=o.get,S=o.changes,E=(t,e)=>r.gen(function*(){if(!(yield*s(t)))return yield*r.fail(new d(t));e?yield*r.void:yield*l(t)}),p=t=>r.map(s(t),e=>e?.text),B=(t,e)=>u(t,{text:e});return yield*f.log("info","StatusBar service initialized"),{createItem:y,updateItem:u,removeItem:l,getItem:s,items:g,itemsChanges:S,setItemVisibility:E,getItemText:p,setItemText:B}}));var $=T;export{$ as default};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { Effect, Layer, Stream, SubscriptionRef } from "effect";
+import StatusBarTag from "../Tag/StatusBarTag.js";
+import StatusBarItemNotFoundError from "../Error/StatusBarItemNotFoundError.js";
+import StatusBarUpdateError from "../Error/StatusBarUpdateError.js";
+import { Telemetry } from "../../Telemetry.js";
+const StatusBarLive = Layer.effect(
+  StatusBarTag,
+  Effect.gen(function* () {
+    const TelemetryService = yield* Telemetry;
+    const ItemsRef = yield* SubscriptionRef.make([]);
+    const CreateItem = /* @__PURE__ */ __name((Item) => Effect.gen(function* () {
+      const Id = `statusbar-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+      const NewItem = { ...Item, id: Id };
+      yield* SubscriptionRef.modify(ItemsRef, (Items2) => [void 0, [...Items2, NewItem].sort((a, b) => a.priority - b.priority)]);
+      yield* TelemetryService.log("info", `Created status bar item: ${Id}`);
+      return NewItem;
+    }), "CreateItem");
+    const UpdateItem = /* @__PURE__ */ __name((Id, updates) => Effect.gen(function* () {
+      const Existing = yield* GetItem(Id);
+      if (!Existing) {
+        return yield* Effect.fail(new StatusBarItemNotFoundError(Id));
+      }
+      try {
+        yield* SubscriptionRef.modify(ItemsRef, (Items2) => [
+          void 0,
+          Items2.map((Item) => Item.id === Id ? { ...Item, ...updates } : Item).sort((a, b) => a.priority - b.priority)
+        ]);
+        yield* TelemetryService.log("info", `Updated status bar item: ${Id}`);
+      } catch (error) {
+        return yield* Effect.fail(new StatusBarUpdateError(Id, error));
+      }
+    }), "UpdateItem");
+    const RemoveItem = /* @__PURE__ */ __name((Id) => Effect.gen(function* () {
+      const Existing = yield* GetItem(Id);
+      if (!Existing) {
+        return yield* Effect.fail(new StatusBarItemNotFoundError(Id));
+      }
+      yield* SubscriptionRef.modify(ItemsRef, (Items2) => [void 0, Items2.filter((Item) => Item.id !== Id)]);
+      yield* TelemetryService.log("info", `Removed status bar item: ${Id}`);
+    }), "RemoveItem");
+    const GetItem = /* @__PURE__ */ __name((Id) => Effect.map(ItemsRef.get, (Items2) => Items2.find((Item) => Item.id === Id)), "GetItem");
+    const Items = ItemsRef.get;
+    const ItemsChanges = ItemsRef.changes;
+    const SetItemVisibility = /* @__PURE__ */ __name((Id, visible) => Effect.gen(function* () {
+      const Existing = yield* GetItem(Id);
+      if (!Existing) {
+        return yield* Effect.fail(new StatusBarItemNotFoundError(Id));
+      }
+      if (!visible) {
+        yield* RemoveItem(Id);
+      } else {
+        yield* Effect.void;
+      }
+    }), "SetItemVisibility");
+    const GetItemText = /* @__PURE__ */ __name((Id) => Effect.map(GetItem(Id), (Item) => Item?.text), "GetItemText");
+    const SetItemText = /* @__PURE__ */ __name((Id, text) => UpdateItem(Id, { text }), "SetItemText");
+    yield* TelemetryService.log("info", "StatusBar service initialized");
+    const service = {
+      createItem: CreateItem,
+      updateItem: UpdateItem,
+      removeItem: RemoveItem,
+      getItem: GetItem,
+      items: Items,
+      itemsChanges: ItemsChanges,
+      setItemVisibility: SetItemVisibility,
+      getItemText: GetItemText,
+      setItemText: SetItemText
+    };
+    return service;
+  })
+);
+var StatusBarLive_default = StatusBarLive;
+export {
+  StatusBarLive_default as default
+};
+//# sourceMappingURL=StatusBarLive.js.map
