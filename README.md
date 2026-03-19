@@ -28,15 +28,15 @@ implementations with high-performance, OS-native equivalents, all underpinned by
 **Wind** is engineered to:
 
 1. **Emulate the VSCode Sandbox:** Through a sophisticated
-   [`Preload.ts`](Source/Preload.ts) script, it shims critical Electron and
-   Node.js APIs that VSCode's workbench code expects, creating a compatible
-   execution context.
-2. **Implement Core VSCode Services:** It provides frontend implementations for
-   key VSCode services via
-   [`Polyfills/NativeModulePolyfill.ts`](Source/Polyfills/NativeModulePolyfill.ts),
+   [`Preload.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Preload.ts)
+   script, it shims critical Electron and Node.js APIs that VSCode's workbench
+   code expects, creating a compatible execution context. 2. **Implement Core
+   VSCode Services:** It provides frontend implementations for key VSCode
+   services via
+   [`Polyfills/NativeModulePolyfill.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Polyfills/NativeModulePolyfill.ts),
    leveraging `Effect-TS` for highly reliable, composable, and maintainable
    logic.
-3. **Integrate with Tauri & Native Capabilities:** It offers a clean abstraction
+2. **Integrate with Tauri & Native Capabilities:** It offers a clean abstraction
    layer over Tauri APIs for file operations, dialogs, and OS information,
    making them accessible in a type-safe way through Effect-based wrappers.
 
@@ -46,11 +46,12 @@ implementations with high-performance, OS-native equivalents, all underpinned by
 
 - **Native Dialog Experience:** Implements dialog services for File Open/Save
   dialogs using Tauri's native OS dialogs via
-  [`Polyfills/NativeModulePolyfill.ts`](Source/Polyfills/NativeModulePolyfill.ts).
-- **VSCode Environment Compliance:** A sophisticated
-  [`Preload.ts`](Source/Preload.ts) script establishes the crucial
-  `window.vscode` global object, shimming `ipcRenderer` and `process` to bridge
-  the gap between the VSCode workbench code and the Tauri runtime.
+  [`Polyfills/NativeModulePolyfill.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Polyfills/NativeModulePolyfill.ts).
+    - **VSCode Environment Compliance:** A sophisticated
+      [`Preload.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Preload.ts)
+      script establishes the crucial `window.vscode` global object, shimming
+      `ipcRenderer` and `process` to bridge the gap between the VSCode workbench
+      code and the Tauri runtime.
 - **Effect-TS Powered Architecture:** Employs `Effect` for all asynchronous
   operations and service logic, ensuring that all potential failures are
   explicitly handled as typed, tagged errors for maximum robustness.
@@ -65,23 +66,25 @@ implementations with high-performance, OS-native equivalents, all underpinned by
 
 ## Core Architecture Principles 🏗️
 
-| Principle         | Description                                                                                                                               | Key Components Involved                                                                                               |
-| :---------------- | :---------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------- |
-| **Compatibility** | Provide a high-fidelity VSCode renderer environment to maximize `Sky`'s reusability and minimize changes needed for VSCode UI components. | [`Preload.ts`](Source/Preload.ts), [`Polyfills/`](Source/Polyfills/)                                                  |
-| **Modularity**    | Components (preload, services, integrations) are organized into distinct, cohesive modules for clarity and maintainability.               | [`Effect/`](Source/Effect/), [`Types/`](Source/Types/), [`Bootstrap/`](Source/Bootstrap/)                             |
-| **Robustness**    | Leverage `Effect-TS` for all service implementations and asynchronous operations, ensuring predictable error handling and composability.  | All [`Effect/`](Source/Effect/) services with `Layer` and `Tag` patterns                                              |
-| **Abstraction**   | Create a clean layer over Tauri APIs, isolating platform specifics and simplifying their usage within the application.                    | [`Preload.ts`](Source/Preload.ts), [`Effect/IPC/`](Source/Effect/IPC/), [`Effect/Mountain/`](Source/Effect/Mountain/) |
-| **Integration**   | Seamlessly connect `Sky`'s frontend requests with `Mountain`'s backend capabilities through Tauri's `invoke`/event system.                | [`Preload.ts`](Source/Preload.ts) (ipcRenderer shim), [`Effect/Mountain/`](Source/Effect/Mountain/)                   |
+| Principle         | Description                                                                                                                               | Key Components Involved                                                                                                                                                                                                                                                                                                  |
+| :---------------- | :---------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Compatibility** | Provide a high-fidelity VSCode renderer environment to maximize `Sky`'s reusability and minimize changes needed for VSCode UI components. | [`Preload.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Preload.ts), [`Polyfills/`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Polyfills/)                                                                                                                   |
+| **Modularity**    | Components (preload, services, integrations) are organized into distinct, cohesive modules for clarity and maintainability.               | [`Effect/`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/), [`Types/`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Types/), [`Bootstrap/`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Bootstrap/)                             |
+| **Robustness**    | Leverage `Effect-TS` for all service implementations and asynchronous operations, ensuring predictable error handling and composability.  | All [`Effect/`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/) services with `Layer` and `Tag` patterns                                                                                                                                                                                |
+| **Abstraction**   | Create a clean layer over Tauri APIs, isolating platform specifics and simplifying their usage within the application.                    | [`Preload.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Preload.ts), [`Effect/IPC/`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/IPC/), [`Effect/Mountain/`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/Mountain/) |
+| **Integration**   | Seamlessly connect `Sky`'s frontend requests with `Mountain`'s backend capabilities through Tauri's `invoke`/event system.                | [`Preload.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Preload.ts) (ipcRenderer shim), [`Effect/Mountain/`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/Mountain/)                                                                                    |
 
 ---
 
 ## Deep Dive & Component Breakdown 🔬
 
-The `Wind` architecture centers around the [`Preload.ts`](Source/Preload.ts)
+The `Wind` architecture centers around the
+[`Preload.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Preload.ts)
 script which sets up the VSCode compatibility layer, and the
-[`Effect/`](Source/Effect/) directory which contains all Effect-TS based
-services. See the [`Effect/index.ts`](Source/Effect/index.ts) for the complete
-module exports and layer compositions.
+[`Effect/`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/)
+directory which contains all Effect-TS based services. See the
+[`Effect/index.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/index.ts)
+for the complete module exports and layer compositions.
 
 ---
 
@@ -221,22 +224,22 @@ Runtime.runPromise(AppRuntime, invokeEffect);
 
 3. **Available Effect Services:**
 
-| Service         | Import Path                                                                       | Description                           |
-| --------------- | --------------------------------------------------------------------------------- | ------------------------------------- |
-| `IPC`           | [`@codeeditorland/wind/Effect`](Source/Effect/index.ts)                           | Inter-process communication via Tauri |
-| `Sandbox`       | [`@codeeditorland/wind/Effect/Sandbox`](Source/Effect/Sandbox/index.ts)           | Preload globals and environment       |
-| `Configuration` | [`@codeeditorland/wind/Effect/Configuration`](Source/Effect/Configuration.ts)     | Workbench configuration management    |
-| `Telemetry`     | [`@codeeditorland/wind/Effect/Telemetry`](Source/Effect/Telemetry/index.ts)       | Logging, spans, and metrics           |
-| `Mountain`      | [`@codeeditorland/wind/Effect/Mountain`](Source/Effect/Mountain/index.ts)         | Backend RPC connection                |
-| `MountainSync`  | [`@codeeditorland/wind/Effect/MountainSync`](Source/Effect/MountainSync/index.ts) | Background synchronization            |
-| `Environment`   | [`@codeeditorland/wind/Effect/Environment`](Source/Effect/Environment/index.ts)   | System/platform detection             |
-| `Health`        | [`@codeeditorland/wind/Effect/Health`](Source/Effect/Health/index.ts)             | Service health checks                 |
-| `Bootstrap`     | [`@codeeditorland/wind/Effect/Bootstrap`](Source/Effect/Bootstrap/index.ts)       | Multi-stage bootstrap orchestration   |
-| `Clipboard`     | [`@codeeditorland/wind/Effect/Clipboard`](Source/Effect/Clipboard.ts)             | System clipboard access               |
-| `ActivityBar`   | [`@codeeditorland/wind/Effect/ActivityBar`](Source/Effect/ActivityBar/index.ts)   | VSCode activity bar management        |
-| `Panel`         | [`@codeeditorland/wind/Effect/Panel`](Source/Effect/Panel/index.ts)               | VSCode panel management               |
-| `Sidebar`       | [`@codeeditorland/wind/Effect/Sidebar`](Source/Effect/Sidebar/index.ts)           | VSCode sidebar management             |
-| `StatusBar`     | [`@codeeditorland/wind/Effect/StatusBar`](Source/Effect/StatusBar/index.ts)       | VSCode status bar management          |
+| Service         | Import Path                                                                                                                                        | Description                           |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `IPC`           | [`@codeeditorland/wind/Effect`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/index.ts)                           | Inter-process communication via Tauri |
+| `Sandbox`       | [`@codeeditorland/wind/Effect/Sandbox`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/Sandbox/index.ts)           | Preload globals and environment       |
+| `Configuration` | [`@codeeditorland/wind/Effect/Configuration`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/Configuration.ts)     | Workbench configuration management    |
+| `Telemetry`     | [`@codeeditorland/wind/Effect/Telemetry`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/Telemetry/index.ts)       | Logging, spans, and metrics           |
+| `Mountain`      | [`@codeeditorland/wind/Effect/Mountain`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/Mountain/index.ts)         | Backend RPC connection                |
+| `MountainSync`  | [`@codeeditorland/wind/Effect/MountainSync`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/MountainSync/index.ts) | Background synchronization            |
+| `Environment`   | [`@codeeditorland/wind/Effect/Environment`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/Environment/index.ts)   | System/platform detection             |
+| `Health`        | [`@codeeditorland/wind/Effect/Health`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/Health/index.ts)             | Service health checks                 |
+| `Bootstrap`     | [`@codeeditorland/wind/Effect/Bootstrap`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/Bootstrap/index.ts)       | Multi-stage bootstrap orchestration   |
+| `Clipboard`     | [`@codeeditorland/wind/Effect/Clipboard`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/Clipboard.ts)             | System clipboard access               |
+| `ActivityBar`   | [`@codeeditorland/wind/Effect/ActivityBar`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/ActivityBar/index.ts)   | VSCode activity bar management        |
+| `Panel`         | [`@codeeditorland/wind/Effect/Panel`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/Panel/index.ts)               | VSCode panel management               |
+| `Sidebar`       | [`@codeeditorland/wind/Effect/Sidebar`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/Sidebar/index.ts)           | VSCode sidebar management             |
+| `StatusBar`     | [`@codeeditorland/wind/Effect/StatusBar`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Effect/StatusBar/index.ts)       | VSCode status bar management          |
 
 ---
 
