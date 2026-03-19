@@ -184,8 +184,9 @@ pnpm add @codeeditorland/wind
 
 ### Usage
 
-`Wind` is primarily integrated via its [`Preload.ts`](Source/Preload.ts) script
-and its `Effect-TS` layers.
+`Wind` is primarily integrated via its
+[`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)
+script and its `Effect-TS` layers.
 
 1. **Integrate the Preload Script:** Configure your `tauri.config.json` to
    include the bundled `Preload.js` from `Wind` in your main window's preload
