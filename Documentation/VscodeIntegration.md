@@ -241,7 +241,7 @@ window.vscode;
 
 ## Current Status
 
-### ✅ Implemented
+### ✅ Implemented
 
 1. **Preload Script** (`Source/Preload.ts`)
     - IPC renderer shim with Tauri integration
@@ -265,7 +265,7 @@ window.vscode;
     - Window configuration for VSCode
     - CSP policies for VSCode resources
 
-### ⚠️ DEPRECATED
+### ⚠️ DEPRECATED
 
 1. **Complete Service Layer Integration**
     - Introduce Wind's Effect-TS services into Bootstrap.ts

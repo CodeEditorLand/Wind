@@ -39,7 +39,7 @@ Land
 
 ---
 
-# **Wind** 🍃
+# **Wind** 🍃
 
 The Breath of Land: VSCode Environment & Services for Tauri
 
@@ -73,7 +73,7 @@ resilience and type safety.
 
 ---
 
-## Key Features 🔐
+## Key Features 🔐
 
 - **Native Dialog Experience:** Implements dialog services for File Open/Save
   dialogs using Tauri's native OS dialogs via
@@ -107,7 +107,7 @@ resilience and type safety.
 
 ---
 
-## Deep Dive & Component Breakdown 🔬
+## Deep Dive & Component Breakdown 🔬
 
 The `Wind` architecture centers around the
 [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)
@@ -119,7 +119,7 @@ for the complete module exports and layer compositions.
 
 ---
 
-## `Wind` in the Land Ecosystem 🍃 + 🏞️
+## `Wind` in the Land Ecosystem 🍃 + 🏞️
 
 This diagram illustrates `Wind`'s central role between `Sky` (the UI) and the
 Tauri/`Mountain` (backend) environment.
@@ -160,7 +160,7 @@ TauriAPIs -- Communicates with --> MountainBackend;
 
 ---
 
-## Project Structure Overview 🗺️
+## Project Structure Overview 🗺️
 
 The `Wind` repository is organized to clearly separate concerns:
 
@@ -196,9 +196,9 @@ Wind/
 
 ---
 
-## Getting Started 🚀
+## Getting Started 🚀
 
-### Installation 📥
+### Installation 📥
 
 ```sh
 pnpm add @codeeditorland/wind
@@ -213,7 +213,7 @@ pnpm add @codeeditorland/wind
 - VSCode platform code (e.g., `vs/base`, `vs/platform`), typically sourced from
   the `Land/Dependency` submodule.
 
-### Usage 🚀
+### Usage 🚀
 
 `Wind` is primarily integrated via its
 [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)
