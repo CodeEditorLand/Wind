@@ -665,7 +665,7 @@ function installRequireShim(): void {
 		});
 	});
 
-	console.log("[NativeModulePolyfill] ✓ Require shim installed");
+	console.log("[NativeModulePolyfill] ✓ Require shim installed");
 }
 
 // Also need to install the function on its own for later invocations
@@ -725,7 +725,7 @@ export function installNativeModulePolyfill(): void {
 		(window as any).vscode.electron = electronModule;
 	}
 
-	console.log("[NativeModulePolyfill] ✓ Electron native module polyfill installed");
+	console.log("[NativeModulePolyfill] ✓ Electron native module polyfill installed");
 }
 
 // ============================================================================

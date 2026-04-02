@@ -83,14 +83,14 @@
 //
 // Pattern Migration Status
 // ------------------------
-// - **New Pattern (Define/Implement/Problem)**: Configuration service ✅
-// - **Old Pattern (Interface/Live/Mock/Tag/Type)**: Clipboard, others ⚠️
+// - **New Pattern (Define/Implement/Problem)**: Configuration service ✅
+// - **Old Pattern (Interface/Live/Mock/Tag/Type)**: Clipboard, others ⚠️
 // - **Action**: Need to migrate remaining services
 //
 // Summary for Wind
 // ----------------
 // - **Type**: TypeScript/Effect-TS
-// - **TODOs**: 4 found 🟢
+// - **TODOs**: 4 found 🟢
 // - **Key Change**: Service architecture pattern (560016c)
 // - **Action Needed**: Migrate remaining services to Define/Implement/Problem
 //
@@ -299,12 +299,12 @@ const Globals = {
 
 if (IsTauri) {
 	(window as any).vscode = Globals;
-	console.log("[Preload] ✅ Sandbox globals exposed to window.vscode");
+	console.log("[Preload] Sandbox globals exposed to window.vscode");
 
 	// Dispatch ready event
 	window.dispatchEvent(new Event("vscode-wind-preload-ready"));
 } else {
-	console.error("[Preload] ❌ Tauri not detected - preload failed");
+	console.error("[Preload] Tauri not detected - preload failed");
 }
 
 // Export for type checking

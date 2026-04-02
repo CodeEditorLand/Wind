@@ -666,7 +666,7 @@ export async function installProcessPolyfill(): Promise<void> {
 			(window as any).vscode.process = proc;
 		}
 
-		console.log("[ProcessPolyfill] ✓ Node.js process polyfill installed");
+		console.log("[ProcessPolyfill] ✓ Node.js process polyfill installed");
 	} catch (error) {
 		console.error("[ProcessPolyfill] Failed to install process polyfill:", error);
 	}

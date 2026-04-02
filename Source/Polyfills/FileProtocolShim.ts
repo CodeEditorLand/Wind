@@ -423,7 +423,7 @@ function installFetchInterception(): void {
 		}
 	};
 
-	console.log("[FileProtocolShim] ✓ fetch interception installed");
+	console.log("[FileProtocolShim] ✓ fetch interception installed");
 }
 
 /**
@@ -492,7 +492,7 @@ export function installFileProtocolShim(): void {
 	// Install module import interception
 	installModuleInterception();
 
-	console.log("[FileProtocolShim] ✓ VSCode protocol polyfills installed");
+	console.log("[FileProtocolShim] ✓ VSCode protocol polyfills installed");
 }
 
 // ============================================================================

@@ -277,7 +277,7 @@ function InstallBrowserAPIPolyfills(): void {
 			return id;
 		};
 		console.log(
-			"[Wind] ✓ requestIdleCallback polyfill installed",
+			"[Wind] ✓ requestIdleCallback polyfill installed",
 		);
 	}
 
@@ -290,7 +290,7 @@ function InstallBrowserAPIPolyfills(): void {
 			clearTimeout(id as unknown as ReturnType<typeof setTimeout>);
 		};
 		console.log(
-			"[Wind] ✓ cancelIdleCallback polyfill installed",
+			"[Wind] ✓ cancelIdleCallback polyfill installed",
 		);
 	}
 }

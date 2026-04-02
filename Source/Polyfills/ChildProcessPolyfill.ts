@@ -745,7 +745,7 @@ export function installChildProcessPolyfill(): void {
 		(window as any).vscode.childProcess = childProcess;
 	}
 
-	console.log("[ChildProcessPolyfill] ✓ Node.js child_process module polyfill installed");
+	console.log("[ChildProcessPolyfill] ✓ Node.js child_process module polyfill installed");
 }
 
 // Get process from global (for exec path, etc.)

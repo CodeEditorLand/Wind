@@ -690,7 +690,7 @@ export async function installSharedProcessProxy(): Promise<void> {
 		UpdateService,
 	};
 
-	console.log("[SharedProcessProxy] ✓ Shared process proxy installed");
+	console.log("[SharedProcessProxy] ✓ Shared process proxy installed");
 }
 
 // ============================================================================

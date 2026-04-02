@@ -692,7 +692,7 @@ export function installFileSystemPolyfill(): void {
 		(window as any).vscode.fs = fs;
 	}
 
-	console.log("[FileSystemPolyfill] ✓ Node.js fs module polyfill installed");
+	console.log("[FileSystemPolyfill] ✓ Node.js fs module polyfill installed");
 }
 
 /**

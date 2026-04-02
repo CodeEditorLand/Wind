@@ -232,7 +232,7 @@ class IPCRendererImpl implements IpcRenderer {
 	 */
 	sendSync(_channel: string, ..._args: unknown[]): unknown {
 		console.warn(
-			`[IPCRendererShim] ⚠️ sendSync is not supported in Tauri. Use invoke() instead. Returning undefined.`
+			`[IPCRendererShim] ⚠️ sendSync is not supported in Tauri. Use invoke() instead. Returning undefined.`
 		);
 		return undefined;
 	}
@@ -438,13 +438,13 @@ export function installIPCRendererShim(): void {
 	// Attach to window.vscode if available
 	if (typeof (window as unknown as { vscode?: Record<string, unknown> }).vscode !== "undefined") {
 		(window as unknown as { vscode?: { ipcRenderer?: IpcRenderer } }).vscode!.ipcRenderer = ipcRenderer;
-		console.log("[IPCRendererShim] ✓ IPCRenderer attached to window.vscode");
+		console.log("[IPCRendererShim] ✓ IPCRenderer attached to window.vscode");
 	}
 
 	// Also make available globally for easier access
 	(window as unknown as { __IPC_RENDERER__?: IpcRenderer }).__IPC_RENDERER__ = ipcRenderer;
 
-	console.log("[IPCRendererShim] ✓ Electron IPC renderer polyfill installed");
+	console.log("[IPCRendererShim] ✓ Electron IPC renderer polyfill installed");
 }
 
 // ============================================================================
