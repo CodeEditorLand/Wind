@@ -36,9 +36,12 @@ Land
 </td>
 </tr>
 </table>
+
 ---
 
-# **Wind** 🍃 The Breath of Land: VSCode Environment & Services for Tauri
+# **Wind** 🍃
+
+The Breath of Land: VSCode Environment & Services for Tauri
 
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://github.com/CodeEditorLand/Wind/tree/Current/LICENSE)
 [![NPM Version](https://img.shields.io/npm/v/@codeeditorland/wind.svg)](https://www.npmjs.com/package/@codeeditorland/wind)
@@ -47,40 +50,39 @@ Land
 
 Welcome to **Wind**! This element is the vital **Effect-TS native service
 layer** that allows `Sky` (Land's VSCode-based UI) to breathe and function
-within the **Tauri** shell. **Wind** meticulously recreates essential parts of
-the VSCode renderer environment, provides robust implementations of core
-services (like file dialogs and configuration), and integrates seamlessly with
-the `Mountain` backend via Tauri APIs. It replaces Electron-based
-implementations with high-performance, OS-native equivalents, all underpinned by
-**Effect-TS** for resilience and type safety.
+within the **Tauri** shell. **Wind** recreates essential parts of the VSCode
+renderer environment, provides robust implementations of core services (like
+file dialogs and configuration), and integrates seamlessly with the `Mountain`
+backend via Tauri APIs. It replaces Electron-based implementations with
+high-performance, OS-native equivalents, all underpinned by **Effect-TS** for
+resilience and type safety.
 
 **Wind** is engineered to:
 
 1. **Emulate the VSCode Sandbox:** Through a sophisticated
    [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)
    script, it shims critical Electron and Node.js APIs that VSCode's workbench
-   code expects, creating a compatible execution context. 2. **Implement Core
-   VSCode Services:** It provides frontend implementations for key VSCode
-   services via
+   code expects, creating a compatible execution context.
+2. **Implement Core VSCode Services:** It provides frontend implementations for
+   key VSCode services via
    [`Polyfills/NativeModulePolyfill.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Polyfills/NativeModulePolyfill.ts),
-   leveraging `Effect-TS` for highly reliable, composable, and maintainable
-   logic.
-2. **Integrate with Tauri & Native Capabilities:** It offers a clean abstraction
+   leveraging `Effect-TS` for reliable, composable, and maintainable logic.
+3. **Integrate with Tauri & Native Capabilities:** It offers a clean abstraction
    layer over Tauri APIs for file operations, dialogs, and OS information,
    making them accessible in a type-safe way through Effect-based wrappers.
 
 ---
 
-## Key Features 🔐
+## Key Features 🔐
 
 - **Native Dialog Experience:** Implements dialog services for File Open/Save
   dialogs using Tauri's native OS dialogs via
   [`Polyfills/NativeModulePolyfill.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Polyfills/NativeModulePolyfill.ts).
-    - **VSCode Environment Compliance:** A sophisticated
-      [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)
-      script establishes the crucial `window.vscode` global object, shimming
-      `ipcRenderer` and `process` to bridge the gap between the VSCode workbench
-      code and the Tauri runtime.
+- **VSCode Environment Compliance:** A sophisticated
+  [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)
+  script establishes the crucial `window.vscode` global object, shimming
+  `ipcRenderer` and `process` to bridge the gap between the VSCode workbench
+  code and the Tauri runtime.
 - **Effect-TS Powered Architecture:** Employs `Effect` for all asynchronous
   operations and service logic, ensuring that all potential failures are
   explicitly handled as typed, tagged errors for maximum robustness.
@@ -105,19 +107,19 @@ implementations with high-performance, OS-native equivalents, all underpinned by
 
 ---
 
-## Deep Dive & Component Breakdown 🔬
+## Deep Dive & Component Breakdown 🔬
 
 The `Wind` architecture centers around the
 [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)
 script which sets up the VSCode compatibility layer, and the
 [`Effect/`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Effect/)
-directory which contains all Effect-TS based services. See the
+directory which contains all Effect-TS based services. See
 [`Effect/index.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Effect/index.ts)
 for the complete module exports and layer compositions.
 
 ---
 
-## `Wind` in the Land Ecosystem 🍃 + 🏞️
+## `Wind` in the Land Ecosystem 🍃 + 🏞️
 
 This diagram illustrates `Wind`'s central role between `Sky` (the UI) and the
 Tauri/`Mountain` (backend) environment.
@@ -158,7 +160,7 @@ TauriAPIs -- Communicates with --> MountainBackend;
 
 ---
 
-## Project Structure Overview 🗺️
+## Project Structure Overview 🗺️
 
 The `Wind` repository is organized to clearly separate concerns:
 
@@ -194,9 +196,9 @@ Wind/
 
 ---
 
-## Getting Started 🚀
+## Getting Started 🚀
 
-### Installation 📥
+### Installation 📥
 
 ```sh
 pnpm add @codeeditorland/wind
@@ -211,7 +213,7 @@ pnpm add @codeeditorland/wind
 - VSCode platform code (e.g., `vs/base`, `vs/platform`), typically sourced from
   the `Land/Dependency` submodule.
 
-### Usage 🚀
+### Usage 🚀
 
 `Wind` is primarily integrated via its
 [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)
@@ -276,9 +278,11 @@ Runtime.runPromise(AppRuntime, invokeEffect);
 ## License ⚖️
 
 This project is released into the public domain under the **Creative Commons CC0
-Universal** license. You are free to use, modify, distribute, and build upon
-this work for any purpose, without any restrictions. For the full legal text,
-see the [`LICENSE`](https://github.com/CodeEditorLand/Wind/tree/Current/) file.
+Universal** license.
+
+You are free to use, modify, distribute, and build upon this work for any
+purpose, without any restrictions. For the full legal text, see the
+[`LICENSE`](https://github.com/CodeEditorLand/Wind/tree/Current/) file.
 
 ---
 
@@ -297,6 +301,11 @@ through [NGI0 Commons Fund](https://NLnet.NL/commonsfund), a fund established by
 [NLnet](https://NLnet.NL) with financial support from the European Commission's
 [Next Generation Internet](https://ngi.eu) program. Learn more at the
 [NLnet project page](https://NLnet.NL/project/Land).
+
+The project is operated by PlayForm, based in Sofia, Bulgaria.
+
+PlayForm acts as the open-source steward for Code Editor Land under the NGI0
+Commons Fund grant.
 
 <table>
 	<thead>
