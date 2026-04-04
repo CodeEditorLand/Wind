@@ -45,8 +45,8 @@ The Breath of Land: VSCode Environment & Services for Tauri
 
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://github.com/CodeEditorLand/Wind/tree/Current/LICENSE)
 [![NPM Version](https://img.shields.io/npm/v/@codeeditorland/wind.svg)](https://www.npmjs.com/package/@codeeditorland/wind)
-[![Tauri API Version](https://img.shields.io/badge/Tauri_API-v2.10.1-blue.svg)](https://www.npmjs.com/package/@tauri-apps/api)
-[![Effect Version](https://img.shields.io/badge/Effect-v3.19.18-blueviolet.svg)](https://www.npmjs.com/package/effect)
+[<img src="https://cdn.simpleicons.org/tauri/24C8D8" width="14" alt="Tauri" />](https://tauri.app/)&#x2001;[![Tauri API Version](https://img.shields.io/badge/Tauri_API-v2.10.1-blue.svg)](https://www.npmjs.com/package/@tauri-apps/api)
+[<img src="https://cdn.simpleicons.org/effect" width="14" alt="Effect-TS" />](https://effect.website/)&#x2001;[![Effect Version](https://img.shields.io/badge/Effect-v3.19.18-blueviolet.svg)](https://www.npmjs.com/package/effect)
 
 Welcome to **Wind**! This element is the vital **Effect-TS native service
 layer** that allows `Sky` (Land's VSCode-based UI) to breathe and function
