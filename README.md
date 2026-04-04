@@ -294,6 +294,15 @@ history of changes specific to **Wind**.
 
 ---
 
+
+## See Also
+
+- [Architecture Overview](https://editor.land/Doc/architecture)
+- [Cocoon](https://github.com/CodeEditorLand/Cocoon)
+- [Sky](https://github.com/CodeEditorLand/Sky)
+- [Mountain](https://github.com/CodeEditorLand/Mountain)
+- [Worker](https://github.com/CodeEditorLand/Worker)
+
 ## Funding & Acknowledgements 🙏🏻
 
 **Wind** is a core element of the **Land** ecosystem. This project is funded
