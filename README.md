@@ -57,19 +57,16 @@ backend via Tauri APIs. It replaces Electron-based implementations with
 high-performance, OS-native equivalents, all underpinned by **Effect-TS** for
 resilience and type safety.
 
-**Wind** is engineered to:
+**What Wind gives you:**
 
-1. **Emulate the VSCode Sandbox:** Through a sophisticated
-   [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)
-   script, it shims critical Electron and Node.js APIs that VSCode's workbench
-   code expects, creating a compatible execution context.
-2. **Implement Core VSCode Services:** It provides frontend implementations for
-   key VSCode services via
-   [`Polyfills/NativeModulePolyfill.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Polyfills/NativeModulePolyfill.ts),
-   leveraging `Effect-TS` for reliable, composable, and maintainable logic.
-3. **Integrate with Tauri & Native Capabilities:** It offers a clean abstraction
-   layer over Tauri APIs for file operations, dialogs, and OS information,
-   making them accessible in a type-safe way through Effect-based wrappers.
+1. **VS Code workbench, without Electron.** Wind shims the Electron and Node.js
+   APIs that VS Code's workbench expects. The existing code runs unmodified in
+   Tauri's webview.
+2. **Type-safe services with Effect-TS.** Every workbench service (file dialogs,
+   configuration, output channels) is a composable `Layer`. Errors are typed,
+   dependencies are explicit, and everything is testable.
+3. **Native OS integration.** File dialogs, clipboard, and OS info use Tauri
+   native APIs. No Electron IPC proxy, no renderer-to-main roundtrip.
 
 ---
 
