@@ -23,6 +23,11 @@ import { ActivityBarLive } from "../ActivityBar.js";
 import { PanelLive } from "../Panel.js";
 import { SidebarLive } from "../Sidebar.js";
 import { StatusBarLive } from "../StatusBar.js";
+import { LiveCommandsServiceLayer as CommandsLive } from "../Commands/Commands.js";
+import { LiveFilesServiceLayer as FilesLive } from "../Files/Files.js";
+import { LiveLanguageServiceLayer as LanguageLive } from "../Language/Language.js";
+import { LiveExtensionsServiceLayer as ExtensionsLive } from "../Extensions/Extensions.js";
+import { LiveEditorServiceLayer as EditorLive } from "../Editor/Editor.js";
 
 // ============================================================================
 // Base Tauri Layer (without config sync)
@@ -48,6 +53,12 @@ export const TauriBaseLayer = Layer.empty.pipe(
 	Layer.provide(PanelLive),
 	Layer.provide(SidebarLive),
 	Layer.provide(StatusBarLive),
+	// Editor service layers (depend on CommandsLive / IPC)
+	Layer.provide(CommandsLive),
+	Layer.provide(FilesLive),
+	Layer.provide(LanguageLive),
+	Layer.provide(ExtensionsLive),
+	Layer.provide(EditorLive),
 );
 
 // ============================================================================
@@ -74,6 +85,12 @@ export const TauriLiveLayer = Layer.empty.pipe(
 	Layer.provide(PanelLive),
 	Layer.provide(SidebarLive),
 	Layer.provide(StatusBarLive),
+	// Editor service layers (depend on CommandsLive / IPC)
+	Layer.provide(CommandsLive),
+	Layer.provide(FilesLive),
+	Layer.provide(LanguageLive),
+	Layer.provide(ExtensionsLive),
+	Layer.provide(EditorLive),
 );
 
 // ============================================================================
