@@ -28,6 +28,9 @@ import { LiveFilesServiceLayer as FilesLive } from "../Files/Files.js";
 import { LiveLanguageServiceLayer as LanguageLive } from "../Language/Language.js";
 import { LiveExtensionsServiceLayer as ExtensionsLive } from "../Extensions/Extensions.js";
 import { LiveEditorServiceLayer as EditorLive } from "../Editor/Editor.js";
+import { LiveTerminalServiceLayer as TerminalLive } from "../Terminal/Terminal.js";
+import { LiveOutputServiceLayer as OutputLive } from "../Output/Output.js";
+import { default as LiveTextFileServiceLayer } from "../TextFile/Live.js";
 
 // ============================================================================
 // Base Tauri Layer (without config sync)
@@ -59,6 +62,10 @@ export const TauriBaseLayer = Layer.empty.pipe(
 	Layer.provide(LanguageLive),
 	Layer.provide(ExtensionsLive),
 	Layer.provide(EditorLive),
+	// Tier 2 service layers
+	Layer.provide(TerminalLive),
+	Layer.provide(OutputLive),
+	Layer.provide(LiveTextFileServiceLayer),
 );
 
 // ============================================================================
@@ -91,6 +98,10 @@ export const TauriLiveLayer = Layer.empty.pipe(
 	Layer.provide(LanguageLive),
 	Layer.provide(ExtensionsLive),
 	Layer.provide(EditorLive),
+	// Tier 2 service layers
+	Layer.provide(TerminalLive),
+	Layer.provide(OutputLive),
+	Layer.provide(LiveTextFileServiceLayer),
 );
 
 // ============================================================================
