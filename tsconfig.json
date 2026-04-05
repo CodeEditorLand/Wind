@@ -92,7 +92,7 @@
 			}
 		],
 
-		"rootDir": ".",
+		"rootDir": "./Source",
 
 		"skipLibCheck": true,
 
