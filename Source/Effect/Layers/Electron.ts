@@ -26,13 +26,12 @@ import { TelemetryLive } from "../Telemetry.js";
  *
  * Use this when you need manual control over configuration sync.
  */
-export const ElectronBaseLayer = Layer.empty.pipe(
-	Layer.provide(SandboxLive),
-	Layer.provide(IPCElectronLive),
-	Layer.provide(TelemetryLive),
-	Layer.provide(ConfigurationLive),
-	Layer.provide(MountainLive),
-);
+export const ElectronBaseLayer = Layer.empty
+	.pipe(Layer.provideMerge(SandboxLive))
+	.pipe(Layer.provideMerge(IPCElectronLive))
+	.pipe(Layer.provideMerge(TelemetryLive))
+	.pipe(Layer.provideMerge(ConfigurationLive))
+	.pipe(Layer.provideMerge(MountainLive));
 
 // ============================================================================
 // Full Electron Layer (with auto config sync)
@@ -44,13 +43,12 @@ export const ElectronBaseLayer = Layer.empty.pipe(
  *
  * This is the standard layer for Sky (Electron) builds.
  */
-export const ElectronLiveLayer = Layer.empty.pipe(
-	Layer.provide(SandboxLive),
-	Layer.provide(IPCElectronLive),
-	Layer.provide(TelemetryLive),
-	Layer.provide(ConfigurationWithSyncLive),
-	Layer.provide(MountainLive),
-);
+export const ElectronLiveLayer = Layer.empty
+	.pipe(Layer.provideMerge(SandboxLive))
+	.pipe(Layer.provideMerge(IPCElectronLive))
+	.pipe(Layer.provideMerge(TelemetryLive))
+	.pipe(Layer.provideMerge(ConfigurationWithSyncLive))
+	.pipe(Layer.provideMerge(MountainLive));
 
 // ============================================================================
 // Electron Development Layer (with verbose logging)
@@ -60,13 +58,12 @@ export const ElectronLiveLayer = Layer.empty.pipe(
  * Electron layer with maximum telemetry and logging.
  * Useful for debugging and development in Electron environment.
  */
-export const ElectronDevLayer = Layer.empty.pipe(
-	Layer.provide(SandboxLive),
-	Layer.provide(IPCElectronLive),
-	Layer.provide(TelemetryLive),
-	Layer.provide(ConfigurationWithSyncLive),
-	Layer.provide(MountainLive),
-);
+export const ElectronDevLayer = Layer.empty
+	.pipe(Layer.provideMerge(SandboxLive))
+	.pipe(Layer.provideMerge(IPCElectronLive))
+	.pipe(Layer.provideMerge(TelemetryLive))
+	.pipe(Layer.provideMerge(ConfigurationWithSyncLive))
+	.pipe(Layer.provideMerge(MountainLive));
 
 // Export default for convenience
 export default ElectronLiveLayer;

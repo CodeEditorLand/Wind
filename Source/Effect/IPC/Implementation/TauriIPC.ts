@@ -48,11 +48,21 @@ export const TauriIPCLive = Effect.gen(function* () {
 		invoke: (channel: string) => (args: ReadonlyArray<unknown>) =>
 			Effect.tryPromise({
 				try: () => {
-					const invokeArgs: InvokeArgs | undefined =
-						args.length === 1
-							? (args[0] as InvokeArgs)
-							: (args as unknown as InvokeArgs);
-					return tauriInvoke(channel, invokeArgs);
+					// All Wind IPC calls route through the single MountainIPCInvoke
+					// Tauri command (registered as "mountain_ipc_invoke").
+					// Mountain receives: method = channel name, params = args array.
+					// Send as array so Mountain can always destructure positionally.
+					// Single-element arrays are preserved; empty stays [].
+					const params: unknown =
+						args.length === 0
+							? []
+							: args.length === 1
+								? args[0]
+								: Array.from(args);
+					return tauriInvoke("mountain_ipc_invoke", {
+						method: channel,
+						params,
+					});
 				},
 				catch: (error) => CreateIPCInvokeError(channel, error),
 			}),

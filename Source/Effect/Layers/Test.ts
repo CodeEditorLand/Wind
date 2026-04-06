@@ -21,13 +21,12 @@ import { TelemetryLive, TelemetryMockLive } from "../Telemetry.js";
  * Complete test layer with all services mocked.
  * No real backend connections, all effects succeed with dummy data.
  */
-export const TestLayer = Layer.empty.pipe(
-	Layer.provide(SandboxMockLive),
-	Layer.provide(IPCMockLive),
-	Layer.provide(ConfigurationMock),
-	Layer.provide(TelemetryMockLive),
-	Layer.provide(MountainMockLive),
-);
+export const TestLayer = Layer.empty
+	.pipe(Layer.provideMerge(SandboxMockLive))
+	.pipe(Layer.provideMerge(IPCMockLive))
+	.pipe(Layer.provideMerge(ConfigurationMock))
+	.pipe(Layer.provideMerge(TelemetryMockLive))
+	.pipe(Layer.provideMerge(MountainMockLive));
 
 // ============================================================================
 // Test Layer with Real Telemetry
@@ -37,13 +36,12 @@ export const TestLayer = Layer.empty.pipe(
  * Test layer with real telemetry but mocked services.
  * Useful for testing performance monitoring.
  */
-export const TestWithTelemetryLayer = Layer.empty.pipe(
-	Layer.provide(SandboxMockLive),
-	Layer.provide(IPCMockLive),
-	Layer.provide(ConfigurationMock),
-	Layer.provide(TelemetryLive),
-	Layer.provide(MountainMockLive),
-);
+export const TestWithTelemetryLayer = Layer.empty
+	.pipe(Layer.provideMerge(SandboxMockLive))
+	.pipe(Layer.provideMerge(IPCMockLive))
+	.pipe(Layer.provideMerge(ConfigurationMock))
+	.pipe(Layer.provideMerge(TelemetryLive))
+	.pipe(Layer.provideMerge(MountainMockLive));
 
 // Export default for convenience
 export default TestLayer;
