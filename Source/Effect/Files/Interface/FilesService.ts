@@ -12,9 +12,7 @@ export interface FilesService {
 		uri: string,
 		content: Uint8Array,
 	) => Effect.Effect<void, FilesProblem>;
-	readonly Stat: (
-		uri: string,
-	) => Effect.Effect<
+	readonly Stat: (uri: string) => Effect.Effect<
 		{
 			readonly type: number;
 			readonly size: number;

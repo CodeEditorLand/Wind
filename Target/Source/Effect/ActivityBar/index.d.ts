@@ -1,3 +1,5 @@
+import { ActivityBarTag } from "./Tag/ActivityBarTag.js";
+
 /**
  * @module Effect/ActivityBar
  * @description
@@ -26,12 +28,25 @@
  */
 export { default as ActivityBarItemNotFoundError } from "./Error/ActivityBarItemNotFoundError.js";
 export { default as ActivityBarUpdateError } from "./Error/ActivityBarUpdateError.js";
-export type { ActivityBarBadge, ActivityBarItem, CreateActivityBarItem } from "./Type/ActivityBarType.js";
+export type {
+	ActivityBarBadge,
+	ActivityBarItem,
+	CreateActivityBarItem,
+} from "./Type/ActivityBarType.js";
 export type { ActivityBarService } from "./Interface/ActivityBarService.js";
 export { ActivityBarTag } from "./Tag/ActivityBarTag.js";
-export { MakeCreateItem, MakeUpdateItem, MakeRemoveItem, MakeGetItem, MakeSetActiveItem, MakeSetBadge, MakeGetBadge, GenerateItemId, } from "./Implementation/ActivityBarHelper.js";
+export {
+	MakeCreateItem,
+	MakeUpdateItem,
+	MakeRemoveItem,
+	MakeGetItem,
+	MakeSetActiveItem,
+	MakeSetBadge,
+	MakeGetBadge,
+	GenerateItemId,
+} from "./Implementation/ActivityBarHelper.js";
 export { ActivityBarLive } from "./Implementation/ActivityBarImplementation.js";
 export { ActivityBarMockLive } from "./Layer/ActivityBarMock.js";
-import { ActivityBarTag } from "./Tag/ActivityBarTag.js";
+
 export { ActivityBarTag as ActivityBar };
 //# sourceMappingURL=index.d.ts.map

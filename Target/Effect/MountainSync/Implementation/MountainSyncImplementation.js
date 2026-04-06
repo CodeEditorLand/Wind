@@ -1,1 +1,97 @@
-import{Effect as n,Fiber as d}from"effect";import f from"./MountainSyncHelper.js";const m={enabled:!0,syncIntervalMs:5e3,autoRetry:!0,maxRetries:3,batchSize:100},p=(y,s,t)=>{let o=null,e="idle",r=0,u=0,a=0,l=0,S=0;return{start:g=>n.gen(function*(){const c={...m,...g};if(!c.enabled){yield*t.log("info","[MountainSync] Sync disabled in config");return}yield*t.log("info",`[MountainSync] Starting sync with ${c.syncIntervalMs}ms interval`),e="syncing",o=yield*n.gen(function*(){yield*n.forever(n.gen(function*(){yield*n.sleep(`${c.syncIntervalMs} millis`);const i=yield*f(y,s,t);r=Date.now(),u++,S+=i.itemsSynced,i.success?(a++,yield*t.log("info",`[MountainSync] Synced ${i.itemsSynced} items in ${i.duration}ms`)):c.autoRetry&&(l++,yield*t.log("warn",`[MountainSync] Sync failed, will retry: ${i.error?.message}`))}))}).pipe(n.fork)}),stop:()=>n.gen(function*(){o&&(yield*d.interrupt(o),o=null,e="idle",yield*t.log("info","[MountainSync] Stopped"))}),syncNow:()=>f(y,s,t),getStatus:()=>n.sync(()=>e),getStats:()=>n.gen(function*(){return{lastSyncTime:r,syncCount:u,successCount:a,errorCount:l,itemsSynced:S}}),pause:()=>n.gen(function*(){e="paused",yield*t.log("info","[MountainSync] Pausing...")}),resume:()=>n.gen(function*(){e="syncing",yield*t.log("info","[MountainSync] Resuming...")})}};var v=p;export{v as default};
+import { Fiber as d, Effect as n } from "effect";
+
+import f from "./MountainSyncHelper.js";
+
+const m = {
+		enabled: !0,
+		syncIntervalMs: 5e3,
+		autoRetry: !0,
+		maxRetries: 3,
+		batchSize: 100,
+	},
+	p = (y, s, t) => {
+		let o = null,
+			e = "idle",
+			r = 0,
+			u = 0,
+			a = 0,
+			l = 0,
+			S = 0;
+		return {
+			start: (g) =>
+				n.gen(function* () {
+					const c = { ...m, ...g };
+					if (!c.enabled) {
+						yield* t.log(
+							"info",
+							"[MountainSync] Sync disabled in config",
+						);
+						return;
+					}
+					(yield* t.log(
+						"info",
+						`[MountainSync] Starting sync with ${c.syncIntervalMs}ms interval`,
+					),
+						(e = "syncing"),
+						(o = yield* n
+							.gen(function* () {
+								yield* n.forever(
+									n.gen(function* () {
+										yield* n.sleep(
+											`${c.syncIntervalMs} millis`,
+										);
+										const i = yield* f(y, s, t);
+										((r = Date.now()),
+											u++,
+											(S += i.itemsSynced),
+											i.success
+												? (a++,
+													yield* t.log(
+														"info",
+														`[MountainSync] Synced ${i.itemsSynced} items in ${i.duration}ms`,
+													))
+												: c.autoRetry &&
+													(l++,
+													yield* t.log(
+														"warn",
+														`[MountainSync] Sync failed, will retry: ${i.error?.message}`,
+													)));
+									}),
+								);
+							})
+							.pipe(n.fork)));
+				}),
+			stop: () =>
+				n.gen(function* () {
+					o &&
+						(yield* d.interrupt(o),
+						(o = null),
+						(e = "idle"),
+						yield* t.log("info", "[MountainSync] Stopped"));
+				}),
+			syncNow: () => f(y, s, t),
+			getStatus: () => n.sync(() => e),
+			getStats: () =>
+				n.gen(function* () {
+					return {
+						lastSyncTime: r,
+						syncCount: u,
+						successCount: a,
+						errorCount: l,
+						itemsSynced: S,
+					};
+				}),
+			pause: () =>
+				n.gen(function* () {
+					((e = "paused"),
+						yield* t.log("info", "[MountainSync] Pausing..."));
+				}),
+			resume: () =>
+				n.gen(function* () {
+					((e = "syncing"),
+						yield* t.log("info", "[MountainSync] Resuming..."));
+				}),
+		};
+	};
+var v = p;
+export { v as default };

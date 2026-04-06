@@ -16,5 +16,24 @@
  * import { ActivityBar, ActivityBarLive } from "./Effect/ActivityBar/index.js";
  * ```
  */
-export { ActivityBarItemNotFoundError, ActivityBarUpdateError, type ActivityBarBadge, type ActivityBarItem, type CreateActivityBarItem, type ActivityBarService, ActivityBarTag, ActivityBar, MakeCreateItem, MakeUpdateItem, MakeRemoveItem, MakeGetItem, MakeSetActiveItem, MakeSetBadge, MakeGetBadge, GenerateItemId, ActivityBarLive, ActivityBarMockLive, } from "./ActivityBar/index.js";
+export {
+	ActivityBarItemNotFoundError,
+	ActivityBarUpdateError,
+	type ActivityBarBadge,
+	type ActivityBarItem,
+	type CreateActivityBarItem,
+	type ActivityBarService,
+	ActivityBarTag,
+	ActivityBar,
+	MakeCreateItem,
+	MakeUpdateItem,
+	MakeRemoveItem,
+	MakeGetItem,
+	MakeSetActiveItem,
+	MakeSetBadge,
+	MakeGetBadge,
+	GenerateItemId,
+	ActivityBarLive,
+	ActivityBarMockLive,
+} from "./ActivityBar/index.js";
 //# sourceMappingURL=ActivityBar.d.ts.map

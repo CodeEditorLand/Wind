@@ -1,1 +1,178 @@
-import{Effect as o}from"effect";import"../../Environment/index.js";import{EnvironmentTag as i}from"../../Environment/index.js";import{Telemetry as n,withSpan as a}from"../../Telemetry.js";import{Sandbox as s}from"../../Sandbox.js";import{Configuration as l}from"../../Configuration.js";import{MountainTag as c}from"../../Mountain.js";import{HealthTag as g}from"../../Health.js";const u=a("stage0_environment",o.gen(function*(){const e=yield*n,r=yield*i;e.log("info","[Bootstrap] Stage 0: Detecting environment...");const t=yield*r.getInfo;return e.log("info",`[Bootstrap] Environment: ${t.platform}/${t.architecture}`),e.log("info",`[Bootstrap] Locale: ${t.locale}, Timezone: ${t.timezone}`),{stageName:"Environment",success:!0,duration:0,error:void 0}})),d=a("stage1_preload",o.gen(function*(){const e=yield*n,r=yield*s;return e.log("info","[Bootstrap] Stage 1: Waiting for preload..."),yield*r.awaitReady,e.log("info","[Bootstrap] Preload ready, globals available"),{stageName:"Preload",success:!0,duration:0,error:void 0}})),f=a("stage2_configuration",o.gen(function*(){const e=yield*n;return yield*(yield*l).get,e.log("info","[Bootstrap] Stage 2: Loading configuration..."),e.log("info","[Bootstrap] Configuration applied"),{stageName:"Configuration",success:!0,duration:0,error:void 0}})),p=a("stage3_services",o.gen(function*(){const e=yield*n;return e.log("info","[Bootstrap] Stage 3: Connecting to Mountain backend..."),yield*(yield*c).connect,e.log("info","[Bootstrap] Mountain connected"),{stageName:"Services",success:!0,duration:0,error:void 0}})),m=a("stage4_preparation",o.gen(function*(){const e=yield*n;return e.log("info","[Bootstrap] Stage 4: Preparing workbench resources..."),e.log("info","[Bootstrap] Workbench resources prepared"),{stageName:"Preparation",success:!0,duration:0,error:void 0}})),y=a("stage5_initialization",o.gen(function*(){const e=yield*n;return e.log("info","[Bootstrap] Stage 5: Initializing VSCode workbench..."),e.log("info","[Bootstrap] VSCode workbench initialized"),yield*o.sync(()=>{window.dispatchEvent(new CustomEvent("vscode-wind-bootstrap-complete",{detail:{success:!0}}))}),{stageName:"Initialization",success:!0,duration:0,error:void 0}})),h=a("stage6_healthcheck",o.gen(function*(){const e=yield*n,r=yield*g;e.log("info","[Bootstrap] Stage 6: Running health checks...");const t=yield*r.checkAllServices();return e.log("info",`[Bootstrap] Health check result: ${t.overallStatus}`),t.overallStatus==="unhealthy"&&e.log("error","[Bootstrap] Some services are unhealthy!"),{stageName:"HealthCheck",success:t.overallStatus!=="unhealthy",duration:0,error:void 0}}));var R={stage0_Environment:u,stage1_Preload:d,stage2_Configuration:f,stage3_Services:p,stage4_Preparation:m,stage5_Initialization:y,stage6_HealthCheck:h};export{R as default,u as stage0_Environment,d as stage1_Preload,f as stage2_Configuration,p as stage3_Services,m as stage4_Preparation,y as stage5_Initialization,h as stage6_HealthCheck};
+import { Effect as o } from "effect";
+
+import "../../Environment/index.js";
+
+import { Configuration as l } from "../../Configuration.js";
+import { EnvironmentTag as i } from "../../Environment/index.js";
+import { HealthTag as g } from "../../Health.js";
+import { MountainTag as c } from "../../Mountain.js";
+import { Sandbox as s } from "../../Sandbox.js";
+import { withSpan as a, Telemetry as n } from "../../Telemetry.js";
+
+const u = a(
+		"stage0_environment",
+		o.gen(function* () {
+			const e = yield* n,
+				r = yield* i;
+			e.log("info", "[Bootstrap] Stage 0: Detecting environment...");
+			const t = yield* r.getInfo;
+			return (
+				e.log(
+					"info",
+					`[Bootstrap] Environment: ${t.platform}/${t.architecture}`,
+				),
+				e.log(
+					"info",
+					`[Bootstrap] Locale: ${t.locale}, Timezone: ${t.timezone}`,
+				),
+				{
+					stageName: "Environment",
+					success: !0,
+					duration: 0,
+					error: void 0,
+				}
+			);
+		}),
+	),
+	d = a(
+		"stage1_preload",
+		o.gen(function* () {
+			const e = yield* n,
+				r = yield* s;
+			return (
+				e.log("info", "[Bootstrap] Stage 1: Waiting for preload..."),
+				yield* r.awaitReady,
+				e.log("info", "[Bootstrap] Preload ready, globals available"),
+				{
+					stageName: "Preload",
+					success: !0,
+					duration: 0,
+					error: void 0,
+				}
+			);
+		}),
+	),
+	f = a(
+		"stage2_configuration",
+		o.gen(function* () {
+			const e = yield* n;
+			return (
+				yield* (yield* l).get,
+				e.log("info", "[Bootstrap] Stage 2: Loading configuration..."),
+				e.log("info", "[Bootstrap] Configuration applied"),
+				{
+					stageName: "Configuration",
+					success: !0,
+					duration: 0,
+					error: void 0,
+				}
+			);
+		}),
+	),
+	p = a(
+		"stage3_services",
+		o.gen(function* () {
+			const e = yield* n;
+			return (
+				e.log(
+					"info",
+					"[Bootstrap] Stage 3: Connecting to Mountain backend...",
+				),
+				yield* (yield* c).connect,
+				e.log("info", "[Bootstrap] Mountain connected"),
+				{
+					stageName: "Services",
+					success: !0,
+					duration: 0,
+					error: void 0,
+				}
+			);
+		}),
+	),
+	m = a(
+		"stage4_preparation",
+		o.gen(function* () {
+			const e = yield* n;
+			return (
+				e.log(
+					"info",
+					"[Bootstrap] Stage 4: Preparing workbench resources...",
+				),
+				e.log("info", "[Bootstrap] Workbench resources prepared"),
+				{
+					stageName: "Preparation",
+					success: !0,
+					duration: 0,
+					error: void 0,
+				}
+			);
+		}),
+	),
+	y = a(
+		"stage5_initialization",
+		o.gen(function* () {
+			const e = yield* n;
+			return (
+				e.log(
+					"info",
+					"[Bootstrap] Stage 5: Initializing VSCode workbench...",
+				),
+				e.log("info", "[Bootstrap] VSCode workbench initialized"),
+				yield* o.sync(() => {
+					window.dispatchEvent(
+						new CustomEvent("vscode-wind-bootstrap-complete", {
+							detail: { success: !0 },
+						}),
+					);
+				}),
+				{
+					stageName: "Initialization",
+					success: !0,
+					duration: 0,
+					error: void 0,
+				}
+			);
+		}),
+	),
+	h = a(
+		"stage6_healthcheck",
+		o.gen(function* () {
+			const e = yield* n,
+				r = yield* g;
+			e.log("info", "[Bootstrap] Stage 6: Running health checks...");
+			const t = yield* r.checkAllServices();
+			return (
+				e.log(
+					"info",
+					`[Bootstrap] Health check result: ${t.overallStatus}`,
+				),
+				t.overallStatus === "unhealthy" &&
+					e.log("error", "[Bootstrap] Some services are unhealthy!"),
+				{
+					stageName: "HealthCheck",
+					success: t.overallStatus !== "unhealthy",
+					duration: 0,
+					error: void 0,
+				}
+			);
+		}),
+	);
+var R = {
+	stage0_Environment: u,
+	stage1_Preload: d,
+	stage2_Configuration: f,
+	stage3_Services: p,
+	stage4_Preparation: m,
+	stage5_Initialization: y,
+	stage6_HealthCheck: h,
+};
+export {
+	R as default,
+	u as stage0_Environment,
+	d as stage1_Preload,
+	f as stage2_Configuration,
+	p as stage3_Services,
+	m as stage4_Preparation,
+	y as stage5_Initialization,
+	h as stage6_HealthCheck,
+};

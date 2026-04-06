@@ -8,11 +8,17 @@
  * @category Layer
  */
 import { Layer } from "effect";
+
 import { ActivityBarTag } from "../Tag/ActivityBarTag.js";
+
 /**
  * Mock implementation layer for ActivityBar service.
  * Provides simple no-op implementation for testing.
  */
-export declare const ActivityBarMockLive: Layer.Layer<ActivityBarTag, never, never>;
+export declare const ActivityBarMockLive: Layer.Layer<
+	ActivityBarTag,
+	never,
+	never
+>;
 export default ActivityBarMockLive;
 //# sourceMappingURL=ActivityBarMock.d.ts.map

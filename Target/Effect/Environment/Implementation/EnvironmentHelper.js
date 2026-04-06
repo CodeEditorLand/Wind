@@ -1,1 +1,43 @@
-const t=()=>{if(typeof navigator>"u")return"web";const e=navigator.platform?.toLowerCase()||"";return e.includes("win")?"win32":e.includes("mac")?"darwin":e.includes("linux")||e.includes("ubuntu")?"linux":"web"},r=()=>{if(typeof navigator>"u")return"web";const e=navigator.userAgent.toLowerCase();return e.includes("arm")||e.includes("aarch64")?"arm64":"x64"},n=()=>typeof navigator>"u"?"en-US":navigator.language||"en-US",o=()=>{try{return Intl.DateTimeFormat().resolvedOptions().timeZone||"UTC"}catch{return"UTC"}},i=()=>typeof navigator>"u"?"Unknown":navigator.userAgent||"Unknown",a={DetectPlatform:t,DetectArchitecture:r,DetectLocale:n,DetectTimezone:o,GetUserAgent:i};var u=a;export{r as DetectArchitecture,n as DetectLocale,t as DetectPlatform,o as DetectTimezone,i as GetUserAgent,u as default};
+const t = () => {
+		if (typeof navigator > "u") return "web";
+		const e = navigator.platform?.toLowerCase() || "";
+		return e.includes("win")
+			? "win32"
+			: e.includes("mac")
+				? "darwin"
+				: e.includes("linux") || e.includes("ubuntu")
+					? "linux"
+					: "web";
+	},
+	r = () => {
+		if (typeof navigator > "u") return "web";
+		const e = navigator.userAgent.toLowerCase();
+		return e.includes("arm") || e.includes("aarch64") ? "arm64" : "x64";
+	},
+	n = () =>
+		typeof navigator > "u" ? "en-US" : navigator.language || "en-US",
+	o = () => {
+		try {
+			return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+		} catch {
+			return "UTC";
+		}
+	},
+	i = () =>
+		typeof navigator > "u" ? "Unknown" : navigator.userAgent || "Unknown",
+	a = {
+		DetectPlatform: t,
+		DetectArchitecture: r,
+		DetectLocale: n,
+		DetectTimezone: o,
+		GetUserAgent: i,
+	};
+var u = a;
+export {
+	r as DetectArchitecture,
+	n as DetectLocale,
+	t as DetectPlatform,
+	o as DetectTimezone,
+	i as GetUserAgent,
+	u as default,
+};

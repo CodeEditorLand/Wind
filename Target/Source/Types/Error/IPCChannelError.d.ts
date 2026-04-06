@@ -9,9 +9,9 @@
  * IPC channel error
  */
 export declare class IPCChannelError extends Error {
-    readonly channel: string;
-    readonly cause: unknown;
-    readonly _tag = "IPCChannelError";
-    constructor(channel: string, cause: unknown);
+	readonly channel: string;
+	readonly cause: unknown;
+	readonly _tag = "IPCChannelError";
+	constructor(channel: string, cause: unknown);
 }
 //# sourceMappingURL=IPCChannelError.d.ts.map

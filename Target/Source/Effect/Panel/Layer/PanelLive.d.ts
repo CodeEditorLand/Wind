@@ -8,7 +8,9 @@
  * @category Layer
  */
 import { Layer } from "effect";
+
 import PanelTag from "../Tag/PanelTag.js";
+
 /**
  * Live layer for Panel service.
  * Provides reactive panel management with SubscriptionRef-based state.
@@ -22,6 +24,10 @@ import PanelTag from "../Tag/PanelTag.js";
  * const appLayer = Layer.mergeAll(TelemetryLive, PanelLive);
  * ```
  */
-declare const PanelLive: Layer.Layer<PanelTag, never, import("../../Telemetry.js").TelemetryTag>;
+declare const PanelLive: Layer.Layer<
+	PanelTag,
+	never,
+	import("../../Telemetry.js").TelemetryTag
+>;
 export default PanelLive;
 //# sourceMappingURL=PanelLive.d.ts.map

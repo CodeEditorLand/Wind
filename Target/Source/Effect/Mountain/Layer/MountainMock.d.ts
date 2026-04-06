@@ -8,7 +8,9 @@
  * @category Layer
  */
 import { Layer } from "effect";
+
 import { MountainTag } from "../Tag/MountainTag.js";
+
 /**
  * Mock implementation layer for Mountain service.
  * Provides simple no-op implementation for testing.

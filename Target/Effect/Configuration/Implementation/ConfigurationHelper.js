@@ -1,1 +1,103 @@
-import{Effect as r}from"effect";import"../../../Types/Sandbox.js";import"../Error/ConfigFetchError.js";import{ConfigValidationError as f}from"../Error/ConfigValidationError.js";import{ConfigApplyError as a}from"../Error/ConfigApplyError.js";const i=n=>{const e=[];if(!n||typeof n!="object")return e.push({path:"",message:"Configuration must be an object"}),e;const o=n;if(o.zoomLevel!==void 0&&(typeof o.zoomLevel!="number"?e.push({path:"zoomLevel",message:"Must be a number"}):(o.zoomLevel<-10||o.zoomLevel>10)&&e.push({path:"zoomLevel",message:"Must be between -10 and 10"})),o.userEnv!==void 0&&typeof o.userEnv!="object"&&e.push({path:"userEnv",message:"Must be an object"}),o.workspace!==void 0)if(typeof o.workspace!="object"||o.workspace===null)e.push({path:"workspace",message:"Must be an object"});else{const t=o.workspace;t.id!==void 0&&typeof t.id!="string"&&e.push({path:"workspace.id",message:"Must be a string"}),t.uri!==void 0&&typeof t.uri!="string"&&e.push({path:"workspace.uri",message:"Must be a string"})}return e},p=()=>n=>r.sync(()=>i(n)).pipe(r.flatMap(e=>e.length>0?r.fail(new f(e.map(o=>`${o.path}: ${o.message}`))):r.succeed(n))),u=()=>n=>r.gen(function*(){if(n.zoomLevel!==void 0&&(yield*r.try({try:()=>{window&&window.vscode&&window.vscode.postMessage({type:"setZoomLevel",payload:n.zoomLevel})},catch:e=>new a("zoomLevel",e)})),n.userEnv)for(const[e,o]of Object.entries(n.userEnv||{}))yield*r.try({try:()=>{typeof process<"u"&&process.env&&(process.env[e]=o)},catch:t=>new a(e,t)})}),c=(n,e)=>{const o=e.split(".");let t=n;for(const s of o)if(t&&typeof t=="object"&&s in t)t=t[s];else return;return t};export{c as GetConfigValue,u as MakeApply,p as MakeValidate,i as ValidateConfiguration};
+import { Effect as r } from "effect";
+
+import "../../../Types/Sandbox.js";
+import "../Error/ConfigFetchError.js";
+
+import { ConfigApplyError as a } from "../Error/ConfigApplyError.js";
+import { ConfigValidationError as f } from "../Error/ConfigValidationError.js";
+
+const i = (n) => {
+		const e = [];
+		if (!n || typeof n != "object")
+			return (
+				e.push({
+					path: "",
+					message: "Configuration must be an object",
+				}),
+				e
+			);
+		const o = n;
+		if (
+			(o.zoomLevel !== void 0 &&
+				(typeof o.zoomLevel != "number"
+					? e.push({ path: "zoomLevel", message: "Must be a number" })
+					: (o.zoomLevel < -10 || o.zoomLevel > 10) &&
+						e.push({
+							path: "zoomLevel",
+							message: "Must be between -10 and 10",
+						})),
+			o.userEnv !== void 0 &&
+				typeof o.userEnv != "object" &&
+				e.push({ path: "userEnv", message: "Must be an object" }),
+			o.workspace !== void 0)
+		)
+			if (typeof o.workspace != "object" || o.workspace === null)
+				e.push({ path: "workspace", message: "Must be an object" });
+			else {
+				const t = o.workspace;
+				(t.id !== void 0 &&
+					typeof t.id != "string" &&
+					e.push({
+						path: "workspace.id",
+						message: "Must be a string",
+					}),
+					t.uri !== void 0 &&
+						typeof t.uri != "string" &&
+						e.push({
+							path: "workspace.uri",
+							message: "Must be a string",
+						}));
+			}
+		return e;
+	},
+	p = () => (n) =>
+		r
+			.sync(() => i(n))
+			.pipe(
+				r.flatMap((e) =>
+					e.length > 0
+						? r.fail(new f(e.map((o) => `${o.path}: ${o.message}`)))
+						: r.succeed(n),
+				),
+			),
+	u = () => (n) =>
+		r.gen(function* () {
+			if (
+				(n.zoomLevel !== void 0 &&
+					(yield* r.try({
+						try: () => {
+							window &&
+								window.vscode &&
+								window.vscode.postMessage({
+									type: "setZoomLevel",
+									payload: n.zoomLevel,
+								});
+						},
+						catch: (e) => new a("zoomLevel", e),
+					})),
+				n.userEnv)
+			)
+				for (const [e, o] of Object.entries(n.userEnv || {}))
+					yield* r.try({
+						try: () => {
+							typeof process < "u" &&
+								process.env &&
+								(process.env[e] = o);
+						},
+						catch: (t) => new a(e, t),
+					});
+		}),
+	c = (n, e) => {
+		const o = e.split(".");
+		let t = n;
+		for (const s of o)
+			if (t && typeof t == "object" && s in t) t = t[s];
+			else return;
+		return t;
+	};
+export {
+	c as GetConfigValue,
+	u as MakeApply,
+	p as MakeValidate,
+	i as ValidateConfiguration,
+};

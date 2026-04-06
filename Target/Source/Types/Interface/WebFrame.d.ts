@@ -9,6 +9,6 @@
  * WebFrame interface
  */
 export interface WebFrame {
-    readonly setZoomLevel: (level: number) => void;
+	readonly setZoomLevel: (level: number) => void;
 }
 //# sourceMappingURL=WebFrame.d.ts.map

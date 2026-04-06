@@ -12,24 +12,24 @@
  * Contains all configurable properties for a status bar item.
  */
 export interface StatusBarItem {
-    /** Unique identifier for the status bar item */
-    readonly id: string;
-    /** Text displayed in the status bar */
-    readonly text: string;
-    /** Alignment of the item within the status bar */
-    readonly alignment: "left" | "right";
-    /** Priority for ordering - lower values appear first */
-    readonly priority: number;
-    /** Text color override */
-    readonly color?: string;
-    /** Background color override */
-    readonly backgroundColor?: string;
-    /** Tooltip text shown on hover */
-    readonly tooltip?: string;
-    /** Command to execute on click */
-    readonly command?: string;
-    /** Icon identifier */
-    readonly icon?: string;
+	/** Unique identifier for the status bar item */
+	readonly id: string;
+	/** Text displayed in the status bar */
+	readonly text: string;
+	/** Alignment of the item within the status bar */
+	readonly alignment: "left" | "right";
+	/** Priority for ordering - lower values appear first */
+	readonly priority: number;
+	/** Text color override */
+	readonly color?: string;
+	/** Background color override */
+	readonly backgroundColor?: string;
+	/** Tooltip text shown on hover */
+	readonly tooltip?: string;
+	/** Command to execute on click */
+	readonly command?: string;
+	/** Icon identifier */
+	readonly icon?: string;
 }
 /**
  * Type for creating a new status bar item.

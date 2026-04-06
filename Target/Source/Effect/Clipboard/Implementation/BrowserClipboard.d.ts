@@ -7,6 +7,7 @@
  * @category Implementation
  */
 import type { ClipboardService } from "../Interface/ClipboardService.js";
+
 /**
  * Live clipboard service for web environments
  * Uses the browser's Clipboard API

@@ -7,9 +7,9 @@
  * @category Error
  */
 export declare class ActivityBarUpdateError extends Error {
-    readonly _tag = "ActivityBarUpdateError";
-    constructor(itemId: string, cause: unknown);
-    get name(): string;
+	readonly _tag = "ActivityBarUpdateError";
+	constructor(itemId: string, cause: unknown);
+	get name(): string;
 }
 export default ActivityBarUpdateError;
 //# sourceMappingURL=ActivityBarUpdateError.d.ts.map

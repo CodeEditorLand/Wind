@@ -1,1 +1,13 @@
-import{Effect as e}from"effect";const i=(o,r,t)=>e.gen(function*(){const n=Date.now();return yield*t.log("info","[MountainSync] Performing sync..."),yield*e.sleep(10),{success:!0,itemsSynced:0,duration:Date.now()-n}});var y=i;export{y as default};
+import { Effect as e } from "effect";
+
+const i = (o, r, t) =>
+	e.gen(function* () {
+		const n = Date.now();
+		return (
+			yield* t.log("info", "[MountainSync] Performing sync..."),
+			yield* e.sleep(10),
+			{ success: !0, itemsSynced: 0, duration: Date.now() - n }
+		);
+	});
+var y = i;
+export { y as default };

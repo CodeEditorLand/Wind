@@ -8,6 +8,7 @@
  * @category Helper
  */
 import { Effect } from "effect";
+
 /**
  * Wraps an effect with automatic metric recording.
  * Records the execution duration as a metric and logs any failures.
@@ -28,5 +29,13 @@ import { Effect } from "effect";
  * );
  * ```
  */
-export default function withMetric<A, E, R>(name: string, effect: Effect.Effect<A, E, R>, labels?: Record<string, string>): Effect.Effect<Effect.Effect<A, E, R>, never, import("../index.js").TelemetryTag>;
+export default function withMetric<A, E, R>(
+	name: string,
+	effect: Effect.Effect<A, E, R>,
+	labels?: Record<string, string>,
+): Effect.Effect<
+	Effect.Effect<A, E, R>,
+	never,
+	import("../index.js").TelemetryTag
+>;
 //# sourceMappingURL=withMetric.d.ts.map

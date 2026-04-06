@@ -9,21 +9,21 @@
  * URI components interface
  */
 export interface UriComponents {
-    scheme: string;
-    authority?: string;
-    path: string;
-    query?: string;
-    fragment?: string;
+	scheme: string;
+	authority?: string;
+	path: string;
+	query?: string;
+	fragment?: string;
 }
 /**
  * URI interface
  */
 export interface URI {
-    scheme: string;
-    authority?: string;
-    path: string;
-    query?: string;
-    fragment?: string;
-    toString(): string;
+	scheme: string;
+	authority?: string;
+	path: string;
+	query?: string;
+	fragment?: string;
+	toString(): string;
 }
 //# sourceMappingURL=VSCodeUtilityType.d.ts.map

@@ -8,7 +8,9 @@
  * @category Layer
  */
 import { Effect, Layer } from "effect";
+
 import MountainSyncTag from "../Tag/MountainSyncTag.js";
+
 /**
  * Creates a mock MountainSync service implementation.
  * All operations return static values suitable for testing.
@@ -16,23 +18,31 @@ import MountainSyncTag from "../Tag/MountainSyncTag.js";
  * @returns Mock MountainSync service instance
  */
 declare const makeMockMountainSync: () => {
-    start: () => Effect.Effect<void, never, never>;
-    stop: () => Effect.Effect<void, never, never>;
-    syncNow: () => Effect.Effect<{
-        success: true;
-        itemsSynced: number;
-        duration: number;
-    }, never, never>;
-    getStatus: () => Effect.Effect<"idle", never, never>;
-    getStats: () => Effect.Effect<{
-        lastSyncTime: number;
-        syncCount: number;
-        successCount: number;
-        errorCount: number;
-        itemsSynced: number;
-    }, never, never>;
-    pause: () => Effect.Effect<void, never, never>;
-    resume: () => Effect.Effect<void, never, never>;
+	start: () => Effect.Effect<void, never, never>;
+	stop: () => Effect.Effect<void, never, never>;
+	syncNow: () => Effect.Effect<
+		{
+			success: true;
+			itemsSynced: number;
+			duration: number;
+		},
+		never,
+		never
+	>;
+	getStatus: () => Effect.Effect<"idle", never, never>;
+	getStats: () => Effect.Effect<
+		{
+			lastSyncTime: number;
+			syncCount: number;
+			successCount: number;
+			errorCount: number;
+			itemsSynced: number;
+		},
+		never,
+		never
+	>;
+	pause: () => Effect.Effect<void, never, never>;
+	resume: () => Effect.Effect<void, never, never>;
 };
 /**
  * Mock layer for MountainSync service.

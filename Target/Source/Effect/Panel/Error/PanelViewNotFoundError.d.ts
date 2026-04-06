@@ -11,8 +11,8 @@
  * Includes the view ID that was not found.
  */
 export default class PanelViewNotFoundError extends Error {
-    readonly _tag = "PanelViewNotFoundError";
-    constructor(viewId: string);
-    get name(): string;
+	readonly _tag = "PanelViewNotFoundError";
+	constructor(viewId: string);
+	get name(): string;
 }
 //# sourceMappingURL=PanelViewNotFoundError.d.ts.map

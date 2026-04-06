@@ -21,10 +21,15 @@
  * ```
  */
 import { Layer } from "effect";
+
 /**
  * Live layer for NetworkRestrictions service
  * Provides a complete implementation that blocks external network traffic
  */
-export declare const NetworkRestrictionsLive: Layer.Layer<import("../Tag/NetworkRestrictionsTag.js").NetworkRestrictionsTag, never, import("../../Telemetry.js").TelemetryTag>;
+export declare const NetworkRestrictionsLive: Layer.Layer<
+	import("../Tag/NetworkRestrictionsTag.js").NetworkRestrictionsTag,
+	never,
+	import("../../Telemetry.js").TelemetryTag
+>;
 export default NetworkRestrictionsLive;
 //# sourceMappingURL=NetworkRestrictionsImplementation.d.ts.map

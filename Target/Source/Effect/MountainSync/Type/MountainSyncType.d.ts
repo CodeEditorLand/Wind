@@ -18,45 +18,45 @@ export type SyncStatus = "idle" | "syncing" | "paused" | "error";
  * Controls sync behavior including intervals, retry policies, and batch sizes.
  */
 export interface SyncConfig {
-    /** Whether synchronization is enabled */
-    readonly enabled: boolean;
-    /** Time interval between sync operations in milliseconds */
-    readonly syncIntervalMs: number;
-    /** Whether to automatically retry failed sync operations */
-    readonly autoRetry: boolean;
-    /** Maximum number of retry attempts for failed operations */
-    readonly maxRetries: number;
-    /** Number of items to sync in each batch operation */
-    readonly batchSize: number;
+	/** Whether synchronization is enabled */
+	readonly enabled: boolean;
+	/** Time interval between sync operations in milliseconds */
+	readonly syncIntervalMs: number;
+	/** Whether to automatically retry failed sync operations */
+	readonly autoRetry: boolean;
+	/** Maximum number of retry attempts for failed operations */
+	readonly maxRetries: number;
+	/** Number of items to sync in each batch operation */
+	readonly batchSize: number;
 }
 /**
  * Statistics tracking for synchronization operations.
  * Provides metrics on sync performance and history.
  */
 export interface SyncStats {
-    /** Timestamp of the last successful sync operation */
-    readonly lastSyncTime: number;
-    /** Total number of sync operations performed */
-    readonly syncCount: number;
-    /** Number of successful sync operations */
-    readonly successCount: number;
-    /** Number of failed sync operations */
-    readonly errorCount: number;
-    /** Total number of items successfully synchronized */
-    readonly itemsSynced: number;
+	/** Timestamp of the last successful sync operation */
+	readonly lastSyncTime: number;
+	/** Total number of sync operations performed */
+	readonly syncCount: number;
+	/** Number of successful sync operations */
+	readonly successCount: number;
+	/** Number of failed sync operations */
+	readonly errorCount: number;
+	/** Total number of items successfully synchronized */
+	readonly itemsSynced: number;
 }
 /**
  * Result of a single synchronization operation.
  * Contains outcome details and any error information.
  */
 export interface MountainSyncResult {
-    /** Whether the sync operation completed successfully */
-    readonly success: boolean;
-    /** Number of items synchronized during this operation */
-    readonly itemsSynced: number;
-    /** Duration of the sync operation in milliseconds */
-    readonly duration: number;
-    /** Error details if the operation failed */
-    readonly error?: Error;
+	/** Whether the sync operation completed successfully */
+	readonly success: boolean;
+	/** Number of items synchronized during this operation */
+	readonly itemsSynced: number;
+	/** Duration of the sync operation in milliseconds */
+	readonly duration: number;
+	/** Error details if the operation failed */
+	readonly error?: Error;
 }
 //# sourceMappingURL=MountainSyncType.d.ts.map

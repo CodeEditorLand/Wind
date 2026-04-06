@@ -7,13 +7,18 @@
  * @category Tag
  */
 import { Context } from "effect";
+
 import type { ClipboardService } from "../Interface/ClipboardService.js";
-declare const ClipboardServiceTag_base: Context.TagClass<ClipboardServiceTag, "Application/ClipboardService", ClipboardService>;
+
+declare const ClipboardServiceTag_base: Context.TagClass<
+	ClipboardServiceTag,
+	"Application/ClipboardService",
+	ClipboardService
+>;
 /**
  * Clipboard service tag for dependency injection
  */
-export declare class ClipboardServiceTag extends ClipboardServiceTag_base {
-}
+export declare class ClipboardServiceTag extends ClipboardServiceTag_base {}
 /**
  * Alias for the Clipboard service tag
  */

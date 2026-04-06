@@ -7,10 +7,10 @@
  * @category Error
  */
 export declare class MountainSyncError extends Error {
-    readonly _tag = "MountainSyncError";
-    readonly resource: string;
-    readonly cause: unknown;
-    constructor(resource: string, cause: unknown);
+	readonly _tag = "MountainSyncError";
+	readonly resource: string;
+	readonly cause: unknown;
+	constructor(resource: string, cause: unknown);
 }
 export default MountainSyncError;
 //# sourceMappingURL=MountainSyncError.d.ts.map

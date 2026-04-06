@@ -9,5 +9,12 @@
 /**
  * Stage name type definition
  */
-export type StageName = "Environment" | "Preload" | "Configuration" | "Services" | "Preparation" | "Initialization" | "HealthCheck";
+export type StageName =
+	| "Environment"
+	| "Preload"
+	| "Configuration"
+	| "Services"
+	| "Preparation"
+	| "Initialization"
+	| "HealthCheck";
 //# sourceMappingURL=StageName.d.ts.map

@@ -7,13 +7,14 @@
  * @category Tag
  */
 import { Context } from "effect";
+
 import type { IPCService } from "../Interface/IPCService.js";
+
 declare const IPCTag_base: Context.TagClass<IPCTag, "IPC", IPCService>;
 /**
  * IPC service tag for dependency injection
  */
-export declare class IPCTag extends IPCTag_base {
-}
+export declare class IPCTag extends IPCTag_base {}
 /**
  * Alias for the IPC service tag
  */

@@ -14,7 +14,10 @@ export type { WebFrame } from "./Interface/WebFrame.js";
 export type { ProcessEnvironment } from "./Interface/ProcessEnvironment.js";
 export type { SandboxNodeProcess } from "./Interface/SandboxNodeProcess.js";
 export type { SandboxContext } from "./Interface/SandboxContext.js";
-export type { ISandboxConfiguration, Workspace } from "./Interface/ISandboxConfiguration.js";
+export type {
+	ISandboxConfiguration,
+	Workspace,
+} from "./Interface/ISandboxConfiguration.js";
 export type { WebUtils } from "./Interface/WebUtils.js";
 export type { SandboxGlobals } from "./Interface/SandboxGlobals.js";
 //# sourceMappingURL=index.d.ts.map

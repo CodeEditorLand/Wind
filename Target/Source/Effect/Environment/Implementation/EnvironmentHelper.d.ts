@@ -6,7 +6,8 @@
  * @see {@link Effect/Environment/Implementation/EnvironmentImplementation} Main implementation
  * @category Implementation
  */
-import type { Platform, Architecture } from "../Type/EnvironmentType.js";
+import type { Architecture, Platform } from "../Type/EnvironmentType.js";
+
 /**
  * Detect the current platform
  * @returns The detected platform type
@@ -33,11 +34,11 @@ export declare const DetectTimezone: () => string;
  */
 export declare const GetUserAgent: () => string;
 declare const helpers: {
-    DetectPlatform: () => Platform;
-    DetectArchitecture: () => Architecture;
-    DetectLocale: () => string;
-    DetectTimezone: () => string;
-    GetUserAgent: () => string;
+	DetectPlatform: () => Platform;
+	DetectArchitecture: () => Architecture;
+	DetectLocale: () => string;
+	DetectTimezone: () => string;
+	GetUserAgent: () => string;
 };
 export default helpers;
 //# sourceMappingURL=EnvironmentHelper.d.ts.map

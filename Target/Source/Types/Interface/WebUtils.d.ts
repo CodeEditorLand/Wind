@@ -9,6 +9,6 @@
  * WebUtils interface
  */
 export interface WebUtils {
-    readonly getPathForFile: (file: File) => string;
+	readonly getPathForFile: (file: File) => string;
 }
 //# sourceMappingURL=WebUtils.d.ts.map

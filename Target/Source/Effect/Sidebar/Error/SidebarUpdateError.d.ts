@@ -11,9 +11,9 @@
  * Includes the panel ID and the underlying cause of the failure.
  */
 export default class SidebarUpdateError extends Error {
-    readonly _tag = "SidebarUpdateError";
-    readonly cause: unknown;
-    constructor(panelId: string, cause: unknown);
-    get name(): string;
+	readonly _tag = "SidebarUpdateError";
+	readonly cause: unknown;
+	constructor(panelId: string, cause: unknown);
+	get name(): string;
 }
 //# sourceMappingURL=SidebarUpdateError.d.ts.map

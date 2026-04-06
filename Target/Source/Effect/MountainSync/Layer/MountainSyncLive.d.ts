@@ -8,10 +8,12 @@
  * @category Layer
  */
 import { Layer } from "effect";
-import MountainSyncTag from "../Tag/MountainSyncTag.js";
-import { MountainTag } from "../../Mountain.js";
+
 import { IPCTag } from "../../IPC.js";
+import { MountainTag } from "../../Mountain.js";
 import { TelemetryTag } from "../../Telemetry.js";
+import MountainSyncTag from "../Tag/MountainSyncTag.js";
+
 /**
  * Live layer for MountainSync service.
  * Provides the production implementation and requires Mountain, IPC, and Telemetry services.
@@ -32,6 +34,10 @@ import { TelemetryTag } from "../../Telemetry.js";
  * );
  * ```
  */
-declare const MountainSyncLive: Layer.Layer<MountainSyncTag, never, TelemetryTag | IPCTag | MountainTag>;
+declare const MountainSyncLive: Layer.Layer<
+	MountainSyncTag,
+	never,
+	TelemetryTag | IPCTag | MountainTag
+>;
 export default MountainSyncLive;
 //# sourceMappingURL=MountainSyncLive.d.ts.map

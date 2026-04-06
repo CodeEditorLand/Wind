@@ -7,13 +7,18 @@
  * @category Tag
  */
 import { Context } from "effect";
+
 import type { NetworkRestrictionsService } from "../Interface/NetworkRestrictionsService.js";
-declare const NetworkRestrictionsTag_base: Context.TagClass<NetworkRestrictionsTag, "NetworkRestrictions", NetworkRestrictionsService>;
+
+declare const NetworkRestrictionsTag_base: Context.TagClass<
+	NetworkRestrictionsTag,
+	"NetworkRestrictions",
+	NetworkRestrictionsService
+>;
 /**
  * NetworkRestrictions service tag for dependency injection
  */
-export declare class NetworkRestrictionsTag extends NetworkRestrictionsTag_base {
-}
+export declare class NetworkRestrictionsTag extends NetworkRestrictionsTag_base {}
 /**
  * Alias for the NetworkRestrictions tag
  */

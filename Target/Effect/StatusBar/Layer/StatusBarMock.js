@@ -1,1 +1,19 @@
-import{Effect as t,Layer as i,Stream as s}from"effect";import m from"../Tag/StatusBarTag.js";const r=()=>({createItem:e=>t.succeed({...e,id:`mock-statusbar-${Date.now()}`}),updateItem:(e,a)=>t.void,removeItem:e=>t.void,getItem:e=>t.succeed(void 0),items:t.succeed([]),itemsChanges:s.empty,setItemVisibility:(e,a)=>t.void,getItemText:e=>t.succeed(void 0),setItemText:(e,a)=>t.void}),d=i.succeed(m,r());var c=d;export{c as default,r as makeMockStatusBar};
+import { Layer as i, Stream as s, Effect as t } from "effect";
+
+import m from "../Tag/StatusBarTag.js";
+
+const r = () => ({
+		createItem: (e) =>
+			t.succeed({ ...e, id: `mock-statusbar-${Date.now()}` }),
+		updateItem: (e, a) => t.void,
+		removeItem: (e) => t.void,
+		getItem: (e) => t.succeed(void 0),
+		items: t.succeed([]),
+		itemsChanges: s.empty,
+		setItemVisibility: (e, a) => t.void,
+		getItemText: (e) => t.succeed(void 0),
+		setItemText: (e, a) => t.void,
+	}),
+	d = i.succeed(m, r());
+var c = d;
+export { c as default, r as makeMockStatusBar };

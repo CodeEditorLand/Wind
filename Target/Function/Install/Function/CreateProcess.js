@@ -1,1 +1,23 @@
-function n(e){return{platform:"web",arch:"web",type:"renderer",execPath:"/",env:e.userEnv??{},cwd:()=>"/",versions:{node:"20.0.0",chrome:navigator.userAgent.match(/Chrome\/(\d+)/)?.[1]||"0",electron:"0.0.0"},on:(o,r)=>{},getProcessMemoryInfo:async()=>({private:0,residentSet:0,shared:0}),shellEnv:async()=>({})}}export{n as CreateProcess};
+function n(e) {
+	return {
+		platform: "web",
+		arch: "web",
+		type: "renderer",
+		execPath: "/",
+		env: e.userEnv ?? {},
+		cwd: () => "/",
+		versions: {
+			node: "20.0.0",
+			chrome: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || "0",
+			electron: "0.0.0",
+		},
+		on: (o, r) => {},
+		getProcessMemoryInfo: async () => ({
+			private: 0,
+			residentSet: 0,
+			shared: 0,
+		}),
+		shellEnv: async () => ({}),
+	};
+}
+export { n as CreateProcess };

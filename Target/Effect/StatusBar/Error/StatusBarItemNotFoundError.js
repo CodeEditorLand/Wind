@@ -1,1 +1,12 @@
-class t extends Error{constructor(r){super(`Status bar item '${r}' not found`);this.itemId=r;Object.setPrototypeOf(this,t.prototype)}_tag="StatusBarItemNotFoundError";get name(){return"StatusBarItemNotFoundError"}}export{t as default};
+class t extends Error {
+	constructor(r) {
+		super(`Status bar item '${r}' not found`);
+		this.itemId = r;
+		Object.setPrototypeOf(this, t.prototype);
+	}
+	_tag = "StatusBarItemNotFoundError";
+	get name() {
+		return "StatusBarItemNotFoundError";
+	}
+}
+export { t as default };

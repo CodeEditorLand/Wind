@@ -1,3 +1,5 @@
+import { ConfigurationTag } from "./Tag/ConfigurationTag.js";
+
 /**
  * @module Effect/Configuration
  * @description
@@ -30,9 +32,20 @@ export { default as ConfigApplyError } from "./Error/ConfigApplyError.js";
 export type { ConfigSchemaIssue } from "./Type/ConfigurationSchemaType.js";
 export type { ConfigurationService } from "./Interface/ConfigurationService.js";
 export { ConfigurationTag } from "./Tag/ConfigurationTag.js";
-export { ValidateConfiguration, MakeValidate, MakeApply, GetConfigValue } from "./Implementation/ConfigurationHelper.js";
-export { ConfigurationLive, ConfigurationWithSyncLive } from "./Implementation/ConfigurationImplementation.js";
-export { ConfigurationMock, makeMockConfiguration } from "./Layer/ConfigurationMock.js";
-import { ConfigurationTag } from "./Tag/ConfigurationTag.js";
+export {
+	ValidateConfiguration,
+	MakeValidate,
+	MakeApply,
+	GetConfigValue,
+} from "./Implementation/ConfigurationHelper.js";
+export {
+	ConfigurationLive,
+	ConfigurationWithSyncLive,
+} from "./Implementation/ConfigurationImplementation.js";
+export {
+	ConfigurationMock,
+	makeMockConfiguration,
+} from "./Layer/ConfigurationMock.js";
+
 export { ConfigurationTag as Configuration };
 //# sourceMappingURL=index.d.ts.map

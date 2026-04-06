@@ -31,90 +31,97 @@
  * File stats interface (partial Node.js fs.Stats)
  */
 interface Stats {
-    dev: number;
-    ino: number;
-    mode: number;
-    nlink: number;
-    uid: number;
-    gid: number;
-    rdev: number;
-    size: number;
-    atimeMs: number;
-    mtimeMs: number;
-    ctimeMs: number;
-    birthtimeMs: number;
-    atime: Date;
-    mtime: Date;
-    ctime: Date;
-    birthtime: Date;
-    isFile(): boolean;
-    isDirectory(): boolean;
-    isBlockDevice(): boolean;
-    isCharacterDevice(): boolean;
-    isSymbolicLink(): boolean;
-    isFIFO(): boolean;
-    isSocket(): boolean;
+	dev: number;
+	ino: number;
+	mode: number;
+	nlink: number;
+	uid: number;
+	gid: number;
+	rdev: number;
+	size: number;
+	atimeMs: number;
+	mtimeMs: number;
+	ctimeMs: number;
+	birthtimeMs: number;
+	atime: Date;
+	mtime: Date;
+	ctime: Date;
+	birthtime: Date;
+	isFile(): boolean;
+	isDirectory(): boolean;
+	isBlockDevice(): boolean;
+	isCharacterDevice(): boolean;
+	isSymbolicLink(): boolean;
+	isFIFO(): boolean;
+	isSocket(): boolean;
 }
 /**
  * Directory entry
  */
 interface Dirent {
-    name: string;
-    path: string;
-    isFile(): boolean;
-    isDirectory(): boolean;
-    isBlockDevice(): boolean;
-    isCharacterDevice(): boolean;
-    isSymbolicLink(): boolean;
-    isFIFO(): boolean;
-    isSocket(): boolean;
+	name: string;
+	path: string;
+	isFile(): boolean;
+	isDirectory(): boolean;
+	isBlockDevice(): boolean;
+	isCharacterDevice(): boolean;
+	isSymbolicLink(): boolean;
+	isFIFO(): boolean;
+	isSocket(): boolean;
 }
 /**
  * Mkdir options
  */
 interface MkdirOptions {
-    recursive?: boolean;
-    mode?: number;
+	recursive?: boolean;
+	mode?: number;
 }
 /**
  * Rm options
  */
 interface RmOptions {
-    recursive?: boolean;
-    force?: boolean;
-    maxRetries?: number;
-    retryDelay?: number;
+	recursive?: boolean;
+	force?: boolean;
+	maxRetries?: number;
+	retryDelay?: number;
 }
 /**
  * Read file options
  */
 interface ReadFileOptions {
-    encoding?: BufferEncoding | null;
-    flag?: string;
+	encoding?: BufferEncoding | null;
+	flag?: string;
 }
 /**
  * Write file options
  */
 interface WriteFileOptions {
-    encoding?: BufferEncoding | null;
-    mode?: number;
-    flag?: string;
+	encoding?: BufferEncoding | null;
+	mode?: number;
+	flag?: string;
 }
 /**
  * Copy file options
  */
 interface CopyFileOptions {
-    mode?: number;
-    flags?: number;
+	mode?: number;
+	flags?: number;
 }
 /**
  * Read file from Mountain file system
  */
-declare function readFile(path: string, options?: ReadFileOptions | BufferEncoding): Promise<string | Buffer>;
+declare function readFile(
+	path: string,
+	options?: ReadFileOptions | BufferEncoding,
+): Promise<string | Buffer>;
 /**
  * Write file to Mountain file system
  */
-declare function writeFile(path: string, data: string | Buffer, options?: WriteFileOptions | BufferEncoding): Promise<void>;
+declare function writeFile(
+	path: string,
+	data: string | Buffer,
+	options?: WriteFileOptions | BufferEncoding,
+): Promise<void>;
 /**
  * Delete file from Mountain file system
  */
@@ -130,11 +137,18 @@ declare function rename(oldPath: string, newPath: string): Promise<void>;
 /**
  * Copy file
  */
-declare function copyFile(src: string, dest: string, options?: CopyFileOptions): Promise<void>;
+declare function copyFile(
+	src: string,
+	dest: string,
+	options?: CopyFileOptions,
+): Promise<void>;
 /**
  * Make directory
  */
-declare function mkdir(path: string, options?: MkdirOptions | number | boolean): Promise<void>;
+declare function mkdir(
+	path: string,
+	options?: MkdirOptions | number | boolean,
+): Promise<void>;
 /**
  * Remove directory
  */
@@ -142,9 +156,12 @@ declare function rmdir(path: string): Promise<void>;
 /**
  * Read directory
  */
-declare function readdir(path: string, options?: {
-    withFileTypes?: boolean;
-}): Promise<string[] | Dirent[]>;
+declare function readdir(
+	path: string,
+	options?: {
+		withFileTypes?: boolean;
+	},
+): Promise<string[] | Dirent[]>;
 /**
  * Get file stats
  */
@@ -206,64 +223,64 @@ declare function chown(): never;
  */
 export declare function installFileSystemPolyfill(): void;
 declare const _default: {
-    install: typeof installFileSystemPolyfill;
-    module: {
-        readFile: typeof readFile;
-        writeFile: typeof writeFile;
-        unlink: typeof unlink;
-        rm: typeof rm;
-        rename: typeof rename;
-        copyFile: typeof copyFile;
-        mkdir: typeof mkdir;
-        rmdir: typeof rmdir;
-        readdir: typeof readdir;
-        stat: typeof stat;
-        exists: typeof exists;
-        constants: {
-            O_RDONLY: number;
-            O_WRONLY: number;
-            O_RDWR: number;
-            O_CREAT: number;
-            O_TRUNC: number;
-            O_APPEND: number;
-        };
-        open: typeof open;
-        read: typeof read;
-        write: typeof write;
-        close: typeof close;
-        readFileSync: typeof readFileSync;
-        writeFileSync: typeof writeFileSync;
-        watch: typeof watch;
-        watchFile: typeof watchFile;
-        symlink: typeof symlink;
-        readlink: typeof readlink;
-        chmod: typeof chmod;
-        chown: typeof chown;
-        promises: {
-            readFile: typeof readFile;
-            writeFile: typeof writeFile;
-            unlink: typeof unlink;
-            rm: typeof rm;
-            rename: typeof rename;
-            copyFile: typeof copyFile;
-            mkdir: typeof mkdir;
-            rmdir: typeof rmdir;
-            readdir: typeof readdir;
-            stat: typeof stat;
-            exists: typeof exists;
-        };
-    };
-    readFile: typeof readFile;
-    writeFile: typeof writeFile;
-    unlink: typeof unlink;
-    rm: typeof rm;
-    rename: typeof rename;
-    copyFile: typeof copyFile;
-    mkdir: typeof mkdir;
-    rmdir: typeof rmdir;
-    readdir: typeof readdir;
-    stat: typeof stat;
-    exists: typeof exists;
+	install: typeof installFileSystemPolyfill;
+	module: {
+		readFile: typeof readFile;
+		writeFile: typeof writeFile;
+		unlink: typeof unlink;
+		rm: typeof rm;
+		rename: typeof rename;
+		copyFile: typeof copyFile;
+		mkdir: typeof mkdir;
+		rmdir: typeof rmdir;
+		readdir: typeof readdir;
+		stat: typeof stat;
+		exists: typeof exists;
+		constants: {
+			O_RDONLY: number;
+			O_WRONLY: number;
+			O_RDWR: number;
+			O_CREAT: number;
+			O_TRUNC: number;
+			O_APPEND: number;
+		};
+		open: typeof open;
+		read: typeof read;
+		write: typeof write;
+		close: typeof close;
+		readFileSync: typeof readFileSync;
+		writeFileSync: typeof writeFileSync;
+		watch: typeof watch;
+		watchFile: typeof watchFile;
+		symlink: typeof symlink;
+		readlink: typeof readlink;
+		chmod: typeof chmod;
+		chown: typeof chown;
+		promises: {
+			readFile: typeof readFile;
+			writeFile: typeof writeFile;
+			unlink: typeof unlink;
+			rm: typeof rm;
+			rename: typeof rename;
+			copyFile: typeof copyFile;
+			mkdir: typeof mkdir;
+			rmdir: typeof rmdir;
+			readdir: typeof readdir;
+			stat: typeof stat;
+			exists: typeof exists;
+		};
+	};
+	readFile: typeof readFile;
+	writeFile: typeof writeFile;
+	unlink: typeof unlink;
+	rm: typeof rm;
+	rename: typeof rename;
+	copyFile: typeof copyFile;
+	mkdir: typeof mkdir;
+	rmdir: typeof rmdir;
+	readdir: typeof readdir;
+	stat: typeof stat;
+	exists: typeof exists;
 };
 export default _default;
 //# sourceMappingURL=FileSystemPolyfill.d.ts.map

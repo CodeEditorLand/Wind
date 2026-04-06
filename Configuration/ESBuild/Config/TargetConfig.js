@@ -1,1 +1,45 @@
-import*as t from"../Constant/EnvironmentConstant.js";import a from"./BaseConfig.js";import{deepmerge as n}from"deepmerge-ts";async function p(i){return n(a,{outdir:"Target",drop:t.On?[]:["debugger","console"],define:{__DEV__:t.On?"true":"false",__INCREMENT__:`"${`${t.On?"DEVELOPMENT":"PRODUCTION"}-${(await import("ulid")).ulid()}`}"`},treeShaking:!t.On,entryPoints:(await import("@playform/build/Target/Function/Entry.js")).default(i,["Source/Configuration/*"]),platform:"browser",outbase:"Source",plugins:t.Compile?n(i.plugins||[],[{name:"Compile",setup({onEnd:r}){r(async({metafile:u})=>{const e=u?.outputs;for(const o in e)Object.prototype.hasOwnProperty.call(e,o)&&o.endsWith(".js")&&(await import("@playform/build/Target/Function/Exec.js")).default(`Build '${o}' 											--ESBuild Configuration/ESBuild/Target/Compile.js 											--TypeScript Configuration/tsconfig/Target/Compile.json`)})}}]):[]})}export{p as default};
+import { deepmerge as n } from "deepmerge-ts";
+
+import * as t from "../Constant/EnvironmentConstant.js";
+import a from "./BaseConfig.js";
+
+async function p(i) {
+	return n(a, {
+		outdir: "Target",
+		drop: t.On ? [] : ["debugger", "console"],
+		define: {
+			__DEV__: t.On ? "true" : "false",
+			__INCREMENT__: `"${`${t.On ? "DEVELOPMENT" : "PRODUCTION"}-${(await import("ulid")).ulid()}`}"`,
+		},
+		treeShaking: !t.On,
+		entryPoints: (
+			await import("@playform/build/Target/Function/Entry.js")
+		).default(i, ["Source/Configuration/*"]),
+		platform: "browser",
+		outbase: "Source",
+		plugins: t.Compile
+			? n(i.plugins || [], [
+					{
+						name: "Compile",
+						setup({ onEnd: r }) {
+							r(async ({ metafile: u }) => {
+								const e = u?.outputs;
+								for (const o in e)
+									Object.prototype.hasOwnProperty.call(
+										e,
+										o,
+									) &&
+										o.endsWith(".js") &&
+										(
+											await import("@playform/build/Target/Function/Exec.js")
+										).default(
+											`Build '${o}' 											--ESBuild Configuration/ESBuild/Target/Compile.js 											--TypeScript Configuration/tsconfig/Target/Compile.json`,
+										);
+							});
+						},
+					},
+				])
+			: [],
+	});
+}
+export { p as default };

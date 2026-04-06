@@ -6,6 +6,7 @@
  * @category Config
  */
 import type { BuildOptions } from "esbuild";
+
 /**
  * Base ESBuild configuration
  */

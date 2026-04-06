@@ -8,8 +8,14 @@
  * @category Tag
  */
 import { Context } from "effect";
+
 import type { ConfigurationService } from "../Interface/ConfigurationService.js";
-declare const ConfigurationTag_base: Context.TagClass<ConfigurationTag, "Configuration", ConfigurationService>;
+
+declare const ConfigurationTag_base: Context.TagClass<
+	ConfigurationTag,
+	"Configuration",
+	ConfigurationService
+>;
 /**
  * Context Tag for Configuration service.
  * Use this to inject the Configuration service into Effect programs.
@@ -25,7 +31,6 @@ declare const ConfigurationTag_base: Context.TagClass<ConfigurationTag, "Configu
  * });
  * ```
  */
-export declare class ConfigurationTag extends ConfigurationTag_base {
-}
+export declare class ConfigurationTag extends ConfigurationTag_base {}
 export default ConfigurationTag;
 //# sourceMappingURL=ConfigurationTag.d.ts.map

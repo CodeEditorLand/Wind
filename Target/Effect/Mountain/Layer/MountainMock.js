@@ -1,1 +1,18 @@
-import{Effect as e,Layer as t,Stream as c}from"effect";import{MountainTag as n}from"../Tag/MountainTag.js";const o=t.succeed(n,{connectionState:e.succeed({_tag:"Connected",version:"mock"}),connectionChanges:c.empty,connect:e.void,disconnect:e.void,rpc:()=>()=>e.succeed({}),sync:()=>e.succeed({success:!0,resourcesSynced:0,errors:[],duration:0}),syncEvents:c.empty,version:e.succeed("mock"),healthCheck:e.succeed(!0)});var i=o;export{o as MountainMockLive,i as default};
+import { Stream as c, Effect as e, Layer as t } from "effect";
+
+import { MountainTag as n } from "../Tag/MountainTag.js";
+
+const o = t.succeed(n, {
+	connectionState: e.succeed({ _tag: "Connected", version: "mock" }),
+	connectionChanges: c.empty,
+	connect: e.void,
+	disconnect: e.void,
+	rpc: () => () => e.succeed({}),
+	sync: () =>
+		e.succeed({ success: !0, resourcesSynced: 0, errors: [], duration: 0 }),
+	syncEvents: c.empty,
+	version: e.succeed("mock"),
+	healthCheck: e.succeed(!0),
+});
+var i = o;
+export { o as MountainMockLive, i as default };

@@ -1,3 +1,5 @@
+import { MountainTag } from "./Tag/MountainTag.js";
+
 /**
  * @module Effect/Mountain
  * @description
@@ -28,11 +30,15 @@ export { default as MountainConnectionError } from "./Error/MountainConnectionEr
 export { default as MountainRPCError } from "./Error/MountainRPCError.js";
 export { default as MountainSyncError } from "./Error/MountainSyncError.js";
 export { default as MountainStateError } from "./Error/MountainStateError.js";
-export type { MountainConnectionState, SyncResource, SyncResult } from "./Type/MountainType.js";
+export type {
+	MountainConnectionState,
+	SyncResource,
+	SyncResult,
+} from "./Type/MountainType.js";
 export type { MountainService } from "./Interface/MountainService.js";
 export { MountainTag } from "./Tag/MountainTag.js";
 export { MountainLive } from "./Implementation/MountainImplementation.js";
 export { MountainMockLive } from "./Layer/MountainMock.js";
-import { MountainTag } from "./Tag/MountainTag.js";
+
 export { MountainTag as Mountain };
 //# sourceMappingURL=index.d.ts.map

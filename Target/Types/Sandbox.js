@@ -1,1 +1,25 @@
-class a extends Error{_tag="SandboxNotReadyError";constructor(){super("window.vscode is not initialized. Preload script not executed.")}}class t extends Error{constructor(n,r){super(`IPC channel '${n}' error: ${String(r)}`);this.channel=n;this.cause=r}_tag="IPCChannelError"}class i extends Error{_tag="ConfigurationNotReadyError";constructor(){super("Configuration not yet resolved from preload")}}export{i as ConfigurationNotReadyError,t as IPCChannelError,a as SandboxNotReadyError};
+class a extends Error {
+	_tag = "SandboxNotReadyError";
+	constructor() {
+		super("window.vscode is not initialized. Preload script not executed.");
+	}
+}
+class t extends Error {
+	constructor(n, r) {
+		super(`IPC channel '${n}' error: ${String(r)}`);
+		this.channel = n;
+		this.cause = r;
+	}
+	_tag = "IPCChannelError";
+}
+class i extends Error {
+	_tag = "ConfigurationNotReadyError";
+	constructor() {
+		super("Configuration not yet resolved from preload");
+	}
+}
+export {
+	i as ConfigurationNotReadyError,
+	t as IPCChannelError,
+	a as SandboxNotReadyError,
+};

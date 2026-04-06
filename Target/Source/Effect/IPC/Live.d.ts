@@ -5,7 +5,9 @@
  * @category Layer
  */
 import { Layer } from "effect";
+
 import { IPCTag } from "./Tag/IPCTag.js";
+
 /**
  * Tauri IPC service layer
  */

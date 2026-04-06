@@ -1,3 +1,9 @@
+import {
+	IPCElectronLive,
+	default as IPCTauriLiveLayer,
+	MockIPCLive,
+} from "./IPC/index.js";
+
 /**
  * @module Effect/IPC
  * @description
@@ -7,36 +13,36 @@
  * @category Service
  */
 export declare class IPCInvokeError extends Error {
-    readonly _tag = "IPCInvokeError";
-    readonly _channel: string;
-    readonly _cause: unknown;
-    constructor(channel: string, cause: unknown);
-    get name(): string;
-    get channel(): string;
-    get cause(): unknown;
+	readonly _tag = "IPCInvokeError";
+	readonly _channel: string;
+	readonly _cause: unknown;
+	constructor(channel: string, cause: unknown);
+	get name(): string;
+	get channel(): string;
+	get cause(): unknown;
 }
 export declare class IPCSendError extends Error {
-    readonly _tag = "IPCSendError";
-    readonly _channel: string;
-    readonly _cause: unknown;
-    constructor(channel: string, cause: unknown);
-    get name(): string;
-    get channel(): string;
-    get cause(): unknown;
+	readonly _tag = "IPCSendError";
+	readonly _channel: string;
+	readonly _cause: unknown;
+	constructor(channel: string, cause: unknown);
+	get name(): string;
+	get channel(): string;
+	get cause(): unknown;
 }
 export declare class IPCSubscriptionError extends Error {
-    readonly _tag = "IPCSubscriptionError";
-    readonly _channel: string;
-    readonly _cause: unknown;
-    constructor(channel: string, cause: unknown);
-    get name(): string;
-    get channel(): string;
-    get cause(): unknown;
+	readonly _tag = "IPCSubscriptionError";
+	readonly _channel: string;
+	readonly _cause: unknown;
+	constructor(channel: string, cause: unknown);
+	get name(): string;
+	get channel(): string;
+	get cause(): unknown;
 }
 export type { IPCService } from "./IPC/Interface/IPCService.js";
 export { IPCTag, IPC } from "./IPC/Tag/IPCTag.js";
 export { TauriIPCLive } from "./IPC/Implementation/TauriIPC.js";
-import { default as IPCTauriLiveLayer, IPCElectronLive, MockIPCLive } from "./IPC/index.js";
+
 export { IPCTauriLiveLayer, IPCElectronLive, MockIPCLive };
 export { IPCTauriLiveLayer as IPCTauriLive };
 export { MockIPCLive as IPCMockLive };

@@ -8,7 +8,9 @@
  * @category Implementation
  */
 import { Layer } from "effect";
+
 import { BootstrapTag } from "../Tag/BootstrapTag.js";
+
 /**
  * Live implementation layer for Bootstrap service.
  * Orchestrates all initialization stages for the VSCode workbench.

@@ -1,1 +1,81 @@
-class o extends Error{_tag="IPCInvokeError";_channel;_cause;constructor(e,r){super(`IPC invoke failed on channel '${e}': ${String(r)}`),this._channel=e,this._cause=r,Object.setPrototypeOf(this,o.prototype)}get name(){return"IPCInvokeError"}get channel(){return this._channel}get cause(){return this._cause}}class s extends Error{_tag="IPCSendError";_channel;_cause;constructor(e,r){super(`IPC send failed on channel '${e}': ${String(r)}`),this._channel=e,this._cause=r,Object.setPrototypeOf(this,s.prototype)}get name(){return"IPCSendError"}get channel(){return this._channel}get cause(){return this._cause}}class a extends Error{_tag="IPCSubscriptionError";_channel;_cause;constructor(e,r){super(`IPC subscription failed on channel '${e}': ${String(r)}`),this._channel=e,this._cause=r,Object.setPrototypeOf(this,a.prototype)}get name(){return"IPCSubscriptionError"}get channel(){return this._channel}get cause(){return this._cause}}import{IPCTag as h,IPC as p}from"./IPC/Tag/IPCTag.js";import{TauriIPCLive as I}from"./IPC/Implementation/TauriIPC.js";import{default as n,IPCElectronLive as i,MockIPCLive as t}from"./IPC/index.js";export{p as IPC,i as IPCElectronLive,o as IPCInvokeError,t as IPCMockLive,s as IPCSendError,a as IPCSubscriptionError,h as IPCTag,n as IPCTauriLive,n as IPCTauriLiveLayer,t as MockIPCLive,I as TauriIPCLive};
+import { TauriIPCLive as I } from "./IPC/Implementation/TauriIPC.js";
+import {
+	IPCElectronLive as i,
+	default as n,
+	MockIPCLive as t,
+} from "./IPC/index.js";
+import { IPCTag as h, IPC as p } from "./IPC/Tag/IPCTag.js";
+
+class o extends Error {
+	_tag = "IPCInvokeError";
+	_channel;
+	_cause;
+	constructor(e, r) {
+		(super(`IPC invoke failed on channel '${e}': ${String(r)}`),
+			(this._channel = e),
+			(this._cause = r),
+			Object.setPrototypeOf(this, o.prototype));
+	}
+	get name() {
+		return "IPCInvokeError";
+	}
+	get channel() {
+		return this._channel;
+	}
+	get cause() {
+		return this._cause;
+	}
+}
+class s extends Error {
+	_tag = "IPCSendError";
+	_channel;
+	_cause;
+	constructor(e, r) {
+		(super(`IPC send failed on channel '${e}': ${String(r)}`),
+			(this._channel = e),
+			(this._cause = r),
+			Object.setPrototypeOf(this, s.prototype));
+	}
+	get name() {
+		return "IPCSendError";
+	}
+	get channel() {
+		return this._channel;
+	}
+	get cause() {
+		return this._cause;
+	}
+}
+class a extends Error {
+	_tag = "IPCSubscriptionError";
+	_channel;
+	_cause;
+	constructor(e, r) {
+		(super(`IPC subscription failed on channel '${e}': ${String(r)}`),
+			(this._channel = e),
+			(this._cause = r),
+			Object.setPrototypeOf(this, a.prototype));
+	}
+	get name() {
+		return "IPCSubscriptionError";
+	}
+	get channel() {
+		return this._channel;
+	}
+	get cause() {
+		return this._cause;
+	}
+}
+export {
+	p as IPC,
+	i as IPCElectronLive,
+	o as IPCInvokeError,
+	t as IPCMockLive,
+	s as IPCSendError,
+	a as IPCSubscriptionError,
+	h as IPCTag,
+	n as IPCTauriLive,
+	n as IPCTauriLiveLayer,
+	t as MockIPCLive,
+	I as TauriIPCLive,
+};

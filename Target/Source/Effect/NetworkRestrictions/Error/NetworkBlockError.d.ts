@@ -10,12 +10,12 @@
  * Error thrown when a network request is blocked
  */
 export interface NetworkBlockError {
-    readonly _tag: "NetworkBlockError";
-    readonly url: string;
-    readonly reason: string;
-    readonly message: string;
-    readonly name: string;
-    readonly cause: string;
+	readonly _tag: "NetworkBlockError";
+	readonly url: string;
+	readonly reason: string;
+	readonly message: string;
+	readonly name: string;
+	readonly cause: string;
 }
 /**
  * Creates a NetworkBlockError instance
@@ -23,6 +23,9 @@ export interface NetworkBlockError {
  * @param reason - The reason for blocking
  * @returns A NetworkBlockError instance
  */
-declare const CreateNetworkBlockError: (url: string, reason: string) => NetworkBlockError;
+declare const CreateNetworkBlockError: (
+	url: string,
+	reason: string,
+) => NetworkBlockError;
 export default CreateNetworkBlockError;
 //# sourceMappingURL=NetworkBlockError.d.ts.map

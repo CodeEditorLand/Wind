@@ -9,7 +9,10 @@
  * @see {@link Effect/StatusBar/Layer/StatusBarMock} Mock layer
  * @category Re-export
  */
-export type { StatusBarItem, CreateStatusBarItem } from "./Type/StatusBarType.js";
+export type {
+	StatusBarItem,
+	CreateStatusBarItem,
+} from "./Type/StatusBarType.js";
 export type { StatusBarService } from "./Interface/StatusBarService.js";
 export { default as StatusBarTag, StatusBar } from "./Tag/StatusBarTag.js";
 export { default as StatusBarLive } from "./Layer/StatusBarLive.js";

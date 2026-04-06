@@ -7,10 +7,10 @@
  * @category Error
  */
 export declare class ConfigApplyError extends Error {
-    readonly key: string;
-    readonly cause: unknown;
-    readonly _tag = "ConfigApplyError";
-    constructor(key: string, cause: unknown);
+	readonly key: string;
+	readonly cause: unknown;
+	readonly _tag = "ConfigApplyError";
+	constructor(key: string, cause: unknown);
 }
 export default ConfigApplyError;
 //# sourceMappingURL=ConfigApplyError.d.ts.map

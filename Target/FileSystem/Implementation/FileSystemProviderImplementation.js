@@ -1,1 +1,224 @@
-import{Effect as a,Layer as u,Context as h}from"effect";import{URI as c}from"../Type/URI.js";import{FileType as p}from"../Type/FileType.js";import{InvalidPathError as w,UnknownFileSystemError as f,toFileSystemProviderError as n}from"../Error/FileSystemProviderError.js";import{IPC as P}from"../../Effect/IPC.js";const y={READ:"file:read",WRITE:"file:write",STAT:"file:stat",DELETE:"file:delete",MKDIR:"file:mkdir",RMDIR:"file:delete",READDIR:"file:readdir",COPY:"file:copy",MOVE:"file:move"},F=h.GenericTag("FileSystemProvider");function m(o){const s=o.fsPath();if(s===null)throw new w(o.toString());return s}function M(o){return c.file(o)}function I(o){let s;return o.is_directory?s=p.Directory:o.is_file?s=p.File:s=p.Unknown,{type:s,size:o.size??0,ctime:o.created??o.modified??Date.now(),mtime:o.modified??Date.now()}}function b(o){return o.map(s=>{let t;return s.is_directory?t=p.Directory:s.is_file?t=p.File:t=p.Unknown,[s.name,t]})}const v=o=>{class s{async readFile(e){const i=m(e);try{const r=await o(y.READ,i);if(typeof r=="string")return new TextEncoder().encode(r);if(r instanceof Uint8Array)return r;if(Array.isArray(r))return new Uint8Array(r);throw new f("Unexpected result format from file:read")}catch(r){throw n(r,"readFile",i)}}async writeFile(e,i,r){const d=m(e);try{const l=new TextDecoder().decode(i);await o(y.WRITE,d,l)}catch(l){throw n(l,"writeFile",d)}}async delete(e){const i=m(e);try{await o(y.DELETE,i)}catch(r){throw n(r,"delete",i)}}async copy(e,i){const r=m(e),d=m(i);try{await o(y.COPY,r,d)}catch(l){throw n(l,"copy",`${r} -> ${d}`)}}async move(e,i){const r=m(e),d=m(i);try{await o(y.MOVE,r,d)}catch(l){throw n(l,"move",`${r} -> ${d}`)}}async readdir(e){const i=m(e);try{const r=await o(y.READDIR,i);if(!Array.isArray(r))throw new f("Unexpected result format from file:readdir");return b(r)}catch(r){throw n(r,"readdir",i)}}async mkdir(e,i={}){const r=m(e);try{await o(y.MKDIR,r,i.recursive??!0)}catch(d){throw n(d,"mkdir",r)}}async rmdir(e){const i=m(e);try{await o(y.RMDIR,i)}catch(r){throw n(r,"rmdir",i)}}async stat(e){const i=m(e);try{const r=await o(y.STAT,i);if(!r||typeof r!="object")throw new f("Unexpected result format from file:stat");return I(r)}catch(r){throw n(r,"stat",i)}}watch(e,i){return{dispose:()=>{}}}}return new s},R=u.effect(F,a.gen(function*(){const o=yield*P,s=v((t,...e)=>a.runPromise(o.invoke(t)(e)));return{getProvider:a.succeed(s),readFile:t=>a.tryPromise({try:()=>s.readFile(c.parse(t)),catch:e=>n(e,"readFile",t)}),writeFile:(t,e,i={})=>a.tryPromise({try:()=>s.writeFile(c.parse(t),e,{create:i.create??!0,overwrite:i.overwrite??!0}),catch:r=>n(r,"writeFile",t)}),delete:t=>a.tryPromise({try:()=>s.delete(c.parse(t)),catch:e=>n(e,"delete",t)}),copy:(t,e)=>a.tryPromise({try:()=>s.copy(c.parse(t),c.parse(e)),catch:i=>n(i,"copy",`${t} -> ${e}`)}),move:(t,e)=>a.tryPromise({try:()=>s.move(c.parse(t),c.parse(e)),catch:i=>n(i,"move",`${t} -> ${e}`)}),readdir:t=>a.tryPromise({try:()=>s.readdir(c.parse(t)),catch:e=>n(e,"readdir",t)}).pipe(a.map(e=>e.map(([i,r])=>[i,r]))),mkdir:(t,e={})=>a.tryPromise({try:()=>s.mkdir(c.parse(t),e),catch:i=>n(i,"mkdir",t)}),rmdir:t=>a.tryPromise({try:()=>s.rmdir(c.parse(t)),catch:e=>n(e,"rmdir",t)}),stat:t=>a.tryPromise({try:()=>s.stat(c.parse(t)),catch:e=>n(e,"stat",t)})}}));var $=R;export{R as FileSystemProviderLive,F as FileSystemProviderTag,y as MountainCommands,$ as default};
+import { Effect as a, Context as h, Layer as u } from "effect";
+
+import { IPC as P } from "../../Effect/IPC.js";
+import {
+	UnknownFileSystemError as f,
+	toFileSystemProviderError as n,
+	InvalidPathError as w,
+} from "../Error/FileSystemProviderError.js";
+import { FileType as p } from "../Type/FileType.js";
+import { URI as c } from "../Type/URI.js";
+
+const y = {
+		READ: "file:read",
+		WRITE: "file:write",
+		STAT: "file:stat",
+		DELETE: "file:delete",
+		MKDIR: "file:mkdir",
+		RMDIR: "file:delete",
+		READDIR: "file:readdir",
+		COPY: "file:copy",
+		MOVE: "file:move",
+	},
+	F = h.GenericTag("FileSystemProvider");
+function m(o) {
+	const s = o.fsPath();
+	if (s === null) throw new w(o.toString());
+	return s;
+}
+function M(o) {
+	return c.file(o);
+}
+function I(o) {
+	let s;
+	return (
+		o.is_directory
+			? (s = p.Directory)
+			: o.is_file
+				? (s = p.File)
+				: (s = p.Unknown),
+		{
+			type: s,
+			size: o.size ?? 0,
+			ctime: o.created ?? o.modified ?? Date.now(),
+			mtime: o.modified ?? Date.now(),
+		}
+	);
+}
+function b(o) {
+	return o.map((s) => {
+		let t;
+		return (
+			s.is_directory
+				? (t = p.Directory)
+				: s.is_file
+					? (t = p.File)
+					: (t = p.Unknown),
+			[s.name, t]
+		);
+	});
+}
+const v = (o) => {
+		class s {
+			async readFile(e) {
+				const i = m(e);
+				try {
+					const r = await o(y.READ, i);
+					if (typeof r == "string")
+						return new TextEncoder().encode(r);
+					if (r instanceof Uint8Array) return r;
+					if (Array.isArray(r)) return new Uint8Array(r);
+					throw new f("Unexpected result format from file:read");
+				} catch (r) {
+					throw n(r, "readFile", i);
+				}
+			}
+			async writeFile(e, i, r) {
+				const d = m(e);
+				try {
+					const l = new TextDecoder().decode(i);
+					await o(y.WRITE, d, l);
+				} catch (l) {
+					throw n(l, "writeFile", d);
+				}
+			}
+			async delete(e) {
+				const i = m(e);
+				try {
+					await o(y.DELETE, i);
+				} catch (r) {
+					throw n(r, "delete", i);
+				}
+			}
+			async copy(e, i) {
+				const r = m(e),
+					d = m(i);
+				try {
+					await o(y.COPY, r, d);
+				} catch (l) {
+					throw n(l, "copy", `${r} -> ${d}`);
+				}
+			}
+			async move(e, i) {
+				const r = m(e),
+					d = m(i);
+				try {
+					await o(y.MOVE, r, d);
+				} catch (l) {
+					throw n(l, "move", `${r} -> ${d}`);
+				}
+			}
+			async readdir(e) {
+				const i = m(e);
+				try {
+					const r = await o(y.READDIR, i);
+					if (!Array.isArray(r))
+						throw new f(
+							"Unexpected result format from file:readdir",
+						);
+					return b(r);
+				} catch (r) {
+					throw n(r, "readdir", i);
+				}
+			}
+			async mkdir(e, i = {}) {
+				const r = m(e);
+				try {
+					await o(y.MKDIR, r, i.recursive ?? !0);
+				} catch (d) {
+					throw n(d, "mkdir", r);
+				}
+			}
+			async rmdir(e) {
+				const i = m(e);
+				try {
+					await o(y.RMDIR, i);
+				} catch (r) {
+					throw n(r, "rmdir", i);
+				}
+			}
+			async stat(e) {
+				const i = m(e);
+				try {
+					const r = await o(y.STAT, i);
+					if (!r || typeof r != "object")
+						throw new f("Unexpected result format from file:stat");
+					return I(r);
+				} catch (r) {
+					throw n(r, "stat", i);
+				}
+			}
+			watch(e, i) {
+				return { dispose: () => {} };
+			}
+		}
+		return new s();
+	},
+	R = u.effect(
+		F,
+		a.gen(function* () {
+			const o = yield* P,
+				s = v((t, ...e) => a.runPromise(o.invoke(t)(e)));
+			return {
+				getProvider: a.succeed(s),
+				readFile: (t) =>
+					a.tryPromise({
+						try: () => s.readFile(c.parse(t)),
+						catch: (e) => n(e, "readFile", t),
+					}),
+				writeFile: (t, e, i = {}) =>
+					a.tryPromise({
+						try: () =>
+							s.writeFile(c.parse(t), e, {
+								create: i.create ?? !0,
+								overwrite: i.overwrite ?? !0,
+							}),
+						catch: (r) => n(r, "writeFile", t),
+					}),
+				delete: (t) =>
+					a.tryPromise({
+						try: () => s.delete(c.parse(t)),
+						catch: (e) => n(e, "delete", t),
+					}),
+				copy: (t, e) =>
+					a.tryPromise({
+						try: () => s.copy(c.parse(t), c.parse(e)),
+						catch: (i) => n(i, "copy", `${t} -> ${e}`),
+					}),
+				move: (t, e) =>
+					a.tryPromise({
+						try: () => s.move(c.parse(t), c.parse(e)),
+						catch: (i) => n(i, "move", `${t} -> ${e}`),
+					}),
+				readdir: (t) =>
+					a
+						.tryPromise({
+							try: () => s.readdir(c.parse(t)),
+							catch: (e) => n(e, "readdir", t),
+						})
+						.pipe(a.map((e) => e.map(([i, r]) => [i, r]))),
+				mkdir: (t, e = {}) =>
+					a.tryPromise({
+						try: () => s.mkdir(c.parse(t), e),
+						catch: (i) => n(i, "mkdir", t),
+					}),
+				rmdir: (t) =>
+					a.tryPromise({
+						try: () => s.rmdir(c.parse(t)),
+						catch: (e) => n(e, "rmdir", t),
+					}),
+				stat: (t) =>
+					a.tryPromise({
+						try: () => s.stat(c.parse(t)),
+						catch: (e) => n(e, "stat", t),
+					}),
+			};
+		}),
+	);
+var $ = R;
+export {
+	R as FileSystemProviderLive,
+	F as FileSystemProviderTag,
+	y as MountainCommands,
+	$ as default,
+};

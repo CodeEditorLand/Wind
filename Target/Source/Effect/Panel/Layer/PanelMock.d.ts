@@ -8,8 +8,10 @@
  * @category Layer
  */
 import { Layer } from "effect";
-import PanelTag from "../Tag/PanelTag.js";
+
 import type { PanelService } from "../Interface/PanelService.js";
+import PanelTag from "../Tag/PanelTag.js";
+
 /**
  * Creates a mock Panel service implementation.
  * All operations return static values suitable for testing.

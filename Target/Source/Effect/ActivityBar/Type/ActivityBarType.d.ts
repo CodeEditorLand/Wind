@@ -10,19 +10,19 @@
  * Represents a badge displayed on an activity bar item.
  */
 export interface ActivityBarBadge {
-    readonly text: string;
-    readonly color?: string;
+	readonly text: string;
+	readonly color?: string;
 }
 /**
  * Represents a complete activity bar item with all properties.
  */
 export interface ActivityBarItem {
-    readonly id: string;
-    readonly title: string;
-    readonly icon: string;
-    readonly command: string;
-    readonly position: number;
-    readonly badge?: ActivityBarBadge;
+	readonly id: string;
+	readonly title: string;
+	readonly icon: string;
+	readonly command: string;
+	readonly position: number;
+	readonly badge?: ActivityBarBadge;
 }
 /**
  * Represents the data required to create a new activity bar item

@@ -8,11 +8,17 @@
  * @category Implementation
  */
 import { Layer } from "effect";
+
 import { ActivityBarTag } from "../Tag/ActivityBarTag.js";
+
 /**
  * Live implementation layer for ActivityBar service.
  * Provides in-memory storage with reactive state management.
  */
-export declare const ActivityBarLive: Layer.Layer<ActivityBarTag, never, import("../../Telemetry.js").TelemetryTag>;
+export declare const ActivityBarLive: Layer.Layer<
+	ActivityBarTag,
+	never,
+	import("../../Telemetry.js").TelemetryTag
+>;
 export default ActivityBarLive;
 //# sourceMappingURL=ActivityBarImplementation.d.ts.map

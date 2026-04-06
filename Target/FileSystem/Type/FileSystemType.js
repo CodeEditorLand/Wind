@@ -1,1 +1,17 @@
-class s extends Error{constructor(i,n){super(i);this.code=n;this.name="FileSystemError"}}var o=(e=>(e.FileNotFound="FileNotFound",e.FileExists="FileExists",e.NoPermissions="NoPermissions",e.InvalidPath="InvalidPath",e.NotSupported="NotSupported",e.Unknown="Unknown",e))(o||{});export{s as FileSystemError,o as FileSystemErrorCode};
+class s extends Error {
+	constructor(i, n) {
+		super(i);
+		this.code = n;
+		this.name = "FileSystemError";
+	}
+}
+var o = ((e) => (
+	(e.FileNotFound = "FileNotFound"),
+	(e.FileExists = "FileExists"),
+	(e.NoPermissions = "NoPermissions"),
+	(e.InvalidPath = "InvalidPath"),
+	(e.NotSupported = "NotSupported"),
+	(e.Unknown = "Unknown"),
+	e
+))(o || {});
+export { s as FileSystemError, o as FileSystemErrorCode };

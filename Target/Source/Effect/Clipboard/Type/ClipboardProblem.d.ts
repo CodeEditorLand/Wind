@@ -10,24 +10,30 @@
  * Clipboard error types with categorization
  * Microsoft VSCode Reference: Clipboard error handling patterns
  */
-export type ClipboardProblem = {
-    readonly _tag: "ClipboardNotAvailable";
-    readonly reason: string;
-} | {
-    readonly _tag: "ClipboardReadError";
-    readonly error: Error;
-} | {
-    readonly _tag: "ClipboardWriteError";
-    readonly error: Error;
-} | {
-    readonly _tag: "ClipboardPermissionDenied";
-    readonly reason: string;
-} | {
-    readonly _tag: "ClipboardFormatNotSupported";
-    readonly format: string;
-} | {
-    readonly _tag: "ClipboardSizeExceeded";
-    readonly size: number;
-    readonly limit: number;
-};
+export type ClipboardProblem =
+	| {
+			readonly _tag: "ClipboardNotAvailable";
+			readonly reason: string;
+	  }
+	| {
+			readonly _tag: "ClipboardReadError";
+			readonly error: Error;
+	  }
+	| {
+			readonly _tag: "ClipboardWriteError";
+			readonly error: Error;
+	  }
+	| {
+			readonly _tag: "ClipboardPermissionDenied";
+			readonly reason: string;
+	  }
+	| {
+			readonly _tag: "ClipboardFormatNotSupported";
+			readonly format: string;
+	  }
+	| {
+			readonly _tag: "ClipboardSizeExceeded";
+			readonly size: number;
+			readonly limit: number;
+	  };
 //# sourceMappingURL=ClipboardProblem.d.ts.map

@@ -8,8 +8,10 @@
  * @category Layer
  */
 import { Layer } from "effect";
-import TelemetryTag from "../Tag/TelemetryTag.js";
+
 import type { TelemetryService } from "../Interface/TelemetryService.js";
+import TelemetryTag from "../Tag/TelemetryTag.js";
+
 /**
  * Creates a mock Telemetry service implementation.
  * All operations return static values suitable for testing.

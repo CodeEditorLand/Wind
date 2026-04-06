@@ -7,10 +7,10 @@
  * @category Error
  */
 export declare class MountainStateError extends Error {
-    readonly _tag = "MountainStateError";
-    readonly expected: string;
-    readonly actual: string;
-    constructor(expected: string, actual: string);
+	readonly _tag = "MountainStateError";
+	readonly expected: string;
+	readonly actual: string;
+	constructor(expected: string, actual: string);
 }
 export default MountainStateError;
 //# sourceMappingURL=MountainStateError.d.ts.map

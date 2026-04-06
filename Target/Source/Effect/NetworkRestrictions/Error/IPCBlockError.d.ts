@@ -10,12 +10,12 @@
  * Error thrown when an IPC channel is blocked
  */
 export interface IPCBlockError {
-    readonly _tag: "IPCBlockError";
-    readonly channel: string;
-    readonly reason: string;
-    readonly message: string;
-    readonly name: string;
-    readonly cause: string;
+	readonly _tag: "IPCBlockError";
+	readonly channel: string;
+	readonly reason: string;
+	readonly message: string;
+	readonly name: string;
+	readonly cause: string;
 }
 /**
  * Creates an IPCBlockError instance
@@ -23,6 +23,9 @@ export interface IPCBlockError {
  * @param reason - The reason for blocking
  * @returns An IPCBlockError instance
  */
-declare const CreateIPCBlockError: (channel: string, reason: string) => IPCBlockError;
+declare const CreateIPCBlockError: (
+	channel: string,
+	reason: string,
+) => IPCBlockError;
 export default CreateIPCBlockError;
 //# sourceMappingURL=IPCBlockError.d.ts.map

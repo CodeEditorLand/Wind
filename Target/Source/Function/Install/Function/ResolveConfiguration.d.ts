@@ -8,6 +8,7 @@
  * @category Function
  */
 import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes";
+
 /**
  * Resolves the VSCode sandbox configuration
  */

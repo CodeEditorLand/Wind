@@ -1,1 +1,12 @@
-class t extends Error{_tag="ActivityBarItemNotFoundError";constructor(r){super(`Activity bar item '${r}' not found`),Object.setPrototypeOf(this,t.prototype)}get name(){return"ActivityBarItemNotFoundError"}}var e=t;export{t as ActivityBarItemNotFoundError,e as default};
+class t extends Error {
+	_tag = "ActivityBarItemNotFoundError";
+	constructor(r) {
+		(super(`Activity bar item '${r}' not found`),
+			Object.setPrototypeOf(this, t.prototype));
+	}
+	get name() {
+		return "ActivityBarItemNotFoundError";
+	}
+}
+var e = t;
+export { t as ActivityBarItemNotFoundError, e as default };

@@ -1,1 +1,11 @@
-class o extends Error{_tag="MountainSyncError";resource;cause;constructor(r,n){super(`Mountain sync for '${r}' failed: ${String(n)}`),this.resource=r}}var t=o;export{o as MountainSyncError,t as default};
+class o extends Error {
+	_tag = "MountainSyncError";
+	resource;
+	cause;
+	constructor(r, n) {
+		(super(`Mountain sync for '${r}' failed: ${String(n)}`),
+			(this.resource = r));
+	}
+}
+var t = o;
+export { o as MountainSyncError, t as default };

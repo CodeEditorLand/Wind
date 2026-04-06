@@ -1,1 +1,11 @@
-class e extends Error{_tag="PanelViewNotFoundError";constructor(r){super(`Panel view '${r}' not found`),Object.setPrototypeOf(this,e.prototype)}get name(){return"PanelViewNotFoundError"}}export{e as default};
+class e extends Error {
+	_tag = "PanelViewNotFoundError";
+	constructor(r) {
+		(super(`Panel view '${r}' not found`),
+			Object.setPrototypeOf(this, e.prototype));
+	}
+	get name() {
+		return "PanelViewNotFoundError";
+	}
+}
+export { e as default };

@@ -7,15 +7,16 @@
  * @category Type
  */
 import type { StageResult } from "./StageResult.js";
+
 /**
  * Bootstrap result interface
  */
 export interface BootstrapResult {
-    /** Whether the entire bootstrap process succeeded */
-    success: boolean;
-    /** Results from each individual stage */
-    results: StageResult[];
-    /** Total duration of all stages in milliseconds */
-    totalDuration: number;
+	/** Whether the entire bootstrap process succeeded */
+	success: boolean;
+	/** Results from each individual stage */
+	results: StageResult[];
+	/** Total duration of all stages in milliseconds */
+	totalDuration: number;
 }
 //# sourceMappingURL=BootstrapResult.d.ts.map

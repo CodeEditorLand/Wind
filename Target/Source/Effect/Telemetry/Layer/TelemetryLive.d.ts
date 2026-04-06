@@ -8,7 +8,9 @@
  * @category Layer
  */
 import { Layer } from "effect";
+
 import TelemetryTag from "../Tag/TelemetryTag.js";
+
 /**
  * Live layer for Telemetry service.
  * Provides reactive telemetry management with SubscriptionRef-based state.

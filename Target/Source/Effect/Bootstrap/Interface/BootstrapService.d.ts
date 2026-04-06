@@ -8,7 +8,12 @@
  * @category Interface
  */
 import { Effect } from "effect";
-import type { BootstrapOptions, BootstrapResult } from "../Type/BootstrapType.js";
+
+import type {
+	BootstrapOptions,
+	BootstrapResult,
+} from "../Type/BootstrapType.js";
+
 /**
  * Service interface for Bootstrap orchestration.
  * Coordinates all initialization stages for the VSCode workbench.
@@ -23,11 +28,13 @@ import type { BootstrapOptions, BootstrapResult } from "../Type/BootstrapType.js
  * - Stage 6: Health checks
  */
 export interface BootstrapService {
-    /**
-     * Run the bootstrap process with optional configuration.
-     * @param options - Options for controlling bootstrap behavior
-     * @returns Effect that resolves to the bootstrap result
-     */
-    readonly run: (options?: BootstrapOptions) => Effect.Effect<BootstrapResult, never>;
+	/**
+	 * Run the bootstrap process with optional configuration.
+	 * @param options - Options for controlling bootstrap behavior
+	 * @returns Effect that resolves to the bootstrap result
+	 */
+	readonly run: (
+		options?: BootstrapOptions,
+	) => Effect.Effect<BootstrapResult, never>;
 }
 //# sourceMappingURL=BootstrapService.d.ts.map

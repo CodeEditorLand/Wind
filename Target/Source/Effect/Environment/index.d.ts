@@ -26,6 +26,17 @@ export type { Platform, Architecture } from "./Type/EnvironmentType.js";
 export type { EnvironmentInfo } from "./Type/EnvironmentType.js";
 export type { EnvironmentService } from "./Interface/EnvironmentService.js";
 export { EnvironmentTag } from "./Tag/EnvironmentTag.js";
-export { EnvironmentLive as default, EnvironmentLive, EnvironmentMock, makeMockEnvironment, } from "./Implementation/EnvironmentImplementation.js";
-export { DetectPlatform, DetectArchitecture, DetectLocale, DetectTimezone, GetUserAgent, } from "./Implementation/EnvironmentHelper.js";
+export {
+	EnvironmentLive as default,
+	EnvironmentLive,
+	EnvironmentMock,
+	makeMockEnvironment,
+} from "./Implementation/EnvironmentImplementation.js";
+export {
+	DetectPlatform,
+	DetectArchitecture,
+	DetectLocale,
+	DetectTimezone,
+	GetUserAgent,
+} from "./Implementation/EnvironmentHelper.js";
 //# sourceMappingURL=index.d.ts.map

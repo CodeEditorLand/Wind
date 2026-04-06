@@ -9,19 +9,20 @@
  */
 import type { Mode } from "./Mode.js";
 import type { Platform } from "./Platform.js";
+
 /**
  * Environment data interface
  */
 export interface EnvironmentData {
-    /** Runtime platform */
-    platform: Platform;
-    /** Execution mode */
-    mode: Mode;
-    /** Browser user agent string */
-    userAgent: string;
-    /** Browser/system language */
-    language: string;
-    /** System timezone */
-    timezone: string;
+	/** Runtime platform */
+	platform: Platform;
+	/** Execution mode */
+	mode: Mode;
+	/** Browser user agent string */
+	userAgent: string;
+	/** Browser/system language */
+	language: string;
+	/** System timezone */
+	timezone: string;
 }
 //# sourceMappingURL=EnvironmentData.d.ts.map

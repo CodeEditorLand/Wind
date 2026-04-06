@@ -8,8 +8,14 @@
  * @category Tag
  */
 import { Context } from "effect";
+
 import type { MountainSyncService } from "../Interface/MountainSyncService.js";
-declare const MountainSyncTag_base: Context.TagClass<MountainSyncTag, "Effect/MountainSync", MountainSyncService>;
+
+declare const MountainSyncTag_base: Context.TagClass<
+	MountainSyncTag,
+	"Effect/MountainSync",
+	MountainSyncService
+>;
 /**
  * Context.Tag for MountainSync service dependency injection.
  * Use this tag to access MountainSync in Effect programs.
@@ -25,7 +31,6 @@ declare const MountainSyncTag_base: Context.TagClass<MountainSyncTag, "Effect/Mo
  * });
  * ```
  */
-export default class MountainSyncTag extends MountainSyncTag_base {
-}
+export default class MountainSyncTag extends MountainSyncTag_base {}
 export {};
 //# sourceMappingURL=MountainSyncTag.d.ts.map

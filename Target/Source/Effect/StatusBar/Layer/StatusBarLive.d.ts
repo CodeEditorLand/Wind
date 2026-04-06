@@ -8,7 +8,9 @@
  * @category Layer
  */
 import { Layer } from "effect";
+
 import StatusBarTag from "../Tag/StatusBarTag.js";
+
 /**
  * Live layer for StatusBar service.
  * Provides reactive status bar item management with SubscriptionRef-based state.
@@ -22,6 +24,10 @@ import StatusBarTag from "../Tag/StatusBarTag.js";
  * const appLayer = Layer.mergeAll(TelemetryLive, StatusBarLive);
  * ```
  */
-declare const StatusBarLive: Layer.Layer<StatusBarTag, never, import("../../Telemetry.js").TelemetryTag>;
+declare const StatusBarLive: Layer.Layer<
+	StatusBarTag,
+	never,
+	import("../../Telemetry.js").TelemetryTag
+>;
 export default StatusBarLive;
 //# sourceMappingURL=StatusBarLive.d.ts.map

@@ -8,10 +8,12 @@
  * @category Implementation
  */
 import { Effect } from "effect";
-import type { MountainSyncResult } from "../Type/MountainSyncType.js";
-import type { MountainService } from "../../Mountain.js";
+
 import type { IPCService } from "../../IPC.js";
+import type { MountainService } from "../../Mountain.js";
 import type { TelemetryService } from "../../Telemetry.js";
+import type { MountainSyncResult } from "../Type/MountainSyncType.js";
+
 /**
  * Performs a single synchronization operation.
  * This is the core sync logic that coordinates between Mountain, IPC, and Telemetry.
@@ -21,6 +23,10 @@ import type { TelemetryService } from "../../Telemetry.js";
  * @param telemetry - Telemetry service for logging
  * @returns Effect that produces MountainSyncResult
  */
-declare const SyncNowEffect: (_mountain: MountainService, _ipc: IPCService, telemetry: TelemetryService) => Effect.Effect<MountainSyncResult>;
+declare const SyncNowEffect: (
+	_mountain: MountainService,
+	_ipc: IPCService,
+	telemetry: TelemetryService,
+) => Effect.Effect<MountainSyncResult>;
 export default SyncNowEffect;
 //# sourceMappingURL=MountainSyncHelper.d.ts.map

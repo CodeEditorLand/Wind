@@ -1,1 +1,11 @@
-class r extends Error{_tag="SidebarPanelNotFoundError";constructor(e){super(`Sidebar panel '${e}' not found`),Object.setPrototypeOf(this,r.prototype)}get name(){return"SidebarPanelNotFoundError"}}export{r as default};
+class r extends Error {
+	_tag = "SidebarPanelNotFoundError";
+	constructor(e) {
+		(super(`Sidebar panel '${e}' not found`),
+			Object.setPrototypeOf(this, r.prototype));
+	}
+	get name() {
+		return "SidebarPanelNotFoundError";
+	}
+}
+export { r as default };

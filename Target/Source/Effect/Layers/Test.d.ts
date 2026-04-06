@@ -5,6 +5,7 @@
  * Useful for unit testing without real backend dependencies.
  */
 import { Layer } from "effect";
+
 /**
  * Complete test layer with all services mocked.
  * No real backend connections, all effects succeed with dummy data.

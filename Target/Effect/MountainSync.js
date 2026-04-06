@@ -1,1 +1,1 @@
-export*from"./MountainSync/index.js";
+export * from "./MountainSync/index.js";

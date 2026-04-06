@@ -7,10 +7,10 @@
  * @category Error
  */
 export declare class MountainRPCError extends Error {
-    readonly _tag = "MountainRPCError";
-    readonly method: string;
-    readonly cause: unknown;
-    constructor(method: string, cause: unknown);
+	readonly _tag = "MountainRPCError";
+	readonly method: string;
+	readonly cause: unknown;
+	constructor(method: string, cause: unknown);
 }
 export default MountainRPCError;
 //# sourceMappingURL=MountainRPCError.d.ts.map

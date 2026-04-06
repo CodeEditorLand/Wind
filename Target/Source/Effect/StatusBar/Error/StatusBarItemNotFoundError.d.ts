@@ -11,9 +11,9 @@
  * Includes the item ID that was not found.
  */
 export default class StatusBarItemNotFoundError extends Error {
-    readonly itemId: string;
-    readonly _tag = "StatusBarItemNotFoundError";
-    constructor(itemId: string);
-    get name(): string;
+	readonly itemId: string;
+	readonly _tag = "StatusBarItemNotFoundError";
+	constructor(itemId: string);
+	get name(): string;
 }
 //# sourceMappingURL=StatusBarItemNotFoundError.d.ts.map

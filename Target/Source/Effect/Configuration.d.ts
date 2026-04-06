@@ -17,5 +17,21 @@
  * import { Configuration, ConfigurationLive } from "./Effect/Configuration/index.js";
  * ```
  */
-export { ConfigFetchError, ConfigValidationError, ConfigApplyError, type ConfigSchemaIssue, type ConfigurationService, ConfigurationTag, ValidateConfiguration, MakeValidate, MakeApply, GetConfigValue, ConfigurationLive, ConfigurationWithSyncLive, ConfigurationMock, makeMockConfiguration, Configuration, } from "./Configuration/index.js";
+export {
+	ConfigFetchError,
+	ConfigValidationError,
+	ConfigApplyError,
+	type ConfigSchemaIssue,
+	type ConfigurationService,
+	ConfigurationTag,
+	ValidateConfiguration,
+	MakeValidate,
+	MakeApply,
+	GetConfigValue,
+	ConfigurationLive,
+	ConfigurationWithSyncLive,
+	ConfigurationMock,
+	makeMockConfiguration,
+	Configuration,
+} from "./Configuration/index.js";
 //# sourceMappingURL=Configuration.d.ts.map

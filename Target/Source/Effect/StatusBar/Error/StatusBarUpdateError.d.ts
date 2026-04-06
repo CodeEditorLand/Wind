@@ -11,10 +11,10 @@
  * Includes the item ID and the underlying cause of the failure.
  */
 export default class StatusBarUpdateError extends Error {
-    readonly _tag = "StatusBarUpdateError";
-    readonly cause: unknown;
-    readonly itemId: string;
-    constructor(itemId: string, cause: unknown);
-    get name(): string;
+	readonly _tag = "StatusBarUpdateError";
+	readonly cause: unknown;
+	readonly itemId: string;
+	constructor(itemId: string, cause: unknown);
+	get name(): string;
 }
 //# sourceMappingURL=StatusBarUpdateError.d.ts.map

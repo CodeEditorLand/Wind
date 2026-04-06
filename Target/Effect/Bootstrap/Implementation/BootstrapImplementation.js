@@ -1,1 +1,91 @@
-import{Effect as l,Layer as d}from"effect";import{BootstrapTag as B}from"../Tag/BootstrapTag.js";import{Telemetry as S}from"../../Telemetry.js";import{stage0_Environment as y,stage1_Preload as T,stage2_Configuration as R,stage3_Services as w,stage4_Preparation as v,stage5_Initialization as D,stage6_HealthCheck as h}from"./BootstrapStage.js";const k=()=>({run:p=>l.gen(function*(){const t=yield*S,f=Date.now(),{skipHealthCheck:g=!1,debugMode:u=!1}=p??{};t.log("info","[Bootstrap] ==============================================="),t.log("info","[Bootstrap] Wind VSCode Workbench Bootstrap"),t.log("info","[Bootstrap] Debug mode: "+u),t.log("info","[Bootstrap] ===============================================");const m=[y,T,R,w,v,D,...g?[]:[h]],s=[];for(const e of m){const o=Date.now();let n;try{n={...yield*l.suspend(()=>e),duration:Date.now()-o}}catch(a){const i=a instanceof i?a:new i(String(a));n={stageName:"Unknown",success:!1,duration:Date.now()-o,error:i}}s.push(n)}const c=Date.now()-f,r=s.every(e=>e.success);if(t.log("info","[Bootstrap] ==============================================="),t.log("info",`[Bootstrap] ${r?"\u2713 Bootstrap completed successfully":"\u2717 Bootstrap failed"}`),t.log("info",`[Bootstrap] Total duration: ${c}ms`),t.log("info","[Bootstrap] ==============================================="),!r){const e=s.filter(o=>!o.success);t.log("error","[Bootstrap] Failed stages:");for(const o of e)t.log("error",`[Bootstrap]   - ${o.stageName}: ${o.error?.message||"Unknown error"}`)}return{success:r,totalDuration:c,stages:s,error:r?void 0:new Error("Bootstrap failed")}})}),E=d.effect(B,l.succeed(k()));var j=E;export{E as BootstrapLive,j as default};
+import { Layer as d, Effect as l } from "effect";
+
+import { Telemetry as S } from "../../Telemetry.js";
+import { BootstrapTag as B } from "../Tag/BootstrapTag.js";
+import {
+	stage5_Initialization as D,
+	stage6_HealthCheck as h,
+	stage2_Configuration as R,
+	stage1_Preload as T,
+	stage4_Preparation as v,
+	stage3_Services as w,
+	stage0_Environment as y,
+} from "./BootstrapStage.js";
+
+const k = () => ({
+		run: (p) =>
+			l.gen(function* () {
+				const t = yield* S,
+					f = Date.now(),
+					{ skipHealthCheck: g = !1, debugMode: u = !1 } = p ?? {};
+				(t.log(
+					"info",
+					"[Bootstrap] ===============================================",
+				),
+					t.log(
+						"info",
+						"[Bootstrap] Wind VSCode Workbench Bootstrap",
+					),
+					t.log("info", "[Bootstrap] Debug mode: " + u),
+					t.log(
+						"info",
+						"[Bootstrap] ===============================================",
+					));
+				const m = [y, T, R, w, v, D, ...(g ? [] : [h])],
+					s = [];
+				for (const e of m) {
+					const o = Date.now();
+					let n;
+					try {
+						n = {
+							...(yield* l.suspend(() => e)),
+							duration: Date.now() - o,
+						};
+					} catch (a) {
+						const i = a instanceof i ? a : new i(String(a));
+						n = {
+							stageName: "Unknown",
+							success: !1,
+							duration: Date.now() - o,
+							error: i,
+						};
+					}
+					s.push(n);
+				}
+				const c = Date.now() - f,
+					r = s.every((e) => e.success);
+				if (
+					(t.log(
+						"info",
+						"[Bootstrap] ===============================================",
+					),
+					t.log(
+						"info",
+						`[Bootstrap] ${r ? "\u2713 Bootstrap completed successfully" : "\u2717 Bootstrap failed"}`,
+					),
+					t.log("info", `[Bootstrap] Total duration: ${c}ms`),
+					t.log(
+						"info",
+						"[Bootstrap] ===============================================",
+					),
+					!r)
+				) {
+					const e = s.filter((o) => !o.success);
+					t.log("error", "[Bootstrap] Failed stages:");
+					for (const o of e)
+						t.log(
+							"error",
+							`[Bootstrap]   - ${o.stageName}: ${o.error?.message || "Unknown error"}`,
+						);
+				}
+				return {
+					success: r,
+					totalDuration: c,
+					stages: s,
+					error: r ? void 0 : new Error("Bootstrap failed"),
+				};
+			}),
+	}),
+	E = d.effect(B, l.succeed(k()));
+var j = E;
+export { E as BootstrapLive, j as default };

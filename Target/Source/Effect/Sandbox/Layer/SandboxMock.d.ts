@@ -8,7 +8,9 @@
  * @category Layer
  */
 import { Layer } from "effect";
+
 import type { SandboxService } from "../Interface/SandboxService.js";
+
 /**
  * Mock layer for Sandbox service.
  * Provides a failing implementation for testing non-vscode environments.

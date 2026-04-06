@@ -29,7 +29,14 @@ export type { ClipboardService } from "./Interface/ClipboardService.js";
 export { ClipboardServiceTag, Clipboard } from "./Tag/ClipboardServiceTag.js";
 export { LiveBrowserClipboardService } from "./Implementation/BrowserClipboard.js";
 export { MockClipboardService } from "./Implementation/MockClipboard.js";
-export { CreateNotAvailableError, CreateReadError, CreateWriteError, CreatePermissionDeniedError, CreateFormatNotSupportedError, CreateSizeExceededError, } from "./Implementation/ClipboardHelper.js";
+export {
+	CreateNotAvailableError,
+	CreateReadError,
+	CreateWriteError,
+	CreatePermissionDeniedError,
+	CreateFormatNotSupportedError,
+	CreateSizeExceededError,
+} from "./Implementation/ClipboardHelper.js";
 export { default as LiveClipboardServiceLayer } from "./Live.js";
 export { default as MockClipboardServiceLayer } from "./Mock.js";
 //# sourceMappingURL=Clipboard.d.ts.map

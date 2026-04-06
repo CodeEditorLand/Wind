@@ -1,1 +1,71 @@
-import{Layer as r}from"effect";import{ConfigurationLive as u,ConfigurationWithSyncLive as y}from"../Configuration.js";import{MountainLive as i}from"../Mountain.js";import{SandboxLive as o}from"../Sandbox.js";import{TelemetryLive as e}from"../Telemetry.js";import{EnvironmentLive as p}from"../Environment.js";import{HealthLive as v}from"../Health.js";import{BootstrapLive as d}from"../Bootstrap.js";import{LiveClipboardServiceLayer as t}from"../Clipboard.js";import{MountainSyncLive as m}from"../MountainSync.js";import{ActivityBarLive as a}from"../ActivityBar.js";import{PanelLive as L}from"../Panel.js";import{SidebarLive as n}from"../Sidebar.js";import{StatusBarLive as f}from"../StatusBar.js";const H=r.empty.pipe(r.provide(o),r.provide(p),r.provide(t),r.provide(e),r.provide(u),r.provide(i),r.provide(m),r.provide(v),r.provide(d),r.provide(a),r.provide(L),r.provide(n),r.provide(f)),c=r.empty.pipe(r.provide(o),r.provide(p),r.provide(t),r.provide(e),r.provide(y),r.provide(i),r.provide(m),r.provide(v),r.provide(d),r.provide(a),r.provide(L),r.provide(n),r.provide(f)),P=r.empty.pipe(r.provide(o),r.provide(p),r.provide(t),r.provide(e),r.provide(y),r.provide(i),r.provide(m),r.provide(v),r.provide(d),r.provide(a),r.provide(L),r.provide(n),r.provide(f));var W=c;export{H as TauriBaseLayer,P as TauriDevLayer,c as TauriLiveLayer,W as default};
+import { Layer as r } from "effect";
+
+import { ActivityBarLive as a } from "../ActivityBar.js";
+import { BootstrapLive as d } from "../Bootstrap.js";
+import { LiveClipboardServiceLayer as t } from "../Clipboard.js";
+import {
+	ConfigurationLive as u,
+	ConfigurationWithSyncLive as y,
+} from "../Configuration.js";
+import { EnvironmentLive as p } from "../Environment.js";
+import { HealthLive as v } from "../Health.js";
+import { MountainLive as i } from "../Mountain.js";
+import { MountainSyncLive as m } from "../MountainSync.js";
+import { PanelLive as L } from "../Panel.js";
+import { SandboxLive as o } from "../Sandbox.js";
+import { SidebarLive as n } from "../Sidebar.js";
+import { StatusBarLive as f } from "../StatusBar.js";
+import { TelemetryLive as e } from "../Telemetry.js";
+
+const H = r.empty.pipe(
+		r.provide(o),
+		r.provide(p),
+		r.provide(t),
+		r.provide(e),
+		r.provide(u),
+		r.provide(i),
+		r.provide(m),
+		r.provide(v),
+		r.provide(d),
+		r.provide(a),
+		r.provide(L),
+		r.provide(n),
+		r.provide(f),
+	),
+	c = r.empty.pipe(
+		r.provide(o),
+		r.provide(p),
+		r.provide(t),
+		r.provide(e),
+		r.provide(y),
+		r.provide(i),
+		r.provide(m),
+		r.provide(v),
+		r.provide(d),
+		r.provide(a),
+		r.provide(L),
+		r.provide(n),
+		r.provide(f),
+	),
+	P = r.empty.pipe(
+		r.provide(o),
+		r.provide(p),
+		r.provide(t),
+		r.provide(e),
+		r.provide(y),
+		r.provide(i),
+		r.provide(m),
+		r.provide(v),
+		r.provide(d),
+		r.provide(a),
+		r.provide(L),
+		r.provide(n),
+		r.provide(f),
+	);
+var W = c;
+export {
+	H as TauriBaseLayer,
+	P as TauriDevLayer,
+	c as TauriLiveLayer,
+	W as default,
+};

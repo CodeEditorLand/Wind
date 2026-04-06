@@ -1,1 +1,201 @@
-import{Effect as e,Layer as u,Schedule as f}from"effect";import{EnvironmentTag as y}from"../../Environment.js";import{TelemetryTag as S}from"../../Telemetry.js";import{MountainTag as d}from"../../Mountain.js";import{ConfigurationTag as p}from"../../Configuration.js";import{HealthTag as v}from"../Tag/HealthTag.js";const h=()=>({checkService:s=>e.gen(function*(){const t=Date.now();switch(s.toLowerCase()){case"environment":const i=Date.now()-t;return e.succeed({serviceName:"Environment",status:"healthy",message:"Environment service available",lastChecked:Date.now(),responseTime:i});case"telemetry":const a=yield*S,m=Date.now()-t;return yield*a.log("info","[Health] Telemetry health check").pipe(e.map(()=>({serviceName:"Telemetry",status:"healthy",message:"Telemetry service available",lastChecked:Date.now(),responseTime:m})),e.catchAll(()=>e.succeed({serviceName:"Telemetry",status:"unhealthy",message:"Telemetry service error",lastChecked:Date.now(),responseTime:Date.now()-t})));case"mountain":{const r=yield*d,c=Date.now()-t;return yield*r.version.pipe(e.map(n=>({serviceName:"Mountain",status:"healthy",message:`Mountain backend connected (v${n})`,lastChecked:Date.now(),responseTime:c,details:{version:n}})),e.catchAll(n=>e.succeed({serviceName:"Mountain",status:"unhealthy",message:`Mountain connection failed: ${String(n)}`,lastChecked:Date.now(),responseTime:Date.now()-t})))}case"ipc":const o=Date.now()-t;return e.succeed({serviceName:"IPC",status:"healthy",message:"IPC service available",lastChecked:Date.now(),responseTime:o});case"configuration":{const r=yield*p,c=Date.now()-t;return yield*r.get.pipe(e.map(()=>({serviceName:"Configuration",status:"healthy",message:"Configuration service available",lastChecked:Date.now(),responseTime:c})),e.catchAll(()=>e.succeed({serviceName:"Configuration",status:"unhealthy",message:"Configuration service error",lastChecked:Date.now(),responseTime:c})))}default:return e.succeed({serviceName:s,status:"unknown",message:`Unknown service: ${s}`,lastChecked:Date.now(),responseTime:0})}}),checkAllServices:()=>e.gen(function*(){const t=yield*(yield*y).getInfo,i=["environment","telemetry","mountain","ipc","configuration"],a=h(),m=i.map(l=>a.checkService(l)),o=yield*e.all(m),r=o.filter(l=>l.status==="unhealthy").length,c=o.filter(l=>l.status==="degraded").length;let n="healthy";return r>0?n="unhealthy":c>0&&(n="degraded"),{overallStatus:n,services:o,systemInfo:{platform:t.platform,architecture:t.architecture,upSince:Date.now()},lastChecked:Date.now()}}),getOverallStatus:()=>e.gen(function*(){return(yield*h().checkAllServices()).overallStatus}),monitorService:(s,t)=>e.gen(function*(){yield*h().checkService(s).pipe(e.repeat(f.spaced(`${t} millis`)))})}),M=u.effect(v,e.succeed(h())),g=s=>({checkService:t=>e.gen(function*(){const a=s?.[t]??"healthy";return{serviceName:t,status:a,message:a==="healthy"?"Mock service healthy":"Mock service unhealthy",lastChecked:Date.now(),responseTime:0}}),checkAllServices:()=>e.gen(function*(){return{overallStatus:"healthy",services:["environment","telemetry","mountain","ipc","configuration"].map(a=>({serviceName:a,status:s?.[a]??"healthy",message:"Mock service check",lastChecked:Date.now(),responseTime:0})),systemInfo:{platform:"mock",architecture:"mock",upSince:Date.now()},lastChecked:Date.now()}}),getOverallStatus:()=>e.succeed("healthy"),monitorService:()=>e.void}),E=u.effect(v,e.succeed(g()));export{M as HealthLive,E as HealthMock,h as makeHealthChecker,g as makeMockHealth};
+import { Effect as e, Schedule as f, Layer as u } from "effect";
+
+import { ConfigurationTag as p } from "../../Configuration.js";
+import { EnvironmentTag as y } from "../../Environment.js";
+import { MountainTag as d } from "../../Mountain.js";
+import { TelemetryTag as S } from "../../Telemetry.js";
+import { HealthTag as v } from "../Tag/HealthTag.js";
+
+const h = () => ({
+		checkService: (s) =>
+			e.gen(function* () {
+				const t = Date.now();
+				switch (s.toLowerCase()) {
+					case "environment":
+						const i = Date.now() - t;
+						return e.succeed({
+							serviceName: "Environment",
+							status: "healthy",
+							message: "Environment service available",
+							lastChecked: Date.now(),
+							responseTime: i,
+						});
+					case "telemetry":
+						const a = yield* S,
+							m = Date.now() - t;
+						return yield* a
+							.log("info", "[Health] Telemetry health check")
+							.pipe(
+								e.map(() => ({
+									serviceName: "Telemetry",
+									status: "healthy",
+									message: "Telemetry service available",
+									lastChecked: Date.now(),
+									responseTime: m,
+								})),
+								e.catchAll(() =>
+									e.succeed({
+										serviceName: "Telemetry",
+										status: "unhealthy",
+										message: "Telemetry service error",
+										lastChecked: Date.now(),
+										responseTime: Date.now() - t,
+									}),
+								),
+							);
+					case "mountain": {
+						const r = yield* d,
+							c = Date.now() - t;
+						return yield* r.version.pipe(
+							e.map((n) => ({
+								serviceName: "Mountain",
+								status: "healthy",
+								message: `Mountain backend connected (v${n})`,
+								lastChecked: Date.now(),
+								responseTime: c,
+								details: { version: n },
+							})),
+							e.catchAll((n) =>
+								e.succeed({
+									serviceName: "Mountain",
+									status: "unhealthy",
+									message: `Mountain connection failed: ${String(n)}`,
+									lastChecked: Date.now(),
+									responseTime: Date.now() - t,
+								}),
+							),
+						);
+					}
+					case "ipc":
+						const o = Date.now() - t;
+						return e.succeed({
+							serviceName: "IPC",
+							status: "healthy",
+							message: "IPC service available",
+							lastChecked: Date.now(),
+							responseTime: o,
+						});
+					case "configuration": {
+						const r = yield* p,
+							c = Date.now() - t;
+						return yield* r.get.pipe(
+							e.map(() => ({
+								serviceName: "Configuration",
+								status: "healthy",
+								message: "Configuration service available",
+								lastChecked: Date.now(),
+								responseTime: c,
+							})),
+							e.catchAll(() =>
+								e.succeed({
+									serviceName: "Configuration",
+									status: "unhealthy",
+									message: "Configuration service error",
+									lastChecked: Date.now(),
+									responseTime: c,
+								}),
+							),
+						);
+					}
+					default:
+						return e.succeed({
+							serviceName: s,
+							status: "unknown",
+							message: `Unknown service: ${s}`,
+							lastChecked: Date.now(),
+							responseTime: 0,
+						});
+				}
+			}),
+		checkAllServices: () =>
+			e.gen(function* () {
+				const t = yield* (yield* y).getInfo,
+					i = [
+						"environment",
+						"telemetry",
+						"mountain",
+						"ipc",
+						"configuration",
+					],
+					a = h(),
+					m = i.map((l) => a.checkService(l)),
+					o = yield* e.all(m),
+					r = o.filter((l) => l.status === "unhealthy").length,
+					c = o.filter((l) => l.status === "degraded").length;
+				let n = "healthy";
+				return (
+					r > 0 ? (n = "unhealthy") : c > 0 && (n = "degraded"),
+					{
+						overallStatus: n,
+						services: o,
+						systemInfo: {
+							platform: t.platform,
+							architecture: t.architecture,
+							upSince: Date.now(),
+						},
+						lastChecked: Date.now(),
+					}
+				);
+			}),
+		getOverallStatus: () =>
+			e.gen(function* () {
+				return (yield* h().checkAllServices()).overallStatus;
+			}),
+		monitorService: (s, t) =>
+			e.gen(function* () {
+				yield* h()
+					.checkService(s)
+					.pipe(e.repeat(f.spaced(`${t} millis`)));
+			}),
+	}),
+	M = u.effect(v, e.succeed(h())),
+	g = (s) => ({
+		checkService: (t) =>
+			e.gen(function* () {
+				const a = s?.[t] ?? "healthy";
+				return {
+					serviceName: t,
+					status: a,
+					message:
+						a === "healthy"
+							? "Mock service healthy"
+							: "Mock service unhealthy",
+					lastChecked: Date.now(),
+					responseTime: 0,
+				};
+			}),
+		checkAllServices: () =>
+			e.gen(function* () {
+				return {
+					overallStatus: "healthy",
+					services: [
+						"environment",
+						"telemetry",
+						"mountain",
+						"ipc",
+						"configuration",
+					].map((a) => ({
+						serviceName: a,
+						status: s?.[a] ?? "healthy",
+						message: "Mock service check",
+						lastChecked: Date.now(),
+						responseTime: 0,
+					})),
+					systemInfo: {
+						platform: "mock",
+						architecture: "mock",
+						upSince: Date.now(),
+					},
+					lastChecked: Date.now(),
+				};
+			}),
+		getOverallStatus: () => e.succeed("healthy"),
+		monitorService: () => e.void,
+	}),
+	E = u.effect(v, e.succeed(g()));
+export {
+	M as HealthLive,
+	E as HealthMock,
+	h as makeHealthChecker,
+	g as makeMockHealth,
+};

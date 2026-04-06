@@ -9,6 +9,7 @@
  * @category Function
  */
 import type { IpcRenderer } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/electronTypes";
+
 /**
  * Creates an IPC renderer interface
  */

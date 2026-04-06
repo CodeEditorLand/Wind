@@ -8,8 +8,14 @@
  * @category Tag
  */
 import { Context } from "effect";
+
 import type { BootstrapService } from "../Interface/BootstrapService.js";
-declare const BootstrapTag_base: Context.TagClass<BootstrapTag, "Effect/BootstrapService", BootstrapService>;
+
+declare const BootstrapTag_base: Context.TagClass<
+	BootstrapTag,
+	"Effect/BootstrapService",
+	BootstrapService
+>;
 /**
  * Context Tag for Bootstrap service.
  * Use this to inject the Bootstrap service into Effect programs.
@@ -24,7 +30,6 @@ declare const BootstrapTag_base: Context.TagClass<BootstrapTag, "Effect/Bootstra
  * });
  * ```
  */
-export declare class BootstrapTag extends BootstrapTag_base {
-}
+export declare class BootstrapTag extends BootstrapTag_base {}
 export default BootstrapTag;
 //# sourceMappingURL=BootstrapTag.d.ts.map

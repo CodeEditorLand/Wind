@@ -9,6 +9,6 @@
  * Process environment interface
  */
 export interface ProcessEnvironment {
-    readonly [key: string]: string | undefined;
+	readonly [key: string]: string | undefined;
 }
 //# sourceMappingURL=ProcessEnvironment.d.ts.map

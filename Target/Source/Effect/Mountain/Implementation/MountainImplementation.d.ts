@@ -8,12 +8,20 @@
  * @category Implementation
  */
 import { Layer } from "effect";
-import { MountainTag } from "../Tag/MountainTag.js";
+
 import { Configuration } from "../../Configuration.js";
+import { MountainTag } from "../Tag/MountainTag.js";
+
 /**
  * Live implementation layer for Mountain service.
  * Provides reactive connection management with automatic retry and background sync.
  */
-export declare const MountainLive: Layer.Layer<MountainTag, never, import("../../Telemetry.js").TelemetryTag | Configuration | import("../../IPC.js").IPCTag>;
+export declare const MountainLive: Layer.Layer<
+	MountainTag,
+	never,
+	| import("../../Telemetry.js").TelemetryTag
+	| Configuration
+	| import("../../IPC.js").IPCTag
+>;
 export default MountainLive;
 //# sourceMappingURL=MountainImplementation.d.ts.map

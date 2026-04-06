@@ -17,5 +17,18 @@
  * import { Mountain, MountainLive } from "./Effect/Mountain/index.js";
  * ```
  */
-export { MountainConnectionError, MountainRPCError, MountainSyncError, MountainStateError, type MountainConnectionState, type SyncResource, type SyncResult, type MountainService, MountainTag, MountainLive, MountainMockLive, Mountain, } from "./Mountain/index.js";
+export {
+	MountainConnectionError,
+	MountainRPCError,
+	MountainSyncError,
+	MountainStateError,
+	type MountainConnectionState,
+	type SyncResource,
+	type SyncResult,
+	type MountainService,
+	MountainTag,
+	MountainLive,
+	MountainMockLive,
+	Mountain,
+} from "./Mountain/index.js";
 //# sourceMappingURL=Mountain.d.ts.map

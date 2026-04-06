@@ -9,7 +9,12 @@
  * @see {@link Effect/MountainSync/Layer/MountainSyncMock} Mock layer
  * @category Re-export
  */
-export type { SyncStatus, SyncConfig, SyncStats, MountainSyncResult } from "./Type/MountainSyncType.js";
+export type {
+	SyncStatus,
+	SyncConfig,
+	SyncStats,
+	MountainSyncResult,
+} from "./Type/MountainSyncType.js";
 export type { MountainSyncService } from "./Interface/MountainSyncService.js";
 export { default as MountainSyncTag } from "./Tag/MountainSyncTag.js";
 export { default as MountainSyncLive } from "./Layer/MountainSyncLive.js";

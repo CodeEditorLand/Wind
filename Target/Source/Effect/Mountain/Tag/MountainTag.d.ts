@@ -8,8 +8,14 @@
  * @category Tag
  */
 import { Context } from "effect";
+
 import type { MountainService } from "../Interface/MountainService.js";
-declare const MountainTag_base: Context.TagClass<MountainTag, "Mountain", MountainService>;
+
+declare const MountainTag_base: Context.TagClass<
+	MountainTag,
+	"Mountain",
+	MountainService
+>;
 /**
  * Context Tag for Mountain service.
  * Use this to inject the Mountain service into Effect programs.
@@ -25,7 +31,6 @@ declare const MountainTag_base: Context.TagClass<MountainTag, "Mountain", Mounta
  * });
  * ```
  */
-export declare class MountainTag extends MountainTag_base {
-}
+export declare class MountainTag extends MountainTag_base {}
 export default MountainTag;
 //# sourceMappingURL=MountainTag.d.ts.map

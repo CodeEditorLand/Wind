@@ -1,1 +1,13 @@
-class e extends Error{_tag="PanelUpdateError";cause;constructor(t,r){super(`Failed to update panel view '${t}': ${String(r)}`),this.cause=r,Object.setPrototypeOf(this,e.prototype)}get name(){return"PanelUpdateError"}}export{e as default};
+class e extends Error {
+	_tag = "PanelUpdateError";
+	cause;
+	constructor(t, r) {
+		(super(`Failed to update panel view '${t}': ${String(r)}`),
+			(this.cause = r),
+			Object.setPrototypeOf(this, e.prototype));
+	}
+	get name() {
+		return "PanelUpdateError";
+	}
+}
+export { e as default };

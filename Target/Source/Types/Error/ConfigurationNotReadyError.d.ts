@@ -9,7 +9,7 @@
  * Configuration not ready error
  */
 export declare class ConfigurationNotReadyError extends Error {
-    readonly _tag = "ConfigurationNotReadyError";
-    constructor();
+	readonly _tag = "ConfigurationNotReadyError";
+	constructor();
 }
 //# sourceMappingURL=ConfigurationNotReadyError.d.ts.map

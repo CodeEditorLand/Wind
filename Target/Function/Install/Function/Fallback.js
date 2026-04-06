@@ -1,1 +1,19 @@
-function e(){if(typeof window.legacyBridge<"u"){window.vscode=window.legacyBridge;return}typeof window.vscode>"u"&&(window.vscode={process:{platform:"web"},ipcRenderer:{send:()=>{},invoke:async()=>({}),on:()=>({}),once:()=>({}),removeListener:()=>({}),removeAllListeners:()=>{}}})}export{e as Fallback};
+function e() {
+	if (typeof window.legacyBridge < "u") {
+		window.vscode = window.legacyBridge;
+		return;
+	}
+	typeof window.vscode > "u" &&
+		(window.vscode = {
+			process: { platform: "web" },
+			ipcRenderer: {
+				send: () => {},
+				invoke: async () => ({}),
+				on: () => ({}),
+				once: () => ({}),
+				removeListener: () => ({}),
+				removeAllListeners: () => {},
+			},
+		});
+}
+export { e as Fallback };

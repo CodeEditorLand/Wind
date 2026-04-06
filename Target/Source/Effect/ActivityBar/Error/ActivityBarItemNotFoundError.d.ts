@@ -7,9 +7,9 @@
  * @category Error
  */
 export declare class ActivityBarItemNotFoundError extends Error {
-    readonly _tag = "ActivityBarItemNotFoundError";
-    constructor(itemId: string);
-    get name(): string;
+	readonly _tag = "ActivityBarItemNotFoundError";
+	constructor(itemId: string);
+	get name(): string;
 }
 export default ActivityBarItemNotFoundError;
 //# sourceMappingURL=ActivityBarItemNotFoundError.d.ts.map

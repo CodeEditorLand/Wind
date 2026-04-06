@@ -9,7 +9,11 @@
  * @see {@link Effect/Panel/Layer/PanelMock} Mock layer
  * @category Re-export
  */
-export type { PanelView, CreatePanelView, PanelViewType } from "./Type/PanelType.js";
+export type {
+	PanelView,
+	CreatePanelView,
+	PanelViewType,
+} from "./Type/PanelType.js";
 export type { PanelService } from "./Interface/PanelService.js";
 export { default as PanelTag, Panel } from "./Tag/PanelTag.js";
 export { default as PanelLive } from "./Layer/PanelLive.js";

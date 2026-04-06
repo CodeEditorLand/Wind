@@ -1,3 +1,6 @@
+import { LiveClipboardServiceLayer as LiveLayer } from "./Clipboard/Live.js";
+import { MockClipboardServiceLayer as MockLayer } from "./Clipboard/Mock.js";
+
 /**
  * @module Application/Clipboard
  * @description
@@ -49,15 +52,40 @@
  */
 export type { ClipboardProblem } from "./Clipboard/Type/ClipboardProblem.js";
 export type { ClipboardService } from "./Clipboard/Interface/ClipboardService.js";
-export { ClipboardServiceTag, Clipboard } from "./Clipboard/Tag/ClipboardServiceTag.js";
+export {
+	ClipboardServiceTag,
+	Clipboard,
+} from "./Clipboard/Tag/ClipboardServiceTag.js";
 export { LiveBrowserClipboardService } from "./Clipboard/Implementation/BrowserClipboard.js";
 export { MockClipboardService } from "./Clipboard/Implementation/MockClipboard.js";
-import { LiveClipboardServiceLayer as LiveLayer } from "./Clipboard/Live.js";
-import { MockClipboardServiceLayer as MockLayer } from "./Clipboard/Mock.js";
+
 export { LiveLayer, MockLayer };
-export declare const LiveClipboardServiceLayer: import("effect/Layer").Layer<import("./Clipboard.js").ClipboardServiceTag, never, never>;
-export declare const MockClipboardServiceLayer: import("effect/Layer").Layer<import("./Clipboard.js").ClipboardServiceTag, never, never>;
-export declare const LiveClipboard: import("effect/Layer").Layer<import("./Clipboard.js").ClipboardServiceTag, never, never>;
-export declare const MockClipboard: import("effect/Layer").Layer<import("./Clipboard.js").ClipboardServiceTag, never, never>;
-export { CreateNotAvailableError, CreateReadError, CreateWriteError, CreatePermissionDeniedError, CreateFormatNotSupportedError, CreateSizeExceededError, } from "./Clipboard/Implementation/ClipboardHelper.js";
+export declare const LiveClipboardServiceLayer: import("effect/Layer").Layer<
+	import("./Clipboard.js").ClipboardServiceTag,
+	never,
+	never
+>;
+export declare const MockClipboardServiceLayer: import("effect/Layer").Layer<
+	import("./Clipboard.js").ClipboardServiceTag,
+	never,
+	never
+>;
+export declare const LiveClipboard: import("effect/Layer").Layer<
+	import("./Clipboard.js").ClipboardServiceTag,
+	never,
+	never
+>;
+export declare const MockClipboard: import("effect/Layer").Layer<
+	import("./Clipboard.js").ClipboardServiceTag,
+	never,
+	never
+>;
+export {
+	CreateNotAvailableError,
+	CreateReadError,
+	CreateWriteError,
+	CreatePermissionDeniedError,
+	CreateFormatNotSupportedError,
+	CreateSizeExceededError,
+} from "./Clipboard/Implementation/ClipboardHelper.js";
 //# sourceMappingURL=Clipboard.d.ts.map

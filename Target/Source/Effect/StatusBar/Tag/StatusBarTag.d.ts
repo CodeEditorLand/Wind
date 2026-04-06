@@ -8,8 +8,14 @@
  * @category Tag
  */
 import { Context } from "effect";
+
 import type { StatusBarService } from "../Interface/StatusBarService.js";
-declare const StatusBarTag_base: Context.TagClass<StatusBarTag, "StatusBar", StatusBarService>;
+
+declare const StatusBarTag_base: Context.TagClass<
+	StatusBarTag,
+	"StatusBar",
+	StatusBarService
+>;
 /**
  * Context.Tag for StatusBar service dependency injection.
  * Use this tag to access StatusBar in Effect programs.
@@ -25,8 +31,7 @@ declare const StatusBarTag_base: Context.TagClass<StatusBarTag, "StatusBar", Sta
  * });
  * ```
  */
-export default class StatusBarTag extends StatusBarTag_base {
-}
+export default class StatusBarTag extends StatusBarTag_base {}
 /**
  * Alias for StatusBarTag for shorter import paths.
  */

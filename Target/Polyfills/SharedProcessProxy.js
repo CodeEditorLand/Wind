@@ -1,1 +1,350 @@
-async function i(e,r={}){try{if(typeof window.__TAURI__?.invoke<"u")return await window.__TAURI__.invoke(e,r);if(typeof window.TAURI?.invoke<"u")return await window.TAURI.invoke(e,r);throw new Error(`Tauri invoke not available for command: ${e}`)}catch(n){throw console.error(`[SharedProcessProxy] Tauri invoke failed for ${e}:`,n),n}}function m(e,r){if(typeof window.__TAURI__?.event?.listen=="function"){const n=window.__TAURI__.event.listen(e,({payload:t})=>{r(t)});return()=>{n.then(t=>t())}}if(typeof window.TAURI?.event?.listen=="function"){const n=window.TAURI.event.listen(e,({payload:t})=>{r(t)});return()=>{n.then(t=>t())}}return console.warn(`[SharedProcessProxy] Tauri event listener not available for: ${e}`),()=>{}}function d(e){const r=new Map,n=new Map;let t=!1;const c=m(`shared_process:response:${e}`,s=>{const o=s;if(o.correlationId&&n.has(o.correlationId)){const a=n.get(o.correlationId);o.success?a.resolve(o.data):a.reject(new Error(o.error??"Unknown error")),n.delete(o.correlationId)}}),I=m(`shared_process:event:${e}`,s=>{const o=s;b(o.event,...o.args)});function b(s,...o){const a=r.get(s);a&&a.forEach(l=>{try{l(...o)}catch(w){console.error(`[SharedProcessProxy] Error in ${e} event listener (${s}):`,w)}})}function x(){return`${e}_${Date.now()}_${Math.random().toString(36).substring(7)}`}return{service:e,get ready(){return t},set ready(s){t=s},async healthCheck(){try{return e==="extension-host"?await i("cocoon:extension_host_health",{}):e==="search"?await i("cocoon:search_service_health",{}):e==="debug"?await i("cocoon:debug_service_health",{}):await i("shared_process:service_health",{service:e})}catch{return!1}},async invoke(s,...o){const a=x(),l={service:e,method:s,args:o,correlationId:a};return new Promise((w,S)=>{n.set(a,{resolve:w,reject:S}),i("shared_process:invoke",l).catch(_=>{n.delete(a),S(_)})})},on(s,o){r.has(s)||r.set(s,new Set),r.get(s).add(o)},once(s,o){const a=(...l)=>{o(...l),this.removeListener(s,a)};this.on(s,a)},removeListener(s,o){const a=r.get(s);a&&(a.delete(o),a.size===0&&r.delete(s))},removeAllListeners(s){s?r.delete(s):r.clear()}}}const h=Object.assign(d("extension-host"),{async start(e){return await this.invoke("start",e)},async stop(e){return await this.invoke("stop",e)},async restart(e){return await this.invoke("restart",e)},async callExtensionAPI(e,r,...n){return await this.invoke("callAPI",e,r,...n)},async getStatus(){return await this.invoke("getStatus")}}),u=Object.assign(d("search"),{async search(e,r){return await this.invoke("search",e,r)},async getIndexStatus(){return await this.invoke("getIndexStatus")},async clearIndex(){return await this.invoke("clearIndex")}}),g=Object.assign(d("debug"),{async startSession(e){return await this.invoke("startSession",e)},async stopSession(e){return await this.invoke("stopSession",e)},async sendCommand(e,r,...n){return await this.invoke("sendCommand",e,r,...n)},async getActiveSessions(){return await this.invoke("getActiveSessions")}}),v=Object.assign(d("storage"),{async getItem(e){return await i("storage:get_item",{key:e})},async setItem(e,r){return await i("storage:set_item",{key:e,value:r})},async removeItem(e){return await i("storage:remove_item",{key:e})},async getAllItems(){return await i("storage:get_all_items",{})},async clear(){return await i("storage:clear",{})}}),P=Object.assign(d("update"),{async checkForUpdates(){return await i("update:check",{})},async downloadUpdate(){return await i("update:download",{})},async installUpdate(){return await i("update:install",{})},async getStatus(){return await i("update:get_status",{})}});class k{services=new Map;healthCheckInterval=null;constructor(){this.registerService(h),this.registerService(u),this.registerService(g),this.registerService(v),this.registerService(P)}registerService(r){this.services.set(r.service,r),console.log(`[SharedProcessProxy] Registered service: ${r.service}`)}getService(r){return this.services.get(r)}getAllServices(){return new Map(this.services)}startHealthChecks(r=3e4){this.healthCheckInterval===null&&(this.healthCheckInterval=window.setInterval(async()=>{console.log("[SharedProcessProxy] Running health checks for all services");for(const[n,t]of this.services.entries())try{const c=await t.healthCheck();t.ready=c,c||console.warn(`[SharedProcessProxy] Service ${n} is unhealthy`)}catch(c){console.error(`[SharedProcessProxy] Health check failed for ${n}:`,c),t.ready=!1}},r),console.log("[SharedProcessProxy] Health checks started"))}stopHealthChecks(){this.healthCheckInterval!==null&&(clearInterval(this.healthCheckInterval),this.healthCheckInterval=null,console.log("[SharedProcessProxy] Health checks stopped"))}async initialize(){console.log("[SharedProcessProxy] Initializing shared process services...");for(const[r,n]of this.services.entries())try{const t=await n.healthCheck();n.ready=t,console.log(`[SharedProcessProxy] Service ${r}: ${t?"ready":"not ready"}`)}catch(t){console.warn(`[SharedProcessProxy] Failed to initialize ${r}:`,t),n.ready=!1}this.startHealthChecks(),console.log("[SharedProcessProxy] Shared process services initialized")}async shutdown(){console.log("[SharedProcessProxy] Shutting down shared process services..."),this.stopHealthChecks();for(const r of this.services.values())r.removeAllListeners();console.log("[SharedProcessProxy] Shared process services shut down")}}let y=null;function p(){return y||(y=new k,console.log("[SharedProcessProxy] SharedProcessManager instance created")),y}async function f(){if(typeof window>"u")return;if(window.__SHARED_PROCESS_PROXY_INSTALLED__){console.log("[SharedProcessProxy] Already installed, skipping");return}window.__SHARED_PROCESS_PROXY_INSTALLED__=!0,console.log("[SharedProcessProxy] Installing shared process proxy...");const e=p();await e.initialize(),typeof window.vscode<"u"&&(window.vscode.sharedProcess={manager:e,ExtensionHostService:h,SearchService:u,DebugService:g,StorageService:v,UpdateService:P}),window.__SHARED_PROCESS__={manager:e,ExtensionHostService:h,SearchService:u,DebugService:g,StorageService:v,UpdateService:P},console.log("[SharedProcessProxy]\u2001\u2713 Shared process proxy installed")}var R={install:f,getManager:p,ExtensionHostService:h,SearchService:u,DebugService:g,StorageService:v,UpdateService:P,SharedProcessManager:k};typeof window<"u"&&f().catch(e=>{console.error("[SharedProcessProxy] Failed to auto-install:",e)});export{g as DebugService,h as ExtensionHostService,u as SearchService,v as StorageService,P as UpdateService,R as default,p as getSharedProcessManager,f as installSharedProcessProxy};
+async function i(e, r = {}) {
+	try {
+		if (typeof window.__TAURI__?.invoke < "u")
+			return await window.__TAURI__.invoke(e, r);
+		if (typeof window.TAURI?.invoke < "u")
+			return await window.TAURI.invoke(e, r);
+		throw new Error(`Tauri invoke not available for command: ${e}`);
+	} catch (n) {
+		throw (
+			console.error(
+				`[SharedProcessProxy] Tauri invoke failed for ${e}:`,
+				n,
+			),
+			n
+		);
+	}
+}
+function m(e, r) {
+	if (typeof window.__TAURI__?.event?.listen == "function") {
+		const n = window.__TAURI__.event.listen(e, ({ payload: t }) => {
+			r(t);
+		});
+		return () => {
+			n.then((t) => t());
+		};
+	}
+	if (typeof window.TAURI?.event?.listen == "function") {
+		const n = window.TAURI.event.listen(e, ({ payload: t }) => {
+			r(t);
+		});
+		return () => {
+			n.then((t) => t());
+		};
+	}
+	return (
+		console.warn(
+			`[SharedProcessProxy] Tauri event listener not available for: ${e}`,
+		),
+		() => {}
+	);
+}
+function d(e) {
+	const r = new Map(),
+		n = new Map();
+	let t = !1;
+	const c = m(`shared_process:response:${e}`, (s) => {
+			const o = s;
+			if (o.correlationId && n.has(o.correlationId)) {
+				const a = n.get(o.correlationId);
+				(o.success
+					? a.resolve(o.data)
+					: a.reject(new Error(o.error ?? "Unknown error")),
+					n.delete(o.correlationId));
+			}
+		}),
+		I = m(`shared_process:event:${e}`, (s) => {
+			const o = s;
+			b(o.event, ...o.args);
+		});
+	function b(s, ...o) {
+		const a = r.get(s);
+		a &&
+			a.forEach((l) => {
+				try {
+					l(...o);
+				} catch (w) {
+					console.error(
+						`[SharedProcessProxy] Error in ${e} event listener (${s}):`,
+						w,
+					);
+				}
+			});
+	}
+	function x() {
+		return `${e}_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+	}
+	return {
+		service: e,
+		get ready() {
+			return t;
+		},
+		set ready(s) {
+			t = s;
+		},
+		async healthCheck() {
+			try {
+				return e === "extension-host"
+					? await i("cocoon:extension_host_health", {})
+					: e === "search"
+						? await i("cocoon:search_service_health", {})
+						: e === "debug"
+							? await i("cocoon:debug_service_health", {})
+							: await i("shared_process:service_health", {
+									service: e,
+								});
+			} catch {
+				return !1;
+			}
+		},
+		async invoke(s, ...o) {
+			const a = x(),
+				l = { service: e, method: s, args: o, correlationId: a };
+			return new Promise((w, S) => {
+				(n.set(a, { resolve: w, reject: S }),
+					i("shared_process:invoke", l).catch((_) => {
+						(n.delete(a), S(_));
+					}));
+			});
+		},
+		on(s, o) {
+			(r.has(s) || r.set(s, new Set()), r.get(s).add(o));
+		},
+		once(s, o) {
+			const a = (...l) => {
+				(o(...l), this.removeListener(s, a));
+			};
+			this.on(s, a);
+		},
+		removeListener(s, o) {
+			const a = r.get(s);
+			a && (a.delete(o), a.size === 0 && r.delete(s));
+		},
+		removeAllListeners(s) {
+			s ? r.delete(s) : r.clear();
+		},
+	};
+}
+const h = Object.assign(d("extension-host"), {
+		async start(e) {
+			return await this.invoke("start", e);
+		},
+		async stop(e) {
+			return await this.invoke("stop", e);
+		},
+		async restart(e) {
+			return await this.invoke("restart", e);
+		},
+		async callExtensionAPI(e, r, ...n) {
+			return await this.invoke("callAPI", e, r, ...n);
+		},
+		async getStatus() {
+			return await this.invoke("getStatus");
+		},
+	}),
+	u = Object.assign(d("search"), {
+		async search(e, r) {
+			return await this.invoke("search", e, r);
+		},
+		async getIndexStatus() {
+			return await this.invoke("getIndexStatus");
+		},
+		async clearIndex() {
+			return await this.invoke("clearIndex");
+		},
+	}),
+	g = Object.assign(d("debug"), {
+		async startSession(e) {
+			return await this.invoke("startSession", e);
+		},
+		async stopSession(e) {
+			return await this.invoke("stopSession", e);
+		},
+		async sendCommand(e, r, ...n) {
+			return await this.invoke("sendCommand", e, r, ...n);
+		},
+		async getActiveSessions() {
+			return await this.invoke("getActiveSessions");
+		},
+	}),
+	v = Object.assign(d("storage"), {
+		async getItem(e) {
+			return await i("storage:get_item", { key: e });
+		},
+		async setItem(e, r) {
+			return await i("storage:set_item", { key: e, value: r });
+		},
+		async removeItem(e) {
+			return await i("storage:remove_item", { key: e });
+		},
+		async getAllItems() {
+			return await i("storage:get_all_items", {});
+		},
+		async clear() {
+			return await i("storage:clear", {});
+		},
+	}),
+	P = Object.assign(d("update"), {
+		async checkForUpdates() {
+			return await i("update:check", {});
+		},
+		async downloadUpdate() {
+			return await i("update:download", {});
+		},
+		async installUpdate() {
+			return await i("update:install", {});
+		},
+		async getStatus() {
+			return await i("update:get_status", {});
+		},
+	});
+class k {
+	services = new Map();
+	healthCheckInterval = null;
+	constructor() {
+		(this.registerService(h),
+			this.registerService(u),
+			this.registerService(g),
+			this.registerService(v),
+			this.registerService(P));
+	}
+	registerService(r) {
+		(this.services.set(r.service, r),
+			console.log(
+				`[SharedProcessProxy] Registered service: ${r.service}`,
+			));
+	}
+	getService(r) {
+		return this.services.get(r);
+	}
+	getAllServices() {
+		return new Map(this.services);
+	}
+	startHealthChecks(r = 3e4) {
+		this.healthCheckInterval === null &&
+			((this.healthCheckInterval = window.setInterval(async () => {
+				console.log(
+					"[SharedProcessProxy] Running health checks for all services",
+				);
+				for (const [n, t] of this.services.entries())
+					try {
+						const c = await t.healthCheck();
+						((t.ready = c),
+							c ||
+								console.warn(
+									`[SharedProcessProxy] Service ${n} is unhealthy`,
+								));
+					} catch (c) {
+						(console.error(
+							`[SharedProcessProxy] Health check failed for ${n}:`,
+							c,
+						),
+							(t.ready = !1));
+					}
+			}, r)),
+			console.log("[SharedProcessProxy] Health checks started"));
+	}
+	stopHealthChecks() {
+		this.healthCheckInterval !== null &&
+			(clearInterval(this.healthCheckInterval),
+			(this.healthCheckInterval = null),
+			console.log("[SharedProcessProxy] Health checks stopped"));
+	}
+	async initialize() {
+		console.log(
+			"[SharedProcessProxy] Initializing shared process services...",
+		);
+		for (const [r, n] of this.services.entries())
+			try {
+				const t = await n.healthCheck();
+				((n.ready = t),
+					console.log(
+						`[SharedProcessProxy] Service ${r}: ${t ? "ready" : "not ready"}`,
+					));
+			} catch (t) {
+				(console.warn(
+					`[SharedProcessProxy] Failed to initialize ${r}:`,
+					t,
+				),
+					(n.ready = !1));
+			}
+		(this.startHealthChecks(),
+			console.log(
+				"[SharedProcessProxy] Shared process services initialized",
+			));
+	}
+	async shutdown() {
+		(console.log(
+			"[SharedProcessProxy] Shutting down shared process services...",
+		),
+			this.stopHealthChecks());
+		for (const r of this.services.values()) r.removeAllListeners();
+		console.log("[SharedProcessProxy] Shared process services shut down");
+	}
+}
+let y = null;
+function p() {
+	return (
+		y ||
+			((y = new k()),
+			console.log(
+				"[SharedProcessProxy] SharedProcessManager instance created",
+			)),
+		y
+	);
+}
+async function f() {
+	if (typeof window > "u") return;
+	if (window.__SHARED_PROCESS_PROXY_INSTALLED__) {
+		console.log("[SharedProcessProxy] Already installed, skipping");
+		return;
+	}
+	((window.__SHARED_PROCESS_PROXY_INSTALLED__ = !0),
+		console.log("[SharedProcessProxy] Installing shared process proxy..."));
+	const e = p();
+	(await e.initialize(),
+		typeof window.vscode < "u" &&
+			(window.vscode.sharedProcess = {
+				manager: e,
+				ExtensionHostService: h,
+				SearchService: u,
+				DebugService: g,
+				StorageService: v,
+				UpdateService: P,
+			}),
+		(window.__SHARED_PROCESS__ = {
+			manager: e,
+			ExtensionHostService: h,
+			SearchService: u,
+			DebugService: g,
+			StorageService: v,
+			UpdateService: P,
+		}),
+		console.log(
+			"[SharedProcessProxy]\u2001\u2713 Shared process proxy installed",
+		));
+}
+var R = {
+	install: f,
+	getManager: p,
+	ExtensionHostService: h,
+	SearchService: u,
+	DebugService: g,
+	StorageService: v,
+	UpdateService: P,
+	SharedProcessManager: k,
+};
+typeof window < "u" &&
+	f().catch((e) => {
+		console.error("[SharedProcessProxy] Failed to auto-install:", e);
+	});
+export {
+	g as DebugService,
+	h as ExtensionHostService,
+	u as SearchService,
+	v as StorageService,
+	P as UpdateService,
+	R as default,
+	p as getSharedProcessManager,
+	f as installSharedProcessProxy,
+};

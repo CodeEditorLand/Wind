@@ -1,1 +1,13 @@
-class t extends Error{_tag="ActivityBarUpdateError";constructor(e,r){super(`Failed to update activity bar item '${e}': ${String(r)}`),this.cause=r,Object.setPrototypeOf(this,t.prototype)}get name(){return"ActivityBarUpdateError"}}var o=t;export{t as ActivityBarUpdateError,o as default};
+class t extends Error {
+	_tag = "ActivityBarUpdateError";
+	constructor(e, r) {
+		(super(`Failed to update activity bar item '${e}': ${String(r)}`),
+			(this.cause = r),
+			Object.setPrototypeOf(this, t.prototype));
+	}
+	get name() {
+		return "ActivityBarUpdateError";
+	}
+}
+var o = t;
+export { t as ActivityBarUpdateError, o as default };

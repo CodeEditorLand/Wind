@@ -10,10 +10,10 @@
  * Includes the operation name and the underlying cause of the failure.
  */
 export default class TelemetryCollectionError extends Error {
-    readonly _tag = "TelemetryCollectionError";
-    readonly operation: string;
-    readonly cause: unknown;
-    constructor(operation: string, cause: unknown);
-    get name(): string;
+	readonly _tag = "TelemetryCollectionError";
+	readonly operation: string;
+	readonly cause: unknown;
+	constructor(operation: string, cause: unknown);
+	get name(): string;
 }
 //# sourceMappingURL=TelemetryCollectionError.d.ts.map

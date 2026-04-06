@@ -1,1 +1,138 @@
-import{Effect as n,Layer as w,SubscriptionRef as o,HashMap as c}from"effect";import H from"../Tag/TelemetryTag.js";const D=w.effect(H,n.gen(function*(){const g=yield*o.make(c.empty()),y=yield*o.make(c.empty()),i=yield*o.make([]),d=(e,r,t)=>n.gen(function*(){const a={name:e,value:r,timestamp:Date.now(),labels:t??{}},s=yield*g.get,l=c.get(s,e).pipe(n.runSync)||[];yield*o.set(g,c.set(s,e,[...l,a].slice(-1e3)));const p=yield*i.get;yield*o.set(i,[...p,{type:"metric",timestamp:Date.now(),data:a}].slice(-1e4)),console.log(`[Telemetry] Metric: ${e} = ${r}`)}),u=(e,r)=>n.sync(()=>{const t=Date.now();return{end:(s,l)=>n.gen(function*(){const p=Date.now(),m={name:e,startTime:t,endTime:p,duration:p-t,success:s,error:l??"",labels:r??{}},f=yield*y.get,h=c.get(f,e).pipe(n.runSync)||[];yield*o.set(y,c.set(f,e,[...h,m].slice(-1e3)));const b=yield*i.get;yield*o.set(i,[...b,{type:"span",timestamp:Date.now(),data:m}].slice(-1e4)),console.log(`[Telemetry] Span: ${e} completed in ${m.duration}ms (success: ${s})`)})}}),T=(e,r,t)=>n.gen(function*(){const a={level:e,message:r,context:t??{}},s=yield*i.get;yield*o.set(i,[...s,{type:"log",timestamp:Date.now(),data:a}].slice(-1e4)),(e==="error"?console.error:e==="warn"?console.warn:e==="debug"?console.debug:console.log)(`[Telemetry] [${e.toUpperCase()}] ${r}`,t??{})}),v=i.changes,E=e=>g.get.pipe(n.map(r=>c.get(r,e).pipe(n.runSync)||[])),S=e=>y.get.pipe(n.map(r=>{const t=c.get(r,e).pipe(n.runSync)||[];return t.length===0?0:t.reduce((s,l)=>s+(l.duration||0),0)/t.length})),M=e=>y.get.pipe(n.map(r=>{const t=c.get(r,e).pipe(n.runSync)||[];return t.length===0?0:t.filter(s=>s.success).length/t.length})),R=n.void;return yield*n.log("[Telemetry] Telemetry service initialized"),{recordMetric:d,startSpan:u,log:T,events:v,getMetrics:E,getAverageDuration:S,getSuccessRate:M,flush:R}}));var x=D;export{x as default};
+import {
+	HashMap as c,
+	Effect as n,
+	SubscriptionRef as o,
+	Layer as w,
+} from "effect";
+
+import H from "../Tag/TelemetryTag.js";
+
+const D = w.effect(
+	H,
+	n.gen(function* () {
+		const g = yield* o.make(c.empty()),
+			y = yield* o.make(c.empty()),
+			i = yield* o.make([]),
+			d = (e, r, t) =>
+				n.gen(function* () {
+					const a = {
+							name: e,
+							value: r,
+							timestamp: Date.now(),
+							labels: t ?? {},
+						},
+						s = yield* g.get,
+						l = c.get(s, e).pipe(n.runSync) || [];
+					yield* o.set(g, c.set(s, e, [...l, a].slice(-1e3)));
+					const p = yield* i.get;
+					(yield* o.set(
+						i,
+						[
+							...p,
+							{ type: "metric", timestamp: Date.now(), data: a },
+						].slice(-1e4),
+					),
+						console.log(`[Telemetry] Metric: ${e} = ${r}`));
+				}),
+			u = (e, r) =>
+				n.sync(() => {
+					const t = Date.now();
+					return {
+						end: (s, l) =>
+							n.gen(function* () {
+								const p = Date.now(),
+									m = {
+										name: e,
+										startTime: t,
+										endTime: p,
+										duration: p - t,
+										success: s,
+										error: l ?? "",
+										labels: r ?? {},
+									},
+									f = yield* y.get,
+									h = c.get(f, e).pipe(n.runSync) || [];
+								yield* o.set(
+									y,
+									c.set(f, e, [...h, m].slice(-1e3)),
+								);
+								const b = yield* i.get;
+								(yield* o.set(
+									i,
+									[
+										...b,
+										{
+											type: "span",
+											timestamp: Date.now(),
+											data: m,
+										},
+									].slice(-1e4),
+								),
+									console.log(
+										`[Telemetry] Span: ${e} completed in ${m.duration}ms (success: ${s})`,
+									));
+							}),
+					};
+				}),
+			T = (e, r, t) =>
+				n.gen(function* () {
+					const a = { level: e, message: r, context: t ?? {} },
+						s = yield* i.get;
+					(yield* o.set(
+						i,
+						[
+							...s,
+							{ type: "log", timestamp: Date.now(), data: a },
+						].slice(-1e4),
+					),
+						(e === "error"
+							? console.error
+							: e === "warn"
+								? console.warn
+								: e === "debug"
+									? console.debug
+									: console.log)(
+							`[Telemetry] [${e.toUpperCase()}] ${r}`,
+							t ?? {},
+						));
+				}),
+			v = i.changes,
+			E = (e) =>
+				g.get.pipe(n.map((r) => c.get(r, e).pipe(n.runSync) || [])),
+			S = (e) =>
+				y.get.pipe(
+					n.map((r) => {
+						const t = c.get(r, e).pipe(n.runSync) || [];
+						return t.length === 0
+							? 0
+							: t.reduce((s, l) => s + (l.duration || 0), 0) /
+									t.length;
+					}),
+				),
+			M = (e) =>
+				y.get.pipe(
+					n.map((r) => {
+						const t = c.get(r, e).pipe(n.runSync) || [];
+						return t.length === 0
+							? 0
+							: t.filter((s) => s.success).length / t.length;
+					}),
+				),
+			R = n.void;
+		return (
+			yield* n.log("[Telemetry] Telemetry service initialized"),
+			{
+				recordMetric: d,
+				startSpan: u,
+				log: T,
+				events: v,
+				getMetrics: E,
+				getAverageDuration: S,
+				getSuccessRate: M,
+				flush: R,
+			}
+		);
+	}),
+);
+var x = D;
+export { x as default };

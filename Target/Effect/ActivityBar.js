@@ -1,1 +1,33 @@
-import{ActivityBarItemNotFoundError as a,ActivityBarUpdateError as i,ActivityBarTag as r,ActivityBar as v,MakeCreateItem as y,MakeUpdateItem as c,MakeRemoveItem as B,MakeGetItem as m,MakeSetActiveItem as A,MakeSetBadge as I,MakeGetBadge as k,GenerateItemId as o,ActivityBarLive as M,ActivityBarMockLive as d}from"./ActivityBar/index.js";export{v as ActivityBar,a as ActivityBarItemNotFoundError,M as ActivityBarLive,d as ActivityBarMockLive,r as ActivityBarTag,i as ActivityBarUpdateError,o as GenerateItemId,y as MakeCreateItem,k as MakeGetBadge,m as MakeGetItem,B as MakeRemoveItem,A as MakeSetActiveItem,I as MakeSetBadge,c as MakeUpdateItem};
+import {
+	ActivityBarItemNotFoundError as a,
+	MakeSetActiveItem as A,
+	MakeRemoveItem as B,
+	MakeUpdateItem as c,
+	ActivityBarMockLive as d,
+	ActivityBarUpdateError as i,
+	MakeSetBadge as I,
+	MakeGetBadge as k,
+	MakeGetItem as m,
+	ActivityBarLive as M,
+	GenerateItemId as o,
+	ActivityBarTag as r,
+	ActivityBar as v,
+	MakeCreateItem as y,
+} from "./ActivityBar/index.js";
+
+export {
+	v as ActivityBar,
+	a as ActivityBarItemNotFoundError,
+	M as ActivityBarLive,
+	d as ActivityBarMockLive,
+	r as ActivityBarTag,
+	i as ActivityBarUpdateError,
+	o as GenerateItemId,
+	y as MakeCreateItem,
+	k as MakeGetBadge,
+	m as MakeGetItem,
+	B as MakeRemoveItem,
+	A as MakeSetActiveItem,
+	I as MakeSetBadge,
+	c as MakeUpdateItem,
+};

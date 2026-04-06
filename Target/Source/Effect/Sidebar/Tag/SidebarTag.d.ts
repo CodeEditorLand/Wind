@@ -8,8 +8,14 @@
  * @category Tag
  */
 import { Context } from "effect";
+
 import type { SidebarService } from "../Interface/SidebarService.js";
-declare const SidebarTag_base: Context.TagClass<SidebarTag, "Sidebar", SidebarService>;
+
+declare const SidebarTag_base: Context.TagClass<
+	SidebarTag,
+	"Sidebar",
+	SidebarService
+>;
 /**
  * Context.Tag for Sidebar service dependency injection.
  * Use this tag to access Sidebar in Effect programs.
@@ -25,8 +31,7 @@ declare const SidebarTag_base: Context.TagClass<SidebarTag, "Sidebar", SidebarSe
  * });
  * ```
  */
-export default class SidebarTag extends SidebarTag_base {
-}
+export default class SidebarTag extends SidebarTag_base {}
 /**
  * Alias for SidebarTag for shorter import paths.
  */

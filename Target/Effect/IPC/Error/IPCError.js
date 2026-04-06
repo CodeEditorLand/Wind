@@ -1,1 +1,32 @@
-const e=(r,n)=>({_tag:"IPCInvokeError",channel:r,cause:n,message:`IPC invoke failed on channel '${r}': ${String(n)}`,name:"IPCInvokeError"}),o=(r,n)=>({_tag:"IPCSendError",channel:r,cause:n,message:`IPC send failed on channel '${r}': ${String(n)}`,name:"IPCSendError"}),a=(r,n)=>({_tag:"IPCSubscriptionError",channel:r,cause:n,message:`IPC subscription failed on channel '${r}': ${String(n)}`,name:"IPCSubscriptionError"});var t={CreateIPCInvokeError:e,CreateIPCSendError:o,CreateIPCSubscriptionError:a};export{e as CreateIPCInvokeError,o as CreateIPCSendError,a as CreateIPCSubscriptionError,t as default};
+const e = (r, n) => ({
+		_tag: "IPCInvokeError",
+		channel: r,
+		cause: n,
+		message: `IPC invoke failed on channel '${r}': ${String(n)}`,
+		name: "IPCInvokeError",
+	}),
+	o = (r, n) => ({
+		_tag: "IPCSendError",
+		channel: r,
+		cause: n,
+		message: `IPC send failed on channel '${r}': ${String(n)}`,
+		name: "IPCSendError",
+	}),
+	a = (r, n) => ({
+		_tag: "IPCSubscriptionError",
+		channel: r,
+		cause: n,
+		message: `IPC subscription failed on channel '${r}': ${String(n)}`,
+		name: "IPCSubscriptionError",
+	});
+var t = {
+	CreateIPCInvokeError: e,
+	CreateIPCSendError: o,
+	CreateIPCSubscriptionError: a,
+};
+export {
+	e as CreateIPCInvokeError,
+	o as CreateIPCSendError,
+	a as CreateIPCSubscriptionError,
+	t as default,
+};

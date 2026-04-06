@@ -8,6 +8,7 @@
  * @category Helper
  */
 import { Effect } from "effect";
+
 /**
  * Wraps an effect with automatic span tracking.
  * Creates a span before the effect, tracks its duration, and records success/failure.
@@ -28,5 +29,13 @@ import { Effect } from "effect";
  * );
  * ```
  */
-export default function withSpan<A, E, R>(name: string, effect: Effect.Effect<A, E, R>, labels?: Record<string, string>): Effect.Effect<Effect.Effect<A, E, R>, never, import("../index.js").TelemetryTag>;
+export default function withSpan<A, E, R>(
+	name: string,
+	effect: Effect.Effect<A, E, R>,
+	labels?: Record<string, string>,
+): Effect.Effect<
+	Effect.Effect<A, E, R>,
+	never,
+	import("../index.js").TelemetryTag
+>;
 //# sourceMappingURL=withSpan.d.ts.map

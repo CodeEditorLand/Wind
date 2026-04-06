@@ -6,7 +6,9 @@
  * @category Implementation
  */
 import { Effect } from "effect";
+
 import type { IPCService } from "../Interface/IPCService.js";
+
 /**
  * Tauri IPC service implementation
  */

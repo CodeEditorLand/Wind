@@ -9,7 +9,7 @@
  * Sandbox not ready error
  */
 export declare class SandboxNotReadyError extends Error {
-    readonly _tag = "SandboxNotReadyError";
-    constructor();
+	readonly _tag = "SandboxNotReadyError";
+	constructor();
 }
 //# sourceMappingURL=SandboxNotReadyError.d.ts.map

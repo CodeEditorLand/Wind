@@ -8,7 +8,9 @@
  * @category Tag
  */
 import { Context } from "effect";
+
 import type { PanelService } from "../Interface/PanelService.js";
+
 declare const PanelTag_base: Context.TagClass<PanelTag, "Panel", PanelService>;
 /**
  * Context.Tag for Panel service dependency injection.
@@ -25,8 +27,7 @@ declare const PanelTag_base: Context.TagClass<PanelTag, "Panel", PanelService>;
  * });
  * ```
  */
-export default class PanelTag extends PanelTag_base {
-}
+export default class PanelTag extends PanelTag_base {}
 /**
  * Alias for PanelTag for shorter import paths.
  */

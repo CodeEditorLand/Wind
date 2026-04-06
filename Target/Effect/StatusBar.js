@@ -1,1 +1,1 @@
-export*from"./StatusBar/index.js";
+export * from "./StatusBar/index.js";

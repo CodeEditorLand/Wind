@@ -22,11 +22,30 @@
  * Effect.runPromise(program.pipe(Effect.provide(Environment)));
  * ```
  */
-import EnvironmentLive, { EnvironmentTag as EnvTag } from "./Environment/index.js";
-export { default, EnvironmentMock, makeMockEnvironment, EnvironmentTag } from "./Environment/index.js";
+import EnvironmentLive, {
+	EnvironmentTag as EnvTag,
+} from "./Environment/index.js";
+
+export {
+	default,
+	EnvironmentMock,
+	makeMockEnvironment,
+	EnvironmentTag,
+} from "./Environment/index.js";
 export { EnvironmentLive };
-export type { Platform, Architecture, EnvironmentInfo, EnvironmentService, } from "./Environment/index.js";
-export { DetectPlatform, DetectArchitecture, DetectLocale, DetectTimezone, GetUserAgent, } from "./Environment/index.js";
+export type {
+	Platform,
+	Architecture,
+	EnvironmentInfo,
+	EnvironmentService,
+} from "./Environment/index.js";
+export {
+	DetectPlatform,
+	DetectArchitecture,
+	DetectLocale,
+	DetectTimezone,
+	GetUserAgent,
+} from "./Environment/index.js";
 export declare const Environment: typeof EnvTag;
 export type { EnvironmentInfo as Type } from "./Environment/index.js";
 //# sourceMappingURL=Environment.d.ts.map

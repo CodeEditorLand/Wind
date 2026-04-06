@@ -11,21 +11,22 @@
  * @see {@link Types/Interface/WebUtils} Web utils interface
  * @category Interface
  */
-import type { IPCRenderer } from "./IPCRenderer.js";
 import type { IPCMessagePort } from "./IPCMessagePort.js";
-import type { WebFrame } from "./WebFrame.js";
-import type { SandboxNodeProcess } from "./SandboxNodeProcess.js";
+import type { IPCRenderer } from "./IPCRenderer.js";
 import type { SandboxContext } from "./SandboxContext.js";
+import type { SandboxNodeProcess } from "./SandboxNodeProcess.js";
+import type { WebFrame } from "./WebFrame.js";
 import type { WebUtils } from "./WebUtils.js";
+
 /**
  * Complete sandbox globals interface
  */
 export interface SandboxGlobals {
-    readonly ipcRenderer: IPCRenderer;
-    readonly ipcMessagePort: IPCMessagePort;
-    readonly webFrame: WebFrame;
-    readonly process: SandboxNodeProcess;
-    readonly context: SandboxContext;
-    readonly webUtils: WebUtils;
+	readonly ipcRenderer: IPCRenderer;
+	readonly ipcMessagePort: IPCMessagePort;
+	readonly webFrame: WebFrame;
+	readonly process: SandboxNodeProcess;
+	readonly context: SandboxContext;
+	readonly webUtils: WebUtils;
 }
 //# sourceMappingURL=SandboxGlobals.d.ts.map

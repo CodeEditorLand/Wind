@@ -7,9 +7,9 @@
  * @category Error
  */
 export declare class ConfigFetchError extends Error {
-    readonly cause: unknown;
-    readonly _tag = "ConfigFetchError";
-    constructor(cause: unknown);
+	readonly cause: unknown;
+	readonly _tag = "ConfigFetchError";
+	constructor(cause: unknown);
 }
 export default ConfigFetchError;
 //# sourceMappingURL=ConfigFetchError.d.ts.map

@@ -1,1 +1,14 @@
-import{Effect as e}from"effect";const r={readText:()=>e.succeed("mock clipboard text"),writeText:t=>e.void,readHTML:()=>e.succeed(""),writeHTML:()=>e.void,readImage:()=>e.succeed(new Blob),writeImage:()=>e.void,hasText:()=>e.succeed(!0),clear:()=>e.void};var i=r;export{r as MockClipboardService,i as default};
+import { Effect as e } from "effect";
+
+const r = {
+	readText: () => e.succeed("mock clipboard text"),
+	writeText: (t) => e.void,
+	readHTML: () => e.succeed(""),
+	writeHTML: () => e.void,
+	readImage: () => e.succeed(new Blob()),
+	writeImage: () => e.void,
+	hasText: () => e.succeed(!0),
+	clear: () => e.void,
+};
+var i = r;
+export { r as MockClipboardService, i as default };

@@ -1,1 +1,15 @@
-class e extends Error{_tag="TelemetryCollectionError";operation;cause;constructor(r,t){super(`Telemetry collection failed for '${r}': ${String(t)}`),this.operation=r,this.cause=t,Object.setPrototypeOf(this,e.prototype)}get name(){return"TelemetryCollectionError"}}export{e as default};
+class e extends Error {
+	_tag = "TelemetryCollectionError";
+	operation;
+	cause;
+	constructor(r, t) {
+		(super(`Telemetry collection failed for '${r}': ${String(t)}`),
+			(this.operation = r),
+			(this.cause = t),
+			Object.setPrototypeOf(this, e.prototype));
+	}
+	get name() {
+		return "TelemetryCollectionError";
+	}
+}
+export { e as default };

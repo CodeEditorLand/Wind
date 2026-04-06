@@ -5,22 +5,23 @@
  * @category Type
  */
 import type { UriComponents } from "./VSCodeUtilityType.js";
+
 /**
  * Resource URI provider interface
  */
 export interface IResourceUriProvider {
-    (uri: UriComponents): UriComponents;
+	(uri: UriComponents): UriComponents;
 }
 /**
  * External URI resolver interface
  */
 export interface IExternalUriResolver {
-    (uri: UriComponents): Promise<UriComponents>;
+	(uri: UriComponents): Promise<UriComponents>;
 }
 /**
  * Remote resource provider interface
  */
 export interface IRemoteResourceProvider {
-    provideResource(uri: UriComponents): Promise<Uint8Array>;
+	provideResource(uri: UriComponents): Promise<Uint8Array>;
 }
 //# sourceMappingURL=VSCodeProviderType.d.ts.map

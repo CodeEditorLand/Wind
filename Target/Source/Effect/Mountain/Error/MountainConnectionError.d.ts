@@ -7,9 +7,9 @@
  * @category Error
  */
 export declare class MountainConnectionError extends Error {
-    readonly _tag = "MountainConnectionError";
-    readonly cause: unknown;
-    constructor(cause: unknown);
+	readonly _tag = "MountainConnectionError";
+	readonly cause: unknown;
+	constructor(cause: unknown);
 }
 export default MountainConnectionError;
 //# sourceMappingURL=MountainConnectionError.d.ts.map

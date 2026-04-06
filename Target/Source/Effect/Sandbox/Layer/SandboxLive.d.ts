@@ -8,7 +8,9 @@
  * @category Layer
  */
 import { Layer } from "effect";
+
 import type { SandboxService } from "../Interface/SandboxService.js";
+
 /**
  * Live layer for Sandbox service.
  * Provides access to window.vscode preload globals with polling-based ready check.

@@ -21,9 +21,11 @@
  * ```
  */
 import { Layer } from "effect";
-import { EnvironmentTag } from "../Tag/EnvironmentTag.js";
+
 import type { EnvironmentService } from "../Interface/EnvironmentService.js";
-import type { Platform, Architecture } from "../Type/EnvironmentType.js";
+import { EnvironmentTag } from "../Tag/EnvironmentTag.js";
+import type { Architecture, Platform } from "../Type/EnvironmentType.js";
+
 /**
  * Live layer for Environment service
  */
@@ -33,15 +35,17 @@ export declare const EnvironmentLive: Layer.Layer<EnvironmentTag, never, never>;
  * @param overrides - Optional partial environment info to override defaults
  * @returns A mock environment service
  */
-export declare const makeMockEnvironment: (overrides?: Partial<{
-    readonly platform: Platform;
-    readonly architecture: Architecture;
-    readonly locale: string;
-    readonly timezone: string;
-    readonly userAgent: string;
-    readonly isSecureContext: boolean;
-    readonly language: string;
-}>) => EnvironmentService;
+export declare const makeMockEnvironment: (
+	overrides?: Partial<{
+		readonly platform: Platform;
+		readonly architecture: Architecture;
+		readonly locale: string;
+		readonly timezone: string;
+		readonly userAgent: string;
+		readonly isSecureContext: boolean;
+		readonly language: string;
+	}>,
+) => EnvironmentService;
 /**
  * Mock layer for Environment service
  */

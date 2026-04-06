@@ -8,10 +8,11 @@
  * @see {@link Effect/MountainSync/Type/MountainSyncType} Type definitions
  * @category Implementation
  */
-import type { MountainSyncService } from "../Interface/MountainSyncService.js";
-import type { MountainService } from "../../Mountain.js";
 import type { IPCService } from "../../IPC.js";
+import type { MountainService } from "../../Mountain.js";
 import type { TelemetryService } from "../../Telemetry.js";
+import type { MountainSyncService } from "../Interface/MountainSyncService.js";
+
 /**
  * Creates a MountainSync service instance.
  * Manages background synchronization between Mountain and Wind.
@@ -21,6 +22,10 @@ import type { TelemetryService } from "../../Telemetry.js";
  * @param telemetry - Telemetry service for logging
  * @returns MountainSync service instance
  */
-declare const makeMountainSync: (Mountain: MountainService, IPC: IPCService, TelemetryService: TelemetryService) => MountainSyncService;
+declare const makeMountainSync: (
+	Mountain: MountainService,
+	IPC: IPCService,
+	TelemetryService: TelemetryService,
+) => MountainSyncService;
 export default makeMountainSync;
 //# sourceMappingURL=MountainSyncImplementation.d.ts.map

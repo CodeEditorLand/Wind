@@ -1,1 +1,17 @@
-import{Effect as r}from"effect";import{Telemetry as c}from"../../Telemetry.js";function a(t,o,i){return r.gen(function*(){const e=yield*c,n=Date.now();return o.pipe(r.tap(()=>e.recordMetric(`${t}_duration`,Date.now()-n,i)),r.tapError(f=>e.log("error",`${t} failed`,{error:String(f)})))})}export{a as default};
+import { Effect as r } from "effect";
+
+import { Telemetry as c } from "../../Telemetry.js";
+
+function a(t, o, i) {
+	return r.gen(function* () {
+		const e = yield* c,
+			n = Date.now();
+		return o.pipe(
+			r.tap(() => e.recordMetric(`${t}_duration`, Date.now() - n, i)),
+			r.tapError((f) =>
+				e.log("error", `${t} failed`, { error: String(f) }),
+			),
+		);
+	});
+}
+export { a as default };

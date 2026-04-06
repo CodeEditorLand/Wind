@@ -7,9 +7,9 @@
  * @category Error
  */
 export declare class ConfigValidationError extends Error {
-    readonly issues: ReadonlyArray<string>;
-    readonly _tag = "ConfigValidationError";
-    constructor(issues: ReadonlyArray<string>);
+	readonly issues: ReadonlyArray<string>;
+	readonly _tag = "ConfigValidationError";
+	constructor(issues: ReadonlyArray<string>);
 }
 export default ConfigValidationError;
 //# sourceMappingURL=ConfigValidationError.d.ts.map

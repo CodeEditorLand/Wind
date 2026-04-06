@@ -8,8 +8,14 @@
  * @category Tag
  */
 import { Context } from "effect";
+
 import type { TelemetryService } from "../Interface/TelemetryService.js";
-declare const TelemetryTag_base: Context.TagClass<TelemetryTag, "Telemetry", TelemetryService>;
+
+declare const TelemetryTag_base: Context.TagClass<
+	TelemetryTag,
+	"Telemetry",
+	TelemetryService
+>;
 /**
  * Context.Tag for Telemetry service dependency injection.
  * Use this tag to access Telemetry in Effect programs.
@@ -25,8 +31,7 @@ declare const TelemetryTag_base: Context.TagClass<TelemetryTag, "Telemetry", Tel
  * });
  * ```
  */
-export default class TelemetryTag extends TelemetryTag_base {
-}
+export default class TelemetryTag extends TelemetryTag_base {}
 /**
  * Alias for TelemetryTag for shorter import paths.
  */

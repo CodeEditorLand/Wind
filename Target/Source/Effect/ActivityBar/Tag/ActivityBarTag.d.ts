@@ -8,8 +8,14 @@
  * @category Tag
  */
 import { Context } from "effect";
+
 import type { ActivityBarService } from "../Interface/ActivityBarService.js";
-declare const ActivityBarTag_base: Context.TagClass<ActivityBarTag, "ActivityBar", ActivityBarService>;
+
+declare const ActivityBarTag_base: Context.TagClass<
+	ActivityBarTag,
+	"ActivityBar",
+	ActivityBarService
+>;
 /**
  * Context Tag for ActivityBar service.
  * Use this to inject the ActivityBar service into Effect programs.
@@ -24,7 +30,6 @@ declare const ActivityBarTag_base: Context.TagClass<ActivityBarTag, "ActivityBar
  * });
  * ```
  */
-export declare class ActivityBarTag extends ActivityBarTag_base {
-}
+export declare class ActivityBarTag extends ActivityBarTag_base {}
 export default ActivityBarTag;
 //# sourceMappingURL=ActivityBarTag.d.ts.map

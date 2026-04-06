@@ -6,7 +6,9 @@
  * @category Layer
  */
 import { Layer } from "effect";
+
 import { IPCTag } from "./Tag/IPCTag.js";
+
 /**
  * Mock IPC service for testing
  */

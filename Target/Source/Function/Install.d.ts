@@ -1,6 +1,7 @@
 import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes";
 import type { IpcRenderer } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/electronTypes";
 import type { ISandboxNodeProcess } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/globals";
+
 /**
  * @module Install
  *
@@ -18,7 +19,9 @@ import type { ISandboxNodeProcess } from "@codeeditorland/output/vs/base/parts/s
  */
 export default function Install(): Promise<void>;
 export declare function CreateIPCRenderer(): IpcRenderer;
-export declare function CreateProcess(Configuration: ISandboxConfiguration): ISandboxNodeProcess;
+export declare function CreateProcess(
+	Configuration: ISandboxConfiguration,
+): ISandboxNodeProcess;
 export declare function ResolveConfiguration(): Promise<ISandboxConfiguration>;
 /**
  * Validates IPC channels with proper guard clauses

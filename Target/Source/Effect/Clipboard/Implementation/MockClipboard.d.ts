@@ -7,6 +7,7 @@
  * @category Implementation
  */
 import type { ClipboardService } from "../Interface/ClipboardService.js";
+
 /**
  * Mock clipboard service for testing
  * Provides a simple in-memory clipboard state

@@ -8,8 +8,10 @@
  * @category Layer
  */
 import { Layer } from "effect";
-import { BootstrapTag } from "../Tag/BootstrapTag.js";
+
 import type { BootstrapService } from "../Interface/BootstrapService.js";
+import { BootstrapTag } from "../Tag/BootstrapTag.js";
+
 /**
  * Creates a mock bootstrap service for testing.
  */

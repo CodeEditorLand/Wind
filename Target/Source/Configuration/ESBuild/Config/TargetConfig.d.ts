@@ -6,8 +6,11 @@
  * @category Config
  */
 import type { BuildOptions } from "esbuild";
+
 /**
  * Target ESBuild configuration
  */
-export default function targetConfig(Current: BuildOptions): Promise<BuildOptions>;
+export default function targetConfig(
+	Current: BuildOptions,
+): Promise<BuildOptions>;
 //# sourceMappingURL=TargetConfig.d.ts.map

@@ -8,8 +8,10 @@
  * @category Layer
  */
 import { Layer } from "effect";
-import SidebarTag from "../Tag/SidebarTag.js";
+
 import type { SidebarService } from "../Interface/SidebarService.js";
+import SidebarTag from "../Tag/SidebarTag.js";
+
 /**
  * Creates a mock Sidebar service implementation.
  * All operations return static values suitable for testing.

@@ -8,7 +8,9 @@
  * @category Layer
  */
 import { Layer } from "effect";
+
 import SidebarTag from "../Tag/SidebarTag.js";
+
 /**
  * Live layer for Sidebar service.
  * Provides reactive sidebar panel management with SubscriptionRef-based state.
@@ -22,6 +24,10 @@ import SidebarTag from "../Tag/SidebarTag.js";
  * const appLayer = Layer.mergeAll(TelemetryLive, SidebarLive);
  * ```
  */
-declare const SidebarLive: Layer.Layer<SidebarTag, never, import("../../Telemetry.js").TelemetryTag>;
+declare const SidebarLive: Layer.Layer<
+	SidebarTag,
+	never,
+	import("../../Telemetry.js").TelemetryTag
+>;
 export default SidebarLive;
 //# sourceMappingURL=SidebarLive.d.ts.map

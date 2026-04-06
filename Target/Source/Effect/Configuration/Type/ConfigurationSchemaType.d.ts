@@ -9,9 +9,9 @@
  * Represents a configuration schema validation issue.
  */
 export interface ConfigSchemaIssue {
-    /** Path to the configuration property with the issue */
-    readonly path: string;
-    /** Description of the validation issue */
-    readonly message: string;
+	/** Path to the configuration property with the issue */
+	readonly path: string;
+	/** Description of the validation issue */
+	readonly message: string;
 }
 //# sourceMappingURL=ConfigurationSchemaType.d.ts.map

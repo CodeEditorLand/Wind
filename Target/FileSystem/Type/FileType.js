@@ -1,1 +1,20 @@
-var t=(n=>(n[n.Unknown=0]="Unknown",n[n.File=1]="File",n[n.Directory=2]="Directory",n[n.SymbolicLink=64]="SymbolicLink",n))(t||{});function i(r){switch(r){case 1:return"file";case 2:return"directory";case 64:return"symlink";default:return"unknown"}}export{t as FileType,i as fileTypeToString};
+var t = ((n) => (
+	(n[(n.Unknown = 0)] = "Unknown"),
+	(n[(n.File = 1)] = "File"),
+	(n[(n.Directory = 2)] = "Directory"),
+	(n[(n.SymbolicLink = 64)] = "SymbolicLink"),
+	n
+))(t || {});
+function i(r) {
+	switch (r) {
+		case 1:
+			return "file";
+		case 2:
+			return "directory";
+		case 64:
+			return "symlink";
+		default:
+			return "unknown";
+	}
+}
+export { t as FileType, i as fileTypeToString };

@@ -15,5 +15,12 @@ export type { EnvironmentData } from "./Type/EnvironmentData.js";
 export type { ConfigurationData } from "./Type/ConfigurationData.js";
 export type { ServiceData } from "./Type/ServiceData.js";
 export type { WorkbenchData } from "./Type/WorkbenchData.js";
-export type { IVSCodeWorkbenchOptions, IVSCodeServiceCollection, IVSCodeServiceIdentifier, IVSCodeEnvironmentService, IVSCodeConfigurationService, IVSCodeLoggerService, } from "./VSCode/index.js";
+export type {
+	IVSCodeWorkbenchOptions,
+	IVSCodeServiceCollection,
+	IVSCodeServiceIdentifier,
+	IVSCodeEnvironmentService,
+	IVSCodeConfigurationService,
+	IVSCodeLoggerService,
+} from "./VSCode/index.js";
 //# sourceMappingURL=index.d.ts.map

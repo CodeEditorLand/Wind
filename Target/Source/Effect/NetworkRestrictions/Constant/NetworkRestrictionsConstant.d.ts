@@ -12,19 +12,19 @@
  * while allowing internal communication and specific whitelisted domains
  */
 export declare const DEFAULT_NETWORK_RESTRICTIONS: {
-    blockHTTP: true;
-    blockHTTPS: true;
-    blockWebSocket: true;
-    blockMarketplace: true;
-    blockExtensionUpdates: true;
-    blockTelemetry: true;
-    blockExtensionTelemetry: true;
-    allowInternal: true;
-    allowLocalhost: true;
-    allowMountain: true;
-    logBlocked: true;
-    allowedDomains: never[];
-    blockedDomains: string[];
+	blockHTTP: true;
+	blockHTTPS: true;
+	blockWebSocket: true;
+	blockMarketplace: true;
+	blockExtensionUpdates: true;
+	blockTelemetry: true;
+	blockExtensionTelemetry: true;
+	allowInternal: true;
+	allowLocalhost: true;
+	allowMountain: true;
+	logBlocked: true;
+	allowedDomains: never[];
+	blockedDomains: string[];
 };
 /**
  * Common telemetry endpoints that should always be blocked
@@ -51,27 +51,27 @@ export declare const ALLOWED_IPC_CHANNELS: string[];
  */
 export declare const BLOCKED_IPC_CHANNELS: string[];
 declare const constants: {
-    readonly DEFAULT_NETWORK_RESTRICTIONS: {
-        blockHTTP: true;
-        blockHTTPS: true;
-        blockWebSocket: true;
-        blockMarketplace: true;
-        blockExtensionUpdates: true;
-        blockTelemetry: true;
-        blockExtensionTelemetry: true;
-        allowInternal: true;
-        allowLocalhost: true;
-        allowMountain: true;
-        logBlocked: true;
-        allowedDomains: never[];
-        blockedDomains: string[];
-    };
-    readonly TelemetryEndpoint: string[];
-    readonly MarketplaceEndpoint: string[];
-    readonly UpdateEndpoint: string[];
-    readonly AiEndpoint: string[];
-    readonly ALLOWED_IPC_CHANNELS: string[];
-    readonly BLOCKED_IPC_CHANNELS: string[];
+	readonly DEFAULT_NETWORK_RESTRICTIONS: {
+		blockHTTP: true;
+		blockHTTPS: true;
+		blockWebSocket: true;
+		blockMarketplace: true;
+		blockExtensionUpdates: true;
+		blockTelemetry: true;
+		blockExtensionTelemetry: true;
+		allowInternal: true;
+		allowLocalhost: true;
+		allowMountain: true;
+		logBlocked: true;
+		allowedDomains: never[];
+		blockedDomains: string[];
+	};
+	readonly TelemetryEndpoint: string[];
+	readonly MarketplaceEndpoint: string[];
+	readonly UpdateEndpoint: string[];
+	readonly AiEndpoint: string[];
+	readonly ALLOWED_IPC_CHANNELS: string[];
+	readonly BLOCKED_IPC_CHANNELS: string[];
 };
 export default constants;
 //# sourceMappingURL=NetworkRestrictionsConstant.d.ts.map

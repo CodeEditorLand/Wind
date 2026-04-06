@@ -1,1 +1,27 @@
-import e,{EnvironmentTag as n}from"./Environment/index.js";import{default as c,EnvironmentMock as E,makeMockEnvironment as a,EnvironmentTag as f}from"./Environment/index.js";import{DetectPlatform as x,DetectArchitecture as k,DetectLocale as s,DetectTimezone as T,GetUserAgent as g}from"./Environment/index.js";const m=n;export{k as DetectArchitecture,s as DetectLocale,x as DetectPlatform,T as DetectTimezone,m as Environment,e as EnvironmentLive,E as EnvironmentMock,f as EnvironmentTag,g as GetUserAgent,c as default,a as makeMockEnvironment};
+import e, {
+	makeMockEnvironment as a,
+	default as c,
+	EnvironmentMock as E,
+	EnvironmentTag as f,
+	GetUserAgent as g,
+	DetectArchitecture as k,
+	EnvironmentTag as n,
+	DetectLocale as s,
+	DetectTimezone as T,
+	DetectPlatform as x,
+} from "./Environment/index.js";
+
+const m = n;
+export {
+	k as DetectArchitecture,
+	s as DetectLocale,
+	x as DetectPlatform,
+	T as DetectTimezone,
+	m as Environment,
+	e as EnvironmentLive,
+	E as EnvironmentMock,
+	f as EnvironmentTag,
+	g as GetUserAgent,
+	c as default,
+	a as makeMockEnvironment,
+};

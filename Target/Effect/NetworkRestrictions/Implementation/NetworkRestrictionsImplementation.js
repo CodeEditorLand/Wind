@@ -1,1 +1,112 @@
-import{Effect as o,Layer as N,Ref as r}from"effect";import{Telemetry as T}from"../../Telemetry.js";import{NetworkRestrictions as p}from"../Tag/NetworkRestrictionsTag.js";import l from"../Error/NetworkBlockError.js";import v from"../Error/IPCBlockError.js";import{DEFAULT_NETWORK_RESTRICTIONS as L}from"../Constant/NetworkRestrictionsConstant.js";import{IsInternalURL as S,IsBlockedURL as B,IsAllowedURL as h,IsIPCAllowed as I}from"./NetworkRestrictionsHelper.js";const b=N.effect(p,o.gen(function*(){const s=yield*T,i=yield*r.make(JSON.parse(JSON.stringify(L))),n=yield*r.make([]),k=yield*r.make("NONE"),f=e=>o.gen(function*(){const t=yield*i.get;if(t.allowInternal&&S(t,e)||h(t,e))return!0;if(B(t,e))return yield*o.fail(l(e,"URL is blocked by network restrictions"));if(t.blockHTTP||t.blockHTTPS){const c=new URL(e);if(c.protocol==="http:"&&t.blockHTTP)return yield*o.fail(l(e,"HTTP requests are blocked"));if(c.protocol==="https:"&&t.blockHTTPS)return yield*o.fail(l(e,"HTTPS requests are blocked"))}return!1}),R=(e,t)=>o.gen(function*(){(yield*i.get).logBlocked&&(yield*s.log("warn",`[NetworkRestrictions] Blocked URL: ${e} - ${t}`),yield*r.update(n,C=>[...C,{timestamp:Date.now(),type:e.startsWith("https:")?"https":"http",target:e,reason:t}]))}),d=e=>o.gen(function*(){return I(e)?!0:yield*o.fail(v(e,"IPC channel is blocked by network restrictions"))}),a=i.get,g=e=>o.gen(function*(){const t=yield*i.get;yield*r.set(i,{...t,...e}),yield*s.log("info","[NetworkRestrictions] Configuration updated")}),y=n.get,u=r.set(n,[]),m=e=>o.gen(function*(){yield*r.set(k,e),yield*s.log("info",`[NetworkRestrictions] Telemetry level set to: ${e}`)}),w=k.get;return yield*s.log("info","[NetworkRestrictions] Network restrictions service initialized"),{checkURL:f,blockURL:R,checkIPCChannel:d,config:a,updateConfig:g,getBlockedRequests:y,clearBlockedRequests:u,setTelemetryLevel:m,getTelemetryLevel:w}}));var $=b;export{b as NetworkRestrictionsLive,$ as default};
+import { Layer as N, Effect as o, Ref as r } from "effect";
+
+import { Telemetry as T } from "../../Telemetry.js";
+import { DEFAULT_NETWORK_RESTRICTIONS as L } from "../Constant/NetworkRestrictionsConstant.js";
+import v from "../Error/IPCBlockError.js";
+import l from "../Error/NetworkBlockError.js";
+import { NetworkRestrictions as p } from "../Tag/NetworkRestrictionsTag.js";
+import {
+	IsBlockedURL as B,
+	IsAllowedURL as h,
+	IsIPCAllowed as I,
+	IsInternalURL as S,
+} from "./NetworkRestrictionsHelper.js";
+
+const b = N.effect(
+	p,
+	o.gen(function* () {
+		const s = yield* T,
+			i = yield* r.make(JSON.parse(JSON.stringify(L))),
+			n = yield* r.make([]),
+			k = yield* r.make("NONE"),
+			f = (e) =>
+				o.gen(function* () {
+					const t = yield* i.get;
+					if ((t.allowInternal && S(t, e)) || h(t, e)) return !0;
+					if (B(t, e))
+						return yield* o.fail(
+							l(e, "URL is blocked by network restrictions"),
+						);
+					if (t.blockHTTP || t.blockHTTPS) {
+						const c = new URL(e);
+						if (c.protocol === "http:" && t.blockHTTP)
+							return yield* o.fail(
+								l(e, "HTTP requests are blocked"),
+							);
+						if (c.protocol === "https:" && t.blockHTTPS)
+							return yield* o.fail(
+								l(e, "HTTPS requests are blocked"),
+							);
+					}
+					return !1;
+				}),
+			R = (e, t) =>
+				o.gen(function* () {
+					(yield* i.get).logBlocked &&
+						(yield* s.log(
+							"warn",
+							`[NetworkRestrictions] Blocked URL: ${e} - ${t}`,
+						),
+						yield* r.update(n, (C) => [
+							...C,
+							{
+								timestamp: Date.now(),
+								type: e.startsWith("https:") ? "https" : "http",
+								target: e,
+								reason: t,
+							},
+						]));
+				}),
+			d = (e) =>
+				o.gen(function* () {
+					return I(e)
+						? !0
+						: yield* o.fail(
+								v(
+									e,
+									"IPC channel is blocked by network restrictions",
+								),
+							);
+				}),
+			a = i.get,
+			g = (e) =>
+				o.gen(function* () {
+					const t = yield* i.get;
+					(yield* r.set(i, { ...t, ...e }),
+						yield* s.log(
+							"info",
+							"[NetworkRestrictions] Configuration updated",
+						));
+				}),
+			y = n.get,
+			u = r.set(n, []),
+			m = (e) =>
+				o.gen(function* () {
+					(yield* r.set(k, e),
+						yield* s.log(
+							"info",
+							`[NetworkRestrictions] Telemetry level set to: ${e}`,
+						));
+				}),
+			w = k.get;
+		return (
+			yield* s.log(
+				"info",
+				"[NetworkRestrictions] Network restrictions service initialized",
+			),
+			{
+				checkURL: f,
+				blockURL: R,
+				checkIPCChannel: d,
+				config: a,
+				updateConfig: g,
+				getBlockedRequests: y,
+				clearBlockedRequests: u,
+				setTelemetryLevel: m,
+				getTelemetryLevel: w,
+			}
+		);
+	}),
+);
+var $ = b;
+export { b as NetworkRestrictionsLive, $ as default };

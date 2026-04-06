@@ -15,24 +15,24 @@
  * @phase 1 of Approach A3 implementation
  */
 interface FileSystemRequest {
-    protocol: string;
-    path: string;
-    query?: Record<string, string>;
-    headers?: Headers;
+	protocol: string;
+	path: string;
+	query?: Record<string, string>;
+	headers?: Headers;
 }
 interface FileSystemResponse {
-    content: string | Blob | null;
-    error?: Error;
-    metadata?: {
-        mime?: string;
-        version?: string;
-        etag?: string;
-        lastModified?: string;
-    };
+	content: string | Blob | null;
+	error?: Error;
+	metadata?: {
+		mime?: string;
+		version?: string;
+		etag?: string;
+		lastModified?: string;
+	};
 }
 interface ProtocolHandler {
-    matches(req: FileSystemRequest): boolean;
-    handle(req: FileSystemRequest): Promise<FileSystemResponse>;
+	matches(req: FileSystemRequest): boolean;
+	handle(req: FileSystemRequest): Promise<FileSystemResponse>;
 }
 /**
  * Parse custom protocol URL
@@ -50,10 +50,10 @@ export declare function installFileProtocolShim(): void;
  * Export for testing/debugging purposes
  */
 export declare const FileProtocolShim: {
-    install: typeof installFileProtocolShim;
-    handlers: ProtocolHandler[];
-    parseProtocolURL: typeof parseProtocolURL;
-    inferMimeType: typeof inferMimeType;
+	install: typeof installFileProtocolShim;
+	handlers: ProtocolHandler[];
+	parseProtocolURL: typeof parseProtocolURL;
+	inferMimeType: typeof inferMimeType;
 };
 export {};
 //# sourceMappingURL=FileProtocolShim.d.ts.map

@@ -1,1 +1,77 @@
-import{Effect as o,SubscriptionRef as y}from"effect";import{ActivityBarItemNotFoundError as m}from"../Error/ActivityBarItemNotFoundError.js";import{ActivityBarUpdateError as p}from"../Error/ActivityBarUpdateError.js";const v=()=>`activitybar-${Date.now()}-${Math.random().toString(36).substring(2,9)}`,E=(i,e)=>r=>o.gen(function*(){const t=v(),n={...r,id:t};return yield*y.modify(i,s=>[void 0,[...s,n].sort((f,d)=>f.position-d.position)]),yield*e.log("info",`Created activity bar item: ${t}`),n}),l=(i,e,r)=>(t,n)=>o.gen(function*(){if(!(yield*e(t)))return yield*o.fail(new m(t));try{const f=new Map;Object.entries(n).forEach(([a,c])=>{(a!=="badge"||c!==void 0)&&f.set(a,c)});const d=Object.fromEntries(f);yield*y.modify(i,a=>[void 0,a.map(c=>c.id===t?{...c,...d}:c).sort((c,u)=>c.position-u.position)]),yield*r.log("info",`Updated activity bar item: ${t}`)}catch(f){return yield*o.fail(new p(t,f))}}),g=(i,e,r,t)=>n=>o.gen(function*(){if(!(yield*r(n)))return yield*o.fail(new m(n));yield*y.modify(i,d=>[void 0,d.filter(a=>a.id!==n)]),(yield*e.get)===n&&(yield*y.set(e,void 0)),yield*t.log("info",`Removed activity bar item: ${n}`)}),A=i=>e=>o.map(i.get,r=>r.find(t=>t.id===e)),B=(i,e,r)=>t=>o.gen(function*(){if(!(yield*e(t)))return yield*o.fail(new m(t));yield*y.set(i,t),yield*r.log("info",`Set active activity bar item: ${t}`)}),b=i=>(e,r)=>r===void 0?i(e,{}):i(e,{badge:r}),I=i=>e=>o.map(i(e),r=>r?.badge);var C={MakeCreateItem:E,MakeUpdateItem:l,MakeRemoveItem:g,MakeGetItem:A,MakeSetActiveItem:B,MakeSetBadge:b,MakeGetBadge:I,GenerateItemId:v};export{v as GenerateItemId,E as MakeCreateItem,I as MakeGetBadge,A as MakeGetItem,g as MakeRemoveItem,B as MakeSetActiveItem,b as MakeSetBadge,l as MakeUpdateItem,C as default};
+import { Effect as o, SubscriptionRef as y } from "effect";
+
+import { ActivityBarItemNotFoundError as m } from "../Error/ActivityBarItemNotFoundError.js";
+import { ActivityBarUpdateError as p } from "../Error/ActivityBarUpdateError.js";
+
+const v = () =>
+		`activitybar-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+	E = (i, e) => (r) =>
+		o.gen(function* () {
+			const t = v(),
+				n = { ...r, id: t };
+			return (
+				yield* y.modify(i, (s) => [
+					void 0,
+					[...s, n].sort((f, d) => f.position - d.position),
+				]),
+				yield* e.log("info", `Created activity bar item: ${t}`),
+				n
+			);
+		}),
+	l = (i, e, r) => (t, n) =>
+		o.gen(function* () {
+			if (!(yield* e(t))) return yield* o.fail(new m(t));
+			try {
+				const f = new Map();
+				Object.entries(n).forEach(([a, c]) => {
+					(a !== "badge" || c !== void 0) && f.set(a, c);
+				});
+				const d = Object.fromEntries(f);
+				(yield* y.modify(i, (a) => [
+					void 0,
+					a
+						.map((c) => (c.id === t ? { ...c, ...d } : c))
+						.sort((c, u) => c.position - u.position),
+				]),
+					yield* r.log("info", `Updated activity bar item: ${t}`));
+			} catch (f) {
+				return yield* o.fail(new p(t, f));
+			}
+		}),
+	g = (i, e, r, t) => (n) =>
+		o.gen(function* () {
+			if (!(yield* r(n))) return yield* o.fail(new m(n));
+			(yield* y.modify(i, (d) => [void 0, d.filter((a) => a.id !== n)]),
+				(yield* e.get) === n && (yield* y.set(e, void 0)),
+				yield* t.log("info", `Removed activity bar item: ${n}`));
+		}),
+	A = (i) => (e) => o.map(i.get, (r) => r.find((t) => t.id === e)),
+	B = (i, e, r) => (t) =>
+		o.gen(function* () {
+			if (!(yield* e(t))) return yield* o.fail(new m(t));
+			(yield* y.set(i, t),
+				yield* r.log("info", `Set active activity bar item: ${t}`));
+		}),
+	b = (i) => (e, r) => (r === void 0 ? i(e, {}) : i(e, { badge: r })),
+	I = (i) => (e) => o.map(i(e), (r) => r?.badge);
+var C = {
+	MakeCreateItem: E,
+	MakeUpdateItem: l,
+	MakeRemoveItem: g,
+	MakeGetItem: A,
+	MakeSetActiveItem: B,
+	MakeSetBadge: b,
+	MakeGetBadge: I,
+	GenerateItemId: v,
+};
+export {
+	v as GenerateItemId,
+	E as MakeCreateItem,
+	I as MakeGetBadge,
+	A as MakeGetItem,
+	g as MakeRemoveItem,
+	B as MakeSetActiveItem,
+	b as MakeSetBadge,
+	l as MakeUpdateItem,
+	C as default,
+};

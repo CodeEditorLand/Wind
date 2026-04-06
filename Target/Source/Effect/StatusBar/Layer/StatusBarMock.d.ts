@@ -8,8 +8,10 @@
  * @category Layer
  */
 import { Layer } from "effect";
-import StatusBarTag from "../Tag/StatusBarTag.js";
+
 import type { StatusBarService } from "../Interface/StatusBarService.js";
+import StatusBarTag from "../Tag/StatusBarTag.js";
+
 /**
  * Creates a mock StatusBar service implementation.
  * All operations return static values suitable for testing.

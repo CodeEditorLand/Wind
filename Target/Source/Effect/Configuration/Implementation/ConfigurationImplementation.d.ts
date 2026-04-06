@@ -8,18 +8,30 @@
  * @category Implementation
  */
 import { Layer } from "effect";
-import { ConfigurationTag } from "../Tag/ConfigurationTag.js";
-import { ConfigFetchError } from "../Error/ConfigFetchError.js";
+
 import { MountainTag } from "../../Mountain.js";
+import { ConfigFetchError } from "../Error/ConfigFetchError.js";
+import { ConfigurationTag } from "../Tag/ConfigurationTag.js";
+
 /**
  * Live implementation layer for Configuration service.
  * Provides reactive configuration management with fetch and sync capabilities.
  */
-export declare const ConfigurationLive: Layer.Layer<ConfigurationTag, ConfigFetchError, import("../../Sandbox.js").SandboxService | import("../../IPC.js").IPCTag>;
+export declare const ConfigurationLive: Layer.Layer<
+	ConfigurationTag,
+	ConfigFetchError,
+	import("../../Sandbox.js").SandboxService | import("../../IPC.js").IPCTag
+>;
 /**
  * Live implementation layer for Configuration service with Mountain sync.
  * Includes periodic sync with the Mountain backend.
  */
-export declare const ConfigurationWithSyncLive: Layer.Layer<ConfigurationTag, ConfigFetchError, import("../../Sandbox.js").SandboxService | import("../../IPC.js").IPCTag | MountainTag>;
+export declare const ConfigurationWithSyncLive: Layer.Layer<
+	ConfigurationTag,
+	ConfigFetchError,
+	| import("../../Sandbox.js").SandboxService
+	| import("../../IPC.js").IPCTag
+	| MountainTag
+>;
 export default ConfigurationLive;
 //# sourceMappingURL=ConfigurationImplementation.d.ts.map

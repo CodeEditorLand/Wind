@@ -1,1 +1,199 @@
-async function l(){try{if(typeof window>"u"){const t=new Error("Cannot install Wind polyfill: window is not defined");console.error(t);return}if(window.polyfillInstalled)return;window.polyfillInstalled=!0,console.log("[Wind] Starting Wind preload installation..."),m();const e=await u(),o=d(),n=c(e),s={ipcRenderer:o,process:n,configuration:e};window.preloadGlobals=s,console.log("[Wind] preloadGlobals attached to window");const r={ipcRenderer:o,process:n,context:{configuration:()=>e,resolveConfiguration:async()=>e},webFrame:{setZoomLevel:()=>{}},webUtils:{getPathForFile:t=>t.name},ipcMessagePort:{acquire:()=>{}}};window.vscode=r,console.info("[Wind] Successfully installed Electron API polyfill for workbench."),window.__WIND_PRELOAD_READY__=!0,console.log("[Wind] Preload ready, Effect-TS bootstrap can proceed")}catch(e){console.error("[Wind] Install error:",e),p()}}function d(){const e={send:o=>{i(o)},invoke:async o=>{if(!i(o))throw new Error(`Invalid IPC channel: ${o}`);return{}},on:(o,n)=>e,once:(o,n)=>e,removeListener:(o,n)=>e};return e}function c(e){return{platform:"web",arch:"web",type:"renderer",execPath:"/",env:e.userEnv??{},cwd:()=>"/",versions:{node:"20.0.0",chrome:navigator.userAgent.match(/Chrome\/(\d+)/)?.[1]||"0",electron:"0.0.0"},on:(o,n)=>{},getProcessMemoryInfo:async()=>({private:0,residentSet:0,shared:0}),shellEnv:async()=>({})}}async function u(){return{windowId:1,appRoot:"file:///app",userEnv:{PATH:"/usr/bin:/bin",HOME:"/"},product:{nameShort:"VSCode Wind",nameLong:"VSCode Wind",applicationName:"vscode-wind",version:"0.0.1",commit:"dev",date:new Date().toISOString(),urlProtocol:"vscode-wind",dataFolderName:"vscode-wind",serverApplicationName:"vscode-wind-server",extensionProperties:{},defaultChatAgent:{extensionId:"vscode",chatExtensionId:"vscode",chatExtensionOutputId:"vscode",documentationUrl:"https://code.visualstudio.com/docs",skusDocumentationUrl:"https://code.visualstudio.com/docs",publicCodeMatchesUrl:"https://code.visualstudio.com/docs",manageSettingsUrl:"https://code.visualstudio.com/docs",managePlanUrl:"https://code.visualstudio.com/docs",manageOverageUrl:"https://code.visualstudio.com/docs",upgradePlanUrl:"https://code.visualstudio.com/docs",signUpUrl:"https://code.visualstudio.com/docs",termsStatementUrl:"https://code.visualstudio.com/terms",privacyStatementUrl:"https://privacy.microsoft.com",provider:{default:{id:"default",name:"Default"},enterprise:{id:"enterprise",name:"Enterprise"},google:{id:"google",name:"Google"},apple:{id:"apple",name:"Apple"}},providerUriSetting:"ai.provider.uri",providerScopes:[["read"],["write"]],entitlementUrl:"https://code.visualstudio.com/docs",entitlementSignupLimitedUrl:"https://code.visualstudio.com/docs",tokenEntitlementUrl:"https://code.visualstudio.com/docs",mcpRegistryDataUrl:"https://code.visualstudio.com/docs",chatQuotaExceededContext:"",completionsQuotaExceededContext:"",walkthroughCommand:"",completionsMenuCommand:"",completionsRefreshTokenCommand:"",chatRefreshTokenCommand:"",generateCommitMessageCommand:"",resolveMergeConflictsCommand:"",completionsAdvancedSetting:"",completionsEnablementSetting:"",nextEditSuggestionsSetting:""}},zoomLevel:0,nls:{messages:[],language:"en"}}}function i(e){return!(!e||typeof e!="string"||typeof navigator<"u"&&!e.startsWith("vscode:"))}function p(){if(typeof window.legacyBridge<"u"){window.vscode=window.legacyBridge;return}typeof window.vscode>"u"&&(window.vscode={process:{platform:"web"},ipcRenderer:{send:()=>{},invoke:async()=>({}),on:()=>({}),once:()=>({}),removeListener:()=>({}),removeAllListeners:()=>{}}})}function m(){typeof window.requestIdleCallback!="function"&&(console.log("[Wind] Installing requestIdleCallback polyfill..."),window.requestIdleCallback=function(e,o){const n=o?.timeout??1,s=Date.now();return setTimeout(()=>{const t=Date.now(),a={didTimeout:n<=0,timeRemaining:()=>Math.max(0,n-(t-s))};e(a)},n)},console.log("[Wind]\u2001\u2713 requestIdleCallback polyfill installed")),typeof window.cancelIdleCallback!="function"&&(console.log("[Wind] Installing cancelIdleCallback polyfill..."),window.cancelIdleCallback=function(e){clearTimeout(e)},console.log("[Wind]\u2001\u2713 cancelIdleCallback polyfill installed"))}export{d as CreateIPCRenderer,c as CreateProcess,p as Fallback,u as ResolveConfiguration,i as ValidateIPCChannel,l as default};
+async function l() {
+	try {
+		if (typeof window > "u") {
+			const t = new Error(
+				"Cannot install Wind polyfill: window is not defined",
+			);
+			console.error(t);
+			return;
+		}
+		if (window.polyfillInstalled) return;
+		((window.polyfillInstalled = !0),
+			console.log("[Wind] Starting Wind preload installation..."),
+			m());
+		const e = await u(),
+			o = d(),
+			n = c(e),
+			s = { ipcRenderer: o, process: n, configuration: e };
+		((window.preloadGlobals = s),
+			console.log("[Wind] preloadGlobals attached to window"));
+		const r = {
+			ipcRenderer: o,
+			process: n,
+			context: {
+				configuration: () => e,
+				resolveConfiguration: async () => e,
+			},
+			webFrame: { setZoomLevel: () => {} },
+			webUtils: { getPathForFile: (t) => t.name },
+			ipcMessagePort: { acquire: () => {} },
+		};
+		((window.vscode = r),
+			console.info(
+				"[Wind] Successfully installed Electron API polyfill for workbench.",
+			),
+			(window.__WIND_PRELOAD_READY__ = !0),
+			console.log(
+				"[Wind] Preload ready, Effect-TS bootstrap can proceed",
+			));
+	} catch (e) {
+		(console.error("[Wind] Install error:", e), p());
+	}
+}
+function d() {
+	const e = {
+		send: (o) => {
+			i(o);
+		},
+		invoke: async (o) => {
+			if (!i(o)) throw new Error(`Invalid IPC channel: ${o}`);
+			return {};
+		},
+		on: (o, n) => e,
+		once: (o, n) => e,
+		removeListener: (o, n) => e,
+	};
+	return e;
+}
+function c(e) {
+	return {
+		platform: "web",
+		arch: "web",
+		type: "renderer",
+		execPath: "/",
+		env: e.userEnv ?? {},
+		cwd: () => "/",
+		versions: {
+			node: "20.0.0",
+			chrome: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || "0",
+			electron: "0.0.0",
+		},
+		on: (o, n) => {},
+		getProcessMemoryInfo: async () => ({
+			private: 0,
+			residentSet: 0,
+			shared: 0,
+		}),
+		shellEnv: async () => ({}),
+	};
+}
+async function u() {
+	return {
+		windowId: 1,
+		appRoot: "file:///app",
+		userEnv: { PATH: "/usr/bin:/bin", HOME: "/" },
+		product: {
+			nameShort: "VSCode Wind",
+			nameLong: "VSCode Wind",
+			applicationName: "vscode-wind",
+			version: "0.0.1",
+			commit: "dev",
+			date: new Date().toISOString(),
+			urlProtocol: "vscode-wind",
+			dataFolderName: "vscode-wind",
+			serverApplicationName: "vscode-wind-server",
+			extensionProperties: {},
+			defaultChatAgent: {
+				extensionId: "vscode",
+				chatExtensionId: "vscode",
+				chatExtensionOutputId: "vscode",
+				documentationUrl: "https://code.visualstudio.com/docs",
+				skusDocumentationUrl: "https://code.visualstudio.com/docs",
+				publicCodeMatchesUrl: "https://code.visualstudio.com/docs",
+				manageSettingsUrl: "https://code.visualstudio.com/docs",
+				managePlanUrl: "https://code.visualstudio.com/docs",
+				manageOverageUrl: "https://code.visualstudio.com/docs",
+				upgradePlanUrl: "https://code.visualstudio.com/docs",
+				signUpUrl: "https://code.visualstudio.com/docs",
+				termsStatementUrl: "https://code.visualstudio.com/terms",
+				privacyStatementUrl: "https://privacy.microsoft.com",
+				provider: {
+					default: { id: "default", name: "Default" },
+					enterprise: { id: "enterprise", name: "Enterprise" },
+					google: { id: "google", name: "Google" },
+					apple: { id: "apple", name: "Apple" },
+				},
+				providerUriSetting: "ai.provider.uri",
+				providerScopes: [["read"], ["write"]],
+				entitlementUrl: "https://code.visualstudio.com/docs",
+				entitlementSignupLimitedUrl:
+					"https://code.visualstudio.com/docs",
+				tokenEntitlementUrl: "https://code.visualstudio.com/docs",
+				mcpRegistryDataUrl: "https://code.visualstudio.com/docs",
+				chatQuotaExceededContext: "",
+				completionsQuotaExceededContext: "",
+				walkthroughCommand: "",
+				completionsMenuCommand: "",
+				completionsRefreshTokenCommand: "",
+				chatRefreshTokenCommand: "",
+				generateCommitMessageCommand: "",
+				resolveMergeConflictsCommand: "",
+				completionsAdvancedSetting: "",
+				completionsEnablementSetting: "",
+				nextEditSuggestionsSetting: "",
+			},
+		},
+		zoomLevel: 0,
+		nls: { messages: [], language: "en" },
+	};
+}
+function i(e) {
+	return !(
+		!e ||
+		typeof e != "string" ||
+		(typeof navigator < "u" && !e.startsWith("vscode:"))
+	);
+}
+function p() {
+	if (typeof window.legacyBridge < "u") {
+		window.vscode = window.legacyBridge;
+		return;
+	}
+	typeof window.vscode > "u" &&
+		(window.vscode = {
+			process: { platform: "web" },
+			ipcRenderer: {
+				send: () => {},
+				invoke: async () => ({}),
+				on: () => ({}),
+				once: () => ({}),
+				removeListener: () => ({}),
+				removeAllListeners: () => {},
+			},
+		});
+}
+function m() {
+	(typeof window.requestIdleCallback != "function" &&
+		(console.log("[Wind] Installing requestIdleCallback polyfill..."),
+		(window.requestIdleCallback = function (e, o) {
+			const n = o?.timeout ?? 1,
+				s = Date.now();
+			return setTimeout(() => {
+				const t = Date.now(),
+					a = {
+						didTimeout: n <= 0,
+						timeRemaining: () => Math.max(0, n - (t - s)),
+					};
+				e(a);
+			}, n);
+		}),
+		console.log(
+			"[Wind]\u2001\u2713 requestIdleCallback polyfill installed",
+		)),
+		typeof window.cancelIdleCallback != "function" &&
+			(console.log("[Wind] Installing cancelIdleCallback polyfill..."),
+			(window.cancelIdleCallback = function (e) {
+				clearTimeout(e);
+			}),
+			console.log(
+				"[Wind]\u2001\u2713 cancelIdleCallback polyfill installed",
+			)));
+}
+export {
+	d as CreateIPCRenderer,
+	c as CreateProcess,
+	p as Fallback,
+	u as ResolveConfiguration,
+	i as ValidateIPCChannel,
+	l as default,
+};
