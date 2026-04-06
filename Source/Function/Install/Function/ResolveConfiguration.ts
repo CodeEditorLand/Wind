@@ -52,7 +52,8 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 				providerUriSetting: "ai.provider.uri",
 				providerScopes: [["read"], ["write"]],
 				entitlementUrl: "https://code.visualstudio.com/docs",
-				entitlementSignupLimitedUrl: "https://code.visualstudio.com/docs",
+				entitlementSignupLimitedUrl:
+					"https://code.visualstudio.com/docs",
 				tokenEntitlementUrl: "https://code.visualstudio.com/docs",
 				mcpRegistryDataUrl: "https://code.visualstudio.com/docs",
 				chatQuotaExceededContext: "",

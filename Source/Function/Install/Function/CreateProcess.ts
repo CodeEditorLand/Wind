@@ -8,11 +8,8 @@
  * @category Function
  */
 
-import type {
-	ISandboxNodeProcess,
-} from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/globals";
-
 import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes";
+import type { ISandboxNodeProcess } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/globals";
 
 /**
  * Creates a sandbox node process interface

@@ -82,5 +82,8 @@ export interface SpanHandle {
 	 * @param success - Whether the operation succeeded
 	 * @param error - Optional error message if the operation failed
 	 */
-	readonly end: (success: boolean, error?: string) => Effect.Effect<void, never>;
+	readonly end: (
+		success: boolean,
+		error?: string,
+	) => Effect.Effect<void, never>;
 }

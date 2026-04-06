@@ -11,7 +11,11 @@
  */
 
 // Types
-export type { PanelView, CreatePanelView, PanelViewType } from "./Type/PanelType.js";
+export type {
+	PanelView,
+	CreatePanelView,
+	PanelViewType,
+} from "./Type/PanelType.js";
 
 // Service interface
 export type { PanelService } from "./Interface/PanelService.js";

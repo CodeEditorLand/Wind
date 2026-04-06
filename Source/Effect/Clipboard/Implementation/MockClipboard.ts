@@ -8,6 +8,7 @@
  */
 
 import { Effect } from "effect";
+
 import type { ClipboardService } from "../Interface/ClipboardService.js";
 
 // ============================================================================

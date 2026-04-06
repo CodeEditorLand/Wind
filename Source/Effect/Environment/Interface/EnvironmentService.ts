@@ -9,7 +9,8 @@
  */
 
 import { Effect } from "effect";
-import type { Platform, Architecture } from "../Type/EnvironmentType.js";
+
+import type { Architecture, Platform } from "../Type/EnvironmentType.js";
 
 // ============================================================================
 // Service Interface
@@ -51,4 +52,3 @@ export interface EnvironmentService {
 	/** Check if running in web environment */
 	readonly isWeb: Effect.Effect<boolean, never>;
 }
-

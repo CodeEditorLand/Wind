@@ -9,9 +9,10 @@
  */
 
 import { Context, Effect } from "effect";
-import type { NetworkRestrictionConfig } from "../Type/NetworkRestrictionConfig.js";
-import type { NetworkBlockError } from "../Error/NetworkBlockError.js";
+
 import type { IPCBlockError } from "../Error/IPCBlockError.js";
+import type { NetworkBlockError } from "../Error/NetworkBlockError.js";
+import type { NetworkRestrictionConfig } from "../Type/NetworkRestrictionConfig.js";
 
 // ============================================================================
 // Type Definitions
@@ -37,13 +38,20 @@ export type TelemetryLevel = "NONE" | "CRASH" | "ERROR" | "USAGE";
  */
 export interface NetworkRestrictionsService {
 	/** Check if a URL is allowed */
-	readonly checkURL: (url: string) => Effect.Effect<boolean, NetworkBlockError>;
+	readonly checkURL: (
+		url: string,
+	) => Effect.Effect<boolean, NetworkBlockError>;
 
 	/** Block a URL (used by window.fetch override) */
-	readonly blockURL: (url: string, reason: string) => Effect.Effect<void, never>;
+	readonly blockURL: (
+		url: string,
+		reason: string,
+	) => Effect.Effect<void, never>;
 
 	/** Check if an IPC channel is allowed */
-	readonly checkIPCChannel: (channel: string) => Effect.Effect<boolean, IPCBlockError>;
+	readonly checkIPCChannel: (
+		channel: string,
+	) => Effect.Effect<boolean, IPCBlockError>;
 
 	/** Get current configuration */
 	readonly config: Effect.Effect<NetworkRestrictionConfig, never>;
@@ -54,15 +62,19 @@ export interface NetworkRestrictionsService {
 	) => Effect.Effect<void, never>;
 
 	/** Get list of blocked requests (for debugging) */
-	readonly getBlockedRequests: Effect.Effect<ReadonlyArray<BlockedRequest>, never>;
+	readonly getBlockedRequests: Effect.Effect<
+		ReadonlyArray<BlockedRequest>,
+		never
+	>;
 
 	/** Clear blocked requests log */
 	readonly clearBlockedRequests: Effect.Effect<void, never>;
 
 	/** Set telemetry level (NONE, CRASH, ERROR, USAGE) */
-	readonly setTelemetryLevel: (level: TelemetryLevel) => Effect.Effect<void, never>;
+	readonly setTelemetryLevel: (
+		level: TelemetryLevel,
+	) => Effect.Effect<void, never>;
 
 	/** Get current telemetry level */
 	readonly getTelemetryLevel: Effect.Effect<TelemetryLevel, never>;
 }
-

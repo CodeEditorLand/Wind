@@ -6,8 +6,9 @@
  */
 
 import { Layer } from "effect";
-import { IPCTag } from "./Tag/IPCTag.js";
+
 import { TauriIPCLive } from "./Implementation/TauriIPC.js";
+import { IPCTag } from "./Tag/IPCTag.js";
 
 /**
  * Tauri IPC service layer

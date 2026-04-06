@@ -17,13 +17,10 @@ const Merge = (await import("deepmerge-ts")).deepmergeCustom({
  * Compile ESBuild configuration
  */
 export default async (Current: BuildOptions): Promise<BuildOptions> =>
-	Merge<BuildOptions>(
-		await TargetConfig(Current),
-		{
-			bundle: true,
-			outbase: "Target",
-			tsconfig: "Configuration/tsconfig/Target/Compile.json",
-			plugins: [],
-			allowOverwrite: true,
-		} as any,
-	);
+	Merge<BuildOptions>(await TargetConfig(Current), {
+		bundle: true,
+		outbase: "Target",
+		tsconfig: "Configuration/tsconfig/Target/Compile.json",
+		plugins: [],
+		allowOverwrite: true,
+	} as any);

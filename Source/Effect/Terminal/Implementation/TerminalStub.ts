@@ -1,4 +1,5 @@
 import { Effect } from "effect";
+
 import type { TerminalService } from "../Interface/TerminalService.js";
 
 export const StubTerminalService: TerminalService = {

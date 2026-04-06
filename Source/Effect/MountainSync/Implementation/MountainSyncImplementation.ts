@@ -10,11 +10,16 @@
  */
 
 import { Effect, Fiber } from "effect";
-import type { MountainSyncService } from "../Interface/MountainSyncService.js";
-import type { SyncConfig, SyncStats, SyncStatus } from "../Type/MountainSyncType.js";
-import type { MountainService } from "../../Mountain.js";
+
 import type { IPCService } from "../../IPC.js";
+import type { MountainService } from "../../Mountain.js";
 import type { TelemetryService } from "../../Telemetry.js";
+import type { MountainSyncService } from "../Interface/MountainSyncService.js";
+import type {
+	SyncConfig,
+	SyncStats,
+	SyncStatus,
+} from "../Type/MountainSyncType.js";
 import SyncNowEffect from "./MountainSyncHelper.js";
 
 /**
@@ -61,7 +66,10 @@ const makeMountainSync = (
 				};
 
 				if (!FullConfig.enabled) {
-					yield* TelemetryService.log("info", "[MountainSync] Sync disabled in config");
+					yield* TelemetryService.log(
+						"info",
+						"[MountainSync] Sync disabled in config",
+					);
 					return;
 				}
 
@@ -76,9 +84,15 @@ const makeMountainSync = (
 					// Main sync loop
 					yield* Effect.forever(
 						Effect.gen(function* () {
-							yield* Effect.sleep(`${FullConfig.syncIntervalMs} millis`);
+							yield* Effect.sleep(
+								`${FullConfig.syncIntervalMs} millis`,
+							);
 
-							const Result = yield* SyncNowEffect(Mountain, IPC, TelemetryService);
+							const Result = yield* SyncNowEffect(
+								Mountain,
+								IPC,
+								TelemetryService,
+							);
 
 							// Update stats
 							LastSyncTime = Date.now();
@@ -111,7 +125,10 @@ const makeMountainSync = (
 					yield* Fiber.interrupt(SyncFiber);
 					SyncFiber = null;
 					SyncStatus = "idle";
-					yield* TelemetryService.log("info", "[MountainSync] Stopped");
+					yield* TelemetryService.log(
+						"info",
+						"[MountainSync] Stopped",
+					);
 				}
 			}),
 
@@ -133,13 +150,19 @@ const makeMountainSync = (
 		pause: () =>
 			Effect.gen(function* () {
 				SyncStatus = "paused";
-				yield* TelemetryService.log("info", "[MountainSync] Pausing...");
+				yield* TelemetryService.log(
+					"info",
+					"[MountainSync] Pausing...",
+				);
 			}),
 
 		resume: () =>
 			Effect.gen(function* () {
 				SyncStatus = "syncing";
-				yield* TelemetryService.log("info", "[MountainSync] Resuming...");
+				yield* TelemetryService.log(
+					"info",
+					"[MountainSync] Resuming...",
+				);
 			}),
 	};
 };

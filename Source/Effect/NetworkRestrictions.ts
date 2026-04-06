@@ -3,7 +3,7 @@
  * @description
  * Atomic Network Restrictions service using Effect-TS.
  * Blocks all external network traffic from VSCode workbench and extensions.
- * 
+ *
  * @see {@link Effect/NetworkRestrictions/Interface/NetworkRestrictionsService} Service interface
  * @see {@link Effect/NetworkRestrictions/Implementation/NetworkRestrictionsImplementation} Live implementation
  * @see {@link Effect/NetworkRestrictions/Tag/NetworkRestrictionsTag} Service tag
@@ -12,13 +12,13 @@
  * ```typescript
  * import { NetworkRestrictionsLive, NetworkRestrictions } from "./Effect/NetworkRestrictions.js";
  * import { Effect } from "effect";
- * 
+ *
  * const program = Effect.gen(function* () {
  *   const restrictions = yield* NetworkRestrictions;
  *   const isAllowed = yield* restrictions.checkURL("https://api.example.com");
  *   console.log("Is allowed:", isAllowed);
  * });
- * 
+ *
  * Effect.runPromise(program.pipe(Effect.provide(NetworkRestrictionsLive)));
  * ```
  */
@@ -48,10 +48,17 @@ export {
 } from "./NetworkRestrictions/Constant/NetworkRestrictionsConstant.js";
 
 // Interface
-export type { NetworkRestrictionsService, BlockedRequest, TelemetryLevel } from "./NetworkRestrictions/Interface/NetworkRestrictionsService.js";
+export type {
+	NetworkRestrictionsService,
+	BlockedRequest,
+	TelemetryLevel,
+} from "./NetworkRestrictions/Interface/NetworkRestrictionsService.js";
 
 // Tag
-export { NetworkRestrictions, NetworkRestrictionsTag } from "./NetworkRestrictions/Tag/NetworkRestrictionsTag.js";
+export {
+	NetworkRestrictions,
+	NetworkRestrictionsTag,
+} from "./NetworkRestrictions/Tag/NetworkRestrictionsTag.js";
 
 // Implementation
 export {

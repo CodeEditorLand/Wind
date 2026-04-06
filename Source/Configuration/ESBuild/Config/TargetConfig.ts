@@ -5,16 +5,18 @@
  * Extends base config with target-specific settings.
  * @category Config
  */
+import { deepmerge } from "deepmerge-ts";
 import type { BuildOptions } from "esbuild";
 
 import * as Environment from "../Constant/EnvironmentConstant.js";
 import BaseConfig from "./BaseConfig.js";
-import { deepmerge } from "deepmerge-ts";
 
 /**
  * Target ESBuild configuration
  */
-export default async function targetConfig(Current: BuildOptions): Promise<BuildOptions> {
+export default async function targetConfig(
+	Current: BuildOptions,
+): Promise<BuildOptions> {
 	const merged = deepmerge(BaseConfig, {
 		outdir: "Target",
 		drop: Environment.On ? [] : ["debugger", "console"],
@@ -36,7 +38,12 @@ export default async function targetConfig(Current: BuildOptions): Promise<Build
 							onEnd(async ({ metafile }: any) => {
 								const _Output = metafile?.outputs;
 								for (const Output in _Output) {
-									if (Object.prototype.hasOwnProperty.call(_Output, Output)) {
+									if (
+										Object.prototype.hasOwnProperty.call(
+											_Output,
+											Output,
+										)
+									) {
 										if (Output.endsWith(".js")) {
 											(
 												await import("@playform/build/Target/Function/Exec.js")

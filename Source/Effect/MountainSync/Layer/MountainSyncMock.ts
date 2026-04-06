@@ -9,9 +9,12 @@
  */
 
 import { Effect, Layer } from "effect";
+
 import MountainSyncTag from "../Tag/MountainSyncTag.js";
-import type { SyncStats } from "../Type/MountainSyncType.js";
-import type { MountainSyncResult } from "../Type/MountainSyncType.js";
+import type {
+	MountainSyncResult,
+	SyncStats,
+} from "../Type/MountainSyncType.js";
 
 /**
  * Creates a mock MountainSync service implementation.
@@ -55,7 +58,10 @@ const makeMockMountainSync = () => ({
  * const testLayer = MountainSyncMock;
  * ```
  */
-const MountainSyncMock = Layer.effect(MountainSyncTag, Effect.succeed(makeMockMountainSync()));
+const MountainSyncMock = Layer.effect(
+	MountainSyncTag,
+	Effect.succeed(makeMockMountainSync()),
+);
 
 export default MountainSyncMock;
 export { makeMockMountainSync };

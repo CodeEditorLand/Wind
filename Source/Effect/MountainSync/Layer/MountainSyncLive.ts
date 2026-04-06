@@ -9,11 +9,12 @@
  */
 
 import { Effect, Layer } from "effect";
-import MountainSyncTag from "../Tag/MountainSyncTag.js";
-import makeMountainSync from "../Implementation/MountainSyncImplementation.js";
-import { MountainTag } from "../../Mountain.js";
+
 import { IPCTag } from "../../IPC.js";
+import { MountainTag } from "../../Mountain.js";
 import { TelemetryTag } from "../../Telemetry.js";
+import makeMountainSync from "../Implementation/MountainSyncImplementation.js";
+import MountainSyncTag from "../Tag/MountainSyncTag.js";
 
 /**
  * Live layer for MountainSync service.

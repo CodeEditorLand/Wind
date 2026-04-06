@@ -8,6 +8,7 @@
  */
 
 import { Context } from "effect";
+
 import type { EnvironmentService } from "../Interface/EnvironmentService.js";
 
 // ============================================================================
@@ -17,8 +18,9 @@ import type { EnvironmentService } from "../Interface/EnvironmentService.js";
 /**
  * Environment service tag for dependency injection
  */
-export class EnvironmentTag extends Context.Tag(
-	"Effect/EnvironmentService",
-)<EnvironmentTag, EnvironmentService>() {}
+export class EnvironmentTag extends Context.Tag("Effect/EnvironmentService")<
+	EnvironmentTag,
+	EnvironmentService
+>() {}
 
 export default EnvironmentTag;

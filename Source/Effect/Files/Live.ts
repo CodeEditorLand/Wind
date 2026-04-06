@@ -17,10 +17,11 @@
  */
 
 import { Effect, Layer } from "effect";
-import { FilesServiceTag } from "./Tag/FilesServiceTag.js";
-import type { FilesService } from "./Interface/FilesService.js";
-import type { FilesProblem } from "./Type/FilesProblem.js";
+
 import { IPC } from "../IPC.js";
+import type { FilesService } from "./Interface/FilesService.js";
+import { FilesServiceTag } from "./Tag/FilesServiceTag.js";
+import type { FilesProblem } from "./Type/FilesProblem.js";
 
 const MakeFilesProblem = (error: unknown): FilesProblem =>
 	error instanceof Error
@@ -39,133 +40,134 @@ export const LiveFilesServiceLayer = Layer.effect(
 		const Service: FilesService = {
 			ReadFile: (uri) => {
 				const Path = UriToPath(uri);
-				return IPCService
-					.invoke("file:read")([Path])
-					.pipe(
-						Effect.map((Result) => {
-							if (Result instanceof Uint8Array) return Result;
-							if (typeof Result === "string")
-								return new TextEncoder().encode(Result);
-							if (Array.isArray(Result))
-								return new Uint8Array(Result as number[]);
-							return new Uint8Array();
-						}),
-						Effect.mapError(MakeFilesProblem),
-					);
+				return IPCService.invoke("file:read")([Path]).pipe(
+					Effect.map((Result) => {
+						if (Result instanceof Uint8Array) return Result;
+						if (typeof Result === "string")
+							return new TextEncoder().encode(Result);
+						if (Array.isArray(Result))
+							return new Uint8Array(Result as number[]);
+						return new Uint8Array();
+					}),
+					Effect.mapError(MakeFilesProblem),
+				);
 			},
 
 			WriteFile: (uri, content) => {
 				const Path = UriToPath(uri);
-				return IPCService
-					.invoke("file:write")([Path, Array.from(content)])
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeFilesProblem),
-					);
+				return IPCService.invoke("file:write")([
+					Path,
+					Array.from(content),
+				]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeFilesProblem),
+				);
 			},
 
 			Stat: (uri) => {
 				const Path = UriToPath(uri);
-				return IPCService
-					.invoke("file:stat")([Path])
-					.pipe(
-						Effect.map((Result) => {
-							const Metadata = Result as {
-								type?: number;
-								isFile?: boolean;
-								isDirectory?: boolean;
-								size?: number;
-								mtime?: number;
-							};
-							return {
-								// VS Code FileType: 0=Unknown 1=File 2=Directory 64=SymbolicLink
-								type: Metadata.type ?? (Metadata.isDirectory ? 2 : 1),
-								size: Metadata.size ?? 0,
-								mtime: Metadata.mtime ?? 0,
-							};
-						}),
-						Effect.mapError(MakeFilesProblem),
-					);
+				return IPCService.invoke("file:stat")([Path]).pipe(
+					Effect.map((Result) => {
+						const Metadata = Result as {
+							type?: number;
+							isFile?: boolean;
+							isDirectory?: boolean;
+							size?: number;
+							mtime?: number;
+						};
+						return {
+							// VS Code FileType: 0=Unknown 1=File 2=Directory 64=SymbolicLink
+							type:
+								Metadata.type ?? (Metadata.isDirectory ? 2 : 1),
+							size: Metadata.size ?? 0,
+							mtime: Metadata.mtime ?? 0,
+						};
+					}),
+					Effect.mapError(MakeFilesProblem),
+				);
 			},
 
 			ReadDir: (uri) => {
 				const Path = UriToPath(uri);
-				return IPCService
-					.invoke("file:readdir")([Path])
-					.pipe(
-						Effect.map((Result) => {
-							if (!Array.isArray(Result)) return [];
-							// Result is an array of [name, type] tuples or plain names
-							return (Result as unknown[]).map((Entry): [string, number] => {
+				return IPCService.invoke("file:readdir")([Path]).pipe(
+					Effect.map((Result) => {
+						if (!Array.isArray(Result)) return [];
+						// Result is an array of [name, type] tuples or plain names
+						return (Result as unknown[]).map(
+							(Entry): [string, number] => {
 								if (Array.isArray(Entry)) {
-									const [Name, Type] = Entry as [string, number];
+									const [Name, Type] = Entry as [
+										string,
+										number,
+									];
 									return [Name, Type ?? 0];
 								}
 								return [String(Entry), 0];
-							});
-						}),
-						Effect.mapError(MakeFilesProblem),
-					);
+							},
+						);
+					}),
+					Effect.mapError(MakeFilesProblem),
+				);
 			},
 
 			CreateDirectory: (uri) => {
 				const Path = UriToPath(uri);
-				return IPCService
-					.invoke("file:mkdir")([Path])
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeFilesProblem),
-					);
+				return IPCService.invoke("file:mkdir")([Path]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeFilesProblem),
+				);
 			},
 
 			Delete: (uri, options) => {
 				const Path = UriToPath(uri);
-				return IPCService
-					.invoke("file:delete")([Path, options ?? {}])
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeFilesProblem),
-					);
+				return IPCService.invoke("file:delete")([
+					Path,
+					options ?? {},
+				]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeFilesProblem),
+				);
 			},
 
 			Rename: (source, target, options) => {
 				const SourcePath = UriToPath(source);
 				const TargetPath = UriToPath(target);
-				return IPCService
-					.invoke("file:move")([SourcePath, TargetPath, options ?? {}])
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeFilesProblem),
-					);
+				return IPCService.invoke("file:move")([
+					SourcePath,
+					TargetPath,
+					options ?? {},
+				]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeFilesProblem),
+				);
 			},
 
 			Copy: (source, target, options) => {
 				const SourcePath = UriToPath(source);
 				const TargetPath = UriToPath(target);
-				return IPCService
-					.invoke("file:copy")([SourcePath, TargetPath, options ?? {}])
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeFilesProblem),
-					);
+				return IPCService.invoke("file:copy")([
+					SourcePath,
+					TargetPath,
+					options ?? {},
+				]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeFilesProblem),
+				);
 			},
 
 			Exists: (uri) => {
 				const Path = UriToPath(uri);
-				return IPCService
-					.invoke("file:exists")([Path])
-					.pipe(
-						Effect.map((Result) => Boolean(Result)),
-						Effect.mapError(MakeFilesProblem),
-					);
+				return IPCService.invoke("file:exists")([Path]).pipe(
+					Effect.map((Result) => Boolean(Result)),
+					Effect.mapError(MakeFilesProblem),
+				);
 			},
 
 			Watch: (uri) => {
 				// Watch registration is fire-and-forget for now.
 				// Mountain's CocoonService.watch_file stores the intent.
 				const Path = UriToPath(uri);
-				return IPCService
-					.invoke("file:read")([Path]) // Verify path exists
+				return IPCService.invoke("file:read")([Path]) // Verify path exists
 					.pipe(
 						Effect.map(() => ({
 							dispose: () => {

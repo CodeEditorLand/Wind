@@ -17,7 +17,9 @@ export class ActivityBarItemNotFoundError extends Error {
 		super(`Activity bar item '${itemId}' not found`);
 		Object.setPrototypeOf(this, ActivityBarItemNotFoundError.prototype);
 	}
-	override get name() { return "ActivityBarItemNotFoundError"; }
+	override get name() {
+		return "ActivityBarItemNotFoundError";
+	}
 }
 
 export default ActivityBarItemNotFoundError;

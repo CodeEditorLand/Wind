@@ -10,11 +10,13 @@
 
 import { Context, Effect, Stream } from "effect";
 
-import type { ISandboxConfiguration } from "../../../Types/Sandbox.js";
-import type { ConfigurationNotReadyError } from "../../../Types/Sandbox.js";
+import type {
+	ConfigurationNotReadyError,
+	ISandboxConfiguration,
+} from "../../../Types/Sandbox.js";
+import type { ConfigApplyError } from "../Error/ConfigApplyError.js";
 import type { ConfigFetchError } from "../Error/ConfigFetchError.js";
 import type { ConfigValidationError } from "../Error/ConfigValidationError.js";
-import type { ConfigApplyError } from "../Error/ConfigApplyError.js";
 
 // ============================================================================
 // Service Interface
@@ -29,7 +31,10 @@ export interface ConfigurationService {
 	 * Get current configuration snapshot.
 	 * @returns Effect that resolves to the current configuration
 	 */
-	readonly get: Effect.Effect<ISandboxConfiguration, ConfigurationNotReadyError>;
+	readonly get: Effect.Effect<
+		ISandboxConfiguration,
+		ConfigurationNotReadyError
+	>;
 
 	/**
 	 * Fetch configuration from backend.

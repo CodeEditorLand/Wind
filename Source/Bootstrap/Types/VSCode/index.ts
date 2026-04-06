@@ -69,9 +69,6 @@ export type {
 	IRemoteResourceProvider,
 } from "./Type/VSCodeProviderType.js";
 
-export type {
-	UriComponents,
-	URI,
-} from "./Type/VSCodeUtilityType.js";
+export type { UriComponents, URI } from "./Type/VSCodeUtilityType.js";
 
 export type { Event, IDisposable } from "./Type/VSCodeCommonType.js";

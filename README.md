@@ -96,7 +96,7 @@ for the complete module exports and layer compositions.
 
 ---
 
-## `Wind` in the Land Ecosystem&#x2001;🍃 + 🏞️
+## `Wind` in the Land Ecosystem&#x2001;🍃 + 🏞️
 
 This diagram illustrates `Wind`'s central role between `Sky` (the UI) and the
 Tauri/`Mountain` (backend) environment.

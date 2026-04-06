@@ -1,3 +1,9 @@
+// Import and re-export layers
+import {
+	HealthLive as LiveLayer,
+	HealthMock as MockLayer,
+} from "./Health/Implementation/HealthImplementation.js";
+
 /**
  * @module Effect/Health
  * @description
@@ -11,7 +17,11 @@
 // ============================================================================
 
 // Types
-export type { HealthStatus, ServiceHealth, SystemHealth } from "./Health/index.js";
+export type {
+	HealthStatus,
+	ServiceHealth,
+	SystemHealth,
+} from "./Health/index.js";
 
 // Interface
 export type { HealthService } from "./Health/Interface/HealthService.js";
@@ -25,8 +35,6 @@ export {
 	CreateServiceHealthWithNoResponseTime,
 } from "./Health/index.js";
 
-// Import and re-export layers
-import { HealthLive as LiveLayer, HealthMock as MockLayer } from "./Health/Implementation/HealthImplementation.js";
 export { LiveLayer, MockLayer };
 
 // Backward compatibility aliases

@@ -9,8 +9,9 @@
  */
 
 import { Effect, Layer, Stream } from "effect";
-import TelemetryTag from "../Tag/TelemetryTag.js";
+
 import type { TelemetryService } from "../Interface/TelemetryService.js";
+import TelemetryTag from "../Tag/TelemetryTag.js";
 import type { SpanHandle } from "../Type/TelemetryType.js";
 
 /**

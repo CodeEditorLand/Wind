@@ -1,4 +1,12 @@
 /**
+ * Import VSCode types for compatibility
+ */
+import type {
+	IpcRenderer,
+	IpcRendererEvent,
+} from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/electronTypes";
+
+/**
  * @module NativeModulePolyfill
  *
  * @description
@@ -52,11 +60,6 @@ interface ElectronModule {
 }
 
 /**
- * Import VSCode types for compatibility
- */
-import type { IpcRenderer, IpcRendererEvent } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/electronTypes";
-
-/**
  * WebFrame interface (partial)
  */
 interface WebFrame {
@@ -83,9 +86,18 @@ interface App {
  * Screen interface (partial)
  */
 interface Screen {
-	getDisplayNearestPoint(point: { x: number; y: number }): { id: number; bounds: { x: number; y: number; width: number; height: number } };
-	getPrimaryDisplay(): { id: number; bounds: { x: number; y: number; width: number; height: number } };
-	getAllDisplays(): Array<{ id: number; bounds: { x: number; y: number; width: number; height: number } }>;
+	getDisplayNearestPoint(point: { x: number; y: number }): {
+		id: number;
+		bounds: { x: number; y: number; width: number; height: number };
+	};
+	getPrimaryDisplay(): {
+		id: number;
+		bounds: { x: number; y: number; width: number; height: number };
+	};
+	getAllDisplays(): Array<{
+		id: number;
+		bounds: { x: number; y: number; width: number; height: number };
+	}>;
 }
 
 /**
@@ -103,8 +115,12 @@ interface Shell {
  * Dialog interface (partial)
  */
 interface Dialog {
-	showOpenDialog(options?: unknown): Promise<{ filePaths: string[]; canceled: boolean }>;
-	showSaveDialog(options?: unknown): Promise<{ filePath: string | undefined; canceled: boolean }>;
+	showOpenDialog(
+		options?: unknown,
+	): Promise<{ filePaths: string[]; canceled: boolean }>;
+	showSaveDialog(
+		options?: unknown,
+	): Promise<{ filePath: string | undefined; canceled: boolean }>;
 	showMessage(message: string): void;
 	showError(message: string): void;
 }
@@ -151,16 +167,22 @@ interface BrowserWindow {
 /**
  * Invoke Tauri command with proper error handling
  */
-async function invokeTauri<T>(command: string, args: Record<string, unknown> = {}): Promise<T> {
+async function invokeTauri<T>(
+	command: string,
+	args: Record<string, unknown> = {},
+): Promise<T> {
 	try {
 		const tauri = (window as any).__TAURI__ ?? (window as any).TAURI;
 		if (typeof tauri?.invoke === "function") {
 			return await tauri.invoke(command, args);
 		}
-		
+
 		throw new Error(`Tauri invoke not available for command: ${command}`);
 	} catch (error: unknown) {
-		console.error(`[NativeModulePolyfill] Tauri invoke failed for ${command}:`, error);
+		console.error(
+			`[NativeModulePolyfill] Tauri invoke failed for ${command}:`,
+			error,
+		);
 		throw error;
 	}
 }
@@ -172,7 +194,17 @@ async function invokeTauri<T>(command: string, args: Record<string, unknown> = {
 /**
  * Cache for polyfilled modules
  */
-const MODULE_CACHE: Map<string, ElectronModule | IpcRenderer | WebFrame | Screen | Shell | Dialog | Clipboard | NativeTheme> = new Map();
+const MODULE_CACHE: Map<
+	string,
+	| ElectronModule
+	| IpcRenderer
+	| WebFrame
+	| Screen
+	| Shell
+	| Dialog
+	| Clipboard
+	| NativeTheme
+> = new Map();
 
 /**
  * Get or create cached module
@@ -196,29 +228,33 @@ function getCachedModule<T>(key: string, factory: () => T): T {
 function createWebFrame(): WebFrame {
 	return {
 		setZoomLevel(level: number): void {
-			console.log(`[NativeModulePolyfill] WebFrame.setZoomLevel(${level})`);
+			console.log(
+				`[NativeModulePolyfill] WebFrame.setZoomLevel(${level})`,
+			);
 			// This is a no-op in browser as zoom is handled by CSS/transform
 		},
-		
+
 		setZoomFactor(factor: number): void {
-			console.log(`[NativeModulePolyfill] WebFrame.setZoomFactor(${factor})`);
+			console.log(
+				`[NativeModulePolyfill] WebFrame.setZoomFactor(${factor})`,
+			);
 			// This is a no-op in browser as zoom is handled by CSS/transform
 		},
-		
+
 		getZoomFactor(): number {
 			return 1.0;
 		},
-		
+
 		getZoomLevel(): number {
 			return 0;
 		},
-		
+
 		insertCSS(css: string): void {
 			const style = document.createElement("style");
 			style.textContent = css;
 			document.head.appendChild(style);
 		},
-		
+
 		insertText(text: string): void {
 			document.execCommand("insertText", false, text);
 		},
@@ -237,19 +273,19 @@ function createApp(): App {
 		getName(): string {
 			return "CodeEditorLand";
 		},
-		
+
 		getVersion(): string {
 			return "0.0.1";
 		},
-		
+
 		getLocale(): string {
 			return navigator.language;
 		},
-		
+
 		isReady(): boolean {
 			return true;
 		},
-		
+
 		whenReady(): Promise<void> {
 			return Promise.resolve();
 		},
@@ -265,7 +301,10 @@ function createApp(): App {
  */
 function createScreen(): Screen {
 	return {
-		getDisplayNearestPoint(point: { x: number; y: number }): { id: number; bounds: { x: number; y: number; width: number; height: number } } {
+		getDisplayNearestPoint(point: { x: number; y: number }): {
+			id: number;
+			bounds: { x: number; y: number; width: number; height: number };
+		} {
 			// Return primary display in browser
 			return {
 				id: 1,
@@ -277,8 +316,11 @@ function createScreen(): Screen {
 				},
 			};
 		},
-		
-		getPrimaryDisplay(): { id: number; bounds: { x: number; y: number; width: number; height: number } } {
+
+		getPrimaryDisplay(): {
+			id: number;
+			bounds: { x: number; y: number; width: number; height: number };
+		} {
 			return {
 				id: 1,
 				bounds: {
@@ -289,8 +331,11 @@ function createScreen(): Screen {
 				},
 			};
 		},
-		
-		getAllDisplays(): Array<{ id: number; bounds: { x: number; y: number; width: number; height: number } }> {
+
+		getAllDisplays(): Array<{
+			id: number;
+			bounds: { x: number; y: number; width: number; height: number };
+		}> {
 			return [
 				{
 					id: 1,
@@ -318,7 +363,9 @@ function createShell(): Shell {
 		async openExternal(url: string): Promise<void> {
 			// Use Tauri's shell module
 			try {
-				const shell = (window as any).__TAURI__?.shell ?? (window as any).TAURI?.shell;
+				const shell =
+					(window as any).__TAURI__?.shell ??
+					(window as any).TAURI?.shell;
 				if (typeof shell?.open === "function") {
 					await shell.open(url);
 				} else {
@@ -326,26 +373,33 @@ function createShell(): Shell {
 					window.open(url, "_blank");
 				}
 			} catch (error) {
-				console.error("[NativeModulePolyfill] Shell.openExternal error:", error);
+				console.error(
+					"[NativeModulePolyfill] Shell.openExternal error:",
+					error,
+				);
 				throw error;
 			}
 		},
-		
+
 		async openPath(path: string): Promise<string> {
 			// Not supported in browser
-			throw new Error("Shell.openPath is not supported in browser environment");
+			throw new Error(
+				"Shell.openPath is not supported in browser environment",
+			);
 		},
-		
+
 		async showItemInFolder(path: string): Promise<void> {
 			// Not supported in browser
-			throw new Error("Shell.showItemInFolder is not supported in browser environment");
+			throw new Error(
+				"Shell.showItemInFolder is not supported in browser environment",
+			);
 		},
-		
+
 		async trashItem(path: string): Promise<void> {
 			// Delete item via Mountain
 			await invokeTauri("file:delete", { path });
 		},
-		
+
 		beep(): void {
 			if (typeof AudioContext !== "undefined") {
 				const ctx = new AudioContext();
@@ -369,29 +423,44 @@ function createShell(): Shell {
  */
 function createDialog(): Dialog {
 	return {
-		async showOpenDialog(options?: unknown): Promise<{ filePaths: string[]; canceled: boolean }> {
+		async showOpenDialog(
+			options?: unknown,
+		): Promise<{ filePaths: string[]; canceled: boolean }> {
 			// Use Tauri's dialog module if available
 			try {
-				const dialog = (window as any).__TAURI__?.dialog ?? (window as any).TAURI?.dialog;
+				const dialog =
+					(window as any).__TAURI__?.dialog ??
+					(window as any).TAURI?.dialog;
 				if (typeof dialog?.open === "function") {
 					const selected = await dialog.open(options);
 					return {
-						filePaths: Array.isArray(selected) ? selected : selected ? [selected] : [],
+						filePaths: Array.isArray(selected)
+							? selected
+							: selected
+								? [selected]
+								: [],
 						canceled: !selected,
 					};
 				}
 			} catch (error) {
-				console.error("[NativeModulePolyfill] Dialog.showOpenDialog error:", error);
+				console.error(
+					"[NativeModulePolyfill] Dialog.showOpenDialog error:",
+					error,
+				);
 			}
-			
+
 			// Fallback: return empty
 			return { filePaths: [], canceled: true };
 		},
-		
-		async showSaveDialog(options?: unknown): Promise<{ filePath: string | undefined; canceled: boolean }> {
+
+		async showSaveDialog(
+			options?: unknown,
+		): Promise<{ filePath: string | undefined; canceled: boolean }> {
 			// Use Tauri's dialog module if available
 			try {
-				const dialog = (window as any).__TAURI__?.dialog ?? (window as any).TAURI?.dialog;
+				const dialog =
+					(window as any).__TAURI__?.dialog ??
+					(window as any).TAURI?.dialog;
 				if (typeof dialog?.save === "function") {
 					const filePath = await dialog.save(options);
 					return {
@@ -400,15 +469,20 @@ function createDialog(): Dialog {
 					};
 				}
 			} catch (error) {
-				console.error("[NativeModulePolyfill] Dialog.showSaveDialog error:", error);
+				console.error(
+					"[NativeModulePolyfill] Dialog.showSaveDialog error:",
+					error,
+				);
 			}
-			
+
 			// Fallback: return empty
 			return { filePath: undefined, canceled: true };
 		},
-		
+
 		showMessage(message: string): void {
-			console.log(`[NativeModulePolyfill] Dialog.showMessage: ${message}`);
+			console.log(
+				`[NativeModulePolyfill] Dialog.showMessage: ${message}`,
+			);
 			// Could use Tauri alert or browser alert
 			if ((window as any).__TAURI__?.dialog?.message) {
 				(window as any).__TAURI__.dialog.message(message);
@@ -416,9 +490,11 @@ function createDialog(): Dialog {
 				console.info(message);
 			}
 		},
-		
+
 		showError(message: string): void {
-			console.error(`[NativeModulePolyfill] Dialog.showError: ${message}`);
+			console.error(
+				`[NativeModulePolyfill] Dialog.showError: ${message}`,
+			);
 			// Could use Tauri alert or browser alert
 			if ((window as any).__TAURI__?.dialog?.message) {
 				(window as any).__TAURI__.dialog.message("Error: " + message);
@@ -441,7 +517,9 @@ function createClipboard(): Clipboard {
 		async writeText(text: string): Promise<void> {
 			// Use Tauri's clipboard module
 			try {
-				const clipboard = (window as any).__TAURI__?.clipboard ?? (window as any).TAURI?.clipboard;
+				const clipboard =
+					(window as any).__TAURI__?.clipboard ??
+					(window as any).TAURI?.clipboard;
 				if (typeof clipboard?.writeText === "function") {
 					await clipboard.writeText(text);
 				} else {
@@ -449,40 +527,53 @@ function createClipboard(): Clipboard {
 					await navigator.clipboard.writeText(text);
 				}
 			} catch (error) {
-				console.error("[NativeModulePolyfill] Clipboard.writeText error:", error);
+				console.error(
+					"[NativeModulePolyfill] Clipboard.writeText error:",
+					error,
+				);
 				throw error;
 			}
 		},
-		
+
 		async readText(): Promise<string> {
 			// Use Tauri's clipboard module
 			try {
-				const clipboard = (window as any).__TAURI__?.clipboard ?? (window as any).TAURI?.clipboard;
+				const clipboard =
+					(window as any).__TAURI__?.clipboard ??
+					(window as any).TAURI?.clipboard;
 				if (typeof clipboard?.readText === "function") {
 					return await clipboard.readText();
 				}
 			} catch (error) {
-				console.warn("[NativeModulePolyfill] Tauri clipboard not available, using browser clipboard");
+				console.warn(
+					"[NativeModulePolyfill] Tauri clipboard not available, using browser clipboard",
+				);
 			}
-			
+
 			// Fallback to browser clipboard
 			return await navigator.clipboard.readText();
 		},
-		
+
 		async writeBuffer(format: string, buffer: Buffer): Promise<void> {
 			// Not fully supported in browser clipboard
-			console.warn("[NativeModulePolyfill] Clipboard.writeBuffer not fully supported");
+			console.warn(
+				"[NativeModulePolyfill] Clipboard.writeBuffer not fully supported",
+			);
 			throw new Error("Clipboard.writeBuffer is not fully supported");
 		},
-		
+
 		async readBuffer(format: string): Promise<Buffer | undefined> {
 			// Not fully supported in browser clipboard
-			console.warn("[NativeModulePolyfill] Clipboard.readBuffer not fully supported");
+			console.warn(
+				"[NativeModulePolyfill] Clipboard.readBuffer not fully supported",
+			);
 			return undefined;
 		},
-		
+
 		clear(): void {
-			console.warn("[NativeModulePolyfill] Clipboard.clear not fully supported");
+			console.warn(
+				"[NativeModulePolyfill] Clipboard.clear not fully supported",
+			);
 		},
 	};
 }
@@ -499,18 +590,18 @@ function createNativeTheme(): NativeTheme {
 		get shouldUseDarkColors(): boolean {
 			return window.matchMedia("(prefers-color-scheme: dark)").matches;
 		},
-		
+
 		get shouldUseInvertedColorScheme(): boolean {
 			return false;
 		},
-		
+
 		get theme(): "system" | "light" | "dark" {
 			// Try to get from Tauri if available
 			const tauri = (window as any).__TAURI__ ?? (window as any).TAURI;
 			if (tauri?.window?.appWindow?.theme) {
 				return tauri.window.appWindow.theme;
 			}
-			
+
 			// Fallback to system preference
 			return "system";
 		},
@@ -574,7 +665,7 @@ function createElectronModule(): ElectronModule {
 			if (shim) {
 				return shim;
 			}
-			
+
 			// Basic fallback
 			return {
 				send: () => {},
@@ -585,14 +676,17 @@ function createElectronModule(): ElectronModule {
 				removeAllListeners: () => ({}),
 			} as unknown as IpcRenderer;
 		}) as IpcRenderer,
-		
+
 		webFrame: getCachedModule("webFrame", createWebFrame) as WebFrame,
 		app: getCachedModule("app", createApp) as App,
 		screen: getCachedModule("screen", createScreen) as Screen,
 		shell: getCachedModule("shell", createShell) as Shell,
 		dialog: getCachedModule("dialog", createDialog) as Dialog,
 		clipboard: getCachedModule("clipboard", createClipboard) as Clipboard,
-		nativeTheme: getCachedModule("nativeTheme", createNativeTheme) as NativeTheme,
+		nativeTheme: getCachedModule(
+			"nativeTheme",
+			createNativeTheme,
+		) as NativeTheme,
 		BrowserWindow: createBrowserWindow(),
 	};
 }
@@ -625,7 +719,7 @@ function installRequireShim(): void {
 		if (id.startsWith("electron/")) {
 			const moduleName = id.replace("electron/", "");
 			const electronModule = createElectronModule();
-			
+
 			switch (moduleName) {
 				case "ipcRenderer":
 					return electronModule.ipcRenderer;
@@ -647,9 +741,13 @@ function installRequireShim(): void {
 				case "BrowserWindow":
 					return electronModule.BrowserWindow;
 				case "remote":
-					throw new Error("electron.remote is not supported in Tauri environment");
+					throw new Error(
+						"electron.remote is not supported in Tauri environment",
+					);
 				default:
-					console.warn(`[NativeModulePolyfill] Unknown electron module: ${moduleName}`);
+					console.warn(
+						`[NativeModulePolyfill] Unknown electron module: ${moduleName}`,
+					);
 					return {};
 			}
 		}
@@ -661,7 +759,10 @@ function installRequireShim(): void {
 	// Copy properties from original require
 	Object.keys(originalRequire).forEach((key) => {
 		Object.defineProperty((window as any).require, key, {
-			...(Object.getOwnPropertyDescriptor(originalRequire, key) as PropertyDescriptor),
+			...(Object.getOwnPropertyDescriptor(
+				originalRequire,
+				key,
+			) as PropertyDescriptor),
 		});
 	});
 
@@ -677,16 +778,26 @@ function installRequireShim(): void {
 		const moduleName = id.replace("electron/", "");
 		const electronModule = createElectronModule();
 		switch (moduleName) {
-			case "ipcRenderer": return electronModule.ipcRenderer;
-			case "webFrame": return electronModule.webFrame;
-			case "app": return electronModule.app;
-			case "screen": return electronModule.screen;
-			case "shell": return electronModule.shell;
-			case "dialog": return electronModule.dialog;
-			case "clipboard": return electronModule.clipboard;
-			case "nativeTheme": return electronModule.nativeTheme;
-			case "BrowserWindow": return electronModule.BrowserWindow;
-			default: return {};
+			case "ipcRenderer":
+				return electronModule.ipcRenderer;
+			case "webFrame":
+				return electronModule.webFrame;
+			case "app":
+				return electronModule.app;
+			case "screen":
+				return electronModule.screen;
+			case "shell":
+				return electronModule.shell;
+			case "dialog":
+				return electronModule.dialog;
+			case "clipboard":
+				return electronModule.clipboard;
+			case "nativeTheme":
+				return electronModule.nativeTheme;
+			case "BrowserWindow":
+				return electronModule.BrowserWindow;
+			default:
+				return {};
 		}
 	}
 	return undefined;
@@ -711,7 +822,9 @@ export function installNativeModulePolyfill(): void {
 	}
 	(window as any).__NATIVE_MODULE_POLYFILL_INSTALLED__ = true;
 
-	console.log("[NativeModulePolyfill] Installing Electron native module polyfill...");
+	console.log(
+		"[NativeModulePolyfill] Installing Electron native module polyfill...",
+	);
 
 	// Install require shim
 	installRequireShim();
@@ -725,7 +838,9 @@ export function installNativeModulePolyfill(): void {
 		(window as any).vscode.electron = electronModule;
 	}
 
-	console.log("[NativeModulePolyfill] ✓ Electron native module polyfill installed");
+	console.log(
+		"[NativeModulePolyfill] ✓ Electron native module polyfill installed",
+	);
 }
 
 // ============================================================================
@@ -734,7 +849,7 @@ export function installNativeModulePolyfill(): void {
 
 export default {
 	install: installNativeModulePolyfill,
-	
+
 	// Individual modules
 	createElectronModule,
 	createWebFrame,

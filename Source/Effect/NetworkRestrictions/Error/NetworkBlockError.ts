@@ -33,7 +33,10 @@ export interface NetworkBlockError {
  * @param reason - The reason for blocking
  * @returns A NetworkBlockError instance
  */
-const CreateNetworkBlockError = (url: string, reason: string): NetworkBlockError => ({
+const CreateNetworkBlockError = (
+	url: string,
+	reason: string,
+): NetworkBlockError => ({
 	_tag: "NetworkBlockError",
 	url,
 	reason,

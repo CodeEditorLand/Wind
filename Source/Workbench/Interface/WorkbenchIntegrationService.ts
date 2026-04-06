@@ -9,12 +9,12 @@
 
 import type { Effect } from "effect";
 
-import type { WorkbenchIntegrationError } from "../Type/WorkbenchIntegrationType.js";
 import type {
 	ProviderRegistrationResult,
 	WorkbenchDiagnostics,
 	WorkbenchInitState,
 	WorkbenchIntegrationConfig,
+	WorkbenchIntegrationError,
 	WorkspaceContext,
 } from "../Type/WorkbenchIntegrationType.js";
 

@@ -16,7 +16,10 @@ export { FileSystemProviderTag } from "./Implementation/FileSystemProviderImplem
 // Layers
 // ============================================================================
 
-export { FileSystemProviderLive, MountainCommands } from "./Implementation/FileSystemProviderImplementation.js";
+export {
+	FileSystemProviderLive,
+	MountainCommands,
+} from "./Implementation/FileSystemProviderImplementation.js";
 
 // ============================================================================
 // Interface

@@ -113,19 +113,25 @@ interface ProcessConfig {
 /**
  * Invoke Tauri command with proper error handling
  */
-async function invokeTauri<T>(command: string, args: Record<string, unknown> = {}): Promise<T> {
+async function invokeTauri<T>(
+	command: string,
+	args: Record<string, unknown> = {},
+): Promise<T> {
 	try {
 		if (typeof (window as any).__TAURI__?.invoke !== "undefined") {
 			return await (window as any).__TAURI__.invoke<T>(command, args);
 		}
-		
+
 		if (typeof (window as any).TAURI?.invoke !== "undefined") {
 			return await (window as any).TAURI.invoke<T>(command, args);
 		}
-		
+
 		throw new Error(`Tauri invoke not available for command: ${command}`);
 	} catch (error: unknown) {
-		console.error(`[ProcessPolyfill] Tauri invoke failed for ${command}:`, error);
+		console.error(
+			`[ProcessPolyfill] Tauri invoke failed for ${command}:`,
+			error,
+		);
 		throw error;
 	}
 }
@@ -172,16 +178,23 @@ async function getProcessConfiguration(): Promise<ProcessConfig> {
 
 			return {
 				...DEFAULT_PROCESS_CONFIG,
-				...(execPath.status === "fulfilled" && { execPath: execPath.value }),
-				...(platform.status === "fulfilled" && { platform: platform.value }),
+				...(execPath.status === "fulfilled" && {
+					execPath: execPath.value,
+				}),
+				...(platform.status === "fulfilled" && {
+					platform: platform.value,
+				}),
 				...(arch.status === "fulfilled" && { arch: arch.value }),
 				...(pid.status === "fulfilled" && { pid: pid.value }),
 			};
 		}
 	} catch (error) {
-		console.warn("[ProcessPolyfill] Failed to get process configuration from Tauri:", error);
+		console.warn(
+			"[ProcessPolyfill] Failed to get process configuration from Tauri:",
+			error,
+		);
 	}
-	
+
 	return DEFAULT_PROCESS_CONFIG;
 }
 
@@ -202,7 +215,7 @@ function detectChromeVersion(): string {
  */
 function createVersions(): ProcessVersions {
 	const chromeVersion = detectChromeVersion();
-	
+
 	return {
 		node: "20.11.0",
 		chrome: chromeVersion,
@@ -239,10 +252,7 @@ function hrtime(time?: [number, number]): [number, number] {
 
 	if (time) {
 		const diff = now - (time[0] * 1e9 + time[1]);
-		return [
-			Math.floor(diff / 1e9),
-			Math.floor(diff % 1e9),
-		];
+		return [Math.floor(diff / 1e9), Math.floor(diff % 1e9)];
 	}
 
 	return [seconds, nanoseconds];
@@ -297,24 +307,28 @@ class ProcessPolyfill {
 	public execArgv: string[];
 	public env: Record<string, string>;
 	public title: string;
-	
+
 	// Event listener storage
-	private listeners: Map<ProcessEventType, Set<ProcessEventListener>> = new Map();
-	
+	private listeners: Map<ProcessEventType, Set<ProcessEventListener>> =
+		new Map();
+
 	// Process state
 	private _exitCode: number | null = null;
 	private _exited: boolean = false;
 
 	constructor(config: ProcessConfig) {
 		// Initialize core properties
-		this.platform = config.platform ?? DEFAULT_PROCESS_CONFIG.platform ?? "darwin";
+		this.platform =
+			config.platform ?? DEFAULT_PROCESS_CONFIG.platform ?? "darwin";
 		this.arch = config.arch ?? DEFAULT_PROCESS_CONFIG.arch ?? "x64";
 		this.version = "v20.11.0";
 		this.versions = createVersions();
 		this.pid = config.pid ?? DEFAULT_PROCESS_CONFIG.pid ?? 1;
 		this.ppid = config.ppid ?? DEFAULT_PROCESS_CONFIG.ppid ?? 0;
-		this.execPath = config.execPath ?? DEFAULT_PROCESS_CONFIG.execPath ?? "";
-		this.execArgv = config.execArgv ?? DEFAULT_PROCESS_CONFIG.execArgv ?? [];
+		this.execPath =
+			config.execPath ?? DEFAULT_PROCESS_CONFIG.execPath ?? "";
+		this.execArgv =
+			config.execArgv ?? DEFAULT_PROCESS_CONFIG.execArgv ?? [];
 		this.env = config.env ?? DEFAULT_PROCESS_CONFIG.env ?? {};
 		this.title = "codeeditorland";
 
@@ -354,8 +368,10 @@ class ProcessPolyfill {
 		Object.defineProperty(this, "release", {
 			value: {
 				name: "node",
-				sourceUrl: "https://nodejs.org/download/release/v20.11.0/node-v20.11.0.tar.gz",
-				headersUrl: "https://nodejs.org/download/release/v20.11.0/node-v20.11.0-headers.tar.gz",
+				sourceUrl:
+					"https://nodejs.org/download/release/v20.11.0/node-v20.11.0.tar.gz",
+				headersUrl:
+					"https://nodejs.org/download/release/v20.11.0/node-v20.11.0-headers.tar.gz",
 				libUrl: "https://nodejs.org/download/release/v20.11.0/node-v20.11.0-darwin-arm64.tar.gz",
 			},
 			writable: false,
@@ -379,7 +395,7 @@ class ProcessPolyfill {
 			enumerable: true,
 			configurable: false,
 		});
-		
+
 		// Set up hrtime function
 		this.hrtime = hrtime;
 	}
@@ -404,7 +420,10 @@ class ProcessPolyfill {
 	 * Get process memory info (Electron-specific)
 	 */
 	getProcessMemoryInfo(): Promise<ProcessMemoryInfo> {
-		return invokeTauri<ProcessMemoryInfo>("process:get_memory_info", {}).catch((error) => {
+		return invokeTauri<ProcessMemoryInfo>(
+			"process:get_memory_info",
+			{},
+		).catch((error) => {
 			console.warn("[ProcessPolyfill] Failed to get memory info:", error);
 			// Return mocked values
 			return {
@@ -429,7 +448,10 @@ class ProcessPolyfill {
 	 */
 	async shellEnv(): Promise<Record<string, string>> {
 		try {
-			return await invokeTauri<Record<string, string>>("process:get_shell_env", {});
+			return await invokeTauri<Record<string, string>>(
+				"process:get_shell_env",
+				{},
+			);
 		} catch (error) {
 			console.warn("[ProcessPolyfill] Failed to get shell env:", error);
 			return this.env;
@@ -440,7 +462,9 @@ class ProcessPolyfill {
 	 * Umask - not supported in browser
 	 */
 	umask(mask?: number): number {
-		console.warn("[ProcessPolyfill] umask is not supported in browser environment");
+		console.warn(
+			"[ProcessPolyfill] umask is not supported in browser environment",
+		);
 		return 0o022;
 	}
 
@@ -448,18 +472,20 @@ class ProcessPolyfill {
 	 * Exit the process - not supported in browser
 	 */
 	exit(code?: number): never {
-		console.warn(`[ProcessPolyfill] exit(${code}) called - not supported in browser`);
+		console.warn(
+			`[ProcessPolyfill] exit(${code}) called - not supported in browser`,
+		);
 		this._exitCode = code ?? 0;
 		this._exited = true;
-		
+
 		// Emit 'exit' event
 		this.emit("exit", this._exitCode);
-		
+
 		// In browser, we can't actually exit, so we reload or close
 		if (typeof window !== "undefined") {
 			window.close();
 		}
-		
+
 		throw new Error(`Process cannot exit in browser environment`);
 	}
 
@@ -467,8 +493,10 @@ class ProcessPolyfill {
 	 * Kill a process
 	 */
 	kill(pid: number, signal?: string | number): boolean {
-		console.warn(`[ProcessPolyfill] kill(${pid}, ${signal}) - not fully supported in browser`);
-		
+		console.warn(
+			`[ProcessPolyfill] kill(${pid}, ${signal}) - not fully supported in browser`,
+		);
+
 		try {
 			// Try to kill via Tauri
 			invokeTauri("process:kill", { pid, signal }).catch(() => {
@@ -538,7 +566,10 @@ class ProcessPolyfill {
 	/**
 	 * Remove event listener
 	 */
-	removeListener(event: ProcessEventType, listener: ProcessEventListener): this {
+	removeListener(
+		event: ProcessEventType,
+		listener: ProcessEventListener,
+	): this {
 		const listeners = this.listeners.get(event);
 		if (listeners) {
 			listeners.delete(listener);
@@ -574,7 +605,10 @@ class ProcessPolyfill {
 			try {
 				listener(...args);
 			} catch (error) {
-				console.error(`[ProcessPolyfill] Error in ${event} listener:`, error);
+				console.error(
+					`[ProcessPolyfill] Error in ${event} listener:`,
+					error,
+				);
 			}
 		});
 
@@ -660,7 +694,7 @@ export async function installProcessPolyfill(): Promise<void> {
 	try {
 		// Make process available globally
 		(window as any).process = proc;
-		
+
 		// Also attach to window.vscode if available
 		if (typeof (window as any).vscode !== "undefined") {
 			(window as any).vscode.process = proc;
@@ -668,7 +702,10 @@ export async function installProcessPolyfill(): Promise<void> {
 
 		console.log("[ProcessPolyfill] ✓ Node.js process polyfill installed");
 	} catch (error) {
-		console.error("[ProcessPolyfill] Failed to install process polyfill:", error);
+		console.error(
+			"[ProcessPolyfill] Failed to install process polyfill:",
+			error,
+		);
 	}
 }
 
@@ -687,7 +724,7 @@ export function installProcessPolyfillSync(): void {
 
 	const proc = getProcessSync();
 	(window as any).process = proc;
-	
+
 	if (typeof (window as any).vscode !== "undefined") {
 		(window as any).vscode.process = proc;
 	}

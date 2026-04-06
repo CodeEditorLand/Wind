@@ -8,10 +8,17 @@
  * @category Layer
  */
 
-import { Effect, Layer, Stream, SubscriptionRef, HashMap } from "effect";
-import TelemetryTag from "../Tag/TelemetryTag.js";
+import { Effect, HashMap, Layer, Stream, SubscriptionRef } from "effect";
+
 import type { TelemetryService } from "../Interface/TelemetryService.js";
-import type { TelemetryMetric, TelemetrySpan, TelemetryLog, TelemetryEvent, SpanHandle } from "../Type/TelemetryType.js";
+import TelemetryTag from "../Tag/TelemetryTag.js";
+import type {
+	SpanHandle,
+	TelemetryEvent,
+	TelemetryLog,
+	TelemetryMetric,
+	TelemetrySpan,
+} from "../Type/TelemetryType.js";
 
 /**
  * Live layer for Telemetry service.
@@ -29,11 +36,17 @@ const TelemetryLive = Layer.effect(
 	TelemetryTag,
 	Effect.gen(function* () {
 		// Storage for metrics and spans
-		const metricsRef = yield* SubscriptionRef.make<HashMap.HashMap<string, ReadonlyArray<TelemetryMetric>>>(HashMap.empty());
+		const metricsRef = yield* SubscriptionRef.make<
+			HashMap.HashMap<string, ReadonlyArray<TelemetryMetric>>
+		>(HashMap.empty());
 
-		const spansRef = yield* SubscriptionRef.make<HashMap.HashMap<string, ReadonlyArray<TelemetrySpan>>>(HashMap.empty());
+		const spansRef = yield* SubscriptionRef.make<
+			HashMap.HashMap<string, ReadonlyArray<TelemetrySpan>>
+		>(HashMap.empty());
 
-		const eventsRef = yield* SubscriptionRef.make<ReadonlyArray<TelemetryEvent>>([]);
+		const eventsRef = yield* SubscriptionRef.make<
+			ReadonlyArray<TelemetryEvent>
+		>([]);
 
 		// Atom: Record a metric
 		const recordMetric = (
@@ -50,10 +63,16 @@ const TelemetryLive = Layer.effect(
 				};
 
 				const currentMetrics = yield* metricsRef.get;
-				const existing = HashMap.get(currentMetrics, name).pipe(Effect.runSync) || [];
+				const existing =
+					HashMap.get(currentMetrics, name).pipe(Effect.runSync) ||
+					[];
 				yield* SubscriptionRef.set(
 					metricsRef,
-					HashMap.set(currentMetrics, name, [...existing, metric].slice(-1000)),
+					HashMap.set(
+						currentMetrics,
+						name,
+						[...existing, metric].slice(-1000),
+					),
 				);
 
 				const currentEvents = yield* eventsRef.get;
@@ -73,11 +92,17 @@ const TelemetryLive = Layer.effect(
 			});
 
 		// Atom: Start a span
-		const startSpan = (name: string, labels?: Record<string, string>): Effect.Effect<SpanHandle, never> =>
+		const startSpan = (
+			name: string,
+			labels?: Record<string, string>,
+		): Effect.Effect<SpanHandle, never> =>
 			Effect.sync((): SpanHandle => {
 				const startTime = Date.now();
 
-				const end = (success: boolean, error?: string | undefined): Effect.Effect<void, never> =>
+				const end = (
+					success: boolean,
+					error?: string | undefined,
+				): Effect.Effect<void, never> =>
 					Effect.gen(function* () {
 						const endTime = Date.now();
 						const span: TelemetrySpan = {
@@ -91,8 +116,18 @@ const TelemetryLive = Layer.effect(
 						};
 
 						const currentSpans = yield* spansRef.get;
-						const existing = HashMap.get(currentSpans, name).pipe(Effect.runSync) || [];
-						yield* SubscriptionRef.set(spansRef, HashMap.set(currentSpans, name, [...existing, span].slice(-1000)));
+						const existing =
+							HashMap.get(currentSpans, name).pipe(
+								Effect.runSync,
+							) || [];
+						yield* SubscriptionRef.set(
+							spansRef,
+							HashMap.set(
+								currentSpans,
+								name,
+								[...existing, span].slice(-1000),
+							),
+						);
 
 						const currentEvents = yield* eventsRef.get;
 						yield* SubscriptionRef.set(
@@ -107,7 +142,9 @@ const TelemetryLive = Layer.effect(
 							].slice(-10000),
 						);
 
-						console.log(`[Telemetry] Span: ${name} completed in ${span.duration}ms (success: ${success})`);
+						console.log(
+							`[Telemetry] Span: ${name} completed in ${span.duration}ms (success: ${success})`,
+						);
 					});
 
 				return { end };
@@ -141,24 +178,48 @@ const TelemetryLive = Layer.effect(
 
 				// Also log to console
 				const consoleMethod =
-					level === "error" ? console.error : level === "warn" ? console.warn : level === "debug" ? console.debug : console.log;
-				consoleMethod(`[Telemetry] [${level.toUpperCase()}] ${message}`, context ?? {});
+					level === "error"
+						? console.error
+						: level === "warn"
+							? console.warn
+							: level === "debug"
+								? console.debug
+								: console.log;
+				consoleMethod(
+					`[Telemetry] [${level.toUpperCase()}] ${message}`,
+					context ?? {},
+				);
 			});
 
 		// Stream of all events - use SubscriptionRef.changes
-		const events: Stream.Stream<ReadonlyArray<TelemetryEvent>, never> = eventsRef.changes;
+		const events: Stream.Stream<
+			ReadonlyArray<TelemetryEvent>,
+			never
+		> = eventsRef.changes;
 
 		// Atom: Get metrics by name
-		const getMetrics = (name: string): Effect.Effect<ReadonlyArray<TelemetryMetric>, never> =>
-			metricsRef.get.pipe(Effect.map((map) => HashMap.get(map, name).pipe(Effect.runSync) || []));
+		const getMetrics = (
+			name: string,
+		): Effect.Effect<ReadonlyArray<TelemetryMetric>, never> =>
+			metricsRef.get.pipe(
+				Effect.map(
+					(map) => HashMap.get(map, name).pipe(Effect.runSync) || [],
+				),
+			);
 
 		// Atom: Get average duration for spans
-		const getAverageDuration = (name: string): Effect.Effect<number, never> =>
+		const getAverageDuration = (
+			name: string,
+		): Effect.Effect<number, never> =>
 			spansRef.get.pipe(
 				Effect.map((map) => {
-					const spans = HashMap.get(map, name).pipe(Effect.runSync) || [];
+					const spans =
+						HashMap.get(map, name).pipe(Effect.runSync) || [];
 					if (spans.length === 0) return 0;
-					const total = spans.reduce((sum, s) => sum + (s.duration || 0), 0);
+					const total = spans.reduce(
+						(sum, s) => sum + (s.duration || 0),
+						0,
+					);
 					return total / spans.length;
 				}),
 			);
@@ -167,7 +228,8 @@ const TelemetryLive = Layer.effect(
 		const getSuccessRate = (name: string): Effect.Effect<number, never> =>
 			spansRef.get.pipe(
 				Effect.map((map) => {
-					const spans = HashMap.get(map, name).pipe(Effect.runSync) || [];
+					const spans =
+						HashMap.get(map, name).pipe(Effect.runSync) || [];
 					if (spans.length === 0) return 0;
 					const successful = spans.filter((s) => s.success).length;
 					return successful / spans.length;

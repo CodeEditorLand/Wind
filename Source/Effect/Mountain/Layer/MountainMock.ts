@@ -10,8 +10,8 @@
 
 import { Effect, Layer, Stream } from "effect";
 
-import { MountainTag } from "../Tag/MountainTag.js";
 import type { MountainService } from "../Interface/MountainService.js";
+import { MountainTag } from "../Tag/MountainTag.js";
 import type { SyncResult } from "../Type/MountainType.js";
 
 // ============================================================================

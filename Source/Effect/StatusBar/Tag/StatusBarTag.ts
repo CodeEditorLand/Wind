@@ -9,6 +9,7 @@
  */
 
 import { Context } from "effect";
+
 import type { StatusBarService } from "../Interface/StatusBarService.js";
 
 /**
@@ -26,7 +27,10 @@ import type { StatusBarService } from "../Interface/StatusBarService.js";
  * });
  * ```
  */
-export default class StatusBarTag extends Context.Tag("StatusBar")<StatusBarTag, StatusBarService>() {}
+export default class StatusBarTag extends Context.Tag("StatusBar")<
+	StatusBarTag,
+	StatusBarService
+>() {}
 
 /**
  * Alias for StatusBarTag for shorter import paths.

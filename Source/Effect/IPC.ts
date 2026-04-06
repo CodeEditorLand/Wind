@@ -1,9 +1,16 @@
+// Layers - import from index
+import {
+	IPCElectronLive,
+	default as IPCTauriLiveLayer,
+	MockIPCLive,
+} from "./IPC/index.js";
+
 /**
  * @module Effect/IPC
  * @description
  * Atomic IPC service using Effect-TS.
  * Wraps Tauri IPC with typed effects and streams.
- * 
+ *
  * @category Service
  */
 
@@ -22,9 +29,15 @@ export class IPCInvokeError extends Error {
 		this._cause = cause;
 		Object.setPrototypeOf(this, IPCInvokeError.prototype);
 	}
-	override get name() { return "IPCInvokeError"; }
-	get channel() { return this._channel; }
-	override get cause() { return this._cause; }
+	override get name() {
+		return "IPCInvokeError";
+	}
+	get channel() {
+		return this._channel;
+	}
+	override get cause() {
+		return this._cause;
+	}
 }
 
 export class IPCSendError extends Error {
@@ -37,9 +50,15 @@ export class IPCSendError extends Error {
 		this._cause = cause;
 		Object.setPrototypeOf(this, IPCSendError.prototype);
 	}
-	override get name() { return "IPCSendError"; }
-	get channel() { return this._channel; }
-	override get cause() { return this._cause; }
+	override get name() {
+		return "IPCSendError";
+	}
+	get channel() {
+		return this._channel;
+	}
+	override get cause() {
+		return this._cause;
+	}
 }
 
 export class IPCSubscriptionError extends Error {
@@ -47,14 +66,22 @@ export class IPCSubscriptionError extends Error {
 	readonly _channel: string;
 	readonly _cause: unknown;
 	constructor(channel: string, cause: unknown) {
-		super(`IPC subscription failed on channel '${channel}': ${String(cause)}`);
+		super(
+			`IPC subscription failed on channel '${channel}': ${String(cause)}`,
+		);
 		this._channel = channel;
 		this._cause = cause;
 		Object.setPrototypeOf(this, IPCSubscriptionError.prototype);
 	}
-	override get name() { return "IPCSubscriptionError"; }
-	get channel() { return this._channel; }
-	override get cause() { return this._cause; }
+	override get name() {
+		return "IPCSubscriptionError";
+	}
+	get channel() {
+		return this._channel;
+	}
+	override get cause() {
+		return this._cause;
+	}
 }
 
 // Service interface
@@ -66,8 +93,6 @@ export { IPCTag, IPC } from "./IPC/Tag/IPCTag.js";
 // Implementations
 export { TauriIPCLive } from "./IPC/Implementation/TauriIPC.js";
 
-// Layers - import from index
-import { default as IPCTauriLiveLayer, IPCElectronLive, MockIPCLive } from "./IPC/index.js";
 export { IPCTauriLiveLayer, IPCElectronLive, MockIPCLive };
 
 // Backward compatibility - export as IPCTauriLive

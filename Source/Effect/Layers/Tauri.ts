@@ -7,30 +7,37 @@
 
 import { Layer } from "effect";
 
+import { ActivityBarLive } from "../ActivityBar.js";
+import { BootstrapLive } from "../Bootstrap.js";
+import { LiveClipboardServiceLayer as ClipboardLive } from "../Clipboard.js";
+import { LiveCommandsServiceLayer as CommandsLive } from "../Commands/Commands.js";
 import {
 	ConfigurationLive,
 	ConfigurationWithSyncLive,
 } from "../Configuration.js";
-import { MountainLive } from "../Mountain.js";
-import { SandboxLive } from "../Sandbox.js";
-import { TelemetryLive } from "../Telemetry.js";
+import { LiveEditorServiceLayer as EditorLive } from "../Editor/Editor.js";
 import { EnvironmentLive } from "../Environment.js";
+import { LiveExtensionsServiceLayer as ExtensionsLive } from "../Extensions/Extensions.js";
+import { LiveFilesServiceLayer as FilesLive } from "../Files/Files.js";
 import { HealthLive } from "../Health.js";
-import { BootstrapLive } from "../Bootstrap.js";
-import { LiveClipboardServiceLayer as ClipboardLive } from "../Clipboard.js";
+import { LiveLanguageServiceLayer as LanguageLive } from "../Language/Language.js";
+import { MountainLive } from "../Mountain.js";
 import { MountainSyncLive } from "../MountainSync.js";
-import { ActivityBarLive } from "../ActivityBar.js";
+import { LiveNotificationServiceLayer as NotificationLive } from "../Notification/Notification.js";
+import { LiveOutputServiceLayer as OutputLive } from "../Output/Output.js";
 import { PanelLive } from "../Panel.js";
+import { LiveProgressServiceLayer as ProgressLive } from "../Progress/Progress.js";
+import { LiveQuickInputServiceLayer as QuickInputLive } from "../QuickInput/QuickInput.js";
+import { SandboxLive } from "../Sandbox.js";
+import { LiveSearchServiceLayer as SearchLive } from "../Search/Search.js";
 import { SidebarLive } from "../Sidebar.js";
 import { StatusBarLive } from "../StatusBar.js";
-import { LiveCommandsServiceLayer as CommandsLive } from "../Commands/Commands.js";
-import { LiveFilesServiceLayer as FilesLive } from "../Files/Files.js";
-import { LiveLanguageServiceLayer as LanguageLive } from "../Language/Language.js";
-import { LiveExtensionsServiceLayer as ExtensionsLive } from "../Extensions/Extensions.js";
-import { LiveEditorServiceLayer as EditorLive } from "../Editor/Editor.js";
+import { LiveStorageServiceLayer as StorageLive } from "../Storage/Storage.js";
+import { TelemetryLive } from "../Telemetry.js";
 import { LiveTerminalServiceLayer as TerminalLive } from "../Terminal/Terminal.js";
-import { LiveOutputServiceLayer as OutputLive } from "../Output/Output.js";
 import { default as LiveTextFileServiceLayer } from "../TextFile/Live.js";
+import { LiveThemesServiceLayer as ThemesLive } from "../Themes/Themes.js";
+import { LiveWorkspacesServiceLayer as WorkspacesLive } from "../Workspaces/Workspaces.js";
 
 // ============================================================================
 // Base Tauri Layer (without config sync)
@@ -66,6 +73,14 @@ export const TauriBaseLayer = Layer.empty.pipe(
 	Layer.provide(TerminalLive),
 	Layer.provide(OutputLive),
 	Layer.provide(LiveTextFileServiceLayer),
+	// Tier 3 service layers
+	Layer.provide(StorageLive),
+	Layer.provide(NotificationLive),
+	Layer.provide(ProgressLive),
+	Layer.provide(QuickInputLive),
+	Layer.provide(WorkspacesLive),
+	Layer.provide(ThemesLive),
+	Layer.provide(SearchLive),
 );
 
 // ============================================================================
@@ -102,6 +117,14 @@ export const TauriLiveLayer = Layer.empty.pipe(
 	Layer.provide(TerminalLive),
 	Layer.provide(OutputLive),
 	Layer.provide(LiveTextFileServiceLayer),
+	// Tier 3 service layers
+	Layer.provide(StorageLive),
+	Layer.provide(NotificationLive),
+	Layer.provide(ProgressLive),
+	Layer.provide(QuickInputLive),
+	Layer.provide(WorkspacesLive),
+	Layer.provide(ThemesLive),
+	Layer.provide(SearchLive),
 );
 
 // ============================================================================

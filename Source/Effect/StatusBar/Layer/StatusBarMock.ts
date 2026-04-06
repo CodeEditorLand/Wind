@@ -9,9 +9,13 @@
  */
 
 import { Effect, Layer, Stream } from "effect";
-import StatusBarTag from "../Tag/StatusBarTag.js";
+
 import type { StatusBarService } from "../Interface/StatusBarService.js";
-import type { StatusBarItem, CreateStatusBarItem } from "../Type/StatusBarType.js";
+import StatusBarTag from "../Tag/StatusBarTag.js";
+import type {
+	CreateStatusBarItem,
+	StatusBarItem,
+} from "../Type/StatusBarType.js";
 
 /**
  * Creates a mock StatusBar service implementation.
@@ -25,7 +29,8 @@ const makeMockStatusBar = (): StatusBarService => ({
 			...item,
 			id: `mock-statusbar-${Date.now()}`,
 		}),
-	updateItem: (_id: string, _updates: Partial<Omit<StatusBarItem, "id">>) => Effect.void,
+	updateItem: (_id: string, _updates: Partial<Omit<StatusBarItem, "id">>) =>
+		Effect.void,
 	removeItem: (_id: string) => Effect.void,
 	getItem: (_id: string) => Effect.succeed(undefined),
 	items: Effect.succeed([]),

@@ -3,7 +3,7 @@
  * @description
  * Environment service for platform detection and environment setup.
  * Replaces VSCode's platform detection from Stage0.
- * 
+ *
  * @see {@link Effect/Environment/Interface/EnvironmentService} Service interface
  * @see {@link Effect/Environment/Implementation/EnvironmentImplementation} Live implementation
  * @see {@link Effect/Environment/Tag/EnvironmentTag} Service tag
@@ -12,13 +12,13 @@
  * ```typescript
  * import Environment from "./Effect/Environment.js";
  * import { Effect } from "effect";
- * 
+ *
  * const program = Effect.gen(function* () {
  *   const env = yield* Environment.EnvironmentTag;
  *   const info = yield* env.getInfo;
  *   console.log("Platform:", info.platform);
  * });
- * 
+ *
  * Effect.runPromise(program.pipe(Effect.provide(Environment)));
  * ```
  */
@@ -27,10 +27,19 @@
 // Re-exports from atomic modules
 // ============================================================================
 
-import EnvironmentLive, { EnvironmentMock, makeMockEnvironment, EnvironmentTag as EnvTag } from "./Environment/index.js";
+import EnvironmentLive, {
+	EnvironmentMock,
+	EnvironmentTag as EnvTag,
+	makeMockEnvironment,
+} from "./Environment/index.js";
 
 // Export as default and named for backward compatibility
-export { default, EnvironmentMock, makeMockEnvironment, EnvironmentTag } from "./Environment/index.js";
+export {
+	default,
+	EnvironmentMock,
+	makeMockEnvironment,
+	EnvironmentTag,
+} from "./Environment/index.js";
 
 // Export EnvironmentLive as named export for backward compatibility
 export { EnvironmentLive };

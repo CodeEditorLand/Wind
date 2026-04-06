@@ -12,7 +12,12 @@
  * Possible types of panel views.
  * Corresponds to VSCode's built-in panel view types.
  */
-export type PanelViewType = "output" | "debug" | "terminal" | "problems" | "custom";
+export type PanelViewType =
+	| "output"
+	| "debug"
+	| "terminal"
+	| "problems"
+	| "custom";
 
 /**
  * Represents a panel view in the VSCode bottom panel area.

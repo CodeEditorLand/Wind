@@ -18,11 +18,7 @@ export class FileSystemProviderError extends Error {
 	_tag: string;
 	readonly code: FileSystemErrorCode;
 
-	constructor(
-		message: string,
-		code: FileSystemErrorCode,
-		cause?: unknown,
-	) {
+	constructor(message: string, code: FileSystemErrorCode, cause?: unknown) {
 		super(message, cause ? { cause } : undefined);
 		this.name = "FileSystemProviderError";
 		this._tag = "FileSystemProviderError";
@@ -35,7 +31,11 @@ export class FileSystemProviderError extends Error {
  */
 export class FileNotFoundError extends FileSystemProviderError {
 	constructor(path: string, cause?: unknown) {
-		super(`File not found: ${path}`, FileSystemErrorCode.FileNotFound, cause);
+		super(
+			`File not found: ${path}`,
+			FileSystemErrorCode.FileNotFound,
+			cause,
+		);
 		this.name = "FileNotFoundError";
 		this._tag = "FileNotFoundError";
 	}
@@ -46,7 +46,11 @@ export class FileNotFoundError extends FileSystemProviderError {
  */
 export class FileExistsError extends FileSystemProviderError {
 	constructor(path: string, cause?: unknown) {
-		super(`File already exists: ${path}`, FileSystemErrorCode.FileExists, cause);
+		super(
+			`File already exists: ${path}`,
+			FileSystemErrorCode.FileExists,
+			cause,
+		);
 		this.name = "FileExistsError";
 		this._tag = "FileExistsError";
 	}
@@ -57,7 +61,11 @@ export class FileExistsError extends FileSystemProviderError {
  */
 export class PermissionError extends FileSystemProviderError {
 	constructor(path: string, cause?: unknown) {
-		super(`Permission denied: ${path}`, FileSystemErrorCode.NoPermissions, cause);
+		super(
+			`Permission denied: ${path}`,
+			FileSystemErrorCode.NoPermissions,
+			cause,
+		);
 		this.name = "PermissionError";
 		this._tag = "PermissionError";
 	}
@@ -79,7 +87,11 @@ export class InvalidPathError extends FileSystemProviderError {
  */
 export class NotSupportedError extends FileSystemProviderError {
 	constructor(operation: string, cause?: unknown) {
-		super(`Operation not supported: ${operation}`, FileSystemErrorCode.NotSupported, cause);
+		super(
+			`Operation not supported: ${operation}`,
+			FileSystemErrorCode.NotSupported,
+			cause,
+		);
 		this.name = "NotSupportedError";
 		this._tag = "NotSupportedError";
 	}
@@ -90,7 +102,11 @@ export class NotSupportedError extends FileSystemProviderError {
  */
 export class UnknownFileSystemError extends FileSystemProviderError {
 	constructor(message: string, cause?: unknown) {
-		super(`Unknown file system error: ${message}`, FileSystemErrorCode.Unknown, cause);
+		super(
+			`Unknown file system error: ${message}`,
+			FileSystemErrorCode.Unknown,
+			cause,
+		);
 		this.name = "UnknownFileSystemError";
 		this._tag = "UnknownFileSystemError";
 	}
@@ -103,14 +119,18 @@ export class UnknownFileSystemError extends FileSystemProviderError {
 /**
  * Check if an error is a FileSystemProviderError
  */
-export function isFileSystemProviderError(error: unknown): error is FileSystemProviderError {
+export function isFileSystemProviderError(
+	error: unknown,
+): error is FileSystemProviderError {
 	return error instanceof FileSystemProviderError;
 }
 
 /**
  * Check if an error is a FileNotFoundError
  */
-export function isFileNotFoundError(error: unknown): error is FileNotFoundError {
+export function isFileNotFoundError(
+	error: unknown,
+): error is FileNotFoundError {
 	return error instanceof FileNotFoundError;
 }
 
@@ -138,14 +158,18 @@ export function isInvalidPathError(error: unknown): error is InvalidPathError {
 /**
  * Check if an error is a NotSupportedError
  */
-export function isNotSupportedError(error: unknown): error is NotSupportedError {
+export function isNotSupportedError(
+	error: unknown,
+): error is NotSupportedError {
 	return error instanceof NotSupportedError;
 }
 
 /**
  * Check if an error is an UnknownFileSystemError
  */
-export function isUnknownFileSystemError(error: unknown): error is UnknownFileSystemError {
+export function isUnknownFileSystemError(
+	error: unknown,
+): error is UnknownFileSystemError {
 	return error instanceof UnknownFileSystemError;
 }
 
@@ -171,20 +195,34 @@ export function toFileSystemProviderError(
 	}
 
 	const message = error instanceof Error ? error.message : String(error);
-	const fullMessage = contextValue ? `${context} (${contextValue}): ${message}` : `${context}: ${message}`;
+	const fullMessage = contextValue
+		? `${context} (${contextValue}): ${message}`
+		: `${context}: ${message}`;
 
 	// Try to infer error type from message
 	const lowerMessage = message.toLowerCase();
-	if (lowerMessage.includes("not found") || lowerMessage.includes("no such")) {
+	if (
+		lowerMessage.includes("not found") ||
+		lowerMessage.includes("no such")
+	) {
 		return new FileNotFoundError(contextValue ?? context, error);
 	}
-	if (lowerMessage.includes("already exists") || lowerMessage.includes("exists")) {
+	if (
+		lowerMessage.includes("already exists") ||
+		lowerMessage.includes("exists")
+	) {
 		return new FileExistsError(contextValue ?? context, error);
 	}
-	if (lowerMessage.includes("permission") || lowerMessage.includes("denied")) {
+	if (
+		lowerMessage.includes("permission") ||
+		lowerMessage.includes("denied")
+	) {
 		return new PermissionError(contextValue ?? context, error);
 	}
-	if (lowerMessage.includes("invalid") || lowerMessage.includes("malformed")) {
+	if (
+		lowerMessage.includes("invalid") ||
+		lowerMessage.includes("malformed")
+	) {
 		return new InvalidPathError(contextValue ?? context, error);
 	}
 

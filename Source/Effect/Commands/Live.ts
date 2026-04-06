@@ -11,10 +11,11 @@
  */
 
 import { Effect, Layer } from "effect";
-import { CommandsServiceTag } from "./Tag/CommandsServiceTag.js";
-import type { CommandsService } from "./Interface/CommandsService.js";
-import type { CommandsProblem } from "./Type/CommandsProblem.js";
+
 import { IPC } from "../IPC.js";
+import type { CommandsService } from "./Interface/CommandsService.js";
+import { CommandsServiceTag } from "./Tag/CommandsServiceTag.js";
+import type { CommandsProblem } from "./Type/CommandsProblem.js";
 
 const MakeCommandsOperationFailed = (error: unknown): CommandsProblem => ({
 	_tag: "CommandsOperationFailed",
@@ -53,12 +54,13 @@ export const LiveCommandsServiceLayer = Layer.effect(
 				}
 
 				// Delegate to Mountain's CommandRegistry via IPC
-				return IPCService
-					.invoke("commands:execute")([id, args[0] ?? null])
-					.pipe(
-						Effect.map((Result) => Result as T),
-						Effect.mapError(MakeCommandsOperationFailed),
-					);
+				return IPCService.invoke("commands:execute")([
+					id,
+					args[0] ?? null,
+				]).pipe(
+					Effect.map((Result) => Result as T),
+					Effect.mapError(MakeCommandsOperationFailed),
+				);
 			},
 
 			UnregisterCommand: (id) =>
@@ -67,16 +69,14 @@ export const LiveCommandsServiceLayer = Layer.effect(
 				}),
 
 			GetCommands: () =>
-				IPCService
-					.invoke("commands:getAll")([])
-					.pipe(
-						Effect.map((Result) =>
-							Array.isArray(Result)
-								? (Result as readonly string[])
-								: [],
-						),
-						Effect.mapError(MakeCommandsOperationFailed),
+				IPCService.invoke("commands:getAll")([]).pipe(
+					Effect.map((Result) =>
+						Array.isArray(Result)
+							? (Result as readonly string[])
+							: [],
 					),
+					Effect.mapError(MakeCommandsOperationFailed),
+				),
 		};
 
 		return Service;

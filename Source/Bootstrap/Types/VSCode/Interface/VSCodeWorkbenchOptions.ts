@@ -8,6 +8,22 @@
  */
 
 import type {
+	ExtensionId,
+	ITunnel,
+	ITunnelOptions,
+	MarketplaceExtension,
+} from "../Type/VSCodeGenericType.js";
+import type {
+	IWebSocket,
+	IWebSocketFactory,
+} from "../Type/VSCodeNetworkType.js";
+import type {
+	IExternalUriResolver,
+	IRemoteResourceProvider,
+	IResourceUriProvider,
+} from "../Type/VSCodeProviderType.js";
+import type { UriComponents } from "../Type/VSCodeUtilityType.js";
+import type {
 	IAuthenticationProvider,
 	ICommand,
 	ICommonTelemetryPropertiesResolver,
@@ -25,24 +41,6 @@ import type {
 	IWindowIndicator,
 	IWorkspaceProvider,
 } from "../Type/VSCodeWorkbenchOptionsType.js";
-import type {
-	ExtensionId,
-	ITunnel,
-	ITunnelOptions,
-	MarketplaceExtension,
-} from "../Type/VSCodeGenericType.js";
-import type {
-	IExternalUriResolver,
-	IRemoteResourceProvider,
-	IResourceUriProvider,
-} from "../Type/VSCodeProviderType.js";
-import type {
-	IWebSocket,
-	IWebSocketFactory,
-} from "../Type/VSCodeNetworkType.js";
-import type {
-	UriComponents,
-} from "../Type/VSCodeUtilityType.js";
 
 /**
  * VSCode Workbench Construction Options interface

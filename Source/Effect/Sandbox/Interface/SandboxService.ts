@@ -9,13 +9,14 @@
  */
 
 import type { Effect } from "effect";
+
 import type {
+	ConfigurationNotReadyError,
 	IPCRenderer,
 	ISandboxConfiguration,
 	SandboxContext,
 	SandboxGlobals,
 	SandboxNotReadyError,
-	ConfigurationNotReadyError,
 } from "../../../Types/Sandbox.ts";
 
 /**
@@ -39,5 +40,8 @@ export interface SandboxService {
 	readonly configuration: Effect.Effect<SandboxContext, SandboxNotReadyError>;
 
 	/** Resolve configuration with proper error handling */
-	readonly resolveConfiguration: Effect.Effect<ISandboxConfiguration, ConfigurationNotReadyError>;
+	readonly resolveConfiguration: Effect.Effect<
+		ISandboxConfiguration,
+		ConfigurationNotReadyError
+	>;
 }

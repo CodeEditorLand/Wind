@@ -8,13 +8,14 @@
  */
 
 import { Effect } from "effect";
+
 import type { ClipboardService } from "../Interface/ClipboardService.js";
 import type { ClipboardProblem } from "../Type/ClipboardProblem.js";
 import {
+	CreateFormatNotSupportedError,
 	CreateNotAvailableError,
 	CreateReadError,
 	CreateWriteError,
-	CreateFormatNotSupportedError,
 } from "./ClipboardHelper.js";
 
 // ============================================================================
@@ -30,7 +31,9 @@ export const LiveBrowserClipboardService: ClipboardService = {
 		Effect.tryPromise({
 			try: async () => {
 				if (typeof navigator === "undefined" || !navigator.clipboard) {
-					throw CreateNotAvailableError("Clipboard API not available in this environment");
+					throw CreateNotAvailableError(
+						"Clipboard API not available in this environment",
+					);
 				}
 				return await navigator.clipboard.readText();
 			},
@@ -41,7 +44,9 @@ export const LiveBrowserClipboardService: ClipboardService = {
 		Effect.tryPromise({
 			try: async () => {
 				if (typeof navigator === "undefined" || !navigator.clipboard) {
-					throw CreateNotAvailableError("Clipboard API not available in this environment");
+					throw CreateNotAvailableError(
+						"Clipboard API not available in this environment",
+					);
 				}
 				await navigator.clipboard.writeText(text);
 			},
@@ -49,17 +54,13 @@ export const LiveBrowserClipboardService: ClipboardService = {
 		}),
 
 	// Placeholder implementations for remaining methods
-	readHTML: () =>
-		Effect.fail(CreateFormatNotSupportedError("HTML")),
+	readHTML: () => Effect.fail(CreateFormatNotSupportedError("HTML")),
 
-	writeHTML: () =>
-		Effect.fail(CreateFormatNotSupportedError("HTML")),
+	writeHTML: () => Effect.fail(CreateFormatNotSupportedError("HTML")),
 
-	readImage: () =>
-		Effect.fail(CreateFormatNotSupportedError("Image")),
+	readImage: () => Effect.fail(CreateFormatNotSupportedError("Image")),
 
-	writeImage: () =>
-		Effect.fail(CreateFormatNotSupportedError("Image")),
+	writeImage: () => Effect.fail(CreateFormatNotSupportedError("Image")),
 
 	hasText: () => Effect.succeed(false),
 

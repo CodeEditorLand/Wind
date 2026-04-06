@@ -150,7 +150,13 @@ export class URI {
 		}
 
 		const dirPath = this.path.substring(0, lastSlash) || "/";
-		return new URI(this.scheme, this.authority, dirPath, this.query, this.fragment);
+		return new URI(
+			this.scheme,
+			this.authority,
+			dirPath,
+			this.query,
+			this.fragment,
+		);
 	}
 
 	/**

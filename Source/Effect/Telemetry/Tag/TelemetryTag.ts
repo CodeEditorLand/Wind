@@ -9,6 +9,7 @@
  */
 
 import { Context } from "effect";
+
 import type { TelemetryService } from "../Interface/TelemetryService.js";
 
 /**
@@ -26,7 +27,10 @@ import type { TelemetryService } from "../Interface/TelemetryService.js";
  * });
  * ```
  */
-export default class TelemetryTag extends Context.Tag("Telemetry")<TelemetryTag, TelemetryService>() {}
+export default class TelemetryTag extends Context.Tag("Telemetry")<
+	TelemetryTag,
+	TelemetryService
+>() {}
 
 /**
  * Alias for TelemetryTag for shorter import paths.

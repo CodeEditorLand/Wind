@@ -1,3 +1,6 @@
+// Convenience alias for backward compatibility
+import { ActivityBarTag } from "./Tag/ActivityBarTag.js";
+
 /**
  * @module Effect/ActivityBar
  * @description
@@ -30,7 +33,11 @@ export { default as ActivityBarItemNotFoundError } from "./Error/ActivityBarItem
 export { default as ActivityBarUpdateError } from "./Error/ActivityBarUpdateError.js";
 
 // Type definitions
-export type { ActivityBarBadge, ActivityBarItem, CreateActivityBarItem } from "./Type/ActivityBarType.js";
+export type {
+	ActivityBarBadge,
+	ActivityBarItem,
+	CreateActivityBarItem,
+} from "./Type/ActivityBarType.js";
 
 // Service interface
 export type { ActivityBarService } from "./Interface/ActivityBarService.js";
@@ -56,6 +63,4 @@ export { ActivityBarLive } from "./Implementation/ActivityBarImplementation.js";
 // Mock implementation layer
 export { ActivityBarMockLive } from "./Layer/ActivityBarMock.js";
 
-// Convenience alias for backward compatibility
-import { ActivityBarTag } from "./Tag/ActivityBarTag.js";
 export { ActivityBarTag as ActivityBar };

@@ -31,6 +31,9 @@ import type { ConfigurationService } from "../Interface/ConfigurationService.js"
  * });
  * ```
  */
-export class ConfigurationTag extends Context.Tag("Configuration")<ConfigurationTag, ConfigurationService>() {}
+export class ConfigurationTag extends Context.Tag("Configuration")<
+	ConfigurationTag,
+	ConfigurationService
+>() {}
 
 export default ConfigurationTag;

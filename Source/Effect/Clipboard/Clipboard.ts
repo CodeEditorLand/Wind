@@ -3,7 +3,7 @@
  * @description
  * Clipboard service implementation for Wind project.
  * Provides read/write operations for clipboard functionality with typed effects.
- * 
+ *
  * @see {@link Effect/Clipboard/Interface/ClipboardService} Service interface
  * @see {@link Effect/Clipboard/Implementation/BrowserClipboard} Live implementation
  * @see {@link Effect/Clipboard/Tag/ClipboardServiceTag} Service tag
@@ -13,14 +13,14 @@
  * import LiveClipboard from "./Effect/Clipboard/Live.js";
  * import { Clipboard } from "./Effect/Clipboard/Clipboard.ts";
  * import { Effect } from "effect";
- * 
+ *
  * const program = Effect.gen(function* () {
  *   const clipboard = yield* Clipboard;
  *   yield* clipboard.writeText("Hello, World!");
  *   const text = yield* clipboard.readText();
  *   return text;
  * });
- * 
+ *
  * Effect.runPromise(program.pipe(Effect.provide(LiveClipboard)));
  * ```
  */

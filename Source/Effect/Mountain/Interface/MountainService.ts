@@ -10,10 +10,14 @@
 
 import { Context, Effect, Stream } from "effect";
 
-import type { MountainConnectionState, SyncResource, SyncResult } from "../Type/MountainType.js";
 import type { MountainConnectionError } from "../Error/MountainConnectionError.js";
 import type { MountainRPCError } from "../Error/MountainRPCError.js";
 import type { MountainSyncError } from "../Error/MountainSyncError.js";
+import type {
+	MountainConnectionState,
+	SyncResource,
+	SyncResult,
+} from "../Type/MountainType.js";
 
 // ============================================================================
 // Service Interface

@@ -10,10 +10,10 @@
 
 import { Effect, Layer, Stream } from "effect";
 
-import { ConfigurationTag } from "../Tag/ConfigurationTag.js";
-import type { ConfigurationService } from "../Interface/ConfigurationService.js";
 import type { ISandboxConfiguration } from "../../../Types/Sandbox.js";
 import { MakeValidate } from "../Implementation/ConfigurationHelper.js";
+import type { ConfigurationService } from "../Interface/ConfigurationService.js";
+import { ConfigurationTag } from "../Tag/ConfigurationTag.js";
 
 // ============================================================================
 // Mock Implementation
@@ -27,15 +27,15 @@ export const makeMockConfiguration = (
 ): ConfigurationService => {
 	const validate = MakeValidate();
 	const mockConfig: ISandboxConfiguration = {
-	zoomLevel: 0,
-	userEnv: {},
-	workspace: {
-		id: "mock-workspace",
-		uri: "mock://workspace",
-		name: "Mock Workspace",
-	},
-	...overrides,
-};
+		zoomLevel: 0,
+		userEnv: {},
+		workspace: {
+			id: "mock-workspace",
+			uri: "mock://workspace",
+			name: "Mock Workspace",
+		},
+		...overrides,
+	};
 
 	return {
 		get: Effect.succeed(mockConfig),

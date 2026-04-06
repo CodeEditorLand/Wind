@@ -3,7 +3,7 @@
  * @description
  * Environment service for platform detection and environment setup.
  * Provides detection of platform, architecture, locale, and other environment settings.
- * 
+ *
  * @see {@link Effect/Environment/Interface/EnvironmentService} Service interface
  * @see {@link Effect/Environment/Implementation/EnvironmentImplementation} Live implementation
  * @see {@link Effect/Environment/Tag/EnvironmentTag} Service tag
@@ -12,13 +12,13 @@
  * ```typescript
  * import { EnvironmentLive, EnvironmentTag } from "./Effect/Environment/index.js";
  * import { Effect } from "effect";
- * 
+ *
  * const program = Effect.gen(function* () {
  *   const env = yield* EnvironmentTag;
  *   const info = yield* env.getInfo;
  *   console.log("Platform:", info.platform);
  * });
- * 
+ *
  * Effect.runPromise(program.pipe(Effect.provide(EnvironmentLive)));
  * ```
  */

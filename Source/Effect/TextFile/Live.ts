@@ -11,10 +11,11 @@
  */
 
 import { Effect, Layer } from "effect";
-import { TextFileServiceTag } from "./Tag/TextFileServiceTag.js";
-import type { TextFileService } from "./Interface/TextFileService.js";
-import type { TextFileProblem } from "./Type/TextFileProblem.js";
+
 import { IPC } from "../IPC.js";
+import type { TextFileService } from "./Interface/TextFileService.js";
+import { TextFileServiceTag } from "./Tag/TextFileServiceTag.js";
+import type { TextFileProblem } from "./Type/TextFileProblem.js";
 
 const UriToPath = (uri: string): string =>
 	uri.startsWith("file://") ? uri.slice("file://".length) : uri;
@@ -31,48 +32,41 @@ export const LiveTextFileServiceLayer = Layer.effect(
 
 		const Service: TextFileService = {
 			Read: (uri) =>
-				IPCService
-					.invoke("textFile:read")([UriToPath(uri)])
-					.pipe(
-						Effect.map((Result) =>
-							typeof Result === "string" ? Result : String(Result),
-						),
-						Effect.mapError(MakeTextFileProblem),
+				IPCService.invoke("textFile:read")([UriToPath(uri)]).pipe(
+					Effect.map((Result) =>
+						typeof Result === "string" ? Result : String(Result),
 					),
+					Effect.mapError(MakeTextFileProblem),
+				),
 
 			Write: (uri, content) =>
-				IPCService
-					.invoke("textFile:write")([UriToPath(uri), content])
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeTextFileProblem),
-					),
+				IPCService.invoke("textFile:write")([
+					UriToPath(uri),
+					content,
+				]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeTextFileProblem),
+				),
 
 			Save: (uri) =>
-				IPCService
-					.invoke("textFile:save")([UriToPath(uri)])
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeTextFileProblem),
-					),
+				IPCService.invoke("textFile:save")([UriToPath(uri)]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeTextFileProblem),
+				),
 
 			SaveAll: () =>
-				IPCService
-					.invoke("textFile:save")([])
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeTextFileProblem),
-					),
+				IPCService.invoke("textFile:save")([]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeTextFileProblem),
+				),
 
 			IsDirty: (_uri) => Effect.succeed(false),
 
 			Revert: (uri) =>
-				IPCService
-					.invoke("textFile:read")([UriToPath(uri)])
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeTextFileProblem),
-					),
+				IPCService.invoke("textFile:read")([UriToPath(uri)]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeTextFileProblem),
+				),
 		};
 
 		return Service;

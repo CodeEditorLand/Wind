@@ -11,9 +11,12 @@
 
 import { Context, Effect, Stream } from "effect";
 
-import type { ActivityBarBadge, ActivityBarItem } from "../Type/ActivityBarType.js";
 import type { ActivityBarItemNotFoundError } from "../Error/ActivityBarItemNotFoundError.js";
 import type { ActivityBarUpdateError } from "../Error/ActivityBarUpdateError.js";
+import type {
+	ActivityBarBadge,
+	ActivityBarItem,
+} from "../Type/ActivityBarType.js";
 
 // ============================================================================
 // Service Interface
@@ -41,7 +44,10 @@ export interface ActivityBarService {
 	readonly updateItem: (
 		id: string,
 		updates: Partial<Omit<ActivityBarItem, "id">>,
-	) => Effect.Effect<void, ActivityBarItemNotFoundError | ActivityBarUpdateError>;
+	) => Effect.Effect<
+		void,
+		ActivityBarItemNotFoundError | ActivityBarUpdateError
+	>;
 
 	/**
 	 * Remove an activity bar item.
@@ -100,7 +106,10 @@ export interface ActivityBarService {
 	readonly setBadge: (
 		id: string,
 		badge: ActivityBarBadge | undefined,
-	) => Effect.Effect<void, ActivityBarItemNotFoundError | ActivityBarUpdateError>;
+	) => Effect.Effect<
+		void,
+		ActivityBarItemNotFoundError | ActivityBarUpdateError
+	>;
 
 	/**
 	 * Get badge for an activity bar item.
@@ -116,6 +125,9 @@ export interface ActivityBarService {
 	 * @param id - The item id to clear badge from
 	 */
 	readonly clearBadge: (
-	 id: string,
-	) => Effect.Effect<void, ActivityBarItemNotFoundError | ActivityBarUpdateError>;
+		id: string,
+	) => Effect.Effect<
+		void,
+		ActivityBarItemNotFoundError | ActivityBarUpdateError
+	>;
 }

@@ -13,10 +13,11 @@
  */
 
 import { Effect, Layer } from "effect";
-import { TerminalServiceTag } from "./Tag/TerminalServiceTag.js";
-import type { TerminalService } from "./Interface/TerminalService.js";
-import type { TerminalProblem } from "./Type/TerminalProblem.js";
+
 import { IPC } from "../IPC.js";
+import type { TerminalService } from "./Interface/TerminalService.js";
+import { TerminalServiceTag } from "./Tag/TerminalServiceTag.js";
+import type { TerminalProblem } from "./Type/TerminalProblem.js";
 
 const MakeTerminalProblem = (error: unknown): TerminalProblem =>
 	error instanceof Error
@@ -30,47 +31,43 @@ export const LiveTerminalServiceLayer = Layer.effect(
 
 		const Service: TerminalService = {
 			CreateTerminal: (options) =>
-				IPCService
-					.invoke("terminal:create")([options ?? {}])
-					.pipe(
-						Effect.map((Result) => {
-							const Info = Result as { id?: number; name?: string };
-							return { id: Info.id ?? 0, name: Info.name ?? "terminal" };
-						}),
-						Effect.mapError(MakeTerminalProblem),
-					),
+				IPCService.invoke("terminal:create")([options ?? {}]).pipe(
+					Effect.map((Result) => {
+						const Info = Result as { id?: number; name?: string };
+						return {
+							id: Info.id ?? 0,
+							name: Info.name ?? "terminal",
+						};
+					}),
+					Effect.mapError(MakeTerminalProblem),
+				),
 
 			SendText: (id, text) =>
-				IPCService
-					.invoke("terminal:sendText")([id, text])
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeTerminalProblem),
-					),
+				IPCService.invoke("terminal:sendText")([id, text]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeTerminalProblem),
+				),
 
 			Dispose: (id) =>
-				IPCService
-					.invoke("terminal:dispose")([id])
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeTerminalProblem),
-					),
+				IPCService.invoke("terminal:dispose")([id]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeTerminalProblem),
+				),
 
 			Show: (id, preserveFocus) =>
-				IPCService
-					.invoke("terminal:show")([id, preserveFocus ?? false])
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeTerminalProblem),
-					),
+				IPCService.invoke("terminal:show")([
+					id,
+					preserveFocus ?? false,
+				]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeTerminalProblem),
+				),
 
 			Hide: (id) =>
-				IPCService
-					.invoke("terminal:hide")([id])
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeTerminalProblem),
-					),
+				IPCService.invoke("terminal:hide")([id]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeTerminalProblem),
+				),
 		};
 
 		return Service;

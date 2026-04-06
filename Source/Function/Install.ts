@@ -195,7 +195,8 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 				providerUriSetting: "ai.provider.uri",
 				providerScopes: [["read"], ["write"]],
 				entitlementUrl: "https://code.visualstudio.com/docs",
-				entitlementSignupLimitedUrl: "https://code.visualstudio.com/docs",
+				entitlementSignupLimitedUrl:
+					"https://code.visualstudio.com/docs",
 				tokenEntitlementUrl: "https://code.visualstudio.com/docs",
 				mcpRegistryDataUrl: "https://code.visualstudio.com/docs",
 				chatQuotaExceededContext: "",
@@ -243,7 +244,7 @@ export function Fallback(): void {
 				on: () => ({}),
 				once: () => ({}),
 				removeListener: () => ({}),
-				removeAllListeners: () => {}
+				removeAllListeners: () => {},
 			},
 		};
 	}
@@ -256,9 +257,7 @@ export function Fallback(): void {
 function InstallBrowserAPIPolyfills(): void {
 	// Polyfill for requestIdleCallback if not available
 	if (typeof window.requestIdleCallback !== "function") {
-		console.log(
-			"[Wind] Installing requestIdleCallback polyfill...",
-		);
+		console.log("[Wind] Installing requestIdleCallback polyfill...");
 		(window as any).requestIdleCallback = function (
 			callback: IdleRequestCallback,
 			options?: IdleRequestOptions,
@@ -266,32 +265,26 @@ function InstallBrowserAPIPolyfills(): void {
 			// Fallback: use setTimeout with reasonable delay
 			const timeout = options?.timeout ?? 1;
 			const start = Date.now();
-			const id = (setTimeout(() => {
+			const id = setTimeout(() => {
 				const end = Date.now();
 				const deadline: IdleDeadline = {
 					didTimeout: timeout <= 0,
 					timeRemaining: () => Math.max(0, timeout - (end - start)),
 				};
 				callback(deadline);
-			}, timeout) as unknown) as number;
+			}, timeout) as unknown as number;
 			return id;
 		};
-		console.log(
-			"[Wind] ✓ requestIdleCallback polyfill installed",
-		);
+		console.log("[Wind] ✓ requestIdleCallback polyfill installed");
 	}
 
 	// Polyfill for cancelIdleCallback if not available
 	if (typeof window.cancelIdleCallback !== "function") {
-		console.log(
-			"[Wind] Installing cancelIdleCallback polyfill...",
-		);
+		console.log("[Wind] Installing cancelIdleCallback polyfill...");
 		(window as any).cancelIdleCallback = function (id: number): void {
 			clearTimeout(id as unknown as ReturnType<typeof setTimeout>);
 		};
-		console.log(
-			"[Wind] ✓ cancelIdleCallback polyfill installed",
-		);
+		console.log("[Wind] ✓ cancelIdleCallback polyfill installed");
 	}
 }
 

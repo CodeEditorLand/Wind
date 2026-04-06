@@ -11,10 +11,11 @@
  */
 
 import { Effect, Layer } from "effect";
-import { ExtensionsServiceTag } from "./Tag/ExtensionsServiceTag.js";
-import type { ExtensionsService } from "./Interface/ExtensionsService.js";
-import type { ExtensionsProblem } from "./Type/ExtensionsProblem.js";
+
 import { IPC } from "../IPC.js";
+import type { ExtensionsService } from "./Interface/ExtensionsService.js";
+import { ExtensionsServiceTag } from "./Tag/ExtensionsServiceTag.js";
+import type { ExtensionsProblem } from "./Type/ExtensionsProblem.js";
 
 const MakeExtensionsProblem = (error: unknown): ExtensionsProblem =>
 	error instanceof Error
@@ -31,42 +32,38 @@ export const LiveExtensionsServiceLayer = Layer.effect(
 
 		const Service: ExtensionsService = {
 			GetExtension: (id) =>
-				IPCService
-					.invoke("extensions:get")([id])
-					.pipe(
-						Effect.map((Result) =>
-							Result === null || Result === undefined ? undefined : Result,
-						),
-						Effect.mapError(MakeExtensionsProblem),
+				IPCService.invoke("extensions:get")([id]).pipe(
+					Effect.map((Result) =>
+						Result === null || Result === undefined
+							? undefined
+							: Result,
 					),
+					Effect.mapError(MakeExtensionsProblem),
+				),
 
 			GetAllExtensions: () =>
-				IPCService
-					.invoke("extensions:getAll")([])
-					.pipe(
-						Effect.map((Result) =>
-							Array.isArray(Result) ? (Result as readonly unknown[]) : [],
-						),
-						Effect.mapError(MakeExtensionsProblem),
+				IPCService.invoke("extensions:getAll")([]).pipe(
+					Effect.map((Result) =>
+						Array.isArray(Result)
+							? (Result as readonly unknown[])
+							: [],
 					),
+					Effect.mapError(MakeExtensionsProblem),
+				),
 
 			IsActive: (id) =>
-				IPCService
-					.invoke("extensions:isActive")([id])
-					.pipe(
-						Effect.map((Result) => Boolean(Result)),
-						Effect.mapError(MakeExtensionsProblem),
-					),
+				IPCService.invoke("extensions:isActive")([id]).pipe(
+					Effect.map((Result) => Boolean(Result)),
+					Effect.mapError(MakeExtensionsProblem),
+				),
 
 			Activate: (id) =>
 				// Extension activation is driven by Mountain/Cocoon on their side.
 				// Wind just verifies the extension exists and returns.
-				IPCService
-					.invoke("extensions:get")([id])
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeExtensionsProblem),
-					),
+				IPCService.invoke("extensions:get")([id]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeExtensionsProblem),
+				),
 		};
 
 		return Service;

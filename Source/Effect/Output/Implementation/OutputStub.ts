@@ -1,4 +1,5 @@
 import { Effect } from "effect";
+
 import type { OutputService } from "../Interface/OutputService.js";
 
 export const StubOutputService: OutputService = {

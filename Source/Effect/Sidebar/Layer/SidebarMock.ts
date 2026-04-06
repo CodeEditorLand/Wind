@@ -9,9 +9,10 @@
  */
 
 import { Effect, Layer, Stream } from "effect";
-import SidebarTag from "../Tag/SidebarTag.js";
+
 import type { SidebarService } from "../Interface/SidebarService.js";
-import type { SidebarPanel, CreateSidebarPanel } from "../Type/SidebarType.js";
+import SidebarTag from "../Tag/SidebarTag.js";
+import type { CreateSidebarPanel, SidebarPanel } from "../Type/SidebarType.js";
 
 /**
  * Creates a mock Sidebar service implementation.
@@ -25,7 +26,8 @@ const makeMockSidebar = (): SidebarService => ({
 			...panel,
 			id: `mock-sidebar-${Date.now()}`,
 		}),
-	updatePanel: (_id: string, _updates: Partial<Omit<SidebarPanel, "id">>) => Effect.void,
+	updatePanel: (_id: string, _updates: Partial<Omit<SidebarPanel, "id">>) =>
+		Effect.void,
 	removePanel: (_id: string) => Effect.void,
 	getPanel: (_id: string) => Effect.succeed(undefined),
 	panels: Effect.succeed([]),

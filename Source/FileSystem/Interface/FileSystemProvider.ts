@@ -8,8 +8,9 @@
  */
 
 import type { Effect } from "effect";
-import type { IFileSystemProvider } from "../Type/FileSystemType.js";
+
 import type { FileSystemProviderError } from "../Error/FileSystemProviderError.js";
+import type { IFileSystemProvider } from "../Type/FileSystemType.js";
 
 // ============================================================================
 // Service Interface
@@ -56,7 +57,9 @@ export interface FileSystemProviderService {
 	 * @param uri - URI of the file/directory to delete
 	 * @returns Effect that completes when deletion is complete
 	 */
-	readonly delete: (uri: string) => Effect.Effect<void, FileSystemProviderError>;
+	readonly delete: (
+		uri: string,
+	) => Effect.Effect<void, FileSystemProviderError>;
 
 	/**
 	 * Copy a file or directory
@@ -105,16 +108,16 @@ export interface FileSystemProviderService {
 	 * @param uri - URI of the directory to remove
 	 * @returns Effect that completes when directory is removed
 	 */
-	readonly rmdir: (uri: string) => Effect.Effect<void, FileSystemProviderError>;
+	readonly rmdir: (
+		uri: string,
+	) => Effect.Effect<void, FileSystemProviderError>;
 
 	/**
 	 * Get file/directory statistics
 	 * @param uri - URI of the file/directory to stat
 	 * @returns Effect resolving to file statistics
 	 */
-	readonly stat: (
-		uri: string,
-	) => Effect.Effect<
+	readonly stat: (uri: string) => Effect.Effect<
 		{
 			type: number;
 			size: number;

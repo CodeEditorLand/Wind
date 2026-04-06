@@ -1,3 +1,9 @@
+// Convenience export for quick bootstrap execution
+import { Effect } from "effect";
+
+import { BootstrapLive } from "./Implementation/BootstrapImplementation.js";
+import { BootstrapTag } from "./Tag/BootstrapTag.js";
+
 /**
  * @module Effect/Bootstrap
  * @description
@@ -26,7 +32,11 @@
  */
 
 // Type definitions
-export type { BootstrapOptions, StageResult, BootstrapResult } from "./Type/BootstrapType.js";
+export type {
+	BootstrapOptions,
+	StageResult,
+	BootstrapResult,
+} from "./Type/BootstrapType.js";
 
 // Service interface
 export type { BootstrapService } from "./Interface/BootstrapService.js";
@@ -51,11 +61,9 @@ export { BootstrapLive } from "./Implementation/BootstrapImplementation.js";
 // Mock implementation layer
 export { BootstrapMock, makeMockBootstrap } from "./Layer/BootstrapMock.js";
 
-// Convenience export for quick bootstrap execution
-import { Effect } from "effect";
-import { BootstrapTag } from "./Tag/BootstrapTag.js";
-import { BootstrapLive } from "./Implementation/BootstrapImplementation.js";
-export const runBootstrap = (options?: import("./Type/BootstrapType.js").BootstrapOptions) =>
+export const runBootstrap = (
+	options?: import("./Type/BootstrapType.js").BootstrapOptions,
+) =>
 	Effect.gen(function* () {
 		const bootstrap = yield* BootstrapTag;
 		return yield* bootstrap.run(options);

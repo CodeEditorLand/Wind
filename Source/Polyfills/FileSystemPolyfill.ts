@@ -140,19 +140,25 @@ interface CopyFileOptions {
 /**
  * Invoke Tauri command with proper error handling
  */
-async function invokeTauri<T>(command: string, args: Record<string, unknown> = {}): Promise<T> {
+async function invokeTauri<T>(
+	command: string,
+	args: Record<string, unknown> = {},
+): Promise<T> {
 	try {
 		if (typeof (window as any).__TAURI__?.invoke !== "undefined") {
 			return await (window as any).__TAURI__.invoke<T>(command, args);
 		}
-		
+
 		if (typeof (window as any).TAURI?.invoke !== "undefined") {
 			return await (window as any).TAURI.invoke<T>(command, args);
 		}
-		
+
 		throw new Error(`Tauri invoke not available for command: ${command}`);
 	} catch (error: unknown) {
-		console.error(`[FileSystemPolyfill] Tauri invoke failed for ${command}:`, error);
+		console.error(
+			`[FileSystemPolyfill] Tauri invoke failed for ${command}:`,
+			error,
+		);
 		throw error;
 	}
 }
@@ -255,7 +261,8 @@ async function readFile(
 	console.log(`[FileSystemPolyfill] readFile: ${path}`);
 
 	// Normalize options
-	const encoding = typeof options === "string" ? options : options?.encoding ?? "utf8";
+	const encoding =
+		typeof options === "string" ? options : (options?.encoding ?? "utf8");
 
 	try {
 		// Call Mountain to read file
@@ -351,7 +358,8 @@ async function rm(path: string, options?: RmOptions): Promise<void> {
 		});
 	} catch (error: unknown) {
 		if (!opts.force) {
-			const err = error instanceof Error ? error : new Error(String(error));
+			const err =
+				error instanceof Error ? error : new Error(String(error));
 			console.error(`[FileSystemPolyfill] rm error: ${path}`, err);
 			throw err;
 		}
@@ -379,7 +387,11 @@ async function rename(oldPath: string, newPath: string): Promise<void> {
 /**
  * Copy file
  */
-async function copyFile(src: string, dest: string, options?: CopyFileOptions): Promise<void> {
+async function copyFile(
+	src: string,
+	dest: string,
+	options?: CopyFileOptions,
+): Promise<void> {
 	console.log(`[FileSystemPolyfill] copyFile: ${src} -> ${dest}`);
 
 	try {
@@ -397,7 +409,10 @@ async function copyFile(src: string, dest: string, options?: CopyFileOptions): P
 /**
  * Make directory
  */
-async function mkdir(path: string, options?: MkdirOptions | number | boolean): Promise<void> {
+async function mkdir(
+	path: string,
+	options?: MkdirOptions | number | boolean,
+): Promise<void> {
 	console.log(`[FileSystemPolyfill] mkdir: ${path}`);
 
 	// Normalize options
@@ -453,21 +468,30 @@ async function rmdir(path: string): Promise<void> {
 /**
  * Read directory
  */
-async function readdir(path: string, options?: { withFileTypes?: boolean }): Promise<string[] | Dirent[]> {
+async function readdir(
+	path: string,
+	options?: { withFileTypes?: boolean },
+): Promise<string[] | Dirent[]> {
 	console.log(`[FileSystemPolyfill] readdir: ${path}`);
 
 	try {
 		const withFileTypes = options?.withFileTypes ?? false;
 
 		// Call Mountain to read directory
-		const entries = await invokeTauri<Array<{ name: string; is_file: boolean }>>("file:readdir", {
+		const entries = await invokeTauri<
+			Array<{ name: string; is_file: boolean }>
+		>("file:readdir", {
 			path,
 		});
 
 		if (withFileTypes) {
 			// Return Dirent objects
 			return entries.map((entry) =>
-				createDirent(entry.name, `${path}/${entry.name}`, !entry.is_file),
+				createDirent(
+					entry.name,
+					`${path}/${entry.name}`,
+					!entry.is_file,
+				),
 			);
 		} else {
 			// Return string array
@@ -522,84 +546,108 @@ async function exists(path: string): Promise<boolean> {
  * Not supported: Cannot open file descriptors in browser/Tauri
  */
 function open(): never {
-	throw new Error("fs.open() is not supported in browser/Tauri environment. No file descriptor operations available.");
+	throw new Error(
+		"fs.open() is not supported in browser/Tauri environment. No file descriptor operations available.",
+	);
 }
 
 /**
  * Not supported: Cannot read from file descriptors in browser/Tauri
  */
 function read(): never {
-	throw new Error("fs.read() is not supported in browser/Tauri environment. Use readFile() instead.");
+	throw new Error(
+		"fs.read() is not supported in browser/Tauri environment. Use readFile() instead.",
+	);
 }
 
 /**
  * Not supported: Cannot write to file descriptors in browser/Tauri
  */
 function write(): never {
-	throw new Error("fs.write() is not supported in browser/Tauri environment. Use writeFile() instead.");
+	throw new Error(
+		"fs.write() is not supported in browser/Tauri environment. Use writeFile() instead.",
+	);
 }
 
 /**
  * Not supported: Cannot close file descriptors in browser/Tauri
  */
 function close(): never {
-	throw new Error("fs.close() is not supported in browser/Tauri environment.");
+	throw new Error(
+		"fs.close() is not supported in browser/Tauri environment.",
+	);
 }
 
 /**
  * Not supported: Synchronous operations not supported
  */
 function readFileSync(): never {
-	throw new Error("fs.readFileSync() is not supported in browser/Tauri environment. Use async readFile() instead.");
+	throw new Error(
+		"fs.readFileSync() is not supported in browser/Tauri environment. Use async readFile() instead.",
+	);
 }
 
 /**
  * Not supported: Synchronous operations not supported
  */
 function writeFileSync(): never {
-	throw new Error("fs.writeFileSync() is not supported in browser/Tauri environment. Use async writeFile() instead.");
+	throw new Error(
+		"fs.writeFileSync() is not supported in browser/Tauri environment. Use async writeFile() instead.",
+	);
 }
 
 /**
  * Not supported: File watching requires backend service
  */
 function watch(): never {
-	throw new Error("fs.watch() is not supported. Use the FileWatcher service instead.");
+	throw new Error(
+		"fs.watch() is not supported. Use the FileWatcher service instead.",
+	);
 }
 
 /**
  * Not supported: File watching requires backend service
  */
 function watchFile(): never {
-	throw new Error("fs.watchFile() is not supported. Use the FileWatcher service instead.");
+	throw new Error(
+		"fs.watchFile() is not supported. Use the FileWatcher service instead.",
+	);
 }
 
 /**
  * Not supported: Symbolic links not fully supported in sandbox
  */
 function symlink(): never {
-	throw new Error("fs.symlink() is not fully supported in browser/Tauri environment.");
+	throw new Error(
+		"fs.symlink() is not fully supported in browser/Tauri environment.",
+	);
 }
 
 /**
  * Not supported: Symbolic links not fully supported in sandbox
  */
 function readlink(): never {
-	throw new Error("fs.readlink() is not fully supported in browser/Tauri environment.");
+	throw new Error(
+		"fs.readlink() is not fully supported in browser/Tauri environment.",
+	);
 }
 
 /**
  * Not supported: Cannot modify file permissions in sandbox
  */
 function chmod(): never {
-	throw new Error("fs.chmod() is not supported in browser/Tauri environment.");
+	throw new Error(
+		"fs.chmod() is not supported in browser/Tauri environment.",
+	);
 }
 
 /**
  * Not supported: Cannot modify file permissions in sandbox
  */
 function chown(): never {
-	throw new Error("fs.chown() is not supported in browser/Tauri environment.");
+	throw new Error(
+		"fs.chown() is not supported in browser/Tauri environment.",
+	);
 }
 
 // ============================================================================
@@ -621,7 +669,7 @@ const fs = {
 	readdir,
 	stat,
 	exists,
-	
+
 	// Constants (partial)
 	constants: {
 		O_RDONLY: 0,
@@ -631,7 +679,7 @@ const fs = {
 		O_TRUNC: 512,
 		O_APPEND: 1024,
 	},
-	
+
 	// Not supported but included for TypeScript compatibility
 	open,
 	read,
@@ -645,7 +693,7 @@ const fs = {
 	readlink,
 	chmod,
 	chown,
-	
+
 	// Promise-based API for modern Node.js code
 	promises: {
 		readFile,
@@ -681,7 +729,9 @@ export function installFileSystemPolyfill(): void {
 	}
 	(window as any).__FILE_SYSTEM_POLYFILL_INSTALLED__ = true;
 
-	console.log("[FileSystemPolyfill] Installing Node.js fs module polyfill...");
+	console.log(
+		"[FileSystemPolyfill] Installing Node.js fs module polyfill...",
+	);
 
 	// Attach fs module to global (for Node.js compatibility)
 	(window as any).fs = fs;
@@ -714,7 +764,7 @@ function createRequireShim() {
 export default {
 	install: installFileSystemPolyfill,
 	module: fs,
-	
+
 	// Individual exports for convenience
 	readFile,
 	writeFile,

@@ -1,3 +1,7 @@
+// Layers - import and re-export both layers
+import { LiveClipboardServiceLayer as LiveLayer } from "./Clipboard/Live.js";
+import { MockClipboardServiceLayer as MockLayer } from "./Clipboard/Mock.js";
+
 /**
  * @module Application/Clipboard
  * @description
@@ -36,14 +40,14 @@
  * ```typescript
  * import Clipboard from "./Effect/Clipboard.js";
  * import { Effect } from "effect";
- * 
+ *
  * const program = Effect.gen(function* () {
  *   const clipboardService = yield* Clipboard.ClipboardServiceTag;
  *   yield* clipboardService.writeText("Hello, World!");
  *   const text = yield* clipboardService.readText();
  *   return text;
  * });
- * 
+ *
  * Effect.runPromise(program.pipe(Effect.provide(Clipboard)));
  * ```
  */
@@ -59,15 +63,14 @@ export type { ClipboardProblem } from "./Clipboard/Type/ClipboardProblem.js";
 export type { ClipboardService } from "./Clipboard/Interface/ClipboardService.js";
 
 // Tag
-export { ClipboardServiceTag, Clipboard } from "./Clipboard/Tag/ClipboardServiceTag.js";
+export {
+	ClipboardServiceTag,
+	Clipboard,
+} from "./Clipboard/Tag/ClipboardServiceTag.js";
 
 // Implementations
 export { LiveBrowserClipboardService } from "./Clipboard/Implementation/BrowserClipboard.js";
 export { MockClipboardService } from "./Clipboard/Implementation/MockClipboard.js";
-
-// Layers - import and re-export both layers
-import { LiveClipboardServiceLayer as LiveLayer } from "./Clipboard/Live.js";
-import { MockClipboardServiceLayer as MockLayer } from "./Clipboard/Mock.js";
 
 export { LiveLayer, MockLayer };
 

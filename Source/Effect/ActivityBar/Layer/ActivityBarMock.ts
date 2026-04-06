@@ -10,10 +10,12 @@
 
 import { Effect, Layer, Stream } from "effect";
 
-import { ActivityBarTag } from "../Tag/ActivityBarTag.js";
 import type { ActivityBarService } from "../Interface/ActivityBarService.js";
-import type { CreateActivityBarItem } from "../Type/ActivityBarType.js";
-import type { ActivityBarBadge } from "../Type/ActivityBarType.js";
+import { ActivityBarTag } from "../Tag/ActivityBarTag.js";
+import type {
+	ActivityBarBadge,
+	CreateActivityBarItem,
+} from "../Type/ActivityBarType.js";
 
 // ============================================================================
 // Mock Implementation
@@ -29,8 +31,10 @@ export const ActivityBarMockLive = Layer.succeed(ActivityBarTag, {
 			...item,
 			id: `mock-activitybar-${Date.now()}`,
 		}),
-	updateItem: (_id: string, _updates: Partial<import("../Type/ActivityBarType.js").ActivityBarItem>) =>
-		Effect.void,
+	updateItem: (
+		_id: string,
+		_updates: Partial<import("../Type/ActivityBarType.js").ActivityBarItem>,
+	) => Effect.void,
 	removeItem: (_id: string) => Effect.void,
 	getItem: (_id: string) => Effect.succeed(undefined),
 	items: Effect.succeed([]),
@@ -38,7 +42,8 @@ export const ActivityBarMockLive = Layer.succeed(ActivityBarTag, {
 	setActiveItem: (_id: string) => Effect.void,
 	getActiveItem: Effect.succeed(undefined),
 	activeItemChanges: Stream.empty,
-	setBadge: (_id: string, _badge: ActivityBarBadge | undefined) => Effect.void,
+	setBadge: (_id: string, _badge: ActivityBarBadge | undefined) =>
+		Effect.void,
 	getBadge: (_id: string) => Effect.succeed(undefined),
 	clearBadge: (_id: string) => Effect.void,
 } satisfies ActivityBarService);

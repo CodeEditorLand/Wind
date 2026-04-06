@@ -11,7 +11,10 @@
  */
 
 // Types
-export type { StatusBarItem, CreateStatusBarItem } from "./Type/StatusBarType.js";
+export type {
+	StatusBarItem,
+	CreateStatusBarItem,
+} from "./Type/StatusBarType.js";
 
 // Service interface
 export type { StatusBarService } from "./Interface/StatusBarService.js";

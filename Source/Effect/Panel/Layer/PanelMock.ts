@@ -9,9 +9,14 @@
  */
 
 import { Effect, Layer, Stream } from "effect";
-import PanelTag from "../Tag/PanelTag.js";
+
 import type { PanelService } from "../Interface/PanelService.js";
-import type { PanelView, CreatePanelView, PanelViewType } from "../Type/PanelType.js";
+import PanelTag from "../Tag/PanelTag.js";
+import type {
+	CreatePanelView,
+	PanelView,
+	PanelViewType,
+} from "../Type/PanelType.js";
 
 /**
  * Creates a mock Panel service implementation.
@@ -25,7 +30,8 @@ const makeMockPanel = (): PanelService => ({
 			...view,
 			id: `mock-panel-${Date.now()}`,
 		}),
-	updateView: (_id: string, _updates: Partial<Omit<PanelView, "id">>) => Effect.void,
+	updateView: (_id: string, _updates: Partial<Omit<PanelView, "id">>) =>
+		Effect.void,
 	removeView: (_id: string) => Effect.void,
 	getView: (_id: string) => Effect.succeed(undefined),
 	views: Effect.succeed([]),

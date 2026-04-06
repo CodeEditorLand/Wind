@@ -9,6 +9,7 @@
  */
 
 import { Context } from "effect";
+
 import type { SidebarService } from "../Interface/SidebarService.js";
 
 /**
@@ -26,7 +27,10 @@ import type { SidebarService } from "../Interface/SidebarService.js";
  * });
  * ```
  */
-export default class SidebarTag extends Context.Tag("Sidebar")<SidebarTag, SidebarService>() {}
+export default class SidebarTag extends Context.Tag("Sidebar")<
+	SidebarTag,
+	SidebarService
+>() {}
 
 /**
  * Alias for SidebarTag for shorter import paths.

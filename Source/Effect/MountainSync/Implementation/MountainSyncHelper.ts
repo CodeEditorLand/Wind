@@ -9,10 +9,11 @@
  */
 
 import { Effect } from "effect";
-import type { MountainSyncResult } from "../Type/MountainSyncType.js";
-import type { MountainService } from "../../Mountain.js";
+
 import type { IPCService } from "../../IPC.js";
+import type { MountainService } from "../../Mountain.js";
 import type { TelemetryService } from "../../Telemetry.js";
+import type { MountainSyncResult } from "../Type/MountainSyncType.js";
 
 /**
  * Performs a single synchronization operation.
@@ -29,21 +30,21 @@ const SyncNowEffect = (
 	telemetry: TelemetryService,
 ): Effect.Effect<MountainSyncResult> =>
 	Effect.gen(function* () {
-	const StartTime = Date.now();
+		const StartTime = Date.now();
 
-	// DEPENDENCY: Requires Mountain service integration to fetch/sync state
-	// This would fetch changes from Mountain, sync state, etc.
+		// DEPENDENCY: Requires Mountain service integration to fetch/sync state
+		// This would fetch changes from Mountain, sync state, etc.
 
-	yield* telemetry.log("info", "[MountainSync] Performing sync...");
+		yield* telemetry.log("info", "[MountainSync] Performing sync...");
 
-	// Mock sync for now
-	yield* Effect.sleep(10);
+		// Mock sync for now
+		yield* Effect.sleep(10);
 
-	return {
-		success: true,
-		itemsSynced: 0,
-		duration: Date.now() - StartTime,
-	} satisfies MountainSyncResult;
-});
+		return {
+			success: true,
+			itemsSynced: 0,
+			duration: Date.now() - StartTime,
+		} satisfies MountainSyncResult;
+	});
 
 export default SyncNowEffect;

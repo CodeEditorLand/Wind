@@ -11,7 +11,12 @@
  */
 
 // Types
-export type { SyncStatus, SyncConfig, SyncStats, MountainSyncResult } from "./Type/MountainSyncType.js";
+export type {
+	SyncStatus,
+	SyncConfig,
+	SyncStats,
+	MountainSyncResult,
+} from "./Type/MountainSyncType.js";
 
 // Service interface
 export type { MountainSyncService } from "./Interface/MountainSyncService.js";

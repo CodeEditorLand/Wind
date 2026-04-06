@@ -10,7 +10,11 @@
 // Tags
 // ============================================================================
 
-export { WorkbenchIntegrationTag, WorkbenchIntegrationLiveLayer, default } from "./Implementation/WorkbenchIntegrationImplementation.js";
+export {
+	WorkbenchIntegrationTag,
+	WorkbenchIntegrationLiveLayer,
+	default,
+} from "./Implementation/WorkbenchIntegrationImplementation.js";
 
 // ============================================================================
 // Interface

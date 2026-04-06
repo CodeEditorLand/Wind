@@ -9,6 +9,7 @@
  */
 
 import { Effect } from "effect";
+
 import type { ClipboardProblem } from "../Type/ClipboardProblem.js";
 
 // ============================================================================
@@ -32,4 +33,3 @@ export interface ClipboardService {
 	readonly hasText: () => Effect.Effect<boolean, ClipboardProblem>;
 	readonly clear: () => Effect.Effect<void, ClipboardProblem>;
 }
-

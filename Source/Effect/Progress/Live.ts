@@ -1,0 +1,66 @@
+/**
+ * @module Effect/Progress/Live
+ * @description
+ * Live implementation of ProgressService via Tauri IPC. Mountain emits
+ * sky://progress/* events that Sky renders as progress indicators.
+ *
+ * IPC channels (WindServiceHandlers.rs):
+ *   progress:begin   → sky://progress/begin (Mountain AppHandle.emit)
+ *   progress:report  → sky://progress/report
+ *   progress:end     → sky://progress/end
+ */
+
+import { Effect, Layer } from "effect";
+
+import { IPC } from "../IPC.js";
+import type { ProgressService } from "./Interface/ProgressService.js";
+import { ProgressServiceTag } from "./Tag/ProgressServiceTag.js";
+import type { ProgressProblem } from "./Type/ProgressProblem.js";
+
+const MakeProgressProblem = (error: unknown): ProgressProblem =>
+	error instanceof Error
+		? { _tag: "ProgressOperationFailed", error }
+		: { _tag: "ProgressOperationFailed", error: new Error(String(error)) };
+
+export const LiveProgressServiceLayer = Layer.effect(
+	ProgressServiceTag,
+	Effect.gen(function* () {
+		const IPCService = yield* IPC;
+
+		const Service: ProgressService = {
+			Begin: (options) =>
+				IPCService.invoke("progress:begin")([
+					options.location,
+					options.title ?? "",
+					options.cancellable ?? false,
+				]).pipe(
+					Effect.map((Result) =>
+						typeof Result === "string"
+							? Result
+							: `progress-${Date.now()}`,
+					),
+					Effect.mapError(MakeProgressProblem),
+				),
+
+			Report: (id, report) =>
+				IPCService.invoke("progress:report")([
+					id,
+					report.increment ?? 0,
+					report.message ?? "",
+				]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeProgressProblem),
+				),
+
+			End: (id) =>
+				IPCService.invoke("progress:end")([id]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeProgressProblem),
+				),
+		};
+
+		return Service;
+	}),
+);
+
+export default LiveProgressServiceLayer;

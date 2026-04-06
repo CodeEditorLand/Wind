@@ -1,3 +1,6 @@
+// Convenience alias for backward compatibility
+import { ConfigurationTag } from "./Tag/ConfigurationTag.js";
+
 /**
  * @module Effect/Configuration
  * @description
@@ -40,14 +43,23 @@ export type { ConfigurationService } from "./Interface/ConfigurationService.js";
 export { ConfigurationTag } from "./Tag/ConfigurationTag.js";
 
 // Helper functions
-export { ValidateConfiguration, MakeValidate, MakeApply, GetConfigValue } from "./Implementation/ConfigurationHelper.js";
+export {
+	ValidateConfiguration,
+	MakeValidate,
+	MakeApply,
+	GetConfigValue,
+} from "./Implementation/ConfigurationHelper.js";
 
 // Live implementation layer
-export { ConfigurationLive, ConfigurationWithSyncLive } from "./Implementation/ConfigurationImplementation.js";
+export {
+	ConfigurationLive,
+	ConfigurationWithSyncLive,
+} from "./Implementation/ConfigurationImplementation.js";
 
 // Mock implementation layer
-export { ConfigurationMock, makeMockConfiguration } from "./Layer/ConfigurationMock.js";
+export {
+	ConfigurationMock,
+	makeMockConfiguration,
+} from "./Layer/ConfigurationMock.js";
 
-// Convenience alias for backward compatibility
-import { ConfigurationTag } from "./Tag/ConfigurationTag.js";
 export { ConfigurationTag as Configuration };

@@ -10,7 +10,10 @@
 
 import { Context, Effect } from "effect";
 
-import type { BootstrapOptions, BootstrapResult } from "../Type/BootstrapType.js";
+import type {
+	BootstrapOptions,
+	BootstrapResult,
+} from "../Type/BootstrapType.js";
 
 // ============================================================================
 // Service Interface
@@ -35,5 +38,7 @@ export interface BootstrapService {
 	 * @param options - Options for controlling bootstrap behavior
 	 * @returns Effect that resolves to the bootstrap result
 	 */
-	readonly run: (options?: BootstrapOptions) => Effect.Effect<BootstrapResult, never>;
+	readonly run: (
+		options?: BootstrapOptions,
+	) => Effect.Effect<BootstrapResult, never>;
 }

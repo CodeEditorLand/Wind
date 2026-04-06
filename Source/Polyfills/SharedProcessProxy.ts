@@ -28,7 +28,7 @@
 /**
  * Shared process service type
  */
-type SharedProcessService = 
+type SharedProcessService =
 	| "extension-host"
 	| "search"
 	| "debug"
@@ -82,19 +82,25 @@ interface ServiceProxy {
 /**
  * Invoke Tauri command with proper error handling
  */
-async function invokeTauri<T>(command: string, args: Record<string, unknown> = {}): Promise<T> {
+async function invokeTauri<T>(
+	command: string,
+	args: Record<string, unknown> = {},
+): Promise<T> {
 	try {
 		if (typeof (window as any).__TAURI__?.invoke !== "undefined") {
 			return await (window as any).__TAURI__.invoke<T>(command, args);
 		}
-		
+
 		if (typeof (window as any).TAURI?.invoke !== "undefined") {
 			return await (window as any).TAURI.invoke<T>(command, args);
 		}
-		
+
 		throw new Error(`Tauri invoke not available for command: ${command}`);
 	} catch (error: unknown) {
-		console.error(`[SharedProcessProxy] Tauri invoke failed for ${command}:`, error);
+		console.error(
+			`[SharedProcessProxy] Tauri invoke failed for ${command}:`,
+			error,
+		);
 		throw error;
 	}
 }
@@ -102,28 +108,39 @@ async function invokeTauri<T>(command: string, args: Record<string, unknown> = {
 /**
  * Listen for Tauri events
  */
-function listenToTauri(event: string, handler: (payload: unknown) => void): () => void {
+function listenToTauri(
+	event: string,
+	handler: (payload: unknown) => void,
+): () => void {
 	if (typeof (window as any).__TAURI__?.event?.listen === "function") {
-		const unlistenPromise = (window as any).__TAURI__.event.listen(event, ({ payload }: { payload: unknown }) => {
-			handler(payload);
-		});
-		
+		const unlistenPromise = (window as any).__TAURI__.event.listen(
+			event,
+			({ payload }: { payload: unknown }) => {
+				handler(payload);
+			},
+		);
+
 		return () => {
 			unlistenPromise.then((unlisten: () => void) => unlisten());
 		};
 	}
-	
+
 	if (typeof (window as any).TAURI?.event?.listen === "function") {
-		const unlistenPromise = (window as any).TAURI.event.listen(event, ({ payload }: { payload: unknown }) => {
-			handler(payload);
-		});
-		
+		const unlistenPromise = (window as any).TAURI.event.listen(
+			event,
+			({ payload }: { payload: unknown }) => {
+				handler(payload);
+			},
+		);
+
 		return () => {
 			unlistenPromise.then((unlisten: () => void) => unlisten());
 		};
 	}
-	
-	console.warn(`[SharedProcessProxy] Tauri event listener not available for: ${event}`);
+
+	console.warn(
+		`[SharedProcessProxy] Tauri event listener not available for: ${event}`,
+	);
 	return () => {};
 }
 
@@ -136,33 +153,47 @@ function listenToTauri(event: string, handler: (payload: unknown) => void): () =
  */
 function createServiceProxy(service: SharedProcessService): ServiceProxy {
 	const listeners: Map<string, Set<(...args: unknown[]) => void>> = new Map();
-	const pendingRequests: Map<string, { resolve: (value: unknown) => void; reject: (error: Error) => void }> = new Map();
-	
+	const pendingRequests: Map<
+		string,
+		{ resolve: (value: unknown) => void; reject: (error: Error) => void }
+	> = new Map();
+
 	let isReady = false;
-	
+
 	// Listen for responses on this service
-	const unlistenResponse = listenToTauri(`shared_process:response:${service}`, (payload: unknown) => {
-		const response = payload as SharedProcessResponse;
-		
-		if (response.correlationId && pendingRequests.has(response.correlationId)) {
-			const pending = pendingRequests.get(response.correlationId)!;
-			
-			if (response.success) {
-				pending.resolve(response.data);
-			} else {
-				pending.reject(new Error(response.error ?? "Unknown error"));
+	const unlistenResponse = listenToTauri(
+		`shared_process:response:${service}`,
+		(payload: unknown) => {
+			const response = payload as SharedProcessResponse;
+
+			if (
+				response.correlationId &&
+				pendingRequests.has(response.correlationId)
+			) {
+				const pending = pendingRequests.get(response.correlationId)!;
+
+				if (response.success) {
+					pending.resolve(response.data);
+				} else {
+					pending.reject(
+						new Error(response.error ?? "Unknown error"),
+					);
+				}
+
+				pendingRequests.delete(response.correlationId);
 			}
-			
-			pendingRequests.delete(response.correlationId);
-		}
-	});
-	
+		},
+	);
+
 	// Listen for events from this service
-	const unlistenEvent = listenToTauri(`shared_process:event:${service}`, (payload: unknown) => {
-		const event = payload as { event: string; args: unknown[] };
-		emitEvent(event.event, ...event.args);
-	});
-	
+	const unlistenEvent = listenToTauri(
+		`shared_process:event:${service}`,
+		(payload: unknown) => {
+			const event = payload as { event: string; args: unknown[] };
+			emitEvent(event.event, ...event.args);
+		},
+	);
+
 	/**
 	 * Emit event to all listeners
 	 */
@@ -173,19 +204,22 @@ function createServiceProxy(service: SharedProcessService): ServiceProxy {
 				try {
 					listener(...args);
 				} catch (error) {
-					console.error(`[SharedProcessProxy] Error in ${service} event listener (${event}):`, error);
+					console.error(
+						`[SharedProcessProxy] Error in ${service} event listener (${event}):`,
+						error,
+					);
 				}
 			});
 		}
 	}
-	
+
 	/**
 	 * Generate correlation ID for request-response pattern
 	 */
 	function generateCorrelationId(): string {
 		return `${service}_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 	}
-	
+
 	return {
 		service,
 		get ready() {
@@ -194,43 +228,55 @@ function createServiceProxy(service: SharedProcessService): ServiceProxy {
 		set ready(value: boolean) {
 			isReady = value;
 		},
-		
+
 		/**
 		 * Health check for the service
 		 */
 		async healthCheck(): Promise<boolean> {
 			try {
 				if (service === "extension-host") {
-					return await invokeTauri<boolean>("cocoon:extension_host_health", {});
+					return await invokeTauri<boolean>(
+						"cocoon:extension_host_health",
+						{},
+					);
 				} else if (service === "search") {
-					return await invokeTauri<boolean>("cocoon:search_service_health", {});
+					return await invokeTauri<boolean>(
+						"cocoon:search_service_health",
+						{},
+					);
 				} else if (service === "debug") {
-					return await invokeTauri<boolean>("cocoon:debug_service_health", {});
+					return await invokeTauri<boolean>(
+						"cocoon:debug_service_health",
+						{},
+					);
 				} else {
-					return await invokeTauri<boolean>("shared_process:service_health", { service });
+					return await invokeTauri<boolean>(
+						"shared_process:service_health",
+						{ service },
+					);
 				}
 			} catch {
 				return false;
 			}
 		},
-		
+
 		/**
 		 * Invoke a method on the service
 		 */
 		async invoke(method: string, ...args: unknown[]): Promise<unknown> {
 			const correlationId = generateCorrelationId();
-			
+
 			const request: SharedProcessMessage = {
 				service,
 				method,
 				args,
 				correlationId,
 			};
-			
+
 			// Create promise for response
 			return new Promise((resolve, reject) => {
 				pendingRequests.set(correlationId, { resolve, reject });
-				
+
 				// Send request to Tauri
 				invokeTauri("shared_process:invoke", request).catch((error) => {
 					pendingRequests.delete(correlationId);
@@ -238,7 +284,7 @@ function createServiceProxy(service: SharedProcessService): ServiceProxy {
 				});
 			});
 		},
-		
+
 		/**
 		 * Register event listener
 		 */
@@ -248,7 +294,7 @@ function createServiceProxy(service: SharedProcessService): ServiceProxy {
 			}
 			listeners.get(event)!.add(handler);
 		},
-		
+
 		/**
 		 * Register one-time event listener
 		 */
@@ -259,11 +305,14 @@ function createServiceProxy(service: SharedProcessService): ServiceProxy {
 			};
 			this.on(event, wrappedHandler);
 		},
-		
+
 		/**
 		 * Remove event listener
 		 */
-		removeListener(event: string, handler: (...args: unknown[]) => void): void {
+		removeListener(
+			event: string,
+			handler: (...args: unknown[]) => void,
+		): void {
 			const eventListeners = listeners.get(event);
 			if (eventListeners) {
 				eventListeners.delete(handler);
@@ -272,7 +321,7 @@ function createServiceProxy(service: SharedProcessService): ServiceProxy {
 				}
 			}
 		},
-		
+
 		/**
 		 * Remove all event listeners
 		 */
@@ -301,35 +350,48 @@ export const ExtensionHostService: ServiceProxy = Object.assign(
 		 * Start extension host
 		 */
 		async start(extensionId: string): Promise<boolean> {
-			return await this.invoke("start", extensionId) as Promise<boolean>;
+			return (await this.invoke(
+				"start",
+				extensionId,
+			)) as Promise<boolean>;
 		},
-		
+
 		/**
 		 * Stop extension host
 		 */
 		async stop(extensionId: string): Promise<boolean> {
-			return await this.invoke("stop", extensionId) as Promise<boolean>;
+			return (await this.invoke("stop", extensionId)) as Promise<boolean>;
 		},
-		
+
 		/**
 		 * Restart extension host
 		 */
 		async restart(extensionId: string): Promise<boolean> {
-			return await this.invoke("restart", extensionId) as Promise<boolean>;
+			return (await this.invoke(
+				"restart",
+				extensionId,
+			)) as Promise<boolean>;
 		},
-		
+
 		/**
 		 * Call extension API
 		 */
-		async callExtensionAPI(extensionId: string, method: string, ...args: unknown[]): Promise<unknown> {
+		async callExtensionAPI(
+			extensionId: string,
+			method: string,
+			...args: unknown[]
+		): Promise<unknown> {
 			return await this.invoke("callAPI", extensionId, method, ...args);
 		},
-		
+
 		/**
 		 * Get extension host status
 		 */
 		async getStatus(): Promise<{ running: boolean; extensions: string[] }> {
-			return await this.invoke("getStatus") as Promise<{ running: boolean; extensions: string[] }>;
+			return (await this.invoke("getStatus")) as Promise<{
+				running: boolean;
+				extensions: string[];
+			}>;
 		},
 	},
 );
@@ -349,21 +411,26 @@ export const SearchService: ServiceProxy = Object.assign(
 		 * Perform search
 		 */
 		async search(query: string, options?: unknown): Promise<unknown[]> {
-			return await this.invoke("search", query, options) as Promise<unknown[]>;
+			return (await this.invoke("search", query, options)) as Promise<
+				unknown[]
+			>;
 		},
-		
+
 		/**
 		 * Get search index status
 		 */
 		async getIndexStatus(): Promise<{ ready: boolean; documents: number }> {
-			return await this.invoke("getIndexStatus") as Promise<{ ready: boolean; documents: number }>;
+			return (await this.invoke("getIndexStatus")) as Promise<{
+				ready: boolean;
+				documents: number;
+			}>;
 		},
-		
+
 		/**
 		 * Clear search index
 		 */
 		async clearIndex(): Promise<boolean> {
-			return await this.invoke("clearIndex") as Promise<boolean>;
+			return (await this.invoke("clearIndex")) as Promise<boolean>;
 		},
 	},
 );
@@ -383,28 +450,47 @@ export const DebugService: ServiceProxy = Object.assign(
 		 * Start debug session
 		 */
 		async startSession(configuration: unknown): Promise<string> {
-			return await this.invoke("startSession", configuration) as Promise<string>;
+			return (await this.invoke(
+				"startSession",
+				configuration,
+			)) as Promise<string>;
 		},
-		
+
 		/**
 		 * Stop debug session
 		 */
 		async stopSession(sessionId: string): Promise<boolean> {
-			return await this.invoke("stopSession", sessionId) as Promise<boolean>;
+			return (await this.invoke(
+				"stopSession",
+				sessionId,
+			)) as Promise<boolean>;
 		},
-		
+
 		/**
 		 * Send debug command
 		 */
-		async sendCommand(sessionId: string, command: string, ...args: unknown[]): Promise<unknown> {
-			return await this.invoke("sendCommand", sessionId, command, ...args);
+		async sendCommand(
+			sessionId: string,
+			command: string,
+			...args: unknown[]
+		): Promise<unknown> {
+			return await this.invoke(
+				"sendCommand",
+				sessionId,
+				command,
+				...args,
+			);
 		},
-		
+
 		/**
 		 * Get active debug sessions
 		 */
-		async getActiveSessions(): Promise<Array<{ id: string; name: string }>> {
-			return await this.invoke("getActiveSessions") as Promise<Array<{ id: string; name: string }>>;
+		async getActiveSessions(): Promise<
+			Array<{ id: string; name: string }>
+		> {
+			return (await this.invoke("getActiveSessions")) as Promise<
+				Array<{ id: string; name: string }>
+			>;
 		},
 	},
 );
@@ -424,30 +510,38 @@ export const StorageService: ServiceProxy = Object.assign(
 		 * Get item from storage
 		 */
 		async getItem(key: string): Promise<string | null> {
-			return await invokeTauri<string | null>("storage:get_item", { key });
+			return await invokeTauri<string | null>("storage:get_item", {
+				key,
+			});
 		},
-		
+
 		/**
 		 * Set item in storage
 		 */
 		async setItem(key: string, value: string): Promise<boolean> {
-			return await invokeTauri<boolean>("storage:set_item", { key, value });
+			return await invokeTauri<boolean>("storage:set_item", {
+				key,
+				value,
+			});
 		},
-		
+
 		/**
 		 * Remove item from storage
 		 */
 		async removeItem(key: string): Promise<boolean> {
 			return await invokeTauri<boolean>("storage:remove_item", { key });
 		},
-		
+
 		/**
 		 * Get all items in storage
 		 */
 		async getAllItems(): Promise<Record<string, string>> {
-			return await invokeTauri<Record<string, string>>("storage:get_all_items", {});
+			return await invokeTauri<Record<string, string>>(
+				"storage:get_all_items",
+				{},
+			);
 		},
-		
+
 		/**
 		 * Clear all storage
 		 */
@@ -471,29 +565,38 @@ export const UpdateService: ServiceProxy = Object.assign(
 		/**
 		 * Check for updates
 		 */
-		async checkForUpdates(): Promise<{ available: boolean; version?: string }> {
-			return await invokeTauri<{ available: boolean; version?: string }>("update:check", {});
+		async checkForUpdates(): Promise<{
+			available: boolean;
+			version?: string;
+		}> {
+			return await invokeTauri<{ available: boolean; version?: string }>(
+				"update:check",
+				{},
+			);
 		},
-		
+
 		/**
 		 * Download update
 		 */
 		async downloadUpdate(): Promise<boolean> {
 			return await invokeTauri<boolean>("update:download", {});
 		},
-		
+
 		/**
 		 * Install update
 		 */
 		async installUpdate(): Promise<boolean> {
 			return await invokeTauri<boolean>("update:install", {});
 		},
-		
+
 		/**
 		 * Get update status
 		 */
 		async getStatus(): Promise<{ state: string; progress: number }> {
-			return await invokeTauri<{ state: string; progress: number }>("update:get_status", {});
+			return await invokeTauri<{ state: string; progress: number }>(
+				"update:get_status",
+				{},
+			);
 		},
 	},
 );
@@ -509,10 +612,10 @@ export const UpdateService: ServiceProxy = Object.assign(
 class SharedProcessManager {
 	// Service proxies
 	private services: Map<SharedProcessService, ServiceProxy> = new Map();
-	
+
 	// Health check interval
 	private healthCheckInterval: number | null = null;
-	
+
 	constructor() {
 		// Register default services
 		this.registerService(ExtensionHostService);
@@ -521,29 +624,31 @@ class SharedProcessManager {
 		this.registerService(StorageService);
 		this.registerService(UpdateService);
 	}
-	
+
 	/**
 	 * Register a service proxy
 	 */
 	registerService(proxy: ServiceProxy): void {
 		this.services.set(proxy.service, proxy);
-		console.log(`[SharedProcessProxy] Registered service: ${proxy.service}`);
+		console.log(
+			`[SharedProcessProxy] Registered service: ${proxy.service}`,
+		);
 	}
-	
+
 	/**
 	 * Get service proxy
 	 */
 	getService(service: SharedProcessService): ServiceProxy | undefined {
 		return this.services.get(service);
 	}
-	
+
 	/**
 	 * Get all services
 	 */
 	getAllServices(): Map<SharedProcessService, ServiceProxy> {
 		return new Map(this.services);
 	}
-	
+
 	/**
 	 * Start health checks
 	 */
@@ -551,28 +656,35 @@ class SharedProcessManager {
 		if (this.healthCheckInterval !== null) {
 			return;
 		}
-		
+
 		this.healthCheckInterval = window.setInterval(async () => {
-			console.log("[SharedProcessProxy] Running health checks for all services");
-			
+			console.log(
+				"[SharedProcessProxy] Running health checks for all services",
+			);
+
 			for (const [serviceName, proxy] of this.services.entries()) {
 				try {
 					const isHealthy = await proxy.healthCheck();
 					proxy.ready = isHealthy;
-					
+
 					if (!isHealthy) {
-						console.warn(`[SharedProcessProxy] Service ${serviceName} is unhealthy`);
+						console.warn(
+							`[SharedProcessProxy] Service ${serviceName} is unhealthy`,
+						);
 					}
 				} catch (error) {
-					console.error(`[SharedProcessProxy] Health check failed for ${serviceName}:`, error);
+					console.error(
+						`[SharedProcessProxy] Health check failed for ${serviceName}:`,
+						error,
+					);
 					proxy.ready = false;
 				}
 			}
 		}, intervalMs);
-		
+
 		console.log("[SharedProcessProxy] Health checks started");
 	}
-	
+
 	/**
 	 * Stop health checks
 	 */
@@ -583,43 +695,52 @@ class SharedProcessManager {
 			console.log("[SharedProcessProxy] Health checks stopped");
 		}
 	}
-	
+
 	/**
 	 * Initialize all services
 	 */
 	async initialize(): Promise<void> {
-		console.log("[SharedProcessProxy] Initializing shared process services...");
-		
+		console.log(
+			"[SharedProcessProxy] Initializing shared process services...",
+		);
+
 		for (const [serviceName, proxy] of this.services.entries()) {
 			try {
 				const isHealthy = await proxy.healthCheck();
 				proxy.ready = isHealthy;
-				console.log(`[SharedProcessProxy] Service ${serviceName}: ${isHealthy ? "ready" : "not ready"}`);
+				console.log(
+					`[SharedProcessProxy] Service ${serviceName}: ${isHealthy ? "ready" : "not ready"}`,
+				);
 			} catch (error) {
-				console.warn(`[SharedProcessProxy] Failed to initialize ${serviceName}:`, error);
+				console.warn(
+					`[SharedProcessProxy] Failed to initialize ${serviceName}:`,
+					error,
+				);
 				proxy.ready = false;
 			}
 		}
-		
+
 		// Start health checks
 		this.startHealthChecks();
-		
+
 		console.log("[SharedProcessProxy] Shared process services initialized");
 	}
-	
+
 	/**
 	 * Shutdown all services
 	 */
 	async shutdown(): Promise<void> {
-		console.log("[SharedProcessProxy] Shutting down shared process services...");
-		
+		console.log(
+			"[SharedProcessProxy] Shutting down shared process services...",
+		);
+
 		this.stopHealthChecks();
-		
+
 		// Remove all listeners
 		for (const proxy of this.services.values()) {
 			proxy.removeAllListeners();
 		}
-		
+
 		console.log("[SharedProcessProxy] Shared process services shut down");
 	}
 }
@@ -636,7 +757,9 @@ let sharedProcessManager: SharedProcessManager | null = null;
 export function getSharedProcessManager(): SharedProcessManager {
 	if (!sharedProcessManager) {
 		sharedProcessManager = new SharedProcessManager();
-		console.log("[SharedProcessProxy] SharedProcessManager instance created");
+		console.log(
+			"[SharedProcessProxy] SharedProcessManager instance created",
+		);
 	}
 	return sharedProcessManager;
 }
@@ -679,7 +802,7 @@ export async function installSharedProcessProxy(): Promise<void> {
 			UpdateService,
 		};
 	}
-	
+
 	// Make services globally available
 	(window as any).__SHARED_PROCESS__ = {
 		manager,
@@ -700,14 +823,14 @@ export async function installSharedProcessProxy(): Promise<void> {
 export default {
 	install: installSharedProcessProxy,
 	getManager: getSharedProcessManager,
-	
+
 	// Service exports
 	ExtensionHostService,
 	SearchService,
 	DebugService,
 	StorageService,
 	UpdateService,
-	
+
 	// Types
 	SharedProcessManager,
 };

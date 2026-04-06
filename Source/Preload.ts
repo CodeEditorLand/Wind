@@ -104,8 +104,8 @@
  * All heavy lifting moved to Effect services.
  */
 
-import { emit, listen } from "@tauri-apps/api/event";
 import { invoke as tauriInvoke } from "@tauri-apps/api/core";
+import { emit, listen } from "@tauri-apps/api/event";
 
 // ============================================================================
 // Atom: Cleanup registry for event listeners
@@ -130,7 +130,8 @@ const ipcRenderer = {
 	},
 
 	invoke: async (channel: string, ...args: unknown[]): Promise<unknown> => {
-		const invokeArgs: any = args.length === 0 ? undefined : (args.length === 1 ? args[0] : args);
+		const invokeArgs: any =
+			args.length === 0 ? undefined : args.length === 1 ? args[0] : args;
 		return tauriInvoke(channel, invokeArgs) as Promise<unknown>;
 	},
 
@@ -184,9 +185,9 @@ const ipcRenderer = {
 // ============================================================================
 
 const ipcMessagePort = {
-acquire: (responseChannel: string, nonce: string) => {
-	// FUTURE: Implement proper MessageChannel for VSCode SharedProcessWorker
-	console.log(
+	acquire: (responseChannel: string, nonce: string) => {
+		// FUTURE: Implement proper MessageChannel for VSCode SharedProcessWorker
+		console.log(
 			`[Preload] MessagePort acquire requested: ${responseChannel}, ${nonce}`,
 		);
 
@@ -223,8 +224,8 @@ const process = {
 		: (navigator.platform || "unknown").toLowerCase().includes("mac")
 			? "darwin"
 			: "linux",
-			arch: "x64", // FUTURE: Detect from Tauri - arch detection requires Tauri platform info
-			env: {},
+	arch: "x64", // FUTURE: Detect from Tauri - arch detection requires Tauri platform info
+	env: {},
 	versions: {
 		node: "20.0.0", // Placeholder
 		chrome: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || "unknown",
@@ -254,7 +255,9 @@ const context = {
 		if (CachedConfiguration) return CachedConfiguration;
 
 		try {
-			const Config = await tauriInvoke("mountain_get_workbench_configuration");
+			const Config = await tauriInvoke(
+				"mountain_get_workbench_configuration",
+			);
 			CachedConfiguration = Config;
 			return Config;
 		} catch (error) {

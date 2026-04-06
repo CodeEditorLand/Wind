@@ -30,7 +30,11 @@
 interface SpawnOptions {
 	cwd?: string;
 	env?: Record<string, string>;
-	stdio?: Array<"pipe" | "ignore" | "inherit" | Stream | number | null> | "pipe" | "ignore" | "inherit";
+	stdio?:
+		| Array<"pipe" | "ignore" | "inherit" | Stream | number | null>
+		| "pipe"
+		| "ignore"
+		| "inherit";
 	detached?: boolean;
 	shell?: boolean | string;
 	windowsVerbatimArguments?: boolean;
@@ -65,7 +69,11 @@ interface ForkOptions {
 	execPath?: string;
 	execArgv?: string[];
 	silent?: boolean;
-	stdio?: Array<"pipe" | "ignore" | "inherit" | Stream | number | null> | "pipe" | "ignore" | "inherit";
+	stdio?:
+		| Array<"pipe" | "ignore" | "inherit" | Stream | number | null>
+		| "pipe"
+		| "ignore"
+		| "inherit";
 	detached?: boolean;
 	windowsVerbatimArguments?: boolean;
 	windowsHide?: boolean;
@@ -127,7 +135,7 @@ type Signal = SignalNumber | SignalString;
 /**
  * Child process event types
  */
-type ChildProcessEvent = 
+type ChildProcessEvent =
 	| "close"
 	| "disconnect"
 	| "error"
@@ -159,19 +167,25 @@ interface Stream {
 /**
  * Invoke Tauri command with proper error handling
  */
-async function invokeTauri<T>(command: string, args: Record<string, unknown> = {}): Promise<T> {
+async function invokeTauri<T>(
+	command: string,
+	args: Record<string, unknown> = {},
+): Promise<T> {
 	try {
 		if (typeof (window as any).__TAURI__?.invoke !== "undefined") {
 			return await (window as any).__TAURI__.invoke<T>(command, args);
 		}
-		
+
 		if (typeof (window as any).TAURI?.invoke !== "undefined") {
 			return await (window as any).TAURI.invoke<T>(command, args);
 		}
-		
+
 		throw new Error(`Tauri invoke not available for command: ${command}`);
 	} catch (error: unknown) {
-		console.error(`[ChildProcessPolyfill] Tauri invoke failed for ${command}:`, error);
+		console.error(
+			`[ChildProcessPolyfill] Tauri invoke failed for ${command}:`,
+			error,
+		);
 		throw error;
 	}
 }
@@ -179,29 +193,40 @@ async function invokeTauri<T>(command: string, args: Record<string, unknown> = {
 /**
  * Listen for Tauri events
  */
-function listenToTauri(event: string, handler: (payload: unknown) => void): () => void {
+function listenToTauri(
+	event: string,
+	handler: (payload: unknown) => void,
+): () => void {
 	if (typeof (window as any).__TAURI__?.event?.listen === "function") {
-		const unlistenPromise = (window as any).__TAURI__.event.listen(event, ({ payload }: { payload: unknown }) => {
-			handler(payload);
-		});
-		
+		const unlistenPromise = (window as any).__TAURI__.event.listen(
+			event,
+			({ payload }: { payload: unknown }) => {
+				handler(payload);
+			},
+		);
+
 		// Return cleanup function
 		return () => {
 			unlistenPromise.then((unlisten: () => void) => unlisten());
 		};
 	}
-	
+
 	if (typeof (window as any).TAURI?.event?.listen === "function") {
-		const unlistenPromise = (window as any).TAURI.event.listen(event, ({ payload }: { payload: unknown }) => {
-			handler(payload);
-		});
-		
+		const unlistenPromise = (window as any).TAURI.event.listen(
+			event,
+			({ payload }: { payload: unknown }) => {
+				handler(payload);
+			},
+		);
+
 		return () => {
 			unlistenPromise.then((unlisten: () => void) => unlisten());
 		};
 	}
-	
-	console.warn(`[ChildProcessPolyfill] Tauri event listener not available for: ${event}`);
+
+	console.warn(
+		`[ChildProcessPolyfill] Tauri event listener not available for: ${event}`,
+	);
 	return () => {};
 }
 
@@ -214,25 +239,28 @@ function listenToTauri(event: string, handler: (payload: unknown) => void): () =
  */
 function createMockStream(direction: "read" | "write"): Stream {
 	const listeners: Map<string, Set<(...args: unknown[]) => void>> = new Map();
-	
+
 	return {
 		write(data: string | Buffer): boolean {
-			console.log(`[ChildProcessPolyfill] Stream write (${direction}):`, data.toString().slice(0, 100));
+			console.log(
+				`[ChildProcessPolyfill] Stream write (${direction}):`,
+				data.toString().slice(0, 100),
+			);
 			return true;
 		},
-		
+
 		end(data?: string | Buffer): void {
 			console.log(`[ChildProcessPolyfill] Stream end (${direction})`);
 			this.emit("end");
 		},
-		
+
 		on(event: string, listener: (...args: unknown[]) => void): void {
 			if (!listeners.has(event)) {
 				listeners.set(event, new Set());
 			}
 			listeners.get(event)!.add(listener);
 		},
-		
+
 		removeAllListeners(event?: string): void {
 			if (event) {
 				listeners.delete(event);
@@ -240,7 +268,7 @@ function createMockStream(direction: "read" | "write"): Stream {
 				listeners.clear();
 			}
 		},
-		
+
 		emit(event: string, ...args: unknown[]): void {
 			const eventListeners = listeners.get(event);
 			if (eventListeners) {
@@ -248,7 +276,10 @@ function createMockStream(direction: "read" | "write"): Stream {
 					try {
 						listener(...args);
 					} catch (error) {
-						console.error(`[ChildProcessPolyfill] Stream event error (${event}):`, error);
+						console.error(
+							`[ChildProcessPolyfill] Stream event error (${event}):`,
+							error,
+						);
 					}
 				});
 			}
@@ -269,68 +300,106 @@ class ChildProcess {
 	killed: boolean = false;
 	exitCode: number | null = null;
 	signalCode: Signal | null = null;
-	
+
 	// Streams
 	stdin: Stream;
 	stdout: Stream;
 	stderr: Stream;
 	stdio: Stream[];
-	
+
 	// Event listeners
-	private listeners: Map<ChildProcessEvent, Set<ChildProcessEventListener>> = new Map();
-	
+	private listeners: Map<ChildProcessEvent, Set<ChildProcessEventListener>> =
+		new Map();
+
 	// Process ID tracking
 	private _sPid: string;
-	
+
 	constructor(spawnId: string) {
 		this._sPid = spawnId;
 		this.stdin = createMockStream("write");
 		this.stdout = createMockStream("read");
 		this.stderr = createMockStream("read");
 		this.stdio = [this.stdin, this.stdout, this.stderr];
-		
+
 		this.setupEventListeners();
 	}
-	
+
 	/**
 	 * Set up Tauri event listeners for this process
 	 */
 	private setupEventListeners(): void {
 		// Listen for spawn events from Tauri
-		const unlistenSpawn = listenToTauri(`child_process:spawn:${this._sPid}`, (payload: unknown) => {
-			console.log(`[ChildProcessPolyfill] Spawn event for ${this._sPid}:`, payload);
-			this.emit("spawn");
-		});
-		
+		const unlistenSpawn = listenToTauri(
+			`child_process:spawn:${this._sPid}`,
+			(payload: unknown) => {
+				console.log(
+					`[ChildProcessPolyfill] Spawn event for ${this._sPid}:`,
+					payload,
+				);
+				this.emit("spawn");
+			},
+		);
+
 		// Listen for exit events from Tauri
-		const unlistenExit = listenToTauri(`child_process:exit:${this._sPid}`, (payload: unknown) => {
-			console.log(`[ChildProcessPolyfill] Exit event for ${this._sPid}:`, payload);
-			const data = payload as { exit_code: number; signal: Signal | null };
-			this.exitCode = data.exit_code;
-			this.signalCode = data.signal;
-			this.killed = true;
-			this.emit("exit", this.exitCode, this.signalCode);
-			this.emit("close", this.exitCode, this.signalCode);
-		});
-		
+		const unlistenExit = listenToTauri(
+			`child_process:exit:${this._sPid}`,
+			(payload: unknown) => {
+				console.log(
+					`[ChildProcessPolyfill] Exit event for ${this._sPid}:`,
+					payload,
+				);
+				const data = payload as {
+					exit_code: number;
+					signal: Signal | null;
+				};
+				this.exitCode = data.exit_code;
+				this.signalCode = data.signal;
+				this.killed = true;
+				this.emit("exit", this.exitCode, this.signalCode);
+				this.emit("close", this.exitCode, this.signalCode);
+			},
+		);
+
 		// Listen for error events from Tauri
-		const unlistenError = listenToTauri(`child_process:error:${this._sPid}`, (payload: unknown) => {
-			console.error(`[ChildProcessPolyfill] Error event for ${this._sPid}:`, payload);
-			this.emit("error", payload);
-		});
-		
+		const unlistenError = listenToTauri(
+			`child_process:error:${this._sPid}`,
+			(payload: unknown) => {
+				console.error(
+					`[ChildProcessPolyfill] Error event for ${this._sPid}:`,
+					payload,
+				);
+				this.emit("error", payload);
+			},
+		);
+
 		// Listen for stdout data
-		const unlistenStdout = listenToTauri(`child_process:stdout:${this._sPid}`, (payload: unknown) => {
-			const data = payload as { data: string | Buffer };
-			this.stdout.emit("data", data.data instanceof Buffer ? data.data : Buffer.from(data.data));
-		});
-		
+		const unlistenStdout = listenToTauri(
+			`child_process:stdout:${this._sPid}`,
+			(payload: unknown) => {
+				const data = payload as { data: string | Buffer };
+				this.stdout.emit(
+					"data",
+					data.data instanceof Buffer
+						? data.data
+						: Buffer.from(data.data),
+				);
+			},
+		);
+
 		// Listen for stderr data
-		const unlistenStderr = listenToTauri(`child_process:stderr:${this._sPid}`, (payload: unknown) => {
-			const data = payload as { data: string | Buffer };
-			this.stderr.emit("data", data.data instanceof Buffer ? data.data : Buffer.from(data.data));
-		});
-		
+		const unlistenStderr = listenToTauri(
+			`child_process:stderr:${this._sPid}`,
+			(payload: unknown) => {
+				const data = payload as { data: string | Buffer };
+				this.stderr.emit(
+					"data",
+					data.data instanceof Buffer
+						? data.data
+						: Buffer.from(data.data),
+				);
+			},
+		);
+
 		// Store cleanup functions
 		this._unlistenFunctions = [
 			unlistenSpawn,
@@ -340,13 +409,13 @@ class ChildProcess {
 			unlistenStderr,
 		];
 	}
-	
+
 	private _unlistenFunctions: Array<() => void> = [];
-	
+
 	// ============================================================================
 	// Event Methods
 	// ============================================================================
-	
+
 	/**
 	 * Add event listener
 	 */
@@ -358,7 +427,7 @@ class ChildProcess {
 		this.listeners.get(event)!.add(listener);
 		return this;
 	}
-	
+
 	/**
 	 * Add one-time event listener
 	 */
@@ -369,11 +438,14 @@ class ChildProcess {
 		};
 		return this.on(event, wrappedListener);
 	}
-	
+
 	/**
 	 * Remove event listener
 	 */
-	removeListener(event: ChildProcessEvent, listener: ChildProcessEventListener): this {
+	removeListener(
+		event: ChildProcessEvent,
+		listener: ChildProcessEventListener,
+	): this {
 		const eventListeners = this.listeners.get(event);
 		if (eventListeners) {
 			eventListeners.delete(listener);
@@ -383,7 +455,7 @@ class ChildProcess {
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Remove all listeners for an event
 	 */
@@ -395,7 +467,7 @@ class ChildProcess {
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Emit event to all listeners
 	 */
@@ -404,62 +476,80 @@ class ChildProcess {
 		if (!listeners || listeners.size === 0) {
 			return false;
 		}
-		
+
 		listeners.forEach((listener) => {
 			try {
 				listener(...args);
 			} catch (error) {
-				console.error(`[ChildProcessPolyfill] Error in ${event} listener:`, error);
+				console.error(
+					`[ChildProcessPolyfill] Error in ${event} listener:`,
+					error,
+				);
 			}
 		});
-		
+
 		return true;
 	}
-	
+
 	// ============================================================================
 	// Process Control
 	// ============================================================================
-	
+
 	/**
 	 * Kill the process
 	 */
 	kill(signal: Signal = "SIGTERM"): boolean {
-		console.log(`[ChildProcessPolyfill] Kill ${this._sPid} with signal: ${signal}`);
-		
+		console.log(
+			`[ChildProcessPolyfill] Kill ${this._sPid} with signal: ${signal}`,
+		);
+
 		if (this.killed) {
 			return true;
 		}
-		
+
 		this.signalCode = signal;
-		
+
 		// Send kill command to Tauri
 		invokeTauri("child_process:kill", {
 			spawn_id: this._sPid,
 			signal,
 		}).catch((error) => {
-			console.error(`[ChildProcessPolyfill] Kill error for ${this._sPid}:`, error);
+			console.error(
+				`[ChildProcessPolyfill] Kill error for ${this._sPid}:`,
+				error,
+			);
 		});
-		
+
 		// Note: We don't immediately mark as killed; wait for exit event from Tauri
 		return true;
 	}
-	
+
 	/**
 	 * Send a message to the process (IPC)
 	 */
-	send(message: unknown, sendHandle?: unknown, options?: { swallowErrors?: boolean }): boolean {
-		console.log(`[ChildProcessPolyfill] Send message to ${this._sPid}:`, message);
-		
+	send(
+		message: unknown,
+		sendHandle?: unknown,
+		options?: { swallowErrors?: boolean },
+	): boolean {
+		console.log(
+			`[ChildProcessPolyfill] Send message to ${this._sPid}:`,
+			message,
+		);
+
 		invokeTauri("child_process:send", {
 			spawn_id: this._sPid,
 			message,
 		}).catch((error) => {
-			console.error(`[ChildProcessPolyfill] Send error for ${this._sPid}:`, error);
+			console.error(
+				`[ChildProcessPolyfill] Send error for ${this._sPid}:`,
+				error,
+			);
 		});
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Disconnect from the process
 	 */
@@ -469,21 +559,21 @@ class ChildProcess {
 		this._unlistenFunctions.forEach((unlisten) => unlisten());
 		this.stdin.end();
 	}
-	
+
 	/**
 	 * Ref the process (keep it alive)
 	 */
 	ref(): this {
 		return this;
 	}
-	
+
 	/**
 	 * Unref the process (allow it to exit)
 	 */
 	unref(): this {
 		return this;
 	}
-	
+
 	/**
 	 * Cleanup resources
 	 */
@@ -500,8 +590,14 @@ class ChildProcess {
 /**
  * Spawn a child process
  */
-function spawn(command: string, args?: string[], options?: SpawnOptions): ChildProcess {
-	console.log(`[ChildProcessPolyfill] spawn: ${command} ${args?.join(" ") ?? ""}`);
+function spawn(
+	command: string,
+	args?: string[],
+	options?: SpawnOptions,
+): ChildProcess {
+	console.log(
+		`[ChildProcessPolyfill] spawn: ${command} ${args?.join(" ") ?? ""}`,
+	);
 
 	// Generate unique spawn ID
 	const spawnId = `spawn_${Date.now()}_${Math.random().toString(36).substring(7)}`;
@@ -524,10 +620,15 @@ function spawn(command: string, args?: string[], options?: SpawnOptions): ChildP
 		.then((result) => {
 			if (result.success) {
 				proc.pid = result.pid;
-				console.log(`[ChildProcessPolyfill] Process spawned with PID: ${proc.pid}`);
+				console.log(
+					`[ChildProcessPolyfill] Process spawned with PID: ${proc.pid}`,
+				);
 				proc.emit("spawn");
 			} else {
-				proc.emit("error", new Error(result.error ?? "Failed to spawn process"));
+				proc.emit(
+					"error",
+					new Error(result.error ?? "Failed to spawn process"),
+				);
 			}
 		})
 		.catch((error) => {
@@ -545,7 +646,11 @@ function spawn(command: string, args?: string[], options?: SpawnOptions): ChildP
 /**
  * Execute a command and get output
  */
-function exec(command: string, options?: ExecOptions, callback?: (error: Error | null, stdout: string, stderr: string) => void): ChildProcess {
+function exec(
+	command: string,
+	options?: ExecOptions,
+	callback?: (error: Error | null, stdout: string, stderr: string) => void,
+): ChildProcess {
 	console.log(`[ChildProcessPolyfill] exec: ${command}`);
 
 	// Generate unique exec ID
@@ -569,7 +674,8 @@ function exec(command: string, options?: ExecOptions, callback?: (error: Error |
 	proc.on("exit", (code: number | null) => {
 		if (code !== 0) {
 			error = new Error(`Command failed: ${command}\n${stderr}`);
-			(error as Error & { code?: number; killed?: boolean }).code = code ?? undefined;
+			(error as Error & { code?: number; killed?: boolean }).code =
+				code ?? undefined;
 			(error as Error & { killed?: boolean }).killed = proc.killed;
 		}
 
@@ -609,7 +715,10 @@ function exec(command: string, options?: ExecOptions, callback?: (error: Error |
 /**
  * Exec with Promise
  */
-function execPromise(command: string, options?: ExecOptions): Promise<{ stdout: string; stderr: string }> {
+function execPromise(
+	command: string,
+	options?: ExecOptions,
+): Promise<{ stdout: string; stderr: string }> {
 	return new Promise((resolve, reject) => {
 		const proc = exec(command, options, (error, stdout, stderr) => {
 			if (error) {
@@ -629,7 +738,11 @@ function execPromise(command: string, options?: ExecOptions): Promise<{ stdout: 
  * Fork a Node.js module as a child process
  * This is primarily used for extension hosts in VSCode
  */
-function fork(modulePath: string, args?: string[], options?: ForkOptions): ChildProcess {
+function fork(
+	modulePath: string,
+	args?: string[],
+	options?: ForkOptions,
+): ChildProcess {
 	console.log(`[ChildProcessPolyfill] fork: ${modulePath}`);
 
 	// Generate unique fork ID
@@ -638,7 +751,8 @@ function fork(modulePath: string, args?: string[], options?: ForkOptions): Child
 	const proc = new ChildProcess(forkId);
 
 	// For extension hosting, we route to Cocoon
-	const isExtensionHost = modulePath.includes("extensionHost") || modulePath.includes("process");
+	const isExtensionHost =
+		modulePath.includes("extensionHost") || modulePath.includes("process");
 
 	if (isExtensionHost) {
 		// Treat as extension host fork - route to Cocoon
@@ -658,10 +772,17 @@ function fork(modulePath: string, args?: string[], options?: ForkOptions): Child
 			.then((result) => {
 				if (result.success) {
 					proc.pid = result.pid;
-					console.log(`[ChildProcessPolyfill] Extension host forked with PID: ${proc.pid}`);
+					console.log(
+						`[ChildProcessPolyfill] Extension host forked with PID: ${proc.pid}`,
+					);
 					proc.emit("spawn");
 				} else {
-					proc.emit("error", new Error(result.error ?? "Failed to fork extension host"));
+					proc.emit(
+						"error",
+						new Error(
+							result.error ?? "Failed to fork extension host",
+						),
+					);
 				}
 			})
 			.catch((error) => {
@@ -698,7 +819,9 @@ const childProcess = {
 	spawn,
 	exec,
 	execSync: () => {
-		throw new Error("childProcess.execSync() is not supported in browser/Tauri environment. Use async exec() instead.");
+		throw new Error(
+			"childProcess.execSync() is not supported in browser/Tauri environment. Use async exec() instead.",
+		);
 	},
 	fork,
 	execFile: exec, // execFile is similar to exec in this context
@@ -723,11 +846,13 @@ export function installChildProcessPolyfill(): void {
 	}
 	(window as any).__CHILD_PROCESS_POLYFILL_INSTALLED__ = true;
 
-	console.log("[ChildProcessPolyfill] Installing Node.js child_process module polyfill...");
+	console.log(
+		"[ChildProcessPolyfill] Installing Node.js child_process module polyfill...",
+	);
 
 	// Attach module to global (for Node.js compatibility)
 	(window as any).childProcess = childProcess;
-	
+
 	// Extend require shim
 	if (typeof (window as any).require === "function") {
 		// biome-ignore lint/complexity/noExplicitAny: Required for require shim
@@ -745,11 +870,16 @@ export function installChildProcessPolyfill(): void {
 		(window as any).vscode.childProcess = childProcess;
 	}
 
-	console.log("[ChildProcessPolyfill] ✓ Node.js child_process module polyfill installed");
+	console.log(
+		"[ChildProcessPolyfill] ✓ Node.js child_process module polyfill installed",
+	);
 }
 
 // Get process from global (for exec path, etc.)
-const process = typeof window !== "undefined" && (window as any).process ? (window as any).process : { execPath: "/usr/local/bin/node" };
+const process =
+	typeof window !== "undefined" && (window as any).process
+		? (window as any).process
+		: { execPath: "/usr/local/bin/node" };
 
 // ============================================================================
 // Exports
@@ -758,13 +888,13 @@ const process = typeof window !== "undefined" && (window as any).process ? (wind
 export default {
 	install: installChildProcessPolyfill,
 	module: childProcess,
-	
+
 	// Individual exports for convenience
 	spawn,
 	exec,
 	execPromise,
 	fork,
-	
+
 	// Types
 	ChildProcess,
 };

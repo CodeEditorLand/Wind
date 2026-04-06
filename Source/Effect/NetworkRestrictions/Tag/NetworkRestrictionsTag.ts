@@ -8,6 +8,7 @@
  */
 
 import { Context } from "effect";
+
 import type { NetworkRestrictionsService } from "../Interface/NetworkRestrictionsService.js";
 
 // ============================================================================
@@ -17,9 +18,10 @@ import type { NetworkRestrictionsService } from "../Interface/NetworkRestriction
 /**
  * NetworkRestrictions service tag for dependency injection
  */
-export class NetworkRestrictionsTag extends Context.Tag(
-	"NetworkRestrictions",
-)<NetworkRestrictionsTag, NetworkRestrictionsService>() {}
+export class NetworkRestrictionsTag extends Context.Tag("NetworkRestrictions")<
+	NetworkRestrictionsTag,
+	NetworkRestrictionsService
+>() {}
 
 /**
  * Alias for the NetworkRestrictions tag

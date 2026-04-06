@@ -6,21 +6,25 @@
  * @category Implementation
  */
 
-import { Effect, Layer, Context } from "effect";
-import type { IFileSystemProvider, IFileWriteOptions } from "../Type/FileSystemType";
-import { URI } from "../Type/URI";
-import { FileType } from "../Type/FileType";
-import type { FileSystemProviderService } from "../Interface/FileSystemProvider";
+import { Context, Effect, Layer } from "effect";
+
+import { IPC } from "../../Effect/IPC.js";
 import {
-	FileNotFoundError,
 	FileExistsError,
-	PermissionError,
+	FileNotFoundError,
 	InvalidPathError,
 	NotSupportedError,
-	UnknownFileSystemError,
+	PermissionError,
 	toFileSystemProviderError,
+	UnknownFileSystemError,
 } from "../Error/FileSystemProviderError";
-import { IPC } from "../../Effect/IPC.js";
+import type { FileSystemProviderService } from "../Interface/FileSystemProvider";
+import type {
+	IFileSystemProvider,
+	IFileWriteOptions,
+} from "../Type/FileSystemType";
+import { FileType } from "../Type/FileType";
+import { URI } from "../Type/URI";
 
 // ============================================================================
 // Mountain IPC Commands
@@ -49,7 +53,8 @@ const MountainCommands = {
 /**
  * Tag for accessing the FileSystemProvider service
  */
-export const FileSystemProviderTag = Context.GenericTag<FileSystemProviderService>("FileSystemProvider");
+export const FileSystemProviderTag =
+	Context.GenericTag<FileSystemProviderService>("FileSystemProvider");
 
 // ============================================================================
 // Utility Functions
@@ -89,7 +94,13 @@ function toIStat(stats: {
 	created?: number;
 	modified?: number;
 	accessed?: number;
-}): { type: number; size: number; ctime: number; mtime: number; permissions?: number } {
+}): {
+	type: number;
+	size: number;
+	ctime: number;
+	mtime: number;
+	permissions?: number;
+} {
 	// Determine file type
 	let type: FileType;
 	if (stats.is_directory) {
@@ -113,11 +124,13 @@ function toIStat(stats: {
  * @param entries - Mountain directory entries
  * @returns Array of [name, FileType] tuples
  */
-function toDirectoryEntries(entries: Array<{
-	name: string;
-	is_file?: boolean;
-	is_directory?: boolean;
-}>): [string, FileType][] {
+function toDirectoryEntries(
+	entries: Array<{
+		name: string;
+		is_file?: boolean;
+		is_directory?: boolean;
+	}>,
+): [string, FileType][] {
 	return entries.map((entry) => {
 		let type: FileType;
 		if (entry.is_directory) {
@@ -135,7 +148,9 @@ function toDirectoryEntries(entries: Array<{
 // Helper: Create provider with IPC access
 // ============================================================================
 
-const createProvider = (invoke: (command: string, ...args: unknown[]) => Promise<unknown>) => {
+const createProvider = (
+	invoke: (command: string, ...args: unknown[]) => Promise<unknown>,
+) => {
 	class MountainFileSystemProvider implements IFileSystemProvider {
 		async readFile(uri: URI): Promise<Uint8Array> {
 			const path = uriToPath(uri);
@@ -156,13 +171,19 @@ const createProvider = (invoke: (command: string, ...args: unknown[]) => Promise
 					return new Uint8Array(result as number[]);
 				}
 
-				throw new UnknownFileSystemError("Unexpected result format from file:read");
+				throw new UnknownFileSystemError(
+					"Unexpected result format from file:read",
+				);
 			} catch (error) {
 				throw toFileSystemProviderError(error, "readFile", path);
 			}
 		}
 
-		async writeFile(uri: URI, content: Uint8Array, options?: IFileWriteOptions): Promise<void> {
+		async writeFile(
+			uri: URI,
+			content: Uint8Array,
+			options?: IFileWriteOptions,
+		): Promise<void> {
 			const path = uriToPath(uri);
 
 			try {
@@ -193,7 +214,11 @@ const createProvider = (invoke: (command: string, ...args: unknown[]) => Promise
 			try {
 				await invoke(MountainCommands.COPY, sourcePath, destPath);
 			} catch (error) {
-				throw toFileSystemProviderError(error, "copy", `${sourcePath} -> ${destPath}`);
+				throw toFileSystemProviderError(
+					error,
+					"copy",
+					`${sourcePath} -> ${destPath}`,
+				);
 			}
 		}
 
@@ -204,7 +229,11 @@ const createProvider = (invoke: (command: string, ...args: unknown[]) => Promise
 			try {
 				await invoke(MountainCommands.MOVE, sourcePath, destPath);
 			} catch (error) {
-				throw toFileSystemProviderError(error, "move", `${sourcePath} -> ${destPath}`);
+				throw toFileSystemProviderError(
+					error,
+					"move",
+					`${sourcePath} -> ${destPath}`,
+				);
 			}
 		}
 
@@ -215,24 +244,35 @@ const createProvider = (invoke: (command: string, ...args: unknown[]) => Promise
 				const result = await invoke(MountainCommands.READDIR, path);
 
 				if (!Array.isArray(result)) {
-					throw new UnknownFileSystemError("Unexpected result format from file:readdir");
+					throw new UnknownFileSystemError(
+						"Unexpected result format from file:readdir",
+					);
 				}
 
-				return toDirectoryEntries(result as unknown as Array<{
-					name: string;
-					is_file?: boolean;
-					is_directory?: boolean;
-				}>);
+				return toDirectoryEntries(
+					result as unknown as Array<{
+						name: string;
+						is_file?: boolean;
+						is_directory?: boolean;
+					}>,
+				);
 			} catch (error) {
 				throw toFileSystemProviderError(error, "readdir", path);
 			}
 		}
 
-		async mkdir(uri: URI, options: { recursive?: boolean } = {}): Promise<void> {
+		async mkdir(
+			uri: URI,
+			options: { recursive?: boolean } = {},
+		): Promise<void> {
 			const path = uriToPath(uri);
 
 			try {
-				await invoke(MountainCommands.MKDIR, path, options.recursive ?? true);
+				await invoke(
+					MountainCommands.MKDIR,
+					path,
+					options.recursive ?? true,
+				);
 			} catch (error) {
 				throw toFileSystemProviderError(error, "mkdir", path);
 			}
@@ -262,17 +302,21 @@ const createProvider = (invoke: (command: string, ...args: unknown[]) => Promise
 				const result = await invoke(MountainCommands.STAT, path);
 
 				if (!result || typeof result !== "object") {
-					throw new UnknownFileSystemError("Unexpected result format from file:stat");
+					throw new UnknownFileSystemError(
+						"Unexpected result format from file:stat",
+					);
 				}
 
-				return toIStat(result as {
-					is_file?: boolean;
-					is_directory?: boolean;
-					size?: number;
-					created?: number;
-					modified?: number;
-					accessed?: number;
-				});
+				return toIStat(
+					result as {
+						is_file?: boolean;
+						is_directory?: boolean;
+						size?: number;
+						created?: number;
+						modified?: number;
+						accessed?: number;
+					},
+				);
 			} catch (error) {
 				throw toFileSystemProviderError(error, "stat", path);
 			}
@@ -311,11 +355,14 @@ export const FileSystemProviderLive = Layer.effect(
 		);
 
 		return {
-			getProvider: Effect.succeed(provider as unknown as IFileSystemProvider),
+			getProvider: Effect.succeed(
+				provider as unknown as IFileSystemProvider,
+			),
 			readFile: (uri: string) =>
 				Effect.tryPromise({
 					try: () => provider.readFile(URI.parse(uri)),
-					catch: (error) => toFileSystemProviderError(error, "readFile", uri),
+					catch: (error) =>
+						toFileSystemProviderError(error, "readFile", uri),
 				}),
 			writeFile: (uri: string, content: Uint8Array, options = {}) =>
 				Effect.tryPromise({
@@ -324,46 +371,73 @@ export const FileSystemProviderLive = Layer.effect(
 							create: options.create ?? true,
 							overwrite: options.overwrite ?? true,
 						} as IFileWriteOptions),
-					catch: (error) => toFileSystemProviderError(error, "writeFile", uri),
+					catch: (error) =>
+						toFileSystemProviderError(error, "writeFile", uri),
 				}),
 			delete: (uri: string) =>
 				Effect.tryPromise({
 					try: () => provider.delete(URI.parse(uri)),
-					catch: (error) => toFileSystemProviderError(error, "delete", uri),
+					catch: (error) =>
+						toFileSystemProviderError(error, "delete", uri),
 				}),
 			copy: (source: string, destination: string) =>
 				Effect.tryPromise({
-					try: () => provider.copy(URI.parse(source), URI.parse(destination)),
-					catch: (error) => toFileSystemProviderError(error, "copy", `${source} -> ${destination}`),
+					try: () =>
+						provider.copy(
+							URI.parse(source),
+							URI.parse(destination),
+						),
+					catch: (error) =>
+						toFileSystemProviderError(
+							error,
+							"copy",
+							`${source} -> ${destination}`,
+						),
 				}),
 			move: (source: string, destination: string) =>
 				Effect.tryPromise({
-					try: () => provider.move(URI.parse(source), URI.parse(destination)),
-					catch: (error) => toFileSystemProviderError(error, "move", `${source} -> ${destination}`),
+					try: () =>
+						provider.move(
+							URI.parse(source),
+							URI.parse(destination),
+						),
+					catch: (error) =>
+						toFileSystemProviderError(
+							error,
+							"move",
+							`${source} -> ${destination}`,
+						),
 				}),
 			readdir: (uri: string) =>
 				Effect.tryPromise({
 					try: () => provider.readdir(URI.parse(uri)),
-					catch: (error) => toFileSystemProviderError(error, "readdir", uri),
+					catch: (error) =>
+						toFileSystemProviderError(error, "readdir", uri),
 				}).pipe(
 					Effect.map((entries) =>
-						entries.map(([name, type]) => [name, type as number] as [string, number]),
+						entries.map(
+							([name, type]) =>
+								[name, type as number] as [string, number],
+						),
 					),
 				),
 			mkdir: (uri: string, options = {}) =>
 				Effect.tryPromise({
 					try: () => provider.mkdir(URI.parse(uri), options),
-					catch: (error) => toFileSystemProviderError(error, "mkdir", uri),
+					catch: (error) =>
+						toFileSystemProviderError(error, "mkdir", uri),
 				}),
 			rmdir: (uri: string) =>
 				Effect.tryPromise({
 					try: () => provider.rmdir(URI.parse(uri)),
-					catch: (error) => toFileSystemProviderError(error, "rmdir", uri),
+					catch: (error) =>
+						toFileSystemProviderError(error, "rmdir", uri),
 				}),
 			stat: (uri: string) =>
 				Effect.tryPromise({
 					try: () => provider.stat(URI.parse(uri)),
-					catch: (error) => toFileSystemProviderError(error, "stat", uri),
+					catch: (error) =>
+						toFileSystemProviderError(error, "stat", uri),
 				}),
 		} satisfies FileSystemProviderService;
 	}),

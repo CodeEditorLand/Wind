@@ -6,18 +6,20 @@
  * @category Implementation
  */
 
+import { invoke as tauriInvoke, type InvokeArgs } from "@tauri-apps/api/core";
+import { emit, listen } from "@tauri-apps/api/event";
 import { Effect, Stream } from "effect";
-import type { IPCService } from "../Interface/IPCService.js";
-import type { IPCInvokeError, IPCSendError, IPCSubscriptionError } from "../Error/IPCError.js";
+
+import { SandboxNotReadyError } from "../../../Types/Sandbox.js";
 import {
 	CreateIPCInvokeError,
 	CreateIPCSendError,
 	CreateIPCSubscriptionError,
+	type IPCInvokeError,
+	type IPCSendError,
+	type IPCSubscriptionError,
 } from "../Error/IPCError.js";
-import { emit, listen } from "@tauri-apps/api/event";
-import { invoke as tauriInvoke } from "@tauri-apps/api/core";
-import type { InvokeArgs } from "@tauri-apps/api/core";
-import { SandboxNotReadyError } from "../../../Types/Sandbox.js";
+import type { IPCService } from "../Interface/IPCService.js";
 
 // ============================================================================
 // Tauri Implementation
@@ -46,15 +48,18 @@ export const TauriIPCLive = Effect.gen(function* () {
 		invoke: (channel: string) => (args: ReadonlyArray<unknown>) =>
 			Effect.tryPromise({
 				try: () => {
-					const invokeArgs: InvokeArgs | undefined = args.length === 1
-						? (args[0] as InvokeArgs)
-						: (args as unknown as InvokeArgs);
+					const invokeArgs: InvokeArgs | undefined =
+						args.length === 1
+							? (args[0] as InvokeArgs)
+							: (args as unknown as InvokeArgs);
 					return tauriInvoke(channel, invokeArgs);
 				},
 				catch: (error) => CreateIPCInvokeError(channel, error),
 			}),
 
-		events: (channel: string): Stream.Stream<
+		events: (
+			channel: string,
+		): Stream.Stream<
 			{ readonly channel: string; readonly args: ReadonlyArray<unknown> },
 			IPCSubscriptionError
 		> =>
@@ -77,7 +82,9 @@ export const TauriIPCLive = Effect.gen(function* () {
 				return Effect.sync(() => cleanup?.());
 			}),
 
-		once: (channel: string): Effect.Effect<
+		once: (
+			channel: string,
+		): Effect.Effect<
 			{ readonly channel: string; readonly args: ReadonlyArray<unknown> },
 			IPCSubscriptionError
 		> =>

@@ -17,8 +17,9 @@
  */
 
 import { Effect, Layer } from "effect";
-import { LanguageServiceTag } from "./Tag/LanguageServiceTag.js";
+
 import type { LanguageService } from "./Interface/LanguageService.js";
+import { LanguageServiceTag } from "./Tag/LanguageServiceTag.js";
 import type { LanguageProblem } from "./Type/LanguageProblem.js";
 
 const MakeLanguageProblem = (error: unknown): LanguageProblem =>
@@ -90,7 +91,9 @@ export const LiveLanguageServiceLayer = Layer.effect(
 					try: () => {
 						// Return the set of selectors for which providers are registered
 						const Selectors = new Set(
-							[...ActiveProviders.values()].map((P) => P.selector),
+							[...ActiveProviders.values()].map(
+								(P) => P.selector,
+							),
 						);
 						return [...Selectors] as readonly string[];
 					},

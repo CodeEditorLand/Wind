@@ -6,10 +6,17 @@
  */
 
 import { Effect } from "effect";
-import type { ServiceHealth, SystemHealth, HealthStatus } from "../Type/HealthType.js";
+
+import type {
+	HealthStatus,
+	ServiceHealth,
+	SystemHealth,
+} from "../Type/HealthType.js";
 
 export interface HealthService {
-	readonly checkService: (serviceName: string) => Effect.Effect<ServiceHealth, never>;
+	readonly checkService: (
+		serviceName: string,
+	) => Effect.Effect<ServiceHealth, never>;
 	readonly checkAllServices: () => Effect.Effect<SystemHealth, never>;
 	readonly getOverallStatus: () => Effect.Effect<HealthStatus, never>;
 	readonly monitorService: (

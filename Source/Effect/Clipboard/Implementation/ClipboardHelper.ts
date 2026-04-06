@@ -19,8 +19,8 @@ import type { ClipboardProblem } from "../Type/ClipboardProblem.js";
  * @returns A ClipboardProblem instance
  */
 export const CreateNotAvailableError = (Reason: string): ClipboardProblem => ({
-  _tag: "ClipboardNotAvailable",
-  reason: Reason,
+	_tag: "ClipboardNotAvailable",
+	reason: Reason,
 });
 
 /**
@@ -29,8 +29,8 @@ export const CreateNotAvailableError = (Reason: string): ClipboardProblem => ({
  * @returns A ClipboardProblem instance
  */
 export const CreateReadError = (Error: Error): ClipboardProblem => ({
-  _tag: "ClipboardReadError",
-  error: Error,
+	_tag: "ClipboardReadError",
+	error: Error,
 });
 
 /**
@@ -39,8 +39,8 @@ export const CreateReadError = (Error: Error): ClipboardProblem => ({
  * @returns A ClipboardProblem instance
  */
 export const CreateWriteError = (Error: Error): ClipboardProblem => ({
-  _tag: "ClipboardWriteError",
-  error: Error,
+	_tag: "ClipboardWriteError",
+	error: Error,
 });
 
 /**
@@ -48,9 +48,11 @@ export const CreateWriteError = (Error: Error): ClipboardProblem => ({
  * @param reason - The reason for permission denial
  * @returns A ClipboardProblem instance
  */
-export const CreatePermissionDeniedError = (Reason: string): ClipboardProblem => ({
-  _tag: "ClipboardPermissionDenied",
-  reason: Reason,
+export const CreatePermissionDeniedError = (
+	Reason: string,
+): ClipboardProblem => ({
+	_tag: "ClipboardPermissionDenied",
+	reason: Reason,
 });
 
 /**
@@ -58,9 +60,11 @@ export const CreatePermissionDeniedError = (Reason: string): ClipboardProblem =>
  * @param format - The unsupported format
  * @returns A ClipboardProblem instance
  */
-export const CreateFormatNotSupportedError = (Format: string): ClipboardProblem => ({
-  _tag: "ClipboardFormatNotSupported",
-  format: Format,
+export const CreateFormatNotSupportedError = (
+	Format: string,
+): ClipboardProblem => ({
+	_tag: "ClipboardFormatNotSupported",
+	format: Format,
 });
 
 /**
@@ -69,19 +73,22 @@ export const CreateFormatNotSupportedError = (Format: string): ClipboardProblem 
  * @param limit - The size limit
  * @returns A ClipboardProblem instance
  */
-export const CreateSizeExceededError = (Size: number, Limit: number): ClipboardProblem => ({
-  _tag: "ClipboardSizeExceeded",
-  size: Size,
-  limit: Limit,
+export const CreateSizeExceededError = (
+	Size: number,
+	Limit: number,
+): ClipboardProblem => ({
+	_tag: "ClipboardSizeExceeded",
+	size: Size,
+	limit: Limit,
 });
 
 const helpers = {
-  CreateNotAvailableError,
-  CreateReadError,
-  CreateWriteError,
-  CreatePermissionDeniedError,
-  CreateFormatNotSupportedError,
-  CreateSizeExceededError,
+	CreateNotAvailableError,
+	CreateReadError,
+	CreateWriteError,
+	CreatePermissionDeniedError,
+	CreateFormatNotSupportedError,
+	CreateSizeExceededError,
 };
 
 export default helpers;

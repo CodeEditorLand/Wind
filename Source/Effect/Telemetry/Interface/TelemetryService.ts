@@ -9,9 +9,14 @@
  * @category Interface
  */
 
-import type { Effect } from "effect";
-import type { Stream } from "effect";
-import type { TelemetryMetric, TelemetryLog, TelemetryEvent, SpanHandle } from "../Type/TelemetryType.js";
+import type { Effect, Stream } from "effect";
+
+import type {
+	SpanHandle,
+	TelemetryEvent,
+	TelemetryLog,
+	TelemetryMetric,
+} from "../Type/TelemetryType.js";
 
 /**
  * Telemetry service interface for unified monitoring and logging.
@@ -42,7 +47,9 @@ export interface TelemetryService {
 	readonly events: Stream.Stream<ReadonlyArray<TelemetryEvent>, never>;
 
 	/** Get all metrics recorded for a specific name */
-	readonly getMetrics: (name: string) => Effect.Effect<ReadonlyArray<TelemetryMetric>, never>;
+	readonly getMetrics: (
+		name: string,
+	) => Effect.Effect<ReadonlyArray<TelemetryMetric>, never>;
 
 	/** Get average duration for spans with the given name */
 	readonly getAverageDuration: (name: string) => Effect.Effect<number, never>;

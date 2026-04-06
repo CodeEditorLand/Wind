@@ -57,10 +57,7 @@ export type {
 } from "./VSCode/Type/VSCodeProviderType.js";
 
 // Utility types
-export type {
-	UriComponents,
-	URI,
-} from "./VSCode/Type/VSCodeUtilityType.js";
+export type { UriComponents, URI } from "./VSCode/Type/VSCodeUtilityType.js";
 
 // Workbench options supporting types
 export type {

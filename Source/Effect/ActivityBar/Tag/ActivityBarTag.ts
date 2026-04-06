@@ -30,6 +30,9 @@ import type { ActivityBarService } from "../Interface/ActivityBarService.js";
  * });
  * ```
  */
-export class ActivityBarTag extends Context.Tag("ActivityBar")<ActivityBarTag, ActivityBarService>() {}
+export class ActivityBarTag extends Context.Tag("ActivityBar")<
+	ActivityBarTag,
+	ActivityBarService
+>() {}
 
 export default ActivityBarTag;

@@ -3,7 +3,7 @@
  * @description
  * Main entry point for Wind polyfill installation.
  * Creates and attaches Electron API shims to window.vscode that Electron workbench expects.
- * 
+ *
  * @responsibilities
  * - Validates window context and prevents double initialization
  * - Creates VSCode-compatible globals with proper typing
@@ -17,12 +17,12 @@
  * @category Function
  */
 
+import type { IMainWindowSandboxGlobals } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/globals";
+
 import { CreateIPCRenderer } from "./CreateIPCRenderer.js";
 import { CreateProcess } from "./CreateProcess.js";
-import { ResolveConfiguration } from "./ResolveConfiguration.js";
 import { Fallback } from "./Fallback.js";
-
-import type { IMainWindowSandboxGlobals } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/globals";
+import { ResolveConfiguration } from "./ResolveConfiguration.js";
 
 /**
  * Main Wind preload installation function

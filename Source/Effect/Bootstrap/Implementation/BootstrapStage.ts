@@ -9,14 +9,16 @@
 
 import { Effect } from "effect";
 
-import type { StageResult } from "../Type/BootstrapType.js";
-import { type EnvironmentInfo } from "../../Environment/index.js";
-import { EnvironmentTag } from "../../Environment/index.js";
-import { Telemetry, withSpan } from "../../Telemetry.js";
-import { Sandbox } from "../../Sandbox.js";
 import { Configuration } from "../../Configuration.js";
-import { MountainTag } from "../../Mountain.js";
+import {
+	EnvironmentTag,
+	type EnvironmentInfo,
+} from "../../Environment/index.js";
 import { HealthTag } from "../../Health.js";
+import { MountainTag } from "../../Mountain.js";
+import { Sandbox } from "../../Sandbox.js";
+import { Telemetry, withSpan } from "../../Telemetry.js";
+import type { StageResult } from "../Type/BootstrapType.js";
 
 // ============================================================================
 // Stage Implementations
@@ -40,7 +42,10 @@ export const stage0_Environment = withSpan(
 			"info",
 			`[Bootstrap] Environment: ${envInfo.platform}/${envInfo.architecture}`,
 		);
-		telemetry.log("info", `[Bootstrap] Locale: ${envInfo.locale}, Timezone: ${envInfo.timezone}`);
+		telemetry.log(
+			"info",
+			`[Bootstrap] Locale: ${envInfo.locale}, Timezone: ${envInfo.timezone}`,
+		);
 
 		return {
 			stageName: "Environment",
@@ -109,7 +114,10 @@ export const stage3_Services = withSpan(
 	Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
 
-		telemetry.log("info", "[Bootstrap] Stage 3: Connecting to Mountain backend...");
+		telemetry.log(
+			"info",
+			"[Bootstrap] Stage 3: Connecting to Mountain backend...",
+		);
 
 		// Connect to mountain backend
 		yield* (yield* MountainTag).connect;
@@ -134,7 +142,10 @@ export const stage4_Preparation = withSpan(
 	Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
 
-		telemetry.log("info", "[Bootstrap] Stage 4: Preparing workbench resources...");
+		telemetry.log(
+			"info",
+			"[Bootstrap] Stage 4: Preparing workbench resources...",
+		);
 
 		// Load VSCode output bundle
 		// This would load @codeeditorland/output
@@ -158,7 +169,10 @@ export const stage5_Initialization = withSpan(
 	Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
 
-		telemetry.log("info", "[Bootstrap] Stage 5: Initializing VSCode workbench...");
+		telemetry.log(
+			"info",
+			"[Bootstrap] Stage 5: Initializing VSCode workbench...",
+		);
 
 		// Initialize VSCode workbench
 		// This would call into the VSCode API from @codeeditorland/output

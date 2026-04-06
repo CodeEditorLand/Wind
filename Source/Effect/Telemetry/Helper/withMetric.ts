@@ -9,6 +9,7 @@
  */
 
 import { Effect } from "effect";
+
 import { Telemetry } from "../../Telemetry.js";
 
 /**

@@ -9,16 +9,17 @@
  */
 
 import { Context, Effect, Layer } from "effect";
-import { Sandbox } from "../Tag/SandboxTag.js";
-import type { SandboxService } from "../Interface/SandboxService.js";
+
 import {
-	SandboxNotReadyError,
 	ConfigurationNotReadyError,
+	SandboxNotReadyError,
 	type IPCRenderer,
 	type ISandboxConfiguration,
 	type SandboxContext,
 	type SandboxGlobals,
 } from "../../../Types/Sandbox.js";
+import type { SandboxService } from "../Interface/SandboxService.js";
+import { Sandbox } from "../Tag/SandboxTag.js";
 
 /**
  * Live layer for Sandbox service.
@@ -56,11 +57,17 @@ const SandboxLive = Layer.effect(
 			while (attempts < maxAttempts) {
 				// Check if preloadGlobals exists (from Install.ts)
 				const preloadGlobals = (window as any).preloadGlobals;
-				if (preloadGlobals && preloadGlobals.process && preloadGlobals.ipcRenderer) {
+				if (
+					preloadGlobals &&
+					preloadGlobals.process &&
+					preloadGlobals.ipcRenderer
+				) {
 					// Now check for window.vscode
 					const vscode = (window as any).vscode;
 					if (vscode) {
-						console.log("[Sandbox] Preload globals and window.vscode ready");
+						console.log(
+							"[Sandbox] Preload globals and window.vscode ready",
+						);
 						return vscode;
 					}
 				}

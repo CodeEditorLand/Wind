@@ -3,7 +3,7 @@
  * @description
  * Atomic IPC service using Effect-TS.
  * Wraps Tauri IPC with typed effects and streams.
- * 
+ *
  * @category Service
  */
 
@@ -12,7 +12,11 @@
 // ============================================================================
 
 // Types
-export type { IPCInvokeError, IPCSendError, IPCSubscriptionError } from "./Error/IPCError.js";
+export type {
+	IPCInvokeError,
+	IPCSendError,
+	IPCSubscriptionError,
+} from "./Error/IPCError.js";
 
 // Interface
 export type { IPCService } from "./Interface/IPCService.js";
@@ -24,7 +28,10 @@ export { IPCTag, IPC } from "./Tag/IPCTag.js";
 export { TauriIPCLive } from "./Implementation/TauriIPC.js";
 
 // Layers
-export { IPCTauriLive as default, IPCTauriLive as IPCElectronLive } from "./Live.js";
+export {
+	IPCTauriLive as default,
+	IPCTauriLive as IPCElectronLive,
+} from "./Live.js";
 export { MockIPCLive } from "./Mock.js";
 
 // Error helpers

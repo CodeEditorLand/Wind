@@ -9,11 +9,11 @@
  * @category Interface
  */
 
-import type { Effect } from "effect";
-import type { Stream } from "effect";
-import type { SidebarPanel, CreateSidebarPanel } from "../Type/SidebarType.js";
+import type { Effect, Stream } from "effect";
+
 import type SidebarPanelNotFoundError from "../Error/SidebarPanelNotFoundError.js";
 import type SidebarUpdateError from "../Error/SidebarUpdateError.js";
+import type { CreateSidebarPanel, SidebarPanel } from "../Type/SidebarType.js";
 
 /**
  * Sidebar service interface for managing VSCode sidebar panels.
@@ -21,7 +21,9 @@ import type SidebarUpdateError from "../Error/SidebarUpdateError.js";
  */
 export interface SidebarService {
 	/** Create a new sidebar panel with auto-generated ID */
-	readonly createPanel: (panel: CreateSidebarPanel) => Effect.Effect<SidebarPanel, never>;
+	readonly createPanel: (
+		panel: CreateSidebarPanel,
+	) => Effect.Effect<SidebarPanel, never>;
 
 	/** Update an existing sidebar panel */
 	readonly updatePanel: (
@@ -30,10 +32,14 @@ export interface SidebarService {
 	) => Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError>;
 
 	/** Remove a sidebar panel */
-	readonly removePanel: (id: string) => Effect.Effect<void, SidebarPanelNotFoundError>;
+	readonly removePanel: (
+		id: string,
+	) => Effect.Effect<void, SidebarPanelNotFoundError>;
 
 	/** Get a specific sidebar panel by ID */
-	readonly getPanel: (id: string) => Effect.Effect<SidebarPanel | undefined, never>;
+	readonly getPanel: (
+		id: string,
+	) => Effect.Effect<SidebarPanel | undefined, never>;
 
 	/** Get all sidebar panels */
 	readonly panels: Effect.Effect<ReadonlyArray<SidebarPanel>, never>;
@@ -42,7 +48,9 @@ export interface SidebarService {
 	readonly panelsChanges: Stream.Stream<ReadonlyArray<SidebarPanel>, never>;
 
 	/** Set the active (focused) sidebar panel */
-	readonly setActivePanel: (id: string) => Effect.Effect<void, SidebarPanelNotFoundError>;
+	readonly setActivePanel: (
+		id: string,
+	) => Effect.Effect<void, SidebarPanelNotFoundError>;
 
 	/** Get the currently active sidebar panel ID */
 	readonly getActivePanel: Effect.Effect<string | undefined, never>;
@@ -51,14 +59,22 @@ export interface SidebarService {
 	readonly activePanelChanges: Stream.Stream<string | undefined, never>;
 
 	/** Toggle a sidebar panel's collapsed state */
-	readonly togglePanel: (id: string) => Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError>;
+	readonly togglePanel: (
+		id: string,
+	) => Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError>;
 
 	/** Collapse a sidebar panel */
-	readonly collapsePanel: (id: string) => Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError>;
+	readonly collapsePanel: (
+		id: string,
+	) => Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError>;
 
 	/** Expand a sidebar panel */
-	readonly expandPanel: (id: string) => Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError>;
+	readonly expandPanel: (
+		id: string,
+	) => Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError>;
 
 	/** Get panels by position filter (left/right) */
-	readonly getPanelsByPosition: (position: "left" | "right") => Effect.Effect<ReadonlyArray<SidebarPanel>, never>;
+	readonly getPanelsByPosition: (
+		position: "left" | "right",
+	) => Effect.Effect<ReadonlyArray<SidebarPanel>, never>;
 }

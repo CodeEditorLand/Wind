@@ -25,7 +25,7 @@ export function Fallback(): void {
 				on: () => ({}),
 				once: () => ({}),
 				removeListener: () => ({}),
-				removeAllListeners: () => {}
+				removeAllListeners: () => {},
 			},
 		};
 	}

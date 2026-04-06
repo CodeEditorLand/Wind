@@ -1,3 +1,6 @@
+// Convenience alias for backward compatibility
+import { MountainTag } from "./Tag/MountainTag.js";
+
 /**
  * @module Effect/Mountain
  * @description
@@ -32,7 +35,11 @@ export { default as MountainSyncError } from "./Error/MountainSyncError.js";
 export { default as MountainStateError } from "./Error/MountainStateError.js";
 
 // Type definitions
-export type { MountainConnectionState, SyncResource, SyncResult } from "./Type/MountainType.js";
+export type {
+	MountainConnectionState,
+	SyncResource,
+	SyncResult,
+} from "./Type/MountainType.js";
 
 // Service interface
 export type { MountainService } from "./Interface/MountainService.js";
@@ -46,6 +53,4 @@ export { MountainLive } from "./Implementation/MountainImplementation.js";
 // Mock implementation layer
 export { MountainMockLive } from "./Layer/MountainMock.js";
 
-// Convenience alias for backward compatibility
-import { MountainTag } from "./Tag/MountainTag.js";
 export { MountainTag as Mountain };

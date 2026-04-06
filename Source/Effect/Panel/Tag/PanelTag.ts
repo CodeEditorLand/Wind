@@ -9,6 +9,7 @@
  */
 
 import { Context } from "effect";
+
 import type { PanelService } from "../Interface/PanelService.js";
 
 /**
@@ -26,7 +27,10 @@ import type { PanelService } from "../Interface/PanelService.js";
  * });
  * ```
  */
-export default class PanelTag extends Context.Tag("Panel")<PanelTag, PanelService>() {}
+export default class PanelTag extends Context.Tag("Panel")<
+	PanelTag,
+	PanelService
+>() {}
 
 /**
  * Alias for PanelTag for shorter import paths.

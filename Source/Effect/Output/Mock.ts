@@ -1,6 +1,7 @@
 import { Layer } from "effect";
-import { OutputServiceTag } from "./Tag/OutputServiceTag.js";
+
 import { StubOutputService } from "./Implementation/OutputStub.js";
+import { OutputServiceTag } from "./Tag/OutputServiceTag.js";
 
 export const MockOutputServiceLayer = Layer.succeed(
 	OutputServiceTag,

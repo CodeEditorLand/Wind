@@ -10,7 +10,12 @@
  */
 
 import type { Effect } from "effect";
-import type { SyncConfig, SyncStats, MountainSyncResult } from "../Type/MountainSyncType.js";
+
+import type {
+	MountainSyncResult,
+	SyncConfig,
+	SyncStats,
+} from "../Type/MountainSyncType.js";
 
 /**
  * MountainSync service interface for managing background synchronization.
@@ -28,7 +33,9 @@ export interface MountainSyncService {
 	readonly syncNow: () => Effect.Effect<MountainSyncResult>;
 
 	/** Get the current synchronization status */
-	readonly getStatus: () => Effect.Effect<"idle" | "syncing" | "paused" | "error">;
+	readonly getStatus: () => Effect.Effect<
+		"idle" | "syncing" | "paused" | "error"
+	>;
 
 	/** Get synchronization statistics and metrics */
 	readonly getStats: () => Effect.Effect<SyncStats>;

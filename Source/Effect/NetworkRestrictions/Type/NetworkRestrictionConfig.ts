@@ -51,4 +51,3 @@ export interface NetworkRestrictionConfig {
 	 */
 	readonly logBlocked: boolean;
 }
-

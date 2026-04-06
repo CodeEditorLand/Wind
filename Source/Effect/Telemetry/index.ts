@@ -11,7 +11,13 @@
  */
 
 // Types
-export type { TelemetryMetric, TelemetrySpan, TelemetryLog, TelemetryEvent, SpanHandle } from "./Type/TelemetryType.js";
+export type {
+	TelemetryMetric,
+	TelemetrySpan,
+	TelemetryLog,
+	TelemetryEvent,
+	SpanHandle,
+} from "./Type/TelemetryType.js";
 
 // Service interface
 export type { TelemetryService } from "./Interface/TelemetryService.js";

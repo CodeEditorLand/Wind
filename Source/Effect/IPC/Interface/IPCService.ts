@@ -9,7 +9,12 @@
  */
 
 import { Effect, Stream } from "effect";
-import type { IPCInvokeError, IPCSendError, IPCSubscriptionError } from "../Error/IPCError.js";
+
+import type {
+	IPCInvokeError,
+	IPCSendError,
+	IPCSubscriptionError,
+} from "../Error/IPCError.js";
 
 // ============================================================================
 // Service Interface
@@ -34,12 +39,18 @@ export interface IPCService {
 	/** Subscribe to events on a channel as a Stream */
 	readonly events: (
 		channel: string,
-	) => Stream.Stream<{ readonly channel: string; readonly args: ReadonlyArray<unknown> }, IPCSubscriptionError>;
+	) => Stream.Stream<
+		{ readonly channel: string; readonly args: ReadonlyArray<unknown> },
+		IPCSubscriptionError
+	>;
 
 	/** One-shot event listener */
 	readonly once: (
 		channel: string,
-	) => Effect.Effect<{ readonly channel: string; readonly args: ReadonlyArray<unknown> }, IPCSubscriptionError>;
+	) => Effect.Effect<
+		{ readonly channel: string; readonly args: ReadonlyArray<unknown> },
+		IPCSubscriptionError
+	>;
 
 	/** Remove all listeners for a channel */
 	readonly removeAllListeners: (

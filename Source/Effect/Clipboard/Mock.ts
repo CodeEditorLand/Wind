@@ -8,8 +8,9 @@
  */
 
 import { Layer } from "effect";
-import { ClipboardServiceTag } from "./Tag/ClipboardServiceTag.js";
+
 import { MockClipboardService } from "./Implementation/MockClipboard.js";
+import { ClipboardServiceTag } from "./Tag/ClipboardServiceTag.js";
 
 // ============================================================================
 // Mock Layer

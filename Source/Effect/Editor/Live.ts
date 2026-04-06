@@ -16,11 +16,12 @@
  */
 
 import { Effect, Layer, Ref } from "effect";
-import { EditorServiceTag } from "./Tag/EditorServiceTag.js";
-import type { EditorService } from "./Interface/EditorService.js";
-import type { EditorProblem } from "./Type/EditorProblem.js";
-import { IPC } from "../IPC.js";
+
 import { Commands } from "../Commands/Commands.js";
+import { IPC } from "../IPC.js";
+import type { EditorService } from "./Interface/EditorService.js";
+import { EditorServiceTag } from "./Tag/EditorServiceTag.js";
+import type { EditorProblem } from "./Type/EditorProblem.js";
 
 const MakeEditorProblem = (error: unknown): EditorProblem =>
 	error instanceof Error
@@ -62,19 +63,19 @@ export const LiveEditorServiceLayer = Layer.effect(
 			OpenEditor: (uri, options) =>
 				// Delegate to the Commands service using the Monaco open command.
 				// If that is not yet registered, fall back to the native file opener.
-				CommandsService
-					.ExecuteCommand("vscode.open", uri, options ?? {})
-					.pipe(
-						Effect.mapError(MakeEditorProblem),
-					),
+				CommandsService.ExecuteCommand(
+					"vscode.open",
+					uri,
+					options ?? {},
+				).pipe(Effect.mapError(MakeEditorProblem)),
 
 			CloseEditor: (_editor) =>
-				CommandsService
-					.ExecuteCommand("workbench.action.closeActiveEditor")
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeEditorProblem),
-					),
+				CommandsService.ExecuteCommand(
+					"workbench.action.closeActiveEditor",
+				).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeEditorProblem),
+				),
 
 			GetSelections: () =>
 				// Sky/Monaco holds the canonical selection state.
@@ -83,28 +84,32 @@ export const LiveEditorServiceLayer = Layer.effect(
 				Effect.succeed([]),
 
 			SetSelections: (_selections) =>
-				CommandsService
-					.ExecuteCommand("editor.action.setSelection", _selections)
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeEditorProblem),
-					),
+				CommandsService.ExecuteCommand(
+					"editor.action.setSelection",
+					_selections,
+				).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeEditorProblem),
+				),
 
 			RevealRange: (range, revealType) =>
-				CommandsService
-					.ExecuteCommand("editor.revealRange", range, revealType ?? 0)
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeEditorProblem),
-					),
+				CommandsService.ExecuteCommand(
+					"editor.revealRange",
+					range,
+					revealType ?? 0,
+				).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeEditorProblem),
+				),
 
 			ApplyDecorations: (_editor, decorations) =>
-				CommandsService
-					.ExecuteCommand("editor.applyDecorations", decorations)
-					.pipe(
-						Effect.map(() => undefined as void),
-						Effect.mapError(MakeEditorProblem),
-					),
+				CommandsService.ExecuteCommand(
+					"editor.applyDecorations",
+					decorations,
+				).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeEditorProblem),
+				),
 		};
 
 		return Service;
