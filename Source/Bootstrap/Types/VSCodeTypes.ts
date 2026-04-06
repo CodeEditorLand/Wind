@@ -39,8 +39,6 @@ export type {
 export type {
 	ExtensionId,
 	MarketplaceExtension,
-	ITunnelOptions,
-	ITunnel,
 } from "./VSCode/Type/VSCodeGenericType.js";
 
 // Network types
@@ -76,7 +74,9 @@ export type {
 	IWelcomeBanner,
 	IWindowIndicator,
 	IWorkspaceProvider,
-	IWorkspace,
-	IWorkspaceFolder,
+	IWorkspaceToOpen,
+	IFolderToOpen,
 	ITunnelProvider,
+	ITunnelOptions,
+	ITunnel,
 } from "./VSCode/Type/VSCodeWorkbenchOptionsType.js";

@@ -1,37 +1,8 @@
 /**
  * @module FileSystem/Type/FileType
  * @description
- * File type enumeration for distinguishing between files, directories, and symbolic links.
- * Corresponds to VSCode's FileType enum.
- * @category Type
+ * Re-exports the real VS Code FileType enum from @codeeditorland/output.
+ * Values: Unknown=0, File=1, Directory=2, SymbolicLink=64.
  */
 
-/**
- * File type enum matching VSCode's FileType
- */
-export enum FileType {
-	/** Unknown file type */
-	Unknown = 0,
-	/** Regular file */
-	File = 1,
-	/** Directory */
-	Directory = 2,
-	/** Symbolic link (or other special file) */
-	SymbolicLink = 64,
-}
-
-/**
- * Convert FileType enum to readable string
- */
-export function fileTypeToString(fileType: FileType): string {
-	switch (fileType) {
-		case FileType.File:
-			return "file";
-		case FileType.Directory:
-			return "directory";
-		case FileType.SymbolicLink:
-			return "symlink";
-		default:
-			return "unknown";
-	}
-}
+export { FileType } from "@codeeditorland/output/vs/platform/files/common/files.js";

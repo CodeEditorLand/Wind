@@ -12,21 +12,8 @@ import type { URI } from "./URI.js";
 // File Metadata Types
 // ============================================================================
 
-/**
- * File statistics (size, type, permissions, timestamps)
- */
-export interface IStat {
-	/** File type (file, directory, symlink) */
-	readonly type: FileType;
-	/** File size in bytes */
-	readonly size: number;
-	/** Creation time (Unix timestamp in milliseconds) */
-	readonly ctime: number;
-	/** Modification time (Unix timestamp in milliseconds) */
-	readonly mtime: number;
-	/** Permissions (Unix-style, e.g., 0o755) */
-	readonly permissions?: number;
-}
+// IStat matches VS Code's IStat exactly — re-export directly.
+export type { IStat } from "@codeeditorland/output/vs/platform/files/common/files.js";
 
 // ============================================================================
 // File Write Options

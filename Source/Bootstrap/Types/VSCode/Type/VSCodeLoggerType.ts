@@ -2,38 +2,27 @@
  * @module Bootstrap/Types/VSCode/Type/VSCodeLoggerType
  * @description
  * Logger-related types for VSCode logging service.
- * Includes log levels, logger options, and logger interface.
  * @see {@link Bootstrap/Types/VSCode/Interface/VSCodeLoggerService} Related service interface
  * @category Type
  */
 
 import type { Event, IDisposable } from "./VSCodeCommonType.js";
 
-/**
- * Log level enum
- * Defines the severity levels for logging
- */
-export enum LogLevel {
-	Trace = 0,
-	Debug = 1,
-	Info = 2,
-	Warning = 3,
-	Error = 4,
-	Critical = 5,
-	Off = 6,
-}
+// LogLevel from the real VS Code source — prevents numeric drift.
+// VS Code values: Off=0, Trace=1, Debug=2, Info=3, Warning=4, Error=5
+// (Wind previously had Trace=0…Off=6, which was inverted and incompatible.)
+export { LogLevel } from "@codeeditorland/output/vs/platform/log/common/log.js";
 
 /**
  * Logger options interface
  */
 export interface ILoggerOptions {
 	name?: string;
-	logLevel?: LogLevel;
+	logLevel?: import("@codeeditorland/output/vs/platform/log/common/log.js").LogLevel;
 }
 
 /**
- * Logger interface
- * Main logging interface used by VSCode
+ * Logger interface matching VS Code's ILogger shape.
  */
 export interface ILogger {
 	trace(message: string, ...args: any[]): void;
@@ -41,7 +30,6 @@ export interface ILogger {
 	info(message: string, ...args: any[]): void;
 	warn(message: string, ...args: any[]): void;
 	error(message: string, ...args: any[]): void;
-	critical(message: string, ...args: any[]): void;
 }
 
 // Re-export common types for convenience

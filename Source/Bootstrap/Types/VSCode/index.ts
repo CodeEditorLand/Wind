@@ -12,13 +12,15 @@ export type { IVSCodeEnvironmentService } from "./Interface/VSCodeEnvironmentSer
 export type { IVSCodeConfigurationService } from "./Interface/VSCodeConfigurationService.js";
 export type { IVSCodeLoggerService } from "./Interface/VSCodeLoggerService.js";
 
-// Supporting types
+// Supporting types — all sourced from @codeeditorland/output via VSCodeWorkbenchOptionsType.ts
 export type {
 	IDefaultLayout,
 	IWorkspaceProvider,
-	IWorkspace,
-	IWorkspaceFolder,
+	IWorkspaceToOpen,
+	IFolderToOpen,
 	ITunnelProvider,
+	ITunnelOptions,
+	ITunnel,
 	IAuthenticationProvider,
 	ICommand,
 	ICommonTelemetryPropertiesResolver,
@@ -52,8 +54,6 @@ export type {
 export type {
 	ExtensionId,
 	MarketplaceExtension,
-	ITunnelOptions,
-	ITunnel,
 } from "./Type/VSCodeGenericType.js";
 
 export type {

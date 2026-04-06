@@ -1,105 +1,18 @@
 /**
  * @module Bootstrap/Types/VSCode/Interface/VSCodeWorkbenchOptions
  * @description
- * VSCode Workbench Construction Options.
- * Based on vs/workbench/browser/web.factory.ts
- * @see {@link Bootstrap/Types/VSCode/Interface/VSCodeServiceCollection} Related service collection interface
- * @category Interface
+ * Workbench construction options — aliased from VS Code's authoritative
+ * IWorkbenchConstructionOptions in @codeeditorland/output/vs/workbench/browser/web.api.js.
+ *
+ * The previous hand-written re-implementation missed 30+ fields from the real
+ * 668-line web.api.d.ts. Sky passes these options directly to the workbench
+ * create() function, so the shape must be exact.
  */
 
-import type {
-	ExtensionId,
-	ITunnel,
-	ITunnelOptions,
-	MarketplaceExtension,
-} from "../Type/VSCodeGenericType.js";
-import type {
-	IWebSocket,
-	IWebSocketFactory,
-} from "../Type/VSCodeNetworkType.js";
-import type {
-	IExternalUriResolver,
-	IRemoteResourceProvider,
-	IResourceUriProvider,
-} from "../Type/VSCodeProviderType.js";
-import type { UriComponents } from "../Type/VSCodeUtilityType.js";
-import type {
-	IAuthenticationProvider,
-	ICommand,
-	ICommonTelemetryPropertiesResolver,
-	IDefaultLayout,
-	IDevelopmentOptions,
-	IInitialColorTheme,
-	IProductConfiguration,
-	IProductQualityChangeHandler,
-	ISecretStorageProvider,
-	ISettingsSyncOptions,
-	ITunnelProvider,
-	IUpdateProvider,
-	IUrlCallbackProvider,
-	IWelcomeBanner,
-	IWindowIndicator,
-	IWorkspaceProvider,
-} from "../Type/VSCodeWorkbenchOptionsType.js";
+import type { IWorkbenchConstructionOptions } from "@codeeditorland/output/vs/workbench/browser/web.api.js";
 
 /**
- * VSCode Workbench Construction Options interface
+ * Alias of IWorkbenchConstructionOptions for Wind consumers.
+ * Use IWorkbenchConstructionOptions directly for new code.
  */
-export interface IVSCodeWorkbenchOptions {
-	// Connection
-	remoteAuthority?: string;
-	serverBasePath?: string;
-	connectionToken?: string | Promise<string>;
-	webviewEndpoint?: string;
-	webSocketFactory?: IWebSocketFactory;
-	resourceUriProvider?: IResourceUriProvider;
-	resolveExternalUri?: IExternalUriResolver;
-	tunnelProvider?: ITunnelProvider;
-	codeExchangeProxyEndpoints?: { [providerId: string]: string };
-	editSessionId?: string;
-	remoteResourceProvider?: IRemoteResourceProvider;
-
-	// Workbench
-	workspaceProvider?: IWorkspaceProvider;
-	settingsSyncOptions?: ISettingsSyncOptions;
-	secretStorageProvider?: ISecretStorageProvider;
-	additionalBuiltinExtensions?: readonly (
-		| MarketplaceExtension
-		| UriComponents
-	)[];
-	enabledExtensions?: readonly ExtensionId[];
-	additionalTrustedDomains?: string[];
-	enableWorkspaceTrust?: boolean;
-	openerAllowedExternalUrlPrefixes?: string[];
-	urlCallbackProvider?: IUrlCallbackProvider;
-	resolveCommonTelemetryProperties?: ICommonTelemetryPropertiesResolver;
-	commands?: readonly ICommand[];
-	defaultLayout?: IDefaultLayout;
-	configurationDefaults?: Record<string, unknown>;
-
-	// Profile
-	profile?: {
-		readonly name: string;
-		readonly contents?: string | UriComponents;
-	};
-	profileToPreview?: UriComponents;
-
-	// Update/Quality
-	updateProvider?: IUpdateProvider;
-	productQualityChangeHandler?: IProductQualityChangeHandler;
-
-	// Branding
-	welcomeBanner?: IWelcomeBanner;
-	productConfiguration?: Partial<IProductConfiguration>;
-	windowIndicator?: IWindowIndicator;
-	initialColorTheme?: IInitialColorTheme;
-
-	// IPC
-	messagePorts?: ReadonlyMap<ExtensionId, MessagePort>;
-
-	// Authentication
-	authenticationProviders?: readonly IAuthenticationProvider[];
-
-	// Development
-	developmentOptions?: IDevelopmentOptions;
-}
+export type IVSCodeWorkbenchOptions = IWorkbenchConstructionOptions;

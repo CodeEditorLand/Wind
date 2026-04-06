@@ -66,8 +66,9 @@ export const FileSystemProviderTag =
  * @returns File system path string
  */
 function uriToPath(uri: URI): string {
-	const path = uri.fsPath();
-	if (path === null) {
+	// fsPath is a getter on the real VS Code URI, not a method call.
+	const path = uri.fsPath;
+	if (!path) {
 		throw new InvalidPathError(uri.toString());
 	}
 	return path;

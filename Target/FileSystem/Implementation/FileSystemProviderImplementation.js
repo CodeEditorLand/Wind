@@ -27,8 +27,8 @@ const MountainCommands = {
 };
 const FileSystemProviderTag = Context.GenericTag("FileSystemProvider");
 function uriToPath(uri) {
-  const path = uri.fsPath();
-  if (path === null) {
+  const path = uri.fsPath;
+  if (!path) {
     throw new InvalidPathError(uri.toString());
   }
   return path;

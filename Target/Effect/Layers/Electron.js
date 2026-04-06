@@ -7,27 +7,9 @@ import { IPCElectronLive } from "../IPC.js";
 import { MountainLive } from "../Mountain.js";
 import { SandboxLive } from "../Sandbox.js";
 import { TelemetryLive } from "../Telemetry.js";
-const ElectronBaseLayer = Layer.empty.pipe(
-  Layer.provide(SandboxLive),
-  Layer.provide(IPCElectronLive),
-  Layer.provide(TelemetryLive),
-  Layer.provide(ConfigurationLive),
-  Layer.provide(MountainLive)
-);
-const ElectronLiveLayer = Layer.empty.pipe(
-  Layer.provide(SandboxLive),
-  Layer.provide(IPCElectronLive),
-  Layer.provide(TelemetryLive),
-  Layer.provide(ConfigurationWithSyncLive),
-  Layer.provide(MountainLive)
-);
-const ElectronDevLayer = Layer.empty.pipe(
-  Layer.provide(SandboxLive),
-  Layer.provide(IPCElectronLive),
-  Layer.provide(TelemetryLive),
-  Layer.provide(ConfigurationWithSyncLive),
-  Layer.provide(MountainLive)
-);
+const ElectronBaseLayer = Layer.empty.pipe(Layer.provideMerge(SandboxLive)).pipe(Layer.provideMerge(IPCElectronLive)).pipe(Layer.provideMerge(TelemetryLive)).pipe(Layer.provideMerge(ConfigurationLive)).pipe(Layer.provideMerge(MountainLive));
+const ElectronLiveLayer = Layer.empty.pipe(Layer.provideMerge(SandboxLive)).pipe(Layer.provideMerge(IPCElectronLive)).pipe(Layer.provideMerge(TelemetryLive)).pipe(Layer.provideMerge(ConfigurationWithSyncLive)).pipe(Layer.provideMerge(MountainLive));
+const ElectronDevLayer = Layer.empty.pipe(Layer.provideMerge(SandboxLive)).pipe(Layer.provideMerge(IPCElectronLive)).pipe(Layer.provideMerge(TelemetryLive)).pipe(Layer.provideMerge(ConfigurationWithSyncLive)).pipe(Layer.provideMerge(MountainLive));
 var Electron_default = ElectronLiveLayer;
 export {
   ElectronBaseLayer,

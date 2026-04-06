@@ -21,8 +21,11 @@ const TauriIPCLive = Effect.gen(function* () {
     }), "send"),
     invoke: /* @__PURE__ */ __name((channel) => (args) => Effect.tryPromise({
       try: /* @__PURE__ */ __name(() => {
-        const invokeArgs = args.length === 1 ? args[0] : args;
-        return tauriInvoke(channel, invokeArgs);
+        const params = args.length === 0 ? [] : args.length === 1 ? args[0] : Array.from(args);
+        return tauriInvoke("mountain_ipc_invoke", {
+          method: channel,
+          params
+        });
       }, "try"),
       catch: /* @__PURE__ */ __name((error) => CreateIPCInvokeError(channel, error), "catch")
     }), "invoke"),
