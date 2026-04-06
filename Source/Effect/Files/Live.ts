@@ -177,6 +177,26 @@ export const LiveFilesServiceLayer = Layer.effect(
 						Effect.mapError(MakeFilesProblem),
 					);
 			},
+
+			ShowOpenDialog: (Options) =>
+				IPCService.invoke("UserInterface.ShowOpenDialog")([
+					Options ?? {},
+				]).pipe(
+					Effect.map((Result) =>
+						Array.isArray(Result) ? (Result as string[]) : [],
+					),
+					Effect.mapError(MakeFilesProblem),
+				),
+
+			ShowSaveDialog: (Options) =>
+				IPCService.invoke("UserInterface.ShowSaveDialog")([
+					Options ?? {},
+				]).pipe(
+					Effect.map((Result) =>
+						typeof Result === "string" ? Result : undefined,
+					),
+					Effect.mapError(MakeFilesProblem),
+				),
 		};
 
 		return Service;
