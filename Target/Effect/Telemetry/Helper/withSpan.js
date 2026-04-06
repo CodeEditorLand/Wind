@@ -1,18 +1,24 @@
-import { Effect as t } from "effect";
-
-import { Telemetry as l } from "../../Telemetry.js";
-
-function c(r, i, f) {
-	return t.gen(function* () {
-		const e = yield* (yield* l).startSpan(r, f);
-		return i.pipe(
-			t.tap(() => e.end(!0)),
-			t.catchAll((n) =>
-				t.gen(function* () {
-					return (yield* e.end(!1, String(n)), yield* t.fail(n));
-				}),
-			),
-		);
-	});
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { Effect } from "effect";
+import { Telemetry } from "../../Telemetry.js";
+function withSpan(name, effect, labels) {
+  return Effect.gen(function* () {
+    const telemetry = yield* Telemetry;
+    const span = yield* telemetry.startSpan(name, labels);
+    return effect.pipe(
+      Effect.tap(() => span.end(true)),
+      Effect.catchAll(
+        (error) => Effect.gen(function* () {
+          yield* span.end(false, String(error));
+          return yield* Effect.fail(error);
+        })
+      )
+    );
+  });
 }
-export { c as default };
+__name(withSpan, "withSpan");
+export {
+  withSpan as default
+};
+//# sourceMappingURL=withSpan.js.map

@@ -1,15 +1,23 @@
-class t extends Error {
-	_tag = "StatusBarUpdateError";
-	cause;
-	itemId;
-	constructor(r, e) {
-		(super(`Failed to update status bar item '${r}': ${String(e)}`),
-			(this.itemId = r),
-			(this.cause = e),
-			Object.setPrototypeOf(this, t.prototype));
-	}
-	get name() {
-		return "StatusBarUpdateError";
-	}
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+class StatusBarUpdateError extends Error {
+  static {
+    __name(this, "StatusBarUpdateError");
+  }
+  _tag = "StatusBarUpdateError";
+  cause;
+  itemId;
+  constructor(itemId, cause) {
+    super(`Failed to update status bar item '${itemId}': ${String(cause)}`);
+    this.itemId = itemId;
+    this.cause = cause;
+    Object.setPrototypeOf(this, StatusBarUpdateError.prototype);
+  }
+  get name() {
+    return "StatusBarUpdateError";
+  }
 }
-export { t as default };
+export {
+  StatusBarUpdateError as default
+};
+//# sourceMappingURL=StatusBarUpdateError.js.map

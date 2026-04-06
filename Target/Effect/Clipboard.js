@@ -1,39 +1,39 @@
-import { LiveBrowserClipboardService as m } from "./Clipboard/Implementation/BrowserClipboard.js";
+import { LiveClipboardServiceLayer as LiveLayer } from "./Clipboard/Live.js";
+import { MockClipboardServiceLayer as MockLayer } from "./Clipboard/Mock.js";
 import {
-	CreateFormatNotSupportedError as E,
-	CreateReadError as f,
-	CreateSizeExceededError as k,
-	CreatePermissionDeniedError as n,
-	CreateNotAvailableError as S,
-	CreateWriteError as y,
-} from "./Clipboard/Implementation/ClipboardHelper.js";
-import { MockClipboardService as s } from "./Clipboard/Implementation/MockClipboard.js";
-import { LiveClipboardServiceLayer as r } from "./Clipboard/Live.js";
-import { MockClipboardServiceLayer as e } from "./Clipboard/Mock.js";
-import {
-	Clipboard as b,
-	ClipboardServiceTag as l,
+  ClipboardServiceTag,
+  Clipboard
 } from "./Clipboard/Tag/ClipboardServiceTag.js";
-
-const a = r,
-	p = e,
-	t = r,
-	C = e;
+import { LiveBrowserClipboardService } from "./Clipboard/Implementation/BrowserClipboard.js";
+import { MockClipboardService } from "./Clipboard/Implementation/MockClipboard.js";
+const LiveClipboardServiceLayer = LiveLayer;
+const MockClipboardServiceLayer = MockLayer;
+const LiveClipboard = LiveLayer;
+const MockClipboard = MockLayer;
+import {
+  CreateNotAvailableError,
+  CreateReadError,
+  CreateWriteError,
+  CreatePermissionDeniedError,
+  CreateFormatNotSupportedError,
+  CreateSizeExceededError
+} from "./Clipboard/Implementation/ClipboardHelper.js";
 export {
-	b as Clipboard,
-	l as ClipboardServiceTag,
-	E as CreateFormatNotSupportedError,
-	S as CreateNotAvailableError,
-	n as CreatePermissionDeniedError,
-	f as CreateReadError,
-	k as CreateSizeExceededError,
-	y as CreateWriteError,
-	m as LiveBrowserClipboardService,
-	t as LiveClipboard,
-	a as LiveClipboardServiceLayer,
-	r as LiveLayer,
-	C as MockClipboard,
-	s as MockClipboardService,
-	p as MockClipboardServiceLayer,
-	e as MockLayer,
+  Clipboard,
+  ClipboardServiceTag,
+  CreateFormatNotSupportedError,
+  CreateNotAvailableError,
+  CreatePermissionDeniedError,
+  CreateReadError,
+  CreateSizeExceededError,
+  CreateWriteError,
+  LiveBrowserClipboardService,
+  LiveClipboard,
+  LiveClipboardServiceLayer,
+  LiveLayer,
+  MockClipboard,
+  MockClipboardService,
+  MockClipboardServiceLayer,
+  MockLayer
 };
+//# sourceMappingURL=Clipboard.js.map

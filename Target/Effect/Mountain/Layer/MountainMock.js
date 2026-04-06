@@ -1,18 +1,29 @@
-import { Stream as c, Effect as e, Layer as t } from "effect";
-
-import { MountainTag as n } from "../Tag/MountainTag.js";
-
-const o = t.succeed(n, {
-	connectionState: e.succeed({ _tag: "Connected", version: "mock" }),
-	connectionChanges: c.empty,
-	connect: e.void,
-	disconnect: e.void,
-	rpc: () => () => e.succeed({}),
-	sync: () =>
-		e.succeed({ success: !0, resourcesSynced: 0, errors: [], duration: 0 }),
-	syncEvents: c.empty,
-	version: e.succeed("mock"),
-	healthCheck: e.succeed(!0),
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { Effect, Layer, Stream } from "effect";
+import { MountainTag } from "../Tag/MountainTag.js";
+const MountainMockLive = Layer.succeed(MountainTag, {
+  connectionState: Effect.succeed({
+    _tag: "Connected",
+    version: "mock"
+  }),
+  connectionChanges: Stream.empty,
+  connect: Effect.void,
+  disconnect: Effect.void,
+  rpc: /* @__PURE__ */ __name(() => () => Effect.succeed({}), "rpc"),
+  sync: /* @__PURE__ */ __name(() => Effect.succeed({
+    success: true,
+    resourcesSynced: 0,
+    errors: [],
+    duration: 0
+  }), "sync"),
+  syncEvents: Stream.empty,
+  version: Effect.succeed("mock"),
+  healthCheck: Effect.succeed(true)
 });
-var i = o;
-export { o as MountainMockLive, i as default };
+var MountainMock_default = MountainMockLive;
+export {
+  MountainMockLive,
+  MountainMock_default as default
+};
+//# sourceMappingURL=MountainMock.js.map

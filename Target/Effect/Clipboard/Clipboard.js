@@ -1,31 +1,28 @@
-import { LiveBrowserClipboardService as t } from "./Implementation/BrowserClipboard.js";
+import { ClipboardServiceTag, Clipboard } from "./Tag/ClipboardServiceTag.js";
+import { LiveBrowserClipboardService } from "./Implementation/BrowserClipboard.js";
+import { MockClipboardService } from "./Implementation/MockClipboard.js";
 import {
-	CreateReadError as b,
-	CreateNotAvailableError as C,
-	CreatePermissionDeniedError as c,
-	CreateFormatNotSupportedError as f,
-	CreateWriteError as m,
-	CreateSizeExceededError as v,
+  CreateNotAvailableError,
+  CreateReadError,
+  CreateWriteError,
+  CreatePermissionDeniedError,
+  CreateFormatNotSupportedError,
+  CreateSizeExceededError
 } from "./Implementation/ClipboardHelper.js";
-import { MockClipboardService as d } from "./Implementation/MockClipboard.js";
-import { default as S } from "./Live.js";
-import { default as E } from "./Mock.js";
-import {
-	Clipboard as a,
-	ClipboardServiceTag as o,
-} from "./Tag/ClipboardServiceTag.js";
-
+import { default as default2 } from "./Live.js";
+import { default as default3 } from "./Mock.js";
 export {
-	a as Clipboard,
-	o as ClipboardServiceTag,
-	f as CreateFormatNotSupportedError,
-	C as CreateNotAvailableError,
-	c as CreatePermissionDeniedError,
-	b as CreateReadError,
-	v as CreateSizeExceededError,
-	m as CreateWriteError,
-	t as LiveBrowserClipboardService,
-	S as LiveClipboardServiceLayer,
-	d as MockClipboardService,
-	E as MockClipboardServiceLayer,
+  Clipboard,
+  ClipboardServiceTag,
+  CreateFormatNotSupportedError,
+  CreateNotAvailableError,
+  CreatePermissionDeniedError,
+  CreateReadError,
+  CreateSizeExceededError,
+  CreateWriteError,
+  LiveBrowserClipboardService,
+  default2 as LiveClipboardServiceLayer,
+  MockClipboardService,
+  default3 as MockClipboardServiceLayer
 };
+//# sourceMappingURL=Clipboard.js.map

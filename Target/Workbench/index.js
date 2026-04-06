@@ -1,13 +1,13 @@
 import {
-	default as n,
-	WorkbenchIntegrationTag as o,
-	WorkbenchIntegrationLiveLayer as t,
+  WorkbenchIntegrationTag,
+  WorkbenchIntegrationLiveLayer,
+  default as default2
 } from "./Implementation/WorkbenchIntegrationImplementation.js";
-import { WorkbenchIntegrationErrorCode as a } from "./Type/WorkbenchIntegrationType.js";
-
+import { WorkbenchIntegrationErrorCode } from "./Type/WorkbenchIntegrationType.js";
 export {
-	a as WorkbenchIntegrationErrorCode,
-	t as WorkbenchIntegrationLiveLayer,
-	o as WorkbenchIntegrationTag,
-	n as default,
+  WorkbenchIntegrationErrorCode,
+  WorkbenchIntegrationLiveLayer,
+  WorkbenchIntegrationTag,
+  default2 as default
 };
+//# sourceMappingURL=index.js.map

@@ -1,71 +1,121 @@
-import { Layer as r } from "effect";
-
-import { ActivityBarLive as a } from "../ActivityBar.js";
-import { BootstrapLive as d } from "../Bootstrap.js";
-import { LiveClipboardServiceLayer as t } from "../Clipboard.js";
+import { Layer } from "effect";
+import { ActivityBarLive } from "../ActivityBar.js";
+import { BootstrapLive } from "../Bootstrap.js";
+import { LiveClipboardServiceLayer as ClipboardLive } from "../Clipboard.js";
+import { LiveCommandsServiceLayer as CommandsLive } from "../Commands/Commands.js";
 import {
-	ConfigurationLive as u,
-	ConfigurationWithSyncLive as y,
+  ConfigurationLive,
+  ConfigurationWithSyncLive
 } from "../Configuration.js";
-import { EnvironmentLive as p } from "../Environment.js";
-import { HealthLive as v } from "../Health.js";
-import { MountainLive as i } from "../Mountain.js";
-import { MountainSyncLive as m } from "../MountainSync.js";
-import { PanelLive as L } from "../Panel.js";
-import { SandboxLive as o } from "../Sandbox.js";
-import { SidebarLive as n } from "../Sidebar.js";
-import { StatusBarLive as f } from "../StatusBar.js";
-import { TelemetryLive as e } from "../Telemetry.js";
-
-const H = r.empty.pipe(
-		r.provide(o),
-		r.provide(p),
-		r.provide(t),
-		r.provide(e),
-		r.provide(u),
-		r.provide(i),
-		r.provide(m),
-		r.provide(v),
-		r.provide(d),
-		r.provide(a),
-		r.provide(L),
-		r.provide(n),
-		r.provide(f),
-	),
-	c = r.empty.pipe(
-		r.provide(o),
-		r.provide(p),
-		r.provide(t),
-		r.provide(e),
-		r.provide(y),
-		r.provide(i),
-		r.provide(m),
-		r.provide(v),
-		r.provide(d),
-		r.provide(a),
-		r.provide(L),
-		r.provide(n),
-		r.provide(f),
-	),
-	P = r.empty.pipe(
-		r.provide(o),
-		r.provide(p),
-		r.provide(t),
-		r.provide(e),
-		r.provide(y),
-		r.provide(i),
-		r.provide(m),
-		r.provide(v),
-		r.provide(d),
-		r.provide(a),
-		r.provide(L),
-		r.provide(n),
-		r.provide(f),
-	);
-var W = c;
+import { LiveEditorServiceLayer as EditorLive } from "../Editor/Editor.js";
+import { EnvironmentLive } from "../Environment.js";
+import { LiveExtensionsServiceLayer as ExtensionsLive } from "../Extensions/Extensions.js";
+import { LiveFilesServiceLayer as FilesLive } from "../Files/Files.js";
+import { HealthLive } from "../Health.js";
+import { LiveLanguageServiceLayer as LanguageLive } from "../Language/Language.js";
+import { MountainLive } from "../Mountain.js";
+import { MountainSyncLive } from "../MountainSync.js";
+import { LiveNotificationServiceLayer as NotificationLive } from "../Notification/Notification.js";
+import { LiveOutputServiceLayer as OutputLive } from "../Output/Output.js";
+import { PanelLive } from "../Panel.js";
+import { LiveProgressServiceLayer as ProgressLive } from "../Progress/Progress.js";
+import { LiveQuickInputServiceLayer as QuickInputLive } from "../QuickInput/QuickInput.js";
+import { SandboxLive } from "../Sandbox.js";
+import { LiveSearchServiceLayer as SearchLive } from "../Search/Search.js";
+import { SidebarLive } from "../Sidebar.js";
+import { StatusBarLive } from "../StatusBar.js";
+import { LiveStorageServiceLayer as StorageLive } from "../Storage/Storage.js";
+import { TelemetryLive } from "../Telemetry.js";
+import { LiveTerminalServiceLayer as TerminalLive } from "../Terminal/Terminal.js";
+import { default as LiveTextFileServiceLayer } from "../TextFile/Live.js";
+import { LiveThemesServiceLayer as ThemesLive } from "../Themes/Themes.js";
+import { LiveWorkspacesServiceLayer as WorkspacesLive } from "../Workspaces/Workspaces.js";
+const TauriBaseLayer = Layer.empty.pipe(
+  Layer.provide(SandboxLive),
+  Layer.provide(EnvironmentLive),
+  Layer.provide(ClipboardLive),
+  Layer.provide(TelemetryLive),
+  Layer.provide(ConfigurationLive),
+  Layer.provide(MountainLive),
+  Layer.provide(MountainSyncLive),
+  Layer.provide(HealthLive),
+  Layer.provide(BootstrapLive),
+  Layer.provide(ActivityBarLive),
+  Layer.provide(PanelLive),
+  Layer.provide(SidebarLive),
+  Layer.provide(StatusBarLive),
+  // Editor service layers (depend on CommandsLive / IPC)
+  Layer.provide(CommandsLive),
+  Layer.provide(FilesLive),
+  Layer.provide(LanguageLive),
+  Layer.provide(ExtensionsLive),
+  Layer.provide(EditorLive),
+  // Tier 2 service layers
+  Layer.provide(TerminalLive),
+  Layer.provide(OutputLive),
+  Layer.provide(LiveTextFileServiceLayer),
+  // Tier 3 service layers
+  Layer.provide(StorageLive),
+  Layer.provide(NotificationLive),
+  Layer.provide(ProgressLive),
+  Layer.provide(QuickInputLive),
+  Layer.provide(WorkspacesLive),
+  Layer.provide(ThemesLive),
+  Layer.provide(SearchLive)
+);
+const TauriLiveLayer = Layer.empty.pipe(
+  Layer.provide(SandboxLive),
+  Layer.provide(EnvironmentLive),
+  Layer.provide(ClipboardLive),
+  Layer.provide(TelemetryLive),
+  Layer.provide(ConfigurationWithSyncLive),
+  Layer.provide(MountainLive),
+  Layer.provide(MountainSyncLive),
+  Layer.provide(HealthLive),
+  Layer.provide(BootstrapLive),
+  Layer.provide(ActivityBarLive),
+  Layer.provide(PanelLive),
+  Layer.provide(SidebarLive),
+  Layer.provide(StatusBarLive),
+  // Editor service layers (depend on CommandsLive / IPC)
+  Layer.provide(CommandsLive),
+  Layer.provide(FilesLive),
+  Layer.provide(LanguageLive),
+  Layer.provide(ExtensionsLive),
+  Layer.provide(EditorLive),
+  // Tier 2 service layers
+  Layer.provide(TerminalLive),
+  Layer.provide(OutputLive),
+  Layer.provide(LiveTextFileServiceLayer),
+  // Tier 3 service layers
+  Layer.provide(StorageLive),
+  Layer.provide(NotificationLive),
+  Layer.provide(ProgressLive),
+  Layer.provide(QuickInputLive),
+  Layer.provide(WorkspacesLive),
+  Layer.provide(ThemesLive),
+  Layer.provide(SearchLive)
+);
+const TauriDevLayer = Layer.empty.pipe(
+  Layer.provide(SandboxLive),
+  Layer.provide(EnvironmentLive),
+  Layer.provide(ClipboardLive),
+  Layer.provide(TelemetryLive),
+  Layer.provide(ConfigurationWithSyncLive),
+  Layer.provide(MountainLive),
+  Layer.provide(MountainSyncLive),
+  Layer.provide(HealthLive),
+  Layer.provide(BootstrapLive),
+  Layer.provide(ActivityBarLive),
+  Layer.provide(PanelLive),
+  Layer.provide(SidebarLive),
+  Layer.provide(StatusBarLive)
+);
+var Tauri_default = TauriLiveLayer;
 export {
-	H as TauriBaseLayer,
-	P as TauriDevLayer,
-	c as TauriLiveLayer,
-	W as default,
+  TauriBaseLayer,
+  TauriDevLayer,
+  TauriLiveLayer,
+  Tauri_default as default
 };
+//# sourceMappingURL=Tauri.js.map

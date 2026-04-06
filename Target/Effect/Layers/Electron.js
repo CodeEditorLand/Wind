@@ -1,39 +1,38 @@
-import { Layer as e } from "effect";
-
+import { Layer } from "effect";
 import {
-	ConfigurationWithSyncLive as t,
-	ConfigurationLive as v,
+  ConfigurationLive,
+  ConfigurationWithSyncLive
 } from "../Configuration.js";
-import { IPCElectronLive as o } from "../IPC.js";
-import { MountainLive as r } from "../Mountain.js";
-import { SandboxLive as i } from "../Sandbox.js";
-import { TelemetryLive as p } from "../Telemetry.js";
-
-const c = e.empty.pipe(
-		e.provide(i),
-		e.provide(o),
-		e.provide(p),
-		e.provide(v),
-		e.provide(r),
-	),
-	d = e.empty.pipe(
-		e.provide(i),
-		e.provide(o),
-		e.provide(p),
-		e.provide(t),
-		e.provide(r),
-	),
-	l = e.empty.pipe(
-		e.provide(i),
-		e.provide(o),
-		e.provide(p),
-		e.provide(t),
-		e.provide(r),
-	);
-var x = d;
+import { IPCElectronLive } from "../IPC.js";
+import { MountainLive } from "../Mountain.js";
+import { SandboxLive } from "../Sandbox.js";
+import { TelemetryLive } from "../Telemetry.js";
+const ElectronBaseLayer = Layer.empty.pipe(
+  Layer.provide(SandboxLive),
+  Layer.provide(IPCElectronLive),
+  Layer.provide(TelemetryLive),
+  Layer.provide(ConfigurationLive),
+  Layer.provide(MountainLive)
+);
+const ElectronLiveLayer = Layer.empty.pipe(
+  Layer.provide(SandboxLive),
+  Layer.provide(IPCElectronLive),
+  Layer.provide(TelemetryLive),
+  Layer.provide(ConfigurationWithSyncLive),
+  Layer.provide(MountainLive)
+);
+const ElectronDevLayer = Layer.empty.pipe(
+  Layer.provide(SandboxLive),
+  Layer.provide(IPCElectronLive),
+  Layer.provide(TelemetryLive),
+  Layer.provide(ConfigurationWithSyncLive),
+  Layer.provide(MountainLive)
+);
+var Electron_default = ElectronLiveLayer;
 export {
-	c as ElectronBaseLayer,
-	l as ElectronDevLayer,
-	d as ElectronLiveLayer,
-	x as default,
+  ElectronBaseLayer,
+  ElectronDevLayer,
+  ElectronLiveLayer,
+  Electron_default as default
 };
+//# sourceMappingURL=Electron.js.map

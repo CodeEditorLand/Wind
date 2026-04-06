@@ -1,35 +1,33 @@
-import { default as i } from "./Error/ActivityBarItemNotFoundError.js";
-import { default as m } from "./Error/ActivityBarUpdateError.js";
+import { ActivityBarTag } from "./Tag/ActivityBarTag.js";
+import { default as default2 } from "./Error/ActivityBarItemNotFoundError.js";
+import { default as default3 } from "./Error/ActivityBarUpdateError.js";
+import { ActivityBarTag as ActivityBarTag2 } from "./Tag/ActivityBarTag.js";
 import {
-	MakeRemoveItem as A,
-	MakeUpdateItem as B,
-	MakeSetBadge as d,
-	MakeGetItem as f,
-	MakeSetActiveItem as I,
-	GenerateItemId as k,
-	MakeCreateItem as p,
-	MakeGetBadge as x,
+  MakeCreateItem,
+  MakeUpdateItem,
+  MakeRemoveItem,
+  MakeGetItem,
+  MakeSetActiveItem,
+  MakeSetBadge,
+  MakeGetBadge,
+  GenerateItemId
 } from "./Implementation/ActivityBarHelper.js";
-import { ActivityBarLive as g } from "./Implementation/ActivityBarImplementation.js";
-import { ActivityBarMockLive as S } from "./Layer/ActivityBarMock.js";
-import {
-	ActivityBarTag as c,
-	ActivityBarTag as t,
-} from "./Tag/ActivityBarTag.js";
-
+import { ActivityBarLive } from "./Implementation/ActivityBarImplementation.js";
+import { ActivityBarMockLive } from "./Layer/ActivityBarMock.js";
 export {
-	t as ActivityBar,
-	i as ActivityBarItemNotFoundError,
-	g as ActivityBarLive,
-	S as ActivityBarMockLive,
-	c as ActivityBarTag,
-	m as ActivityBarUpdateError,
-	k as GenerateItemId,
-	p as MakeCreateItem,
-	x as MakeGetBadge,
-	f as MakeGetItem,
-	A as MakeRemoveItem,
-	I as MakeSetActiveItem,
-	d as MakeSetBadge,
-	B as MakeUpdateItem,
+  ActivityBarTag as ActivityBar,
+  default2 as ActivityBarItemNotFoundError,
+  ActivityBarLive,
+  ActivityBarMockLive,
+  ActivityBarTag2 as ActivityBarTag,
+  default3 as ActivityBarUpdateError,
+  GenerateItemId,
+  MakeCreateItem,
+  MakeGetBadge,
+  MakeGetItem,
+  MakeRemoveItem,
+  MakeSetActiveItem,
+  MakeSetBadge,
+  MakeUpdateItem
 };
+//# sourceMappingURL=index.js.map

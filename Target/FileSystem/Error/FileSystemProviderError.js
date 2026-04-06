@@ -1,107 +1,164 @@
-import { FileSystemErrorCode as t } from "../Type/FileSystemType.js";
-
-class s extends Error {
-	_tag;
-	code;
-	constructor(n, o, i) {
-		(super(n, i ? { cause: i } : void 0),
-			(this.name = "FileSystemProviderError"),
-			(this._tag = "FileSystemProviderError"),
-			(this.code = o));
-	}
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { FileSystemErrorCode } from "../Type/FileSystemType.js";
+class FileSystemProviderError extends Error {
+  static {
+    __name(this, "FileSystemProviderError");
+  }
+  _tag;
+  code;
+  constructor(message, code, cause) {
+    super(message, cause ? { cause } : void 0);
+    this.name = "FileSystemProviderError";
+    this._tag = "FileSystemProviderError";
+    this.code = code;
+  }
 }
-class u extends s {
-	constructor(n, o) {
-		(super(`File not found: ${n}`, t.FileNotFound, o),
-			(this.name = "FileNotFoundError"),
-			(this._tag = "FileNotFoundError"));
-	}
+class FileNotFoundError extends FileSystemProviderError {
+  static {
+    __name(this, "FileNotFoundError");
+  }
+  constructor(path, cause) {
+    super(
+      `File not found: ${path}`,
+      FileSystemErrorCode.FileNotFound,
+      cause
+    );
+    this.name = "FileNotFoundError";
+    this._tag = "FileNotFoundError";
+  }
 }
-class d extends s {
-	constructor(n, o) {
-		(super(`File already exists: ${n}`, t.FileExists, o),
-			(this.name = "FileExistsError"),
-			(this._tag = "FileExistsError"));
-	}
+class FileExistsError extends FileSystemProviderError {
+  static {
+    __name(this, "FileExistsError");
+  }
+  constructor(path, cause) {
+    super(
+      `File already exists: ${path}`,
+      FileSystemErrorCode.FileExists,
+      cause
+    );
+    this.name = "FileExistsError";
+    this._tag = "FileExistsError";
+  }
 }
-class l extends s {
-	constructor(n, o) {
-		(super(`Permission denied: ${n}`, t.NoPermissions, o),
-			(this.name = "PermissionError"),
-			(this._tag = "PermissionError"));
-	}
+class PermissionError extends FileSystemProviderError {
+  static {
+    __name(this, "PermissionError");
+  }
+  constructor(path, cause) {
+    super(
+      `Permission denied: ${path}`,
+      FileSystemErrorCode.NoPermissions,
+      cause
+    );
+    this.name = "PermissionError";
+    this._tag = "PermissionError";
+  }
 }
-class a extends s {
-	constructor(n, o) {
-		(super(`Invalid path: ${n}`, t.InvalidPath, o),
-			(this.name = "InvalidPathError"),
-			(this._tag = "InvalidPathError"));
-	}
+class InvalidPathError extends FileSystemProviderError {
+  static {
+    __name(this, "InvalidPathError");
+  }
+  constructor(path, cause) {
+    super(`Invalid path: ${path}`, FileSystemErrorCode.InvalidPath, cause);
+    this.name = "InvalidPathError";
+    this._tag = "InvalidPathError";
+  }
 }
-class p extends s {
-	constructor(n, o) {
-		(super(`Operation not supported: ${n}`, t.NotSupported, o),
-			(this.name = "NotSupportedError"),
-			(this._tag = "NotSupportedError"));
-	}
+class NotSupportedError extends FileSystemProviderError {
+  static {
+    __name(this, "NotSupportedError");
+  }
+  constructor(operation, cause) {
+    super(
+      `Operation not supported: ${operation}`,
+      FileSystemErrorCode.NotSupported,
+      cause
+    );
+    this.name = "NotSupportedError";
+    this._tag = "NotSupportedError";
+  }
 }
-class E extends s {
-	constructor(n, o) {
-		(super(`Unknown file system error: ${n}`, t.Unknown, o),
-			(this.name = "UnknownFileSystemError"),
-			(this._tag = "UnknownFileSystemError"));
-	}
+class UnknownFileSystemError extends FileSystemProviderError {
+  static {
+    __name(this, "UnknownFileSystemError");
+  }
+  constructor(message, cause) {
+    super(
+      `Unknown file system error: ${message}`,
+      FileSystemErrorCode.Unknown,
+      cause
+    );
+    this.name = "UnknownFileSystemError";
+    this._tag = "UnknownFileSystemError";
+  }
 }
-function m(r) {
-	return r instanceof s;
+function isFileSystemProviderError(error) {
+  return error instanceof FileSystemProviderError;
 }
-function w(r) {
-	return r instanceof u;
+__name(isFileSystemProviderError, "isFileSystemProviderError");
+function isFileNotFoundError(error) {
+  return error instanceof FileNotFoundError;
 }
-function f(r) {
-	return r instanceof d;
+__name(isFileNotFoundError, "isFileNotFoundError");
+function isFileExistsError(error) {
+  return error instanceof FileExistsError;
 }
-function g(r) {
-	return r instanceof l;
+__name(isFileExistsError, "isFileExistsError");
+function isPermissionError(error) {
+  return error instanceof PermissionError;
 }
-function h(r) {
-	return r instanceof a;
+__name(isPermissionError, "isPermissionError");
+function isInvalidPathError(error) {
+  return error instanceof InvalidPathError;
 }
-function k(r) {
-	return r instanceof p;
+__name(isInvalidPathError, "isInvalidPathError");
+function isNotSupportedError(error) {
+  return error instanceof NotSupportedError;
 }
-function S(r) {
-	return r instanceof E;
+__name(isNotSupportedError, "isNotSupportedError");
+function isUnknownFileSystemError(error) {
+  return error instanceof UnknownFileSystemError;
 }
-function x(r, n, o) {
-	if (m(r)) return r;
-	const i = r instanceof Error ? r.message : String(r),
-		c = o ? `${n} (${o}): ${i}` : `${n}: ${i}`,
-		e = i.toLowerCase();
-	return e.includes("not found") || e.includes("no such")
-		? new u(o ?? n, r)
-		: e.includes("already exists") || e.includes("exists")
-			? new d(o ?? n, r)
-			: e.includes("permission") || e.includes("denied")
-				? new l(o ?? n, r)
-				: e.includes("invalid") || e.includes("malformed")
-					? new a(o ?? n, r)
-					: new E(c, r);
+__name(isUnknownFileSystemError, "isUnknownFileSystemError");
+function toFileSystemProviderError(error, context, contextValue) {
+  if (isFileSystemProviderError(error)) {
+    return error;
+  }
+  const message = error instanceof Error ? error.message : String(error);
+  const fullMessage = contextValue ? `${context} (${contextValue}): ${message}` : `${context}: ${message}`;
+  const lowerMessage = message.toLowerCase();
+  if (lowerMessage.includes("not found") || lowerMessage.includes("no such")) {
+    return new FileNotFoundError(contextValue ?? context, error);
+  }
+  if (lowerMessage.includes("already exists") || lowerMessage.includes("exists")) {
+    return new FileExistsError(contextValue ?? context, error);
+  }
+  if (lowerMessage.includes("permission") || lowerMessage.includes("denied")) {
+    return new PermissionError(contextValue ?? context, error);
+  }
+  if (lowerMessage.includes("invalid") || lowerMessage.includes("malformed")) {
+    return new InvalidPathError(contextValue ?? context, error);
+  }
+  return new UnknownFileSystemError(fullMessage, error);
 }
+__name(toFileSystemProviderError, "toFileSystemProviderError");
 export {
-	d as FileExistsError,
-	u as FileNotFoundError,
-	s as FileSystemProviderError,
-	a as InvalidPathError,
-	p as NotSupportedError,
-	l as PermissionError,
-	E as UnknownFileSystemError,
-	f as isFileExistsError,
-	w as isFileNotFoundError,
-	m as isFileSystemProviderError,
-	h as isInvalidPathError,
-	k as isNotSupportedError,
-	g as isPermissionError,
-	S as isUnknownFileSystemError,
-	x as toFileSystemProviderError,
+  FileExistsError,
+  FileNotFoundError,
+  FileSystemProviderError,
+  InvalidPathError,
+  NotSupportedError,
+  PermissionError,
+  UnknownFileSystemError,
+  isFileExistsError,
+  isFileNotFoundError,
+  isFileSystemProviderError,
+  isInvalidPathError,
+  isNotSupportedError,
+  isPermissionError,
+  isUnknownFileSystemError,
+  toFileSystemProviderError
 };
+//# sourceMappingURL=FileSystemProviderError.js.map

@@ -1,11 +1,19 @@
-class e extends Error {
-	_tag = "PanelViewNotFoundError";
-	constructor(r) {
-		(super(`Panel view '${r}' not found`),
-			Object.setPrototypeOf(this, e.prototype));
-	}
-	get name() {
-		return "PanelViewNotFoundError";
-	}
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+class PanelViewNotFoundError extends Error {
+  static {
+    __name(this, "PanelViewNotFoundError");
+  }
+  _tag = "PanelViewNotFoundError";
+  constructor(viewId) {
+    super(`Panel view '${viewId}' not found`);
+    Object.setPrototypeOf(this, PanelViewNotFoundError.prototype);
+  }
+  get name() {
+    return "PanelViewNotFoundError";
+  }
 }
-export { e as default };
+export {
+  PanelViewNotFoundError as default
+};
+//# sourceMappingURL=PanelViewNotFoundError.js.map

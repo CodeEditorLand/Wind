@@ -1,203 +1,322 @@
-async function l(r, e = {}) {
-	try {
-		const n = window.__TAURI__ ?? window.TAURI;
-		if (typeof n?.invoke == "function") return await n.invoke(r, e);
-		throw new Error(`Tauri invoke not available for command: ${r}`);
-	} catch (n) {
-		throw (
-			console.error(`[IPCRendererShim] Tauri invoke failed for ${r}:`, n),
-			n
-		);
-	}
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+async function invokeTauri(command, args = {}) {
+  try {
+    const tauri = window.__TAURI__ ?? window.TAURI;
+    if (typeof tauri?.invoke === "function") {
+      return await tauri.invoke(command, args);
+    }
+    throw new Error(`Tauri invoke not available for command: ${command}`);
+  } catch (error) {
+    console.error(
+      `[IPCRendererShim] Tauri invoke failed for ${command}:`,
+      error
+    );
+    throw error;
+  }
 }
-function c(r, e = {}) {
-	try {
-		const n = window.__TAURI__ ?? window.TAURI;
-		typeof n?.invoke == "function"
-			? n.invoke(r, e).catch((t) => {
-					console.warn(
-						`[IPCRendererShim] Tauri send failed (no response expected): ${r}`,
-						t,
-					);
-				})
-			: console.warn(`[IPCRendererShim] Tauri not available for: ${r}`);
-	} catch (n) {
-		console.warn(
-			`[IPCRendererShim] Tauri send error (no response expected): ${r}`,
-			n,
-		);
-	}
+__name(invokeTauri, "invokeTauri");
+function sendTauri(command, args = {}) {
+  try {
+    const tauri = window.__TAURI__ ?? window.TAURI;
+    if (typeof tauri?.invoke === "function") {
+      tauri.invoke(command, args).catch((error) => {
+        console.warn(
+          `[IPCRendererShim] Tauri send failed (no response expected): ${command}`,
+          error
+        );
+      });
+    } else {
+      console.warn(
+        `[IPCRendererShim] Tauri not available for: ${command}`
+      );
+    }
+  } catch (error) {
+    console.warn(
+      `[IPCRendererShim] Tauri send error (no response expected): ${command}`,
+      error
+    );
+  }
 }
-const u = [
-	{
-		electronPattern: /^logger:(log|warn|error|info|debug|trace|critical)$/,
-		tauriCommand: "logger:log",
-		transform: (r) => ({ level: r[0], message: r[1], context: r[2] }),
-	},
-	{
-		electronPattern: /^policy:(get|set|validate|enforce|check)$/,
-		tauriCommand: "policy:handle",
-		transform: (r) => ({ action: r[0], data: r[1] }),
-	},
-	{
-		electronPattern: /^sign:(sign|verify|generate|validate)$/,
-		tauriCommand: "sign:handle",
-		transform: (r) => ({ action: r[0], data: r[1], options: r[2] }),
-	},
-	{
-		electronPattern: /^userDataProfiles:(create|delete|update|get|list)$/,
-		tauriCommand: "user_data:handle_profile",
-		transform: (r) => ({ action: r[0], profileId: r[1], data: r[2] }),
-	},
-	{
-		electronPattern:
-			/^localFileSystem:(read|write|delete|exists|stat|readdir)$/,
-		tauriCommand: "file:handle",
-		transform: (r) => ({ action: r[0], path: r[1], data: r[2] }),
-	},
+__name(sendTauri, "sendTauri");
+const IPC_CHANNEL_MAPPINGS = [
+  // Logger service
+  {
+    electronPattern: /^logger:(log|warn|error|info|debug|trace|critical)$/,
+    tauriCommand: "logger:log",
+    transform: /* @__PURE__ */ __name((_args) => ({
+      level: _args[0],
+      message: _args[1],
+      context: _args[2]
+    }), "transform")
+  },
+  // Policy service
+  {
+    electronPattern: /^policy:(get|set|validate|enforce|check)$/,
+    tauriCommand: "policy:handle",
+    transform: /* @__PURE__ */ __name((_args) => ({
+      action: _args[0],
+      data: _args[1]
+    }), "transform")
+  },
+  // Signing service
+  {
+    electronPattern: /^sign:(sign|verify|generate|validate)$/,
+    tauriCommand: "sign:handle",
+    transform: /* @__PURE__ */ __name((_args) => ({
+      action: _args[0],
+      data: _args[1],
+      options: _args[2]
+    }), "transform")
+  },
+  // User data profiles service
+  {
+    electronPattern: /^userDataProfiles:(create|delete|update|get|list)$/,
+    tauriCommand: "user_data:handle_profile",
+    transform: /* @__PURE__ */ __name((_args) => ({
+      action: _args[0],
+      profileId: _args[1],
+      data: _args[2]
+    }), "transform")
+  },
+  // Local file system service
+  {
+    electronPattern: /^localFileSystem:(read|write|delete|exists|stat|readdir)$/,
+    tauriCommand: "file:handle",
+    transform: /* @__PURE__ */ __name((_args) => ({
+      action: _args[0],
+      path: _args[1],
+      data: _args[2]
+    }), "transform")
+  }
 ];
-function p(r) {
-	for (const e of u)
-		if (e.electronPattern.test(r)) {
-			const n = e.transform?.([]) ?? {};
-			return { command: e.tauriCommand, args: n };
-		}
-	return null;
+function mapElectronChannelToTauri(channel) {
+  for (const mapping of IPC_CHANNEL_MAPPINGS) {
+    if (mapping.electronPattern.test(channel)) {
+      const args = mapping.transform?.([]) ?? {};
+      return { command: mapping.tauriCommand, args };
+    }
+  }
+  return null;
 }
-function R(r, e) {
-	for (const n of u)
-		if (n.electronPattern.test(r) && n.transform) return n.transform(e);
-	return { args: e };
+__name(mapElectronChannelToTauri, "mapElectronChannelToTauri");
+function transformChannelArgs(channel, args) {
+  for (const mapping of IPC_CHANNEL_MAPPINGS) {
+    if (mapping.electronPattern.test(channel) && mapping.transform) {
+      return mapping.transform(args);
+    }
+  }
+  return { args };
 }
-class g {
-	listeners = new Map();
-	replyHandlers = new Map();
-	replyCounter = 0;
-	onceListeners = new Map();
-	send(e, ...n) {
-		console.log(`[IPCRendererShim] send: ${e}`, n);
-		const t = p(e);
-		if (t) {
-			const o = R(e, n);
-			c(t.command, o);
-		} else c("ipc:send", { channel: e, args: n });
-	}
-	sendSync(e, ...n) {
-		console.warn(
-			"[IPCRendererShim]\u2001\u26A0\uFE0F sendSync is not supported in Tauri. Use invoke() instead. Returning undefined.",
-		);
-	}
-	async invoke(e, ...n) {
-		console.log(`[IPCRendererShim] invoke: ${e}`, n);
-		const t = p(e);
-		if (t) {
-			const o = R(e, n);
-			return await l(t.command, o);
-		}
-		return await l("ipc:invoke", { channel: e, args: n });
-	}
-	on(e, n) {
-		return (
-			console.log(`[IPCRendererShim] on: ${e}`),
-			this.listeners.has(e) || this.listeners.set(e, new Set()),
-			this.listeners.get(e).add(n),
-			this.registerTauriListener(e, n),
-			this
-		);
-	}
-	once(e, n) {
-		(console.log(`[IPCRendererShim] once: ${e}`),
-			this.onceListeners.has(e) || this.onceListeners.set(e, new Set()),
-			this.onceListeners.get(e).add(new WeakRef(n)));
-		const t = (o, ...a) => {
-			(n(o, ...a), this.removeListener(e, t));
-		};
-		return (this.on(e, t), this);
-	}
-	removeListener(e, n) {
-		console.log(`[IPCRendererShim] removeListener: ${e}`);
-		const t = this.listeners.get(e);
-		return (
-			t && (t.delete(n), t.size === 0 && this.listeners.delete(e)),
-			this
-		);
-	}
-	removeAllListeners(e) {
-		return (
-			console.log(`[IPCRendererShim] removeAllListeners: ${e ?? "all"}`),
-			e ? this.listeners.delete(e) : this.listeners.clear(),
-			this
-		);
-	}
-	sendTo(e, n, t) {
-		console.log(`[IPCRendererShim] sendTo: ${e}`);
-		const o = ++this.replyCounter,
-			a = { channel: e, args: n, callback: t, timestamp: Date.now() };
-		(this.replyHandlers.set(o, a),
-			this.invoke(e, ...n)
-				.then((s) => {
-					const i = this.replyHandlers.get(o);
-					i && (i.callback(s), this.replyHandlers.delete(o));
-				})
-				.catch((s) => {
-					console.error(`[IPCRendererShim] sendTo error: ${e}`, s);
-					const i = this.replyHandlers.get(o);
-					i &&
-						(i.callback({ error: s.message }),
-						this.replyHandlers.delete(o));
-				}));
-	}
-	onReply(e, n) {
-		(console.log(`[IPCRendererShim] onReply: ${e}`),
-			this.on(e, (t, ...o) => {
-				n(o[0]);
-			}));
-	}
-	registerTauriListener(e, n) {
-		console.log(`[IPCRendererShim] Registering Tauri listener for: ${e}`);
-	}
-	cleanup() {
-		(console.log("[IPCRendererShim] Cleaning up IPC listeners"),
-			this.listeners.clear(),
-			this.onceListeners.clear(),
-			this.replyHandlers.clear());
-	}
+__name(transformChannelArgs, "transformChannelArgs");
+class IPCRendererImpl {
+  static {
+    __name(this, "IPCRendererImpl");
+  }
+  // Track event listeners by channel
+  listeners = /* @__PURE__ */ new Map();
+  // Track reply handlers
+  replyHandlers = /* @__PURE__ */ new Map();
+  replyCounter = 0;
+  // Track once listeners
+  onceListeners = /* @__PURE__ */ new Map();
+  /**
+   * Send message to main process
+   */
+  send(channel, ...args) {
+    console.log(`[IPCRendererShim] send: ${channel}`, args);
+    const mapping = mapElectronChannelToTauri(channel);
+    if (mapping) {
+      const tauriArgs = transformChannelArgs(channel, args);
+      sendTauri(mapping.command, tauriArgs);
+    } else {
+      sendTauri("ipc:send", {
+        channel,
+        args
+      });
+    }
+  }
+  /**
+   * Synchronous send - polyfilled as async with warning
+   */
+  sendSync(_channel, ..._args) {
+    console.warn(
+      `[IPCRendererShim]\u2001\u26A0\uFE0F sendSync is not supported in Tauri. Use invoke() instead. Returning undefined.`
+    );
+    return void 0;
+  }
+  /**
+   * Invoke main process and get response
+   */
+  async invoke(channel, ...args) {
+    console.log(`[IPCRendererShim] invoke: ${channel}`, args);
+    const mapping = mapElectronChannelToTauri(channel);
+    if (mapping) {
+      const tauriArgs = transformChannelArgs(channel, args);
+      return await invokeTauri(mapping.command, tauriArgs);
+    }
+    return await invokeTauri("ipc:invoke", {
+      channel,
+      args
+    });
+  }
+  /**
+   * Register event listener
+   */
+  on(channel, listener) {
+    console.log(`[IPCRendererShim] on: ${channel}`);
+    if (!this.listeners.has(channel)) {
+      this.listeners.set(channel, /* @__PURE__ */ new Set());
+    }
+    this.listeners.get(channel).add(listener);
+    this.registerTauriListener(channel, listener);
+    return this;
+  }
+  /**
+   * Register one-time event listener
+   */
+  once(channel, listener) {
+    console.log(`[IPCRendererShim] once: ${channel}`);
+    if (!this.onceListeners.has(channel)) {
+      this.onceListeners.set(channel, /* @__PURE__ */ new Set());
+    }
+    this.onceListeners.get(channel).add(new WeakRef(listener));
+    const wrappedListener = /* @__PURE__ */ __name((_event, ...args) => {
+      listener(_event, ...args);
+      this.removeListener(channel, wrappedListener);
+    }, "wrappedListener");
+    this.on(channel, wrappedListener);
+    return this;
+  }
+  /**
+   * Remove specific listener
+   */
+  removeListener(channel, listener) {
+    console.log(`[IPCRendererShim] removeListener: ${channel}`);
+    const channelListeners = this.listeners.get(channel);
+    if (channelListeners) {
+      channelListeners.delete(listener);
+      if (channelListeners.size === 0) {
+        this.listeners.delete(channel);
+      }
+    }
+    return this;
+  }
+  /**
+   * Remove all listeners for a channel
+   */
+  removeAllListeners(channel) {
+    console.log(
+      `[IPCRendererShim] removeAllListeners: ${channel ?? "all"}`
+    );
+    if (channel) {
+      this.listeners.delete(channel);
+    } else {
+      this.listeners.clear();
+    }
+    return this;
+  }
+  /**
+   * Client-side request-reply pattern (sendTo + onReply)
+   */
+  sendTo(channel, args, callback) {
+    console.log(`[IPCRendererShim] sendTo: ${channel}`);
+    const requestId = ++this.replyCounter;
+    const request = {
+      channel,
+      args,
+      callback,
+      timestamp: Date.now()
+    };
+    this.replyHandlers.set(requestId, request);
+    this.invoke(channel, ...args).then((response) => {
+      const handler = this.replyHandlers.get(requestId);
+      if (handler) {
+        handler.callback(response);
+        this.replyHandlers.delete(requestId);
+      }
+    }).catch((error) => {
+      console.error(
+        `[IPCRendererShim] sendTo error: ${channel}`,
+        error
+      );
+      const handler = this.replyHandlers.get(requestId);
+      if (handler) {
+        handler.callback({ error: error.message });
+        this.replyHandlers.delete(requestId);
+      }
+    });
+  }
+  /**
+   * Register reply handler for sendTo pattern
+   */
+  onReply(channel, handler) {
+    console.log(`[IPCRendererShim] onReply: ${channel}`);
+    this.on(channel, (_event, ...args) => {
+      handler(args[0]);
+    });
+  }
+  /**
+   * Helper method to register listener with Tauri
+   */
+  registerTauriListener(_channel, _listener) {
+    console.log(
+      `[IPCRendererShim] Registering Tauri listener for: ${_channel}`
+    );
+  }
+  /**
+   * Cleanup method to remove all listeners
+   */
+  cleanup() {
+    console.log("[IPCRendererShim] Cleaning up IPC listeners");
+    this.listeners.clear();
+    this.onceListeners.clear();
+    this.replyHandlers.clear();
+  }
 }
-let d = null;
-function w() {
-	return (
-		d ||
-			((d = new g()),
-			console.log("[IPCRendererShim] IPCRenderer instance created")),
-		d
-	);
+let ipcRendererInstance = null;
+function getIPCRenderer() {
+  if (!ipcRendererInstance) {
+    ipcRendererInstance = new IPCRendererImpl();
+    console.log("[IPCRendererShim] IPCRenderer instance created");
+  }
+  return ipcRendererInstance;
 }
-function f() {
-	if (typeof window > "u") return;
-	if (window.__IPC_RENDERER_SHIM_INSTALLED__) {
-		console.log("[IPCRendererShim] Already installed, skipping");
-		return;
-	}
-	((window.__IPC_RENDERER_SHIM_INSTALLED__ = !0),
-		console.log(
-			"[IPCRendererShim] Installing Electron IPC renderer polyfill...",
-		));
-	const r = w();
-	(typeof window.vscode < "u" &&
-		((window.vscode.ipcRenderer = r),
-		console.log(
-			"[IPCRendererShim]\u2001\u2713 IPCRenderer attached to window.vscode",
-		)),
-		(window.__IPC_RENDERER__ = r),
-		console.log(
-			"[IPCRendererShim]\u2001\u2713 Electron IPC renderer polyfill installed",
-		));
+__name(getIPCRenderer, "getIPCRenderer");
+function installIPCRendererShim() {
+  if (typeof window === "undefined") {
+    return;
+  }
+  if (window.__IPC_RENDERER_SHIM_INSTALLED__) {
+    console.log("[IPCRendererShim] Already installed, skipping");
+    return;
+  }
+  window.__IPC_RENDERER_SHIM_INSTALLED__ = true;
+  console.log(
+    "[IPCRendererShim] Installing Electron IPC renderer polyfill..."
+  );
+  const ipcRenderer = getIPCRenderer();
+  if (typeof window.vscode !== "undefined") {
+    window.vscode.ipcRenderer = ipcRenderer;
+    console.log(
+      "[IPCRendererShim]\u2001\u2713 IPCRenderer attached to window.vscode"
+    );
+  }
+  window.__IPC_RENDERER__ = ipcRenderer;
+  console.log("[IPCRendererShim]\u2001\u2713 Electron IPC renderer polyfill installed");
 }
-var I = { install: f, get: w };
-typeof window < "u" && f();
-export {
-	g as IPCRendererClass,
-	I as default,
-	w as getIPCRenderer,
-	f as installIPCRendererShim,
+__name(installIPCRendererShim, "installIPCRendererShim");
+var IPCRendererShim_default = {
+  install: installIPCRendererShim,
+  get: getIPCRenderer
 };
+if (typeof window !== "undefined") {
+  installIPCRendererShim();
+}
+export {
+  IPCRendererImpl as IPCRendererClass,
+  IPCRendererShim_default as default,
+  getIPCRenderer,
+  installIPCRendererShim
+};
+//# sourceMappingURL=IPCRendererShim.js.map

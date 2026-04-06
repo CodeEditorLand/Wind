@@ -1,27 +1,33 @@
-import e, {
-	makeMockEnvironment as a,
-	default as c,
-	EnvironmentMock as E,
-	EnvironmentTag as f,
-	GetUserAgent as g,
-	DetectArchitecture as k,
-	EnvironmentTag as n,
-	DetectLocale as s,
-	DetectTimezone as T,
-	DetectPlatform as x,
+import EnvironmentLive, {
+  EnvironmentMock,
+  EnvironmentTag as EnvTag,
+  makeMockEnvironment
 } from "./Environment/index.js";
-
-const m = n;
+import {
+  default as default2,
+  EnvironmentMock as EnvironmentMock2,
+  makeMockEnvironment as makeMockEnvironment2,
+  EnvironmentTag
+} from "./Environment/index.js";
+import {
+  DetectPlatform,
+  DetectArchitecture,
+  DetectLocale,
+  DetectTimezone,
+  GetUserAgent
+} from "./Environment/index.js";
+const Environment = EnvTag;
 export {
-	k as DetectArchitecture,
-	s as DetectLocale,
-	x as DetectPlatform,
-	T as DetectTimezone,
-	m as Environment,
-	e as EnvironmentLive,
-	E as EnvironmentMock,
-	f as EnvironmentTag,
-	g as GetUserAgent,
-	c as default,
-	a as makeMockEnvironment,
+  DetectArchitecture,
+  DetectLocale,
+  DetectPlatform,
+  DetectTimezone,
+  Environment,
+  EnvironmentLive,
+  EnvironmentMock2 as EnvironmentMock,
+  EnvironmentTag,
+  GetUserAgent,
+  default2 as default,
+  makeMockEnvironment2 as makeMockEnvironment
 };
+//# sourceMappingURL=Environment.js.map

@@ -1,80 +1,83 @@
-import { Layer as b, Effect as n, Context as y } from "effect";
-
-import "../Tag/SandboxTag.js";
-
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { Context, Effect, Layer } from "effect";
 import {
-	ConfigurationNotReadyError as c,
-	SandboxNotReadyError as o,
+  ConfigurationNotReadyError,
+  SandboxNotReadyError
 } from "../../../Types/Sandbox.js";
-
-const u = b.effect(
-	y.GenericTag("Sandbox"),
-	n.gen(function* () {
-		const s = n.sync(() => {
-				const e = window.vscode;
-				return !!e && typeof e == "object";
-			}),
-			t = n
-				.sync(() => {
-					const e = window.vscode;
-					if (!e) throw new o();
-					return e;
-				})
-				.pipe(n.mapError(() => new o())),
-			d = n
-				.gen(function* () {
-					let e = 0;
-					const p = 300;
-					for (; e < p; ) {
-						const r = window.preloadGlobals;
-						if (r && r.process && r.ipcRenderer) {
-							const i = window.vscode;
-							if (i)
-								return (
-									console.log(
-										"[Sandbox] Preload globals and window.vscode ready",
-									),
-									i
-								);
-						}
-						(e++, yield* n.sleep("100 millis"));
-					}
-					throw new o();
-				})
-				.pipe(
-					n.timeout("30 seconds"),
-					n.mapError(() => new o()),
-				),
-			l = n.gen(function* () {
-				const e = yield* t;
-				return e.ipcRenderer ? e.ipcRenderer : yield* n.fail(new o());
-			}),
-			a = n.gen(function* () {
-				const e = yield* t;
-				return e.context ? e.context : yield* n.fail(new o());
-			}),
-			f = n
-				.gen(function* () {
-					const e = yield* a;
-					return yield* n.tryPromise({
-						try: () => e.resolveConfiguration(),
-						catch: () => new c(),
-					});
-				})
-				.pipe(
-					n.catchAll((e) =>
-						e instanceof o ? n.fail(new c()) : n.fail(e),
-					),
-				);
-		return {
-			globals: t,
-			isReady: s,
-			awaitReady: d,
-			ipc: l,
-			configuration: a,
-			resolveConfiguration: f,
-		};
-	}),
+import { Sandbox } from "../Tag/SandboxTag.js";
+const SandboxLive = Layer.effect(
+  Context.GenericTag("Sandbox"),
+  Effect.gen(function* () {
+    const checkReady = Effect.sync(() => {
+      const vscode = window.vscode;
+      return !!vscode && typeof vscode === "object";
+    });
+    const getGlobals = Effect.sync(() => {
+      const vscode = window.vscode;
+      if (!vscode) throw new SandboxNotReadyError();
+      return vscode;
+    }).pipe(Effect.mapError(() => new SandboxNotReadyError()));
+    const awaitReady = Effect.gen(function* () {
+      let attempts = 0;
+      const maxAttempts = 300;
+      while (attempts < maxAttempts) {
+        const preloadGlobals = window.preloadGlobals;
+        if (preloadGlobals && preloadGlobals.process && preloadGlobals.ipcRenderer) {
+          const vscode = window.vscode;
+          if (vscode) {
+            console.log(
+              "[Sandbox] Preload globals and window.vscode ready"
+            );
+            return vscode;
+          }
+        }
+        attempts++;
+        yield* Effect.sleep("100 millis");
+      }
+      throw new SandboxNotReadyError();
+    }).pipe(
+      Effect.timeout("30 seconds"),
+      Effect.mapError(() => new SandboxNotReadyError())
+    );
+    const ipc = Effect.gen(function* () {
+      const g = yield* getGlobals;
+      if (!g.ipcRenderer) {
+        return yield* Effect.fail(new SandboxNotReadyError());
+      }
+      return g.ipcRenderer;
+    });
+    const configuration = Effect.gen(function* () {
+      const g = yield* getGlobals;
+      if (!g.context) {
+        return yield* Effect.fail(new SandboxNotReadyError());
+      }
+      return g.context;
+    });
+    const resolveConfiguration = Effect.gen(function* () {
+      const ctx = yield* configuration;
+      return yield* Effect.tryPromise({
+        try: /* @__PURE__ */ __name(() => ctx.resolveConfiguration(), "try"),
+        catch: /* @__PURE__ */ __name(() => new ConfigurationNotReadyError(), "catch")
+      });
+    }).pipe(
+      Effect.catchAll(
+        (error) => error instanceof SandboxNotReadyError ? Effect.fail(new ConfigurationNotReadyError()) : Effect.fail(error)
+      )
+    );
+    const service = {
+      globals: getGlobals,
+      isReady: checkReady,
+      awaitReady,
+      ipc,
+      configuration,
+      resolveConfiguration
+    };
+    return service;
+  })
 );
-var v = u;
-export { v as default };
+var SandboxLive_default = SandboxLive;
+export {
+  SandboxLive_default as default
+};
+//# sourceMappingURL=SandboxLive.js.map

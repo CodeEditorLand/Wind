@@ -1,18 +1,19 @@
-import { Effect as e, Layer as r } from "effect";
-
+import { Effect, Layer } from "effect";
 import {
-	ConfigurationNotReadyError as a,
-	SandboxNotReadyError as o,
+  ConfigurationNotReadyError,
+  SandboxNotReadyError
 } from "../../../Types/Sandbox.js";
-import { Sandbox as i } from "../Tag/SandboxTag.js";
-
-const n = r.succeed(i, {
-	globals: e.die(new o()),
-	isReady: e.succeed(!1),
-	awaitReady: e.die(new o()),
-	ipc: e.die(new o()),
-	configuration: e.die(new o()),
-	resolveConfiguration: e.fail(new a()),
+import { Sandbox } from "../Tag/SandboxTag.js";
+const SandboxMockLive = Layer.succeed(Sandbox, {
+  globals: Effect.die(new SandboxNotReadyError()),
+  isReady: Effect.succeed(false),
+  awaitReady: Effect.die(new SandboxNotReadyError()),
+  ipc: Effect.die(new SandboxNotReadyError()),
+  configuration: Effect.die(new SandboxNotReadyError()),
+  resolveConfiguration: Effect.fail(new ConfigurationNotReadyError())
 });
-var c = n;
-export { c as default };
+var SandboxMock_default = SandboxMockLive;
+export {
+  SandboxMock_default as default
+};
+//# sourceMappingURL=SandboxMock.js.map

@@ -1,8 +1,10 @@
-import { Layer as r } from "effect";
-
-import { TauriIPCLive as e } from "./Implementation/TauriIPC.js";
-import { IPCTag as o } from "./Tag/IPCTag.js";
-
-const t = r.effect(o, e);
-var a = t;
-export { t as IPCTauriLive, a as default };
+import { Layer } from "effect";
+import { TauriIPCLive } from "./Implementation/TauriIPC.js";
+import { IPCTag } from "./Tag/IPCTag.js";
+const IPCTauriLive = Layer.effect(IPCTag, TauriIPCLive);
+var Live_default = IPCTauriLive;
+export {
+  IPCTauriLive,
+  Live_default as default
+};
+//# sourceMappingURL=Live.js.map

@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../Source/Configuration/ESBuild/Target.ts"],
-  "sourcesContent": ["/**\r\n * @module Configuration/ESBuild/Target\r\n * @description\r\n * ESBuild target configuration.\r\n * Re-exports from atomic configuration modules.\r\n */\r\n\r\nimport * as Environment from \"./Constant/EnvironmentConstant.js\";\r\nexport { Environment };\r\n\r\nexport { default as BaseConfig } from \"./Config/BaseConfig.js\";\r\nexport { default as TargetConfig } from \"./Config/TargetConfig.js\";\r\nexport { default as CompileConfig } from \"./Config/CompileConfig.js\";\r\nexport { sep, posix } from \"./Constant/BoundConstant.js\";\r\n"],
-  "mappings": "AAOA,YAAY,iBAAiB;AAG7B,SAAoB,WAAXA,gBAA6B;AACtC,SAAoB,WAAXA,gBAA+B;AACxC,SAAoB,WAAXA,gBAAgC;AACzC,SAAS,KAAK,aAAa;",
+  "sourcesContent": ["/**\n * @module Configuration/ESBuild/Target\n * @description\n * ESBuild target configuration.\n * Re-exports from atomic configuration modules.\n */\n\nimport * as Environment from \"./Constant/EnvironmentConstant.js\";\n\nexport { Environment };\n\nexport { default as BaseConfig } from \"./Config/BaseConfig.js\";\nexport { default as TargetConfig } from \"./Config/TargetConfig.js\";\nexport { default as CompileConfig } from \"./Config/CompileConfig.js\";\nexport { sep, posix } from \"./Constant/BoundConstant.js\";\n"],
+  "mappings": "AAOA,YAAY,iBAAiB;AAI7B,SAAoB,WAAXA,gBAA6B;AACtC,SAAoB,WAAXA,gBAA+B;AACxC,SAAoB,WAAXA,gBAAgC;AACzC,SAAS,KAAK,aAAa;",
   "names": ["default"]
 }

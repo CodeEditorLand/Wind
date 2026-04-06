@@ -1,11 +1,14 @@
-var s = ((r) => (
-	(r[(r.Trace = 0)] = "Trace"),
-	(r[(r.Debug = 1)] = "Debug"),
-	(r[(r.Info = 2)] = "Info"),
-	(r[(r.Warning = 3)] = "Warning"),
-	(r[(r.Error = 4)] = "Error"),
-	(r[(r.Critical = 5)] = "Critical"),
-	(r[(r.Off = 6)] = "Off"),
-	r
-))(s || {});
-export { s as LogLevel };
+var LogLevel = /* @__PURE__ */ ((LogLevel2) => {
+  LogLevel2[LogLevel2["Trace"] = 0] = "Trace";
+  LogLevel2[LogLevel2["Debug"] = 1] = "Debug";
+  LogLevel2[LogLevel2["Info"] = 2] = "Info";
+  LogLevel2[LogLevel2["Warning"] = 3] = "Warning";
+  LogLevel2[LogLevel2["Error"] = 4] = "Error";
+  LogLevel2[LogLevel2["Critical"] = 5] = "Critical";
+  LogLevel2[LogLevel2["Off"] = 6] = "Off";
+  return LogLevel2;
+})(LogLevel || {});
+export {
+  LogLevel
+};
+//# sourceMappingURL=VSCodeLoggerType.js.map

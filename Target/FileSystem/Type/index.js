@@ -1,10 +1,10 @@
-import { FileSystemErrorCode as l } from "./FileSystemType.js";
-import { FileType as o, fileTypeToString as t } from "./FileType.js";
-import { URI as p } from "./URI.js";
-
+import { FileType, fileTypeToString } from "./FileType.js";
+import { URI } from "./URI.js";
+import { FileSystemErrorCode } from "./FileSystemType.js";
 export {
-	l as FileSystemErrorCode,
-	o as FileType,
-	p as URI,
-	t as fileTypeToString,
+  FileSystemErrorCode,
+  FileType,
+  URI,
+  fileTypeToString
 };
+//# sourceMappingURL=index.js.map

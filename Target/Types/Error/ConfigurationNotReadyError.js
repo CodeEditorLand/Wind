@@ -1,7 +1,15 @@
-class o extends Error {
-	_tag = "ConfigurationNotReadyError";
-	constructor() {
-		super("Configuration not yet resolved from preload");
-	}
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+class ConfigurationNotReadyError extends Error {
+  static {
+    __name(this, "ConfigurationNotReadyError");
+  }
+  _tag = "ConfigurationNotReadyError";
+  constructor() {
+    super("Configuration not yet resolved from preload");
+  }
 }
-export { o as ConfigurationNotReadyError };
+export {
+  ConfigurationNotReadyError
+};
+//# sourceMappingURL=ConfigurationNotReadyError.js.map

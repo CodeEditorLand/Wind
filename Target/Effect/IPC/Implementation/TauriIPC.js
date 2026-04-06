@@ -1,60 +1,68 @@
-import { invoke as f } from "@tauri-apps/api/core";
-import { listen as a, emit as y } from "@tauri-apps/api/event";
-import { Effect as o, Stream as s } from "effect";
-
-import { SandboxNotReadyError as p } from "../../../Types/Sandbox.js";
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { invoke as tauriInvoke } from "@tauri-apps/api/core";
+import { emit, listen } from "@tauri-apps/api/event";
+import { Effect, Stream } from "effect";
+import { SandboxNotReadyError } from "../../../Types/Sandbox.js";
 import {
-	CreateIPCSendError as c,
-	CreateIPCInvokeError as d,
-	CreateIPCSubscriptionError as i,
+  CreateIPCInvokeError,
+  CreateIPCSendError,
+  CreateIPCSubscriptionError
 } from "../Error/IPCError.js";
-
-const l = o.gen(function* () {
-	return typeof window < "u" && window.__TAURI__ !== void 0
-		? {
-				send: (r) => (e) =>
-					o.try({
-						try: () => y(r, e.length === 1 ? e[0] : e),
-						catch: (n) => c(r, n),
-					}),
-				invoke: (r) => (e) =>
-					o.tryPromise({
-						try: () => {
-							const n = e.length === 1 ? e[0] : e;
-							return f(r, n);
-						},
-						catch: (n) => d(r, n),
-					}),
-				events: (r) =>
-					s.async((e) => {
-						let n;
-						return (
-							a(r, (t) => {
-								e.single({ channel: r, args: [t.payload] });
-							})
-								.then((t) => {
-									n = t;
-								})
-								.catch((t) => {
-									e.fail(i(r, t));
-								}),
-							o.sync(() => n?.())
-						);
-					}),
-				once: (r) =>
-					o.async((e) => {
-						a(r, (n) => {
-							e(o.succeed({ channel: r, args: [n.payload] }));
-						}).catch((n) => {
-							e(o.fail(i(r, n)));
-						});
-					}),
-				removeAllListeners: (r) =>
-					o
-						.log(`[IPC] Remove all listeners for ${r}`)
-						.pipe(o.map(() => {})),
-			}
-		: yield* o.die(new p());
+const TauriIPCLive = Effect.gen(function* () {
+  const isTauriAvailable = typeof window !== "undefined" && window.__TAURI__ !== void 0;
+  if (!isTauriAvailable) {
+    return yield* Effect.die(new SandboxNotReadyError());
+  }
+  const service = {
+    send: /* @__PURE__ */ __name((channel) => (args) => Effect.try({
+      try: /* @__PURE__ */ __name(() => emit(channel, args.length === 1 ? args[0] : args), "try"),
+      catch: /* @__PURE__ */ __name((error) => CreateIPCSendError(channel, error), "catch")
+    }), "send"),
+    invoke: /* @__PURE__ */ __name((channel) => (args) => Effect.tryPromise({
+      try: /* @__PURE__ */ __name(() => {
+        const invokeArgs = args.length === 1 ? args[0] : args;
+        return tauriInvoke(channel, invokeArgs);
+      }, "try"),
+      catch: /* @__PURE__ */ __name((error) => CreateIPCInvokeError(channel, error), "catch")
+    }), "invoke"),
+    events: /* @__PURE__ */ __name((channel) => Stream.async((emit2) => {
+      let cleanup;
+      listen(channel, (event) => {
+        emit2.single({
+          channel,
+          args: [event.payload]
+        });
+      }).then((unlisten) => {
+        cleanup = unlisten;
+      }).catch((error) => {
+        emit2.fail(CreateIPCSubscriptionError(channel, error));
+      });
+      return Effect.sync(() => cleanup?.());
+    }), "events"),
+    once: /* @__PURE__ */ __name((channel) => Effect.async((resume) => {
+      listen(channel, (event) => {
+        resume(
+          Effect.succeed({
+            channel,
+            args: [event.payload]
+          })
+        );
+      }).catch((error) => {
+        resume(
+          Effect.fail(CreateIPCSubscriptionError(channel, error))
+        );
+      });
+    }), "once"),
+    removeAllListeners: /* @__PURE__ */ __name((channel) => Effect.log(`[IPC] Remove all listeners for ${channel}`).pipe(
+      Effect.map(() => void 0)
+    ), "removeAllListeners")
+  };
+  return service;
 });
-var P = l;
-export { l as TauriIPCLive, P as default };
+var TauriIPC_default = TauriIPCLive;
+export {
+  TauriIPCLive,
+  TauriIPC_default as default
+};
+//# sourceMappingURL=TauriIPC.js.map

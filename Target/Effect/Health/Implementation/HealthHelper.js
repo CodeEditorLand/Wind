@@ -1,21 +1,24 @@
-const i = (e, t, s, r, a) => ({
-		serviceName: e,
-		status: t,
-		message: s,
-		lastChecked: Date.now(),
-		responseTime: r,
-		...(a !== void 0 ? { details: a } : {}),
-	}),
-	n = (e, t, s) => ({
-		serviceName: e,
-		status: t,
-		message: s,
-		lastChecked: Date.now(),
-		responseTime: 0,
-	});
-var o = { CreateServiceHealth: i, CreateServiceHealthWithNoResponseTime: n };
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+const CreateServiceHealth = /* @__PURE__ */ __name((Name, Status, Message, ResponseTime, Details) => ({
+  serviceName: Name,
+  status: Status,
+  message: Message,
+  lastChecked: Date.now(),
+  responseTime: ResponseTime,
+  ...Details !== void 0 ? { details: Details } : {}
+}), "CreateServiceHealth");
+const CreateServiceHealthWithNoResponseTime = /* @__PURE__ */ __name((Name, Status, Message) => ({
+  serviceName: Name,
+  status: Status,
+  message: Message,
+  lastChecked: Date.now(),
+  responseTime: 0
+}), "CreateServiceHealthWithNoResponseTime");
+var HealthHelper_default = { CreateServiceHealth, CreateServiceHealthWithNoResponseTime };
 export {
-	i as CreateServiceHealth,
-	n as CreateServiceHealthWithNoResponseTime,
-	o as default,
+  CreateServiceHealth,
+  CreateServiceHealthWithNoResponseTime,
+  HealthHelper_default as default
 };
+//# sourceMappingURL=HealthHelper.js.map

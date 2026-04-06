@@ -1,10 +1,20 @@
-class o extends Error {
-	_tag = "MountainRPCError";
-	method;
-	cause;
-	constructor(r, n) {
-		(super(`Mountain RPC '${r}' failed: ${String(n)}`), (this.method = r));
-	}
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+class MountainRPCError extends Error {
+  static {
+    __name(this, "MountainRPCError");
+  }
+  _tag = "MountainRPCError";
+  method;
+  cause;
+  constructor(method, cause) {
+    super(`Mountain RPC '${method}' failed: ${String(cause)}`);
+    this.method = method;
+  }
 }
-var e = o;
-export { o as MountainRPCError, e as default };
+var MountainRPCError_default = MountainRPCError;
+export {
+  MountainRPCError,
+  MountainRPCError_default as default
+};
+//# sourceMappingURL=MountainRPCError.js.map

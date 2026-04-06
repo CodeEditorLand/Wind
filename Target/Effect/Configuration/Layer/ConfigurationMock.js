@@ -1,29 +1,37 @@
-import { Stream as a, Effect as o, Layer as t } from "effect";
-
-import { MakeValidate as c } from "../Implementation/ConfigurationHelper.js";
-import { ConfigurationTag as n } from "../Tag/ConfigurationTag.js";
-
-const f = (r) => {
-		const i = c(),
-			e = {
-				zoomLevel: 0,
-				userEnv: {},
-				workspace: {
-					id: "mock-workspace",
-					uri: "mock://workspace",
-					name: "Mock Workspace",
-				},
-				...r,
-			};
-		return {
-			get: o.succeed(e),
-			fetch: o.succeed(e),
-			validate: i,
-			apply: () => o.void,
-			changes: a.empty,
-			refresh: o.succeed(e),
-		};
-	},
-	s = t.succeed(n, f());
-var g = s;
-export { s as ConfigurationMock, g as default, f as makeMockConfiguration };
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { Effect, Layer, Stream } from "effect";
+import { MakeValidate } from "../Implementation/ConfigurationHelper.js";
+import { ConfigurationTag } from "../Tag/ConfigurationTag.js";
+const makeMockConfiguration = /* @__PURE__ */ __name((overrides) => {
+  const validate = MakeValidate();
+  const mockConfig = {
+    zoomLevel: 0,
+    userEnv: {},
+    workspace: {
+      id: "mock-workspace",
+      uri: "mock://workspace",
+      name: "Mock Workspace"
+    },
+    ...overrides
+  };
+  return {
+    get: Effect.succeed(mockConfig),
+    fetch: Effect.succeed(mockConfig),
+    validate,
+    apply: /* @__PURE__ */ __name(() => Effect.void, "apply"),
+    changes: Stream.empty,
+    refresh: Effect.succeed(mockConfig)
+  };
+}, "makeMockConfiguration");
+const ConfigurationMock = Layer.succeed(
+  ConfigurationTag,
+  makeMockConfiguration()
+);
+var ConfigurationMock_default = ConfigurationMock;
+export {
+  ConfigurationMock,
+  ConfigurationMock_default as default,
+  makeMockConfiguration
+};
+//# sourceMappingURL=ConfigurationMock.js.map
