@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # Stage 1: Build configuration files - use self-contained ESBuild.ts to avoid circular dependency
 Build "Source/Configuration/**/*.{ts,json}" \
