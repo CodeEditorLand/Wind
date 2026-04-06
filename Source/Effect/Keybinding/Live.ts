@@ -1,0 +1,76 @@
+/**
+ * @module Effect/Keybinding/Live
+ * @description
+ * Live implementation of KeybindingService backed by Mountain's keybinding
+ * registry via Tauri IPC. Allows Wind components and extensions to register
+ * dynamic keyboard shortcuts at runtime.
+ *
+ * IPC channels (WindServiceHandlers.rs):
+ *   keybinding:add      → register a dynamic keybinding
+ *   keybinding:remove   → unregister keybinding for a command
+ *   keybinding:lookup   → resolve keybinding string for a command
+ *   keybinding:getAll   → list all registered dynamic keybindings
+ */
+
+import { Effect, Layer } from "effect";
+
+import { IPC } from "../IPC.js";
+import type { KeybindingService } from "./Interface/KeybindingService.js";
+import { KeybindingServiceTag } from "./Tag/KeybindingServiceTag.js";
+import type { KeybindingProblem } from "./Type/KeybindingProblem.js";
+
+const MakeKeybindingProblem = (error: unknown): KeybindingProblem => ({
+	_tag: "KeybindingOperationFailed",
+	error: error instanceof Error ? error : new Error(String(error)),
+});
+
+export const LiveKeybindingServiceLayer = Layer.effect(
+	KeybindingServiceTag,
+	Effect.gen(function* () {
+		const IPCService = yield* IPC;
+
+		const Service: KeybindingService = {
+			AddKeybinding: (commandId, keybinding, when) =>
+				IPCService.invoke("keybinding:add")([
+					commandId,
+					keybinding,
+					when ?? null,
+				]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeKeybindingProblem),
+				),
+
+			RemoveKeybinding: (commandId) =>
+				IPCService.invoke("keybinding:remove")([commandId]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeKeybindingProblem),
+				),
+
+			LookupKeybinding: (commandId) =>
+				IPCService.invoke("keybinding:lookup")([commandId]).pipe(
+					Effect.map((Result) =>
+						typeof Result === "string" ? Result : null,
+					),
+					Effect.mapError(MakeKeybindingProblem),
+				),
+
+			GetKeybindings: () =>
+				IPCService.invoke("keybinding:getAll")([]).pipe(
+					Effect.map((Result) =>
+						Array.isArray(Result)
+							? (Result as ReadonlyArray<{
+									commandId: string;
+									keybinding: string;
+									when?: string;
+								}>)
+							: [],
+					),
+					Effect.mapError(MakeKeybindingProblem),
+				),
+		};
+
+		return Service;
+	}),
+);
+
+export default LiveKeybindingServiceLayer;

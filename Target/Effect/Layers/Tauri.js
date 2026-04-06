@@ -7,12 +7,15 @@ import {
   ConfigurationLive,
   ConfigurationWithSyncLive
 } from "../Configuration.js";
+import { LiveDecorationsServiceLayer as DecorationsLive } from "../Decorations/Decorations.js";
 import { LiveEditorServiceLayer as EditorLive } from "../Editor/Editor.js";
 import { EnvironmentLive } from "../Environment.js";
 import { LiveExtensionsServiceLayer as ExtensionsLive } from "../Extensions/Extensions.js";
 import { LiveFilesServiceLayer as FilesLive } from "../Files/Files.js";
 import { HealthLive } from "../Health.js";
+import { LiveKeybindingServiceLayer as KeybindingLive } from "../Keybinding/Keybinding.js";
 import { LiveLanguageServiceLayer as LanguageLive } from "../Language/Language.js";
+import { LiveLifecycleServiceLayer as LifecycleLive } from "../Lifecycle/Lifecycle.js";
 import { MountainLive } from "../Mountain.js";
 import { MountainSyncLive } from "../MountainSync.js";
 import { LiveNotificationServiceLayer as NotificationLive } from "../Notification/Notification.js";
@@ -29,6 +32,7 @@ import { TelemetryLive } from "../Telemetry.js";
 import { LiveTerminalServiceLayer as TerminalLive } from "../Terminal/Terminal.js";
 import { default as LiveTextFileServiceLayer } from "../TextFile/Live.js";
 import { LiveThemesServiceLayer as ThemesLive } from "../Themes/Themes.js";
+import { LiveWorkingCopyServiceLayer as WorkingCopyLive } from "../WorkingCopy/WorkingCopy.js";
 import { LiveWorkspacesServiceLayer as WorkspacesLive } from "../Workspaces/Workspaces.js";
 const TauriBaseLayer = Layer.empty.pipe(
   Layer.provide(SandboxLive),
@@ -61,7 +65,12 @@ const TauriBaseLayer = Layer.empty.pipe(
   Layer.provide(QuickInputLive),
   Layer.provide(WorkspacesLive),
   Layer.provide(ThemesLive),
-  Layer.provide(SearchLive)
+  Layer.provide(SearchLive),
+  // P1 service layers
+  Layer.provide(DecorationsLive),
+  Layer.provide(WorkingCopyLive),
+  Layer.provide(KeybindingLive),
+  Layer.provide(LifecycleLive)
 );
 const TauriLiveLayer = Layer.empty.pipe(
   Layer.provide(SandboxLive),
@@ -94,7 +103,12 @@ const TauriLiveLayer = Layer.empty.pipe(
   Layer.provide(QuickInputLive),
   Layer.provide(WorkspacesLive),
   Layer.provide(ThemesLive),
-  Layer.provide(SearchLive)
+  Layer.provide(SearchLive),
+  // P1 service layers
+  Layer.provide(DecorationsLive),
+  Layer.provide(WorkingCopyLive),
+  Layer.provide(KeybindingLive),
+  Layer.provide(LifecycleLive)
 );
 const TauriDevLayer = Layer.empty.pipe(
   Layer.provide(SandboxLive),

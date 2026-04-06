@@ -1,0 +1,63 @@
+/**
+ * @module Effect/Lifecycle/Live
+ * @description
+ * Live implementation of LifecycleService backed by Mountain's application
+ * phase state via Tauri IPC. Components use this to defer expensive work until
+ * the editor is fully initialised (Restored/Eventually phase).
+ *
+ * IPC channels (WindServiceHandlers.rs):
+ *   lifecycle:getPhase       → get current phase (1–4)
+ *   lifecycle:whenPhase      → poll until phase is reached
+ *   lifecycle:requestShutdown → initiate graceful app shutdown
+ */
+
+import { Effect, Layer } from "effect";
+
+import { IPC } from "../IPC.js";
+import type {
+	LifecyclePhaseValue,
+	LifecycleService,
+} from "./Interface/LifecycleService.js";
+import { LifecycleServiceTag } from "./Tag/LifecycleServiceTag.js";
+import type { LifecycleProblem } from "./Type/LifecycleProblem.js";
+
+const MakeLifecycleProblem = (error: unknown): LifecycleProblem => ({
+	_tag: "LifecycleOperationFailed",
+	error: error instanceof Error ? error : new Error(String(error)),
+});
+
+export const LiveLifecycleServiceLayer = Layer.effect(
+	LifecycleServiceTag,
+	Effect.gen(function* () {
+		const IPCService = yield* IPC;
+
+		const Service: LifecycleService = {
+			GetPhase: () =>
+				IPCService.invoke("lifecycle:getPhase")([]).pipe(
+					Effect.map(
+						(Result) =>
+							(typeof Result === "number"
+								? Result
+								: 1) as LifecyclePhaseValue,
+					),
+					Effect.mapError(MakeLifecycleProblem),
+				),
+
+			WhenPhase: (phase) =>
+				IPCService.invoke("lifecycle:whenPhase")([phase]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeLifecycleProblem),
+				),
+
+			RequestShutdown: () =>
+				IPCService.invoke("lifecycle:requestShutdown")([]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeLifecycleProblem),
+				),
+		};
+
+		return Service;
+	}),
+);
+
+export default LiveLifecycleServiceLayer;
