@@ -99,10 +99,66 @@ function CreateProcess(Configuration) {
 }
 __name(CreateProcess, "CreateProcess");
 async function ResolveConfiguration() {
+  const FileRoot = "/Static/Application/";
   return {
     windowId: 1,
-    appRoot: "file:///app",
+    // Electron workbench computes baseUrl from appRoot:
+    //   new URL(`${fileUriFromPath(appRoot, {scheme:'vscode-file'})}/out/`)
+    // We override _VSCODE_FILE_ROOT after load, but appRoot is still
+    // read for path construction. Point it at the embedded assets root.
+    appRoot: FileRoot,
     userEnv: { PATH: "/usr/bin:/bin", HOME: "/" },
+    // INativeWindowConfiguration fields for Electron workbench
+    mainPid: 0,
+    machineId: "tauri-machine",
+    sqmId: "",
+    devDeviceId: "",
+    isPortable: false,
+    execPath: "/",
+    homeDir: "/",
+    tmpDir: "/tmp",
+    userDataDir: "/",
+    logLevel: 2,
+    loggers: [],
+    perfMarks: [],
+    colorScheme: { dark: true, highContrast: false },
+    autoDetectHighContrast: false,
+    autoDetectColorScheme: false,
+    profiles: {
+      home: { scheme: "vscode-userdata", path: "/User" },
+      all: [],
+      profile: {
+        id: "__default__profile__",
+        isDefault: true,
+        name: "Default",
+        location: void 0,
+        globalStorageHome: {
+          scheme: "vscode-userdata",
+          path: "/User/globalStorage"
+        },
+        settingsResource: {
+          scheme: "vscode-userdata",
+          path: "/User/settings.json"
+        },
+        keybindingsResource: {
+          scheme: "vscode-userdata",
+          path: "/User/keybindings.json"
+        },
+        tasksResource: {
+          scheme: "vscode-userdata",
+          path: "/User/tasks.json"
+        },
+        snippetsHome: {
+          scheme: "vscode-userdata",
+          path: "/User/snippets"
+        },
+        extensionsResource: void 0,
+        cacheHome: {
+          scheme: "vscode-userdata",
+          path: "/User/cacheHome"
+        }
+      }
+    },
     product: {
       nameShort: "VSCode Wind",
       nameLong: "VSCode Wind",

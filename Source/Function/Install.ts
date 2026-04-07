@@ -155,12 +155,78 @@ export function CreateProcess(
 	};
 }
 
-// Configuration resolution with VSCode typing
+// Configuration resolution with VSCode typing.
+// Returns ISandboxConfiguration extended with INativeWindowConfiguration
+// fields that the Electron workbench reads (appRoot, colorScheme, etc.).
+// The browser workbench ignores the extra fields — additive only.
 export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
+	// Use pathname only — the Electron workbench passes appRoot through
+	// fileUriFromPath which prepends vscode-file://. The Step 5 build
+	// patch replaces that with a direct URL using _VSCODE_FILE_ROOT,
+	// so appRoot is no longer used for URL computation. Keep it as a
+	// clean path for any other code that reads it.
+	const FileRoot = "/Static/Application/";
+
 	return {
 		windowId: 1,
-		appRoot: "file:///app",
+		// Electron workbench computes baseUrl from appRoot:
+		//   new URL(`${fileUriFromPath(appRoot, {scheme:'vscode-file'})}/out/`)
+		// We override _VSCODE_FILE_ROOT after load, but appRoot is still
+		// read for path construction. Point it at the embedded assets root.
+		appRoot: FileRoot,
 		userEnv: { PATH: "/usr/bin:/bin", HOME: "/" },
+
+		// INativeWindowConfiguration fields for Electron workbench
+		mainPid: 0,
+		machineId: "tauri-machine",
+		sqmId: "",
+		devDeviceId: "",
+		isPortable: false,
+		execPath: "/",
+		homeDir: "/",
+		tmpDir: "/tmp",
+		userDataDir: "/",
+		logLevel: 2,
+		loggers: [],
+		perfMarks: [],
+		colorScheme: { dark: true, highContrast: false },
+		autoDetectHighContrast: false,
+		autoDetectColorScheme: false,
+		profiles: {
+			home: { scheme: "vscode-userdata", path: "/User" },
+			all: [],
+			profile: {
+				id: "__default__profile__",
+				isDefault: true,
+				name: "Default",
+				location: undefined,
+				globalStorageHome: {
+					scheme: "vscode-userdata",
+					path: "/User/globalStorage",
+				},
+				settingsResource: {
+					scheme: "vscode-userdata",
+					path: "/User/settings.json",
+				},
+				keybindingsResource: {
+					scheme: "vscode-userdata",
+					path: "/User/keybindings.json",
+				},
+				tasksResource: {
+					scheme: "vscode-userdata",
+					path: "/User/tasks.json",
+				},
+				snippetsHome: {
+					scheme: "vscode-userdata",
+					path: "/User/snippets",
+				},
+				extensionsResource: undefined,
+				cacheHome: {
+					scheme: "vscode-userdata",
+					path: "/User/cacheHome",
+				},
+			},
+		},
 		product: {
 			nameShort: "VSCode Wind",
 			nameLong: "VSCode Wind",
