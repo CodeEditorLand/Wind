@@ -29,7 +29,12 @@ const DEFAULT_PROCESS_CONFIG = {
     TMPDIR: "/tmp",
     TMP: "/tmp",
     TEMP: "/tmp",
-    NODE_ENV: "production"
+    NODE_ENV: "production",
+    // Tells the Electron workbench to use relative imports
+    // instead of vscode-file:// URLs (WKWebView can't import()
+    // from custom schemes). Paired with _VSCODE_USE_RELATIVE_IMPORTS
+    // set in Base.astro.
+    VSCODE_DEV: "true"
   },
   platform: "darwin",
   arch: "arm64",
@@ -89,7 +94,7 @@ function createVersions() {
   };
 }
 __name(createVersions, "createVersions");
-let hrtimeStart = process.hrtime();
+let hrtimeStart = [0, 0];
 function hrtime(time) {
   const now = performance.now() * 1e6;
   const seconds = Math.floor(now / 1e9);

@@ -169,12 +169,16 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 
 	return {
 		windowId: 1,
-		// Electron workbench computes baseUrl from appRoot:
-		//   new URL(`${fileUriFromPath(appRoot, {scheme:'vscode-file'})}/out/`)
-		// We override _VSCODE_FILE_ROOT after load, but appRoot is still
-		// read for path construction. Point it at the embedded assets root.
 		appRoot: FileRoot,
-		userEnv: { PATH: "/usr/bin:/bin", HOME: "/" },
+		userEnv: {
+			PATH: "/usr/bin:/bin",
+			HOME: "/",
+			// Tells the Electron workbench to use relative imports
+			// instead of vscode-file:// URLs. WKWebView (macOS) doesn't
+			// support import() from custom schemes, so relative paths
+			// resolve against the module's http://localhost URL.
+			VSCODE_DEV: "true",
+		},
 
 		// INativeWindowConfiguration fields for Electron workbench
 		mainPid: 0,
