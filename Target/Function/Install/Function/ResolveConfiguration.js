@@ -1,10 +1,16 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 async function ResolveConfiguration() {
+  const FileRoot = typeof globalThis._VSCODE_FILE_ROOT === "string" ? globalThis._VSCODE_FILE_ROOT : "/Static/Application/";
+  const AppRoot = FileRoot.replace(/^https?:\/\/[^/]+/, "");
   return {
     windowId: 1,
-    appRoot: "file:///app",
-    userEnv: { PATH: "/usr/bin:/bin", HOME: "/" },
+    appRoot: AppRoot,
+    userEnv: {
+      PATH: "/usr/bin:/bin",
+      HOME: "/",
+      VSCODE_DEV: "true"
+    },
     product: {
       nameShort: "VSCode Wind",
       nameLong: "VSCode Wind",
@@ -56,7 +62,94 @@ async function ResolveConfiguration() {
       }
     },
     zoomLevel: 0,
-    nls: { messages: [], language: "en" }
+    nls: { messages: [], language: "en" },
+    // Desktop-specific fields (INativeWindowConfiguration)
+    // These are read by DesktopMain.initServices() and must exist
+    // to prevent crashes on property access.
+    logLevel: void 0,
+    loggers: [],
+    profiles: {
+      home: { scheme: "vscode-userdata", path: "/User" },
+      all: [
+        {
+          id: "__default__profile__",
+          name: "Default",
+          isDefault: true,
+          location: void 0,
+          globalStorageHome: {
+            scheme: "vscode-userdata",
+            path: "/User/globalStorage"
+          },
+          settingsResource: {
+            scheme: "vscode-userdata",
+            path: "/User/settings.json"
+          },
+          keybindingsResource: {
+            scheme: "vscode-userdata",
+            path: "/User/keybindings.json"
+          },
+          tasksResource: {
+            scheme: "vscode-userdata",
+            path: "/User/tasks.json"
+          },
+          snippetsHome: {
+            scheme: "vscode-userdata",
+            path: "/User/snippets"
+          },
+          extensionsResource: void 0,
+          cacheHome: {
+            scheme: "vscode-userdata",
+            path: "/User/caches"
+          }
+        }
+      ],
+      profile: {
+        id: "__default__profile__",
+        name: "Default",
+        isDefault: true,
+        location: void 0,
+        globalStorageHome: {
+          scheme: "vscode-userdata",
+          path: "/User/globalStorage"
+        },
+        settingsResource: {
+          scheme: "vscode-userdata",
+          path: "/User/settings.json"
+        },
+        keybindingsResource: {
+          scheme: "vscode-userdata",
+          path: "/User/keybindings.json"
+        },
+        tasksResource: {
+          scheme: "vscode-userdata",
+          path: "/User/tasks.json"
+        },
+        snippetsHome: {
+          scheme: "vscode-userdata",
+          path: "/User/snippets"
+        },
+        extensionsResource: void 0,
+        cacheHome: {
+          scheme: "vscode-userdata",
+          path: "/User/caches"
+        }
+      }
+    },
+    os: { release: "24.0.0" },
+    backupPath: void 0,
+    workspace: void 0,
+    fullscreen: false,
+    policiesData: void 0,
+    filesToOpenOrCreate: void 0,
+    filesToDiff: void 0,
+    filesToMerge: void 0,
+    filesToWait: void 0,
+    colorScheme: { dark: true, highContrast: false },
+    autoDetectHighContrast: true,
+    autoDetectColorScheme: false,
+    isInitialStartup: false,
+    perfMarks: [],
+    accessibilitySupport: false
   };
 }
 __name(ResolveConfiguration, "ResolveConfiguration");

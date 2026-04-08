@@ -228,8 +228,191 @@ function transformChannelArgs(
 // IPC Renderer Implementation
 // ============================================================================
 
+// ============================================================================
+// VS Code Binary IPC Protocol — Loopback Responder
+// ============================================================================
+
+/**
+ * Minimal re-implementation of VS Code's serialize/deserialize for IPC messages.
+ * Speaks the same binary protocol as ipc.js ChannelServer/ChannelClient.
+ *
+ * DataType enum: Undefined=0, String=1, Buffer=2, VSBuffer=3, Array=4, Object=5, Int=6
+ * RequestType: Promise=100, PromiseCancel=101, EventListen=102, EventDispose=103
+ * ResponseType: Initialize=200, PromiseSuccess=201, PromiseError=202, PromiseErrorObj=203, EventFire=204
+ */
+
+function SerializeIPC(Data: unknown): Uint8Array {
+	const Parts: Uint8Array[] = [];
+	function Write(Value: unknown): void {
+		if (Value === undefined || Value === null) {
+			Parts.push(new Uint8Array([0])); // Undefined
+		} else if (typeof Value === "string") {
+			const Encoded = new TextEncoder().encode(Value);
+			Parts.push(new Uint8Array([1])); // String
+			WriteVQL(Encoded.length);
+			Parts.push(Encoded);
+		} else if (Array.isArray(Value)) {
+			Parts.push(new Uint8Array([4])); // Array
+			WriteVQL(Value.length);
+			for (const Item of Value) Write(Item);
+		} else if (typeof Value === "number" && (Value | 0) === Value) {
+			Parts.push(new Uint8Array([6])); // Int
+			WriteVQL(Value);
+		} else {
+			const Encoded = new TextEncoder().encode(JSON.stringify(Value));
+			Parts.push(new Uint8Array([5])); // Object
+			WriteVQL(Encoded.length);
+			Parts.push(Encoded);
+		}
+	}
+	function WriteVQL(Value: number): void {
+		const Bytes: number[] = [];
+		let V = Value >>> 0;
+		while (V > 0x7f) {
+			Bytes.push((V & 0x7f) | 0x80);
+			V >>>= 7;
+		}
+		Bytes.push(V & 0x7f);
+		Parts.push(new Uint8Array(Bytes));
+	}
+	Write(Data);
+	let Total = 0;
+	for (const P of Parts) Total += P.length;
+	const Result = new Uint8Array(Total);
+	let Offset = 0;
+	for (const P of Parts) {
+		Result.set(P, Offset);
+		Offset += P.length;
+	}
+	return Result;
+}
+
+function DeserializeIPC(Buffer: ArrayBuffer): unknown {
+	const View = new Uint8Array(Buffer);
+	let Pos = 0;
+	function ReadVQL(): number {
+		let Value = 0;
+		for (let N = 0; ; N += 7) {
+			const Byte = View[Pos++];
+			Value |= (Byte & 0x7f) << N;
+			if (!(Byte & 0x80)) return Value;
+		}
+	}
+	function Read(): unknown {
+		const Type = View[Pos++];
+		switch (Type) {
+			case 0:
+				return undefined;
+			case 1: {
+				const Len = ReadVQL();
+				const Str = new TextDecoder().decode(
+					View.slice(Pos, Pos + Len),
+				);
+				Pos += Len;
+				return Str;
+			}
+			case 2:
+			case 3: {
+				const Len = ReadVQL();
+				const Buf = View.slice(Pos, Pos + Len);
+				Pos += Len;
+				return Buf;
+			}
+			case 4: {
+				const Len = ReadVQL();
+				const Arr: unknown[] = [];
+				for (let I = 0; I < Len; I++) Arr.push(Read());
+				return Arr;
+			}
+			case 5: {
+				const Len = ReadVQL();
+				const Str = new TextDecoder().decode(
+					View.slice(Pos, Pos + Len),
+				);
+				Pos += Len;
+				return JSON.parse(Str);
+			}
+			case 6:
+				return ReadVQL();
+		}
+	}
+	return Read();
+}
+
+/** Build a complete IPC message: serialize(header) + serialize(body) */
+function BuildIPCMessage(Header: unknown, Body: unknown): Uint8Array {
+	const H = SerializeIPC(Header);
+	const B = SerializeIPC(Body);
+	const Result = new Uint8Array(H.length + B.length);
+	Result.set(H, 0);
+	Result.set(B, H.length);
+	return Result;
+}
+
+/** Parse an incoming IPC message into header + body */
+function ParseIPCMessage(Buffer: ArrayBuffer): {
+	Header: unknown;
+	Body: unknown;
+} {
+	const View = new Uint8Array(Buffer);
+	let Pos = 0;
+	function ReadVQL(): number {
+		let Value = 0;
+		for (let N = 0; ; N += 7) {
+			const Byte = View[Pos++];
+			Value |= (Byte & 0x7f) << N;
+			if (!(Byte & 0x80)) return Value;
+		}
+	}
+	function Read(): unknown {
+		const Type = View[Pos++];
+		switch (Type) {
+			case 0:
+				return undefined;
+			case 1: {
+				const Len = ReadVQL();
+				const Str = new TextDecoder().decode(
+					View.slice(Pos, Pos + Len),
+				);
+				Pos += Len;
+				return Str;
+			}
+			case 2:
+			case 3: {
+				const Len = ReadVQL();
+				Pos += Len;
+				return View.slice(Pos - Len, Pos);
+			}
+			case 4: {
+				const Len = ReadVQL();
+				const Arr: unknown[] = [];
+				for (let I = 0; I < Len; I++) Arr.push(Read());
+				return Arr;
+			}
+			case 5: {
+				const Len = ReadVQL();
+				const Str = new TextDecoder().decode(
+					View.slice(Pos, Pos + Len),
+				);
+				Pos += Len;
+				return JSON.parse(Str);
+			}
+			case 6:
+				return ReadVQL();
+		}
+	}
+	const Header = Read();
+	const Body = Read();
+	return { Header, Body };
+}
+
+// ============================================================================
+// IPC Renderer Implementation
+// ============================================================================
+
 /**
  * IPC Renderer class that implements Electron's ipcRenderer API
+ * with a built-in binary IPC loopback that speaks VS Code's ChannelClient protocol.
  */
 class IPCRendererImpl implements IpcRenderer {
 	// Track event listeners by channel
@@ -249,10 +432,200 @@ class IPCRendererImpl implements IpcRenderer {
 	>();
 
 	/**
+	 * Emit a vscode:message event to registered listeners (loopback)
+	 */
+	private emitMessage(Data: Uint8Array | ArrayBuffer): void {
+		const Event: IpcRendererEvent = {
+			sender: {} as IpcRendererEvent["sender"],
+			senderId: 0,
+			senderIsMainFrame: true,
+			ports: [],
+		};
+		const Listeners = this.listeners.get("vscode:message");
+		if (Listeners) {
+			for (const Listener of Listeners) {
+				try {
+					Listener(Event, Data);
+				} catch (Error) {
+					console.error(
+						"[IPCRendererShim] Error in vscode:message listener:",
+						Error,
+					);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Handle the VS Code binary IPC protocol (loopback responder).
+	 * Parses incoming binary requests and sends back stub responses.
+	 */
+	private handleBinaryIPC(Buffer: ArrayBuffer): void {
+		try {
+			const { Header, Body } = ParseIPCMessage(Buffer);
+			const HeaderArr = Header as number[];
+			if (!Array.isArray(HeaderArr)) return;
+
+			const Type = HeaderArr[0];
+
+			// RequestType.Promise = 100
+			if (Type === 100) {
+				const RequestId = HeaderArr[1] as number;
+				const ChannelName = HeaderArr[2] as string;
+				const MethodName = HeaderArr[3] as string;
+
+				console.log(
+					`[IPCRendererShim] IPC request: ${ChannelName}.${MethodName} (id=${RequestId})`,
+				);
+
+				const StubResponse = this.getStubResponse(
+					ChannelName,
+					MethodName,
+					Body,
+				);
+
+				// Check for error sentinel — send PromiseError (202) instead
+				if (
+					typeof StubResponse === "string" &&
+					StubResponse.startsWith("__IPC_ERROR__")
+				) {
+					const ErrorMessage = StubResponse.slice(13);
+					// PromiseError format: [202, requestId], errorMessage
+					const Response = BuildIPCMessage(
+						[202, RequestId],
+						ErrorMessage,
+					);
+					setTimeout(() => this.emitMessage(Response), 0);
+				} else {
+					// PromiseSuccess (201) + stub data
+					const Response = BuildIPCMessage(
+						[201, RequestId],
+						StubResponse,
+					);
+					setTimeout(() => this.emitMessage(Response), 0);
+				}
+			}
+			// RequestType.EventListen = 102
+			else if (Type === 102) {
+				const RequestId = HeaderArr[1] as number;
+				const ChannelName = HeaderArr[2] as string;
+				const EventName = HeaderArr[3] as string;
+				console.log(
+					`[IPCRendererShim] IPC event subscribe: ${ChannelName}.${EventName} (id=${RequestId})`,
+				);
+				// Event subscriptions don't need immediate response.
+				// The server fires EventFire (204) when events occur.
+			}
+		} catch (Error) {
+			console.warn(
+				"[IPCRendererShim] Failed to parse IPC message:",
+				Error,
+			);
+		}
+	}
+
+	/**
+	 * Get a stub response for a channel method call.
+	 * These stubs allow the workbench to initialize without a real main process.
+	 */
+	private getStubResponse(
+		Channel: string,
+		Method: string,
+		_Args: unknown,
+	): unknown {
+		switch (Channel) {
+			case "logger":
+				// LoggerChannelClient: createLogger, log, setVisibility, etc.
+				return undefined;
+			case "policy":
+				// PolicyChannelClient: listen, serialize
+				if (Method === "serialize") return {};
+				return undefined;
+			case "sign":
+				// SignService: sign, createNewMessage, validate
+				return "";
+			case "userDataProfiles":
+				// UserDataProfilesService: various profile ops
+				return undefined;
+			case "keyboardLayout":
+				// NativeKeyboardLayoutService: getKeyboardLayoutData
+				if (Method === "getKeyboardLayoutData") {
+					return {
+						keyboardLayoutInfo: {
+							model: "pc105",
+							layout: "us",
+							variant: "",
+							options: "",
+							rules: "",
+						},
+						keyboardMapping: {},
+					};
+				}
+				return undefined;
+			case "storage":
+				// RemoteStorageService → ApplicationStorageDatabaseClient
+				// Methods: getItems, updateItems, optimize, close
+				if (Method === "getItems") return [];
+				if (Method === "updateItems") return undefined;
+				if (Method === "optimize") return undefined;
+				if (Method === "close") return undefined;
+				return undefined;
+			case "configuration":
+				// ConfigurationService: getValue, updateValue
+				if (Method === "getValue") return {};
+				if (Method === "updateValue") return undefined;
+				return undefined;
+			case "sharedProcess":
+				// SharedProcessService: when, dispose
+				return undefined;
+			case "localFilesystem":
+			case "localFileSystem":
+				// DiskFileSystemProviderClient (channel: localFilesystem)
+				// Return FileNotFound errors for stat/readFile so the workbench
+				// gracefully handles missing files instead of hanging.
+				// The error format matches FileSystemProviderErrorCode.FileNotFound.
+				return "__IPC_ERROR__FileNotFound";
+
+			default:
+				console.log(
+					`[IPCRendererShim] Stub response for unknown channel: ${Channel}.${Method}`,
+				);
+				return undefined;
+		}
+	}
+
+	/**
 	 * Send message to main process
 	 */
 	send(channel: string, ...args: unknown[]): void {
 		console.log(`[IPCRendererShim] send: ${channel}`, args);
+
+		// Handle VS Code binary IPC protocol
+		if (channel === "vscode:hello") {
+			// The ChannelClient waits for Initialize (type 200) response.
+			// Send it asynchronously so the listener is registered first.
+			console.log(
+				"[IPCRendererShim] vscode:hello received, sending Initialize response",
+			);
+			setTimeout(() => {
+				const InitMessage = BuildIPCMessage([200], undefined);
+				this.emitMessage(InitMessage);
+			}, 0);
+			return;
+		}
+
+		if (channel === "vscode:message") {
+			// Binary IPC message from workbench → parse and respond
+			const Buffer = args[0];
+			if (Buffer instanceof ArrayBuffer || ArrayBuffer.isView(Buffer)) {
+				const AB =
+					Buffer instanceof ArrayBuffer
+						? Buffer
+						: (Buffer as Uint8Array).buffer;
+				this.handleBinaryIPC(AB);
+			}
+			return;
+		}
 
 		// Map Electron channel to Tauri command
 		const mapping = mapElectronChannelToTauri(channel);

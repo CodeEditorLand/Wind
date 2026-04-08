@@ -109,6 +109,172 @@ function transformChannelArgs(channel, args) {
   return { args };
 }
 __name(transformChannelArgs, "transformChannelArgs");
+function SerializeIPC(Data) {
+  const Parts = [];
+  function Write(Value) {
+    if (Value === void 0 || Value === null) {
+      Parts.push(new Uint8Array([0]));
+    } else if (typeof Value === "string") {
+      const Encoded = new TextEncoder().encode(Value);
+      Parts.push(new Uint8Array([1]));
+      WriteVQL(Encoded.length);
+      Parts.push(Encoded);
+    } else if (Array.isArray(Value)) {
+      Parts.push(new Uint8Array([4]));
+      WriteVQL(Value.length);
+      for (const Item of Value) Write(Item);
+    } else if (typeof Value === "number" && (Value | 0) === Value) {
+      Parts.push(new Uint8Array([6]));
+      WriteVQL(Value);
+    } else {
+      const Encoded = new TextEncoder().encode(JSON.stringify(Value));
+      Parts.push(new Uint8Array([5]));
+      WriteVQL(Encoded.length);
+      Parts.push(Encoded);
+    }
+  }
+  __name(Write, "Write");
+  function WriteVQL(Value) {
+    const Bytes = [];
+    let V = Value >>> 0;
+    while (V > 127) {
+      Bytes.push(V & 127 | 128);
+      V >>>= 7;
+    }
+    Bytes.push(V & 127);
+    Parts.push(new Uint8Array(Bytes));
+  }
+  __name(WriteVQL, "WriteVQL");
+  Write(Data);
+  let Total = 0;
+  for (const P of Parts) Total += P.length;
+  const Result = new Uint8Array(Total);
+  let Offset = 0;
+  for (const P of Parts) {
+    Result.set(P, Offset);
+    Offset += P.length;
+  }
+  return Result;
+}
+__name(SerializeIPC, "SerializeIPC");
+function DeserializeIPC(Buffer2) {
+  const View = new Uint8Array(Buffer2);
+  let Pos = 0;
+  function ReadVQL() {
+    let Value = 0;
+    for (let N = 0; ; N += 7) {
+      const Byte = View[Pos++];
+      Value |= (Byte & 127) << N;
+      if (!(Byte & 128)) return Value;
+    }
+  }
+  __name(ReadVQL, "ReadVQL");
+  function Read() {
+    const Type = View[Pos++];
+    switch (Type) {
+      case 0:
+        return void 0;
+      case 1: {
+        const Len = ReadVQL();
+        const Str = new TextDecoder().decode(
+          View.slice(Pos, Pos + Len)
+        );
+        Pos += Len;
+        return Str;
+      }
+      case 2:
+      case 3: {
+        const Len = ReadVQL();
+        const Buf = View.slice(Pos, Pos + Len);
+        Pos += Len;
+        return Buf;
+      }
+      case 4: {
+        const Len = ReadVQL();
+        const Arr = [];
+        for (let I = 0; I < Len; I++) Arr.push(Read());
+        return Arr;
+      }
+      case 5: {
+        const Len = ReadVQL();
+        const Str = new TextDecoder().decode(
+          View.slice(Pos, Pos + Len)
+        );
+        Pos += Len;
+        return JSON.parse(Str);
+      }
+      case 6:
+        return ReadVQL();
+    }
+  }
+  __name(Read, "Read");
+  return Read();
+}
+__name(DeserializeIPC, "DeserializeIPC");
+function BuildIPCMessage(Header, Body) {
+  const H = SerializeIPC(Header);
+  const B = SerializeIPC(Body);
+  const Result = new Uint8Array(H.length + B.length);
+  Result.set(H, 0);
+  Result.set(B, H.length);
+  return Result;
+}
+__name(BuildIPCMessage, "BuildIPCMessage");
+function ParseIPCMessage(Buffer2) {
+  const View = new Uint8Array(Buffer2);
+  let Pos = 0;
+  function ReadVQL() {
+    let Value = 0;
+    for (let N = 0; ; N += 7) {
+      const Byte = View[Pos++];
+      Value |= (Byte & 127) << N;
+      if (!(Byte & 128)) return Value;
+    }
+  }
+  __name(ReadVQL, "ReadVQL");
+  function Read() {
+    const Type = View[Pos++];
+    switch (Type) {
+      case 0:
+        return void 0;
+      case 1: {
+        const Len = ReadVQL();
+        const Str = new TextDecoder().decode(
+          View.slice(Pos, Pos + Len)
+        );
+        Pos += Len;
+        return Str;
+      }
+      case 2:
+      case 3: {
+        const Len = ReadVQL();
+        Pos += Len;
+        return View.slice(Pos - Len, Pos);
+      }
+      case 4: {
+        const Len = ReadVQL();
+        const Arr = [];
+        for (let I = 0; I < Len; I++) Arr.push(Read());
+        return Arr;
+      }
+      case 5: {
+        const Len = ReadVQL();
+        const Str = new TextDecoder().decode(
+          View.slice(Pos, Pos + Len)
+        );
+        Pos += Len;
+        return JSON.parse(Str);
+      }
+      case 6:
+        return ReadVQL();
+    }
+  }
+  __name(Read, "Read");
+  const Header = Read();
+  const Body = Read();
+  return { Header, Body };
+}
+__name(ParseIPCMessage, "ParseIPCMessage");
 class IPCRendererImpl {
   static {
     __name(this, "IPCRendererImpl");
@@ -121,10 +287,154 @@ class IPCRendererImpl {
   // Track once listeners
   onceListeners = /* @__PURE__ */ new Map();
   /**
+   * Emit a vscode:message event to registered listeners (loopback)
+   */
+  emitMessage(Data) {
+    const Event = {
+      sender: {},
+      senderId: 0,
+      senderIsMainFrame: true,
+      ports: []
+    };
+    const Listeners = this.listeners.get("vscode:message");
+    if (Listeners) {
+      for (const Listener of Listeners) {
+        try {
+          Listener(Event, Data);
+        } catch (Error2) {
+          console.error(
+            "[IPCRendererShim] Error in vscode:message listener:",
+            Error2
+          );
+        }
+      }
+    }
+  }
+  /**
+   * Handle the VS Code binary IPC protocol (loopback responder).
+   * Parses incoming binary requests and sends back stub responses.
+   */
+  handleBinaryIPC(Buffer2) {
+    try {
+      const { Header, Body } = ParseIPCMessage(Buffer2);
+      const HeaderArr = Header;
+      if (!Array.isArray(HeaderArr)) return;
+      const Type = HeaderArr[0];
+      if (Type === 100) {
+        const RequestId = HeaderArr[1];
+        const ChannelName = HeaderArr[2];
+        const MethodName = HeaderArr[3];
+        console.log(
+          `[IPCRendererShim] IPC request: ${ChannelName}.${MethodName} (id=${RequestId})`
+        );
+        const StubResponse = this.getStubResponse(
+          ChannelName,
+          MethodName,
+          Body
+        );
+        if (typeof StubResponse === "string" && StubResponse.startsWith("__IPC_ERROR__")) {
+          const ErrorMessage = StubResponse.slice(13);
+          const Response = BuildIPCMessage(
+            [202, RequestId],
+            ErrorMessage
+          );
+          setTimeout(() => this.emitMessage(Response), 0);
+        } else {
+          const Response = BuildIPCMessage(
+            [201, RequestId],
+            StubResponse
+          );
+          setTimeout(() => this.emitMessage(Response), 0);
+        }
+      } else if (Type === 102) {
+        const RequestId = HeaderArr[1];
+        const ChannelName = HeaderArr[2];
+        const EventName = HeaderArr[3];
+        console.log(
+          `[IPCRendererShim] IPC event subscribe: ${ChannelName}.${EventName} (id=${RequestId})`
+        );
+      }
+    } catch (Error2) {
+      console.warn(
+        "[IPCRendererShim] Failed to parse IPC message:",
+        Error2
+      );
+    }
+  }
+  /**
+   * Get a stub response for a channel method call.
+   * These stubs allow the workbench to initialize without a real main process.
+   */
+  getStubResponse(Channel, Method, _Args) {
+    switch (Channel) {
+      case "logger":
+        return void 0;
+      case "policy":
+        if (Method === "serialize") return {};
+        return void 0;
+      case "sign":
+        return "";
+      case "userDataProfiles":
+        return void 0;
+      case "keyboardLayout":
+        if (Method === "getKeyboardLayoutData") {
+          return {
+            keyboardLayoutInfo: {
+              model: "pc105",
+              layout: "us",
+              variant: "",
+              options: "",
+              rules: ""
+            },
+            keyboardMapping: {}
+          };
+        }
+        return void 0;
+      case "storage":
+        if (Method === "getItems") return [];
+        if (Method === "updateItems") return void 0;
+        if (Method === "optimize") return void 0;
+        if (Method === "close") return void 0;
+        return void 0;
+      case "configuration":
+        if (Method === "getValue") return {};
+        if (Method === "updateValue") return void 0;
+        return void 0;
+      case "sharedProcess":
+        return void 0;
+      case "localFilesystem":
+      case "localFileSystem":
+        return "__IPC_ERROR__FileNotFound";
+      default:
+        console.log(
+          `[IPCRendererShim] Stub response for unknown channel: ${Channel}.${Method}`
+        );
+        return void 0;
+    }
+  }
+  /**
    * Send message to main process
    */
   send(channel, ...args) {
     console.log(`[IPCRendererShim] send: ${channel}`, args);
+    if (channel === "vscode:hello") {
+      console.log(
+        "[IPCRendererShim] vscode:hello received, sending Initialize response"
+      );
+      setTimeout(() => {
+        const InitMessage = BuildIPCMessage([200], void 0);
+        this.emitMessage(InitMessage);
+      }, 0);
+      return;
+    }
+    if (channel === "vscode:message") {
+      const Buffer2 = args[0];
+      if (Buffer2 instanceof ArrayBuffer || ArrayBuffer.isView(Buffer2)) {
+        const AB = Buffer2 instanceof ArrayBuffer ? Buffer2 : Buffer2.buffer;
+        this.handleBinaryIPC(AB);
+      }
+      return;
+    }
     const mapping = mapElectronChannelToTauri(channel);
     if (mapping) {
       const tauriArgs = transformChannelArgs(channel, args);
