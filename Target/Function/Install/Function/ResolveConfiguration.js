@@ -75,7 +75,10 @@ async function ResolveConfiguration() {
           id: "__default__profile__",
           name: "Default",
           isDefault: true,
-          location: void 0,
+          location: {
+            scheme: "vscode-userdata",
+            path: "/User/profiles/__default__profile__"
+          },
           globalStorageHome: {
             scheme: "vscode-userdata",
             path: "/User/globalStorage"
@@ -96,7 +99,18 @@ async function ResolveConfiguration() {
             scheme: "vscode-userdata",
             path: "/User/snippets"
           },
-          extensionsResource: void 0,
+          promptsHome: {
+            scheme: "vscode-userdata",
+            path: "/User/prompts"
+          },
+          extensionsResource: {
+            scheme: "vscode-userdata",
+            path: "/User/extensions.json"
+          },
+          mcpResource: {
+            scheme: "vscode-userdata",
+            path: "/User/mcp.json"
+          },
           cacheHome: {
             scheme: "vscode-userdata",
             path: "/User/caches"
@@ -107,7 +121,10 @@ async function ResolveConfiguration() {
         id: "__default__profile__",
         name: "Default",
         isDefault: true,
-        location: void 0,
+        location: {
+          scheme: "vscode-userdata",
+          path: "/User/profiles/__default__profile__"
+        },
         globalStorageHome: {
           scheme: "vscode-userdata",
           path: "/User/globalStorage"
@@ -128,7 +145,18 @@ async function ResolveConfiguration() {
           scheme: "vscode-userdata",
           path: "/User/snippets"
         },
-        extensionsResource: void 0,
+        promptsHome: {
+          scheme: "vscode-userdata",
+          path: "/User/prompts"
+        },
+        extensionsResource: {
+          scheme: "vscode-userdata",
+          path: "/User/extensions.json"
+        },
+        mcpResource: {
+          scheme: "vscode-userdata",
+          path: "/User/mcp.json"
+        },
         cacheHome: {
           scheme: "vscode-userdata",
           path: "/User/caches"

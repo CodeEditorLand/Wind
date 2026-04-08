@@ -99,7 +99,10 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 					id: "__default__profile__",
 					name: "Default",
 					isDefault: true,
-					location: undefined,
+					location: {
+						scheme: "vscode-userdata",
+						path: "/User/profiles/__default__profile__",
+					},
 					globalStorageHome: {
 						scheme: "vscode-userdata",
 						path: "/User/globalStorage",
@@ -120,7 +123,18 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 						scheme: "vscode-userdata",
 						path: "/User/snippets",
 					},
-					extensionsResource: undefined,
+					promptsHome: {
+						scheme: "vscode-userdata",
+						path: "/User/prompts",
+					},
+					extensionsResource: {
+						scheme: "vscode-userdata",
+						path: "/User/extensions.json",
+					},
+					mcpResource: {
+						scheme: "vscode-userdata",
+						path: "/User/mcp.json",
+					},
 					cacheHome: {
 						scheme: "vscode-userdata",
 						path: "/User/caches",
@@ -131,7 +145,10 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 				id: "__default__profile__",
 				name: "Default",
 				isDefault: true,
-				location: undefined,
+				location: {
+					scheme: "vscode-userdata",
+					path: "/User/profiles/__default__profile__",
+				},
 				globalStorageHome: {
 					scheme: "vscode-userdata",
 					path: "/User/globalStorage",
@@ -152,7 +169,18 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 					scheme: "vscode-userdata",
 					path: "/User/snippets",
 				},
-				extensionsResource: undefined,
+				promptsHome: {
+					scheme: "vscode-userdata",
+					path: "/User/prompts",
+				},
+				extensionsResource: {
+					scheme: "vscode-userdata",
+					path: "/User/extensions.json",
+				},
+				mcpResource: {
+					scheme: "vscode-userdata",
+					path: "/User/mcp.json",
+				},
 				cacheHome: {
 					scheme: "vscode-userdata",
 					path: "/User/caches",

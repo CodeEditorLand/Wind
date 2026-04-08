@@ -84,6 +84,15 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		},
 	},
 	sharedProcess: {},
+	// Storage — returns empty items so NativeWorkbenchStorageService.initialize()
+	// completes. getItems returns Item[] (array of [key, value] tuples).
+	storage: {
+		getItems: [],
+		updateItems: undefined,
+		optimize: undefined,
+		isUsed: undefined,
+	},
+	d: {},
 };
 
 // ============================================================================
@@ -150,7 +159,8 @@ class TauriChannel implements IChannel {
 			return undefined as T;
 		}
 
-		// Route through Mountain
+		// Route through Mountain — return undefined on error instead of
+		// throwing so services that don't handle rejections don't hang.
 		if (this.RoutePrefix) {
 			const MountainMethod = `${this.RoutePrefix}:${Command}`;
 			const Params =
@@ -160,11 +170,11 @@ class TauriChannel implements IChannel {
 				const Result = await InvokeMountain(MountainMethod, Params);
 				return Result as T;
 			} catch (Error) {
-				console.error(
-					`[TauriMainProcessService] ${this.ChannelName}.${Command} failed:`,
+				console.warn(
+					`[TauriMainProcessService] ${this.ChannelName}.${Command} failed (returning undefined):`,
 					Error,
 				);
-				throw Error;
+				return undefined as T;
 			}
 		}
 
