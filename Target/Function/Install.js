@@ -100,6 +100,37 @@ function CreateProcess(Configuration) {
 __name(CreateProcess, "CreateProcess");
 async function ResolveConfiguration() {
   const FileRoot = "/Static/Application/";
+  const DefaultProfile = {
+    id: "__default__profile__",
+    isDefault: true,
+    name: "Default",
+    location: void 0,
+    globalStorageHome: {
+      scheme: "vscode-userdata",
+      path: "/User/globalStorage"
+    },
+    settingsResource: {
+      scheme: "vscode-userdata",
+      path: "/User/settings.json"
+    },
+    keybindingsResource: {
+      scheme: "vscode-userdata",
+      path: "/User/keybindings.json"
+    },
+    tasksResource: {
+      scheme: "vscode-userdata",
+      path: "/User/tasks.json"
+    },
+    snippetsHome: {
+      scheme: "vscode-userdata",
+      path: "/User/snippets"
+    },
+    extensionsResource: void 0,
+    cacheHome: {
+      scheme: "vscode-userdata",
+      path: "/User/cacheHome"
+    }
+  };
   return {
     windowId: 1,
     appRoot: FileRoot,
@@ -125,43 +156,18 @@ async function ResolveConfiguration() {
     logLevel: 2,
     loggers: [],
     perfMarks: [],
+    os: {
+      release: typeof navigator !== "undefined" ? navigator.userAgent.match(/Mac OS X (\d+[._]\d+)/)?.[1]?.replace("_", ".") ?? "25.0" : "25.0",
+      hostname: "localhost",
+      arch: typeof navigator !== "undefined" ? navigator.userAgent.includes("arm64") || navigator.userAgent.includes("ARM64") ? "arm64" : "x86_64" : "arm64"
+    },
     colorScheme: { dark: true, highContrast: false },
     autoDetectHighContrast: false,
     autoDetectColorScheme: false,
     profiles: {
       home: { scheme: "vscode-userdata", path: "/User" },
-      all: [],
-      profile: {
-        id: "__default__profile__",
-        isDefault: true,
-        name: "Default",
-        location: void 0,
-        globalStorageHome: {
-          scheme: "vscode-userdata",
-          path: "/User/globalStorage"
-        },
-        settingsResource: {
-          scheme: "vscode-userdata",
-          path: "/User/settings.json"
-        },
-        keybindingsResource: {
-          scheme: "vscode-userdata",
-          path: "/User/keybindings.json"
-        },
-        tasksResource: {
-          scheme: "vscode-userdata",
-          path: "/User/tasks.json"
-        },
-        snippetsHome: {
-          scheme: "vscode-userdata",
-          path: "/User/snippets"
-        },
-        extensionsResource: void 0,
-        cacheHome: {
-          scheme: "vscode-userdata",
-          path: "/User/cacheHome"
-        }
-      }
+      all: [DefaultProfile],
+      profile: DefaultProfile
     },
     product: {
       nameShort: "VSCode Wind",

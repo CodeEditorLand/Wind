@@ -84,6 +84,12 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		},
 	},
 	sharedProcess: {},
+	// UtilityProcessWorker — VS Code uses this for heavy operations
+	// (search, file watching) via a utility process. Stub it so the
+	// UtilityProcessWorkerWorkbenchService doesn't hang.
+	utilityProcessWorker: {
+		createWorker: undefined,
+	},
 	// Storage — returns empty items so NativeWorkbenchStorageService.initialize()
 	// completes. getItems returns Item[] (array of [key, value] tuples).
 	storage: {
@@ -92,7 +98,6 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		optimize: undefined,
 		isUsed: undefined,
 	},
-	d: {},
 };
 
 // ============================================================================

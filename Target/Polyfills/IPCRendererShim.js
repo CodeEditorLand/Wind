@@ -435,15 +435,20 @@ class IPCRendererImpl {
       }
       return;
     }
+    if (channel === "vscode:createSharedProcessChannelConnection" || channel === "vscode:toggleDevTools" || channel === "vscode:reloadWindow" || channel === "vscode:reportUnresponsive" || channel === "vscode:openDevTools" || channel.startsWith("vscode:")) {
+      console.log(
+        `[IPCRendererShim] send: ${channel} \u2014 no-op (not wired to Tauri)`
+      );
+      return;
+    }
     const mapping = mapElectronChannelToTauri(channel);
     if (mapping) {
       const tauriArgs = transformChannelArgs(channel, args);
       sendTauri(mapping.command, tauriArgs);
     } else {
-      sendTauri("ipc:send", {
-        channel,
-        args
-      });
+      console.warn(
+        `[IPCRendererShim] send: unmapped channel "${channel}" \u2014 dropping (no Tauri route)`
+      );
     }
   }
   /**
@@ -465,10 +470,10 @@ class IPCRendererImpl {
       const tauriArgs = transformChannelArgs(channel, args);
       return await invokeTauri(mapping.command, tauriArgs);
     }
-    return await invokeTauri("ipc:invoke", {
-      channel,
-      args
-    });
+    console.warn(
+      `[IPCRendererShim] invoke: unmapped channel "${channel}" \u2014 returning undefined`
+    );
+    return void 0;
   }
   /**
    * Register event listener

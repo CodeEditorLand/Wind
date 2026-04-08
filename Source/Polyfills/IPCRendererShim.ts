@@ -623,6 +623,21 @@ class IPCRendererImpl implements IpcRenderer {
 			return;
 		}
 
+		// Known no-op channels — log and drop (no Tauri command exists)
+		if (
+			channel === "vscode:createSharedProcessChannelConnection" ||
+			channel === "vscode:toggleDevTools" ||
+			channel === "vscode:reloadWindow" ||
+			channel === "vscode:reportUnresponsive" ||
+			channel === "vscode:openDevTools" ||
+			channel.startsWith("vscode:")
+		) {
+			console.log(
+				`[IPCRendererShim] send: ${channel} — no-op (not wired to Tauri)`,
+			);
+			return;
+		}
+
 		// Map Electron channel to Tauri command
 		const mapping = mapElectronChannelToTauri(channel);
 
@@ -631,11 +646,11 @@ class IPCRendererImpl implements IpcRenderer {
 			const tauriArgs = transformChannelArgs(channel, args);
 			sendTauri(mapping.command, tauriArgs);
 		} else {
-			// Generic IPC send through Tauri
-			sendTauri("ipc:send", {
-				channel,
-				args,
-			});
+			// Unmapped non-vscode channel — log warning instead of calling
+			// non-existent ipc:send Tauri command
+			console.warn(
+				`[IPCRendererShim] send: unmapped channel "${channel}" — dropping (no Tauri route)`,
+			);
 		}
 	}
 
@@ -663,11 +678,12 @@ class IPCRendererImpl implements IpcRenderer {
 			return await invokeTauri<T>(mapping.command, tauriArgs);
 		}
 
-		// Generic IPC invoke through Tauri
-		return await invokeTauri<T>("ipc:invoke", {
-			channel,
-			args,
-		});
+		// Unmapped channel — return undefined instead of calling
+		// non-existent ipc:invoke Tauri command
+		console.warn(
+			`[IPCRendererShim] invoke: unmapped channel "${channel}" — returning undefined`,
+		);
+		return undefined as T;
 	}
 
 	/**
