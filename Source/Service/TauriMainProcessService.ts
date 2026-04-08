@@ -94,18 +94,20 @@ async function InvokeMountain(
 	Method: string,
 	Params: unknown[],
 ): Promise<unknown> {
-	const Tauri =
-		(window as unknown as { __TAURI__?: { invoke: Function } }).__TAURI__ ??
-		(window as unknown as { TAURI?: { invoke: Function } }).TAURI;
+	// Tauri 2.x: window.__TAURI__.core.invoke()
+	// Tauri 1.x: window.__TAURI__.invoke()
+	const Invoke =
+		(window as any).__TAURI__?.core?.invoke ??
+		(window as any).__TAURI__?.invoke;
 
-	if (typeof Tauri?.invoke !== "function") {
+	if (typeof Invoke !== "function") {
 		console.warn(
 			`[TauriMainProcessService] Tauri not available for: ${Method}`,
 		);
 		return undefined;
 	}
 
-	return await Tauri.invoke("MountainIPCInvoke", {
+	return await Invoke("MountainIPCInvoke", {
 		method: Method,
 		params: Params,
 	});

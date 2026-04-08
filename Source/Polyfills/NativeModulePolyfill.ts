@@ -172,9 +172,14 @@ async function invokeTauri<T>(
 	args: Record<string, unknown> = {},
 ): Promise<T> {
 	try {
-		const tauri = (window as any).__TAURI__ ?? (window as any).TAURI;
-		if (typeof tauri?.invoke === "function") {
-			return await tauri.invoke(command, args);
+		// Tauri 2.x: core.invoke, Tauri 1.x: invoke
+		const Invoke =
+			(window as any).__TAURI__?.core?.invoke ??
+			(window as any).__TAURI__?.invoke ??
+			(window as any).TAURI?.invoke;
+
+		if (typeof Invoke === "function") {
+			return await Invoke(command, args);
 		}
 
 		throw new Error(`Tauri invoke not available for command: ${command}`);

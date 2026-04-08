@@ -2,11 +2,9 @@ var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 async function invokeTauri(command, args = {}) {
   try {
-    if (typeof window.__TAURI__?.invoke !== "undefined") {
-      return await window.__TAURI__.invoke(command, args);
-    }
-    if (typeof window.TAURI?.invoke !== "undefined") {
-      return await window.TAURI.invoke(command, args);
+    const Invoke = window.__TAURI__?.core?.invoke ?? window.__TAURI__?.invoke ?? window.TAURI?.invoke;
+    if (typeof Invoke === "function") {
+      return await Invoke(command, args);
     }
     throw new Error(`Tauri invoke not available for command: ${command}`);
   } catch (error) {

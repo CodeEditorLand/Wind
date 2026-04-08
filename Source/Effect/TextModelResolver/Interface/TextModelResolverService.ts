@@ -36,5 +36,7 @@ export interface TextModelResolverService {
 	/**
 	 * Force-reload a model's content from disk (via Mountain).
 	 */
-	readonly Reload: (uri: string) => Effect.Effect<TextModel, TextModelResolverProblem>;
+	readonly Reload: (
+		uri: string,
+	) => Effect.Effect<TextModel, TextModelResolverProblem>;
 }

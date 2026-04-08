@@ -1,6 +1,7 @@
 // Convenience export for quick bootstrap execution
-import { Effect } from "effect";
+import { Effect, Layer } from "effect";
 
+import TelemetryLive from "../Telemetry/Layer/TelemetryLive.js";
 import { BootstrapLive } from "./Implementation/BootstrapImplementation.js";
 import { BootstrapTag } from "./Tag/BootstrapTag.js";
 
@@ -67,4 +68,6 @@ export const runBootstrap = (
 	Effect.gen(function* () {
 		const bootstrap = yield* BootstrapTag;
 		return yield* bootstrap.run(options);
-	}).pipe(Effect.provide(BootstrapLive));
+	}).pipe(
+		Effect.provide(TelemetryLive.pipe(Layer.provideMerge(BootstrapLive))),
+	);

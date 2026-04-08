@@ -1,8 +1,9 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-import { Effect } from "effect";
+import { Effect, Layer } from "effect";
 import { BootstrapLive } from "./Implementation/BootstrapImplementation.js";
 import { BootstrapTag } from "./Tag/BootstrapTag.js";
+import TelemetryLive from "../Telemetry/Layer/TelemetryLive.js";
 import { BootstrapTag as BootstrapTag2 } from "./Tag/BootstrapTag.js";
 import {
   stage0_Environment,
@@ -18,7 +19,11 @@ import { BootstrapMock, makeMockBootstrap } from "./Layer/BootstrapMock.js";
 const runBootstrap = /* @__PURE__ */ __name((options) => Effect.gen(function* () {
   const bootstrap = yield* BootstrapTag;
   return yield* bootstrap.run(options);
-}).pipe(Effect.provide(BootstrapLive)), "runBootstrap");
+}).pipe(
+  Effect.provide(
+    TelemetryLive.pipe(Layer.provideMerge(BootstrapLive))
+  )
+), "runBootstrap");
 export {
   BootstrapLive2 as BootstrapLive,
   BootstrapMock,

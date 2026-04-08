@@ -78,16 +78,14 @@ async function invokeTauri<T>(
 	args: Record<string, unknown> = {},
 ): Promise<T> {
 	try {
-		const tauri =
-			(
-				window as unknown as {
-					__TAURI__?: { invoke: typeof invokeTauri };
-				}
-			).__TAURI__ ??
-			(window as unknown as { TAURI?: { invoke: typeof invokeTauri } })
-				.TAURI;
-		if (typeof tauri?.invoke === "function") {
-			return await tauri.invoke<T>(command, args);
+		// Tauri 2.x: core.invoke, Tauri 1.x: invoke
+		const Invoke =
+			(window as any).__TAURI__?.core?.invoke ??
+			(window as any).__TAURI__?.invoke ??
+			(window as any).TAURI?.invoke;
+
+		if (typeof Invoke === "function") {
+			return await Invoke(command, args);
 		}
 
 		throw new Error(`Tauri invoke not available for command: ${command}`);
@@ -105,16 +103,14 @@ async function invokeTauri<T>(
  */
 function sendTauri(command: string, args: Record<string, unknown> = {}): void {
 	try {
-		const tauri =
-			(
-				window as unknown as {
-					__TAURI__?: { invoke: typeof invokeTauri };
-				}
-			).__TAURI__ ??
-			(window as unknown as { TAURI?: { invoke: typeof invokeTauri } })
-				.TAURI;
-		if (typeof tauri?.invoke === "function") {
-			tauri.invoke(command, args).catch((error: Error) => {
+		// Tauri 2.x: core.invoke, Tauri 1.x: invoke
+		const Invoke =
+			(window as any).__TAURI__?.core?.invoke ??
+			(window as any).__TAURI__?.invoke ??
+			(window as any).TAURI?.invoke;
+
+		if (typeof Invoke === "function") {
+			Invoke(command, args).catch((error: Error) => {
 				console.warn(
 					`[IPCRendererShim] Tauri send failed (no response expected): ${command}`,
 					error,
