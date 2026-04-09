@@ -23,9 +23,10 @@ function listenToTauri(event, handler) {
       ({ payload }) => {
         handler(payload);
       }
-    );
+    ).catch(() => {
+    });
     return () => {
-      unlistenPromise.then((unlisten) => unlisten());
+      unlistenPromise.then((unlisten) => unlisten?.());
     };
   }
   if (typeof window.TAURI?.event?.listen === "function") {
@@ -34,9 +35,10 @@ function listenToTauri(event, handler) {
       ({ payload }) => {
         handler(payload);
       }
-    );
+    ).catch(() => {
+    });
     return () => {
-      unlistenPromise.then((unlisten) => unlisten());
+      unlistenPromise.then((unlisten) => unlisten?.());
     };
   }
   console.warn(

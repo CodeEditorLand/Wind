@@ -10,6 +10,8 @@
 
 import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes";
 
+import DevLog from "../../DevLog.js";
+
 /**
  * Resolves the VSCode sandbox configuration.
  * Returns ISandboxConfiguration (for browser workbench) but includes
@@ -25,13 +27,83 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 	// Strip origin from FileRoot for appRoot (workbench.js prepends vscode-file://)
 	const AppRoot = FileRoot.replace(/^https?:\/\/[^/]+/, "");
 
+	// Fetch real Tauri paths from Mountain
+	let Paths = { userDataDir: "", logsPath: "", homeDir: "/", tmpDir: "/tmp" };
+	try {
+		const Invoke =
+			(window as any).__TAURI__?.core?.invoke ??
+			(window as any).__TAURI__?.invoke;
+		if (typeof Invoke === "function") {
+			Paths = await Invoke("MountainIPCInvoke", {
+				method: "nativeHost:getEnvironmentPaths",
+				params: [],
+			});
+		}
+	} catch (Error) {
+		DevLog("config", "MountainIPCInvoke failed:", Error);
+	}
+
+	DevLog("config", "paths:", JSON.stringify(Paths));
+
+	// Pass LAND_DEV_LOG from Mountain environment to browser.
+	// The Tauri IPC returns the env var; set it on window so DevLog picks it up.
+	if ((Paths as any).devLog) {
+		(window as any).__LAND_DEV_LOG = (Paths as any).devLog;
+		DevLog.reset();
+	}
+
+	// Read ?folder= from URL (set by pickFolderAndOpen navigation)
+	const FolderParam = new URLSearchParams(window.location.search).get(
+		"folder",
+	);
+	const FolderUri = FolderParam
+		? { scheme: "file", path: FolderParam, authority: "" }
+		: undefined;
+
+	// ISingleFolderWorkspaceIdentifier for the Electron (desktop) workbench.
+	// The browser workbench reads `folderUri` but DesktopMain reads `workspace`.
+	// reviveIdentifier() in desktop.main.ts calls URI.revive() on workspace.uri.
+	const Workspace = FolderUri
+		? {
+				id: Array.from(FolderParam)
+					.reduce(
+						(Hash, Character) =>
+							((Hash << 5) - Hash + Character.charCodeAt(0)) | 0,
+						0,
+					)
+					.toString(16)
+					.replace("-", ""),
+				uri: FolderUri,
+			}
+		: undefined;
+
+	DevLog("config", "url:", window.location.href);
+	DevLog("config", "folderUri:", JSON.stringify(FolderUri));
+	DevLog("config", "workspace:", JSON.stringify(Workspace));
+
+	// Session timestamp for logs subdirectory
+	const Now = new Date();
+	const SessionTimestamp = [
+		Now.getFullYear(),
+		String(Now.getMonth() + 1).padStart(2, "0"),
+		String(Now.getDate()).padStart(2, "0"),
+		"T",
+		String(Now.getHours()).padStart(2, "0"),
+		String(Now.getMinutes()).padStart(2, "0"),
+		String(Now.getSeconds()).padStart(2, "0"),
+	].join("");
+	const LogsLocation = Paths.logsPath
+		? `${Paths.logsPath}/${SessionTimestamp}`
+		: undefined;
+
 	return {
 		windowId: 1,
 		appRoot: AppRoot,
 		userEnv: {
-			PATH: "/usr/bin:/bin",
-			HOME: "/",
+			PATH: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+			HOME: Paths.homeDir || "/",
 			VSCODE_DEV: "true",
+			USER: Paths.homeDir?.split("/").pop() || "user",
 		},
 		product: {
 			nameShort: "VSCode Wind",
@@ -188,8 +260,20 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 			},
 		},
 		os: { release: "24.0.0" },
+
+		// Real paths from Mountain (Tauri PathResolver)
+		homeDir: Paths.homeDir ? `file://${Paths.homeDir}` : undefined,
+		tmpDir: Paths.tmpDir ? `file://${Paths.tmpDir}` : undefined,
+		userDataDir: Paths.userDataDir
+			? `file://${Paths.userDataDir}`
+			: undefined,
+		logsPath: LogsLocation ? `file://${LogsLocation}` : undefined,
+
+		// Workspace — set from ?folder= URL param
+		// folderUri is used by the browser workbench; workspace by the Electron workbench.
+		folderUri: FolderUri,
+		workspace: Workspace,
 		backupPath: undefined,
-		workspace: undefined,
 		fullscreen: false,
 		policiesData: undefined,
 		filesToOpenOrCreate: undefined,
@@ -199,8 +283,8 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 		colorScheme: { dark: true, highContrast: false },
 		autoDetectHighContrast: true,
 		autoDetectColorScheme: false,
-		isInitialStartup: false,
+		isInitialStartup: !FolderParam,
 		perfMarks: [],
 		accessibilitySupport: false,
-	} as ISandboxConfiguration & Record<string, unknown>;
+	} as unknown as ISandboxConfiguration & Record<string, unknown>;
 }

@@ -24,6 +24,22 @@ import type {
 	IServerChannel,
 } from "@codeeditorland/output/vs/base/parts/ipc/common/ipc";
 
+// Inline DevLog — can't import from ../Function/ because this file is served
+// from /Static/Application/vs/platform/ipc/ where relative imports break.
+const DevLog = (Tag: string, ...Args: unknown[]): void => {
+	const Filter = (window as any).__LAND_DEV_LOG;
+	if (!Filter) return;
+	const Lower = Tag.toLowerCase();
+	if (
+		Filter === "all" ||
+		String(Filter)
+			.split(",")
+			.some((T: string) => T.trim().toLowerCase() === Lower)
+	) {
+		console.log(`[DEV:${Tag.toUpperCase()}]`, ...Args);
+	}
+};
+
 // ============================================================================
 // Channel → Mountain Route Mapping
 // ============================================================================
@@ -170,6 +186,8 @@ class TauriChannel implements IChannel {
 		Arg?: unknown,
 		_CancellationToken?: unknown,
 	): Promise<T> {
+		DevLog("ipc", `${this.ChannelName}.${Command}`);
+
 		// Fire-and-forget channels
 		if (FireAndForgetChannels.has(this.ChannelName)) {
 			// Still send to Mountain but don't await
@@ -200,6 +218,32 @@ class TauriChannel implements IChannel {
 
 			try {
 				const Result = await InvokeMountain(MountainMethod, Params);
+				// File read commands return { buffer: number[] } from Mountain.
+				// VS Code's IPCFileSystemProvider does: `const buf = await call<VSBuffer>('readFile', uri); return buf.buffer;`
+				// So `buf.buffer` must return a Uint8Array (not an ArrayBuffer).
+				// Return a VSBuffer-shaped object: { buffer: Uint8Array, byteLength: number }.
+				if (
+					FileSystemChannels.has(this.ChannelName) &&
+					(Command === "readFile" || Command === "read")
+				) {
+					const Raw = Result as
+						| { buffer: number[] }
+						| number[]
+						| null
+						| undefined;
+					if (Raw !== null && Raw !== undefined) {
+						const Arr = Array.isArray(Raw)
+							? Raw
+							: (Raw as { buffer: number[] }).buffer;
+						if (Array.isArray(Arr)) {
+							const Bytes = new Uint8Array(Arr);
+							return {
+								buffer: Bytes,
+								byteLength: Bytes.byteLength,
+							} as unknown as T;
+						}
+					}
+				}
 				return Result as T;
 			} catch (RawError) {
 				// File system errors must be RETHROWN so VS Code's

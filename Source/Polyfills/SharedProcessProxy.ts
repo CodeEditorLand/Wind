@@ -115,28 +115,33 @@ function listenToTauri(
 	handler: (payload: unknown) => void,
 ): () => void {
 	if (typeof (window as any).__TAURI__?.event?.listen === "function") {
-		const unlistenPromise = (window as any).__TAURI__.event.listen(
-			event,
-			({ payload }: { payload: unknown }) => {
+		const unlistenPromise = (window as any).__TAURI__.event
+			.listen(event, ({ payload }: { payload: unknown }) => {
 				handler(payload);
-			},
-		);
+			})
+			.catch(() => {
+				// Silently ignore: event.listen may be blocked by Tauri capability
+				// for http://localhost:* URLs during development
+			});
 
 		return () => {
-			unlistenPromise.then((unlisten: () => void) => unlisten());
+			unlistenPromise.then((unlisten: (() => void) | undefined) =>
+				unlisten?.(),
+			);
 		};
 	}
 
 	if (typeof (window as any).TAURI?.event?.listen === "function") {
-		const unlistenPromise = (window as any).TAURI.event.listen(
-			event,
-			({ payload }: { payload: unknown }) => {
+		const unlistenPromise = (window as any).TAURI.event
+			.listen(event, ({ payload }: { payload: unknown }) => {
 				handler(payload);
-			},
-		);
+			})
+			.catch(() => {});
 
 		return () => {
-			unlistenPromise.then((unlisten: () => void) => unlisten());
+			unlistenPromise.then((unlisten: (() => void) | undefined) =>
+				unlisten?.(),
+			);
 		};
 	}
 

@@ -1,15 +1,59 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import DevLog from "../../DevLog.js";
 async function ResolveConfiguration() {
   const FileRoot = typeof globalThis._VSCODE_FILE_ROOT === "string" ? globalThis._VSCODE_FILE_ROOT : "/Static/Application/";
   const AppRoot = FileRoot.replace(/^https?:\/\/[^/]+/, "");
+  let Paths = { userDataDir: "", logsPath: "", homeDir: "/", tmpDir: "/tmp" };
+  try {
+    const Invoke = window.__TAURI__?.core?.invoke ?? window.__TAURI__?.invoke;
+    if (typeof Invoke === "function") {
+      Paths = await Invoke("MountainIPCInvoke", {
+        method: "nativeHost:getEnvironmentPaths",
+        params: []
+      });
+    }
+  } catch (Error2) {
+    DevLog("config", "MountainIPCInvoke failed:", Error2);
+  }
+  DevLog("config", "paths:", JSON.stringify(Paths));
+  if (Paths.devLog) {
+    window.__LAND_DEV_LOG = Paths.devLog;
+    DevLog.reset();
+  }
+  const FolderParam = new URLSearchParams(window.location.search).get(
+    "folder"
+  );
+  const FolderUri = FolderParam ? { scheme: "file", path: FolderParam, authority: "" } : void 0;
+  const Workspace = FolderUri ? {
+    id: Array.from(FolderParam).reduce(
+      (Hash, Character) => (Hash << 5) - Hash + Character.charCodeAt(0) | 0,
+      0
+    ).toString(16).replace("-", ""),
+    uri: FolderUri
+  } : void 0;
+  DevLog("config", "url:", window.location.href);
+  DevLog("config", "folderUri:", JSON.stringify(FolderUri));
+  DevLog("config", "workspace:", JSON.stringify(Workspace));
+  const Now = /* @__PURE__ */ new Date();
+  const SessionTimestamp = [
+    Now.getFullYear(),
+    String(Now.getMonth() + 1).padStart(2, "0"),
+    String(Now.getDate()).padStart(2, "0"),
+    "T",
+    String(Now.getHours()).padStart(2, "0"),
+    String(Now.getMinutes()).padStart(2, "0"),
+    String(Now.getSeconds()).padStart(2, "0")
+  ].join("");
+  const LogsLocation = Paths.logsPath ? `${Paths.logsPath}/${SessionTimestamp}` : void 0;
   return {
     windowId: 1,
     appRoot: AppRoot,
     userEnv: {
-      PATH: "/usr/bin:/bin",
-      HOME: "/",
-      VSCODE_DEV: "true"
+      PATH: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      HOME: Paths.homeDir || "/",
+      VSCODE_DEV: "true",
+      USER: Paths.homeDir?.split("/").pop() || "user"
     },
     product: {
       nameShort: "VSCode Wind",
@@ -164,8 +208,16 @@ async function ResolveConfiguration() {
       }
     },
     os: { release: "24.0.0" },
+    // Real paths from Mountain (Tauri PathResolver)
+    homeDir: Paths.homeDir ? `file://${Paths.homeDir}` : void 0,
+    tmpDir: Paths.tmpDir ? `file://${Paths.tmpDir}` : void 0,
+    userDataDir: Paths.userDataDir ? `file://${Paths.userDataDir}` : void 0,
+    logsPath: LogsLocation ? `file://${LogsLocation}` : void 0,
+    // Workspace — set from ?folder= URL param
+    // folderUri is used by the browser workbench; workspace by the Electron workbench.
+    folderUri: FolderUri,
+    workspace: Workspace,
     backupPath: void 0,
-    workspace: void 0,
     fullscreen: false,
     policiesData: void 0,
     filesToOpenOrCreate: void 0,
@@ -175,7 +227,7 @@ async function ResolveConfiguration() {
     colorScheme: { dark: true, highContrast: false },
     autoDetectHighContrast: true,
     autoDetectColorScheme: false,
-    isInitialStartup: false,
+    isInitialStartup: !FolderParam,
     perfMarks: [],
     accessibilitySupport: false
   };

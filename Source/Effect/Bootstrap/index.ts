@@ -62,12 +62,16 @@ export { BootstrapLive } from "./Implementation/BootstrapImplementation.js";
 // Mock implementation layer
 export { BootstrapMock, makeMockBootstrap } from "./Layer/BootstrapMock.js";
 
+// Minimal layer: only Telemetry + Bootstrap. Individual stages fail gracefully
+// when their dependencies (IPC, Mountain, Environment, etc.) are unavailable.
+// The full layer stack (ElectronBaseLayer) requires IPC which may die if
+// __TAURI__ isn't injected yet. The Bootstrap is diagnostic, not critical path.
+const BootstrapRunLayer = TelemetryLive.pipe(Layer.provideMerge(BootstrapLive));
+
 export const runBootstrap = (
 	options?: import("./Type/BootstrapType.js").BootstrapOptions,
 ) =>
 	Effect.gen(function* () {
 		const bootstrap = yield* BootstrapTag;
 		return yield* bootstrap.run(options);
-	}).pipe(
-		Effect.provide(TelemetryLive.pipe(Layer.provideMerge(BootstrapLive))),
-	);
+	}).pipe(Effect.provide(BootstrapRunLayer));

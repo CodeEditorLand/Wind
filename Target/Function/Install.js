@@ -17,7 +17,10 @@ async function Install() {
     InstallBrowserAPIPolyfills();
     const Configuration = await ResolveConfiguration();
     const IPCRenderer = CreateIPCRenderer();
-    const Process = CreateProcess(Configuration, CachedPlatform ?? void 0);
+    const Process = CreateProcess(
+      Configuration,
+      CachedPlatform ?? void 0
+    );
     const preloadGlobals = {
       ipcRenderer: IPCRenderer,
       process: Process,
@@ -75,7 +78,17 @@ function CreateIPCRenderer() {
 }
 __name(CreateIPCRenderer, "CreateIPCRenderer");
 function CreateProcess(Configuration, Platform) {
-  const P = Platform ?? CachedPlatform ?? { platformName: "darwin", os: { arch: "x86_64", release: "14.0", hostname: "localhost" }, isWindows: false, isMacOS: true, isLinux: false, homeDir: "/", tmpDir: "/tmp", userDataDir: "/tmp/Land", userName: "User" };
+  const P = Platform ?? CachedPlatform ?? {
+    platformName: "darwin",
+    os: { arch: "x86_64", release: "14.0", hostname: "localhost" },
+    isWindows: false,
+    isMacOS: true,
+    isLinux: false,
+    homeDir: "/",
+    tmpDir: "/tmp",
+    userDataDir: "/tmp/Land",
+    userName: "User"
+  };
   return {
     platform: P.platformName,
     arch: P.os.arch,
@@ -116,10 +129,14 @@ async function DetectPlatform() {
         return Arch2;
       }
     }
-    if (UserAgent.includes("arm64") || UserAgent.includes("ARM64") || UserAgent.includes("aarch64")) return "arm64";
-    if (UserAgent.includes("WOW64") || UserAgent.includes("Win64") || UserAgent.includes("x86_64") || UserAgent.includes("x64")) return "x86_64";
-    if (UserAgent.includes("i686") || UserAgent.includes("i386")) return "x86";
-    if (typeof process !== "undefined" && process.arch) return process.arch === "arm64" ? "arm64" : process.arch === "ia32" ? "x86" : "x86_64";
+    if (UserAgent.includes("arm64") || UserAgent.includes("ARM64") || UserAgent.includes("aarch64"))
+      return "arm64";
+    if (UserAgent.includes("WOW64") || UserAgent.includes("Win64") || UserAgent.includes("x86_64") || UserAgent.includes("x64"))
+      return "x86_64";
+    if (UserAgent.includes("i686") || UserAgent.includes("i386"))
+      return "x86";
+    if (typeof process !== "undefined" && process.arch)
+      return process.arch === "arm64" ? "arm64" : process.arch === "ia32" ? "x86" : "x86_64";
     return "x86_64";
   }, "DetectArch");
   const DetectRelease = /* @__PURE__ */ __name(() => {
