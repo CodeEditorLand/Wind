@@ -109,22 +109,22 @@ function createServiceProxy(service) {
       try {
         if (service === "extension-host") {
           return await invokeTauri(
-            "cocoon:extension_host_health",
+            "cocoon_extension_host_health",
             {}
           );
         } else if (service === "search") {
           return await invokeTauri(
-            "cocoon:search_service_health",
+            "cocoon_search_service_health",
             {}
           );
         } else if (service === "debug") {
           return await invokeTauri(
-            "cocoon:debug_service_health",
+            "cocoon_debug_service_health",
             {}
           );
         } else {
           return await invokeTauri(
-            "shared_process:service_health",
+            "shared_process_service_health",
             { service }
           );
         }

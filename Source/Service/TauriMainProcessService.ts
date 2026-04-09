@@ -37,7 +37,7 @@ const ChannelRouteMap: Record<string, string> = {
 	storage: "storage",
 	logger: "logger",
 	configuration: "configuration",
-	"textFile": "textFile",
+	textFile: "textFile",
 	extensions: "extensions",
 	commands: "commands",
 	terminal: "terminal",
@@ -55,6 +55,17 @@ const ChannelRouteMap: Record<string, string> = {
 	lifecycle: "lifecycle",
 	label: "label",
 	model: "model",
+	// Phase 2: Window management + OS integration
+	nativeHost: "nativeHost",
+	// Phase 3: Terminal PTY
+	localPty: "localPty",
+	// Phase 2.5: Remaining channels routed to Mountain
+	update: "update",
+	url: "url",
+	menubar: "menubar",
+	encryption: "encryption",
+	extensionHostStarter: "extensionHostStarter",
+	extensionhostdebugservice: "extensionhostdebugservice",
 };
 
 /**
@@ -64,10 +75,34 @@ const ChannelRouteMap: Record<string, string> = {
 const FireAndForgetChannels = new Set(["logger"]);
 
 /**
+ * Channels where errors must be thrown (not swallowed) so VS Code's
+ * fileService.js can catch FileNotFound and create missing dirs/files.
+ */
+const FileSystemChannels = new Set(["localFilesystem"]);
+const FileSystemThrowCommands = new Set([
+	"stat",
+	"readFile",
+	"writeFile",
+	"readdir",
+	"mkdir",
+	"delete",
+	"rename",
+	"copy",
+	"open",
+	"close",
+	"read",
+	"write",
+	"realpath",
+	"cloneFile",
+]);
+
+/**
  * Channels that don't exist in Mountain yet — return stub responses
  * to prevent hangs. These should be wired to real handlers over time.
  */
 const StubChannels: Record<string, Record<string, unknown>> = {
+	// Electron-specific channels that have no Tauri equivalent.
+	// Everything else routes to Mountain for real handling.
 	sign: { sign: "", createNewMessage: "", validate: true },
 	policy: { serialize: {}, registerPolicyChange: undefined },
 	userDataProfiles: {},
@@ -84,20 +119,13 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		},
 	},
 	sharedProcess: {},
-	// UtilityProcessWorker — VS Code uses this for heavy operations
-	// (search, file watching) via a utility process. Stub it so the
-	// UtilityProcessWorkerWorkbenchService doesn't hang.
-	utilityProcessWorker: {
-		createWorker: undefined,
-	},
-	// Storage — returns empty items so NativeWorkbenchStorageService.initialize()
-	// completes. getItems returns Item[] (array of [key, value] tuples).
-	storage: {
-		getItems: [],
-		updateItems: undefined,
-		optimize: undefined,
-		isUsed: undefined,
-	},
+	utilityProcessWorker: { createWorker: undefined },
+	// Channels with no desktop equivalent in Tauri
+	meteredConnection: {},
+	webContentExtractor: {},
+	browserElements: {},
+	NativeMcpDiscoveryHelper: { load: undefined },
+	sandboxHelper: {},
 };
 
 // ============================================================================
@@ -164,8 +192,7 @@ class TauriChannel implements IChannel {
 			return undefined as T;
 		}
 
-		// Route through Mountain — return undefined on error instead of
-		// throwing so services that don't handle rejections don't hang.
+		// Route through Mountain
 		if (this.RoutePrefix) {
 			const MountainMethod = `${this.RoutePrefix}:${Command}`;
 			const Params =
@@ -174,10 +201,46 @@ class TauriChannel implements IChannel {
 			try {
 				const Result = await InvokeMountain(MountainMethod, Params);
 				return Result as T;
-			} catch (Error) {
+			} catch (RawError) {
+				// File system errors must be RETHROWN so VS Code's
+				// fileService.js can catch them as FileNotFound/etc.
+				// The mkdirp/readFile/writeFile code relies on
+				// stat() throwing to know the file doesn't exist.
+				if (
+					FileSystemChannels.has(this.ChannelName) &&
+					FileSystemThrowCommands.has(Command)
+				) {
+					// Wrap with FileSystemProviderErrorCode so VS Code
+					// recognizes it. Code 1 = FileNotFound, 6 = NoPermissions.
+					const ErrorMsg = String(RawError);
+					const WrappedError = new Error(ErrorMsg) as any;
+					if (
+						ErrorMsg.includes("No such file or directory") ||
+						ErrorMsg.includes("ENOENT") ||
+						ErrorMsg.includes("not found")
+					) {
+						WrappedError.code = "FileNotFound";
+						WrappedError.fileOperationResult = 1;
+					} else if (
+						ErrorMsg.includes("Permission denied") ||
+						ErrorMsg.includes("EACCES")
+					) {
+						WrappedError.code = "NoPermissions";
+						WrappedError.fileOperationResult = 6;
+					} else if (
+						ErrorMsg.includes("File exists") ||
+						ErrorMsg.includes("EEXIST")
+					) {
+						WrappedError.code = "FileExists";
+						WrappedError.fileOperationResult = 4;
+					}
+					throw WrappedError;
+				}
+				// Other channels: return undefined on error to avoid
+				// hangs in services that don't handle rejections.
 				console.warn(
 					`[TauriMainProcessService] ${this.ChannelName}.${Command} failed (returning undefined):`,
-					Error,
+					RawError,
 				);
 				return undefined as T;
 			}

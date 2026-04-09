@@ -43,10 +43,10 @@ async function getProcessConfiguration() {
   try {
     if (typeof window.__TAURI__ !== "undefined") {
       const [execPath, platform, arch, pid] = await Promise.allSettled([
-        invokeTauri("process:get_exec_path", {}),
-        invokeTauri("process:get_platform", {}),
-        invokeTauri("process:get_arch", {}),
-        invokeTauri("process:get_pid", {})
+        invokeTauri("process_get_exec_path", {}),
+        invokeTauri("process_get_platform", {}),
+        invokeTauri("process_get_arch", {}),
+        invokeTauri("process_get_pid", {})
       ]);
       return {
         ...DEFAULT_PROCESS_CONFIG,
@@ -219,7 +219,7 @@ class ProcessPolyfill {
    */
   getProcessMemoryInfo() {
     return invokeTauri(
-      "process:get_memory_info",
+      "process_get_memory_info",
       {}
     ).catch((error) => {
       console.warn("[ProcessPolyfill] Failed to get memory info:", error);
@@ -249,7 +249,7 @@ class ProcessPolyfill {
   async shellEnv() {
     try {
       return await invokeTauri(
-        "process:get_shell_env",
+        "process_get_shell_env",
         {}
       );
     } catch (error) {
@@ -289,7 +289,7 @@ class ProcessPolyfill {
       `[ProcessPolyfill] kill(${pid}, ${signal}) - not fully supported in browser`
     );
     try {
-      invokeTauri("process:kill", { pid, signal }).catch(() => {
+      invokeTauri("process_kill", { pid, signal }).catch(() => {
       });
       return true;
     } catch {

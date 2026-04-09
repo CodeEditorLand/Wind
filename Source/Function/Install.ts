@@ -54,7 +54,10 @@ export default async function Install(): Promise<void> {
 		// Initialize core components
 		const Configuration = await ResolveConfiguration();
 		const IPCRenderer = CreateIPCRenderer();
-		const Process = CreateProcess(Configuration);
+		const Process = CreateProcess(
+			Configuration,
+			CachedPlatform ?? undefined,
+		);
 
 		// Create preload globals object that will be enhanced by Effect-TS
 		const preloadGlobals = {
@@ -132,14 +135,29 @@ export function CreateIPCRenderer(): IpcRenderer {
 // Process factory with proper VSCode typing
 export function CreateProcess(
 	Configuration: ISandboxConfiguration,
+	Platform?: PlatformInfo,
 ): ISandboxNodeProcess {
+	const P = Platform ??
+		CachedPlatform ?? {
+			platformName: "darwin" as const,
+			os: { arch: "x86_64", release: "14.0", hostname: "localhost" },
+			isWindows: false,
+			isMacOS: true,
+			isLinux: false,
+			homeDir: "/",
+			tmpDir: "/tmp",
+			userDataDir: "/tmp/Land",
+			userName: "User",
+		};
 	return {
-		platform: "web",
-		arch: "web",
+		platform: P.platformName,
+		arch: P.os.arch,
 		type: "renderer",
-		execPath: "/",
+		execPath: P.isWindows
+			? "C:\\Program Files\\Land\\Land.exe"
+			: "/usr/local/bin/land",
 		env: Configuration.userEnv ?? {},
-		cwd: () => "/",
+		cwd: () => P.homeDir,
 		versions: {
 			node: "20.0.0",
 			chrome: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || "0",
@@ -153,6 +171,163 @@ export function CreateProcess(
 		}),
 		shellEnv: async () => ({}),
 	};
+}
+
+// Platform detection — works from browser context (navigator.userAgent)
+// or Node.js context (process.platform). Supports macOS, Windows, Linux.
+interface PlatformInfo {
+	isWindows: boolean;
+	isMacOS: boolean;
+	isLinux: boolean;
+	platformName: "win32" | "darwin" | "linux";
+	homeDir: string;
+	tmpDir: string;
+	userDataDir: string;
+	userName: string;
+	os: { release: string; hostname: string; arch: string };
+}
+
+let CachedPlatform: PlatformInfo | null = null;
+
+async function DetectPlatform(): Promise<PlatformInfo> {
+	if (CachedPlatform) return CachedPlatform;
+	const UserAgent =
+		typeof navigator !== "undefined" ? navigator.userAgent : "";
+	const IsWindows =
+		UserAgent.includes("Windows") ||
+		(typeof process !== "undefined" && process.platform === "win32");
+	const IsMacOS =
+		UserAgent.includes("Macintosh") ||
+		UserAgent.includes("Mac OS") ||
+		(typeof process !== "undefined" && process.platform === "darwin");
+	const IsLinux =
+		(UserAgent.includes("Linux") && !UserAgent.includes("Android")) ||
+		(typeof process !== "undefined" && process.platform === "linux");
+
+	// Detect architecture from multiple sources
+	const DetectArch = (): string => {
+		// Check navigator.userAgentData (modern Chromium)
+		if (typeof navigator !== "undefined" && "userAgentData" in navigator) {
+			const HighEntropyHints = (navigator as any).userAgentData;
+			if (HighEntropyHints?.architecture) {
+				const Arch = HighEntropyHints.architecture;
+				if (Arch === "arm") return "arm64";
+				if (Arch === "x86") return "x86_64";
+				return Arch;
+			}
+		}
+		// Fall back to userAgent parsing
+		if (
+			UserAgent.includes("arm64") ||
+			UserAgent.includes("ARM64") ||
+			UserAgent.includes("aarch64")
+		)
+			return "arm64";
+		if (
+			UserAgent.includes("WOW64") ||
+			UserAgent.includes("Win64") ||
+			UserAgent.includes("x86_64") ||
+			UserAgent.includes("x64")
+		)
+			return "x86_64";
+		if (UserAgent.includes("i686") || UserAgent.includes("i386"))
+			return "x86";
+		// Process-level detection
+		if (typeof process !== "undefined" && process.arch)
+			return process.arch === "arm64"
+				? "arm64"
+				: process.arch === "ia32"
+					? "x86"
+					: "x86_64";
+		return "x86_64";
+	};
+
+	// Detect OS release version
+	const DetectRelease = (): string => {
+		if (IsMacOS) {
+			const Match = UserAgent.match(/Mac OS X (\d+[._]\d+[._]?\d*)/);
+			return Match ? Match[1].replace(/_/g, ".") : "14.0";
+		}
+		if (IsWindows) {
+			// Windows 11: "Windows NT 10.0" with build >= 22000
+			// Windows 10: "Windows NT 10.0"
+			const Match = UserAgent.match(/Windows NT (\d+\.\d+)/);
+			return Match ? Match[1] : "10.0";
+		}
+		if (IsLinux) {
+			// Linux kernel version not reliably in userAgent
+			// Use a sensible default; Mountain will provide real value
+			return "6.1.0";
+		}
+		return "0.0.0";
+	};
+
+	const Arch = DetectArch();
+	const Release = DetectRelease();
+	const PlatformName = IsWindows
+		? ("win32" as const)
+		: IsMacOS
+			? ("darwin" as const)
+			: ("linux" as const);
+
+	// Platform-specific directories — try Tauri env first, then fallback
+	let HomeDir: string;
+	let TmpDir: string;
+	let UserDataDir: string;
+	let UserName = "User";
+
+	// Try to get real home dir from Tauri (Mountain has the real env)
+	const TauriInvoke =
+		(window as any).__TAURI__?.core?.invoke ??
+		(window as any).__TAURI__?.invoke;
+	let RealEnv: Record<string, string> = {};
+	if (typeof TauriInvoke === "function") {
+		try {
+			RealEnv = (await TauriInvoke("process_get_shell_env", {})) ?? {};
+		} catch {
+			// Tauri not ready yet — use fallbacks
+		}
+	}
+
+	const RealHome = RealEnv["HOME"] || RealEnv["USERPROFILE"] || "";
+	const RealUser = RealEnv["USER"] || RealEnv["USERNAME"] || "User";
+	UserName = RealUser;
+
+	if (IsWindows) {
+		HomeDir = RealHome || "C:\\Users\\" + UserName;
+		TmpDir =
+			RealEnv["TEMP"] ||
+			RealEnv["TMP"] ||
+			HomeDir + "\\AppData\\Local\\Temp";
+		UserDataDir =
+			(RealEnv["APPDATA"] || HomeDir + "\\AppData\\Roaming") + "\\Land";
+	} else if (IsMacOS) {
+		HomeDir = RealHome || "/Users/" + UserName;
+		TmpDir = "/tmp";
+		UserDataDir = HomeDir + "/Library/Application Support/Land";
+	} else {
+		HomeDir = RealHome || "/home/" + UserName;
+		TmpDir = "/tmp";
+		UserDataDir =
+			(RealEnv["XDG_CONFIG_HOME"] || HomeDir + "/.config") + "/Land";
+	}
+
+	CachedPlatform = {
+		isWindows: IsWindows,
+		isMacOS: IsMacOS,
+		isLinux: IsLinux,
+		platformName: PlatformName,
+		homeDir: HomeDir,
+		tmpDir: TmpDir,
+		userDataDir: UserDataDir,
+		userName: UserName,
+		os: {
+			release: Release,
+			hostname: "localhost",
+			arch: Arch,
+		},
+	};
+	return CachedPlatform;
 }
 
 // Configuration resolution with VSCode typing.
@@ -199,17 +374,27 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 		},
 	};
 
+	const Platform = await DetectPlatform();
+
 	return {
 		windowId: 1,
 		appRoot: FileRoot,
 		userEnv: {
-			PATH: "/usr/bin:/bin",
-			HOME: "/",
-			// Tells the Electron workbench to use relative imports
-			// instead of vscode-file:// URLs. WKWebView (macOS) doesn't
-			// support import() from custom schemes, so relative paths
-			// resolve against the module's http://localhost URL.
+			PATH: Platform.isWindows
+				? "C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem"
+				: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+			HOME: Platform.homeDir,
 			VSCODE_DEV: "true",
+			...(Platform.isWindows
+				? {
+						USERPROFILE: Platform.homeDir,
+						HOMEDRIVE: "C:",
+						HOMEPATH: "\\Users\\" + (Platform.userName || "User"),
+						SystemRoot: "C:\\Windows",
+						TEMP: Platform.tmpDir,
+						TMP: Platform.tmpDir,
+					}
+				: {}),
 		},
 
 		// INativeWindowConfiguration fields for Electron workbench
@@ -218,22 +403,16 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 		sqmId: "",
 		devDeviceId: "",
 		isPortable: false,
-		execPath: "/",
-		homeDir: "/",
-		tmpDir: "/tmp",
-		userDataDir: "/",
+		execPath: Platform.isWindows
+			? "C:\\Program Files\\Land\\Land.exe"
+			: "/usr/local/bin/land",
+		homeDir: Platform.homeDir,
+		tmpDir: Platform.tmpDir,
+		userDataDir: Platform.userDataDir,
 		logLevel: 2,
 		loggers: [],
 		perfMarks: [],
-		os: {
-			release: typeof navigator !== "undefined"
-				? (navigator.userAgent.match(/Mac OS X (\d+[._]\d+)/)?.[1]?.replace("_", ".") ?? "25.0")
-				: "25.0",
-			hostname: "localhost",
-			arch: typeof navigator !== "undefined"
-				? (navigator.userAgent.includes("arm64") || navigator.userAgent.includes("ARM64") ? "arm64" : "x86_64")
-				: "arm64",
-		},
+		os: Platform.os,
 		colorScheme: { dark: true, highContrast: false },
 		autoDetectHighContrast: false,
 		autoDetectColorScheme: false,

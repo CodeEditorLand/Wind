@@ -177,10 +177,10 @@ async function getProcessConfiguration(): Promise<ProcessConfig> {
 		if (typeof (window as any).__TAURI__ !== "undefined") {
 			// Try to get actual process info from Tauri
 			const [execPath, platform, arch, pid] = await Promise.allSettled([
-				invokeTauri<string>("process:get_exec_path", {}),
-				invokeTauri<string>("process:get_platform", {}),
-				invokeTauri<string>("process:get_arch", {}),
-				invokeTauri<number>("process:get_pid", {}),
+				invokeTauri<string>("process_get_exec_path", {}),
+				invokeTauri<string>("process_get_platform", {}),
+				invokeTauri<string>("process_get_arch", {}),
+				invokeTauri<number>("process_get_pid", {}),
 			]);
 
 			return {
@@ -431,7 +431,7 @@ class ProcessPolyfill {
 	 */
 	getProcessMemoryInfo(): Promise<ProcessMemoryInfo> {
 		return invokeTauri<ProcessMemoryInfo>(
-			"process:get_memory_info",
+			"process_get_memory_info",
 			{},
 		).catch((error) => {
 			console.warn("[ProcessPolyfill] Failed to get memory info:", error);
@@ -459,7 +459,7 @@ class ProcessPolyfill {
 	async shellEnv(): Promise<Record<string, string>> {
 		try {
 			return await invokeTauri<Record<string, string>>(
-				"process:get_shell_env",
+				"process_get_shell_env",
 				{},
 			);
 		} catch (error) {
@@ -509,7 +509,7 @@ class ProcessPolyfill {
 
 		try {
 			// Try to kill via Tauri
-			invokeTauri("process:kill", { pid, signal }).catch(() => {
+			invokeTauri("process_kill", { pid, signal }).catch(() => {
 				// Ignore errors
 			});
 			return true;
