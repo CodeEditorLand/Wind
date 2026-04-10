@@ -35,17 +35,7 @@ async function ResolveConfiguration() {
   DevLog("config", "url:", window.location.href);
   DevLog("config", "folderUri:", JSON.stringify(FolderUri));
   DevLog("config", "workspace:", JSON.stringify(Workspace));
-  const Now = /* @__PURE__ */ new Date();
-  const SessionTimestamp = [
-    Now.getFullYear(),
-    String(Now.getMonth() + 1).padStart(2, "0"),
-    String(Now.getDate()).padStart(2, "0"),
-    "T",
-    String(Now.getHours()).padStart(2, "0"),
-    String(Now.getMinutes()).padStart(2, "0"),
-    String(Now.getSeconds()).padStart(2, "0")
-  ].join("");
-  const LogsLocation = Paths.logsPath ? `${Paths.logsPath}/${SessionTimestamp}` : void 0;
+  const LogsLocation = Paths.logsPath || void 0;
   return {
     windowId: 1,
     appRoot: AppRoot,

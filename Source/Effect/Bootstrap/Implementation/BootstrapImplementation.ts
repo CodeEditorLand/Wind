@@ -8,7 +8,7 @@
  * @category Implementation
  */
 
-import { Effect, Layer } from "effect";
+import { Effect, Either, Layer } from "effect";
 
 import { Telemetry } from "../../Telemetry.js";
 import type { BootstrapService } from "../Interface/BootstrapService.js";
@@ -76,22 +76,27 @@ const makeBootstrap = (): BootstrapService => ({
 			for (const Stage of Stages) {
 				const StageStartTime = Date.now();
 				let Result: StageResult;
-				try {
-					// @ts-expect-error - Effect stages have different requirements that runtime handles correctly
-					const StageResult = yield* Effect.suspend(
-						() => Stage,
-					) as any;
+				// Use Effect.either to catch fiber-level failures (missing services, etc.)
+				// JavaScript try/catch does NOT catch Effect failures from yield*.
+				const Outcome = yield* Effect.either(
+					Effect.suspend(() => Stage) as unknown as Effect.Effect<StageResult, unknown>,
+				);
+				if (Either.isRight(Outcome)) {
 					Result = {
-						...StageResult,
+						...Outcome.right,
 						duration: Date.now() - StageStartTime,
 					};
-				} catch (E) {
-					const Error = E instanceof Error ? E : new Error(String(E));
+				} else {
+					const FailCause = Outcome.left;
+					const ErrorObj =
+						FailCause instanceof Error
+							? FailCause
+							: new Error(String(FailCause));
 					Result = {
 						stageName: "Unknown",
 						success: false as boolean,
 						duration: Date.now() - StageStartTime,
-						error: Error,
+						error: ErrorObj,
 					} satisfies StageResult;
 				}
 				Results.push(Result);

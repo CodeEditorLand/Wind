@@ -81,20 +81,10 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 	DevLog("config", "folderUri:", JSON.stringify(FolderUri));
 	DevLog("config", "workspace:", JSON.stringify(Workspace));
 
-	// Session timestamp for logs subdirectory
-	const Now = new Date();
-	const SessionTimestamp = [
-		Now.getFullYear(),
-		String(Now.getMonth() + 1).padStart(2, "0"),
-		String(Now.getDate()).padStart(2, "0"),
-		"T",
-		String(Now.getHours()).padStart(2, "0"),
-		String(Now.getMinutes()).padStart(2, "0"),
-		String(Now.getSeconds()).padStart(2, "0"),
-	].join("");
-	const LogsLocation = Paths.logsPath
-		? `${Paths.logsPath}/${SessionTimestamp}`
-		: undefined;
+	// Mountain returns logsPath as a session-timestamped directory
+	// (e.g., .../logs/20260410T105248) with window1/ already created.
+	// Use it directly — no additional timestamp nesting needed.
+	const LogsLocation = Paths.logsPath || undefined;
 
 	return {
 		windowId: 1,

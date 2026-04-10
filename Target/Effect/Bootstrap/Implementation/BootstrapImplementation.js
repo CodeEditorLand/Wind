@@ -1,6 +1,6 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-import { Effect, Layer } from "effect";
+import { Effect, Either, Layer } from "effect";
 import { Telemetry } from "../../Telemetry.js";
 import { BootstrapTag } from "../Tag/BootstrapTag.js";
 import {
@@ -46,21 +46,22 @@ const makeBootstrap = /* @__PURE__ */ __name(() => ({
     for (const Stage of Stages) {
       const StageStartTime = Date.now();
       let Result;
-      try {
-        const StageResult = yield* Effect.suspend(
-          () => Stage
-        );
+      const Outcome = yield* Effect.either(
+        Effect.suspend(() => Stage)
+      );
+      if (Either.isRight(Outcome)) {
         Result = {
-          ...StageResult,
+          ...Outcome.right,
           duration: Date.now() - StageStartTime
         };
-      } catch (E) {
-        const Error2 = E instanceof Error2 ? E : new Error2(String(E));
+      } else {
+        const FailCause = Outcome.left;
+        const ErrorObj = FailCause instanceof Error ? FailCause : new Error(String(FailCause));
         Result = {
           stageName: "Unknown",
           success: false,
           duration: Date.now() - StageStartTime,
-          error: Error2
+          error: ErrorObj
         };
       }
       Results.push(Result);

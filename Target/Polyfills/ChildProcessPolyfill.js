@@ -18,27 +18,25 @@ async function invokeTauri(command, args = {}) {
 __name(invokeTauri, "invokeTauri");
 function listenToTauri(event, handler) {
   if (typeof window.__TAURI__?.event?.listen === "function") {
-    const unlistenPromise = window.__TAURI__.event.listen(
-      event,
-      ({ payload }) => {
-        handler(payload);
-      }
-    ).catch(() => {
+    const unlistenPromise = window.__TAURI__.event.listen(event, ({ payload }) => {
+      handler(payload);
+    }).catch(() => {
     });
     return () => {
-      unlistenPromise.then((unlisten) => unlisten?.());
+      unlistenPromise.then(
+        (unlisten) => unlisten?.()
+      );
     };
   }
   if (typeof window.TAURI?.event?.listen === "function") {
-    const unlistenPromise = window.TAURI.event.listen(
-      event,
-      ({ payload }) => {
-        handler(payload);
-      }
-    ).catch(() => {
+    const unlistenPromise = window.TAURI.event.listen(event, ({ payload }) => {
+      handler(payload);
+    }).catch(() => {
     });
     return () => {
-      unlistenPromise.then((unlisten) => unlisten?.());
+      unlistenPromise.then(
+        (unlisten) => unlisten?.()
+      );
     };
   }
   console.warn(

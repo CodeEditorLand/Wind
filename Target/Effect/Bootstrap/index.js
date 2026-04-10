@@ -16,9 +16,7 @@ import {
 } from "./Implementation/BootstrapStage.js";
 import { BootstrapLive as BootstrapLive2 } from "./Implementation/BootstrapImplementation.js";
 import { BootstrapMock, makeMockBootstrap } from "./Layer/BootstrapMock.js";
-const BootstrapRunLayer = TelemetryLive.pipe(
-  Layer.provideMerge(BootstrapLive)
-);
+const BootstrapRunLayer = TelemetryLive.pipe(Layer.provideMerge(BootstrapLive));
 const runBootstrap = /* @__PURE__ */ __name((options) => Effect.gen(function* () {
   const bootstrap = yield* BootstrapTag;
   return yield* bootstrap.run(options);
