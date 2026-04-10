@@ -149,6 +149,8 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	browserElements: {},
 	NativeMcpDiscoveryHelper: { load: undefined },
 	sandboxHelper: {},
+	mcpGateway: {},
+	browserViewGroup: {},
 };
 
 // ============================================================================
