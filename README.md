@@ -1,11 +1,21 @@
-<table><tr>
-<td colspan="1"> <h3 align="center"> <picture>
-<source media="(prefers-color-scheme: dark)" srcset="https://PlayForm.Cloud/Dark/Image/GitHub/Land.svg">
-<source media="(prefers-color-scheme: light)" srcset="https://PlayForm.Cloud/Image/GitHub/Land.svg">
-<img width="28" alt="Land Logo" src="https://PlayForm.Cloud/Image/GitHub/Land.svg">
-</picture> </h3> </td> <td colspan="3" valign="top"> <h3 align="center"> Wind 🍃
-</h3> </td>
-</tr></table>
+<table>
+	<tr>
+		<td align="left" valign="middle">
+			<h3 align="left">
+				<a href="https://Editor.Land" target="_blank">
+					<picture>
+						<source media="(prefers-color-scheme: dark)" srcset="https://PlayForm.Cloud/Dark/Image/GitHub/Land.svg">
+						<source media="(prefers-color-scheme: light)" srcset="https://PlayForm.Cloud/Image/GitHub/Land.svg">
+						<img width="28" alt="Land Logo" src="https://PlayForm.Cloud/Image/GitHub/Land.svg">
+					</picture>
+				</a>
+			</h3>
+		</td>
+		<td align="left" valign="middle">
+			<h3 align="left">Wind 🍃</h3>
+		</td>
+	</tr>
+</table>
 
 ---
 
@@ -14,10 +24,12 @@
 The Breath of Land: VSCode Environment & Services for Tauri
 
 > **VS Code's workbench lives in the Chromium renderer. Every panel interaction
-> that touches files or state crosses the Electron IPC bridge twice: serialize
-> to JSON, send over a pipe, deserialize on the other side.**
+> that touches files or state crosses the Electron IPC bridge: serialize to
+> JSON, send over a pipe, deserialize on the other side — in an untyped,
+> unstructured way.**
 
-_"No Electron IPC proxy. Workbench actions hit the OS directly."_
+_"Typed, Effect-TS native IPC. Workbench actions go through Tauri commands to
+Rust handlers, not an Electron JSON pipe."_
 
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://github.com/CodeEditorLand/Wind/tree/Current/LICENSE)
 [![NPM Version](https://img.shields.io/npm/v/@codeeditorland/wind.svg)](https://www.npmjs.com/package/@codeeditorland/wind)
@@ -29,16 +41,18 @@ layer** that allows `Sky` (Land's VSCode-based UI) to breathe and function
 within the **Tauri** shell. **Wind** meticulously recreates essential parts of
 the VSCode renderer environment, provides robust implementations of core
 services (like file dialogs and configuration), and integrates seamlessly with
-the `Mountain` backend via Tauri APIs. It replaces Electron-based
-implementations with high-performance, OS-native equivalents, all underpinned by
-**Effect-TS** for resilience and type safety.
+the `Mountain` backend via Tauri IPC. Rather than routing through an Electron
+IPC pipe with untyped JSON, Wind dispatches through typed Tauri commands whose
+handlers live in Mountain's Rust core — all underpinned by **Effect-TS** for
+resilience and type safety.
 
 **Wind** is engineered to:
 
 1. **Emulate the VSCode Sandbox:** Through a sophisticated
    [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)
    script, it shims critical Electron and Node.js APIs that VSCode's workbench
-   code expects, creating a compatible execution context.
+   code expects, creating a compatible execution context inside the Tauri
+   WebView.
 2. **Implement Core VSCode Services:** It provides frontend implementations for
    key VSCode services via
    [`Polyfills/NativeModulePolyfill.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Polyfills/NativeModulePolyfill.ts),
@@ -79,7 +93,7 @@ implementations with high-performance, OS-native equivalents, all underpinned by
 | **Compatibility** | Provide a high-fidelity VSCode renderer environment to maximize `Sky`'s reusability and minimize changes needed for VSCode UI components. | `Preload.ts`, `Polyfills/`                             |
 | **Modularity**    | Components (preload, services, integrations) are organized into distinct, cohesive modules for clarity and maintainability.               | `Effect/`, `Types/`, `Bootstrap/`                      |
 | **Robustness**    | Leverage `Effect-TS` for all service implementations and asynchronous operations, ensuring predictable error handling and composability.  | All `Effect/` services with `Layer` and `Tag` patterns |
-| **Abstraction**   | Create a clean layer over Tauri APIs, isolating platform specifics and simplifying their usage within the application.                    | `Preload.ts`, `Effect/IPC/`, `Effect/Mountain/`        |
+| **Abstraction**   | Create a clean layer over Tauri APIs, replacing the untyped Electron IPC pipe with typed Tauri commands whose handlers live in Rust.      | `Preload.ts`, `Effect/IPC/`, `Effect/Mountain/`        |
 | **Integration**   | Seamlessly connect `Sky`'s frontend requests with `Mountain`'s backend capabilities through Tauri's `invoke`/event system.                | `Preload.ts` (ipcRenderer shim), `Effect/Mountain/`    |
 
 ---
@@ -96,7 +110,7 @@ for the complete module exports and layer compositions.
 
 ---
 
-## `Wind` in the Land Ecosystem&#x2001;🍃 + 🏞️
+## `Wind` in the Land Ecosystem&#x2001;🍃 + 🏞️
 
 This diagram illustrates `Wind`'s central role between `Sky` (the UI) and the
 Tauri/`Mountain` (backend) environment.
