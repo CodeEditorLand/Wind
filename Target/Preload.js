@@ -46,11 +46,30 @@ const ipcRenderer = {
 const ipcMessagePort = {
   acquire: /* @__PURE__ */ __name((responseChannel, nonce) => {
     console.log(
-      `[Preload] MessagePort acquire requested: ${responseChannel}, ${nonce}`
+      `[Preload] MessagePort acquire: ${responseChannel}, nonce=${nonce}`
     );
+    const { port1, port2 } = new MessageChannel();
+    window.postMessage(nonce, "*", [port2]);
+    port1.start();
+    let HandshakeComplete = false;
+    port1.onmessage = (Event2) => {
+      if (HandshakeComplete) {
+        return;
+      }
+      const Data = Event2.data;
+      const Length = Data instanceof ArrayBuffer ? Data.byteLength : Data instanceof Uint8Array ? Data.byteLength : typeof Data === "object" && Data?.byteLength ? Data.byteLength : 0;
+      if (Length > 1) {
+        HandshakeComplete = true;
+        console.log(
+          "[Preload] Extension host: received init data, sending Initialized"
+        );
+        port1.postMessage(new Uint8Array([1]));
+      }
+    };
     setTimeout(() => {
-      ipcRenderer.send(responseChannel, nonce);
-    }, 0);
+      console.log("[Preload] Extension host: sending Ready");
+      port1.postMessage(new Uint8Array([2]));
+    }, 50);
   }, "acquire")
 };
 const webFrame = {

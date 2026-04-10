@@ -186,16 +186,62 @@ const ipcRenderer = {
 
 const ipcMessagePort = {
 	acquire: (responseChannel: string, nonce: string) => {
-		// FUTURE: Implement proper MessageChannel for VSCode SharedProcessWorker
 		console.log(
-			`[Preload] MessagePort acquire requested: ${responseChannel}, ${nonce}`,
+			`[Preload] MessagePort acquire: ${responseChannel}, nonce=${nonce}`,
 		);
 
-		// For now, signal that ports are not available
-		// This will need proper implementation for full VSCode compatibility
+		// Create an in-memory MessageChannel.
+		// port2 is posted to the window so acquirePort() (ipc.mp.ts) picks it up
+		// via its window 'message' listener (filters e.data === nonce && e.ports[0]).
+		// port1 implements a minimal extension host handshake so VS Code
+		// does not hang for 60 s waiting for Ready / Initialized.
+		const { port1, port2 } = new MessageChannel();
+
+		// acquirePort() filters: e.data === nonce && e.source === window
+		window.postMessage(nonce, "*", [port2]);
+
+		port1.start();
+
+		let HandshakeComplete = false;
+
+		port1.onmessage = (Event: MessageEvent) => {
+			if (HandshakeComplete) {
+				// After handshake, silently drop extension-host protocol
+				// messages (activate, executeCommand, etc.) until
+				// a real Cocoon relay is wired.
+				return;
+			}
+
+			// The first large message from VS Code is the init data
+			// (JSON-encoded IExtensionHostInitData wrapped in VSBuffer).
+			// Any message with byteLength > 1 is init data; single-byte
+			// messages are control (Ready=2, Initialized=1, Terminate=3).
+			const Data = Event.data;
+			const Length =
+				Data instanceof ArrayBuffer
+					? Data.byteLength
+					: Data instanceof Uint8Array
+						? Data.byteLength
+						: typeof Data === "object" && Data?.byteLength
+							? Data.byteLength
+							: 0;
+
+			if (Length > 1) {
+				HandshakeComplete = true;
+				console.log(
+					"[Preload] Extension host: received init data, sending Initialized",
+				);
+				// MessageType.Initialized → byte 1
+				port1.postMessage(new Uint8Array([1]));
+			}
+		};
+
+		// Send Ready after a tick so VS Code's onMessage listener is registered.
+		// MessageType.Ready → byte 2
 		setTimeout(() => {
-			ipcRenderer.send(responseChannel, nonce);
-		}, 0);
+			console.log("[Preload] Extension host: sending Ready");
+			port1.postMessage(new Uint8Array([2]));
+		}, 50);
 	},
 };
 

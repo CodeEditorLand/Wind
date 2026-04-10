@@ -135,7 +135,14 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		},
 	},
 	sharedProcess: {},
-	utilityProcessWorker: { createWorker: undefined },
+	utilityProcessWorker: {
+		// createWorker returns a never-resolving promise to prevent
+		// destructure crash in watcherClient/utilityProcessWorkerWorkbenchService.
+		// Without a real utility process, the watcher and other workers
+		// simply never initialize (non-blocking — Mountain handles file watching).
+		createWorker: new Promise(() => {}),
+		disposeWorker: undefined,
+	},
 	// Channels with no desktop equivalent in Tauri
 	meteredConnection: {},
 	webContentExtractor: {},
@@ -203,6 +210,7 @@ class TauriChannel implements IChannel {
 		// Stub channels (not yet wired to Mountain)
 		const Stubs = StubChannels[this.ChannelName];
 		if (Stubs !== undefined) {
+			DevLog("ipc", `stub: ${this.ChannelName}.${Command}`);
 			const StubValue = Stubs[Command];
 			if (StubValue !== undefined) {
 				return StubValue as T;
@@ -297,10 +305,50 @@ class TauriChannel implements IChannel {
 		return undefined as T;
 	}
 
-	listen<T>(_Event: string, _Arg?: unknown): VSCodeEvent<T> {
-		// Event subscriptions — return a no-op event for now.
-		// These should be wired to Tauri event listeners (AppHandle.emit)
-		// when Mountain emits sky:// events.
+	listen<T>(Event: string, Arg?: unknown): VSCodeEvent<T> {
+		DevLog("ipc", `listen: ${this.ChannelName}.${Event}`);
+
+		// readFileStream: import real VSBuffer from VS Code's buffer.js
+		// (relative path resolves from /Static/Application/vs/platform/ipc/electron-browser/).
+		if (
+			FileSystemChannels.has(this.ChannelName) &&
+			Event === "readFileStream"
+		) {
+			return ((Listener: (DataOrErrorOrEnd: unknown) => void) => {
+				const Params =
+					Arg !== undefined ? (Array.isArray(Arg) ? Arg : [Arg]) : [];
+
+				Promise.all([
+					import("../../../base/common/buffer.js") as Promise<{
+						VSBuffer: { wrap(buffer: Uint8Array): unknown };
+					}>,
+					InvokeMountain(`${this.RoutePrefix}:readFile`, Params),
+				])
+					.then(([{ VSBuffer }, Result]) => {
+						const Raw = Result as
+							| { buffer: number[] }
+							| number[]
+							| null
+							| undefined;
+						if (Raw !== null && Raw !== undefined) {
+							const Arr = Array.isArray(Raw)
+								? Raw
+								: (Raw as { buffer: number[] }).buffer;
+							if (Array.isArray(Arr)) {
+								Listener(VSBuffer.wrap(new Uint8Array(Arr)));
+							}
+						}
+						Listener("end" as unknown);
+					})
+					.catch((Err) => {
+						Listener(Err);
+					});
+
+				return { dispose: () => {} };
+			}) as unknown as VSCodeEvent<T>;
+		}
+
+		// Other events — return no-op for now.
 		return (() => ({ dispose: () => {} })) as unknown as VSCodeEvent<T>;
 	}
 }

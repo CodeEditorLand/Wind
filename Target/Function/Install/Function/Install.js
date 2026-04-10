@@ -38,8 +38,33 @@ async function Install() {
       webFrame: { setZoomLevel: /* @__PURE__ */ __name(() => {
       }, "setZoomLevel") },
       webUtils: { getPathForFile: /* @__PURE__ */ __name((file) => file.name, "getPathForFile") },
-      ipcMessagePort: { acquire: /* @__PURE__ */ __name(() => {
-      }, "acquire") }
+      ipcMessagePort: {
+        acquire: /* @__PURE__ */ __name((ResponseChannel, Nonce) => {
+          console.log(
+            `[Wind] MessagePort acquire: ${ResponseChannel}, nonce=${Nonce}`
+          );
+          const { port1, port2 } = new MessageChannel();
+          window.postMessage(Nonce, "*", [port2]);
+          port1.start();
+          let Done = false;
+          port1.onmessage = (Event) => {
+            if (Done) return;
+            const Data = Event.data;
+            const Length = Data instanceof ArrayBuffer ? Data.byteLength : Data instanceof Uint8Array ? Data.byteLength : 0;
+            if (Length > 1) {
+              Done = true;
+              console.log(
+                "[Wind] Extension host: received init data, sending Initialized"
+              );
+              port1.postMessage(new Uint8Array([1]));
+            }
+          };
+          setTimeout(() => {
+            console.log("[Wind] Extension host: sending Ready");
+            port1.postMessage(new Uint8Array([2]));
+          }, 50);
+        }, "acquire")
+      }
     };
     window.vscode = Globals;
     console.info(
