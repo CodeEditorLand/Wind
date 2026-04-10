@@ -251,13 +251,13 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 		},
 		os: { release: "24.0.0" },
 
-		// Real paths from Mountain (Tauri PathResolver)
-		homeDir: Paths.homeDir ? `file://${Paths.homeDir}` : undefined,
-		tmpDir: Paths.tmpDir ? `file://${Paths.tmpDir}` : undefined,
-		userDataDir: Paths.userDataDir
-			? `file://${Paths.userDataDir}`
-			: undefined,
-		logsPath: LogsLocation ? `file://${LogsLocation}` : undefined,
+		// Real paths from Mountain (Tauri PathResolver).
+		// VS Code's AbstractNativeEnvironmentService wraps these with URI.file(),
+		// so they must be plain filesystem paths (not file:// URIs).
+		homeDir: Paths.homeDir || undefined,
+		tmpDir: Paths.tmpDir || undefined,
+		userDataDir: Paths.userDataDir || undefined,
+		logsPath: LogsLocation || undefined,
 
 		// Workspace — set from ?folder= URL param
 		// folderUri is used by the browser workbench; workspace by the Electron workbench.
