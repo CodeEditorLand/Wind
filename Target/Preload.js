@@ -49,17 +49,60 @@ const ipcMessagePort = {
     window.postMessage(nonce, "*", [port2]);
     port1.start();
     let HandshakeComplete = false;
-    port1.onmessage = (Event2) => {
-      if (HandshakeComplete) {
-        return;
+    let MessageCount = 0;
+    const ForwardToMountain = /* @__PURE__ */ __name((Data) => {
+      const Invoke = window.__TAURI__?.core?.invoke ?? window.__TAURI__?.invoke;
+      if (typeof Invoke === "function") {
+        const Bytes = Data instanceof Uint8Array ? Array.from(Data) : Array.from(new Uint8Array(Data));
+        Invoke("MountainIPCInvoke", {
+          method: "cocoon:extensionHostMessage",
+          params: [{ data: Bytes, responseChannel }]
+        }).catch(() => {
+        });
       }
+    }, "ForwardToMountain");
+    port1.onmessage = (Event2) => {
       const Data = Event2.data;
       const Length = Data instanceof ArrayBuffer ? Data.byteLength : Data instanceof Uint8Array ? Data.byteLength : typeof Data === "object" && Data?.byteLength ? Data.byteLength : 0;
-      if (Length > 1) {
-        HandshakeComplete = true;
-        port1.postMessage(new Uint8Array([1]));
+      if (!HandshakeComplete) {
+        if (Length > 1) {
+          HandshakeComplete = true;
+          try {
+            performance.mark("land:exthost:handshake-complete");
+          } catch {
+          }
+          ForwardToMountain(
+            Data instanceof Uint8Array ? Data : new Uint8Array(Data)
+          );
+          port1.postMessage(new Uint8Array([1]));
+        }
+        return;
+      }
+      MessageCount++;
+      try {
+        performance.mark(`land:exthost:message:${MessageCount}`, {
+          detail: { bytes: Length }
+        });
+      } catch {
+      }
+      if (Length > 0) {
+        ForwardToMountain(
+          Data instanceof Uint8Array ? Data : new Uint8Array(Data)
+        );
       }
     };
+    const TauriListen = window.__TAURI__?.event?.listen;
+    if (typeof TauriListen === "function") {
+      TauriListen(
+        "cocoon:extensionHostReply",
+        (Event2) => {
+          if (Event2?.payload?.data) {
+            port1.postMessage(new Uint8Array(Event2.payload.data));
+          }
+        }
+      ).catch(() => {
+      });
+    }
     setTimeout(() => {
       port1.postMessage(new Uint8Array([2]));
     }, 50);

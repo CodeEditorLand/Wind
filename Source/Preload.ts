@@ -186,7 +186,6 @@ const ipcRenderer = {
 
 const ipcMessagePort = {
 	acquire: (responseChannel: string, nonce: string) => {
-
 		// Create an in-memory MessageChannel.
 		// port2 is posted to the window so acquirePort() (ipc.mp.ts) picks it up
 		// via its window 'message' listener (filters e.data === nonce && e.ports[0]).
@@ -200,19 +199,28 @@ const ipcMessagePort = {
 		port1.start();
 
 		let HandshakeComplete = false;
+		let MessageCount = 0;
+
+		const ForwardToMountain = (Data: ArrayBuffer | Uint8Array) => {
+			// Forward binary extension host protocol messages to Mountain
+			// for relay to Cocoon via gRPC. Mountain will handle decoding.
+			const Invoke =
+				(window as any).__TAURI__?.core?.invoke ??
+				(window as any).__TAURI__?.invoke;
+
+			if (typeof Invoke === "function") {
+				const Bytes =
+					Data instanceof Uint8Array
+						? Array.from(Data)
+						: Array.from(new Uint8Array(Data));
+				Invoke("MountainIPCInvoke", {
+					method: "cocoon:extensionHostMessage",
+					params: [{ data: Bytes, responseChannel }],
+				}).catch(() => {});
+			}
+		};
 
 		port1.onmessage = (Event: MessageEvent) => {
-			if (HandshakeComplete) {
-				// After handshake, silently drop extension-host protocol
-				// messages (activate, executeCommand, etc.) until
-				// a real Cocoon relay is wired.
-				return;
-			}
-
-			// The first large message from VS Code is the init data
-			// (JSON-encoded IExtensionHostInitData wrapped in VSBuffer).
-			// Any message with byteLength > 1 is init data; single-byte
-			// messages are control (Ready=2, Initialized=1, Terminate=3).
 			const Data = Event.data;
 			const Length =
 				Data instanceof ArrayBuffer
@@ -223,12 +231,57 @@ const ipcMessagePort = {
 							? Data.byteLength
 							: 0;
 
-			if (Length > 1) {
-				HandshakeComplete = true;
-				// MessageType.Initialized → byte 1
-				port1.postMessage(new Uint8Array([1]));
+			if (!HandshakeComplete) {
+				// The first large message from VS Code is the init data
+				// (JSON-encoded IExtensionHostInitData wrapped in VSBuffer).
+				// Any message with byteLength > 1 is init data; single-byte
+				// messages are control (Ready=2, Initialized=1, Terminate=3).
+				if (Length > 1) {
+					HandshakeComplete = true;
+					try {
+						performance.mark("land:exthost:handshake-complete");
+					} catch {}
+
+					// Forward init data to Mountain for Cocoon
+					ForwardToMountain(
+						Data instanceof Uint8Array
+							? Data
+							: new Uint8Array(Data),
+					);
+
+					// MessageType.Initialized → byte 1
+					port1.postMessage(new Uint8Array([1]));
+				}
+				return;
+			}
+
+			// Post-handshake: forward extension host protocol messages
+			MessageCount++;
+			try {
+				performance.mark(`land:exthost:message:${MessageCount}`, {
+					detail: { bytes: Length },
+				});
+			} catch {}
+
+			if (Length > 0) {
+				ForwardToMountain(
+					Data instanceof Uint8Array ? Data : new Uint8Array(Data),
+				);
 			}
 		};
+
+		// Listen for Cocoon → workbench messages via Tauri events
+		const TauriListen = (window as any).__TAURI__?.event?.listen;
+		if (typeof TauriListen === "function") {
+			TauriListen(
+				"cocoon:extensionHostReply",
+				(Event: { payload: { data: number[] } }) => {
+					if (Event?.payload?.data) {
+						port1.postMessage(new Uint8Array(Event.payload.data));
+					}
+				},
+			).catch(() => {});
+		}
 
 		// Send Ready after a tick so VS Code's onMessage listener is registered.
 		// MessageType.Ready → byte 2
