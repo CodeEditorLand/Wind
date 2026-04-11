@@ -394,7 +394,7 @@ if (IsTauri) {
 	(window as any).vscode = Globals;
 
 	// Dispatch ready event
-	window.dispatchEvent(new Event("vscode-wind-preload-ready"));
+	window.dispatchEvent(new Event("land-preload-ready"));
 } else {
 }
 

@@ -172,7 +172,7 @@ const Globals = {
 };
 if (IsTauri) {
   window.vscode = Globals;
-  window.dispatchEvent(new Event("vscode-wind-preload-ready"));
+  window.dispatchEvent(new Event("land-preload-ready"));
 } else {
 }
 //# sourceMappingURL=Preload.js.map

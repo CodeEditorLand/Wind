@@ -50,15 +50,15 @@ async function ResolveConfiguration() {
       USER: Paths.homeDir?.split("/").pop() || "user"
     },
     product: {
-      nameShort: "VSCode Wind",
-      nameLong: "VSCode Wind",
-      applicationName: "vscode-wind",
+      nameShort: "FIDDEE",
+      nameLong: "FIDDEE",
+      applicationName: "land",
       version: "0.0.1",
       commit: "dev",
       date: (/* @__PURE__ */ new Date()).toISOString(),
-      urlProtocol: "vscode-wind",
-      dataFolderName: "vscode-wind",
-      serverApplicationName: "vscode-wind-server",
+      urlProtocol: "land",
+      dataFolderName: "land",
+      serverApplicationName: "land-server",
       extensionProperties: {},
       defaultChatAgent: {
         extensionId: "vscode",
@@ -209,6 +209,11 @@ async function ResolveConfiguration() {
     tmpDir: Paths.tmpDir || void 0,
     userDataDir: Paths.userDataDir || void 0,
     logsPath: LogsLocation || void 0,
+    // Extension paths — tells VS Code's NativeExtensionsScannerService where
+    // to find built-in and user-installed extensions on disk.
+    // appRoot + /extensions = builtinExtensionsPath (VS Code convention)
+    builtinExtensionsPath: `${AppRoot}/extensions`,
+    extensionsPath: Paths.userDataDir ? `${Paths.userDataDir}/extensions` : void 0,
     // Workspace - set from ?folder= URL param
     // folderUri is used by the browser workbench; workspace by the Electron workbench.
     folderUri: FolderUri,

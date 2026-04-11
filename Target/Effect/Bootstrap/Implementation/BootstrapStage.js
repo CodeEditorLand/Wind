@@ -108,7 +108,7 @@ const stage5_Initialization = withSpan(
     telemetry.log("info", "[Bootstrap] VSCode workbench initialized");
     yield* Effect.sync(() => {
       window.dispatchEvent(
-        new CustomEvent("vscode-wind-bootstrap-complete", {
+        new CustomEvent("land-bootstrap-complete", {
           detail: { success: true }
         })
       );
