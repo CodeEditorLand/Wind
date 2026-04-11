@@ -3,7 +3,7 @@
  * @description
  * Supporting types for VSCode Workbench Construction Options.
  * All types are re-exported from their authoritative VS Code source locations
- * in @codeeditorland/output — no local re-declarations.
+ * in @codeeditorland/output - no local re-declarations.
  */
 
 // Types directly exported by web.api.d.ts
@@ -30,7 +30,7 @@ export type { ISecretStorageProvider } from "@codeeditorland/output/vs/platform/
 export type { IUpdateProvider } from "@codeeditorland/output/vs/workbench/services/update/browser/updateService.js";
 export type { IURLCallbackProvider as IUrlCallbackProvider } from "@codeeditorland/output/vs/workbench/services/url/browser/urlService.js";
 
-// IWorkspace / IWorkspaceFolder — VS Code uses IWorkspaceToOpen | IFolderToOpen | undefined.
+// IWorkspace / IWorkspaceFolder - VS Code uses IWorkspaceToOpen | IFolderToOpen | undefined.
 // Re-export the canonical types; Wind consumers should use IWorkspaceToOpen / IFolderToOpen directly.
 export type {
 	IWorkspaceToOpen,

@@ -2,7 +2,7 @@
  * @module Effect/Language/Live
  * @description
  * Live implementation of LanguageService. Provider registrations are
- * fire-and-forget from the Wind side — the actual provider logic lives in
+ * fire-and-forget from the Wind side - the actual provider logic lives in
  * Cocoon (extension host) and is stored in Mountain's ProviderRegistration
  * via gRPC. Wind holds a local disposable reference for each registration so
  * extensions can call `.dispose()` to unregister.

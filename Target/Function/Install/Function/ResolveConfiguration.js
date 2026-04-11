@@ -209,7 +209,7 @@ async function ResolveConfiguration() {
     tmpDir: Paths.tmpDir || void 0,
     userDataDir: Paths.userDataDir || void 0,
     logsPath: LogsLocation || void 0,
-    // Workspace — set from ?folder= URL param
+    // Workspace - set from ?folder= URL param
     // folderUri is used by the browser workbench; workspace by the Electron workbench.
     folderUri: FolderUri,
     workspace: Workspace,

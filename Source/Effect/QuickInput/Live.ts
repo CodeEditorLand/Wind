@@ -2,7 +2,7 @@
  * @module Effect/QuickInput/Live
  * @description
  * Live implementation of QuickInputService via Tauri IPC. Mountain's
- * UserInterfaceProvider handles the blocking oneshot channel pattern —
+ * UserInterfaceProvider handles the blocking oneshot channel pattern -
  * the IPC call blocks until Sky resolves the request via ResolveUIRequest.
  *
  * IPC channels (WindServiceHandlers.rs):

@@ -238,7 +238,7 @@ function createVersions(): ProcessVersions {
 /**
  * High-resolution timer state
  */
-// Defer — process may not exist at module evaluation time.
+// Defer - process may not exist at module evaluation time.
 // Wind Install.ts sets window.vscode.process but not globalThis.process;
 // that happens later when installProcessPolyfill() runs.
 let hrtimeStart: [number, number] = [0, 0];

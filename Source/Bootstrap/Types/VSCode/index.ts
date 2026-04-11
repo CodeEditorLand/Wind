@@ -12,7 +12,7 @@ export type { IVSCodeEnvironmentService } from "./Interface/VSCodeEnvironmentSer
 export type { IVSCodeConfigurationService } from "./Interface/VSCodeConfigurationService.js";
 export type { IVSCodeLoggerService } from "./Interface/VSCodeLoggerService.js";
 
-// Supporting types — all sourced from @codeeditorland/output via VSCodeWorkbenchOptionsType.ts
+// Supporting types - all sourced from @codeeditorland/output via VSCodeWorkbenchOptionsType.ts
 export type {
 	IDefaultLayout,
 	IWorkspaceProvider,

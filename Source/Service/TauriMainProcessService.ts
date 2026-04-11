@@ -14,7 +14,7 @@ import type {
 	IServerChannel,
 } from "@codeeditorland/output/vs/base/parts/ipc/common/ipc";
 
-// Inline trace — performance.mark() collected by build-baked OTELBridge.
+// Inline trace - performance.mark() collected by build-baked OTELBridge.
 const _Trace = (Tag: string, Message: string): void => {
 	try { performance.mark(`land:${Tag}:${Message}`); } catch {}
 };
@@ -48,7 +48,7 @@ const ChannelRouteMap: Record<string, string> = {
 	model: "model",
 	nativeHost: "nativeHost",
 	localPty: "localPty",
-	update: "update",
+	// update: stubbed — Mountain doesn't implement IUpdateService yet
 	url: "url",
 	menubar: "menubar",
 	encryption: "encryption",
@@ -90,6 +90,26 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	sandboxHelper: {},
 	mcpGateway: {},
 	browserViewGroup: {},
+
+	// Fix: terminals.windows — IExternalTerminalService.getDefaultTerminalForPlatforms()
+	externalTerminal: {
+		getDefaultTerminalForPlatforms: {
+			windows: "cmd.exe",
+			linux: "/usr/bin/x-terminal-emulator",
+			osx: "Terminal.app",
+		},
+	},
+
+	// Fix: update.setInternalOrg — IUpdateService methods
+	update: {
+		checkForUpdates: { updateType: 0 },
+		downloadUpdate: undefined,
+		applyUpdate: undefined,
+		quitAndInstall: undefined,
+		isLatestVersion: true,
+		setInternalOrg: undefined,
+		_getInitialState: { type: 0 },
+	},
 };
 
 // ============================================================================
@@ -113,7 +133,7 @@ async function InvokeMountain(
 }
 
 // ============================================================================
-// TauriChannel — implements IChannel
+// TauriChannel - implements IChannel
 // ============================================================================
 
 class TauriChannel implements IChannel {
@@ -261,7 +281,7 @@ class TauriChannel implements IChannel {
 }
 
 // ============================================================================
-// TauriMainProcessService — implements IMainProcessService
+// TauriMainProcessService - implements IMainProcessService
 // ============================================================================
 
 export class TauriMainProcessService {

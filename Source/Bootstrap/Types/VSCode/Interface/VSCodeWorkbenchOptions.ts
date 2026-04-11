@@ -1,7 +1,7 @@
 /**
  * @module Bootstrap/Types/VSCode/Interface/VSCodeWorkbenchOptions
  * @description
- * Workbench construction options — aliased from VS Code's authoritative
+ * Workbench construction options - aliased from VS Code's authoritative
  * IWorkbenchConstructionOptions in @codeeditorland/output/vs/workbench/browser/web.api.js.
  *
  * The previous hand-written re-implementation missed 30+ fields from the real

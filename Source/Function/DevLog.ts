@@ -24,7 +24,7 @@
  * - Consecutive duplicate messages counted (`(x14)` suffix)
  * - Clean single-line output
  *
- * ## Tags — Mountain (Rust) + Wind/Sky (TypeScript)
+ * ## Tags - Mountain (Rust) + Wind/Sky (TypeScript)
  *
  * | Tag           | Scope                                               |
  * |---------------|-----------------------------------------------------|

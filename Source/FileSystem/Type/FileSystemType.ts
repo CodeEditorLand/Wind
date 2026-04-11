@@ -12,7 +12,7 @@ import type { URI } from "./URI.js";
 // File Metadata Types
 // ============================================================================
 
-// IStat matches VS Code's IStat exactly — re-export directly.
+// IStat matches VS Code's IStat exactly - re-export directly.
 export type { IStat } from "@codeeditorland/output/vs/platform/files/common/files.js";
 
 // ============================================================================

@@ -17,7 +17,7 @@ export interface TextModel {
 }
 
 /**
- * Model service interface — lightweight in-memory text model registry.
+ * Model service interface - lightweight in-memory text model registry.
  * Microsoft VSCode Reference: IModelService from vs/editor/common/services/model.ts
  *
  * Maintains a registry of open text documents and their content/version.

@@ -83,7 +83,7 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 
 	// Mountain returns logsPath as a session-timestamped directory
 	// (e.g., .../logs/20260410T105248) with window1/ already created.
-	// Use it directly — no additional timestamp nesting needed.
+	// Use it directly - no additional timestamp nesting needed.
 	const LogsLocation = Paths.logsPath || undefined;
 
 	return {
@@ -259,7 +259,7 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 		userDataDir: Paths.userDataDir || undefined,
 		logsPath: LogsLocation || undefined,
 
-		// Workspace — set from ?folder= URL param
+		// Workspace - set from ?folder= URL param
 		// folderUri is used by the browser workbench; workspace by the Electron workbench.
 		folderUri: FolderUri,
 		workspace: Workspace,

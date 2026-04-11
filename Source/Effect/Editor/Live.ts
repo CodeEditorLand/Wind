@@ -45,7 +45,7 @@ export const LiveEditorServiceLayer = Layer.effect(
 			Effect.gen(function* () {
 				const Events = IPCService.events("editor:activeChanged");
 				// Stream is consumed for its side effects (updating refs).
-				// If the stream errors, we ignore it — editor state is best-effort.
+				// If the stream errors, we ignore it - editor state is best-effort.
 			}).pipe(Effect.catchAll(() => Effect.void)),
 		);
 

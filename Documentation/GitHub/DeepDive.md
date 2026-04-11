@@ -577,7 +577,7 @@ sequenceDiagram
     participant Mountain as Mountain Backend
 
     Sky->>Wind: vscode.window.showInformationMessage()
-    Wind->>Tauri: invoke('show_information_message')
+    Wind->>Tauri: invoke('ShowInformationMessage')
     Tauri->>Mountain: Execute native operation
     Mountain->>Tauri: Return result
     Tauri->>Wind: Resolve promise

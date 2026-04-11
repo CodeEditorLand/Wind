@@ -8,7 +8,7 @@
 
 import type { Event, IDisposable } from "./VSCodeCommonType.js";
 
-// LogLevel from the real VS Code source — prevents numeric drift.
+// LogLevel from the real VS Code source - prevents numeric drift.
 // VS Code values: Off=0, Trace=1, Debug=2, Info=3, Warning=4, Error=5
 // (Wind previously had Trace=0…Off=6, which was inverted and incompatible.)
 export { LogLevel } from "@codeeditorland/output/vs/platform/log/common/log.js";

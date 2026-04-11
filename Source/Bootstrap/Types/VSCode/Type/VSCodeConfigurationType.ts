@@ -8,10 +8,10 @@
 
 import type { UriComponents } from "@codeeditorland/output/vs/base/common/uri.js";
 
-// ConfigurationTarget from the real VS Code source — prevents enum drift.
+// ConfigurationTarget from the real VS Code source - prevents enum drift.
 export { ConfigurationTarget } from "@codeeditorland/output/vs/workbench/api/common/extHostTypes.js";
 
-// Shared structural types — re-exported from VSCodeCommonType to avoid duplicates.
+// Shared structural types - re-exported from VSCodeCommonType to avoid duplicates.
 export type { Event, IDisposable } from "./VSCodeCommonType.js";
 
 /**

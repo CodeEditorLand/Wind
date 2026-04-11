@@ -15,7 +15,7 @@ export const LifecyclePhase = {
 	Ready: 2,
 	/** Editor state restored (workspace opened). */
 	Restored: 3,
-	/** Maximum phase — all deferred work complete. */
+	/** Maximum phase - all deferred work complete. */
 	Eventually: 4,
 } as const;
 

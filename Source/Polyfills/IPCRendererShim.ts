@@ -210,7 +210,7 @@ function transformChannelArgs(
 // ============================================================================
 
 // ============================================================================
-// VS Code Binary IPC Protocol — Loopback Responder
+// VS Code Binary IPC Protocol - Loopback Responder
 // ============================================================================
 
 /**
@@ -457,7 +457,7 @@ class IPCRendererImpl implements IpcRenderer {
 					Body,
 				);
 
-				// Check for error sentinel — send PromiseError (202) instead
+				// Check for error sentinel - send PromiseError (202) instead
 				if (
 					typeof StubResponse === "string" &&
 					StubResponse.startsWith("__IPC_ERROR__")
@@ -585,7 +585,7 @@ class IPCRendererImpl implements IpcRenderer {
 			return;
 		}
 
-		// Known no-op channels — log and drop (no Tauri command exists)
+		// Known no-op channels - log and drop (no Tauri command exists)
 		if (
 			channel === "vscode:createSharedProcessChannelConnection" ||
 			channel === "vscode:toggleDevTools" ||
@@ -605,7 +605,7 @@ class IPCRendererImpl implements IpcRenderer {
 			const tauriArgs = transformChannelArgs(channel, args);
 			sendTauri(mapping.command, tauriArgs);
 		} else {
-			// Unmapped non-vscode channel — log warning instead of calling
+			// Unmapped non-vscode channel - log warning instead of calling
 			// non-existent ipc:send Tauri command
 		}
 	}
@@ -629,7 +629,7 @@ class IPCRendererImpl implements IpcRenderer {
 			return await invokeTauri<T>(mapping.command, tauriArgs);
 		}
 
-		// Unmapped channel — return undefined instead of calling
+		// Unmapped channel - return undefined instead of calling
 		// non-existent ipc:invoke Tauri command
 		return undefined as T;
 	}

@@ -25,7 +25,7 @@ The Breath of `Land`: `VS Code` Environment & Services for `Tauri`.
 
 > **`VS Code`'s workbench lives in the `Chromium` renderer. Every panel
 > interaction that touches files or state crosses the `Electron` IPC bridge:
-> serialize to JSON, send over a pipe, deserialize on the other side — in an
+> serialize to JSON, send over a pipe, deserialize on the other side - in an
 > untyped, unstructured way.**
 
 _"Typed, `Effect-TS` native IPC. Workbench actions go through `Tauri` commands to
@@ -43,7 +43,7 @@ the `VS Code` renderer environment, provides robust implementations of core
 services (like file dialogs and configuration), and integrates seamlessly with
 the `Mountain` backend via `Tauri` IPC. Rather than routing through an `Electron`
 IPC pipe with untyped JSON, `Wind` dispatches through typed `Tauri` commands whose
-handlers live in `Mountain`'s `Rust` core — all underpinned by **`Effect-TS`** for
+handlers live in `Mountain`'s `Rust` core - all underpinned by **`Effect-TS`** for
 resilience and type safety.
 
 **Wind**&#x2001;🍃 is engineered to:
@@ -106,7 +106,7 @@ for the complete module exports and layer compositions.
 
 ---
 
-## `Wind`&#x2001;🍃 in the `Land`&#x2001;🏞️ Ecosystem&#x2001;&#x2001;&#x2001;🍃&#x2001;+&#x2001;🏞️
+## `Wind`&#x2001;🍃 in the `Land`&#x2001;🏞️ Ecosystem&#x2001;🍃&#x2001;+&#x2001;🏞️
 
 This diagram illustrates `Wind`'s central role between `Sky` (the UI) and
 `Tauri` / `Mountain` (backend).
@@ -119,22 +119,22 @@ graph LR
     classDef mountain fill:#f0d0ff,stroke:#9b59b6,stroke-width:2px,color:#2c0050;
     classDef effectts fill:#d4f5d4,stroke:#27ae60,stroke-width:1px,color:#0a3a0a;
 
-    subgraph "🌌 Sky — Frontend UI (Tauri WebView)"
-        SkyApp["🖼️ Sky Application — VS Code UI"]:::sky
+    subgraph "🌌 Sky - Frontend UI (Tauri WebView)"
+        SkyApp["🖼️ Sky Application - VS Code UI"]:::sky
     end
 
-    subgraph "🍃 Wind — VS Code Env & Services Layer (WebView)"
-        PreloadJS["🔌 Preload.js — Environment Shim"]:::wind
+    subgraph "🍃 Wind - VS Code Env & Services Layer (WebView)"
+        PreloadJS["🔌 Preload.js - Environment Shim"]:::wind
         WindEffectTSRuntime["⚡ Wind Effect-TS Runtime & Service Layers"]:::effectts
-        TauriIntegrations["🍃 Wind Effect Services — Tauri API Wrappers"]:::wind
+        TauriIntegrations["🍃 Wind Effect Services - Tauri API Wrappers"]:::wind
 
         SkyApp -- consumes --> WindEffectTSRuntime
         WindEffectTSRuntime -- executes via --> TauriIntegrations
     end
 
-    subgraph "⛰️ Tauri Core & Mountain — Rust Backend"
+    subgraph "⛰️ Tauri Core & Mountain - Rust Backend"
         TauriAPIs["⚙️ Tauri JS API & Plugins"]:::tauri
-        MountainBackend["🦀 Mountain Rust Core — Command Handlers"]:::mountain
+        MountainBackend["🦀 Mountain Rust Core - Command Handlers"]:::mountain
     end
 
     TauriWindow["🔯 Tauri Window"] -- loads --> PreloadJS

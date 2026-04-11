@@ -170,7 +170,7 @@ const TelemetryLive = Layer.effect(
 					].slice(-10000),
 				);
 
-				// Trace via performance.mark — OTELBridge collects automatically
+				// Trace via performance.mark - OTELBridge collects automatically
 				if (typeof performance !== "undefined") {
 					try { performance.mark(`land:telemetry:${level}:${message.slice(0, 80)}`); } catch {}
 				}
