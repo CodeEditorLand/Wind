@@ -19,6 +19,27 @@ const _Trace = (Tag: string, Message: string): void => {
 	try { performance.mark(`land:${Tag}:${Message}`); } catch {}
 };
 
+// Timed trace - wraps an async operation with start/end marks + measure.
+// OTELBridge picks up the measure as a span with real duration.
+const _TimedTrace = async <T>(
+	Tag: string,
+	Label: string,
+	Fn: () => Promise<T>,
+): Promise<T> => {
+	const MarkName = `land:${Tag}:${Label}`;
+	const StartMark = `${MarkName}:start`;
+	try { performance.mark(StartMark); } catch {}
+	try {
+		const Result = await Fn();
+		try { performance.measure(MarkName, StartMark); } catch {}
+		return Result;
+	} catch (Error) {
+		try { performance.mark(`${MarkName}:error`, { detail: { error: String(Error) } }); } catch {}
+		try { performance.measure(MarkName, StartMark); } catch {}
+		throw Error;
+	}
+};
+
 // ============================================================================
 // Channel → Mountain Route Mapping
 // ============================================================================
@@ -172,7 +193,11 @@ class TauriChannel implements IChannel {
 				Arg !== undefined ? (Array.isArray(Arg) ? Arg : [Arg]) : [];
 
 			try {
-				const Result = await InvokeMountain(MountainMethod, Params);
+				const Result = await _TimedTrace(
+					"ipc",
+					MountainMethod,
+					() => InvokeMountain(MountainMethod, Params),
+				);
 
 				if (
 					FileSystemChannels.has(this.ChannelName) &&
