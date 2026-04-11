@@ -26,17 +26,27 @@ import type {
 
 // Inline DevLog — can't import from ../Function/ because this file is served
 // from /Static/Application/vs/platform/ipc/ where relative imports break.
+const _AppDataPattern = /land\.editor\.binary\.[^\s/\\)]+/g;
+let _DedupKey = "";
+let _DedupCount = 0;
 const DevLog = (Tag: string, ...Args: unknown[]): void => {
 	const Filter = (window as any).__LAND_DEV_LOG;
 	if (!Filter) return;
+	const Filters = String(Filter).split(",").map((T: string) => T.trim().toLowerCase());
+	const Short = Filters.includes("short");
 	const Lower = Tag.toLowerCase();
-	if (
-		Filter === "all" ||
-		String(Filter)
-			.split(",")
-			.some((T: string) => T.trim().toLowerCase() === Lower)
-	) {
-		console.log(`[DEV:${Tag.toUpperCase()}]`, ...Args);
+	if (!Short && Filter !== "all" && !Filters.includes(Lower)) return;
+	const TagUpper = Tag.toUpperCase();
+	if (Short) {
+		const Message = Args.map(String).join(" ").replace(_AppDataPattern, "$APP");
+		const Key = `${TagUpper}:${Message}`;
+		if (Key === _DedupKey) { _DedupCount++; return; }
+		if (_DedupCount > 1) console.log(`  (x${_DedupCount})`);
+		_DedupKey = Key;
+		_DedupCount = 1;
+		console.log(`[DEV:${TagUpper}]`, Message);
+	} else {
+		console.log(`[DEV:${TagUpper}]`, ...Args);
 	}
 };
 
@@ -87,8 +97,11 @@ const ChannelRouteMap: Record<string, string> = {
 /**
  * Channels where call() can be fire-and-forget (no real response needed).
  * Returns undefined immediately instead of going through Tauri.
+ * - logger: log messages don't need acknowledgement
+ * - output: VS Code output channels are managed by Mountain natively;
+ *   browser-side stat/writeFile for output_* log files are not needed
  */
-const FireAndForgetChannels = new Set(["logger"]);
+const FireAndForgetChannels = new Set(["logger", "output"]);
 
 /**
  * Channels where errors must be thrown (not swallowed) so VS Code's

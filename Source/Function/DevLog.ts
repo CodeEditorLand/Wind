@@ -8,6 +8,7 @@
  * ```js
  * window.__LAND_DEV_LOG = "vfs,ipc";   // only VFS + IPC
  * window.__LAND_DEV_LOG = "all";        // everything
+ * window.__LAND_DEV_LOG = "short";      // everything, compressed + deduped
  * delete window.__LAND_DEV_LOG;         // off (default)
  * ```
  *
@@ -15,6 +16,13 @@
  * ```js
  * localStorage.setItem("LAND_DEV_LOG", "config,folder");
  * ```
+ *
+ * ## Short Mode
+ *
+ * `LAND_DEV_LOG=short` enables all tags with compression:
+ * - Long app-data paths aliased to `$APP`
+ * - Consecutive duplicate messages counted (`(x14)` suffix)
+ * - Clean single-line output
  *
  * ## Tags — Mountain (Rust) + Wind/Sky (TypeScript)
  *
@@ -57,7 +65,10 @@
  * | `preload`     | Preload: globals, polyfills, ipcRenderer             |
  */
 
+// ── Tag resolution ──────────────────────────────────────────────────────
+
 let CachedTags: string[] | null = null;
+let CachedShort: boolean | null = null;
 
 const GetEnabledTags = (): string[] => {
 	if (CachedTags !== null) return CachedTags;
@@ -74,12 +85,42 @@ const GetEnabledTags = (): string[] => {
 	return CachedTags;
 };
 
+const IsShort = (): boolean => {
+	if (CachedShort !== null) return CachedShort;
+	CachedShort = GetEnabledTags().includes("short");
+	return CachedShort;
+};
+
 const IsEnabled = (Tag: string): boolean => {
 	const Tags = GetEnabledTags();
 	if (Tags.length === 0) return false;
+	if (IsShort()) return true;
 	const Lower = Tag.toLowerCase();
 	return Tags.some((T) => T === "all" || T === Lower);
 };
+
+// ── Path alias ──────────────────────────────────────────────────────────
+// The app-data directory name can be 100+ chars. Alias to $APP.
+
+const AppDataPattern = /land\.editor\.binary\.[^\s/\\)]+/g;
+
+const AliasPath = (Input: string): string =>
+	Input.replace(AppDataPattern, "$APP");
+
+// ── Dedup buffer ────────────────────────────────────────────────────────
+
+let DedupKey = "";
+let DedupCount = 0;
+
+const FlushDedup = (): void => {
+	if (DedupCount > 1) {
+		console.log(`  (x${DedupCount})`);
+	}
+	DedupKey = "";
+	DedupCount = 0;
+};
+
+// ── Main DevLog function ────────────────────────────────────────────────
 
 /**
  * Tagged development log. Only prints if the tag is enabled.
@@ -89,14 +130,34 @@ const IsEnabled = (Tag: string): boolean => {
  * DevLog("CONFIG", "resolveConfiguration folderUri:", folderUri);
  */
 const DevLog = (Tag: string, ...Args: unknown[]): void => {
-	if (IsEnabled(Tag)) {
-		console.log(`[DEV:${Tag.toUpperCase()}]`, ...Args);
+	if (!IsEnabled(Tag)) return;
+
+	const TagUpper = Tag.toUpperCase();
+
+	if (IsShort()) {
+		const Message = Args.map(String).join(" ");
+		const Aliased = AliasPath(Message);
+		const Key = `${TagUpper}:${Aliased}`;
+
+		if (Key === DedupKey) {
+			DedupCount++;
+			return;
+		}
+
+		FlushDedup();
+		DedupKey = Key;
+		DedupCount = 1;
+		console.log(`[DEV:${TagUpper}]`, Aliased);
+	} else {
+		console.log(`[DEV:${TagUpper}]`, ...Args);
 	}
 };
 
 /** Force-reset the cache (call after changing window.__LAND_DEV_LOG). */
 DevLog.reset = () => {
 	CachedTags = null;
+	CachedShort = null;
+	FlushDedup();
 };
 
 export default DevLog;
