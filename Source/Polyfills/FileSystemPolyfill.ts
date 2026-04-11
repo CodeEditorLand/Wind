@@ -157,10 +157,6 @@ async function invokeTauri<T>(
 
 		throw new Error(`Tauri invoke not available for command: ${command}`);
 	} catch (error: unknown) {
-		console.error(
-			`[FileSystemPolyfill] Tauri invoke failed for ${command}:`,
-			error,
-		);
 		throw error;
 	}
 }
@@ -260,8 +256,6 @@ async function readFile(
 	path: string,
 	options?: ReadFileOptions | BufferEncoding,
 ): Promise<string | Buffer> {
-	console.log(`[FileSystemPolyfill] readFile: ${path}`);
-
 	// Normalize options
 	const encoding =
 		typeof options === "string" ? options : (options?.encoding ?? "utf8");
@@ -277,7 +271,6 @@ async function readFile(
 		return encoding === null ? Buffer.from(content, "base64") : content;
 	} catch (error: unknown) {
 		const err = error instanceof Error ? error : new Error(String(error));
-		console.error(`[FileSystemPolyfill] readFile error: ${path}`, err);
 		throw err;
 	}
 }
@@ -290,8 +283,6 @@ async function writeFile(
 	data: string | Buffer,
 	options?: WriteFileOptions | BufferEncoding,
 ): Promise<void> {
-	console.log(`[FileSystemPolyfill] writeFile: ${path}`);
-
 	// Normalize options
 	let encoding: BufferEncoding | null = "utf8";
 	if (typeof options === "string") {
@@ -317,7 +308,6 @@ async function writeFile(
 		});
 	} catch (error: unknown) {
 		const err = error instanceof Error ? error : new Error(String(error));
-		console.error(`[FileSystemPolyfill] writeFile error: ${path}`, err);
 		throw err;
 	}
 }
@@ -326,8 +316,6 @@ async function writeFile(
  * Delete file from Mountain file system
  */
 async function unlink(path: string): Promise<void> {
-	console.log(`[FileSystemPolyfill] unlink: ${path}`);
-
 	try {
 		await invokeTauri("file:delete", {
 			path,
@@ -335,7 +323,6 @@ async function unlink(path: string): Promise<void> {
 		});
 	} catch (error: unknown) {
 		const err = error instanceof Error ? error : new Error(String(error));
-		console.error(`[FileSystemPolyfill] unlink error: ${path}`, err);
 		throw err;
 	}
 }
@@ -344,8 +331,6 @@ async function unlink(path: string): Promise<void> {
  * Remove file or directory (recursive)
  */
 async function rm(path: string, options?: RmOptions): Promise<void> {
-	console.log(`[FileSystemPolyfill] rm: ${path}`);
-
 	opts = {
 		recursive: false,
 		force: false,
@@ -362,7 +347,6 @@ async function rm(path: string, options?: RmOptions): Promise<void> {
 		if (!opts.force) {
 			const err =
 				error instanceof Error ? error : new Error(String(error));
-			console.error(`[FileSystemPolyfill] rm error: ${path}`, err);
 			throw err;
 		}
 	}
@@ -372,8 +356,6 @@ async function rm(path: string, options?: RmOptions): Promise<void> {
  * Rename/move file or directory
  */
 async function rename(oldPath: string, newPath: string): Promise<void> {
-	console.log(`[FileSystemPolyfill] rename: ${oldPath} -> ${newPath}`);
-
 	try {
 		await invokeTauri("file:move", {
 			from: oldPath,
@@ -381,7 +363,6 @@ async function rename(oldPath: string, newPath: string): Promise<void> {
 		});
 	} catch (error: unknown) {
 		const err = error instanceof Error ? error : new Error(String(error));
-		console.error(`[FileSystemPolyfill] rename error: ${oldPath}`, err);
 		throw err;
 	}
 }
@@ -394,8 +375,6 @@ async function copyFile(
 	dest: string,
 	options?: CopyFileOptions,
 ): Promise<void> {
-	console.log(`[FileSystemPolyfill] copyFile: ${src} -> ${dest}`);
-
 	try {
 		await invokeTauri("file:copy", {
 			from: src,
@@ -403,7 +382,6 @@ async function copyFile(
 		});
 	} catch (error: unknown) {
 		const err = error instanceof Error ? error : new Error(String(error));
-		console.error(`[FileSystemPolyfill] copyFile error: ${src}`, err);
 		throw err;
 	}
 }
@@ -415,8 +393,6 @@ async function mkdir(
 	path: string,
 	options?: MkdirOptions | number | boolean,
 ): Promise<void> {
-	console.log(`[FileSystemPolyfill] mkdir: ${path}`);
-
 	// Normalize options
 	let opts: RecursiveMkdirOptions = { recursive: false };
 	if (typeof options === "boolean") {
@@ -437,7 +413,6 @@ async function mkdir(
 		});
 	} catch (error: unknown) {
 		const err = error instanceof Error ? error : new Error(String(error));
-		console.error(`[FileSystemPolyfill] mkdir error: ${path}`, err);
 		throw err;
 	}
 }
@@ -452,8 +427,6 @@ interface RecursiveMkdirOptions {
  * Remove directory
  */
 async function rmdir(path: string): Promise<void> {
-	console.log(`[FileSystemPolyfill] rmdir: ${path}`);
-
 	try {
 		await invokeTauri("file:delete", {
 			path,
@@ -462,7 +435,6 @@ async function rmdir(path: string): Promise<void> {
 		});
 	} catch (error: unknown) {
 		const err = error instanceof Error ? error : new Error(String(error));
-		console.error(`[FileSystemPolyfill] rmdir error: ${path}`, err);
 		throw err;
 	}
 }
@@ -474,8 +446,6 @@ async function readdir(
 	path: string,
 	options?: { withFileTypes?: boolean },
 ): Promise<string[] | Dirent[]> {
-	console.log(`[FileSystemPolyfill] readdir: ${path}`);
-
 	try {
 		const withFileTypes = options?.withFileTypes ?? false;
 
@@ -501,7 +471,6 @@ async function readdir(
 		}
 	} catch (error: unknown) {
 		const err = error instanceof Error ? error : new Error(String(error));
-		console.error(`[FileSystemPolyfill] readdir error: ${path}`, err);
 		throw err;
 	}
 }
@@ -510,8 +479,6 @@ async function readdir(
  * Get file stats
  */
 async function stat(path: string): Promise<Stats> {
-	console.log(`[FileSystemPolyfill] stat: ${path}`);
-
 	try {
 		// Call Mountain to get file stats
 		const mountainStats = await invokeTauri<MountainStats>("file:stat", {
@@ -521,7 +488,6 @@ async function stat(path: string): Promise<Stats> {
 		return mountainStatsToStats(mountainStats);
 	} catch (error: unknown) {
 		const err = error instanceof Error ? error : new Error(String(error));
-		console.error(`[FileSystemPolyfill] stat error: ${path}`, err);
 		throw err;
 	}
 }
@@ -530,8 +496,6 @@ async function stat(path: string): Promise<Stats> {
  * Check if file exists
  */
 async function exists(path: string): Promise<boolean> {
-	console.log(`[FileSystemPolyfill] exists: ${path}`);
-
 	try {
 		await stat(path);
 		return true;
@@ -726,15 +690,9 @@ export function installFileSystemPolyfill(): void {
 
 	// Prevent double installation
 	if ((window as any).__FILE_SYSTEM_POLYFILL_INSTALLED__) {
-		console.log("[FileSystemPolyfill] Already installed, skipping");
 		return;
 	}
 	(window as any).__FILE_SYSTEM_POLYFILL_INSTALLED__ = true;
-
-	console.log(
-		"[FileSystemPolyfill] Installing Node.js fs module polyfill...",
-	);
-
 	// Attach fs module to global (for Node.js compatibility)
 	(window as any).fs = fs;
 	(window as any).require = createRequireShim();
@@ -743,8 +701,6 @@ export function installFileSystemPolyfill(): void {
 	if (typeof (window as any).vscode !== "undefined") {
 		(window as any).vscode.fs = fs;
 	}
-
-	console.log("[FileSystemPolyfill] ✓ Node.js fs module polyfill installed");
 }
 
 /**

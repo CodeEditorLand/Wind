@@ -184,10 +184,6 @@ async function invokeTauri<T>(
 
 		throw new Error(`Tauri invoke not available for command: ${command}`);
 	} catch (error: unknown) {
-		console.error(
-			`[NativeModulePolyfill] Tauri invoke failed for ${command}:`,
-			error,
-		);
 		throw error;
 	}
 }
@@ -233,16 +229,10 @@ function getCachedModule<T>(key: string, factory: () => T): T {
 function createWebFrame(): WebFrame {
 	return {
 		setZoomLevel(level: number): void {
-			console.log(
-				`[NativeModulePolyfill] WebFrame.setZoomLevel(${level})`,
-			);
 			// This is a no-op in browser as zoom is handled by CSS/transform
 		},
 
 		setZoomFactor(factor: number): void {
-			console.log(
-				`[NativeModulePolyfill] WebFrame.setZoomFactor(${factor})`,
-			);
 			// This is a no-op in browser as zoom is handled by CSS/transform
 		},
 
@@ -378,10 +368,6 @@ function createShell(): Shell {
 					window.open(url, "_blank");
 				}
 			} catch (error) {
-				console.error(
-					"[NativeModulePolyfill] Shell.openExternal error:",
-					error,
-				);
 				throw error;
 			}
 		},
@@ -448,10 +434,6 @@ function createDialog(): Dialog {
 					};
 				}
 			} catch (error) {
-				console.error(
-					"[NativeModulePolyfill] Dialog.showOpenDialog error:",
-					error,
-				);
 			}
 
 			// Fallback: return empty
@@ -474,10 +456,6 @@ function createDialog(): Dialog {
 					};
 				}
 			} catch (error) {
-				console.error(
-					"[NativeModulePolyfill] Dialog.showSaveDialog error:",
-					error,
-				);
 			}
 
 			// Fallback: return empty
@@ -485,26 +463,18 @@ function createDialog(): Dialog {
 		},
 
 		showMessage(message: string): void {
-			console.log(
-				`[NativeModulePolyfill] Dialog.showMessage: ${message}`,
-			);
 			// Could use Tauri alert or browser alert
 			if ((window as any).__TAURI__?.dialog?.message) {
 				(window as any).__TAURI__.dialog.message(message);
 			} else {
-				console.info(message);
 			}
 		},
 
 		showError(message: string): void {
-			console.error(
-				`[NativeModulePolyfill] Dialog.showError: ${message}`,
-			);
 			// Could use Tauri alert or browser alert
 			if ((window as any).__TAURI__?.dialog?.message) {
 				(window as any).__TAURI__.dialog.message("Error: " + message);
 			} else {
-				console.error(message);
 			}
 		},
 	};
@@ -532,10 +502,6 @@ function createClipboard(): Clipboard {
 					await navigator.clipboard.writeText(text);
 				}
 			} catch (error) {
-				console.error(
-					"[NativeModulePolyfill] Clipboard.writeText error:",
-					error,
-				);
 				throw error;
 			}
 		},
@@ -550,9 +516,6 @@ function createClipboard(): Clipboard {
 					return await clipboard.readText();
 				}
 			} catch (error) {
-				console.warn(
-					"[NativeModulePolyfill] Tauri clipboard not available, using browser clipboard",
-				);
 			}
 
 			// Fallback to browser clipboard
@@ -561,24 +524,15 @@ function createClipboard(): Clipboard {
 
 		async writeBuffer(format: string, buffer: Buffer): Promise<void> {
 			// Not fully supported in browser clipboard
-			console.warn(
-				"[NativeModulePolyfill] Clipboard.writeBuffer not fully supported",
-			);
 			throw new Error("Clipboard.writeBuffer is not fully supported");
 		},
 
 		async readBuffer(format: string): Promise<Buffer | undefined> {
 			// Not fully supported in browser clipboard
-			console.warn(
-				"[NativeModulePolyfill] Clipboard.readBuffer not fully supported",
-			);
 			return undefined;
 		},
 
 		clear(): void {
-			console.warn(
-				"[NativeModulePolyfill] Clipboard.clear not fully supported",
-			);
 		},
 	};
 }
@@ -713,7 +667,6 @@ function installRequireShim(): void {
 
 	// Create shim function
 	(window as any).require = function (id: string): unknown {
-		console.log(`[NativeModulePolyfill] require('${id}') called`);
 
 		// Intercept electron module
 		if (id === "electron") {
@@ -750,9 +703,6 @@ function installRequireShim(): void {
 						"electron.remote is not supported in Tauri environment",
 					);
 				default:
-					console.warn(
-						`[NativeModulePolyfill] Unknown electron module: ${moduleName}`,
-					);
 					return {};
 			}
 		}
@@ -770,8 +720,6 @@ function installRequireShim(): void {
 			) as PropertyDescriptor),
 		});
 	});
-
-	console.log("[NativeModulePolyfill] ✓ Require shim installed");
 }
 
 // Also need to install the function on its own for later invocations
@@ -822,15 +770,9 @@ export function installNativeModulePolyfill(): void {
 
 	// Prevent double installation
 	if ((window as any).__NATIVE_MODULE_POLYFILL_INSTALLED__) {
-		console.log("[NativeModulePolyfill] Already installed, skipping");
 		return;
 	}
 	(window as any).__NATIVE_MODULE_POLYFILL_INSTALLED__ = true;
-
-	console.log(
-		"[NativeModulePolyfill] Installing Electron native module polyfill...",
-	);
-
 	// Install require shim
 	installRequireShim();
 
@@ -842,10 +784,6 @@ export function installNativeModulePolyfill(): void {
 	if (typeof (window as any).vscode !== "undefined") {
 		(window as any).vscode.electron = electronModule;
 	}
-
-	console.log(
-		"[NativeModulePolyfill] ✓ Electron native module polyfill installed",
-	);
 }
 
 // ============================================================================

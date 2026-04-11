@@ -1,6 +1,11 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-import DevLog from "../../DevLog.js";
+const DevLog = /* @__PURE__ */ __name((Tag, ..._Args) => {
+  try {
+    performance.mark(`land:config:${Tag}`);
+  } catch {
+  }
+}, "DevLog");
 async function ResolveConfiguration() {
   const FileRoot = typeof globalThis._VSCODE_FILE_ROOT === "string" ? globalThis._VSCODE_FILE_ROOT : "/Static/Application/";
   const AppRoot = FileRoot.replace(/^https?:\/\/[^/]+/, "");
@@ -19,7 +24,6 @@ async function ResolveConfiguration() {
   DevLog("config", "paths:", JSON.stringify(Paths));
   if (Paths.devLog) {
     window.__LAND_DEV_LOG = Paths.devLog;
-    DevLog.reset();
   }
   const FolderParam = new URLSearchParams(window.location.search).get(
     "folder"

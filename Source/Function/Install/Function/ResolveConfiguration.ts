@@ -10,7 +10,9 @@
 
 import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes";
 
-import DevLog from "../../DevLog.js";
+const DevLog = (Tag: string, ..._Args: unknown[]): void => {
+	try { performance.mark(`land:config:${Tag}`); } catch {}
+};
 
 /**
  * Resolves the VSCode sandbox configuration.
@@ -46,10 +48,8 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 	DevLog("config", "paths:", JSON.stringify(Paths));
 
 	// Pass LAND_DEV_LOG from Mountain environment to browser.
-	// The Tauri IPC returns the env var; set it on window so DevLog picks it up.
 	if ((Paths as any).devLog) {
 		(window as any).__LAND_DEV_LOG = (Paths as any).devLog;
-		DevLog.reset();
 	}
 
 	// Read ?folder= from URL (set by pickFolderAndOpen navigation)

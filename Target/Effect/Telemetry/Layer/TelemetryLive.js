@@ -37,7 +37,6 @@ const TelemetryLive = Layer.effect(
           }
         ].slice(-1e4)
       );
-      console.log(`[Telemetry] Metric: ${name} = ${value}`);
     }), "recordMetric");
     const startSpan = /* @__PURE__ */ __name((name, labels) => Effect.sync(() => {
       const startTime = Date.now();
@@ -76,9 +75,6 @@ const TelemetryLive = Layer.effect(
             }
           ].slice(-1e4)
         );
-        console.log(
-          `[Telemetry] Span: ${name} completed in ${span.duration}ms (success: ${success})`
-        );
       }), "end");
       return { end };
     }), "startSpan");
@@ -100,11 +96,12 @@ const TelemetryLive = Layer.effect(
           }
         ].slice(-1e4)
       );
-      const consoleMethod = level === "error" ? console.error : level === "warn" ? console.warn : level === "debug" ? console.debug : console.log;
-      consoleMethod(
-        `[Telemetry] [${level.toUpperCase()}] ${message}`,
-        context ?? {}
-      );
+      if (typeof performance !== "undefined") {
+        try {
+          performance.mark(`land:telemetry:${level}:${message.slice(0, 80)}`);
+        } catch {
+        }
+      }
     }), "log");
     const events = eventsRef.changes;
     const getMetrics = /* @__PURE__ */ __name((name) => metricsRef.get.pipe(

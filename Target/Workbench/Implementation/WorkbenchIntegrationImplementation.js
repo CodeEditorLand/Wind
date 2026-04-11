@@ -28,7 +28,6 @@ const addMessage = /* @__PURE__ */ __name((context, type, message) => Ref.update
 const debugLog = /* @__PURE__ */ __name((context, message) => Effect.gen(function* () {
   const debugMode = yield* Ref.get(context.debugModeRef);
   if (debugMode) {
-    console.log(`[WorkbenchIntegration] ${message}`);
   }
 }), "debugLog");
 const toWorkbenchError = /* @__PURE__ */ __name((error, code) => {

@@ -74,10 +74,6 @@ async function invokeTauri<T>(
 
 		throw new Error(`Tauri invoke not available for command: ${command}`);
 	} catch (error: unknown) {
-		console.error(
-			`[FileProtocolShim] Tauri invoke failed for ${command}:`,
-			error,
-		);
 		throw error;
 	}
 }
@@ -97,10 +93,6 @@ const VSCodeFileHandler: ProtocolHandler = {
 
 	async handle(req: FileSystemRequest): Promise<FileSystemResponse> {
 		try {
-			console.log(
-				`[FileProtocolShim] Handling vscode-file:// request: ${req.path}`,
-			);
-
 			// Decode URI-encoded path
 			const decodedPath = decodeURIComponent(req.path);
 
@@ -130,10 +122,6 @@ const VSCodeFileHandler: ProtocolHandler = {
 
 			throw new Error(`Unsupported method: ${method}`);
 		} catch (error: unknown) {
-			console.error(
-				"[FileProtocolShim] vscode-file handler error:",
-				error,
-			);
 			return {
 				content: null,
 				error:
@@ -154,10 +142,6 @@ const VSCodeUserDataHandler: ProtocolHandler = {
 
 	async handle(req: FileSystemRequest): Promise<FileSystemResponse> {
 		try {
-			console.log(
-				`[FileProtocolShim] Handling vscode-userdata:// request: ${req.path}`,
-			);
-
 			// Get user data path from Mountain
 			const userDataPath = await invokeTauri<string>(
 				"file:user_data_path",
@@ -178,10 +162,6 @@ const VSCodeUserDataHandler: ProtocolHandler = {
 				},
 			};
 		} catch (error: unknown) {
-			console.error(
-				"[FileProtocolShim] vscode-userdata handler error:",
-				error,
-			);
 			// Return empty content for user data files that don't exist yet
 			return {
 				content: "",
@@ -202,10 +182,6 @@ const VSCodeResourceHandler: ProtocolHandler = {
 
 	async handle(req: FileSystemRequest): Promise<FileSystemResponse> {
 		try {
-			console.log(
-				`[FileProtocolShim] Handling vscode-resource:// request: ${req.path}`,
-			);
-
 			// Parse extension resource path: vscode-resource://{extensionId}/{path}
 			const [extensionId, ...pathParts] = req.path
 				.split("/")
@@ -228,10 +204,6 @@ const VSCodeResourceHandler: ProtocolHandler = {
 				},
 			};
 		} catch (error: unknown) {
-			console.error(
-				"[FileProtocolShim] vscode-resource handler error:",
-				error,
-			);
 			return {
 				content: null,
 				error:
@@ -252,10 +224,6 @@ const VSCodeRemoteHandler: ProtocolHandler = {
 
 	async handle(req: FileSystemRequest): Promise<FileSystemResponse> {
 		try {
-			console.log(
-				`[FileProtocolShim] Handling vscode-remote:// request: ${req.path}`,
-			);
-
 			// Parse remote path: vscode-remote://{host}/{path}
 			const [host, ...pathParts] = req.path.split("/").filter(Boolean);
 			const remotePath = pathParts.join("/");
@@ -276,10 +244,6 @@ const VSCodeRemoteHandler: ProtocolHandler = {
 				},
 			};
 		} catch (error: unknown) {
-			console.error(
-				"[FileProtocolShim] vscode-remote handler error:",
-				error,
-			);
 			return {
 				content: null,
 				error:
@@ -299,10 +263,6 @@ const FileHandler: ProtocolHandler = {
 
 	async handle(req: FileSystemRequest): Promise<FileSystemResponse> {
 		try {
-			console.log(
-				`[FileProtocolShim] Handling file:// request: ${req.path}`,
-			);
-
 			const decodedPath = decodeURIComponent(req.path);
 
 			const content = await invokeTauri<string>("file:read", {
@@ -318,7 +278,6 @@ const FileHandler: ProtocolHandler = {
 				},
 			};
 		} catch (error: unknown) {
-			console.error("[FileProtocolShim] file handler error:", error);
 			return {
 				content: null,
 				error:
@@ -377,7 +336,6 @@ function parseProtocolURL(url: string): FileSystemRequest {
 			query,
 		};
 	} catch (error) {
-		console.error("[FileProtocolShim] Failed to parse URL:", url, error);
 		throw new Error(`Invalid protocol URL: ${url}`);
 	}
 }
@@ -469,15 +427,9 @@ function installFetchInterception(): void {
 			// Fall back to original fetch for non-protocol URLs
 			return originalFetch(input, init);
 		} catch (error) {
-			console.error(
-				"[FileProtocolShim] Fetch interception error:",
-				error,
-			);
 			return originalFetch(input, init);
 		}
 	};
-
-	console.log("[FileProtocolShim] ✓ fetch interception installed");
 }
 
 /**
@@ -511,14 +463,10 @@ function installModuleInterception(): void {
 	// For ES modules with import maps or custom resolvers:
 	if (typeof (window as any).__createImport !== "undefined") {
 		// Hook into import resolution (environment-specific)
-		console.log("[FileProtocolShim] Custom import interception available");
 	}
 
 	// Note: Full module import interception requires significant
 	// cooperation from the build tooling and module loader
-	console.log(
-		"[FileProtocolShim] Module import interception registered (passive mode)",
-	);
 }
 
 // ============================================================================
@@ -535,20 +483,14 @@ export function installFileProtocolShim(): void {
 
 	// Prevent double installation
 	if ((window as any).__FILE_PROTOCOL_SHIM_INSTALLED__) {
-		console.log("[FileProtocolShim] Already installed, skipping");
 		return;
 	}
 	(window as any).__FILE_PROTOCOL_SHIM_INSTALLED__ = true;
-
-	console.log("[FileProtocolShim] Installing VSCode protocol polyfills...");
-
 	// Install fetch interception
 	installFetchInterception();
 
 	// Install module import interception
 	installModuleInterception();
-
-	console.log("[FileProtocolShim] ✓ VSCode protocol polyfills installed");
 }
 
 // ============================================================================

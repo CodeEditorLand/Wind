@@ -8,10 +8,6 @@ async function invokeTauri(command, args = {}) {
     }
     throw new Error(`Tauri invoke not available for command: ${command}`);
   } catch (error) {
-    console.error(
-      `[ProcessPolyfill] Tauri invoke failed for ${command}:`,
-      error
-    );
     throw error;
   }
 }
@@ -61,10 +57,6 @@ async function getProcessConfiguration() {
       };
     }
   } catch (error) {
-    console.warn(
-      "[ProcessPolyfill] Failed to get process configuration from Tauri:",
-      error
-    );
   }
   return DEFAULT_PROCESS_CONFIG;
 }
@@ -222,7 +214,6 @@ class ProcessPolyfill {
       "process_get_memory_info",
       {}
     ).catch((error) => {
-      console.warn("[ProcessPolyfill] Failed to get memory info:", error);
       return {
         workingSetSize: 100 * 1024 * 1024,
         // 100MB
@@ -253,7 +244,6 @@ class ProcessPolyfill {
         {}
       );
     } catch (error) {
-      console.warn("[ProcessPolyfill] Failed to get shell env:", error);
       return this.env;
     }
   }
@@ -261,18 +251,12 @@ class ProcessPolyfill {
    * Umask - not supported in browser
    */
   umask(mask) {
-    console.warn(
-      "[ProcessPolyfill] umask is not supported in browser environment"
-    );
     return 18;
   }
   /**
    * Exit the process - not supported in browser
    */
   exit(code) {
-    console.warn(
-      `[ProcessPolyfill] exit(${code}) called - not supported in browser`
-    );
     this._exitCode = code ?? 0;
     this._exited = true;
     this.emit("exit", this._exitCode);
@@ -285,9 +269,6 @@ class ProcessPolyfill {
    * Kill a process
    */
   kill(pid, signal) {
-    console.warn(
-      `[ProcessPolyfill] kill(${pid}, ${signal}) - not fully supported in browser`
-    );
     try {
       invokeTauri("process_kill", { pid, signal }).catch(() => {
       });
@@ -380,10 +361,6 @@ class ProcessPolyfill {
       try {
         listener(...args);
       } catch (error) {
-        console.error(
-          `[ProcessPolyfill] Error in ${event} listener:`,
-          error
-        );
       }
     });
     return true;
@@ -410,7 +387,6 @@ async function getProcess() {
     }
     const config = await processConfigPromise;
     processInstance = new ProcessPolyfill(config);
-    console.log("[ProcessPolyfill] Process instance created");
   }
   return processInstance;
 }
@@ -418,7 +394,6 @@ __name(getProcess, "getProcess");
 function getProcessSync() {
   if (!processInstance) {
     processInstance = new ProcessPolyfill(DEFAULT_PROCESS_CONFIG);
-    console.log("[ProcessPolyfill] Process instance created (sync mode)");
   }
   return processInstance;
 }
@@ -428,23 +403,16 @@ async function installProcessPolyfill() {
     return;
   }
   if (window.__PROCESS_POLYFILL_INSTALLED__) {
-    console.log("[ProcessPolyfill] Already installed, skipping");
     return;
   }
   window.__PROCESS_POLYFILL_INSTALLED__ = true;
-  console.log("[ProcessPolyfill] Installing Node.js process polyfill...");
   const proc = await getProcess();
   try {
     window.process = proc;
     if (typeof window.vscode !== "undefined") {
       window.vscode.process = proc;
     }
-    console.log("[ProcessPolyfill]\u2001\u2713 Node.js process polyfill installed");
   } catch (error) {
-    console.error(
-      "[ProcessPolyfill] Failed to install process polyfill:",
-      error
-    );
   }
 }
 __name(installProcessPolyfill, "installProcessPolyfill");
@@ -471,7 +439,6 @@ var ProcessPolyfill_default = {
 };
 if (typeof window !== "undefined") {
   installProcessPolyfill().catch((error) => {
-    console.error("[ProcessPolyfill] Failed to auto-install:", error);
     installProcessPolyfillSync();
   });
 }

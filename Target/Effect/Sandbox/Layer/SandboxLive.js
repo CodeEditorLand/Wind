@@ -26,9 +26,6 @@ const SandboxLive = Layer.effect(
         if (preloadGlobals && preloadGlobals.process && preloadGlobals.ipcRenderer) {
           const vscode = window.vscode;
           if (vscode) {
-            console.log(
-              "[Sandbox] Preload globals and window.vscode ready"
-            );
             return vscode;
           }
         }

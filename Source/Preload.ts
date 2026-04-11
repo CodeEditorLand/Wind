@@ -186,9 +186,6 @@ const ipcRenderer = {
 
 const ipcMessagePort = {
 	acquire: (responseChannel: string, nonce: string) => {
-		console.log(
-			`[Preload] MessagePort acquire: ${responseChannel}, nonce=${nonce}`,
-		);
 
 		// Create an in-memory MessageChannel.
 		// port2 is posted to the window so acquirePort() (ipc.mp.ts) picks it up
@@ -228,9 +225,6 @@ const ipcMessagePort = {
 
 			if (Length > 1) {
 				HandshakeComplete = true;
-				console.log(
-					"[Preload] Extension host: received init data, sending Initialized",
-				);
 				// MessageType.Initialized → byte 1
 				port1.postMessage(new Uint8Array([1]));
 			}
@@ -239,7 +233,6 @@ const ipcMessagePort = {
 		// Send Ready after a tick so VS Code's onMessage listener is registered.
 		// MessageType.Ready → byte 2
 		setTimeout(() => {
-			console.log("[Preload] Extension host: sending Ready");
 			port1.postMessage(new Uint8Array([2]));
 		}, 50);
 	},
@@ -256,7 +249,6 @@ const webFrame = {
 			"--zoom-level",
 			String(level),
 		);
-		console.log(`[Preload] Zoom level set to: ${level}`);
 	},
 };
 
@@ -307,7 +299,6 @@ const context = {
 			CachedConfiguration = Config;
 			return Config;
 		} catch (error) {
-			console.error("[Preload] Failed to fetch configuration:", error);
 			throw error;
 		}
 	},
@@ -348,12 +339,10 @@ const Globals = {
 
 if (IsTauri) {
 	(window as any).vscode = Globals;
-	console.log("[Preload] Sandbox globals exposed to window.vscode");
 
 	// Dispatch ready event
 	window.dispatchEvent(new Event("vscode-wind-preload-ready"));
 } else {
-	console.error("[Preload] Tauri not detected - preload failed");
 }
 
 // Export for type checking

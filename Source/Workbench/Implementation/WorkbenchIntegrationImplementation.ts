@@ -223,7 +223,6 @@ const debugLog = (context: WorkbenchIntegrationContext, message: string) =>
 	Effect.gen(function* () {
 		const debugMode = yield* Ref.get(context.debugModeRef);
 		if (debugMode) {
-			console.log(`[WorkbenchIntegration] ${message}`);
 		}
 	});
 

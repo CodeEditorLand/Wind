@@ -65,9 +65,6 @@ const SandboxLive = Layer.effect(
 					// Now check for window.vscode
 					const vscode = (window as any).vscode;
 					if (vscode) {
-						console.log(
-							"[Sandbox] Preload globals and window.vscode ready",
-						);
 						return vscode;
 					}
 				}

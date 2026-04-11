@@ -99,10 +99,6 @@ async function invokeTauri<T>(
 
 		throw new Error(`Tauri invoke not available for command: ${command}`);
 	} catch (error: unknown) {
-		console.error(
-			`[SharedProcessProxy] Tauri invoke failed for ${command}:`,
-			error,
-		);
 		throw error;
 	}
 }
@@ -144,10 +140,6 @@ function listenToTauri(
 			);
 		};
 	}
-
-	console.warn(
-		`[SharedProcessProxy] Tauri event listener not available for: ${event}`,
-	);
 	return () => {};
 }
 
@@ -211,10 +203,6 @@ function createServiceProxy(service: SharedProcessService): ServiceProxy {
 				try {
 					listener(...args);
 				} catch (error) {
-					console.error(
-						`[SharedProcessProxy] Error in ${service} event listener (${event}):`,
-						error,
-					);
 				}
 			});
 		}
@@ -637,9 +625,6 @@ class SharedProcessManager {
 	 */
 	registerService(proxy: ServiceProxy): void {
 		this.services.set(proxy.service, proxy);
-		console.log(
-			`[SharedProcessProxy] Registered service: ${proxy.service}`,
-		);
 	}
 
 	/**
@@ -665,31 +650,14 @@ class SharedProcessManager {
 		}
 
 		this.healthCheckInterval = window.setInterval(async () => {
-			console.log(
-				"[SharedProcessProxy] Running health checks for all services",
-			);
-
-			for (const [serviceName, proxy] of this.services.entries()) {
+			for (const [, proxy] of this.services.entries()) {
 				try {
-					const isHealthy = await proxy.healthCheck();
-					proxy.ready = isHealthy;
-
-					if (!isHealthy) {
-						console.warn(
-							`[SharedProcessProxy] Service ${serviceName} is unhealthy`,
-						);
-					}
-				} catch (error) {
-					console.error(
-						`[SharedProcessProxy] Health check failed for ${serviceName}:`,
-						error,
-					);
+					proxy.ready = await proxy.healthCheck();
+				} catch {
 					proxy.ready = false;
 				}
 			}
 		}, intervalMs);
-
-		console.log("[SharedProcessProxy] Health checks started");
 	}
 
 	/**
@@ -699,7 +667,6 @@ class SharedProcessManager {
 		if (this.healthCheckInterval !== null) {
 			clearInterval(this.healthCheckInterval);
 			this.healthCheckInterval = null;
-			console.log("[SharedProcessProxy] Health checks stopped");
 		}
 	}
 
@@ -707,48 +674,29 @@ class SharedProcessManager {
 	 * Initialize all services
 	 */
 	async initialize(): Promise<void> {
-		console.log(
-			"[SharedProcessProxy] Initializing shared process services...",
-		);
-
 		for (const [serviceName, proxy] of this.services.entries()) {
 			try {
 				const isHealthy = await proxy.healthCheck();
 				proxy.ready = isHealthy;
-				console.log(
-					`[SharedProcessProxy] Service ${serviceName}: ${isHealthy ? "ready" : "not ready"}`,
-				);
 			} catch (error) {
-				console.warn(
-					`[SharedProcessProxy] Failed to initialize ${serviceName}:`,
-					error,
-				);
 				proxy.ready = false;
 			}
 		}
 
 		// Start health checks
 		this.startHealthChecks();
-
-		console.log("[SharedProcessProxy] Shared process services initialized");
 	}
 
 	/**
 	 * Shutdown all services
 	 */
 	async shutdown(): Promise<void> {
-		console.log(
-			"[SharedProcessProxy] Shutting down shared process services...",
-		);
-
 		this.stopHealthChecks();
 
 		// Remove all listeners
 		for (const proxy of this.services.values()) {
 			proxy.removeAllListeners();
 		}
-
-		console.log("[SharedProcessProxy] Shared process services shut down");
 	}
 }
 
@@ -764,9 +712,6 @@ let sharedProcessManager: SharedProcessManager | null = null;
 export function getSharedProcessManager(): SharedProcessManager {
 	if (!sharedProcessManager) {
 		sharedProcessManager = new SharedProcessManager();
-		console.log(
-			"[SharedProcessProxy] SharedProcessManager instance created",
-		);
 	}
 	return sharedProcessManager;
 }
@@ -785,13 +730,9 @@ export async function installSharedProcessProxy(): Promise<void> {
 
 	// Prevent double installation
 	if ((window as any).__SHARED_PROCESS_PROXY_INSTALLED__) {
-		console.log("[SharedProcessProxy] Already installed, skipping");
 		return;
 	}
 	(window as any).__SHARED_PROCESS_PROXY_INSTALLED__ = true;
-
-	console.log("[SharedProcessProxy] Installing shared process proxy...");
-
 	// Get shared process manager
 	const manager = getSharedProcessManager();
 
@@ -819,8 +760,6 @@ export async function installSharedProcessProxy(): Promise<void> {
 		StorageService,
 		UpdateService,
 	};
-
-	console.log("[SharedProcessProxy] ✓ Shared process proxy installed");
 }
 
 // ============================================================================
@@ -845,6 +784,5 @@ export default {
 // Auto-install on import
 if (typeof window !== "undefined") {
 	installSharedProcessProxy().catch((error) => {
-		console.error("[SharedProcessProxy] Failed to auto-install:", error);
 	});
 }

@@ -8,10 +8,6 @@ async function invokeTauri(command, args = {}) {
     }
     throw new Error(`Tauri invoke not available for command: ${command}`);
   } catch (error) {
-    console.error(
-      `[ChildProcessPolyfill] Tauri invoke failed for ${command}:`,
-      error
-    );
     throw error;
   }
 }
@@ -39,9 +35,6 @@ function listenToTauri(event, handler) {
       );
     };
   }
-  console.warn(
-    `[ChildProcessPolyfill] Tauri event listener not available for: ${event}`
-  );
   return () => {
   };
 }
@@ -50,14 +43,9 @@ function createMockStream(direction) {
   const listeners = /* @__PURE__ */ new Map();
   return {
     write(data) {
-      console.log(
-        `[ChildProcessPolyfill] Stream write (${direction}):`,
-        data.toString().slice(0, 100)
-      );
       return true;
     },
     end(data) {
-      console.log(`[ChildProcessPolyfill] Stream end (${direction})`);
       this.emit("end");
     },
     on(event, listener) {
@@ -80,10 +68,6 @@ function createMockStream(direction) {
           try {
             listener(...args);
           } catch (error) {
-            console.error(
-              `[ChildProcessPolyfill] Stream event error (${event}):`,
-              error
-            );
           }
         });
       }
@@ -124,20 +108,12 @@ class ChildProcess {
     const unlistenSpawn = listenToTauri(
       `child_process:spawn:${this._sPid}`,
       (payload) => {
-        console.log(
-          `[ChildProcessPolyfill] Spawn event for ${this._sPid}:`,
-          payload
-        );
         this.emit("spawn");
       }
     );
     const unlistenExit = listenToTauri(
       `child_process:exit:${this._sPid}`,
       (payload) => {
-        console.log(
-          `[ChildProcessPolyfill] Exit event for ${this._sPid}:`,
-          payload
-        );
         const data = payload;
         this.exitCode = data.exit_code;
         this.signalCode = data.signal;
@@ -149,10 +125,6 @@ class ChildProcess {
     const unlistenError = listenToTauri(
       `child_process:error:${this._sPid}`,
       (payload) => {
-        console.error(
-          `[ChildProcessPolyfill] Error event for ${this._sPid}:`,
-          payload
-        );
         this.emit("error", payload);
       }
     );
@@ -192,7 +164,6 @@ class ChildProcess {
    * Add event listener
    */
   on(event, listener) {
-    console.log(`[ChildProcessPolyfill] on(${event}) for ${this._sPid}`);
     if (!this.listeners.has(event)) {
       this.listeners.set(event, /* @__PURE__ */ new Set());
     }
@@ -245,10 +216,6 @@ class ChildProcess {
       try {
         listener(...args);
       } catch (error) {
-        console.error(
-          `[ChildProcessPolyfill] Error in ${event} listener:`,
-          error
-        );
       }
     });
     return true;
@@ -260,9 +227,6 @@ class ChildProcess {
    * Kill the process
    */
   kill(signal = "SIGTERM") {
-    console.log(
-      `[ChildProcessPolyfill] Kill ${this._sPid} with signal: ${signal}`
-    );
     if (this.killed) {
       return true;
     }
@@ -271,10 +235,6 @@ class ChildProcess {
       spawn_id: this._sPid,
       signal
     }).catch((error) => {
-      console.error(
-        `[ChildProcessPolyfill] Kill error for ${this._sPid}:`,
-        error
-      );
     });
     return true;
   }
@@ -282,18 +242,10 @@ class ChildProcess {
    * Send a message to the process (IPC)
    */
   send(message, sendHandle, options) {
-    console.log(
-      `[ChildProcessPolyfill] Send message to ${this._sPid}:`,
-      message
-    );
     invokeTauri("child_process:send", {
       spawn_id: this._sPid,
       message
     }).catch((error) => {
-      console.error(
-        `[ChildProcessPolyfill] Send error for ${this._sPid}:`,
-        error
-      );
     });
     return true;
   }
@@ -301,7 +253,6 @@ class ChildProcess {
    * Disconnect from the process
    */
   disconnect() {
-    console.log(`[ChildProcessPolyfill] Disconnect from ${this._sPid}`);
     this.removeAllListeners();
     this._unlistenFunctions.forEach((unlisten) => unlisten());
     this.stdin.end();
@@ -327,9 +278,6 @@ class ChildProcess {
   }
 }
 function spawn(command, args, options) {
-  console.log(
-    `[ChildProcessPolyfill] spawn: ${command} ${args?.join(" ") ?? ""}`
-  );
   const spawnId = `spawn_${Date.now()}_${Math.random().toString(36).substring(7)}`;
   const proc = new ChildProcess(spawnId);
   invokeTauri("electron:spawn_child_process", {
@@ -342,9 +290,6 @@ function spawn(command, args, options) {
   }).then((result) => {
     if (result.success) {
       proc.pid = result.pid;
-      console.log(
-        `[ChildProcessPolyfill] Process spawned with PID: ${proc.pid}`
-      );
       proc.emit("spawn");
     } else {
       proc.emit(
@@ -353,14 +298,12 @@ function spawn(command, args, options) {
       );
     }
   }).catch((error) => {
-    console.error("[ChildProcessPolyfill] spawn error:", error);
     proc.emit("error", error);
   });
   return proc;
 }
 __name(spawn, "spawn");
 function exec(command, options, callback) {
-  console.log(`[ChildProcessPolyfill] exec: ${command}`);
   const execId = `exec_${Date.now()}_${Math.random().toString(36).substring(7)}`;
   const proc = new ChildProcess(execId);
   let stdout = "";
@@ -416,7 +359,6 @@ function execPromise(command, options) {
 }
 __name(execPromise, "execPromise");
 function fork(modulePath, args, options) {
-  console.log(`[ChildProcessPolyfill] fork: ${modulePath}`);
   const forkId = `fork_${Date.now()}_${Math.random().toString(36).substring(7)}`;
   const proc = new ChildProcess(forkId);
   const isExtensionHost = modulePath.includes("extensionHost") || modulePath.includes("process");
@@ -432,9 +374,6 @@ function fork(modulePath, args, options) {
     }).then((result) => {
       if (result.success) {
         proc.pid = result.pid;
-        console.log(
-          `[ChildProcessPolyfill] Extension host forked with PID: ${proc.pid}`
-        );
         proc.emit("spawn");
       } else {
         proc.emit(
@@ -445,7 +384,6 @@ function fork(modulePath, args, options) {
         );
       }
     }).catch((error) => {
-      console.error("[ChildProcessPolyfill] fork error:", error);
       proc.emit("error", error);
     });
   } else {
@@ -480,13 +418,9 @@ function installChildProcessPolyfill() {
     return;
   }
   if (window.__CHILD_PROCESS_POLYFILL_INSTALLED__) {
-    console.log("[ChildProcessPolyfill] Already installed, skipping");
     return;
   }
   window.__CHILD_PROCESS_POLYFILL_INSTALLED__ = true;
-  console.log(
-    "[ChildProcessPolyfill] Installing Node.js child_process module polyfill..."
-  );
   window.childProcess = childProcess;
   if (typeof window.require === "function") {
     const existingRequire = window.require;
@@ -500,9 +434,6 @@ function installChildProcessPolyfill() {
   if (typeof window.vscode !== "undefined") {
     window.vscode.childProcess = childProcess;
   }
-  console.log(
-    "[ChildProcessPolyfill]\u2001\u2713 Node.js child_process module polyfill installed"
-  );
 }
 __name(installChildProcessPolyfill, "installChildProcessPolyfill");
 const process = typeof window !== "undefined" && window.process ? window.process : { execPath: "/usr/local/bin/node" };

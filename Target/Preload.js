@@ -45,9 +45,6 @@ const ipcRenderer = {
 };
 const ipcMessagePort = {
   acquire: /* @__PURE__ */ __name((responseChannel, nonce) => {
-    console.log(
-      `[Preload] MessagePort acquire: ${responseChannel}, nonce=${nonce}`
-    );
     const { port1, port2 } = new MessageChannel();
     window.postMessage(nonce, "*", [port2]);
     port1.start();
@@ -60,14 +57,10 @@ const ipcMessagePort = {
       const Length = Data instanceof ArrayBuffer ? Data.byteLength : Data instanceof Uint8Array ? Data.byteLength : typeof Data === "object" && Data?.byteLength ? Data.byteLength : 0;
       if (Length > 1) {
         HandshakeComplete = true;
-        console.log(
-          "[Preload] Extension host: received init data, sending Initialized"
-        );
         port1.postMessage(new Uint8Array([1]));
       }
     };
     setTimeout(() => {
-      console.log("[Preload] Extension host: sending Ready");
       port1.postMessage(new Uint8Array([2]));
     }, 50);
   }, "acquire")
@@ -78,7 +71,6 @@ const webFrame = {
       "--zoom-level",
       String(level)
     );
-    console.log(`[Preload] Zoom level set to: ${level}`);
   }, "setZoomLevel")
 };
 const process = {
@@ -115,7 +107,6 @@ const context = {
       CachedConfiguration = Config;
       return Config;
     } catch (error) {
-      console.error("[Preload] Failed to fetch configuration:", error);
       throw error;
     }
   }, "configuration"),
@@ -138,9 +129,7 @@ const Globals = {
 };
 if (IsTauri) {
   window.vscode = Globals;
-  console.log("[Preload]\u2001Sandbox globals exposed to window.vscode");
   window.dispatchEvent(new Event("vscode-wind-preload-ready"));
 } else {
-  console.error("[Preload]\u2001Tauri not detected - preload failed");
 }
 //# sourceMappingURL=Preload.js.map

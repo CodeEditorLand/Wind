@@ -90,10 +90,6 @@ async function invokeTauri<T>(
 
 		throw new Error(`Tauri invoke not available for command: ${command}`);
 	} catch (error: unknown) {
-		console.error(
-			`[IPCRendererShim] Tauri invoke failed for ${command}:`,
-			error,
-		);
 		throw error;
 	}
 }
@@ -111,21 +107,10 @@ function sendTauri(command: string, args: Record<string, unknown> = {}): void {
 
 		if (typeof Invoke === "function") {
 			Invoke(command, args).catch((error: Error) => {
-				console.warn(
-					`[IPCRendererShim] Tauri send failed (no response expected): ${command}`,
-					error,
-				);
 			});
 		} else {
-			console.warn(
-				`[IPCRendererShim] Tauri not available for: ${command}`,
-			);
 		}
 	} catch (error) {
-		console.warn(
-			`[IPCRendererShim] Tauri send error (no response expected): ${command}`,
-			error,
-		);
 	}
 }
 
@@ -443,10 +428,6 @@ class IPCRendererImpl implements IpcRenderer {
 				try {
 					Listener(Event, Data);
 				} catch (Error) {
-					console.error(
-						"[IPCRendererShim] Error in vscode:message listener:",
-						Error,
-					);
 				}
 			}
 		}
@@ -469,10 +450,6 @@ class IPCRendererImpl implements IpcRenderer {
 				const RequestId = HeaderArr[1] as number;
 				const ChannelName = HeaderArr[2] as string;
 				const MethodName = HeaderArr[3] as string;
-
-				console.log(
-					`[IPCRendererShim] IPC request: ${ChannelName}.${MethodName} (id=${RequestId})`,
-				);
 
 				const StubResponse = this.getStubResponse(
 					ChannelName,
@@ -506,17 +483,10 @@ class IPCRendererImpl implements IpcRenderer {
 				const RequestId = HeaderArr[1] as number;
 				const ChannelName = HeaderArr[2] as string;
 				const EventName = HeaderArr[3] as string;
-				console.log(
-					`[IPCRendererShim] IPC event subscribe: ${ChannelName}.${EventName} (id=${RequestId})`,
-				);
 				// Event subscriptions don't need immediate response.
 				// The server fires EventFire (204) when events occur.
 			}
 		} catch (Error) {
-			console.warn(
-				"[IPCRendererShim] Failed to parse IPC message:",
-				Error,
-			);
 		}
 	}
 
@@ -583,9 +553,6 @@ class IPCRendererImpl implements IpcRenderer {
 				return "__IPC_ERROR__FileNotFound";
 
 			default:
-				console.log(
-					`[IPCRendererShim] Stub response for unknown channel: ${Channel}.${Method}`,
-				);
 				return undefined;
 		}
 	}
@@ -594,15 +561,10 @@ class IPCRendererImpl implements IpcRenderer {
 	 * Send message to main process
 	 */
 	send(channel: string, ...args: unknown[]): void {
-		console.log(`[IPCRendererShim] send: ${channel}`, args);
-
 		// Handle VS Code binary IPC protocol
 		if (channel === "vscode:hello") {
 			// The ChannelClient waits for Initialize (type 200) response.
 			// Send it asynchronously so the listener is registered first.
-			console.log(
-				"[IPCRendererShim] vscode:hello received, sending Initialize response",
-			);
 			setTimeout(() => {
 				const InitMessage = BuildIPCMessage([200], undefined);
 				this.emitMessage(InitMessage);
@@ -632,9 +594,6 @@ class IPCRendererImpl implements IpcRenderer {
 			channel === "vscode:openDevTools" ||
 			channel.startsWith("vscode:")
 		) {
-			console.log(
-				`[IPCRendererShim] send: ${channel} — no-op (not wired to Tauri)`,
-			);
 			return;
 		}
 
@@ -648,9 +607,6 @@ class IPCRendererImpl implements IpcRenderer {
 		} else {
 			// Unmapped non-vscode channel — log warning instead of calling
 			// non-existent ipc:send Tauri command
-			console.warn(
-				`[IPCRendererShim] send: unmapped channel "${channel}" — dropping (no Tauri route)`,
-			);
 		}
 	}
 
@@ -658,9 +614,6 @@ class IPCRendererImpl implements IpcRenderer {
 	 * Synchronous send - polyfilled as async with warning
 	 */
 	sendSync(_channel: string, ..._args: unknown[]): unknown {
-		console.warn(
-			`[IPCRendererShim] ⚠️ sendSync is not supported in Tauri. Use invoke() instead. Returning undefined.`,
-		);
 		return undefined;
 	}
 
@@ -668,8 +621,6 @@ class IPCRendererImpl implements IpcRenderer {
 	 * Invoke main process and get response
 	 */
 	async invoke<T = unknown>(channel: string, ...args: unknown[]): Promise<T> {
-		console.log(`[IPCRendererShim] invoke: ${channel}`, args);
-
 		// Map Electron channel to Tauri command
 		const mapping = mapElectronChannelToTauri(channel);
 
@@ -680,9 +631,6 @@ class IPCRendererImpl implements IpcRenderer {
 
 		// Unmapped channel — return undefined instead of calling
 		// non-existent ipc:invoke Tauri command
-		console.warn(
-			`[IPCRendererShim] invoke: unmapped channel "${channel}" — returning undefined`,
-		);
 		return undefined as T;
 	}
 
@@ -693,8 +641,6 @@ class IPCRendererImpl implements IpcRenderer {
 		channel: string,
 		listener: (event: IpcRendererEvent, ...args: unknown[]) => void,
 	): this {
-		console.log(`[IPCRendererShim] on: ${channel}`);
-
 		if (!this.listeners.has(channel)) {
 			this.listeners.set(channel, new Set());
 		}
@@ -713,8 +659,6 @@ class IPCRendererImpl implements IpcRenderer {
 		channel: string,
 		listener: (event: IpcRendererEvent, ...args: unknown[]) => void,
 	): this {
-		console.log(`[IPCRendererShim] once: ${channel}`);
-
 		if (!this.onceListeners.has(channel)) {
 			this.onceListeners.set(channel, new Set());
 		}
@@ -741,8 +685,6 @@ class IPCRendererImpl implements IpcRenderer {
 		channel: string,
 		listener: (event: IpcRendererEvent, ...args: unknown[]) => void,
 	): this {
-		console.log(`[IPCRendererShim] removeListener: ${channel}`);
-
 		const channelListeners = this.listeners.get(channel);
 		if (channelListeners) {
 			channelListeners.delete(listener);
@@ -758,10 +700,6 @@ class IPCRendererImpl implements IpcRenderer {
 	 * Remove all listeners for a channel
 	 */
 	removeAllListeners(channel?: string): this {
-		console.log(
-			`[IPCRendererShim] removeAllListeners: ${channel ?? "all"}`,
-		);
-
 		if (channel) {
 			this.listeners.delete(channel);
 		} else {
@@ -775,8 +713,6 @@ class IPCRendererImpl implements IpcRenderer {
 	 * Client-side request-reply pattern (sendTo + onReply)
 	 */
 	sendTo(channel: string, args: unknown[], callback: ReplyHandler): void {
-		console.log(`[IPCRendererShim] sendTo: ${channel}`);
-
 		const requestId = ++this.replyCounter;
 		const request: SendToRequest = {
 			channel,
@@ -796,10 +732,6 @@ class IPCRendererImpl implements IpcRenderer {
 				}
 			})
 			.catch((error) => {
-				console.error(
-					`[IPCRendererShim] sendTo error: ${channel}`,
-					error,
-				);
 				const handler = this.replyHandlers.get(requestId);
 				if (handler) {
 					handler.callback({ error: error.message });
@@ -812,8 +744,6 @@ class IPCRendererImpl implements IpcRenderer {
 	 * Register reply handler for sendTo pattern
 	 */
 	onReply(channel: string, handler: ReplyHandler): void {
-		console.log(`[IPCRendererShim] onReply: ${channel}`);
-
 		this.on(channel, (_event, ...args) => {
 			handler(args[0]);
 		});
@@ -828,16 +758,12 @@ class IPCRendererImpl implements IpcRenderer {
 	): void {
 		// Note: Full event listener registration requires Tauri event system
 		// This is a placeholder - actual implementation depends on Tauri setup
-		console.log(
-			`[IPCRendererShim] Registering Tauri listener for: ${_channel}`,
-		);
 	}
 
 	/**
 	 * Cleanup method to remove all listeners
 	 */
 	cleanup(): void {
-		console.log("[IPCRendererShim] Cleaning up IPC listeners");
 		this.listeners.clear();
 		this.onceListeners.clear();
 		this.replyHandlers.clear();
@@ -856,7 +782,6 @@ let ipcRendererInstance: IPCRendererImpl | null = null;
 export function getIPCRenderer(): IpcRenderer {
 	if (!ipcRendererInstance) {
 		ipcRendererInstance = new IPCRendererImpl();
-		console.log("[IPCRendererShim] IPCRenderer instance created");
 	}
 	return ipcRendererInstance;
 }
@@ -878,17 +803,11 @@ export function installIPCRendererShim(): void {
 		(window as unknown as { __IPC_RENDERER_SHIM_INSTALLED__?: boolean })
 			.__IPC_RENDERER_SHIM_INSTALLED__
 	) {
-		console.log("[IPCRendererShim] Already installed, skipping");
 		return;
 	}
 	(
 		window as unknown as { __IPC_RENDERER_SHIM_INSTALLED__: boolean }
 	).__IPC_RENDERER_SHIM_INSTALLED__ = true;
-
-	console.log(
-		"[IPCRendererShim] Installing Electron IPC renderer polyfill...",
-	);
-
 	// Create IPC renderer instance
 	const ipcRenderer = getIPCRenderer();
 
@@ -900,16 +819,11 @@ export function installIPCRendererShim(): void {
 		(
 			window as unknown as { vscode?: { ipcRenderer?: IpcRenderer } }
 		).vscode!.ipcRenderer = ipcRenderer;
-		console.log(
-			"[IPCRendererShim] ✓ IPCRenderer attached to window.vscode",
-		);
 	}
 
 	// Also make available globally for easier access
 	(window as unknown as { __IPC_RENDERER__?: IpcRenderer }).__IPC_RENDERER__ =
 		ipcRenderer;
-
-	console.log("[IPCRendererShim] ✓ Electron IPC renderer polyfill installed");
 }
 
 // ============================================================================

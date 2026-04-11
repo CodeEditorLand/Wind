@@ -1,21 +1,11 @@
 /**
  * @module TauriMainProcessService
  *
- * @description
  * Drop-in replacement for VS Code's ElectronIPCMainProcessService.
- * Implements IMainProcessService by routing channel.call() directly
- * through Tauri invoke to Mountain's WindServiceHandlers.
+ * Routes channel.call() through Tauri invoke to Mountain's WindServiceHandlers.
  *
- * Eliminates the binary IPC protocol entirely — no serialize/deserialize,
- * no vscode:hello/vscode:message, no ChannelClient/ChannelServer.
- *
- * VS Code desktop workbench calls:
- *   mainProcessService.getChannel('localFilesystem').call('stat', [uri])
- *
- * This routes to:
- *   Tauri.invoke("MountainIPCInvoke", { method: "file:stat", params: [uri] })
- *
- * Mountain's WindServiceHandlers.rs handles the rest.
+ * Zero console.* output. Tracing via performance.mark().
+ * Build-baked OTEL bridge (OTELBridge.ts) collects marks automatically.
  */
 
 import type { Event as VSCodeEvent } from "@codeeditorland/output/vs/base/common/event";
@@ -24,40 +14,15 @@ import type {
 	IServerChannel,
 } from "@codeeditorland/output/vs/base/parts/ipc/common/ipc";
 
-// Inline DevLog — can't import from ../Function/ because this file is served
-// from /Static/Application/vs/platform/ipc/ where relative imports break.
-const _AppDataPattern = /land\.editor\.binary\.[^\s/\\)]+/g;
-let _DedupKey = "";
-let _DedupCount = 0;
-const DevLog = (Tag: string, ...Args: unknown[]): void => {
-	const Filter = (window as any).__LAND_DEV_LOG;
-	if (!Filter) return;
-	const Filters = String(Filter).split(",").map((T: string) => T.trim().toLowerCase());
-	const Short = Filters.includes("short");
-	const Lower = Tag.toLowerCase();
-	if (!Short && Filter !== "all" && !Filters.includes(Lower)) return;
-	const TagUpper = Tag.toUpperCase();
-	if (Short) {
-		const Message = Args.map(String).join(" ").replace(_AppDataPattern, "$APP");
-		const Key = `${TagUpper}:${Message}`;
-		if (Key === _DedupKey) { _DedupCount++; return; }
-		if (_DedupCount > 1) console.log(`  (x${_DedupCount})`);
-		_DedupKey = Key;
-		_DedupCount = 1;
-		console.log(`[DEV:${TagUpper}]`, Message);
-	} else {
-		console.log(`[DEV:${TagUpper}]`, ...Args);
-	}
+// Inline trace — performance.mark() collected by build-baked OTELBridge.
+const _Trace = (Tag: string, Message: string): void => {
+	try { performance.mark(`land:${Tag}:${Message}`); } catch {}
 };
 
 // ============================================================================
 // Channel → Mountain Route Mapping
 // ============================================================================
 
-/**
- * Maps VS Code IPC channel names to Mountain WindServiceHandlers route prefixes.
- * VS Code: channel.call('stat', args) → Mountain: "file:stat"
- */
 const ChannelRouteMap: Record<string, string> = {
 	localFilesystem: "file",
 	storage: "storage",
@@ -81,11 +46,8 @@ const ChannelRouteMap: Record<string, string> = {
 	lifecycle: "lifecycle",
 	label: "label",
 	model: "model",
-	// Phase 2: Window management + OS integration
 	nativeHost: "nativeHost",
-	// Phase 3: Terminal PTY
 	localPty: "localPty",
-	// Phase 2.5: Remaining channels routed to Mountain
 	update: "update",
 	url: "url",
 	menubar: "menubar",
@@ -94,69 +56,33 @@ const ChannelRouteMap: Record<string, string> = {
 	extensionhostdebugservice: "extensionhostdebugservice",
 };
 
-/**
- * Channels where call() can be fire-and-forget (no real response needed).
- * Returns undefined immediately instead of going through Tauri.
- * - logger: log messages don't need acknowledgement
- * - output: VS Code output channels are managed by Mountain natively;
- *   browser-side stat/writeFile for output_* log files are not needed
- */
 const FireAndForgetChannels = new Set(["logger", "output"]);
 
-/**
- * Channels where errors must be thrown (not swallowed) so VS Code's
- * fileService.js can catch FileNotFound and create missing dirs/files.
- */
 const FileSystemChannels = new Set(["localFilesystem"]);
 const FileSystemThrowCommands = new Set([
-	"stat",
-	"readFile",
-	"writeFile",
-	"readdir",
-	"mkdir",
-	"delete",
-	"rename",
-	"copy",
-	"open",
-	"close",
-	"read",
-	"write",
-	"realpath",
-	"cloneFile",
+	"stat", "readFile", "writeFile", "readdir", "mkdir",
+	"delete", "rename", "copy", "open", "close",
+	"read", "write", "realpath", "cloneFile",
 ]);
 
-/**
- * Channels that don't exist in Mountain yet — return stub responses
- * to prevent hangs. These should be wired to real handlers over time.
- */
 const StubChannels: Record<string, Record<string, unknown>> = {
-	// Electron-specific channels that have no Tauri equivalent.
-	// Everything else routes to Mountain for real handling.
 	sign: { sign: "", createNewMessage: "", validate: true },
 	policy: { serialize: {}, registerPolicyChange: undefined },
 	userDataProfiles: {},
 	keyboardLayout: {
 		getKeyboardLayoutData: {
 			keyboardLayoutInfo: {
-				model: "pc105",
-				layout: "us",
-				variant: "",
-				options: "",
-				rules: "",
+				model: "pc105", layout: "us", variant: "",
+				options: "", rules: "",
 			},
 			keyboardMapping: {},
 		},
 	},
 	sharedProcess: {},
 	utilityProcessWorker: {
-		// createWorker returns a never-resolving promise to prevent
-		// destructure crash in watcherClient/utilityProcessWorkerWorkbenchService.
-		// Without a real utility process, the watcher and other workers
-		// simply never initialize (non-blocking — Mountain handles file watching).
 		createWorker: new Promise(() => {}),
 		disposeWorker: undefined,
 	},
-	// Channels with no desktop equivalent in Tauri
 	meteredConnection: {},
 	webContentExtractor: {},
 	browserElements: {},
@@ -174,18 +100,11 @@ async function InvokeMountain(
 	Method: string,
 	Params: unknown[],
 ): Promise<unknown> {
-	// Tauri 2.x: window.__TAURI__.core.invoke()
-	// Tauri 1.x: window.__TAURI__.invoke()
 	const Invoke =
 		(window as any).__TAURI__?.core?.invoke ??
 		(window as any).__TAURI__?.invoke;
 
-	if (typeof Invoke !== "function") {
-		console.warn(
-			`[TauriMainProcessService] Tauri not available for: ${Method}`,
-		);
-		return undefined;
-	}
+	if (typeof Invoke !== "function") return undefined;
 
 	return await Invoke("MountainIPCInvoke", {
 		method: Method,
@@ -208,11 +127,9 @@ class TauriChannel implements IChannel {
 		Arg?: unknown,
 		_CancellationToken?: unknown,
 	): Promise<T> {
-		DevLog("ipc", `${this.ChannelName}.${Command}`);
+		_Trace("ipc", `${this.ChannelName}.${Command}`);
 
-		// Fire-and-forget channels
 		if (FireAndForgetChannels.has(this.ChannelName)) {
-			// Still send to Mountain but don't await
 			if (this.RoutePrefix) {
 				InvokeMountain(
 					`${this.RoutePrefix}:${Command}`,
@@ -222,18 +139,13 @@ class TauriChannel implements IChannel {
 			return undefined as T;
 		}
 
-		// Stub channels (not yet wired to Mountain)
 		const Stubs = StubChannels[this.ChannelName];
 		if (Stubs !== undefined) {
-			DevLog("ipc", `stub: ${this.ChannelName}.${Command}`);
+			_Trace("ipc", `stub:${this.ChannelName}.${Command}`);
 			const StubValue = Stubs[Command];
-			if (StubValue !== undefined) {
-				return StubValue as T;
-			}
-			return undefined as T;
+			return (StubValue !== undefined ? StubValue : undefined) as T;
 		}
 
-		// Route through Mountain
 		if (this.RoutePrefix) {
 			const MountainMethod = `${this.RoutePrefix}:${Command}`;
 			const Params =
@@ -241,10 +153,7 @@ class TauriChannel implements IChannel {
 
 			try {
 				const Result = await InvokeMountain(MountainMethod, Params);
-				// File read commands return { buffer: number[] } from Mountain.
-				// VS Code's IPCFileSystemProvider does: `const buf = await call<VSBuffer>('readFile', uri); return buf.buffer;`
-				// So `buf.buffer` must return a Uint8Array (not an ArrayBuffer).
-				// Return a VSBuffer-shaped object: { buffer: Uint8Array, byteLength: number }.
+
 				if (
 					FileSystemChannels.has(this.ChannelName) &&
 					(Command === "readFile" || Command === "read")
@@ -269,16 +178,10 @@ class TauriChannel implements IChannel {
 				}
 				return Result as T;
 			} catch (RawError) {
-				// File system errors must be RETHROWN so VS Code's
-				// fileService.js can catch them as FileNotFound/etc.
-				// The mkdirp/readFile/writeFile code relies on
-				// stat() throwing to know the file doesn't exist.
 				if (
 					FileSystemChannels.has(this.ChannelName) &&
 					FileSystemThrowCommands.has(Command)
 				) {
-					// Wrap with FileSystemProviderErrorCode so VS Code
-					// recognizes it. Code 1 = FileNotFound, 6 = NoPermissions.
 					const ErrorMsg = String(RawError);
 					const WrappedError = new Error(ErrorMsg) as any;
 					if (
@@ -303,28 +206,18 @@ class TauriChannel implements IChannel {
 					}
 					throw WrappedError;
 				}
-				// Other channels: return undefined on error to avoid
-				// hangs in services that don't handle rejections.
-				console.warn(
-					`[TauriMainProcessService] ${this.ChannelName}.${Command} failed (returning undefined):`,
-					RawError,
-				);
+				_Trace("ipc", `error:${this.ChannelName}.${Command}`);
 				return undefined as T;
 			}
 		}
 
-		// Unknown channel — log and return undefined
-		console.warn(
-			`[TauriMainProcessService] Unknown channel: ${this.ChannelName}.${Command}`,
-		);
+		_Trace("ipc", `unknown:${this.ChannelName}.${Command}`);
 		return undefined as T;
 	}
 
 	listen<T>(Event: string, Arg?: unknown): VSCodeEvent<T> {
-		DevLog("ipc", `listen: ${this.ChannelName}.${Event}`);
+		_Trace("ipc", `listen:${this.ChannelName}.${Event}`);
 
-		// readFileStream: import real VSBuffer from VS Code's buffer.js
-		// (relative path resolves from /Static/Application/vs/platform/ipc/electron-browser/).
 		if (
 			FileSystemChannels.has(this.ChannelName) &&
 			Event === "readFileStream"
@@ -363,7 +256,6 @@ class TauriChannel implements IChannel {
 			}) as unknown as VSCodeEvent<T>;
 		}
 
-		// Other events — return no-op for now.
 		return (() => ({ dispose: () => {} })) as unknown as VSCodeEvent<T>;
 	}
 }
@@ -372,19 +264,13 @@ class TauriChannel implements IChannel {
 // TauriMainProcessService — implements IMainProcessService
 // ============================================================================
 
-/**
- * Drop-in replacement for ElectronIPCMainProcessService.
- * Routes getChannel().call() through Tauri invoke to Mountain.
- */
 export class TauriMainProcessService {
 	declare readonly _serviceBrand: undefined;
 
 	private readonly Channels = new Map<string, TauriChannel>();
 
 	constructor(_WindowId: number) {
-		console.log(
-			`[TauriMainProcessService] Created for window ${_WindowId}`,
-		);
+		_Trace("ipc", `TauriMainProcessService:window=${_WindowId}`);
 	}
 
 	getChannel(ChannelName: string): IChannel {
@@ -393,12 +279,6 @@ export class TauriMainProcessService {
 			const RoutePrefix = ChannelRouteMap[ChannelName] ?? null;
 			Channel = new TauriChannel(ChannelName, RoutePrefix);
 			this.Channels.set(ChannelName, Channel);
-
-			if (!RoutePrefix && !StubChannels[ChannelName]) {
-				console.warn(
-					`[TauriMainProcessService] No Mountain route for channel: ${ChannelName}`,
-				);
-			}
 		}
 		return Channel;
 	}
@@ -406,10 +286,7 @@ export class TauriMainProcessService {
 	registerChannel(
 		_ChannelName: string,
 		_Channel: IServerChannel<string>,
-	): void {
-		// In Electron, the renderer registers channels that the main process
-		// can call back into. For Tauri, this is handled by sky:// events.
-	}
+	): void {}
 
 	dispose(): void {
 		this.Channels.clear();

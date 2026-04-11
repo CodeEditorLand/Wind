@@ -8,10 +8,6 @@ async function invokeTauri(command, args = {}) {
     }
     throw new Error(`Tauri invoke not available for command: ${command}`);
   } catch (error) {
-    console.error(
-      `[FileSystemPolyfill] Tauri invoke failed for ${command}:`,
-      error
-    );
     throw error;
   }
 }
@@ -87,7 +83,6 @@ function createDirent(name, path, isDir) {
 }
 __name(createDirent, "createDirent");
 async function readFile(path, options) {
-  console.log(`[FileSystemPolyfill] readFile: ${path}`);
   const encoding = typeof options === "string" ? options : options?.encoding ?? "utf8";
   try {
     const content = await invokeTauri("file:read", {
@@ -97,13 +92,11 @@ async function readFile(path, options) {
     return encoding === null ? Buffer.from(content, "base64") : content;
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
-    console.error(`[FileSystemPolyfill] readFile error: ${path}`, err);
     throw err;
   }
 }
 __name(readFile, "readFile");
 async function writeFile(path, data, options) {
-  console.log(`[FileSystemPolyfill] writeFile: ${path}`);
   let encoding = "utf8";
   if (typeof options === "string") {
     encoding = options;
@@ -124,13 +117,11 @@ async function writeFile(path, data, options) {
     });
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
-    console.error(`[FileSystemPolyfill] writeFile error: ${path}`, err);
     throw err;
   }
 }
 __name(writeFile, "writeFile");
 async function unlink(path) {
-  console.log(`[FileSystemPolyfill] unlink: ${path}`);
   try {
     await invokeTauri("file:delete", {
       path,
@@ -138,13 +129,11 @@ async function unlink(path) {
     });
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
-    console.error(`[FileSystemPolyfill] unlink error: ${path}`, err);
     throw err;
   }
 }
 __name(unlink, "unlink");
 async function rm(path, options) {
-  console.log(`[FileSystemPolyfill] rm: ${path}`);
   opts = {
     recursive: false,
     force: false,
@@ -159,14 +148,12 @@ async function rm(path, options) {
   } catch (error) {
     if (!opts.force) {
       const err = error instanceof Error ? error : new Error(String(error));
-      console.error(`[FileSystemPolyfill] rm error: ${path}`, err);
       throw err;
     }
   }
 }
 __name(rm, "rm");
 async function rename(oldPath, newPath) {
-  console.log(`[FileSystemPolyfill] rename: ${oldPath} -> ${newPath}`);
   try {
     await invokeTauri("file:move", {
       from: oldPath,
@@ -174,13 +161,11 @@ async function rename(oldPath, newPath) {
     });
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
-    console.error(`[FileSystemPolyfill] rename error: ${oldPath}`, err);
     throw err;
   }
 }
 __name(rename, "rename");
 async function copyFile(src, dest, options) {
-  console.log(`[FileSystemPolyfill] copyFile: ${src} -> ${dest}`);
   try {
     await invokeTauri("file:copy", {
       from: src,
@@ -188,13 +173,11 @@ async function copyFile(src, dest, options) {
     });
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
-    console.error(`[FileSystemPolyfill] copyFile error: ${src}`, err);
     throw err;
   }
 }
 __name(copyFile, "copyFile");
 async function mkdir(path, options) {
-  console.log(`[FileSystemPolyfill] mkdir: ${path}`);
   let opts2 = { recursive: false };
   if (typeof options === "boolean") {
     opts2.recursive = options;
@@ -213,13 +196,11 @@ async function mkdir(path, options) {
     });
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
-    console.error(`[FileSystemPolyfill] mkdir error: ${path}`, err);
     throw err;
   }
 }
 __name(mkdir, "mkdir");
 async function rmdir(path) {
-  console.log(`[FileSystemPolyfill] rmdir: ${path}`);
   try {
     await invokeTauri("file:delete", {
       path,
@@ -228,13 +209,11 @@ async function rmdir(path) {
     });
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
-    console.error(`[FileSystemPolyfill] rmdir error: ${path}`, err);
     throw err;
   }
 }
 __name(rmdir, "rmdir");
 async function readdir(path, options) {
-  console.log(`[FileSystemPolyfill] readdir: ${path}`);
   try {
     const withFileTypes = options?.withFileTypes ?? false;
     const entries = await invokeTauri("file:readdir", {
@@ -253,13 +232,11 @@ async function readdir(path, options) {
     }
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
-    console.error(`[FileSystemPolyfill] readdir error: ${path}`, err);
     throw err;
   }
 }
 __name(readdir, "readdir");
 async function stat(path) {
-  console.log(`[FileSystemPolyfill] stat: ${path}`);
   try {
     const mountainStats = await invokeTauri("file:stat", {
       path
@@ -267,13 +244,11 @@ async function stat(path) {
     return mountainStatsToStats(mountainStats);
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
-    console.error(`[FileSystemPolyfill] stat error: ${path}`, err);
     throw err;
   }
 }
 __name(stat, "stat");
 async function exists(path) {
-  console.log(`[FileSystemPolyfill] exists: ${path}`);
   try {
     await stat(path);
     return true;
@@ -408,19 +383,14 @@ function installFileSystemPolyfill() {
     return;
   }
   if (window.__FILE_SYSTEM_POLYFILL_INSTALLED__) {
-    console.log("[FileSystemPolyfill] Already installed, skipping");
     return;
   }
   window.__FILE_SYSTEM_POLYFILL_INSTALLED__ = true;
-  console.log(
-    "[FileSystemPolyfill] Installing Node.js fs module polyfill..."
-  );
   window.fs = fs;
   window.require = createRequireShim();
   if (typeof window.vscode !== "undefined") {
     window.vscode.fs = fs;
   }
-  console.log("[FileSystemPolyfill]\u2001\u2713 Node.js fs module polyfill installed");
 }
 __name(installFileSystemPolyfill, "installFileSystemPolyfill");
 function createRequireShim() {

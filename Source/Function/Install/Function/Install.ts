@@ -1,20 +1,10 @@
 /**
  * @module Function/Install/Function/Install
- * @description
+ *
  * Main entry point for Wind polyfill installation.
- * Creates and attaches Electron API shims to window.vscode that Electron workbench expects.
+ * Creates and attaches Electron API shims to window.vscode.
  *
- * @responsibilities
- * - Validates window context and prevents double initialization
- * - Creates VSCode-compatible globals with proper typing
- * - Handles Mountain backend communication with graceful degradation
- * - Implements Electron-like IPC subsystem with Tauri
- * - Provides comprehensive error handling and cleanup
- *
- * @see {@link Function/Install/Function/ResolveConfiguration} Configuration resolver
- * @see {@link Function/Install/Function/CreateIPCRenderer} IPC renderer factory
- * @see {@link Function/Install/Function/CreateProcess} Process factory
- * @category Function
+ * Zero console.* output. Dev tracing via performance.mark().
  */
 
 import type { IMainWindowSandboxGlobals } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/globals";
@@ -24,21 +14,14 @@ import { CreateProcess } from "./CreateProcess.js";
 import { Fallback } from "./Fallback.js";
 import { ResolveConfiguration } from "./ResolveConfiguration.js";
 
-/**
- * Main Wind preload installation function
- */
+const _Trace = (Message: string): void => {
+	try { performance.mark(`land:install:${Message}`); } catch {}
+};
+
 export default async function Install(): Promise<void> {
 	try {
-		// Validate window context
-		if (typeof window === "undefined") {
-			const error = new Error(
-				"Cannot install Wind polyfill: window is not defined",
-			);
-			console.error(error);
-			return;
-		}
+		if (typeof window === "undefined") return;
 
-		// Prevent double initialization
 		if (
 			(window as unknown as { polyfillInstalled?: boolean })
 				.polyfillInstalled
@@ -49,25 +32,20 @@ export default async function Install(): Promise<void> {
 			window as unknown as { polyfillInstalled: boolean }
 		).polyfillInstalled = true;
 
-		console.log("[Wind] Starting Wind preload installation...");
+		_Trace("start");
 
-		// Initialize core components
 		const Configuration = await ResolveConfiguration();
 		const IPCRenderer = CreateIPCRenderer();
 		const Process = CreateProcess(Configuration);
 
-		// Create preload globals object that will be enhanced by Effect-TS
 		const preloadGlobals = {
 			ipcRenderer: IPCRenderer,
 			process: Process,
 			configuration: Configuration,
 		};
 
-		// Attach preloadGlobals to window for Effect-TS services to access
 		(window as any).preloadGlobals = preloadGlobals;
-		console.log("[Wind] preloadGlobals attached to window");
 
-		// Construct compliant VSCode API object
 		const Globals: IMainWindowSandboxGlobals = {
 			ipcRenderer: IPCRenderer,
 			process: Process,
@@ -79,13 +57,8 @@ export default async function Install(): Promise<void> {
 			webUtils: { getPathForFile: (file: File) => file.name },
 			ipcMessagePort: {
 				acquire: (ResponseChannel: string, Nonce: string) => {
-					console.log(
-						`[Wind] MessagePort acquire: ${ResponseChannel}, nonce=${Nonce}`,
-					);
+					_Trace(`acquire:${ResponseChannel}`);
 
-					// Only do the extension host handshake for the ext host channel.
-					// Other acquires (utility process workers, file watchers) get a
-					// port but no protocol — their stubs never resolve, so no crash.
 					const IsExtensionHost = ResponseChannel.includes(
 						"startExtensionHostMessagePortResult",
 					);
@@ -107,16 +80,10 @@ export default async function Install(): Promise<void> {
 										: 0;
 							if (Length > 1) {
 								Done = true;
-								console.log(
-									"[Wind] Extension host: received init data, sending Initialized",
-								);
 								port1.postMessage(new Uint8Array([1]));
 							}
 						};
 						setTimeout(() => {
-							console.log(
-								"[Wind] Extension host: sending Ready",
-							);
 							port1.postMessage(new Uint8Array([2]));
 						}, 50);
 					}
@@ -124,17 +91,12 @@ export default async function Install(): Promise<void> {
 			},
 		};
 
-		// Attach to window
 		(window as any).vscode = Globals;
-		console.info(
-			"[Wind] Successfully installed Electron API polyfill for workbench.",
-		);
-
-		// Signal that preload is ready for Effect-TS bootstrap
 		(window as any).__WIND_PRELOAD_READY__ = true;
-		console.log("[Wind] Preload ready, Effect-TS bootstrap can proceed");
+
+		_Trace("done");
 	} catch (error: unknown) {
-		console.error(`[Wind] Install error:`, error);
+		try { performance.mark(`land:install:error`); } catch {}
 		Fallback();
 	}
 }

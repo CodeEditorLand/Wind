@@ -87,8 +87,6 @@ const TelemetryLive = Layer.effect(
 						},
 					].slice(-10000),
 				);
-
-				console.log(`[Telemetry] Metric: ${name} = ${value}`);
 			});
 
 		// Atom: Start a span
@@ -141,10 +139,6 @@ const TelemetryLive = Layer.effect(
 								},
 							].slice(-10000),
 						);
-
-						console.log(
-							`[Telemetry] Span: ${name} completed in ${span.duration}ms (success: ${success})`,
-						);
 					});
 
 				return { end };
@@ -176,19 +170,10 @@ const TelemetryLive = Layer.effect(
 					].slice(-10000),
 				);
 
-				// Also log to console
-				const consoleMethod =
-					level === "error"
-						? console.error
-						: level === "warn"
-							? console.warn
-							: level === "debug"
-								? console.debug
-								: console.log;
-				consoleMethod(
-					`[Telemetry] [${level.toUpperCase()}] ${message}`,
-					context ?? {},
-				);
+				// Trace via performance.mark — OTELBridge collects automatically
+				if (typeof performance !== "undefined") {
+					try { performance.mark(`land:telemetry:${level}:${message.slice(0, 80)}`); } catch {}
+				}
 			});
 
 		// Stream of all events - use SubscriptionRef.changes

@@ -8,10 +8,6 @@ async function invokeTauri(command, args = {}) {
     }
     throw new Error(`Tauri invoke not available for command: ${command}`);
   } catch (error) {
-    console.error(
-      `[FileProtocolShim] Tauri invoke failed for ${command}:`,
-      error
-    );
     throw error;
   }
 }
@@ -22,9 +18,6 @@ const VSCodeFileHandler = {
   },
   async handle(req) {
     try {
-      console.log(
-        `[FileProtocolShim] Handling vscode-file:// request: ${req.path}`
-      );
       const decodedPath = decodeURIComponent(req.path);
       const method = req.headers?.get("X-Http-Method") || "GET";
       if (method === "GET" || !method) {
@@ -44,10 +37,6 @@ const VSCodeFileHandler = {
       }
       throw new Error(`Unsupported method: ${method}`);
     } catch (error) {
-      console.error(
-        "[FileProtocolShim] vscode-file handler error:",
-        error
-      );
       return {
         content: null,
         error: error instanceof Error ? error : new Error(String(error))
@@ -61,9 +50,6 @@ const VSCodeUserDataHandler = {
   },
   async handle(req) {
     try {
-      console.log(
-        `[FileProtocolShim] Handling vscode-userdata:// request: ${req.path}`
-      );
       const userDataPath = await invokeTauri(
         "file:user_data_path",
         {}
@@ -81,10 +67,6 @@ const VSCodeUserDataHandler = {
         }
       };
     } catch (error) {
-      console.error(
-        "[FileProtocolShim] vscode-userdata handler error:",
-        error
-      );
       return {
         content: "",
         error: void 0
@@ -98,9 +80,6 @@ const VSCodeResourceHandler = {
   },
   async handle(req) {
     try {
-      console.log(
-        `[FileProtocolShim] Handling vscode-resource:// request: ${req.path}`
-      );
       const [extensionId, ...pathParts] = req.path.split("/").filter(Boolean);
       const resourcePath = pathParts.join("/");
       const content = await invokeTauri(
@@ -117,10 +96,6 @@ const VSCodeResourceHandler = {
         }
       };
     } catch (error) {
-      console.error(
-        "[FileProtocolShim] vscode-resource handler error:",
-        error
-      );
       return {
         content: null,
         error: error instanceof Error ? error : new Error(String(error))
@@ -134,9 +109,6 @@ const VSCodeRemoteHandler = {
   },
   async handle(req) {
     try {
-      console.log(
-        `[FileProtocolShim] Handling vscode-remote:// request: ${req.path}`
-      );
       const [host, ...pathParts] = req.path.split("/").filter(Boolean);
       const remotePath = pathParts.join("/");
       const content = await invokeTauri(
@@ -153,10 +125,6 @@ const VSCodeRemoteHandler = {
         }
       };
     } catch (error) {
-      console.error(
-        "[FileProtocolShim] vscode-remote handler error:",
-        error
-      );
       return {
         content: null,
         error: error instanceof Error ? error : new Error(String(error))
@@ -170,9 +138,6 @@ const FileHandler = {
   },
   async handle(req) {
     try {
-      console.log(
-        `[FileProtocolShim] Handling file:// request: ${req.path}`
-      );
       const decodedPath = decodeURIComponent(req.path);
       const content = await invokeTauri("file:read", {
         path: decodedPath,
@@ -186,7 +151,6 @@ const FileHandler = {
         }
       };
     } catch (error) {
-      console.error("[FileProtocolShim] file handler error:", error);
       return {
         content: null,
         error: error instanceof Error ? error : new Error(String(error))
@@ -220,7 +184,6 @@ function parseProtocolURL(url) {
       query
     };
   } catch (error) {
-    console.error("[FileProtocolShim] Failed to parse URL:", url, error);
     throw new Error(`Invalid protocol URL: ${url}`);
   }
 }
@@ -277,14 +240,9 @@ function installFetchInterception() {
       }
       return originalFetch(input, init);
     } catch (error) {
-      console.error(
-        "[FileProtocolShim] Fetch interception error:",
-        error
-      );
       return originalFetch(input, init);
     }
   }, "interceptFetch");
-  console.log("[FileProtocolShim]\u2001\u2713 fetch interception installed");
 }
 __name(installFetchInterception, "installFetchInterception");
 function needsInterception(url) {
@@ -302,11 +260,7 @@ function needsInterception(url) {
 __name(needsInterception, "needsInterception");
 function installModuleInterception() {
   if (typeof window.__createImport !== "undefined") {
-    console.log("[FileProtocolShim] Custom import interception available");
   }
-  console.log(
-    "[FileProtocolShim] Module import interception registered (passive mode)"
-  );
 }
 __name(installModuleInterception, "installModuleInterception");
 function installFileProtocolShim() {
@@ -314,14 +268,11 @@ function installFileProtocolShim() {
     return;
   }
   if (window.__FILE_PROTOCOL_SHIM_INSTALLED__) {
-    console.log("[FileProtocolShim] Already installed, skipping");
     return;
   }
   window.__FILE_PROTOCOL_SHIM_INSTALLED__ = true;
-  console.log("[FileProtocolShim] Installing VSCode protocol polyfills...");
   installFetchInterception();
   installModuleInterception();
-  console.log("[FileProtocolShim]\u2001\u2713 VSCode protocol polyfills installed");
 }
 __name(installFileProtocolShim, "installFileProtocolShim");
 const FileProtocolShim = {
