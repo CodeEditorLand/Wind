@@ -80,7 +80,7 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	},
 	sharedProcess: {},
 	utilityProcessWorker: {
-		createWorker: new Promise(() => {}),
+		createWorker: { onDidTerminate: new Promise(() => {}) },
 		disposeWorker: undefined,
 	},
 	meteredConnection: {},
