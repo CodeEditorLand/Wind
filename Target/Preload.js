@@ -68,22 +68,45 @@ const ipcMessagePort = {
         if (Length > 1) {
           HandshakeComplete = true;
           try {
-            performance.mark("land:exthost:handshake-complete");
+            performance.mark("land:exthost:handshake:init-data-received", {
+              detail: { bytes: Length }
+            });
+          } catch {
+          }
+          try {
+            const Bytes = Data instanceof Uint8Array ? Data : new Uint8Array(Data);
+            const Text = new TextDecoder().decode(Bytes.slice(0, 500));
+            console.warn("[Extension Host] Init data received:", Length, "bytes, preview:", Text.slice(0, 200));
           } catch {
           }
           ForwardToMountain(
             Data instanceof Uint8Array ? Data : new Uint8Array(Data)
           );
           port1.postMessage(new Uint8Array([1]));
+          try {
+            performance.mark("land:exthost:handshake:initialized-sent");
+          } catch {
+          }
+          console.warn("[Extension Host] Handshake complete \u2014 Initialized sent");
+        } else {
+          console.warn("[Extension Host] Handshake: ignoring control byte", Length > 0 ? new Uint8Array(Data instanceof ArrayBuffer ? Data : Data)[0] : "empty");
         }
         return;
       }
       MessageCount++;
       try {
-        performance.mark(`land:exthost:message:${MessageCount}`, {
+        performance.mark(`land:exthost:rpc:${MessageCount}`, {
           detail: { bytes: Length }
         });
       } catch {
+      }
+      if (MessageCount <= 5) {
+        try {
+          const Bytes = Data instanceof Uint8Array ? Data : new Uint8Array(Data);
+          const Preview = new TextDecoder().decode(Bytes.slice(0, 200));
+          console.warn(`[Extension Host] RPC #${MessageCount}:`, Length, "bytes, preview:", Preview.slice(0, 150));
+        } catch {
+        }
       }
       if (Length > 0) {
         ForwardToMountain(
@@ -105,6 +128,11 @@ const ipcMessagePort = {
     }
     setTimeout(() => {
       port1.postMessage(new Uint8Array([2]));
+      try {
+        performance.mark("land:exthost:handshake:ready-sent");
+      } catch {
+      }
+      console.warn("[Extension Host] Ready sent on MessagePort, waiting for init data...");
     }, 50);
   }, "acquire")
 };
