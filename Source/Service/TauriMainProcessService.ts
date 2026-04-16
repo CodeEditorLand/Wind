@@ -301,6 +301,106 @@ class TauriChannel implements IChannel {
 			}) as unknown as VSCodeEvent<T>;
 		}
 
+		// ----------------------------------------------------------------
+		// localFilesystem — fileChange (file watcher notifications)
+		// ----------------------------------------------------------------
+		if (
+			FileSystemChannels.has(this.ChannelName) &&
+			Event === "fileChange"
+		) {
+			return ((Listener: (Data: unknown) => void) => {
+				const Unlisten = (window as any).__TAURI__?.event?.listen(
+					"sky://vfs/fileChange",
+					(TauriEvent: any) => Listener(TauriEvent.payload),
+				);
+				return {
+					dispose: () => {
+						Unlisten?.then((F: () => void) => F());
+					},
+				};
+			}) as unknown as VSCodeEvent<T>;
+		}
+
+		// ----------------------------------------------------------------
+		// configuration — onDidChangeConfiguration
+		// ----------------------------------------------------------------
+		if (
+			this.ChannelName === "configuration" &&
+			Event === "onDidChangeConfiguration"
+		) {
+			return ((Listener: (Data: unknown) => void) => {
+				const Unlisten = (window as any).__TAURI__?.event?.listen(
+					"sky://configuration/changed",
+					(TauriEvent: any) => Listener(TauriEvent.payload),
+				);
+				return {
+					dispose: () => {
+						Unlisten?.then((F: () => void) => F());
+					},
+				};
+			}) as unknown as VSCodeEvent<T>;
+		}
+
+		// ----------------------------------------------------------------
+		// terminal — onTerminalData
+		// ----------------------------------------------------------------
+		if (
+			this.ChannelName === "terminal" &&
+			Event === "onTerminalData"
+		) {
+			return ((Listener: (Data: unknown) => void) => {
+				const Unlisten = (window as any).__TAURI__?.event?.listen(
+					"sky://terminal/data",
+					(TauriEvent: any) => Listener(TauriEvent.payload),
+				);
+				return {
+					dispose: () => {
+						Unlisten?.then((F: () => void) => F());
+					},
+				};
+			}) as unknown as VSCodeEvent<T>;
+		}
+
+		// ----------------------------------------------------------------
+		// lifecycle — onWillShutdown
+		// ----------------------------------------------------------------
+		if (
+			this.ChannelName === "lifecycle" &&
+			Event === "onWillShutdown"
+		) {
+			return ((Listener: (Data: unknown) => void) => {
+				const Unlisten = (window as any).__TAURI__?.event?.listen(
+					"sky://lifecycle/willShutdown",
+					(TauriEvent: any) => Listener(TauriEvent.payload),
+				);
+				return {
+					dispose: () => {
+						Unlisten?.then((F: () => void) => F());
+					},
+				};
+			}) as unknown as VSCodeEvent<T>;
+		}
+
+		// ----------------------------------------------------------------
+		// lifecycle — onDidChangePhase
+		// ----------------------------------------------------------------
+		if (
+			this.ChannelName === "lifecycle" &&
+			Event === "onDidChangePhase"
+		) {
+			return ((Listener: (Data: unknown) => void) => {
+				const Unlisten = (window as any).__TAURI__?.event?.listen(
+					"sky://lifecycle/phaseChanged",
+					(TauriEvent: any) => Listener(TauriEvent.payload),
+				);
+				return {
+					dispose: () => {
+						Unlisten?.then((F: () => void) => F());
+					},
+				};
+			}) as unknown as VSCodeEvent<T>;
+		}
+
 		return (() => ({ dispose: () => {} })) as unknown as VSCodeEvent<T>;
 	}
 }
