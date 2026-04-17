@@ -225,3 +225,36 @@ export {
 	FileSystemProviderLive,
 } from "../FileSystem/index.js";
 export type { FileSystemProviderService } from "../FileSystem/index.js";
+
+// ============================================================================
+// ATOMIC SERVICE BARRELS
+// ============================================================================
+// Each barrel re-exports the full public surface of its atomic service
+// directory. Consumers should prefer importing directly from the named
+// barrel (e.g. `./Commands.js`) over reaching into `./Commands/Live.js`.
+// Using `export *` avoids duplicating the individual symbol lists that
+// would otherwise drift as each service evolves.
+
+export * from "./Commands.js";
+export * from "./Decorations.js";
+export * from "./Editor.js";
+export * from "./Extensions.js";
+export * from "./Files.js";
+export * from "./History.js";
+export * from "./Keybinding.js";
+export * from "./Label.js";
+export * from "./Language.js";
+export * from "./Lifecycle.js";
+export * from "./Model.js";
+export * from "./Notification.js";
+export * from "./Output.js";
+export * from "./Progress.js";
+export * from "./QuickInput.js";
+export * from "./Search.js";
+export * from "./Storage.js";
+export * from "./Terminal.js";
+export * from "./TextFile.js";
+export * from "./TextModelResolver.js";
+export * from "./Themes.js";
+export * from "./WorkingCopy.js";
+export * from "./Workspaces.js";
