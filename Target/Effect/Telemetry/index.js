@@ -2,8 +2,8 @@ import { default as default2, Telemetry } from "./Tag/TelemetryTag.js";
 import { default as default3 } from "./Layer/TelemetryLive.js";
 import { default as default4 } from "./Layer/TelemetryMock.js";
 import { makeMockTelemetry } from "./Layer/TelemetryMock.js";
-import { default as default5 } from "./Helper/withSpan.js";
-import { default as default6 } from "./Helper/withMetric.js";
+import { default as default5 } from "./Helper/WithSpan.js";
+import { default as default6 } from "./Helper/WithMetric.js";
 import { default as default7 } from "./Error/TelemetryCollectionError.js";
 export {
   Telemetry,
