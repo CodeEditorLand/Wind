@@ -33,8 +33,8 @@ export { default as TelemetryMockLive } from "./Layer/TelemetryMock.js";
 export { makeMockTelemetry } from "./Layer/TelemetryMock.js";
 
 // Helper functions
-export { default as withSpan } from "./Helper/withSpan.js";
-export { default as withMetric } from "./Helper/withMetric.js";
+export { default as withSpan } from "./Helper/WithSpan.js";
+export { default as withMetric } from "./Helper/WithMetric.js";
 
 // Errors
 export { default as TelemetryCollectionError } from "./Error/TelemetryCollectionError.js";
