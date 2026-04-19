@@ -24,6 +24,98 @@ function sendTauri(command, args = {}) {
   }
 }
 __name(sendTauri, "sendTauri");
+const UNHANDLED = /* @__PURE__ */ Symbol("ipc-dialog-unhandled");
+function translateOpenDialogOptions(Options) {
+  if (!Options || typeof Options !== "object") return {};
+  const Properties = Array.isArray(Options.properties) ? Options.properties : [];
+  return {
+    directory: Properties.includes("openDirectory"),
+    multiple: Properties.includes("multiSelections"),
+    canCreateDirectories: Properties.includes("createDirectory"),
+    defaultPath: Options.defaultPath,
+    title: Options.title ?? "Open",
+    filters: Options.filters
+  };
+}
+__name(translateOpenDialogOptions, "translateOpenDialogOptions");
+function translateSaveDialogOptions(Options) {
+  if (!Options || typeof Options !== "object") return {};
+  return {
+    defaultPath: Options.defaultPath,
+    title: Options.title ?? "Save",
+    filters: Options.filters
+  };
+}
+__name(translateSaveDialogOptions, "translateSaveDialogOptions");
+function dialogChannelMethod(Channel) {
+  const Prefixes = ["nativeHost:", "vscode:", "native:"];
+  for (const Prefix of Prefixes) {
+    if (Channel.startsWith(Prefix)) return Channel.slice(Prefix.length);
+  }
+  return null;
+}
+__name(dialogChannelMethod, "dialogChannelMethod");
+async function handleDialogChannel(Channel, Args) {
+  const Method = dialogChannelMethod(Channel);
+  if (!Method) return UNHANDLED;
+  const TauriDialog = window.__TAURI__?.dialog ?? window.TAURI?.dialog;
+  try {
+    switch (Method) {
+      case "showOpenDialog": {
+        const Options = Args[0] ?? {};
+        if (typeof TauriDialog?.open !== "function") {
+          return { filePaths: [], canceled: true };
+        }
+        const selected = await TauriDialog.open(
+          translateOpenDialogOptions(Options)
+        );
+        return {
+          filePaths: Array.isArray(selected) ? selected : selected ? [selected] : [],
+          canceled: !selected
+        };
+      }
+      case "showSaveDialog": {
+        const Options = Args[0] ?? {};
+        if (typeof TauriDialog?.save !== "function") {
+          return { filePath: void 0, canceled: true };
+        }
+        const filePath = await TauriDialog.save(
+          translateSaveDialogOptions(Options)
+        );
+        return {
+          filePath: filePath ?? void 0,
+          canceled: !filePath
+        };
+      }
+      case "showMessageBox": {
+        const Options = Args[0] ?? {};
+        if (typeof TauriDialog?.message !== "function") {
+          return { response: 0, checkboxChecked: false };
+        }
+        await TauriDialog.message(
+          Options.message ?? Options.detail ?? "",
+          {
+            title: Options.title ?? "Mountain",
+            kind: Options.type === "error" ? "error" : Options.type === "warning" ? "warning" : "info"
+          }
+        );
+        return { response: 0, checkboxChecked: false };
+      }
+      default:
+        return UNHANDLED;
+    }
+  } catch (error) {
+    try {
+      console.warn(
+        `[IPCRendererShim] dialog channel ${Channel} failed:`,
+        error
+      );
+    } catch {
+    }
+    return UNHANDLED;
+  }
+}
+__name(handleDialogChannel, "handleDialogChannel");
 const IPC_CHANNEL_MAPPINGS = [
   // Logger service
   {
@@ -419,6 +511,10 @@ class IPCRendererImpl {
    * Invoke main process and get response
    */
   async invoke(channel, ...args) {
+    const DialogResult = await handleDialogChannel(channel, args);
+    if (DialogResult !== UNHANDLED) {
+      return DialogResult;
+    }
     const mapping = mapElectronChannelToTauri(channel);
     if (mapping) {
       const tauriArgs = transformChannelArgs(channel, args);

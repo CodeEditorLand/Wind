@@ -115,6 +115,147 @@ function sendTauri(command: string, args: Record<string, unknown> = {}): void {
 }
 
 // ============================================================================
+// Native-Host Dialog Bridge
+// ============================================================================
+
+/**
+ * Sentinel signalling the channel didn't match any dialog method. Distinct
+ * from `undefined`, which is a valid "user cancelled the dialog" response.
+ */
+const UNHANDLED = Symbol("ipc-dialog-unhandled");
+
+/**
+ * Electron → Tauri dialog option translator. VS Code passes `properties`
+ * flags to describe whether it wants a file or folder picker; Tauri expects
+ * a top-level `{ directory, multiple, canCreateDirectories }` object.
+ */
+function translateOpenDialogOptions(
+	Options: Record<string, unknown> | undefined,
+): Record<string, unknown> {
+	if (!Options || typeof Options !== "object") return {};
+	const Properties = Array.isArray(Options.properties)
+		? (Options.properties as string[])
+		: [];
+	return {
+		directory: Properties.includes("openDirectory"),
+		multiple: Properties.includes("multiSelections"),
+		canCreateDirectories: Properties.includes("createDirectory"),
+		defaultPath: Options.defaultPath as string | undefined,
+		title: (Options.title as string | undefined) ?? "Open",
+		filters: Options.filters as unknown,
+	};
+}
+
+function translateSaveDialogOptions(
+	Options: Record<string, unknown> | undefined,
+): Record<string, unknown> {
+	if (!Options || typeof Options !== "object") return {};
+	return {
+		defaultPath: Options.defaultPath as string | undefined,
+		title: (Options.title as string | undefined) ?? "Save",
+		filters: Options.filters as unknown,
+	};
+}
+
+/**
+ * Normalise the dialog channel name. VS Code's desktop workbench emits
+ * channels under both `nativeHost:*` and `vscode:*` prefixes depending on
+ * which service layer originated the call; the dialog method name is
+ * always the suffix.
+ */
+function dialogChannelMethod(Channel: string): string | null {
+	const Prefixes = ["nativeHost:", "vscode:", "native:"];
+	for (const Prefix of Prefixes) {
+		if (Channel.startsWith(Prefix)) return Channel.slice(Prefix.length);
+	}
+	return null;
+}
+
+/**
+ * Handle native-host dialog channels (showOpenDialog, showSaveDialog,
+ * showMessageBox). Returns `UNHANDLED` when the channel is unrelated so
+ * the caller can fall through to the generic mapping table.
+ */
+async function handleDialogChannel<T>(
+	Channel: string,
+	Args: unknown[],
+): Promise<T | undefined | typeof UNHANDLED> {
+	const Method = dialogChannelMethod(Channel);
+	if (!Method) return UNHANDLED;
+
+	const TauriDialog =
+		(window as any).__TAURI__?.dialog ?? (window as any).TAURI?.dialog;
+
+	try {
+		switch (Method) {
+			case "showOpenDialog": {
+				const Options = (Args[0] ?? {}) as Record<string, unknown>;
+				if (typeof TauriDialog?.open !== "function") {
+					return { filePaths: [], canceled: true } as T;
+				}
+				const selected = await TauriDialog.open(
+					translateOpenDialogOptions(Options),
+				);
+				return {
+					filePaths: Array.isArray(selected)
+						? selected
+						: selected
+							? [selected]
+							: [],
+					canceled: !selected,
+				} as T;
+			}
+			case "showSaveDialog": {
+				const Options = (Args[0] ?? {}) as Record<string, unknown>;
+				if (typeof TauriDialog?.save !== "function") {
+					return { filePath: undefined, canceled: true } as T;
+				}
+				const filePath = await TauriDialog.save(
+					translateSaveDialogOptions(Options),
+				);
+				return {
+					filePath: filePath ?? undefined,
+					canceled: !filePath,
+				} as T;
+			}
+			case "showMessageBox": {
+				// VS Code's options: { type, title, message, detail, buttons, … }
+				// Tauri equivalent: { title, message, kind: "info"|"warning"|"error" }
+				const Options = (Args[0] ?? {}) as Record<string, unknown>;
+				if (typeof TauriDialog?.message !== "function") {
+					return { response: 0, checkboxChecked: false } as T;
+				}
+				await TauriDialog.message(
+					(Options.message as string | undefined) ??
+						(Options.detail as string | undefined) ??
+						"",
+					{
+						title:
+							(Options.title as string | undefined) ?? "Mountain",
+						kind: (Options.type as string | undefined) === "error"
+							? "error"
+							: (Options.type as string | undefined) === "warning"
+								? "warning"
+								: "info",
+					},
+				);
+				return { response: 0, checkboxChecked: false } as T;
+			}
+			default:
+				return UNHANDLED;
+		}
+	} catch (error) {
+		try {
+			console.warn(
+				`[IPCRendererShim] dialog channel ${Channel} failed:`,
+				error,
+			);
+		} catch {}
+		return UNHANDLED;
+	}
+}
+
+// ============================================================================
 // IPC Channel Mappings
 // ============================================================================
 
@@ -621,6 +762,20 @@ class IPCRendererImpl implements IpcRenderer {
 	 * Invoke main process and get response
 	 */
 	async invoke<T = unknown>(channel: string, ...args: unknown[]): Promise<T> {
+		// Native-host dialog channels — VS Code's workbench calls
+		// `nativeHostService.showOpenDialog(options)` which ultimately does
+		// `ipcRenderer.invoke('nativeHost:showOpenDialog', options)` (and the
+		// `vscode:*` variant on the desktop workbench). We bridge these to
+		// Tauri's dialog plugin directly, translating Electron-style
+		// `properties: ['openDirectory']` into Tauri's `{ directory: true }`.
+		// Without this hook clicking "File → Open Folder" resolves to
+		// undefined and the workbench silently drops the result.
+		const DialogResult = await handleDialogChannel<T>(channel, args);
+
+		if (DialogResult !== UNHANDLED) {
+			return DialogResult as T;
+		}
+
 		// Map Electron channel to Tauri command
 		const mapping = mapElectronChannelToTauri(channel);
 

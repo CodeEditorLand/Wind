@@ -147,18 +147,49 @@ function createShell() {
 }
 __name(createShell, "createShell");
 function createDialog() {
+  const TranslateOpenOptions = /* @__PURE__ */ __name((Options) => {
+    if (!Options || typeof Options !== "object") return void 0;
+    const Properties = Array.isArray(Options.properties) ? Options.properties : [];
+    return {
+      directory: Properties.includes("openDirectory"),
+      multiple: Properties.includes("multiSelections"),
+      canCreateDirectories: Properties.includes("createDirectory"),
+      defaultPath: Options.defaultPath,
+      title: Options.title ?? "Open",
+      filters: Options.filters,
+      recursive: false
+    };
+  }, "TranslateOpenOptions");
+  const TranslateSaveOptions = /* @__PURE__ */ __name((Options) => {
+    if (!Options || typeof Options !== "object") return void 0;
+    return {
+      defaultPath: Options.defaultPath,
+      title: Options.title ?? "Save",
+      filters: Options.filters
+    };
+  }, "TranslateSaveOptions");
   return {
     async showOpenDialog(options) {
       try {
         const dialog = window.__TAURI__?.dialog ?? window.TAURI?.dialog;
         if (typeof dialog?.open === "function") {
-          const selected = await dialog.open(options);
+          const Translated = TranslateOpenOptions(
+            options
+          );
+          const selected = await dialog.open(Translated);
           return {
             filePaths: Array.isArray(selected) ? selected : selected ? [selected] : [],
             canceled: !selected
           };
         }
       } catch (error) {
+        try {
+          console.warn(
+            "[NativeModulePolyfill] showOpenDialog failed:",
+            error
+          );
+        } catch {
+        }
       }
       return { filePaths: [], canceled: true };
     },
@@ -166,13 +197,23 @@ function createDialog() {
       try {
         const dialog = window.__TAURI__?.dialog ?? window.TAURI?.dialog;
         if (typeof dialog?.save === "function") {
-          const filePath = await dialog.save(options);
+          const Translated = TranslateSaveOptions(
+            options
+          );
+          const filePath = await dialog.save(Translated);
           return {
             filePath: filePath ?? void 0,
             canceled: !filePath
           };
         }
       } catch (error) {
+        try {
+          console.warn(
+            "[NativeModulePolyfill] showSaveDialog failed:",
+            error
+          );
+        } catch {
+        }
       }
       return { filePath: void 0, canceled: true };
     },

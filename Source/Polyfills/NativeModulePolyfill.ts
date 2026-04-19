@@ -413,17 +413,54 @@ function createShell(): Shell {
  * Create Dialog polyfill
  */
 function createDialog(): Dialog {
+	// Electron's showOpenDialog uses `properties: ['openDirectory' | 'openFile'
+	// | 'multiSelections' | 'createDirectory']`; Tauri's dialog.open uses
+	// `{ directory, multiple, canCreateDirectories }`. VS Code calls the
+	// polyfill with Electron-style options, so we translate here — without
+	// this, "Open Folder" shows a FILE picker (or nothing, on some Tauri
+	// versions) because Tauri sees no `directory: true`.
+	const TranslateOpenOptions = (
+		Options: Record<string, unknown> | undefined,
+	) => {
+		if (!Options || typeof Options !== "object") return undefined;
+		const Properties = Array.isArray(Options.properties)
+			? (Options.properties as string[])
+			: [];
+		return {
+			directory: Properties.includes("openDirectory"),
+			multiple: Properties.includes("multiSelections"),
+			canCreateDirectories: Properties.includes("createDirectory"),
+			defaultPath: Options.defaultPath as string | undefined,
+			title: (Options.title as string | undefined) ?? "Open",
+			filters: Options.filters as unknown,
+			recursive: false,
+		};
+	};
+
+	const TranslateSaveOptions = (
+		Options: Record<string, unknown> | undefined,
+	) => {
+		if (!Options || typeof Options !== "object") return undefined;
+		return {
+			defaultPath: Options.defaultPath as string | undefined,
+			title: (Options.title as string | undefined) ?? "Save",
+			filters: Options.filters as unknown,
+		};
+	};
+
 	return {
 		async showOpenDialog(
 			options?: unknown,
 		): Promise<{ filePaths: string[]; canceled: boolean }> {
-			// Use Tauri's dialog module if available
 			try {
 				const dialog =
 					(window as any).__TAURI__?.dialog ??
 					(window as any).TAURI?.dialog;
 				if (typeof dialog?.open === "function") {
-					const selected = await dialog.open(options);
+					const Translated = TranslateOpenOptions(
+						options as Record<string, unknown>,
+					);
+					const selected = await dialog.open(Translated);
 					return {
 						filePaths: Array.isArray(selected)
 							? selected
@@ -434,31 +471,45 @@ function createDialog(): Dialog {
 					};
 				}
 			} catch (error) {
+				// Tauri plugin missing or permission denied — log for visibility
+				// so "Open Folder" silent failures are grep-able.
+				try {
+					console.warn(
+						"[NativeModulePolyfill] showOpenDialog failed:",
+						error,
+					);
+				} catch {}
 			}
 
-			// Fallback: return empty
 			return { filePaths: [], canceled: true };
 		},
 
 		async showSaveDialog(
 			options?: unknown,
 		): Promise<{ filePath: string | undefined; canceled: boolean }> {
-			// Use Tauri's dialog module if available
 			try {
 				const dialog =
 					(window as any).__TAURI__?.dialog ??
 					(window as any).TAURI?.dialog;
 				if (typeof dialog?.save === "function") {
-					const filePath = await dialog.save(options);
+					const Translated = TranslateSaveOptions(
+						options as Record<string, unknown>,
+					);
+					const filePath = await dialog.save(Translated);
 					return {
 						filePath: filePath ?? undefined,
 						canceled: !filePath,
 					};
 				}
 			} catch (error) {
+				try {
+					console.warn(
+						"[NativeModulePolyfill] showSaveDialog failed:",
+						error,
+					);
+				} catch {}
 			}
 
-			// Fallback: return empty
 			return { filePath: undefined, canceled: true };
 		},
 
