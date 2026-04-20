@@ -362,6 +362,62 @@ class TauriChannel implements IChannel {
 		}
 
 		// ----------------------------------------------------------------
+		// terminal — onTerminalCreate / onTerminalExit
+		//
+		// Mountain emits `sky://terminal/create` and `sky://terminal/exit`
+		// (BATCH-19 Part B). Exposing them on the `terminal` channel as
+		// `onTerminalCreate`/`onTerminalExit` lets workbench components
+		// (the terminal panel, ITerminalInstanceService) learn about
+		// lifecycle transitions without polling.
+		// ----------------------------------------------------------------
+		if (
+			this.ChannelName === "terminal" &&
+			(Event === "onTerminalCreate" || Event === "onTerminalExit")
+		) {
+			const Channel =
+				Event === "onTerminalCreate"
+					? "sky://terminal/create"
+					: "sky://terminal/exit";
+			return ((Listener: (Data: unknown) => void) => {
+				const Unlisten = (window as any).__TAURI__?.event?.listen(
+					Channel,
+					(TauriEvent: any) => Listener(TauriEvent.payload),
+				);
+				return {
+					dispose: () => {
+						Unlisten?.then((F: () => void) => F());
+					},
+				};
+			}) as unknown as VSCodeEvent<T>;
+		}
+
+		// ----------------------------------------------------------------
+		// workspaces — onDidChangeWorkspaceFolders
+		//
+		// Mountain emits `sky://workspaces/changed` with
+		// `{ added, removed, folders }` whenever the folder set mutates
+		// (BATCH-14 broadcast variant). Wind subscribes so the workbench's
+		// workspace service and recent-folders UI see the change the same
+		// tick that Cocoon sees its `$deltaWorkspaceFolders` notification.
+		// ----------------------------------------------------------------
+		if (
+			this.ChannelName === "workspaces" &&
+			Event === "onDidChangeWorkspaceFolders"
+		) {
+			return ((Listener: (Data: unknown) => void) => {
+				const Unlisten = (window as any).__TAURI__?.event?.listen(
+					"sky://workspaces/changed",
+					(TauriEvent: any) => Listener(TauriEvent.payload),
+				);
+				return {
+					dispose: () => {
+						Unlisten?.then((F: () => void) => F());
+					},
+				};
+			}) as unknown as VSCodeEvent<T>;
+		}
+
+		// ----------------------------------------------------------------
 		// lifecycle — onWillShutdown
 		// ----------------------------------------------------------------
 		if (
