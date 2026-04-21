@@ -15,12 +15,76 @@ const DevLog = (Tag: string, ..._Args: unknown[]): void => {
 };
 
 /**
+ * Atom I5: fetch the resolved /product.json generated at build time by
+ * Maintain/Script/ResolveProductConfig.sh from .env.Land's Product* vars.
+ * Single source of truth — no hardcoded identity or version strings here.
+ * Network failures fall through to minimal defaults so the workbench still
+ * boots in degraded mode (with a visible version mismatch warning).
+ */
+type LandProduct = {
+	nameShort: string;
+	nameLong: string;
+	applicationName: string;
+	dataFolderName: string;
+	version: string;
+	commit: string;
+	quality?: string;
+	urlProtocol: string;
+	serverApplicationName: string;
+	embedderIdentifier?: string;
+};
+const LoadProductJson = async (): Promise<LandProduct> => {
+	const Base: LandProduct = {
+		nameShort: "Land",
+		nameLong: "Land Editor",
+		applicationName: "land",
+		dataFolderName: ".land",
+		version: "1.118.0",
+		commit: "dev",
+		urlProtocol: "land",
+		serverApplicationName: "land-server",
+	};
+	try {
+		const Response = await fetch("/product.json");
+		if (Response.ok) {
+			const Body = (await Response.json()) as Partial<LandProduct>;
+			// exactOptionalPropertyTypes: only include optional keys if
+			// the incoming value is a non-empty string. Undefined
+			// assignments fail strict type-check.
+			const Result: LandProduct = {
+				nameShort: Body.nameShort ?? Base.nameShort,
+				nameLong: Body.nameLong ?? Base.nameLong,
+				applicationName: Body.applicationName ?? Base.applicationName,
+				dataFolderName: Body.dataFolderName ?? Base.dataFolderName,
+				version: Body.version ?? Base.version,
+				commit: Body.commit ?? Base.commit,
+				urlProtocol: Body.urlProtocol ?? Base.urlProtocol,
+				serverApplicationName:
+					Body.serverApplicationName ?? Base.serverApplicationName,
+			};
+			if (typeof Body.quality === "string") Result.quality = Body.quality;
+			if (typeof Body.embedderIdentifier === "string")
+				Result.embedderIdentifier = Body.embedderIdentifier;
+			return Result;
+		}
+		DevLog("config", "product.json fetch non-ok:", Response.status);
+	} catch (Error) {
+		DevLog("config", "product.json fetch threw:", Error);
+	}
+	return Base;
+};
+
+/**
  * Resolves the VSCode sandbox configuration.
  * Returns ISandboxConfiguration (for browser workbench) but includes
  * additional fields that DesktopMain (INativeWindowConfiguration) reads.
  * The extra fields are silently ignored by the browser workbench.
  */
 export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
+	// Atom I5: resolve product identity from /product.json so every
+	// consumer of this function gets the build-time-generated values.
+	const Product = await LoadProductJson();
+
 	const FileRoot =
 		typeof globalThis._VSCODE_FILE_ROOT === "string"
 			? globalThis._VSCODE_FILE_ROOT
@@ -96,15 +160,17 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 			USER: Paths.homeDir?.split("/").pop() || "user",
 		},
 		product: {
-			nameShort: "FIDDEE",
-			nameLong: "FIDDEE",
-			applicationName: "land",
-			version: "0.0.1",
-			commit: "dev",
+			// Atom I5: every field below is sourced from /product.json
+			// (generated from .env.Land at build time). See LoadProductJson.
+			nameShort: Product.nameShort,
+			nameLong: Product.nameLong,
+			applicationName: Product.applicationName,
+			version: Product.version,
+			commit: Product.commit,
 			date: new Date().toISOString(),
-			urlProtocol: "land",
-			dataFolderName: "land",
-			serverApplicationName: "land-server",
+			urlProtocol: Product.urlProtocol,
+			dataFolderName: Product.dataFolderName,
+			serverApplicationName: Product.serverApplicationName,
 			extensionProperties: {},
 			defaultChatAgent: {
 				extensionId: "vscode",
@@ -259,7 +325,7 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 		userDataDir: Paths.userDataDir || undefined,
 		logsPath: LogsLocation || undefined,
 
-		// Extension paths — tells VS Code's NativeExtensionsScannerService where
+		// Extension paths - tells VS Code's NativeExtensionsScannerService where
 		// to find built-in and user-installed extensions on disk.
 		// appRoot + /extensions = builtinExtensionsPath (VS Code convention)
 		builtinExtensionsPath: `${AppRoot}/extensions`,

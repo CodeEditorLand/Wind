@@ -6,7 +6,44 @@ const DevLog = /* @__PURE__ */ __name((Tag, ..._Args) => {
   } catch {
   }
 }, "DevLog");
+const LoadProductJson = /* @__PURE__ */ __name(async () => {
+  const Base = {
+    nameShort: "Land",
+    nameLong: "Land Editor",
+    applicationName: "land",
+    dataFolderName: ".land",
+    version: "1.118.0",
+    commit: "dev",
+    urlProtocol: "land",
+    serverApplicationName: "land-server"
+  };
+  try {
+    const Response = await fetch("/product.json");
+    if (Response.ok) {
+      const Body = await Response.json();
+      const Result = {
+        nameShort: Body.nameShort ?? Base.nameShort,
+        nameLong: Body.nameLong ?? Base.nameLong,
+        applicationName: Body.applicationName ?? Base.applicationName,
+        dataFolderName: Body.dataFolderName ?? Base.dataFolderName,
+        version: Body.version ?? Base.version,
+        commit: Body.commit ?? Base.commit,
+        urlProtocol: Body.urlProtocol ?? Base.urlProtocol,
+        serverApplicationName: Body.serverApplicationName ?? Base.serverApplicationName
+      };
+      if (typeof Body.quality === "string") Result.quality = Body.quality;
+      if (typeof Body.embedderIdentifier === "string")
+        Result.embedderIdentifier = Body.embedderIdentifier;
+      return Result;
+    }
+    DevLog("config", "product.json fetch non-ok:", Response.status);
+  } catch (Error2) {
+    DevLog("config", "product.json fetch threw:", Error2);
+  }
+  return Base;
+}, "LoadProductJson");
 async function ResolveConfiguration() {
+  const Product = await LoadProductJson();
   const FileRoot = typeof globalThis._VSCODE_FILE_ROOT === "string" ? globalThis._VSCODE_FILE_ROOT : "/Static/Application/";
   const AppRoot = FileRoot.replace(/^https?:\/\/[^/]+/, "");
   let Paths = { userDataDir: "", logsPath: "", homeDir: "/", tmpDir: "/tmp" };
@@ -50,15 +87,17 @@ async function ResolveConfiguration() {
       USER: Paths.homeDir?.split("/").pop() || "user"
     },
     product: {
-      nameShort: "FIDDEE",
-      nameLong: "FIDDEE",
-      applicationName: "land",
-      version: "0.0.1",
-      commit: "dev",
+      // Atom I5: every field below is sourced from /product.json
+      // (generated from .env.Land at build time). See LoadProductJson.
+      nameShort: Product.nameShort,
+      nameLong: Product.nameLong,
+      applicationName: Product.applicationName,
+      version: Product.version,
+      commit: Product.commit,
       date: (/* @__PURE__ */ new Date()).toISOString(),
-      urlProtocol: "land",
-      dataFolderName: "land",
-      serverApplicationName: "land-server",
+      urlProtocol: Product.urlProtocol,
+      dataFolderName: Product.dataFolderName,
+      serverApplicationName: Product.serverApplicationName,
       extensionProperties: {},
       defaultChatAgent: {
         extensionId: "vscode",
@@ -209,7 +248,7 @@ async function ResolveConfiguration() {
     tmpDir: Paths.tmpDir || void 0,
     userDataDir: Paths.userDataDir || void 0,
     logsPath: LogsLocation || void 0,
-    // Extension paths — tells VS Code's NativeExtensionsScannerService where
+    // Extension paths - tells VS Code's NativeExtensionsScannerService where
     // to find built-in and user-installed extensions on disk.
     // appRoot + /extensions = builtinExtensionsPath (VS Code convention)
     builtinExtensionsPath: `${AppRoot}/extensions`,

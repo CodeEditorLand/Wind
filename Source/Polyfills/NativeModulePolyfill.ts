@@ -416,7 +416,7 @@ function createDialog(): Dialog {
 	// Electron's showOpenDialog uses `properties: ['openDirectory' | 'openFile'
 	// | 'multiSelections' | 'createDirectory']`; Tauri's dialog.open uses
 	// `{ directory, multiple, canCreateDirectories }`. VS Code calls the
-	// polyfill with Electron-style options, so we translate here — without
+	// polyfill with Electron-style options, so we translate here - without
 	// this, "Open Folder" shows a FILE picker (or nothing, on some Tauri
 	// versions) because Tauri sees no `directory: true`.
 	const TranslateOpenOptions = (
@@ -471,7 +471,7 @@ function createDialog(): Dialog {
 					};
 				}
 			} catch (error) {
-				// Tauri plugin missing or permission denied — log for visibility
+				// Tauri plugin missing or permission denied - log for visibility
 				// so "Open Folder" silent failures are grep-able.
 				try {
 					console.warn(

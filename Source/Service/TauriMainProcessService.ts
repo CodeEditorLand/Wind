@@ -53,7 +53,7 @@ const ChannelRouteMap: Record<string, string> = {
 	extensions: "extensions",
 	// Route the Extensions-sidebar IPC channels into Mountain's
 	// existing `extensions:*` handlers. See the twin comment in
-	// `Element/Output/Source/Service/TauriMainProcessService.ts` —
+	// `Element/Output/Source/Service/TauriMainProcessService.ts` -
 	// Wind and Output ship two copies of this service depending on
 	// workbench flavour, so the mapping has to be duplicated here to
 	// keep them aligned.
@@ -77,7 +77,7 @@ const ChannelRouteMap: Record<string, string> = {
 	model: "model",
 	nativeHost: "nativeHost",
 	localPty: "localPty",
-	// update: stubbed — Mountain doesn't implement IUpdateService yet
+	// update: stubbed - Mountain doesn't implement IUpdateService yet
 	url: "url",
 	menubar: "menubar",
 	encryption: "encryption",
@@ -120,7 +120,7 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	mcpGateway: {},
 	browserViewGroup: {},
 
-	// Fix: terminals.windows — IExternalTerminalService.getDefaultTerminalForPlatforms()
+	// Fix: terminals.windows - IExternalTerminalService.getDefaultTerminalForPlatforms()
 	externalTerminal: {
 		getDefaultTerminalForPlatforms: {
 			windows: "cmd.exe",
@@ -129,7 +129,7 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		},
 	},
 
-	// Fix: update.setInternalOrg — IUpdateService methods
+	// Fix: update.setInternalOrg - IUpdateService methods
 	update: {
 		checkForUpdates: { updateType: 0 },
 		downloadUpdate: undefined,
@@ -310,7 +310,7 @@ class TauriChannel implements IChannel {
 		}
 
 		// ----------------------------------------------------------------
-		// localFilesystem — fileChange (file watcher notifications)
+		// localFilesystem - fileChange (file watcher notifications)
 		// ----------------------------------------------------------------
 		if (
 			FileSystemChannels.has(this.ChannelName) &&
@@ -330,7 +330,7 @@ class TauriChannel implements IChannel {
 		}
 
 		// ----------------------------------------------------------------
-		// configuration — onDidChangeConfiguration
+		// configuration - onDidChangeConfiguration
 		// ----------------------------------------------------------------
 		if (
 			this.ChannelName === "configuration" &&
@@ -350,7 +350,7 @@ class TauriChannel implements IChannel {
 		}
 
 		// ----------------------------------------------------------------
-		// terminal — onTerminalData
+		// terminal - onTerminalData
 		// ----------------------------------------------------------------
 		if (
 			this.ChannelName === "terminal" &&
@@ -370,7 +370,7 @@ class TauriChannel implements IChannel {
 		}
 
 		// ----------------------------------------------------------------
-		// terminal — onTerminalCreate / onTerminalExit
+		// terminal - onTerminalCreate / onTerminalExit
 		//
 		// Mountain emits `sky://terminal/create` and `sky://terminal/exit`
 		// (BATCH-19 Part B). Exposing them on the `terminal` channel as
@@ -400,7 +400,7 @@ class TauriChannel implements IChannel {
 		}
 
 		// ----------------------------------------------------------------
-		// workspaces — onDidChangeWorkspaceFolders
+		// workspaces - onDidChangeWorkspaceFolders
 		//
 		// Mountain emits `sky://workspaces/changed` with
 		// `{ added, removed, folders }` whenever the folder set mutates
@@ -426,7 +426,7 @@ class TauriChannel implements IChannel {
 		}
 
 		// ----------------------------------------------------------------
-		// lifecycle — onWillShutdown
+		// lifecycle - onWillShutdown
 		// ----------------------------------------------------------------
 		if (
 			this.ChannelName === "lifecycle" &&
@@ -446,7 +446,7 @@ class TauriChannel implements IChannel {
 		}
 
 		// ----------------------------------------------------------------
-		// lifecycle — onDidChangePhase
+		// lifecycle - onDidChangePhase
 		// ----------------------------------------------------------------
 		if (
 			this.ChannelName === "lifecycle" &&

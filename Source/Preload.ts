@@ -264,7 +264,7 @@ const ipcMessagePort = {
 					try {
 						performance.mark("land:exthost:handshake:initialized-sent");
 					} catch {}
-					console.warn("[Extension Host] Handshake complete — Initialized sent");
+					console.warn("[Extension Host] Handshake complete - Initialized sent");
 				} else {
 					console.warn("[Extension Host] Handshake: ignoring control byte", Length > 0 ? new Uint8Array(Data instanceof ArrayBuffer ? Data : Data)[0] : "empty");
 				}

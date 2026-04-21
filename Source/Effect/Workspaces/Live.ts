@@ -110,7 +110,7 @@ export const LiveWorkspacesServiceLayer = Layer.effect(
 			 * `sky://workspaces/changed` from
 			 * `UpdateWorkspaceFoldersAndBroadcast`. Map each event's raw
 			 * payload into a typed `WorkspacesChangeEvent` and drop entries
-			 * we can't parse — Mountain is the source of truth for folder
+			 * we can't parse - Mountain is the source of truth for folder
 			 * shape, but defensive parsing keeps the stream alive if a
 			 * future field is introduced.
 			 */

@@ -97,12 +97,12 @@ const Tier = {
 	Telemetry: Pick<TierTelemetryValue>("Telemetry", "Synchronous"),
 } as const;
 
-// One-shot boot banner — visible in browser DevTools.
+// One-shot boot banner - visible in browser DevTools.
 try {
 	// eslint-disable-next-line no-console
 	console.info("[LandFix:Tier] Wind tier set resolved:", Tier);
 } catch {
-	// Ignore — production bundles may strip `console`.
+	// Ignore - production bundles may strip `console`.
 }
 
 export default Tier;

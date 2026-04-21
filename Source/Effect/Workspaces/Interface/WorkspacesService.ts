@@ -40,7 +40,7 @@ export interface WorkspacesService {
 	/**
 	 * Stream of workspace folder mutations emitted by Mountain. Consumers that
 	 * cache `GetFolders()` results should subscribe to this stream to
-	 * invalidate and re-fetch — otherwise their view drifts from Cocoon's
+	 * invalidate and re-fetch - otherwise their view drifts from Cocoon's
 	 * `vscode.workspace.workspaceFolders` after File → Open Folder.
 	 *
 	 * The Tauri channel is `sky://workspaces/changed`. Mountain fires it from

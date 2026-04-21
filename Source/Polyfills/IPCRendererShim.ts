@@ -762,7 +762,7 @@ class IPCRendererImpl implements IpcRenderer {
 	 * Invoke main process and get response
 	 */
 	async invoke<T = unknown>(channel: string, ...args: unknown[]): Promise<T> {
-		// Native-host dialog channels — VS Code's workbench calls
+		// Native-host dialog channels - VS Code's workbench calls
 		// `nativeHostService.showOpenDialog(options)` which ultimately does
 		// `ipcRenderer.invoke('nativeHost:showOpenDialog', options)` (and the
 		// `vscode:*` variant on the desktop workbench). We bridge these to

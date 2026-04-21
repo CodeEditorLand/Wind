@@ -3,7 +3,7 @@
 All notable changes to Wind (UI Service Layer) are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/).
 
-## [v2.1] — Q2 2026: Full Workbench Lift
+## [v2.1] - Q2 2026: Full Workbench Lift
 
 ### Added
 
@@ -18,13 +18,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/).
 - TauriMainProcessService verified: 24 VS Code IPC channels routed to Mountain
 - ResolveConfiguration confirmed loading real Mountain paths
 
-## [v2.0] — Q1 2026: Editor Launch Sprint
+## [v2.0] - Q1 2026: Editor Launch Sprint
 
 ### April 8-16: Tauri IPC Bridge Sprint
 
 #### Added
 
-- `Source/Service/TauriMainProcessService.ts` (232 lines, April 8) — IPC
+- `Source/Service/TauriMainProcessService.ts` (232 lines, April 8) - IPC
   routing with 24 channel routes and 14 stub channels:
   - Routed: localFilesystem, storage, configuration, textFile, extensions,
     commands, terminal, output, notification, progress, quickInput, workspaces,
@@ -35,9 +35,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/).
     sharedProcess, utilityProcessWorker, meteredConnection, webContentExtractor,
     browserElements, NativeMcpDiscoveryHelper, sandboxHelper, mcpGateway,
     browserViewGroup, externalTerminal
-- `Source/Polyfills/IPCRendererShim.ts` (373 lines) — binary IPC protocol
+- `Source/Polyfills/IPCRendererShim.ts` (373 lines) - binary IPC protocol
   (created then consolidated)
-- `Source/Function/DevLog.ts` (72 lines, April 9) — development logging with
+- `Source/Function/DevLog.ts` (72 lines, April 9) - development logging with
   short mode and fire-and-forget semantics
 - MessageChannel for extension host IPC: Preload.ts +58 lines, init data →
   Initialized byte ([1]) → Ready byte ([2]) after 50ms
@@ -64,15 +64,15 @@ Format: [Keep a Changelog](https://keepachangelog.com/).
 
 #### Added
 
-- `Source/Preload.ts` (99 lines) — Tauri/Electron bridge
-- `Source/Bootstrap/Types/` — 30+ VS Code type mirror files:
+- `Source/Preload.ts` (99 lines) - Tauri/Electron bridge
+- `Source/Bootstrap/Types/` - 30+ VS Code type mirror files:
   BootstrapTypes.ts, Type/ subtree (BootstrapConfig, EnvironmentData, Mode,
   Platform, StageResult, etc.)
-- `Source/Bootstrap/Types/VSCode/` — VSCodeConfigurationType,
+- `Source/Bootstrap/Types/VSCode/` - VSCodeConfigurationType,
   VSCodeLoggerType, VSCodeWorkbenchOptionsType
 - TypeScript 5.9.3 → 6.0.2 upgrade (March 24)
 
-## [v1.3] — Q4 2025: Dependency Maintenance
+## [v1.3] - Q4 2025: Dependency Maintenance
 
 ### Changed
 
@@ -81,14 +81,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/).
 - @effect/language-service: 0.60.x → 0.63.2
 - No major Application/ restructures; module count stable
 
-## [v1.2] — Q3 2025: Full Stack Integration
+## [v1.2] - Q3 2025: Full Stack Integration
 
 ### Added
 
 - 100+ Application service modules following Define/Implement/Problem pattern:
-  - `Source/Application/{Service}/Define.ts` — interface
-  - `Source/Application/{Service}/Implement.ts` — Effect-TS implementation
-  - `Source/Application/{Service}/Problem.ts` — error types
+  - `Source/Application/{Service}/Define.ts` - interface
+  - `Source/Application/{Service}/Implement.ts` - Effect-TS implementation
+  - `Source/Application/{Service}/Problem.ts` - error types
 - Services: Command, Configuration, Dialog, Editor, EditorGroup, File,
   FileSystem, Host, IPC, LanguageFeature, Logger, Marker, Notification,
   Policy, UntitledTextEditor, and more
@@ -100,16 +100,16 @@ Format: [Keep a Changelog](https://keepachangelog.com/).
 - solid-js 1.9.x stable
 - @types/node 24.x
 
-## [v1.1] — Q2 2025: Architecture Buildout
+## [v1.1] - Q2 2025: Architecture Buildout
 
-**May 30, 2025: the pivot point — Effect-TS + Application layer born.**
+**May 30, 2025: the pivot point - Effect-TS + Application layer born.**
 
 ### Added
 
-- `Source/Effect/` directory — Effect-TS service composition layer
-- `Source/Application/` directory — 50+ service modules (Dialog, FileDialog,
+- `Source/Effect/` directory - Effect-TS service composition layer
+- `Source/Application/` directory - 50+ service modules (Dialog, FileDialog,
   etc.) with Effect-TS-driven patterns
-- `Source/Configuration/ESBuild/` — build config restructure
+- `Source/Configuration/ESBuild/` - build config restructure
 - effect, @effect/platform, @effect/experimental, @effect/language-service
   dependencies
 
@@ -118,7 +118,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/).
 - Source/Element/Preview.scss
 - SolidJS evaluation concluded
 
-## [v1.0] — Q1 2025: Integration Phase
+## [v1.0] - Q1 2025: Integration Phase
 
 ### Changed
 
@@ -127,7 +127,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/).
 - CODE_OF_CONDUCT.md, CONTRIBUTING.md governance refresh
 - Target gen/delete cycles (CI/CD integration testing)
 
-## [v0.2] — Q4 2024: Architecture Solidification
+## [v0.2] - Q4 2024: Architecture Solidification
 
 ### Added
 
@@ -141,7 +141,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/).
 - solid-devtools: 0.31.2 → 0.31.7
 - CSS custom properties: `--Mute` action-form convention
 
-## [v0.1] — Q3 2024: Rapid Development
+## [v0.1] - Q3 2024: Rapid Development
 
 ### Changed
 
@@ -151,18 +151,18 @@ Format: [Keep a Changelog](https://keepachangelog.com/).
 - @playform/build: 0.1.2 → 0.1.7
 - No new architectural folders; pure refinement
 
-## [v0.0] — Q2 2024: Project Inception
+## [v0.0] - Q2 2024: Project Inception
 
 ### Added
 
-- `Source/Context/` — React-style context primitives (Action, Connection,
+- `Source/Context/` - React-style context primitives (Action, Connection,
   Environment, Session, Store)
-- `Source/Element/` — SolidJS components (Editor.tsx, Button, Anchor, Tip,
+- `Source/Element/` - SolidJS components (Editor.tsx, Button, Anchor, Tip,
   Footer)
-- `Source/Library/` — helper functions (Create, Pad, Persist, Environment)
-- `Source/Function/` — utilities (Merge)
-- `Source/Stylesheet/` — SCSS (Element/*, Mixin/*)
-- `Source/Variable/` — ESBuild config, StringURL constant
+- `Source/Library/` - helper functions (Create, Pad, Persist, Environment)
+- `Source/Function/` - utilities (Merge)
+- `Source/Stylesheet/` - SCSS (Element/*, Mixin/*)
+- `Source/Variable/` - ESBuild config, StringURL constant
 
 ### Dependencies (First Release)
 
