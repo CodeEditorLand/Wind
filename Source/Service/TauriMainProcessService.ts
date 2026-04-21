@@ -51,6 +51,14 @@ const ChannelRouteMap: Record<string, string> = {
 	configuration: "configuration",
 	textFile: "textFile",
 	extensions: "extensions",
+	// Route the Extensions-sidebar IPC channels into Mountain's
+	// existing `extensions:*` handlers. See the twin comment in
+	// `Element/Output/Source/Service/TauriMainProcessService.ts` —
+	// Wind and Output ship two copies of this service depending on
+	// workbench flavour, so the mapping has to be duplicated here to
+	// keep them aligned.
+	extensionManagement: "extensions",
+	extensionGallery: "extensions",
 	commands: "commands",
 	terminal: "terminal",
 	output: "output",
