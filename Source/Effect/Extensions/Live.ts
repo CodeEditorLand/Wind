@@ -4,14 +4,28 @@
  * Live implementation of ExtensionsService backed by Mountain's
  * ExtensionManagementService via Tauri IPC.
  *
- * IPC channels (WindServiceHandlers.rs):
- *   extensions:getAll  → GetExtensions()
- *   extensions:get     → GetExtension(id)
- *   extensions:isActive → IsActive(id)
+ * Atom L3 reference site: every `invoke` sources its wire string from the
+ * Channel registry (`Element/Wind/Source/IPC/Channel.ts` / mirror of
+ * `Element/Common/Source/IPC/Channel.rs`) rather than from a free-text
+ * string literal. A typo now fails to compile instead of hitting the
+ * unknown-command fallback in `WindServiceHandlers.rs`.
+ *
+ * Atom K5: `InstallVsix` / `Uninstall` resolve through real handlers in
+ * `WindServiceHandler/Extension.rs` (K2/K3) — the prior no-op stub in
+ * `WindServiceHandlers.rs:692-695` silently returned `null`. Callers now
+ * observe the ILocalExtension envelope on install and a `true` on uninstall.
+ *
+ * IPC channels consumed:
+ *   ExtensionsGet       → handle_extensions_get
+ *   ExtensionsGetAll    → handle_extensions_get_all
+ *   ExtensionsIsActive  → handle_extensions_is_active
+ *   ExtensionsInstall   → handle_extensions_install (K2)
+ *   ExtensionsUninstall → handle_extensions_uninstall (K3)
  */
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { ExtensionsService } from "./Interface/ExtensionsService.js";
 import { ExtensionsServiceTag } from "./Tag/ExtensionsServiceTag.js";
@@ -32,7 +46,7 @@ export const LiveExtensionsServiceLayer = Layer.effect(
 
 		const Service: ExtensionsService = {
 			GetExtension: (id) =>
-				IPCService.invoke("extensions:get")([id]).pipe(
+				IPCService.invoke(Channel.ExtensionsGet)([id]).pipe(
 					Effect.map((Result) =>
 						Result === null || Result === undefined
 							? undefined
@@ -42,7 +56,7 @@ export const LiveExtensionsServiceLayer = Layer.effect(
 				),
 
 			GetAllExtensions: () =>
-				IPCService.invoke("extensions:getAll")([]).pipe(
+				IPCService.invoke(Channel.ExtensionsGetAll)([]).pipe(
 					Effect.map((Result) =>
 						Array.isArray(Result)
 							? (Result as readonly unknown[])
@@ -52,16 +66,32 @@ export const LiveExtensionsServiceLayer = Layer.effect(
 				),
 
 			IsActive: (id) =>
-				IPCService.invoke("extensions:isActive")([id]).pipe(
+				IPCService.invoke(Channel.ExtensionsIsActive)([id]).pipe(
 					Effect.map((Result) => Boolean(Result)),
 					Effect.mapError(MakeExtensionsProblem),
 				),
 
 			Activate: (id) =>
-				// Extension activation is driven by Mountain/Cocoon on their side.
-				// Wind just verifies the extension exists and returns.
-				IPCService.invoke("extensions:get")([id]).pipe(
+				// TODO(Wave 3 follow-up): replace with a `commands:execute`
+				// of `workbench.extensions.activate` or a dedicated
+				// `extensions:activate` channel so Cocoon's `$activateByEvent`
+				// actually fires. Current implementation only verifies the
+				// extension exists, which matches the legacy stub behaviour.
+				IPCService.invoke(Channel.ExtensionsGet)([id]).pipe(
 					Effect.map(() => undefined as void),
+					Effect.mapError(MakeExtensionsProblem),
+				),
+
+			InstallVsix: (VsixPath) =>
+				IPCService.invoke(Channel.ExtensionsInstall)([VsixPath]).pipe(
+					Effect.mapError(MakeExtensionsProblem),
+				),
+
+			Uninstall: (Identifier) =>
+				IPCService.invoke(Channel.ExtensionsUninstall)([
+					Identifier,
+				]).pipe(
+					Effect.map((Result) => Result === true),
 					Effect.mapError(MakeExtensionsProblem),
 				),
 		};
