@@ -13,6 +13,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type {
 	LifecyclePhaseValue,
@@ -33,7 +34,7 @@ export const LiveLifecycleServiceLayer = Layer.effect(
 
 		const Service: LifecycleService = {
 			GetPhase: () =>
-				IPCService.invoke("lifecycle:getPhase")([]).pipe(
+				IPCService.invoke(Channel.LifecycleGetPhase)([]).pipe(
 					Effect.map(
 						(Result) =>
 							(typeof Result === "number"
@@ -44,13 +45,13 @@ export const LiveLifecycleServiceLayer = Layer.effect(
 				),
 
 			WhenPhase: (phase) =>
-				IPCService.invoke("lifecycle:whenPhase")([phase]).pipe(
+				IPCService.invoke(Channel.LifecycleWhenPhase)([phase]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeLifecycleProblem),
 				),
 
 			RequestShutdown: () =>
-				IPCService.invoke("lifecycle:requestShutdown")([]).pipe(
+				IPCService.invoke(Channel.LifecycleRequestShutdown)([]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeLifecycleProblem),
 				),

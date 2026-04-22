@@ -12,6 +12,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { SearchService } from "./Interface/SearchService.js";
 import { SearchServiceTag } from "./Tag/SearchServiceTag.js";
@@ -29,7 +30,7 @@ export const LiveSearchServiceLayer = Layer.effect(
 
 		const Service: SearchService = {
 			FindInFiles: (options) =>
-				IPCService.invoke("search:findInFiles")([
+				IPCService.invoke(Channel.SearchFindInFiles)([
 					options.pattern,
 					options.isRegex ?? false,
 					options.isCaseSensitive ?? false,
@@ -51,7 +52,7 @@ export const LiveSearchServiceLayer = Layer.effect(
 				),
 
 			FindFiles: (options) =>
-				IPCService.invoke("search:findFiles")([
+				IPCService.invoke(Channel.SearchFindFiles)([
 					options.pattern,
 					options.maxResults ?? 500,
 				]).pipe(

@@ -14,6 +14,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { OutputService } from "./Interface/OutputService.js";
 import { OutputServiceTag } from "./Tag/OutputServiceTag.js";
@@ -34,7 +35,7 @@ export const LiveOutputServiceLayer = Layer.effect(
 
 		const Service: OutputService = {
 			CreateChannel: (name) =>
-				IPCService.invoke("output:create")([name]).pipe(
+				IPCService.invoke(Channel.OutputCreate)([name]).pipe(
 					Effect.map(() => {
 						ActiveChannels.add(name);
 						return { name };
@@ -43,13 +44,13 @@ export const LiveOutputServiceLayer = Layer.effect(
 				),
 
 			Append: (channelName, text) =>
-				IPCService.invoke("output:append")([channelName, text]).pipe(
+				IPCService.invoke(Channel.OutputAppend)([channelName, text]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeOutputProblem),
 				),
 
 			AppendLine: (channelName, line) =>
-				IPCService.invoke("output:appendLine")([
+				IPCService.invoke(Channel.OutputAppendLine)([
 					channelName,
 					line,
 				]).pipe(
@@ -58,13 +59,13 @@ export const LiveOutputServiceLayer = Layer.effect(
 				),
 
 			Clear: (channelName) =>
-				IPCService.invoke("output:clear")([channelName]).pipe(
+				IPCService.invoke(Channel.OutputClear)([channelName]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeOutputProblem),
 				),
 
 			Show: (channelName) =>
-				IPCService.invoke("output:show")([channelName]).pipe(
+				IPCService.invoke(Channel.OutputShow)([channelName]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeOutputProblem),
 				),

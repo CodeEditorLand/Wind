@@ -106,6 +106,13 @@ export const MountainLive = Layer.effect(
 			yield* SetState({ _tag: "Connecting", attempt: 1 });
 
 			const ConnectionEffect = Effect.gen(function* () {
+				// TODO(L3-orphan): `mountain_get_status` uses a snake_case wire
+				// string instead of the project's `prefix:method` convention,
+				// so it can't fit the Channel registry's
+				// `Record<string, \`${string}:${string}\`>` shape. Either
+				// rename the Mountain handler to `mountain:getStatus` (Wind +
+				// Mountain coordinated change) or relax the registry's type
+				// guard. Left inline until the rename decision is made.
 				const Status = yield* IPCService.invoke("mountain_get_status")(
 					[],
 				).pipe(

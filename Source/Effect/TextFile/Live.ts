@@ -12,6 +12,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { TextFileService } from "./Interface/TextFileService.js";
 import { TextFileServiceTag } from "./Tag/TextFileServiceTag.js";
@@ -32,7 +33,7 @@ export const LiveTextFileServiceLayer = Layer.effect(
 
 		const Service: TextFileService = {
 			Read: (uri) =>
-				IPCService.invoke("textFile:read")([UriToPath(uri)]).pipe(
+				IPCService.invoke(Channel.TextFileRead)([UriToPath(uri)]).pipe(
 					Effect.map((Result) =>
 						typeof Result === "string" ? Result : String(Result),
 					),
@@ -40,7 +41,7 @@ export const LiveTextFileServiceLayer = Layer.effect(
 				),
 
 			Write: (uri, content) =>
-				IPCService.invoke("textFile:write")([
+				IPCService.invoke(Channel.TextFileWrite)([
 					UriToPath(uri),
 					content,
 				]).pipe(
@@ -49,13 +50,13 @@ export const LiveTextFileServiceLayer = Layer.effect(
 				),
 
 			Save: (uri) =>
-				IPCService.invoke("textFile:save")([UriToPath(uri)]).pipe(
+				IPCService.invoke(Channel.TextFileSave)([UriToPath(uri)]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeTextFileProblem),
 				),
 
 			SaveAll: () =>
-				IPCService.invoke("textFile:save")([]).pipe(
+				IPCService.invoke(Channel.TextFileSave)([]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeTextFileProblem),
 				),
@@ -63,7 +64,7 @@ export const LiveTextFileServiceLayer = Layer.effect(
 			IsDirty: (_uri) => Effect.succeed(false),
 
 			Revert: (uri) =>
-				IPCService.invoke("textFile:read")([UriToPath(uri)]).pipe(
+				IPCService.invoke(Channel.TextFileRead)([UriToPath(uri)]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeTextFileProblem),
 				),

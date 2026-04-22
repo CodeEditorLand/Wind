@@ -18,6 +18,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { FilesService } from "./Interface/FilesService.js";
 import { FilesServiceTag } from "./Tag/FilesServiceTag.js";
@@ -40,7 +41,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 		const Service: FilesService = {
 			ReadFile: (uri) => {
 				const Path = UriToPath(uri);
-				return IPCService.invoke("file:read")([Path]).pipe(
+				return IPCService.invoke(Channel.FileRead)([Path]).pipe(
 					Effect.map((Result) => {
 						if (Result instanceof Uint8Array) return Result;
 						if (typeof Result === "string")
@@ -55,7 +56,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 
 			WriteFile: (uri, content) => {
 				const Path = UriToPath(uri);
-				return IPCService.invoke("file:write")([
+				return IPCService.invoke(Channel.FileWrite)([
 					Path,
 					Array.from(content),
 				]).pipe(
@@ -66,7 +67,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 
 			Stat: (uri) => {
 				const Path = UriToPath(uri);
-				return IPCService.invoke("file:stat")([Path]).pipe(
+				return IPCService.invoke(Channel.FileStat)([Path]).pipe(
 					Effect.map((Result) => {
 						const Metadata = Result as {
 							type?: number;
@@ -89,7 +90,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 
 			ReadDir: (uri) => {
 				const Path = UriToPath(uri);
-				return IPCService.invoke("file:readdir")([Path]).pipe(
+				return IPCService.invoke(Channel.FileReaddir)([Path]).pipe(
 					Effect.map((Result) => {
 						if (!Array.isArray(Result)) return [];
 						// Result is an array of [name, type] tuples or plain names
@@ -112,7 +113,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 
 			CreateDirectory: (uri) => {
 				const Path = UriToPath(uri);
-				return IPCService.invoke("file:mkdir")([Path]).pipe(
+				return IPCService.invoke(Channel.FileMkdir)([Path]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeFilesProblem),
 				);
@@ -120,7 +121,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 
 			Delete: (uri, options) => {
 				const Path = UriToPath(uri);
-				return IPCService.invoke("file:delete")([
+				return IPCService.invoke(Channel.FileDelete)([
 					Path,
 					options ?? {},
 				]).pipe(
@@ -132,7 +133,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 			Rename: (source, target, options) => {
 				const SourcePath = UriToPath(source);
 				const TargetPath = UriToPath(target);
-				return IPCService.invoke("file:move")([
+				return IPCService.invoke(Channel.FileMove)([
 					SourcePath,
 					TargetPath,
 					options ?? {},
@@ -145,7 +146,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 			Copy: (source, target, options) => {
 				const SourcePath = UriToPath(source);
 				const TargetPath = UriToPath(target);
-				return IPCService.invoke("file:copy")([
+				return IPCService.invoke(Channel.FileCopy)([
 					SourcePath,
 					TargetPath,
 					options ?? {},
@@ -157,7 +158,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 
 			Exists: (uri) => {
 				const Path = UriToPath(uri);
-				return IPCService.invoke("file:exists")([Path]).pipe(
+				return IPCService.invoke(Channel.FileExists)([Path]).pipe(
 					Effect.map((Result) => Boolean(Result)),
 					Effect.mapError(MakeFilesProblem),
 				);
@@ -167,7 +168,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 				// Watch registration is fire-and-forget for now.
 				// Mountain's CocoonService.watch_file stores the intent.
 				const Path = UriToPath(uri);
-				return IPCService.invoke("file:read")([Path]) // Verify path exists
+				return IPCService.invoke(Channel.FileRead)([Path]) // Verify path exists
 					.pipe(
 						Effect.map(() => ({
 							dispose: () => {
@@ -178,6 +179,13 @@ export const LiveFilesServiceLayer = Layer.effect(
 					);
 			},
 
+			// TODO(L3-orphan): `UserInterface.ShowOpenDialog` / `…ShowSaveDialog`
+			// are Cocoon→Mountain gRPC method names, not Wind→Mountain Tauri
+			// IPC channels — calling them through `IPCService.invoke` hits the
+			// unknown-command fallback in `WindServiceHandlers.rs`. Needs a
+			// real Wind→Mountain dialog channel (proposed: `dialog:showOpen`,
+			// `dialog:showSave`) plus a handler in Mountain. Left as-is so a
+			// later atom fixes the wiring rather than bypassing it silently.
 			ShowOpenDialog: (Options) =>
 				IPCService.invoke("UserInterface.ShowOpenDialog")([
 					Options ?? {},

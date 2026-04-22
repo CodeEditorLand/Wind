@@ -12,6 +12,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { CommandsService } from "./Interface/CommandsService.js";
 import { CommandsServiceTag } from "./Tag/CommandsServiceTag.js";
@@ -54,7 +55,7 @@ export const LiveCommandsServiceLayer = Layer.effect(
 				}
 
 				// Delegate to Mountain's CommandRegistry via IPC
-				return IPCService.invoke("commands:execute")([
+				return IPCService.invoke(Channel.CommandsExecute)([
 					id,
 					args[0] ?? null,
 				]).pipe(
@@ -69,7 +70,7 @@ export const LiveCommandsServiceLayer = Layer.effect(
 				}),
 
 			GetCommands: () =>
-				IPCService.invoke("commands:getAll")([]).pipe(
+				IPCService.invoke(Channel.CommandsGetAll)([]).pipe(
 					Effect.map((Result) =>
 						Array.isArray(Result)
 							? (Result as readonly string[])

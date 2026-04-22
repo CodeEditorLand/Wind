@@ -14,6 +14,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { WorkingCopyService } from "./Interface/WorkingCopyService.js";
 import { WorkingCopyServiceTag } from "./Tag/WorkingCopyServiceTag.js";
@@ -31,19 +32,19 @@ export const LiveWorkingCopyServiceLayer = Layer.effect(
 
 		const Service: WorkingCopyService = {
 			IsDirty: (uri) =>
-				IPCService.invoke("workingCopy:isDirty")([uri]).pipe(
+				IPCService.invoke(Channel.WorkingCopyIsDirty)([uri]).pipe(
 					Effect.map((Result) => Result === true),
 					Effect.mapError(MakeWorkingCopyProblem),
 				),
 
 			SetDirty: (uri, dirty) =>
-				IPCService.invoke("workingCopy:setDirty")([uri, dirty]).pipe(
+				IPCService.invoke(Channel.WorkingCopySetDirty)([uri, dirty]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeWorkingCopyProblem),
 				),
 
 			GetAllDirty: () =>
-				IPCService.invoke("workingCopy:getAllDirty")([]).pipe(
+				IPCService.invoke(Channel.WorkingCopyGetAllDirty)([]).pipe(
 					Effect.map((Result) =>
 						Array.isArray(Result)
 							? (Result as readonly string[])
@@ -53,7 +54,7 @@ export const LiveWorkingCopyServiceLayer = Layer.effect(
 				),
 
 			GetDirtyCount: () =>
-				IPCService.invoke("workingCopy:getDirtyCount")([]).pipe(
+				IPCService.invoke(Channel.WorkingCopyGetDirtyCount)([]).pipe(
 					Effect.map((Result) =>
 						typeof Result === "number" ? Result : 0,
 					),

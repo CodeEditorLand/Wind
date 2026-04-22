@@ -12,6 +12,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { LabelService } from "./Interface/LabelService.js";
 import { LabelServiceTag } from "./Tag/LabelServiceTag.js";
@@ -29,7 +30,7 @@ export const LiveLabelServiceLayer = Layer.effect(
 
 		const Service: LabelService = {
 			GetUriLabel: (uri, options) =>
-				IPCService.invoke("label:getUri")([
+				IPCService.invoke(Channel.LabelGetURI)([
 					uri,
 					options?.relative ?? false,
 				]).pipe(
@@ -40,7 +41,7 @@ export const LiveLabelServiceLayer = Layer.effect(
 				),
 
 			GetWorkspaceLabel: () =>
-				IPCService.invoke("label:getWorkspace")([]).pipe(
+				IPCService.invoke(Channel.LabelGetWorkspace)([]).pipe(
 					Effect.map((Result) =>
 						typeof Result === "string" ? Result : "",
 					),
@@ -48,7 +49,7 @@ export const LiveLabelServiceLayer = Layer.effect(
 				),
 
 			GetBaseLabel: (uri) =>
-				IPCService.invoke("label:getBase")([uri]).pipe(
+				IPCService.invoke(Channel.LabelGetBase)([uri]).pipe(
 					Effect.map((Result) =>
 						typeof Result === "string"
 							? Result

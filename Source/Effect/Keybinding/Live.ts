@@ -14,6 +14,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { KeybindingService } from "./Interface/KeybindingService.js";
 import { KeybindingServiceTag } from "./Tag/KeybindingServiceTag.js";
@@ -31,7 +32,7 @@ export const LiveKeybindingServiceLayer = Layer.effect(
 
 		const Service: KeybindingService = {
 			AddKeybinding: (commandId, keybinding, when) =>
-				IPCService.invoke("keybinding:add")([
+				IPCService.invoke(Channel.KeybindingAdd)([
 					commandId,
 					keybinding,
 					when ?? null,
@@ -41,13 +42,13 @@ export const LiveKeybindingServiceLayer = Layer.effect(
 				),
 
 			RemoveKeybinding: (commandId) =>
-				IPCService.invoke("keybinding:remove")([commandId]).pipe(
+				IPCService.invoke(Channel.KeybindingRemove)([commandId]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeKeybindingProblem),
 				),
 
 			LookupKeybinding: (commandId) =>
-				IPCService.invoke("keybinding:lookup")([commandId]).pipe(
+				IPCService.invoke(Channel.KeybindingLookup)([commandId]).pipe(
 					Effect.map((Result) =>
 						typeof Result === "string" ? Result : null,
 					),
@@ -55,7 +56,7 @@ export const LiveKeybindingServiceLayer = Layer.effect(
 				),
 
 			GetKeybindings: () =>
-				IPCService.invoke("keybinding:getAll")([]).pipe(
+				IPCService.invoke(Channel.KeybindingGetAll)([]).pipe(
 					Effect.map((Result) =>
 						Array.isArray(Result)
 							? (Result as ReadonlyArray<{

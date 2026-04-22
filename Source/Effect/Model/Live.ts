@@ -14,6 +14,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { ModelService, TextModel } from "./Interface/ModelService.js";
 import { ModelServiceTag } from "./Tag/ModelServiceTag.js";
@@ -48,7 +49,7 @@ export const LiveModelServiceLayer = Layer.effect(
 
 		const Service: ModelService = {
 			OpenModel: (uri) =>
-				IPCService.invoke("model:open")([uri]).pipe(
+				IPCService.invoke(Channel.ModelOpen)([uri]).pipe(
 					Effect.mapError(MakeModelProblem),
 					Effect.flatMap((Result) => {
 						const Parsed = ParseTextModel(Result);
@@ -64,19 +65,19 @@ export const LiveModelServiceLayer = Layer.effect(
 				),
 
 			CloseModel: (uri) =>
-				IPCService.invoke("model:close")([uri]).pipe(
+				IPCService.invoke(Channel.ModelClose)([uri]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeModelProblem),
 				),
 
 			GetModel: (uri) =>
-				IPCService.invoke("model:get")([uri]).pipe(
+				IPCService.invoke(Channel.ModelGet)([uri]).pipe(
 					Effect.map((Result) => ParseTextModel(Result)),
 					Effect.mapError(MakeModelProblem),
 				),
 
 			GetAllModels: () =>
-				IPCService.invoke("model:getAll")([]).pipe(
+				IPCService.invoke(Channel.ModelGetAll)([]).pipe(
 					Effect.map((Result) => {
 						if (!Array.isArray(Result))
 							return [] as readonly TextModel[];
@@ -89,7 +90,7 @@ export const LiveModelServiceLayer = Layer.effect(
 				),
 
 			UpdateContent: (uri, content) =>
-				IPCService.invoke("model:updateContent")([uri, content]).pipe(
+				IPCService.invoke(Channel.ModelUpdateContent)([uri, content]).pipe(
 					Effect.mapError(MakeModelProblem),
 					Effect.flatMap((Result) => {
 						const Parsed = ParseTextModel(Result);

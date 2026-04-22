@@ -13,6 +13,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { ThemesService } from "./Interface/ThemesService.js";
 import { ThemesServiceTag } from "./Tag/ThemesServiceTag.js";
@@ -30,7 +31,7 @@ export const LiveThemesServiceLayer = Layer.effect(
 
 		const Service: ThemesService = {
 			GetActiveTheme: () =>
-				IPCService.invoke("themes:getActive")([]).pipe(
+				IPCService.invoke(Channel.ThemesGetActive)([]).pipe(
 					Effect.map((Result) => {
 						const Theme = Result as {
 							id?: string;
@@ -51,7 +52,7 @@ export const LiveThemesServiceLayer = Layer.effect(
 				),
 
 			ListThemes: () =>
-				IPCService.invoke("themes:list")([]).pipe(
+				IPCService.invoke(Channel.ThemesList)([]).pipe(
 					Effect.map((Result) =>
 						Array.isArray(Result)
 							? (Result as readonly {
@@ -69,7 +70,7 @@ export const LiveThemesServiceLayer = Layer.effect(
 				),
 
 			SetTheme: (themeId) =>
-				IPCService.invoke("themes:set")([themeId]).pipe(
+				IPCService.invoke(Channel.ThemesSet)([themeId]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeThemesProblem),
 				),

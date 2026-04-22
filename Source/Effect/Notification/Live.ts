@@ -14,6 +14,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { NotificationService } from "./Interface/NotificationService.js";
 import { NotificationServiceTag } from "./Tag/NotificationServiceTag.js";
@@ -34,7 +35,7 @@ export const LiveNotificationServiceLayer = Layer.effect(
 
 		const Service: NotificationService = {
 			Show: (message, severity, actions) =>
-				IPCService.invoke("notification:show")([
+				IPCService.invoke(Channel.NotificationShow)([
 					message,
 					severity,
 					actions ?? [],
@@ -46,7 +47,7 @@ export const LiveNotificationServiceLayer = Layer.effect(
 				),
 
 			ShowProgress: (title, cancellable) =>
-				IPCService.invoke("notification:showProgress")([
+				IPCService.invoke(Channel.NotificationShowProgress)([
 					title,
 					cancellable,
 				]).pipe(
@@ -59,7 +60,7 @@ export const LiveNotificationServiceLayer = Layer.effect(
 				),
 
 			UpdateProgress: (id, increment, message) =>
-				IPCService.invoke("notification:updateProgress")([
+				IPCService.invoke(Channel.NotificationUpdateProgress)([
 					id,
 					increment,
 					message ?? "",
@@ -69,7 +70,7 @@ export const LiveNotificationServiceLayer = Layer.effect(
 				),
 
 			EndProgress: (id) =>
-				IPCService.invoke("notification:endProgress")([id]).pipe(
+				IPCService.invoke(Channel.NotificationEndProgress)([id]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeNotificationProblem),
 				),

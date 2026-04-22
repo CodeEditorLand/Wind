@@ -13,6 +13,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { StorageService } from "./Interface/StorageService.js";
 import { StorageServiceTag } from "./Tag/StorageServiceTag.js";
@@ -30,25 +31,25 @@ export const LiveStorageServiceLayer = Layer.effect(
 
 		const Service: StorageService = {
 			Get: (key) =>
-				IPCService.invoke("storage:get")([key]).pipe(
+				IPCService.invoke(Channel.StorageGet)([key]).pipe(
 					Effect.map((Result) => Result),
 					Effect.mapError(MakeStorageProblem),
 				),
 
 			Set: (key, value) =>
-				IPCService.invoke("storage:set")([key, value]).pipe(
+				IPCService.invoke(Channel.StorageSet)([key, value]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeStorageProblem),
 				),
 
 			Delete: (key) =>
-				IPCService.invoke("storage:delete")([key]).pipe(
+				IPCService.invoke(Channel.StorageDelete)([key]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeStorageProblem),
 				),
 
 			Keys: () =>
-				IPCService.invoke("storage:keys")([]).pipe(
+				IPCService.invoke(Channel.StorageKeys)([]).pipe(
 					Effect.map((Result) =>
 						Array.isArray(Result)
 							? (Result as readonly string[])

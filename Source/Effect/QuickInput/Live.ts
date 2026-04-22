@@ -12,6 +12,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { QuickInputService } from "./Interface/QuickInputService.js";
 import { QuickInputServiceTag } from "./Tag/QuickInputServiceTag.js";
@@ -32,7 +33,7 @@ export const LiveQuickInputServiceLayer = Layer.effect(
 
 		const Service: QuickInputService = {
 			ShowQuickPick: (items, options) =>
-				IPCService.invoke("quickInput:showQuickPick")([
+				IPCService.invoke(Channel.QuickInputShowQuickPick)([
 					items,
 					options ?? {},
 				]).pipe(
@@ -50,7 +51,7 @@ export const LiveQuickInputServiceLayer = Layer.effect(
 				),
 
 			ShowInputBox: (options) =>
-				IPCService.invoke("quickInput:showInputBox")([
+				IPCService.invoke(Channel.QuickInputShowInputBox)([
 					options ?? {},
 				]).pipe(
 					Effect.map((Result) =>

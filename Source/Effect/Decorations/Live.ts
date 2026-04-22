@@ -14,6 +14,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type {
 	DecorationsService,
@@ -34,7 +35,7 @@ export const LiveDecorationsServiceLayer = Layer.effect(
 
 		const Service: DecorationsService = {
 			GetDecoration: (uri, includeChildren) =>
-				IPCService.invoke("decorations:get")([
+				IPCService.invoke(Channel.DecorationsGet)([
 					uri,
 					includeChildren,
 				]).pipe(
@@ -45,7 +46,7 @@ export const LiveDecorationsServiceLayer = Layer.effect(
 				),
 
 			GetDecorations: (uris) =>
-				IPCService.invoke("decorations:getMany")([uris]).pipe(
+				IPCService.invoke(Channel.DecorationsGetMany)([uris]).pipe(
 					Effect.map((Result) => {
 						const Map_ = new Map<string, FileDecoration>();
 						if (Result != null && typeof Result === "object") {
@@ -61,13 +62,13 @@ export const LiveDecorationsServiceLayer = Layer.effect(
 				),
 
 			SetDecoration: (uri, decoration) =>
-				IPCService.invoke("decorations:set")([uri, decoration]).pipe(
+				IPCService.invoke(Channel.DecorationsSet)([uri, decoration]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeDecorationsProblem),
 				),
 
 			ClearDecoration: (uri) =>
-				IPCService.invoke("decorations:clear")([uri]).pipe(
+				IPCService.invoke(Channel.DecorationsClear)([uri]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeDecorationsProblem),
 				),

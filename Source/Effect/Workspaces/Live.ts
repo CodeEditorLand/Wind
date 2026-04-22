@@ -14,6 +14,7 @@
 
 import { Effect, Layer, Stream } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type {
 	WorkspacesChangeEvent,
@@ -69,7 +70,7 @@ export const LiveWorkspacesServiceLayer = Layer.effect(
 
 		const Service: WorkspacesService = {
 			GetFolders: () =>
-				IPCService.invoke("workspaces:getFolders")([]).pipe(
+				IPCService.invoke(Channel.WorkspacesGetFolders)([]).pipe(
 					Effect.map((Result) =>
 						Array.isArray(Result)
 							? (Result as readonly {
@@ -83,7 +84,7 @@ export const LiveWorkspacesServiceLayer = Layer.effect(
 				),
 
 			AddFolder: (uri, name) =>
-				IPCService.invoke("workspaces:addFolder")([
+				IPCService.invoke(Channel.WorkspacesAddFolder)([
 					uri,
 					name ?? "",
 				]).pipe(
@@ -92,13 +93,13 @@ export const LiveWorkspacesServiceLayer = Layer.effect(
 				),
 
 			RemoveFolder: (uri) =>
-				IPCService.invoke("workspaces:removeFolder")([uri]).pipe(
+				IPCService.invoke(Channel.WorkspacesRemoveFolder)([uri]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeWorkspacesProblem),
 				),
 
 			GetName: () =>
-				IPCService.invoke("workspaces:getName")([]).pipe(
+				IPCService.invoke(Channel.WorkspacesGetName)([]).pipe(
 					Effect.map((Result) =>
 						typeof Result === "string" ? Result : undefined,
 					),

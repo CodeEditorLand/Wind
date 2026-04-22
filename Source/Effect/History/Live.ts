@@ -16,6 +16,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { HistoryService } from "./Interface/HistoryService.js";
 import { HistoryServiceTag } from "./Tag/HistoryServiceTag.js";
@@ -33,43 +34,43 @@ export const LiveHistoryServiceLayer = Layer.effect(
 
 		const Service: HistoryService = {
 			GoBack: () =>
-				IPCService.invoke("history:goBack")([]).pipe(
+				IPCService.invoke(Channel.HistoryGoBack)([]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeHistoryProblem),
 				),
 
 			GoForward: () =>
-				IPCService.invoke("history:goForward")([]).pipe(
+				IPCService.invoke(Channel.HistoryGoForward)([]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeHistoryProblem),
 				),
 
 			CanGoBack: () =>
-				IPCService.invoke("history:canGoBack")([]).pipe(
+				IPCService.invoke(Channel.HistoryCanGoBack)([]).pipe(
 					Effect.map((Result) => Result === true),
 					Effect.mapError(MakeHistoryProblem),
 				),
 
 			CanGoForward: () =>
-				IPCService.invoke("history:canGoForward")([]).pipe(
+				IPCService.invoke(Channel.HistoryCanGoForward)([]).pipe(
 					Effect.map((Result) => Result === true),
 					Effect.mapError(MakeHistoryProblem),
 				),
 
 			Push: (uri) =>
-				IPCService.invoke("history:push")([uri]).pipe(
+				IPCService.invoke(Channel.HistoryPush)([uri]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeHistoryProblem),
 				),
 
 			Clear: () =>
-				IPCService.invoke("history:clear")([]).pipe(
+				IPCService.invoke(Channel.HistoryClear)([]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeHistoryProblem),
 				),
 
 			GetStack: () =>
-				IPCService.invoke("history:getStack")([]).pipe(
+				IPCService.invoke(Channel.HistoryGetStack)([]).pipe(
 					Effect.map((Result) =>
 						Array.isArray(Result)
 							? (Result as readonly string[])

@@ -14,6 +14,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { TerminalService } from "./Interface/TerminalService.js";
 import { TerminalServiceTag } from "./Tag/TerminalServiceTag.js";
@@ -31,7 +32,7 @@ export const LiveTerminalServiceLayer = Layer.effect(
 
 		const Service: TerminalService = {
 			CreateTerminal: (options) =>
-				IPCService.invoke("terminal:create")([options ?? {}]).pipe(
+				IPCService.invoke(Channel.TerminalCreate)([options ?? {}]).pipe(
 					Effect.map((Result) => {
 						const Info = Result as { id?: number; name?: string };
 						return {
@@ -43,19 +44,19 @@ export const LiveTerminalServiceLayer = Layer.effect(
 				),
 
 			SendText: (id, text) =>
-				IPCService.invoke("terminal:sendText")([id, text]).pipe(
+				IPCService.invoke(Channel.TerminalSendText)([id, text]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeTerminalProblem),
 				),
 
 			Dispose: (id) =>
-				IPCService.invoke("terminal:dispose")([id]).pipe(
+				IPCService.invoke(Channel.TerminalDispose)([id]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeTerminalProblem),
 				),
 
 			Show: (id, preserveFocus) =>
-				IPCService.invoke("terminal:show")([
+				IPCService.invoke(Channel.TerminalShow)([
 					id,
 					preserveFocus ?? false,
 				]).pipe(
@@ -64,7 +65,7 @@ export const LiveTerminalServiceLayer = Layer.effect(
 				),
 
 			Hide: (id) =>
-				IPCService.invoke("terminal:hide")([id]).pipe(
+				IPCService.invoke(Channel.TerminalHide)([id]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeTerminalProblem),
 				),

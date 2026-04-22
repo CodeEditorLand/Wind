@@ -12,6 +12,7 @@
 
 import { Effect, Layer } from "effect";
 
+import Channel from "../../IPC/Channel.js";
 import { IPC } from "../IPC.js";
 import type { ProgressService } from "./Interface/ProgressService.js";
 import { ProgressServiceTag } from "./Tag/ProgressServiceTag.js";
@@ -29,7 +30,7 @@ export const LiveProgressServiceLayer = Layer.effect(
 
 		const Service: ProgressService = {
 			Begin: (options) =>
-				IPCService.invoke("progress:begin")([
+				IPCService.invoke(Channel.ProgressBegin)([
 					options.location,
 					options.title ?? "",
 					options.cancellable ?? false,
@@ -43,7 +44,7 @@ export const LiveProgressServiceLayer = Layer.effect(
 				),
 
 			Report: (id, report) =>
-				IPCService.invoke("progress:report")([
+				IPCService.invoke(Channel.ProgressReport)([
 					id,
 					report.increment ?? 0,
 					report.message ?? "",
@@ -53,7 +54,7 @@ export const LiveProgressServiceLayer = Layer.effect(
 				),
 
 			End: (id) =>
-				IPCService.invoke("progress:end")([id]).pipe(
+				IPCService.invoke(Channel.ProgressEnd)([id]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeProgressProblem),
 				),

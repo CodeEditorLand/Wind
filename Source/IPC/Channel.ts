@@ -189,6 +189,21 @@ export default {
 	StorageSet: "storage:set",
 	StorageUpdateItems: "storage:updateItems",
 
+	// --- QuickInput (vscode.window.showQuickPick / showInputBox) ---
+	QuickInputShowInputBox: "quickInput:showInputBox",
+	QuickInputShowQuickPick: "quickInput:showQuickPick",
+
+	// --- TextFile (editor working-copy surface) ---
+	TextFileRead: "textFile:read",
+	TextFileWrite: "textFile:write",
+	TextFileSave: "textFile:save",
+
+	// --- WorkingCopy (dirty-state tracking) ---
+	WorkingCopyGetAllDirty: "workingCopy:getAllDirty",
+	WorkingCopyGetDirtyCount: "workingCopy:getDirtyCount",
+	WorkingCopyIsDirty: "workingCopy:isDirty",
+	WorkingCopySetDirty: "workingCopy:setDirty",
+
 	// --- Terminal ---
 	TerminalCreate: "terminal:create",
 	TerminalDispose: "terminal:dispose",
