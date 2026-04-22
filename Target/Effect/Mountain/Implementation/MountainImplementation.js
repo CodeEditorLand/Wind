@@ -9,6 +9,7 @@ import {
   Stream,
   SubscriptionRef
 } from "effect";
+import Channel from "../../../IPC/Channel.js";
 import { Configuration } from "../../Configuration.js";
 import { IPC } from "../../IPC.js";
 import { Telemetry } from "../../Telemetry.js";
@@ -60,9 +61,9 @@ const MountainLive = Layer.effect(
     const Connect = Effect.gen(function* () {
       yield* SetState({ _tag: "Connecting", attempt: 1 });
       const ConnectionEffect = Effect.gen(function* () {
-        const Status = yield* IPCService.invoke("mountain_get_status")(
-          []
-        ).pipe(
+        const Status = yield* IPCService.invoke(
+          Channel.MountainGetStatus
+        )([]).pipe(
           Effect.map(
             (Result) => {
               const APIStatus = Result;
@@ -263,7 +264,7 @@ const MountainLive = Layer.effect(
       Stream.flatMap((Events) => Stream.fromIterable(Events))
     );
     const Version = Effect.gen(function* () {
-      const Status = yield* IPCService.invoke("mountain_get_status")(
+      const Status = yield* IPCService.invoke(Channel.MountainGetStatus)(
         []
       ).pipe(
         Effect.map((Result) => {
@@ -276,7 +277,7 @@ const MountainLive = Layer.effect(
     });
     const HealthCheck = Effect.gen(function* () {
       return yield* Effect.orElse(
-        RPC("mountain_get_status")().pipe(
+        RPC(Channel.MountainGetStatus)().pipe(
           Effect.map((Status) => Status.connected === true)
         ),
         () => Effect.succeed(false)
