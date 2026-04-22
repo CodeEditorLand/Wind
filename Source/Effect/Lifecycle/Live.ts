@@ -6,7 +6,7 @@
  * the editor is fully initialised (Restored/Eventually phase).
  *
  * IPC channels (WindServiceHandlers.rs):
- *   lifecycle:getPhase       → get current phase (1–4)
+ *   lifecycle:getPhase       → get current phase (1-4)
  *   lifecycle:whenPhase      → poll until phase is reached
  *   lifecycle:requestShutdown → initiate graceful app shutdown
  */

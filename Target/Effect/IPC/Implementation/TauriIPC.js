@@ -22,7 +22,7 @@ const TauriIPCLive = Effect.gen(function* () {
     invoke: /* @__PURE__ */ __name((channel) => (args) => Effect.tryPromise({
       try: /* @__PURE__ */ __name(() => {
         const params = args.length === 0 ? [] : args.length === 1 ? args[0] : Array.from(args);
-        return tauriInvoke("mountain_ipc_invoke", {
+        return tauriInvoke("MountainIPCInvoke", {
           method: channel,
           params
         });

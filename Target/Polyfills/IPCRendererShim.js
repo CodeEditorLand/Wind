@@ -4,6 +4,12 @@ async function invokeTauri(command, args = {}) {
   try {
     const Invoke = window.__TAURI__?.core?.invoke ?? window.__TAURI__?.invoke ?? window.TAURI?.invoke;
     if (typeof Invoke === "function") {
+      if (command.includes(":")) {
+        return await Invoke("MountainIPCInvoke", {
+          method: command,
+          params: args
+        });
+      }
       return await Invoke(command, args);
     }
     throw new Error(`Tauri invoke not available for command: ${command}`);
@@ -16,9 +22,12 @@ function sendTauri(command, args = {}) {
   try {
     const Invoke = window.__TAURI__?.core?.invoke ?? window.__TAURI__?.invoke ?? window.TAURI?.invoke;
     if (typeof Invoke === "function") {
-      Invoke(command, args).catch((error) => {
+      const Call = command.includes(":") ? Invoke("MountainIPCInvoke", {
+        method: command,
+        params: args
+      }) : Invoke(command, args);
+      Call.catch((_error) => {
       });
-    } else {
     }
   } catch (error) {
   }

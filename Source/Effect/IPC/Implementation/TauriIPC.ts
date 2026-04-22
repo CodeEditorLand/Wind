@@ -48,18 +48,25 @@ export const TauriIPCLive = Effect.gen(function* () {
 		invoke: (channel: string) => (args: ReadonlyArray<unknown>) =>
 			Effect.tryPromise({
 				try: () => {
-					// All Wind IPC calls route through the single MountainIPCInvoke
-					// Tauri command (registered as "mountain_ipc_invoke").
-					// Mountain receives: method = channel name, params = args array.
-					// Send as array so Mountain can always destructure positionally.
-					// Single-element arrays are preserved; empty stays [].
+					// All Wind IPC calls route through the single
+					// `MountainIPCInvoke` Tauri command (registered in
+					// `Binary/Main/Entry.rs::invoke_handler!`; implementation
+					// in `Binary/IPC/InvokeCommand.rs`). Tauri's default
+					// snake-case auto-conversion means `"mountain_ipc_invoke"`
+					// also resolves - but every other call site in Wind /
+					// Sky / Output uses the PascalCase form, so stay
+					// consistent with those.
+					// Mountain receives: method = channel name, params = args
+					// array. Send as array so Mountain can always destructure
+					// positionally; single-element arrays preserved; empty
+					// stays [].
 					const params: unknown =
 						args.length === 0
 							? []
 							: args.length === 1
 								? args[0]
 								: Array.from(args);
-					return tauriInvoke("mountain_ipc_invoke", {
+					return tauriInvoke("MountainIPCInvoke", {
 						method: channel,
 						params,
 					});

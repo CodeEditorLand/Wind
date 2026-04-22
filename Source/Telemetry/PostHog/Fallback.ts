@@ -4,7 +4,7 @@
  * `fetch`-based `/batch/` POST for node-side Wind layers where
  * `window.posthog` is unavailable. Matches Cocoon's envelope shape so
  * PostHog's server treats our direct POST identically to an SDK call.
- * Silent on failure — telemetry must never raise.
+ * Silent on failure - telemetry must never raise.
  */
 
 import type { Configuration } from "./Configuration.js";

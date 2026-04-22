@@ -31,7 +31,7 @@ export type LifecyclePhaseValue =
  * vs/workbench/services/lifecycle/common/lifecycle.ts
  */
 export interface LifecycleService {
-	/** Get the current lifecycle phase (1–4). */
+	/** Get the current lifecycle phase (1-4). */
 	readonly GetPhase: () => Effect.Effect<
 		LifecyclePhaseValue,
 		LifecycleProblem

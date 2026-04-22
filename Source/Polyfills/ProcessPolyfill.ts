@@ -125,6 +125,20 @@ async function invokeTauri<T>(
 			(window as any).TAURI?.invoke;
 
 		if (typeof Invoke === "function") {
+			// Colon-prefixed methods (e.g. `file:write`,
+			// `shared_process:invoke`) are not registered as direct Tauri
+			// commands - Rust function names can't contain colons. They
+			// dispatch through Mountain's single `MountainIPCInvoke`
+			// command, which unwraps `params` back into the positional
+			// `Vec<Value>` the internal handlers consume. Route
+			// transparently so this polyfill behaves like the rest of
+			// Wind/Sky/Output.
+			if (command.includes(":")) {
+				return await Invoke("MountainIPCInvoke", {
+					method: command,
+					params: args,
+				});
+			}
 			return await Invoke(command, args);
 		}
 
