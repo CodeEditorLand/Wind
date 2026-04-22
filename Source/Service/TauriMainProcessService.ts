@@ -139,6 +139,86 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		setInternalOrg: undefined,
 		_getInitialState: { type: 0 },
 	},
+
+	// Fix: `IExtensionTipsService` - `exeBasedRecommendations.ts:54` does
+	// `this._importantTips = await …getImportantExecutableBasedTips()` and
+	// the next line iterates with `.forEach`. Without a stub the IPC call
+	// rejects → `undefined` seeps through → `undefined.forEach` crashes
+	// with `undefined is not an object (evaluating 'this._importantTips.forEach')`.
+	// Land doesn't host an exe-based recommendation backend, so an empty
+	// array is the correct "no recommendations" shape. `configBasedTips`
+	// maps to the same service's config-based counterpart - also empty.
+	extensionTipsService: {
+		getImportantExecutableBasedTips: [],
+		getOtherExecutableBasedTips: [],
+		getAllWorkspacesTips: [],
+		getConfigBasedTips: [],
+		getImportantExecutableBasedTipsForExecutable: [],
+	},
+
+	// Fix: `IMcpManagementService` channel - `mcpManagementIpc.ts:167`
+	// calls `.then(servers => servers.map(…))` expecting an array. Missing
+	// handler → undefined → `.map` crashes with
+	// `undefined is not an object (evaluating 'servers.map')`. Empty
+	// array = "no MCP servers installed", which matches the absence of a
+	// Mountain-side MCP gallery.
+	mcpManagement: {
+		getInstalled: [],
+		install: undefined,
+		uninstall: undefined,
+		getGalleryServers: [],
+		getLatest: undefined,
+	},
+	mcpWorkbenchManagement: {
+		getInstalled: [],
+		getLocalServers: [],
+		install: undefined,
+		uninstall: undefined,
+	},
+
+	// Fix: `IUserDataSyncService._getInitialData` returns a 3-tuple
+	// `[status, conflicts, lastSyncTime]` that `userDataSyncServiceIpc.ts:165`
+	// destructures. Missing handler → undefined → the bracket-destructure
+	// throws `undefined is not an object (evaluating '[status, conflicts, lastSyncTime]')`.
+	// Return the "Uninitialised" status (0), no conflicts, no sync time
+	// so the workbench treats sync as disabled.
+	userDataSyncService: {
+		_getInitialData: [0, [], null],
+		accept: undefined,
+		resolveContent: null,
+		replace: undefined,
+		reset: undefined,
+		stop: undefined,
+		pull: undefined,
+		hasPreviouslySynced: false,
+		hasLocalData: false,
+		turnOn: undefined,
+		turnOff: undefined,
+	},
+	// `IUserDataSyncAccount._getInitialData` returns the account or
+	// `undefined` when no account is signed in - matches the equivalent
+	// `userDataSyncIpc.ts:51` callsite.
+	userDataSync: {
+		_getInitialData: undefined,
+		getAccount: undefined,
+	},
+	userDataSyncStoreManagement: {
+		_getInitialData: null,
+	},
+	userDataAutoSync: {
+		triggerSync: undefined,
+		turnOn: undefined,
+		turnOff: undefined,
+	},
+
+	// Fix: `languageDetectionWorkerService` - iterates
+	// `fileExtensions.extensions` and crashes when the IPC returns
+	// undefined. Empty result = "language detection disabled",
+	// matching the absence of the ML detector in Land.
+	languageDetection: {
+		detectLanguage: null,
+		provideLanguageDetectionHints: { fileExtensions: { extensions: [] } },
+	},
 };
 
 // ============================================================================
