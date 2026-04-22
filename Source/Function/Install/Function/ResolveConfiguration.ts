@@ -17,7 +17,7 @@ const DevLog = (Tag: string, ..._Args: unknown[]): void => {
 /**
  * Atom I5: fetch the resolved /product.json generated at build time by
  * Maintain/Script/ResolveProductConfig.sh from .env.Land's Product* vars.
- * Single source of truth — no hardcoded identity or version strings here.
+ * Single source of truth - no hardcoded identity or version strings here.
  * Network failures fall through to minimal defaults so the workbench still
  * boots in degraded mode (with a visible version mismatch warning).
  */

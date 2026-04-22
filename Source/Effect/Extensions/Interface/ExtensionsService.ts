@@ -25,7 +25,7 @@ export interface ExtensionsService {
 	readonly Activate: (id: string) => Effect.Effect<void, ExtensionsProblem>;
 	/**
 	 * Install a local `.vsix` file. `VsixPath` is accepted as either a plain
-	 * path or a `file://` URI — Mountain's handler normalises both.
+	 * path or a `file://` URI - Mountain's handler normalises both.
 	 *
 	 * Resolves with the `ILocalExtension` envelope Mountain returns (same
 	 * shape as `ExtensionsGetInstalled`), so the caller can update the

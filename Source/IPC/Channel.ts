@@ -1,11 +1,11 @@
 // ---------------------------------------------------------------------------
-// IPC Channel Registry — TS mirror of Element/Common/Source/IPC/Channel.rs
+// IPC Channel Registry - TS mirror of Element/Common/Source/IPC/Channel.rs
 // ---------------------------------------------------------------------------
 //
 // Every Wind-side `IPCService.invoke(...)` picks its wire string from this
 // object. The Rust `Channel` enum in Common is the authoritative source; this
 // file is hand-kept in lockstep. Ordering and wire strings must match exactly
-// — a `grep "=>" Channel.rs | wc -l` and a `grep ":" Channel.ts | wc -l`
+// - a `grep "=>" Channel.rs | wc -l` and a `grep ":" Channel.ts | wc -l`
 // should agree, and both should equal the live Mountain dispatch count.
 //
 // Type-safe consumption pattern:
@@ -247,12 +247,12 @@ export default {
 	// Two historical channel groups don't follow the `prefix:method` shape
 	// the rest of the registry uses:
 	//
-	//   1. `UserInterface.Show*Dialog` — dotted method names mirrored from
+	//   1. `UserInterface.Show*Dialog` - dotted method names mirrored from
 	//      Cocoon→Mountain gRPC. Wind's Files/Live.ts wires them through
 	//      Tauri IPC today; the Mountain-side handler is planned as a
 	//      future `dialog:showOpen` / `dialog:showSave` rename. Until that
 	//      coordinated change lands both sides accept the dotted form.
-	//   2. `mountain_get_status` — snake_case Tauri command predating the
+	//   2. `mountain_get_status` - snake_case Tauri command predating the
 	//      `prefix:method` convention. Rename candidate only.
 	//
 	// These are grouped at the tail so a future rename is one block to move.

@@ -10,8 +10,8 @@
  *   - `sky://extensions/uninstalled` → `{ identifier, location }`
  *
  * Consumers (sidebar view, notification toast, error-tracking hook) almost
- * always want the union of both — a single stream tagged with the change
- * kind — rather than subscribing to each raw event. `ExtensionChangeStream`
+ * always want the union of both - a single stream tagged with the change
+ * kind - rather than subscribing to each raw event. `ExtensionChangeStream`
  * is that union, typed via the Wind `SkyEvent` registry so wire-string
  * changes caught at compile time.
  *
@@ -69,7 +69,7 @@ const FirstArgAsPayload = (
 /**
  * Install + uninstall events merged into a single Effect-TS stream of
  * typed `ExtensionChange` items. Any payload shape mismatch produces an
- * empty string / undefined rather than dropping the event — the
+ * empty string / undefined rather than dropping the event - the
  * receiver's refresh logic can re-fetch `extensions:getAll` to recover
  * authoritative state.
  */

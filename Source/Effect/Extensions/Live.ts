@@ -11,7 +11,7 @@
  * unknown-command fallback in `WindServiceHandlers.rs`.
  *
  * Atom K5: `InstallVsix` / `Uninstall` resolve through real handlers in
- * `WindServiceHandler/Extension.rs` (K2/K3) — the prior no-op stub in
+ * `WindServiceHandler/Extension.rs` (K2/K3) - the prior no-op stub in
  * `WindServiceHandlers.rs:692-695` silently returned `null`. Callers now
  * observe the ILocalExtension envelope on install and a `true` on uninstall.
  *

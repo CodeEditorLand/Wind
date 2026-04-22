@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Sky Event Registry — TS mirror of Element/Common/Source/IPC/SkyEvent.rs
+// Sky Event Registry - TS mirror of Element/Common/Source/IPC/SkyEvent.rs
 // ---------------------------------------------------------------------------
 //
 // Mountain emits Tauri events on `sky://…` URIs to notify Wind of state
