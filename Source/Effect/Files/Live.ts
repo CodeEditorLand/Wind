@@ -179,15 +179,16 @@ export const LiveFilesServiceLayer = Layer.effect(
 					);
 			},
 
-			// TODO(L3-orphan): `UserInterface.ShowOpenDialog` / `…ShowSaveDialog`
-			// are Cocoon→Mountain gRPC method names, not Wind→Mountain Tauri
-			// IPC channels — calling them through `IPCService.invoke` hits the
-			// unknown-command fallback in `WindServiceHandlers.rs`. Needs a
-			// real Wind→Mountain dialog channel (proposed: `dialog:showOpen`,
-			// `dialog:showSave`) plus a handler in Mountain. Left as-is so a
-			// later atom fixes the wiring rather than bypassing it silently.
+			// `UserInterface.ShowOpenDialog` / `…ShowSaveDialog` use dotted
+			// names inherited from the Cocoon→Mountain gRPC surface. Wave 5
+			// added them to the Channel registry (tail group with a
+			// rename-path comment pointing at `dialog:showOpen` /
+			// `dialog:showSave`). The Mountain-side handler rename is a
+			// coordinated follow-up; until then the wire strings stay
+			// dotted on both ends and the registry is the single source of
+			// truth for the spelling.
 			ShowOpenDialog: (Options) =>
-				IPCService.invoke("UserInterface.ShowOpenDialog")([
+				IPCService.invoke(Channel.UserInterfaceShowOpenDialog)([
 					Options ?? {},
 				]).pipe(
 					Effect.map((Result) =>
@@ -197,7 +198,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 				),
 
 			ShowSaveDialog: (Options) =>
-				IPCService.invoke("UserInterface.ShowSaveDialog")([
+				IPCService.invoke(Channel.UserInterfaceShowSaveDialog)([
 					Options ?? {},
 				]).pipe(
 					Effect.map((Result) =>

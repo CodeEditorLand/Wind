@@ -15,6 +15,7 @@
 import { Effect, Layer, Stream } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+import SkyEvent from "../../IPC/SkyEvent.js";
 import { IPC } from "../IPC.js";
 import type {
 	WorkspacesChangeEvent,
@@ -116,7 +117,7 @@ export const LiveWorkspacesServiceLayer = Layer.effect(
 			 * future field is introduced.
 			 */
 			OnChange: () =>
-				IPCService.events("sky://workspaces/changed").pipe(
+				IPCService.events(SkyEvent.WorkspacesChanged).pipe(
 					Stream.map((Event): WorkspacesChangeEvent => {
 						const Payload = (Event.args[0] ?? {}) as Record<
 							string,

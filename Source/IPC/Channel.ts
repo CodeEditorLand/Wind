@@ -243,4 +243,20 @@ export default {
 	WorkspacesGetWorkspaceIdentifier: "workspaces:getWorkspaceIdentifier",
 	WorkspacesRemoveFolder: "workspaces:removeFolder",
 	WorkspacesRemoveRecentlyOpened: "workspaces:removeRecentlyOpened",
-} as const satisfies Readonly<Record<string, `${string}:${string}`>>;
+	// --- Legacy wire-shape channels (non prefix:method) ---
+	// Two historical channel groups don't follow the `prefix:method` shape
+	// the rest of the registry uses:
+	//
+	//   1. `UserInterface.Show*Dialog` — dotted method names mirrored from
+	//      Cocoon→Mountain gRPC. Wind's Files/Live.ts wires them through
+	//      Tauri IPC today; the Mountain-side handler is planned as a
+	//      future `dialog:showOpen` / `dialog:showSave` rename. Until that
+	//      coordinated change lands both sides accept the dotted form.
+	//   2. `mountain_get_status` — snake_case Tauri command predating the
+	//      `prefix:method` convention. Rename candidate only.
+	//
+	// These are grouped at the tail so a future rename is one block to move.
+	MountainGetStatus: "mountain_get_status",
+	UserInterfaceShowOpenDialog: "UserInterface.ShowOpenDialog",
+	UserInterfaceShowSaveDialog: "UserInterface.ShowSaveDialog",
+} as const satisfies Readonly<Record<string, string>>;

@@ -18,6 +18,7 @@ import {
 	SubscriptionRef,
 } from "effect";
 
+import Channel from "../../../IPC/Channel.js";
 import { Configuration } from "../../Configuration.js";
 import { IPC } from "../../IPC.js";
 import { Telemetry } from "../../Telemetry.js";
@@ -106,16 +107,14 @@ export const MountainLive = Layer.effect(
 			yield* SetState({ _tag: "Connecting", attempt: 1 });
 
 			const ConnectionEffect = Effect.gen(function* () {
-				// TODO(L3-orphan): `mountain_get_status` uses a snake_case wire
-				// string instead of the project's `prefix:method` convention,
-				// so it can't fit the Channel registry's
-				// `Record<string, \`${string}:${string}\`>` shape. Either
-				// rename the Mountain handler to `mountain:getStatus` (Wind +
-				// Mountain coordinated change) or relax the registry's type
-				// guard. Left inline until the rename decision is made.
-				const Status = yield* IPCService.invoke("mountain_get_status")(
-					[],
-				).pipe(
+				// `mountain_get_status` is a legacy snake_case channel that
+				// predates the `prefix:method` convention. Registry relaxed
+				// in wave 5 to allow both shapes; rename to
+				// `mountain:getStatus` (coordinated Wind + Mountain change)
+				// is the future clean-up path.
+				const Status = yield* IPCService.invoke(
+					Channel.MountainGetStatus,
+				)([]).pipe(
 					Effect.map(
 						(Result): { connected: boolean; version: string } => {
 							const APIStatus = Result as {
@@ -372,7 +371,7 @@ export const MountainLive = Layer.effect(
 
 		// Atom: Get version - using raw IPC to avoid error type issues
 		const Version: MountainService["version"] = Effect.gen(function* () {
-			const Status = yield* IPCService.invoke("mountain_get_status")(
+			const Status = yield* IPCService.invoke(Channel.MountainGetStatus)(
 				[],
 			).pipe(
 				Effect.map((Result): { version: string } => {
@@ -390,7 +389,7 @@ export const MountainLive = Layer.effect(
 		// Atom: Health check
 		const HealthCheck = Effect.gen(function* () {
 			return yield* Effect.orElse(
-				RPC("mountain_get_status")().pipe(
+				RPC(Channel.MountainGetStatus)().pipe(
 					Effect.map((Status: any) => Status.connected === true),
 				),
 				() => Effect.succeed(false),
