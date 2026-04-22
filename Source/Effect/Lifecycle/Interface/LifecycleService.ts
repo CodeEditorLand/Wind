@@ -47,4 +47,15 @@ export interface LifecycleService {
 
 	/** Initiate a graceful application shutdown. */
 	readonly RequestShutdown: () => Effect.Effect<void, LifecycleProblem>;
+
+	/**
+	 * Advance the application phase to at least the given value. No-op if the
+	 * application is already at or beyond the target phase — Mountain rejects
+	 * backwards/same-phase advances. Used by Sky when the workbench becomes
+	 * truly interactive (Restored) and when late-binding work should
+	 * unblock (Eventually).
+	 */
+	readonly AdvancePhase: (
+		phase: LifecyclePhaseValue,
+	) => Effect.Effect<void, LifecycleProblem>;
 }

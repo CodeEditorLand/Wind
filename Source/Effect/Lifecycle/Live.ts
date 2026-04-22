@@ -55,6 +55,12 @@ export const LiveLifecycleServiceLayer = Layer.effect(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeLifecycleProblem),
 				),
+
+			AdvancePhase: (phase) =>
+				IPCService.invoke(Channel.LifecycleAdvancePhase)([phase]).pipe(
+					Effect.map(() => undefined as void),
+					Effect.mapError(MakeLifecycleProblem),
+				),
 		};
 
 		return Service;
