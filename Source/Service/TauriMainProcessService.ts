@@ -274,6 +274,15 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		setMcpGalleryManifest: undefined,
 	},
 
+	// extensionGalleryManifest: workbench seeds gallery metadata via
+	// `setExtensionGalleryManifest({...})` at boot. Output copy had the
+	// entry stubbed as `{}` before the key was named explicitly; adding
+	// to Wind for lockstep even though the Output bundle is the active
+	// runtime copy per the 2026-04 channel-stub forensic round.
+	extensionGalleryManifest: {
+		setExtensionGalleryManifest: undefined,
+	},
+
 	// Fix: `languageDetectionWorkerServiceImpl.resolveWorkspaceLanguageIds`
 	// calls `_diagnosticsService.getWorkspaceFileExtensions(workspace)`
 	// synchronously inside a `for (const ext of fileExtensions.extensions)`
@@ -364,6 +373,7 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		readImage: undefined,
 	},
 	playwright: {
+		__initialize: undefined,
 		click: undefined,
 		hover: undefined,
 		drag: undefined,
@@ -467,9 +477,20 @@ class TauriChannel implements IChannel {
 		if (Stubs !== undefined) {
 			_Trace("ipc", `stub:${this.ChannelName}.${Command}`);
 			const StubValue = Stubs[Command];
+			// Disposition: `value` = real payload, `noop` = undefined on
+			// purpose, `drift` = key missing from stub object (worth
+			// investigating). Mirror of the Output copy.
+			const Disposition = Object.prototype.hasOwnProperty.call(
+				Stubs,
+				Command,
+			)
+				? StubValue === undefined
+					? "noop"
+					: "value"
+				: "drift";
 			_DevLogForward(
 				"channel-stub",
-				`stub-hit channel=${this.ChannelName} cmd=${Command} present=${StubValue !== undefined}`,
+				`stub-hit channel=${this.ChannelName} cmd=${Command} disposition=${Disposition}`,
 			);
 			return (StubValue !== undefined ? StubValue : undefined) as T;
 		}
