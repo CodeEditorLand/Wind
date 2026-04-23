@@ -7,12 +7,40 @@
 
 import { FileSystemErrorCode } from "../Type/FileSystemType.js";
 
+/**
+ * Map Wind's `FileSystemErrorCode` to the exact string VS Code's enum uses.
+ * VS Code's `toFileSystemProviderErrorCode` (`vs/platform/files/common/files.ts:863`)
+ * extracts the token from `error.name` and switches on `'EntryNotFound'`,
+ * `'EntryExists'`, etc. - NOT the enum key names. Our enum uses the key-like
+ * values (`"FileNotFound"`, `"FileExists"`); translate here so the name we
+ * emit matches what VS Code parses back.
+ */
+const VsCodeErrorCodeToken: Record<FileSystemErrorCode, string> = {
+	[FileSystemErrorCode.FileNotFound]: "EntryNotFound",
+	[FileSystemErrorCode.FileExists]: "EntryExists",
+	[FileSystemErrorCode.NoPermissions]: "NoPermissions",
+	[FileSystemErrorCode.InvalidPath]: "Unknown",
+	[FileSystemErrorCode.NotSupported]: "Unknown",
+	[FileSystemErrorCode.Unknown]: "Unknown",
+};
+
 // ============================================================================
 // Error Base Class
 // ============================================================================
 
 /**
- * Base error class for file system provider operations
+ * Base error class for file system provider operations.
+ *
+ * `name` MUST follow the `"<code> (FileSystemError)"` convention so that
+ * VS Code's `toFileSystemProviderErrorCode` (in `vs/platform/files/common/files.ts`)
+ * can recognise the error without requiring `instanceof FileSystemProviderError`
+ * - Wind's class is a SEPARATE class from VS Code's (different module), so
+ * the instanceof check fails and VS Code falls back to regex-matching `error.name`.
+ * This name shape is VS Code's `markAsFileSystemProviderError()` contract.
+ *
+ * Without this, `mkdirp` and `validateWriteFile` treat missing-file/dir errors
+ * as unknown and rethrow, surfacing as unhandled rejections like
+ * `Unable to write file '.../output_<ts>/tasks.log' (Error: Failed to stat file ...)`.
  */
 export class FileSystemProviderError extends Error {
 	_tag: string;
@@ -20,7 +48,7 @@ export class FileSystemProviderError extends Error {
 
 	constructor(message: string, code: FileSystemErrorCode, cause?: unknown) {
 		super(message, cause ? { cause } : undefined);
-		this.name = "FileSystemProviderError";
+		this.name = `${VsCodeErrorCodeToken[code] ?? "Unknown"} (FileSystemError)`;
 		this._tag = "FileSystemProviderError";
 		this.code = code;
 	}
@@ -36,7 +64,6 @@ export class FileNotFoundError extends FileSystemProviderError {
 			FileSystemErrorCode.FileNotFound,
 			cause,
 		);
-		this.name = "FileNotFoundError";
 		this._tag = "FileNotFoundError";
 	}
 }
@@ -51,7 +78,6 @@ export class FileExistsError extends FileSystemProviderError {
 			FileSystemErrorCode.FileExists,
 			cause,
 		);
-		this.name = "FileExistsError";
 		this._tag = "FileExistsError";
 	}
 }
@@ -66,7 +92,6 @@ export class PermissionError extends FileSystemProviderError {
 			FileSystemErrorCode.NoPermissions,
 			cause,
 		);
-		this.name = "PermissionError";
 		this._tag = "PermissionError";
 	}
 }
@@ -77,7 +102,6 @@ export class PermissionError extends FileSystemProviderError {
 export class InvalidPathError extends FileSystemProviderError {
 	constructor(path: string, cause?: unknown) {
 		super(`Invalid path: ${path}`, FileSystemErrorCode.InvalidPath, cause);
-		this.name = "InvalidPathError";
 		this._tag = "InvalidPathError";
 	}
 }
@@ -92,7 +116,6 @@ export class NotSupportedError extends FileSystemProviderError {
 			FileSystemErrorCode.NotSupported,
 			cause,
 		);
-		this.name = "NotSupportedError";
 		this._tag = "NotSupportedError";
 	}
 }
@@ -107,7 +130,6 @@ export class UnknownFileSystemError extends FileSystemProviderError {
 			FileSystemErrorCode.Unknown,
 			cause,
 		);
-		this.name = "UnknownFileSystemError";
 		this._tag = "UnknownFileSystemError";
 	}
 }

@@ -1,6 +1,14 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 import { FileSystemErrorCode } from "../Type/FileSystemType.js";
+const VsCodeErrorCodeToken = {
+  [FileSystemErrorCode.FileNotFound]: "EntryNotFound",
+  [FileSystemErrorCode.FileExists]: "EntryExists",
+  [FileSystemErrorCode.NoPermissions]: "NoPermissions",
+  [FileSystemErrorCode.InvalidPath]: "Unknown",
+  [FileSystemErrorCode.NotSupported]: "Unknown",
+  [FileSystemErrorCode.Unknown]: "Unknown"
+};
 class FileSystemProviderError extends Error {
   static {
     __name(this, "FileSystemProviderError");
@@ -9,7 +17,7 @@ class FileSystemProviderError extends Error {
   code;
   constructor(message, code, cause) {
     super(message, cause ? { cause } : void 0);
-    this.name = "FileSystemProviderError";
+    this.name = `${VsCodeErrorCodeToken[code] ?? "Unknown"} (FileSystemError)`;
     this._tag = "FileSystemProviderError";
     this.code = code;
   }
@@ -24,7 +32,6 @@ class FileNotFoundError extends FileSystemProviderError {
       FileSystemErrorCode.FileNotFound,
       cause
     );
-    this.name = "FileNotFoundError";
     this._tag = "FileNotFoundError";
   }
 }
@@ -38,7 +45,6 @@ class FileExistsError extends FileSystemProviderError {
       FileSystemErrorCode.FileExists,
       cause
     );
-    this.name = "FileExistsError";
     this._tag = "FileExistsError";
   }
 }
@@ -52,7 +58,6 @@ class PermissionError extends FileSystemProviderError {
       FileSystemErrorCode.NoPermissions,
       cause
     );
-    this.name = "PermissionError";
     this._tag = "PermissionError";
   }
 }
@@ -62,7 +67,6 @@ class InvalidPathError extends FileSystemProviderError {
   }
   constructor(path, cause) {
     super(`Invalid path: ${path}`, FileSystemErrorCode.InvalidPath, cause);
-    this.name = "InvalidPathError";
     this._tag = "InvalidPathError";
   }
 }
@@ -76,7 +80,6 @@ class NotSupportedError extends FileSystemProviderError {
       FileSystemErrorCode.NotSupported,
       cause
     );
-    this.name = "NotSupportedError";
     this._tag = "NotSupportedError";
   }
 }
@@ -90,7 +93,6 @@ class UnknownFileSystemError extends FileSystemProviderError {
       FileSystemErrorCode.Unknown,
       cause
     );
-    this.name = "UnknownFileSystemError";
     this._tag = "UnknownFileSystemError";
   }
 }
