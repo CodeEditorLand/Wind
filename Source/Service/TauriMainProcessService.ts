@@ -219,6 +219,22 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		detectLanguage: null,
 		provideLanguageDetectionHints: { fileExtensions: { extensions: [] } },
 	},
+	// Fix: `languageDetectionWorkerServiceImpl.resolveWorkspaceLanguageIds`
+	// calls `_diagnosticsService.getWorkspaceFileExtensions(workspace)`
+	// synchronously inside a `for (const ext of fileExtensions.extensions)`
+	// loop. Stock VS Code wires `IDiagnosticsService` to the shared-process
+	// `diagnostics` channel; Land has no shared process, so the call
+	// returns `undefined` and the loop throws `TypeError: undefined is
+	// not an object (evaluating 'fileExtensions.extensions')`. Stub the
+	// channel with an empty-extensions shape so language detection just
+	// contributes no workspace-derived biases and continues.
+	diagnostics: {
+		getWorkspaceFileExtensions: { extensions: [] },
+		getDiagnostics: [],
+		getSystemInfo: {},
+		getPerformanceInfo: {},
+		reportWorkspaceStats: { configFiles: [], fileTypes: [], launchConfigFiles: [] },
+	},
 };
 
 // ============================================================================

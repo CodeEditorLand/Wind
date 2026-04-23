@@ -102,6 +102,9 @@ export default {
 	SCMUpdateGroup: "sky://scm/updateGroup",
 
 	// --- Status bar ---
+	// Canonical prefix is `sky://statusbar/` (no hyphen). The old
+	// `sky://status-bar/message` fork has been collapsed onto
+	// `sky://statusbar/set-message`.
 	StatusBarCreate: "sky://statusbar/create",
 	StatusBarDispose: "sky://statusbar/dispose",
 	StatusBarDisposeEntry: "sky://statusbar/dispose-entry",
@@ -109,7 +112,6 @@ export default {
 	StatusBarSetEntry: "sky://statusbar/set-entry",
 	StatusBarSetMessage: "sky://statusbar/set-message",
 	StatusBarUpdate: "sky://statusbar/update",
-	StatusBarMessage: "sky://status-bar/message",
 
 	// --- Task ---
 	TaskExecute: "sky://task/execute",
@@ -135,6 +137,9 @@ export default {
 	ThemeChange: "sky://theme/change",
 
 	// --- Tree view ---
+	// Canonical prefix is `sky://tree-view/` (kebab-case). The earlier
+	// `sky://treeView/register` camelCase fork has been collapsed onto
+	// `TreeViewCreate` - a single channel every listener subscribes to.
 	TreeViewCreate: "sky://tree-view/create",
 	TreeViewDispose: "sky://tree-view/dispose",
 	TreeViewNodeExpanded: "sky://tree-view/node-expanded",
@@ -145,7 +150,6 @@ export default {
 	TreeViewSetBadge: "sky://tree-view/set-badge",
 	TreeViewSetMessage: "sky://tree-view/set-message",
 	TreeViewSetTitle: "sky://tree-view/set-title",
-	TreeViewRegister: "sky://treeView/register",
 
 	// --- UI ---
 	UIShowInputBoxRequest: "sky://ui/show-input-box-request",
@@ -156,6 +160,11 @@ export default {
 	VFSFileChange: "sky://vfs/fileChange",
 
 	// --- Webview ---
+	// Canonical form is kebab-case (`sky://webview/post-message`,
+	// `sky://webview/set-html`). The `…CamelCase` aliases existed because
+	// Mountain's mod.rs emitted `sky://webview/postMessage` /
+	// `sky://webview/setHtml` inline; those emit sites have been migrated
+	// to the enum so Sky only ever sees the kebab-case form.
 	WebviewCreate: "sky://webview/create",
 	WebviewCreated: "sky://webview/created",
 	WebviewDispose: "sky://webview/dispose",
@@ -163,10 +172,8 @@ export default {
 	WebviewMessage: "sky://webview/message",
 	WebviewOptionsChanged: "sky://webview/options-changed",
 	WebviewPostMessage: "sky://webview/post-message",
-	WebviewPostMessageCamelCase: "sky://webview/postMessage",
 	WebviewRevealed: "sky://webview/revealed",
 	WebviewSetHTML: "sky://webview/set-html",
-	WebviewSetHTMLCamelCase: "sky://webview/setHtml",
 
 	// --- Window ---
 	WindowShowTextDocument: "sky://window/showTextDocument",
