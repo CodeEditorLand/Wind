@@ -23,14 +23,23 @@ const _Trace = (Tag: string, Message: string): void => {
 // `LAND_DEV_LOG=<tag> tail -f Mountain.dev.log` picks up TS-originated
 // traffic alongside Rust `dev_log!` output. Fire-and-forget - never
 // awaits, never throws. Mountain short-circuits cheaply when the tag
-// isn't enabled.
+// isn't enabled. Sends BOTH casings (`Tag`/`Message` + `tag`/`message`)
+// so Tauri's param-case handling doesn't require a guess - the Rust
+// command coalesces whichever arrived populated.
 const _DevLogForward = (Tag: string, Message: string): void => {
 	try {
+		const Internals = (window as any).__TAURI_INTERNALS__;
 		const Invoke =
 			(window as any).__TAURI__?.core?.invoke ??
-			(window as any).__TAURI__?.invoke;
+			(window as any).__TAURI__?.invoke ??
+			Internals?.invoke;
 		if (typeof Invoke !== "function") return;
-		Invoke("RenderDevLog", { Tag, Message }).catch(() => {});
+		Invoke("RenderDevLog", {
+			Tag,
+			Message,
+			tag: Tag,
+			message: Message,
+		}).catch(() => {});
 	} catch {}
 };
 
@@ -234,6 +243,30 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		detectLanguage: null,
 		provideLanguageDetectionHints: { fileExtensions: { extensions: [] } },
 	},
+	// Fix: `telemetryAppender` channel - stock VS Code's
+	// TelemetryChannelAppender posts every single event through the
+	// shared-process `telemetryAppender` IPC channel. Land has no
+	// shared process and no telemetry backend, so every call falls
+	// through to `InvokeMountain("undefined:log")`. Observed at 155
+	// calls per boot in `channel-stub` tag output - by far the hottest
+	// miss. Stub with the expected `log`/`flush` no-ops so the
+	// appender short-circuits in the stub path instead of chewing
+	// a Tauri round-trip each time.
+	telemetryAppender: {
+		log: undefined,
+		flush: undefined,
+	},
+
+	// Fix: `mcpGalleryManifest` channel - MCP extension marketplace
+	// manifest bootstrap. `channel-stub` tag surfaced this as the sole
+	// remaining `miss` per session. The workbench calls
+	// `setMcpGalleryManifest({...})` once at boot to seed the MCP
+	// gallery state; a no-op stub is sufficient until Land has an MCP
+	// registry of its own to wire in.
+	mcpGalleryManifest: {
+		setMcpGalleryManifest: undefined,
+	},
+
 	// Fix: `languageDetectionWorkerServiceImpl.resolveWorkspaceLanguageIds`
 	// calls `_diagnosticsService.getWorkspaceFileExtensions(workspace)`
 	// synchronously inside a `for (const ext of fileExtensions.extensions)`
