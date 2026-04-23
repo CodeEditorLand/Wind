@@ -107,6 +107,13 @@ const ChannelRouteMap: Record<string, string> = {
 	encryption: "encryption",
 	extensionHostStarter: "extensionHostStarter",
 	extensionhostdebugservice: "extensionhostdebugservice",
+	// Git: the built-in `git` extension's `MainProcessService.getChannel("localGit")`
+	// path. Stock VS Code backs this with `ILocalGitService` in the shared
+	// process; Land routes every method (`exec`, `clone`, `pull`, `checkout`,
+	// `revParse`, `fetch`, `revListCount`, `cancel`, `isAvailable`) to
+	// Mountain's `git:*` subprocess handlers (see
+	// `Mountain/Source/IPC/WindServiceHandlers/Git.rs`).
+	localGit: "git",
 };
 
 const FireAndForgetChannels = new Set(["logger", "output"]);
@@ -283,6 +290,99 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		getPerformanceInfo: {},
 		reportWorkspaceStats: { configFiles: [], fileTypes: [], launchConfigFiles: [] },
 	},
+
+	// --- Batch 6: medium-priority channels stock VS Code exposes via the
+	// shared/main process that Land doesn't have. Mirror of the Output
+	// copy in `Element/Output/Source/Service/TauriMainProcessService.ts` -
+	// BOTH files must line-match per the Wind/Output lockstep rule
+	// (HANDOFF §-10 Trap 4). Shapes track the matching `I*Service`
+	// interface under VS Code's `vs/platform/**/common/*.ts`.
+	test: {
+		getResults: [],
+		addResult: undefined,
+		clearResults: undefined,
+	},
+	profileStorageListener: {
+		onDidChange: undefined,
+	},
+	checksum: {
+		checksum: "",
+	},
+	languagePacks: {
+		getAvailableLanguages: [],
+		getInstalledLanguages: [],
+		getBuiltInExtensionTranslationsUri: undefined,
+	},
+	userDataSyncUtil: {
+		resolveDefaultIgnoredSettings: [],
+		resolveUserKeybindings: {},
+		resolveFormattingOptions: {
+			eol: "\n",
+			insertSpaces: true,
+			tabSize: 4,
+		},
+	},
+	userDataSyncMachines: {
+		getMachines: [],
+		addCurrentMachine: undefined,
+		removeCurrentMachine: undefined,
+		renameMachine: undefined,
+		setEnablements: undefined,
+	},
+	IUserDataSyncResourceProviderService: {
+		getRemoteSyncedProfiles: [],
+		getLocalSyncedProfiles: [],
+		getRemoteSyncResourceHandles: [],
+		getLocalSyncResourceHandles: [],
+		getAssociatedResources: [],
+		getMachineId: undefined,
+		getLocalSyncedMachines: [],
+		resolveContent: null,
+	},
+	customEndpointTelemetry: {
+		publicLog: undefined,
+		publicLogError: undefined,
+	},
+	process: {
+		createTunnel: { id: "" },
+		startTunnel: {},
+		setAddress: undefined,
+		setTunnelInUse: undefined,
+		destroyTunnel: undefined,
+	},
+	remoteTunnel: {
+		getTunnelStatus: { type: "disconnected" },
+		getMode: { active: false },
+		initialize: { type: "disconnected" },
+		startTunnel: { type: "disconnected" },
+		stopTunnel: undefined,
+		getTunnelName: null,
+		getAccount: null,
+		getSessionToken: null,
+	},
+	sharedWebContentExtractor: {
+		readImage: undefined,
+	},
+	playwright: {
+		click: undefined,
+		hover: undefined,
+		drag: undefined,
+		fill: undefined,
+		select: undefined,
+		screenshot: null,
+		snapshot: null,
+		evaluate: null,
+	},
+	v8InspectProfiling: {
+		startProfiling: "",
+		stopProfiling: {
+			nodes: [],
+			samples: [],
+			timeDeltas: [],
+			startTime: 0,
+			endTime: 0,
+		},
+	},
 };
 
 // ============================================================================
@@ -299,10 +399,37 @@ async function InvokeMountain(
 
 	if (typeof Invoke !== "function") return undefined;
 
-	return await Invoke("MountainIPCInvoke", {
-		method: Method,
-		params: Params,
-	});
+	// `tauri-invoke` tag: per-invoke duration + ok/fail. Mirror of the
+	// Output copy - the Rust `ipc` tag already logs paired invoke/done
+	// lines with ns precision; this line captures the *render-side*
+	// elapsed time including Tauri transport, so a slow transport
+	// (webview message channel starvation) vs a slow handler (Echo
+	// backlog / lock contention) can be told apart.
+	const Start =
+		typeof performance !== "undefined" ? performance.now() : Date.now();
+	try {
+		const Value = await Invoke("MountainIPCInvoke", {
+			method: Method,
+			params: Params,
+		});
+		const Elapsed = (
+			typeof performance !== "undefined" ? performance.now() : Date.now()
+		) - Start;
+		_DevLogForward(
+			"tauri-invoke",
+			`[TauriInvoke] method=${Method} ok=true elapsed_ms=${Elapsed.toFixed(2)}`,
+		);
+		return Value;
+	} catch (Error) {
+		const Elapsed = (
+			typeof performance !== "undefined" ? performance.now() : Date.now()
+		) - Start;
+		_DevLogForward(
+			"tauri-invoke",
+			`[TauriInvoke] method=${Method} ok=false elapsed_ms=${Elapsed.toFixed(2)} err=${String(Error)}`,
+		);
+		throw Error;
+	}
 }
 
 // ============================================================================

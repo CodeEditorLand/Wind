@@ -419,12 +419,40 @@ const Globals = {
 // Atom: Expose to window
 // ============================================================================
 
+// `preload-shim` diagnostic tag: fire-and-forget line into Mountain's
+// dev-log file sink so `LAND_DEV_LOG=preload-shim` surfaces exactly when
+// `window.vscode` is populated and with which global keys. Silent until
+// Tauri is mounted - the legacy `else` branch stayed empty historically;
+// emitting there would claim preload success in the Astro SSR pass where
+// `window` is a Node polyfill and the shim isn't really in effect.
+const _PreloadShimLog = (Message: string): void => {
+	try {
+		const Internals = (window as any).__TAURI_INTERNALS__;
+		const Invoke =
+			(window as any).__TAURI__?.core?.invoke ??
+			(window as any).__TAURI__?.invoke ??
+			Internals?.invoke;
+		if (typeof Invoke !== "function") return;
+		Invoke("RenderDevLog", {
+			Tag: "preload-shim",
+			Message,
+			tag: "preload-shim",
+			message: Message,
+		}).catch(() => {});
+	} catch {}
+};
+
 if (IsTauri) {
 	(window as any).vscode = Globals;
+
+	_PreloadShimLog(
+		`[Preload] window.vscode installed keys=${Object.keys(Globals).join(",")}`,
+	);
 
 	// Dispatch ready event
 	window.dispatchEvent(new Event("land-preload-ready"));
 } else {
+	_PreloadShimLog("[Preload] skipped non-Tauri host");
 }
 
 // Export for type checking

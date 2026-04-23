@@ -198,9 +198,28 @@ const Globals = {
   context,
   webUtils
 };
+const _PreloadShimLog = /* @__PURE__ */ __name((Message) => {
+  try {
+    const Internals = window.__TAURI_INTERNALS__;
+    const Invoke = window.__TAURI__?.core?.invoke ?? window.__TAURI__?.invoke ?? Internals?.invoke;
+    if (typeof Invoke !== "function") return;
+    Invoke("RenderDevLog", {
+      Tag: "preload-shim",
+      Message,
+      tag: "preload-shim",
+      message: Message
+    }).catch(() => {
+    });
+  } catch {
+  }
+}, "_PreloadShimLog");
 if (IsTauri) {
   window.vscode = Globals;
+  _PreloadShimLog(
+    `[Preload] window.vscode installed keys=${Object.keys(Globals).join(",")}`
+  );
   window.dispatchEvent(new Event("land-preload-ready"));
 } else {
+  _PreloadShimLog("[Preload] skipped non-Tauri host");
 }
 //# sourceMappingURL=Preload.js.map
