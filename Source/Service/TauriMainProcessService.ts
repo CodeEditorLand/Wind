@@ -178,11 +178,11 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 
 	// Fix: `IUserDataSyncService._getInitialData` returns a 3-tuple
 	// `[status, conflicts, lastSyncTime]` that `userDataSyncServiceIpc.ts:165`
-	// destructures. Missing handler → undefined → the bracket-destructure
-	// throws `undefined is not an object (evaluating '[status, conflicts, lastSyncTime]')`.
-	// Return the "Uninitialised" status (0), no conflicts, no sync time
-	// so the workbench treats sync as disabled.
-	userDataSyncService: {
+	// destructures. Channel name is `userDataSync` (registered in
+	// `workbench/services/userDataSync/electron-browser/userDataSyncService.ts:13`),
+	// not `userDataSyncService`. Return Uninitialised / no conflicts / never
+	// synced so the workbench treats sync as disabled.
+	userDataSync: {
 		_getInitialData: [0, [], null],
 		accept: undefined,
 		resolveContent: null,
@@ -195,10 +195,10 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		turnOn: undefined,
 		turnOff: undefined,
 	},
-	// `IUserDataSyncAccount._getInitialData` returns the account or
-	// `undefined` when no account is signed in - matches the equivalent
-	// `userDataSyncIpc.ts:51` callsite.
-	userDataSync: {
+	// `IUserDataSyncAccountService._getInitialData` returns the account or
+	// `undefined` when no account is signed in. Channel name is
+	// `userDataSyncAccount` - matches `userDataSyncIpc.ts:51` callsite.
+	userDataSyncAccount: {
 		_getInitialData: undefined,
 		getAccount: undefined,
 	},
