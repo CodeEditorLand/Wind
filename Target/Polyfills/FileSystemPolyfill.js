@@ -1,6 +1,1 @@
-import "@codeeditorland/output/Polyfill/FileSystemPolyfill";
-var FileSystemPolyfill_default = {};
-export {
-  FileSystemPolyfill_default as default
-};
-//# sourceMappingURL=FileSystemPolyfill.js.map
+import"@codeeditorland/output/Polyfill/FileSystemPolyfill";var e={};export{e as default};

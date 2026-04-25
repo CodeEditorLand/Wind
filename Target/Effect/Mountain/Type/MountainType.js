@@ -1,1 +1,0 @@
-//# sourceMappingURL=MountainType.js.map
