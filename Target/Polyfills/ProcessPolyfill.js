@@ -1,1 +1,6 @@
-import"@codeeditorland/output/Polyfill/ProcessPolyfill";var e={};export{e as default};
+import "@codeeditorland/output/Polyfill/ProcessPolyfill";
+var ProcessPolyfill_default = {};
+export {
+  ProcessPolyfill_default as default
+};
+//# sourceMappingURL=ProcessPolyfill.js.map

@@ -1,1 +1,16 @@
-import{Context as e}from"effect";class t extends e.Tag("NetworkRestrictions")(){}const i=t;var s=t;export{i as NetworkRestrictions,t as NetworkRestrictionsTag,s as default};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { Context } from "effect";
+class NetworkRestrictionsTag extends Context.Tag("NetworkRestrictions")() {
+  static {
+    __name(this, "NetworkRestrictionsTag");
+  }
+}
+const NetworkRestrictions = NetworkRestrictionsTag;
+var NetworkRestrictionsTag_default = NetworkRestrictionsTag;
+export {
+  NetworkRestrictions,
+  NetworkRestrictionsTag,
+  NetworkRestrictionsTag_default as default
+};
+//# sourceMappingURL=NetworkRestrictionsTag.js.map

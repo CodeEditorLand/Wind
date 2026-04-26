@@ -1,1 +1,20 @@
-import{Effect as e,Layer as r}from"effect";import{IPCTag as i}from"../../IPC.js";import{MountainTag as m}from"../../Mountain.js";import{TelemetryTag as a}from"../../Telemetry.js";import f from"../Implementation/MountainSyncImplementation.js";import c from"../Tag/MountainSyncTag.js";const y=r.effect(c,e.gen(function*(){const t=yield*m,o=yield*i,n=yield*a;return f(t,o,n)}));var s=y;export{s as default};
+import { Effect, Layer } from "effect";
+import { IPCTag } from "../../IPC.js";
+import { MountainTag } from "../../Mountain.js";
+import { TelemetryTag } from "../../Telemetry.js";
+import makeMountainSync from "../Implementation/MountainSyncImplementation.js";
+import MountainSyncTag from "../Tag/MountainSyncTag.js";
+const MountainSyncLive = Layer.effect(
+  MountainSyncTag,
+  Effect.gen(function* () {
+    const mountain = yield* MountainTag;
+    const ipc = yield* IPCTag;
+    const telemetry = yield* TelemetryTag;
+    return makeMountainSync(mountain, ipc, telemetry);
+  })
+);
+var MountainSyncLive_default = MountainSyncLive;
+export {
+  MountainSyncLive_default as default
+};
+//# sourceMappingURL=MountainSyncLive.js.map

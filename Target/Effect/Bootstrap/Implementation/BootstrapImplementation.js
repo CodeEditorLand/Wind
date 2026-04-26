@@ -1,1 +1,115 @@
-import{Effect as a,Either as B,Layer as S}from"effect";import{Telemetry as w}from"../../Telemetry.js";import{BootstrapTag as y}from"../Tag/BootstrapTag.js";import{stage0_Environment as E,stage1_Preload as T,stage2_Configuration as h,stage3_Services as R,stage4_Preparation as k,stage5_Initialization as v,stage6_HealthCheck as D}from"./BootstrapStage.js";const _=()=>({run:f=>a.gen(function*(){const t=yield*w,p=Date.now(),{skipHealthCheck:g=!1,debugMode:u=!1}=f??{};t.log("info","[Bootstrap] ==============================================="),t.log("info","[Bootstrap] Wind VSCode Workbench Bootstrap"),t.log("info","[Bootstrap] Debug mode: "+u),t.log("info","[Bootstrap] ===============================================");const m=[E,T,h,R,k,v,...g?[]:[D]],s=[];for(const e of m){const o=Date.now();let n;const i=yield*a.either(a.suspend(()=>e));if(B.isRight(i))n={...i.right,duration:Date.now()-o};else{const l=i.left,d=l instanceof Error?l:new Error(String(l));n={stageName:"Unknown",success:!1,duration:Date.now()-o,error:d}}s.push(n)}const c=Date.now()-p,r=s.every(e=>e.success);if(t.log("info","[Bootstrap] ==============================================="),t.log("info",`[Bootstrap] ${r?"\u2713 Bootstrap completed successfully":"\u2717 Bootstrap failed"}`),t.log("info",`[Bootstrap] Total duration: ${c}ms`),t.log("info","[Bootstrap] ==============================================="),!r){const e=s.filter(o=>!o.success);t.log("error","[Bootstrap] Failed stages:");for(const o of e)t.log("error",`[Bootstrap]   - ${o.stageName}: ${o.error?.message||"Unknown error"}`)}return{success:r,totalDuration:c,stages:s,error:r?void 0:new Error("Bootstrap failed")}})}),b=S.effect(y,a.succeed(_()));var x=b;export{b as BootstrapLive,x as default};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { Effect, Either, Layer } from "effect";
+import { Telemetry } from "../../Telemetry.js";
+import { BootstrapTag } from "../Tag/BootstrapTag.js";
+import {
+  stage0_Environment,
+  stage1_Preload,
+  stage2_Configuration,
+  stage3_Services,
+  stage4_Preparation,
+  stage5_Initialization,
+  stage6_HealthCheck
+} from "./BootstrapStage.js";
+const makeBootstrap = /* @__PURE__ */ __name(() => ({
+  run: /* @__PURE__ */ __name((Options) => Effect.gen(function* () {
+    const TelemetryService = yield* Telemetry;
+    const StartTime = Date.now();
+    const { skipHealthCheck = false, debugMode = false } = Options ?? {};
+    TelemetryService.log(
+      "info",
+      "[Bootstrap] ==============================================="
+    );
+    TelemetryService.log(
+      "info",
+      "[Bootstrap] Wind VSCode Workbench Bootstrap"
+    );
+    TelemetryService.log(
+      "info",
+      "[Bootstrap] Debug mode: " + debugMode
+    );
+    TelemetryService.log(
+      "info",
+      "[Bootstrap] ==============================================="
+    );
+    const Stages = [
+      stage0_Environment,
+      stage1_Preload,
+      stage2_Configuration,
+      stage3_Services,
+      stage4_Preparation,
+      stage5_Initialization,
+      ...skipHealthCheck ? [] : [stage6_HealthCheck]
+    ];
+    const Results = [];
+    for (const Stage of Stages) {
+      const StageStartTime = Date.now();
+      let Result;
+      const Outcome = yield* Effect.either(
+        Effect.suspend(() => Stage)
+      );
+      if (Either.isRight(Outcome)) {
+        Result = {
+          ...Outcome.right,
+          duration: Date.now() - StageStartTime
+        };
+      } else {
+        const FailCause = Outcome.left;
+        const ErrorObj = FailCause instanceof Error ? FailCause : new Error(String(FailCause));
+        Result = {
+          stageName: "Unknown",
+          success: false,
+          duration: Date.now() - StageStartTime,
+          error: ErrorObj
+        };
+      }
+      Results.push(Result);
+    }
+    const EndTime = Date.now();
+    const TotalDuration = EndTime - StartTime;
+    const AllSuccess = Results.every((R) => R.success);
+    TelemetryService.log(
+      "info",
+      "[Bootstrap] ==============================================="
+    );
+    TelemetryService.log(
+      "info",
+      `[Bootstrap] ${AllSuccess ? "\u2713 Bootstrap completed successfully" : "\u2717 Bootstrap failed"}`
+    );
+    TelemetryService.log(
+      "info",
+      `[Bootstrap] Total duration: ${TotalDuration}ms`
+    );
+    TelemetryService.log(
+      "info",
+      "[Bootstrap] ==============================================="
+    );
+    if (!AllSuccess) {
+      const FailedStages = Results.filter((R) => !R.success);
+      TelemetryService.log("error", "[Bootstrap] Failed stages:");
+      for (const Failed of FailedStages) {
+        TelemetryService.log(
+          "error",
+          `[Bootstrap]   - ${Failed.stageName}: ${Failed.error?.message || "Unknown error"}`
+        );
+      }
+    }
+    return {
+      success: AllSuccess,
+      totalDuration: TotalDuration,
+      stages: Results,
+      error: AllSuccess ? void 0 : new Error("Bootstrap failed")
+    };
+  }), "run")
+}), "makeBootstrap");
+const BootstrapLive = Layer.effect(
+  BootstrapTag,
+  Effect.succeed(makeBootstrap())
+);
+var BootstrapImplementation_default = BootstrapLive;
+export {
+  BootstrapLive,
+  BootstrapImplementation_default as default
+};
+//# sourceMappingURL=BootstrapImplementation.js.map

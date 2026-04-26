@@ -1,1 +1,150 @@
-import{Effect as t,HashMap as c,Layer as b,SubscriptionRef as i}from"effect";import w from"../Tag/TelemetryTag.js";const D=b.effect(w,t.gen(function*(){const f=yield*i.make(c.empty()),y=yield*i.make(c.empty()),o=yield*i.make([]),d=(e,r,n)=>t.gen(function*(){const a={name:e,value:r,timestamp:Date.now(),labels:n??{}},s=yield*f.get,l=c.get(s,e).pipe(t.runSync)||[];yield*i.set(f,c.set(s,e,[...l,a].slice(-1e3)));const p=yield*o.get;yield*i.set(o,[...p,{type:"metric",timestamp:Date.now(),data:a}].slice(-1e4))}),u=(e,r)=>t.sync(()=>{const n=Date.now();return{end:(s,l)=>t.gen(function*(){const p=Date.now(),m={name:e,startTime:n,endTime:p,duration:p-n,success:s,error:l??"",labels:r??{}},g=yield*y.get,M=c.get(g,e).pipe(t.runSync)||[];yield*i.set(y,c.set(g,e,[...M,m].slice(-1e3)));const H=yield*o.get;yield*i.set(o,[...H,{type:"span",timestamp:Date.now(),data:m}].slice(-1e4))})}}),v=(e,r,n)=>t.gen(function*(){const a={level:e,message:r,context:n??{}},s=yield*o.get;if(yield*i.set(o,[...s,{type:"log",timestamp:Date.now(),data:a}].slice(-1e4)),typeof performance<"u")try{performance.mark(`land:telemetry:${e}:${r.slice(0,80)}`)}catch{}}),T=o.changes,E=e=>f.get.pipe(t.map(r=>c.get(r,e).pipe(t.runSync)||[])),S=e=>y.get.pipe(t.map(r=>{const n=c.get(r,e).pipe(t.runSync)||[];return n.length===0?0:n.reduce((s,l)=>s+(l.duration||0),0)/n.length})),R=e=>y.get.pipe(t.map(r=>{const n=c.get(r,e).pipe(t.runSync)||[];return n.length===0?0:n.filter(s=>s.success).length/n.length})),h=t.void;return yield*t.log("[Telemetry] Telemetry service initialized"),{recordMetric:d,startSpan:u,log:v,events:T,getMetrics:E,getAverageDuration:S,getSuccessRate:R,flush:h}}));var j=D;export{j as default};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { Effect, HashMap, Layer, Stream, SubscriptionRef } from "effect";
+import TelemetryTag from "../Tag/TelemetryTag.js";
+const TelemetryLive = Layer.effect(
+  TelemetryTag,
+  Effect.gen(function* () {
+    const metricsRef = yield* SubscriptionRef.make(HashMap.empty());
+    const spansRef = yield* SubscriptionRef.make(HashMap.empty());
+    const eventsRef = yield* SubscriptionRef.make([]);
+    const recordMetric = /* @__PURE__ */ __name((name, value, labels) => Effect.gen(function* () {
+      const metric = {
+        name,
+        value,
+        timestamp: Date.now(),
+        labels: labels ?? {}
+      };
+      const currentMetrics = yield* metricsRef.get;
+      const existing = HashMap.get(currentMetrics, name).pipe(Effect.runSync) || [];
+      yield* SubscriptionRef.set(
+        metricsRef,
+        HashMap.set(
+          currentMetrics,
+          name,
+          [...existing, metric].slice(-1e3)
+        )
+      );
+      const currentEvents = yield* eventsRef.get;
+      yield* SubscriptionRef.set(
+        eventsRef,
+        [
+          ...currentEvents,
+          {
+            type: "metric",
+            timestamp: Date.now(),
+            data: metric
+          }
+        ].slice(-1e4)
+      );
+    }), "recordMetric");
+    const startSpan = /* @__PURE__ */ __name((name, labels) => Effect.sync(() => {
+      const startTime = Date.now();
+      const end = /* @__PURE__ */ __name((success, error) => Effect.gen(function* () {
+        const endTime = Date.now();
+        const span = {
+          name,
+          startTime,
+          endTime,
+          duration: endTime - startTime,
+          success,
+          error: error ?? "",
+          labels: labels ?? {}
+        };
+        const currentSpans = yield* spansRef.get;
+        const existing = HashMap.get(currentSpans, name).pipe(
+          Effect.runSync
+        ) || [];
+        yield* SubscriptionRef.set(
+          spansRef,
+          HashMap.set(
+            currentSpans,
+            name,
+            [...existing, span].slice(-1e3)
+          )
+        );
+        const currentEvents = yield* eventsRef.get;
+        yield* SubscriptionRef.set(
+          eventsRef,
+          [
+            ...currentEvents,
+            {
+              type: "span",
+              timestamp: Date.now(),
+              data: span
+            }
+          ].slice(-1e4)
+        );
+      }), "end");
+      return { end };
+    }), "startSpan");
+    const log = /* @__PURE__ */ __name((level, message, context) => Effect.gen(function* () {
+      const logEntry = {
+        level,
+        message,
+        context: context ?? {}
+      };
+      const currentEvents = yield* eventsRef.get;
+      yield* SubscriptionRef.set(
+        eventsRef,
+        [
+          ...currentEvents,
+          {
+            type: "log",
+            timestamp: Date.now(),
+            data: logEntry
+          }
+        ].slice(-1e4)
+      );
+      if (typeof performance !== "undefined") {
+        try {
+          performance.mark(`land:telemetry:${level}:${message.slice(0, 80)}`);
+        } catch {
+        }
+      }
+    }), "log");
+    const events = eventsRef.changes;
+    const getMetrics = /* @__PURE__ */ __name((name) => metricsRef.get.pipe(
+      Effect.map(
+        (map) => HashMap.get(map, name).pipe(Effect.runSync) || []
+      )
+    ), "getMetrics");
+    const getAverageDuration = /* @__PURE__ */ __name((name) => spansRef.get.pipe(
+      Effect.map((map) => {
+        const spans = HashMap.get(map, name).pipe(Effect.runSync) || [];
+        if (spans.length === 0) return 0;
+        const total = spans.reduce(
+          (sum, s) => sum + (s.duration || 0),
+          0
+        );
+        return total / spans.length;
+      })
+    ), "getAverageDuration");
+    const getSuccessRate = /* @__PURE__ */ __name((name) => spansRef.get.pipe(
+      Effect.map((map) => {
+        const spans = HashMap.get(map, name).pipe(Effect.runSync) || [];
+        if (spans.length === 0) return 0;
+        const successful = spans.filter((s) => s.success).length;
+        return successful / spans.length;
+      })
+    ), "getSuccessRate");
+    const flush = Effect.void;
+    yield* Effect.log("[Telemetry] Telemetry service initialized");
+    const service = {
+      recordMetric,
+      startSpan,
+      log,
+      events,
+      getMetrics,
+      getAverageDuration,
+      getSuccessRate,
+      flush
+    };
+    return service;
+  })
+);
+var TelemetryLive_default = TelemetryLive;
+export {
+  TelemetryLive_default as default
+};
+//# sourceMappingURL=TelemetryLive.js.map

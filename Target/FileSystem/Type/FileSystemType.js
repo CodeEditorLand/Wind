@@ -1,1 +1,27 @@
-class n extends Error{constructor(o,s){super(o);this.code=s;this.name="FileSystemError"}code}var i=(e=>(e.FileNotFound="FileNotFound",e.FileExists="FileExists",e.NoPermissions="NoPermissions",e.InvalidPath="InvalidPath",e.NotSupported="NotSupported",e.Unknown="Unknown",e))(i||{});export{n as FileSystemError,i as FileSystemErrorCode};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+class FileSystemError extends Error {
+  constructor(message, code) {
+    super(message);
+    this.code = code;
+    this.name = "FileSystemError";
+  }
+  code;
+  static {
+    __name(this, "FileSystemError");
+  }
+}
+var FileSystemErrorCode = /* @__PURE__ */ ((FileSystemErrorCode2) => {
+  FileSystemErrorCode2["FileNotFound"] = "FileNotFound";
+  FileSystemErrorCode2["FileExists"] = "FileExists";
+  FileSystemErrorCode2["NoPermissions"] = "NoPermissions";
+  FileSystemErrorCode2["InvalidPath"] = "InvalidPath";
+  FileSystemErrorCode2["NotSupported"] = "NotSupported";
+  FileSystemErrorCode2["Unknown"] = "Unknown";
+  return FileSystemErrorCode2;
+})(FileSystemErrorCode || {});
+export {
+  FileSystemError,
+  FileSystemErrorCode
+};
+//# sourceMappingURL=FileSystemType.js.map
