@@ -10,5 +10,6 @@
 export default (Seed: string): string => {
 	if (Seed.length > 0) return Seed;
 
-	return `land-dev-wind-${Date.now()}`;
+	const Username = process.env["USER"] ?? process.env["USERNAME"] ?? "unknown";
+	return `land-dev-wind-${Username}`;
 };
