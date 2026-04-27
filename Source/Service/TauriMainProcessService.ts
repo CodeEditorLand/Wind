@@ -171,6 +171,55 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		_getInitialState: { type: 0 },
 	},
 
+	// Fix: webview - `IWebviewManagerService` stub. Stock VS Code uses
+	// this channel (electron-browser/windowIgnoreMenuShortcutsManager.ts)
+	// to disable native menu shortcuts while a webview has focus on
+	// macOS / native-titlebar Linux. Tauri's WKWebView has no electron
+	// menu to disable, so every call is a no-op. Mirror of the Output
+	// copy (`Element/Output/Source/Service/TauriMainProcessService.ts`)
+	// so the Wind/Output lockstep rule holds.
+	webview: {
+		setIgnoreMenuShortcuts: undefined,
+		setContextMenuVisible: undefined,
+		hideReference: undefined,
+		showReference: undefined,
+	},
+
+	// Fix: watcher - `IFileWatcherService` stub. Land routes file
+	// watching via Mountain's typed `FileWatcher.Register` IPC, not
+	// through the platform's `watcher` channel. Stub the legacy ops to
+	// stop them from hitting `Unknown method` paths during workbench
+	// boot. Mirror of Output copy.
+	watcher: {
+		watch: undefined,
+		unwatch: undefined,
+		setVerboseLogging: undefined,
+	},
+
+	// Fix: urlHandler - `IURLService` stub. `vscode://<path>` deeplink
+	// handlers register through this channel; without it any extension
+	// that calls `vscode.window.registerUriHandler(...)` would hit
+	// `Unknown method` on Cocoon's `MainProcessService.getChannel`. Stub
+	// to no-ops for now - `open: false` signals "no handler took the
+	// URI", which is the same fall-through the workbench applies in
+	// stock VS Code when no extension claims the URI.
+	urlHandler: {
+		registerHandler: undefined,
+		open: false,
+		create: undefined,
+	},
+
+	// Fix: download - `IDownloadService` stub. Extension gallery's
+	// optional download path looks for this channel; in Land we have
+	// no remote gallery so the only legitimate caller is a `vsix`
+	// install where the stream comes from disk. Returning undefined
+	// keeps the workbench's `download(uri).then(local => ...)` chain
+	// resolving with no body so the caller surfaces a friendly
+	// "download not supported" rather than crashing.
+	download: {
+		download: undefined,
+	},
+
 	// Fix: `IExtensionTipsService` - `exeBasedRecommendations.ts:54` does
 	// `this._importantTips = await …getImportantExecutableBasedTips()` and
 	// the next line iterates with `.forEach`. Without a stub the IPC call
