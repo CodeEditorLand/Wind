@@ -1,7 +1,7 @@
 /**
  * Thin re-export. Source of truth:
- * `@codeeditorland/output/Polyfill/SharedProcessProxy`.
+ * `@codeeditorland/output/Configuration/Polyfill/SharedProcessProxy`.
  */
-import "@codeeditorland/output/Polyfill/SharedProcessProxy";
+import "@codeeditorland/output/Configuration/Polyfill/SharedProcessProxy.js";
 
 export default {};

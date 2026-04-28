@@ -34,8 +34,8 @@ const ReadString = (Key: string, Fallback: string): string => {
 };
 
 export default (): Configuration => ({
-	Key: ReadString("LAND_POSTHOG_KEY", DefaultKey),
-	Host: ReadString("LAND_POSTHOG_HOST", DefaultHost),
-	Enabled: ReadString("LAND_POSTHOG_WIND_ENABLED", "true") !== "false",
-	DistinctIdentifierSeed: ReadString("LAND_POSTHOG_DISTINCT_ID", ""),
+	Key: ReadString("Authorize", DefaultKey),
+	Host: ReadString("Beam", DefaultHost),
+	Enabled: ReadString("Report", "true") !== "false",
+	DistinctIdentifierSeed: ReadString("Brand", ""),
 });

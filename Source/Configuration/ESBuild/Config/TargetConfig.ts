@@ -27,23 +27,23 @@ import BaseConfig from "./BaseConfig.js";
  * right of `??` here.
  */
 const PostHogDefines = {
-	"import.meta.env.LAND_POSTHOG_KEY": JSON.stringify(
-		process.env["LAND_POSTHOG_KEY"] ?? "",
+	"import.meta.env.Authorize": JSON.stringify(
+		process.env["Authorize"] ?? "",
 	),
-	"import.meta.env.LAND_POSTHOG_HOST": JSON.stringify(
-		process.env["LAND_POSTHOG_HOST"] ?? "https://eu.i.posthog.com",
+	"import.meta.env.Beam": JSON.stringify(
+		process.env["Beam"] ?? "https://eu.i.posthog.com",
 	),
-	"import.meta.env.LAND_POSTHOG_WIND_ENABLED": JSON.stringify(
-		process.env["LAND_POSTHOG_WIND_ENABLED"] ?? "true",
+	"import.meta.env.Report": JSON.stringify(
+		process.env["Report"] ?? "true",
 	),
-	"import.meta.env.LAND_POSTHOG_SESSION_RECORDING": JSON.stringify(
-		process.env["LAND_POSTHOG_SESSION_RECORDING"] ?? "false",
+	"import.meta.env.Replay": JSON.stringify(
+		process.env["Replay"] ?? "false",
 	),
-	"import.meta.env.LAND_POSTHOG_SURVEYS": JSON.stringify(
-		process.env["LAND_POSTHOG_SURVEYS"] ?? "false",
+	"import.meta.env.Ask": JSON.stringify(
+		process.env["Ask"] ?? "false",
 	),
-	"import.meta.env.LAND_POSTHOG_DISTINCT_ID": JSON.stringify(
-		process.env["LAND_POSTHOG_DISTINCT_ID"] ?? "",
+	"import.meta.env.Brand": JSON.stringify(
+		process.env["Brand"] ?? "",
 	),
 };
 

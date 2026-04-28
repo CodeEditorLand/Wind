@@ -1,4 +1,4 @@
-import { URI } from "@codeeditorland/output/vs/base/common/uri.js";
+import { URI } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/uri.js";
 export {
   URI
 };

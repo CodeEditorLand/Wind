@@ -60,7 +60,7 @@ async function ResolveConfiguration() {
   }
   DevLog("config", "paths:", JSON.stringify(Paths));
   if (Paths.devLog) {
-    window.__LAND_DEV_LOG = Paths.devLog;
+    window.__Trace = Paths.devLog;
   }
   const FolderParam = new URLSearchParams(window.location.search).get(
     "folder"

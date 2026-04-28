@@ -8,11 +8,11 @@
  * Build-baked OTEL bridge (OTELBridge.ts) collects marks automatically.
  */
 
-import type { Event as VSCodeEvent } from "@codeeditorland/output/vs/base/common/event";
+import type { Event as VSCodeEvent } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
 import type {
 	IChannel,
 	IServerChannel,
-} from "@codeeditorland/output/vs/base/parts/ipc/common/ipc";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/ipc/common/ipc.js";
 
 // Inline trace - performance.mark() collected by build-baked OTELBridge.
 const _Trace = (Tag: string, Message: string): void => {
@@ -22,7 +22,7 @@ const _Trace = (Tag: string, Message: string): void => {
 };
 
 // Mirror a tagged line into Mountain's dev-log file sink so
-// `LAND_DEV_LOG=<tag> tail -f Mountain.dev.log` picks up TS-originated
+// `Trace=<tag> tail -f Mountain.dev.log` picks up TS-originated
 // traffic alongside Rust `dev_log!` output. Fire-and-forget - never
 // awaits, never throws. Mountain short-circuits cheaply when the tag
 // isn't enabled. Sends BOTH casings (`Tag`/`Message` + `tag`/`message`)

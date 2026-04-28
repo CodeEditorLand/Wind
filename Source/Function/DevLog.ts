@@ -4,22 +4,22 @@
  * Tag-filtered development logging for the browser side.
  *
  * ## Control
- * Set `window.__LAND_DEV_LOG` in the browser console or pass via config:
+ * Set `window.__Trace` in the browser console or pass via config:
  * ```js
- * window.__LAND_DEV_LOG = "vfs,ipc";   // only VFS + IPC
- * window.__LAND_DEV_LOG = "all";        // everything
- * window.__LAND_DEV_LOG = "short";      // everything, compressed + deduped
- * delete window.__LAND_DEV_LOG;         // off (default)
+ * window.__Trace = "vfs,ipc";   // only VFS + IPC
+ * window.__Trace = "all";        // everything
+ * window.__Trace = "short";      // everything, compressed + deduped
+ * delete window.__Trace;         // off (default)
  * ```
  *
- * Or set `LAND_DEV_LOG` in localStorage for persistence:
+ * Or set `Trace` in localStorage for persistence:
  * ```js
- * localStorage.setItem("LAND_DEV_LOG", "config,folder");
+ * localStorage.setItem("Trace", "config,folder");
  * ```
  *
  * ## Short Mode
  *
- * `LAND_DEV_LOG=short` enables all tags with compression:
+ * `Trace=short` enables all tags with compression:
  * - Long app-data paths aliased to `$APP`
  * - Consecutive duplicate messages counted (`(x14)` suffix)
  * - Clean single-line output
@@ -73,9 +73,9 @@ let CachedShort: boolean | null = null;
 const GetEnabledTags = (): string[] => {
 	if (CachedTags !== null) return CachedTags;
 	const Raw =
-		(window as any).__LAND_DEV_LOG ??
+		(window as any).__Trace ??
 		(typeof localStorage !== "undefined"
-			? localStorage.getItem("LAND_DEV_LOG")
+			? localStorage.getItem("Trace")
 			: null);
 	CachedTags = Raw
 		? String(Raw)
@@ -153,7 +153,7 @@ const DevLog = (Tag: string, ...Args: unknown[]): void => {
 	}
 };
 
-/** Force-reset the cache (call after changing window.__LAND_DEV_LOG). */
+/** Force-reset the cache (call after changing window.__Trace). */
 DevLog.reset = () => {
 	CachedTags = null;
 	CachedShort = null;

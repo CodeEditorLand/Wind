@@ -456,7 +456,7 @@ const Globals = {
 // ============================================================================
 
 // `preload-shim` diagnostic tag: fire-and-forget line into Mountain's
-// dev-log file sink so `LAND_DEV_LOG=preload-shim` surfaces exactly when
+// dev-log file sink so `Trace=preload-shim` surfaces exactly when
 // `window.vscode` is populated and with which global keys. Silent until
 // Tauri is mounted - the legacy `else` branch stayed empty historically;
 // emitting there would claim preload success in the Astro SSR pass where

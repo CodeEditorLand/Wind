@@ -7,7 +7,7 @@
  * Zero console.* output. Dev tracing via performance.mark().
  */
 
-import type { IMainWindowSandboxGlobals } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/globals";
+import type { IMainWindowSandboxGlobals } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/sandbox/electron-browser/globals.js";
 
 import { CreateIPCRenderer } from "./CreateIPCRenderer.js";
 import { CreateProcess } from "./CreateProcess.js";

@@ -1,4 +1,4 @@
-import { FileType } from "@codeeditorland/output/vs/platform/files/common/files.js";
+import { FileType } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/files/common/files.js";
 export {
   FileType
 };

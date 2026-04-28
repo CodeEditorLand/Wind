@@ -8,8 +8,8 @@
  * @category Function
  */
 
-import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes";
-import type { ISandboxNodeProcess } from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/globals";
+import type { ISandboxConfiguration } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/sandbox/common/sandboxTypes.js";
+import type { ISandboxNodeProcess } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/sandbox/electron-browser/globals.js";
 
 /**
  * Creates a sandbox node process interface

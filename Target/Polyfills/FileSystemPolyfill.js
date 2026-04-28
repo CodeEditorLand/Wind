@@ -1,4 +1,4 @@
-import "@codeeditorland/output/Polyfill/FileSystemPolyfill";
+import "@codeeditorland/output/Configuration/Polyfill/FileSystemPolyfill.js";
 var FileSystemPolyfill_default = {};
 export {
   FileSystemPolyfill_default as default

@@ -6,4 +6,4 @@
  * (wrong shape), and methods like with(), toJSON(), revive() were missing.
  */
 
-export { URI } from "@codeeditorland/output/vs/base/common/uri.js";
+export { URI } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/uri.js";

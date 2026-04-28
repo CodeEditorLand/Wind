@@ -21,18 +21,18 @@ export type {
 	ITunnelProvider,
 	ITunnelOptions,
 	ITunnel,
-} from "@codeeditorland/output/vs/workbench/browser/web.api.js";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/browser/web.api.js";
 
 // Types sourced from VS Code sub-packages
-export type { IAuthenticationProvider } from "@codeeditorland/output/vs/workbench/services/authentication/common/authentication.js";
-export type { IProductConfiguration } from "@codeeditorland/output/vs/base/common/product.js";
-export type { ISecretStorageProvider } from "@codeeditorland/output/vs/platform/secrets/common/secrets.js";
-export type { IUpdateProvider } from "@codeeditorland/output/vs/workbench/services/update/browser/updateService.js";
-export type { IURLCallbackProvider as IUrlCallbackProvider } from "@codeeditorland/output/vs/workbench/services/url/browser/urlService.js";
+export type { IAuthenticationProvider } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/authentication/common/authentication.js";
+export type { IProductConfiguration } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/product.js";
+export type { ISecretStorageProvider } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/secrets/common/secrets.js";
+export type { IUpdateProvider } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/update/browser/updateService.js";
+export type { IURLCallbackProvider as IUrlCallbackProvider } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/url/browser/urlService.js";
 
 // IWorkspace / IWorkspaceFolder - VS Code uses IWorkspaceToOpen | IFolderToOpen | undefined.
 // Re-export the canonical types; Wind consumers should use IWorkspaceToOpen / IFolderToOpen directly.
 export type {
 	IWorkspaceToOpen,
 	IFolderToOpen,
-} from "@codeeditorland/output/vs/platform/window/common/window.js";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/window/common/window.js";

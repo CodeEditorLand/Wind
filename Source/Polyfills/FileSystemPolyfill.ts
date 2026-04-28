@@ -1,7 +1,7 @@
 /**
  * Thin re-export. Source of truth:
- * `@codeeditorland/output/Polyfill/FileSystemPolyfill`.
+ * `@codeeditorland/output/Configuration/Polyfill/FileSystemPolyfill`.
  */
-import "@codeeditorland/output/Polyfill/FileSystemPolyfill";
+import "@codeeditorland/output/Configuration/Polyfill/FileSystemPolyfill.js";
 
 export default {};

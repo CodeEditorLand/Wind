@@ -53,7 +53,7 @@
 		"outDir": "Target",
 
 		"paths": {
-			"@codeeditorland/output/*": ["../Output/Target/Microsoft/VSCode/*"]
+			"@codeeditorland/output/*": ["../Output/*"]
 		},
 
 		"plugins": [

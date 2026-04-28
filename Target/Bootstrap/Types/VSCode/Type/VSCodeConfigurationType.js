@@ -1,4 +1,4 @@
-import { ConfigurationTarget } from "@codeeditorland/output/vs/workbench/api/common/extHostTypes.js";
+import { ConfigurationTarget } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/api/common/extHostTypes.js";
 export {
   ConfigurationTarget
 };

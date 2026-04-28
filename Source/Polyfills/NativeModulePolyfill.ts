@@ -1,7 +1,7 @@
 /**
  * Thin re-export. Source of truth:
- * `@codeeditorland/output/Polyfill/NativeModulePolyfill`.
+ * `@codeeditorland/output/Configuration/Polyfill/NativeModulePolyfill`.
  */
-import "@codeeditorland/output/Polyfill/NativeModulePolyfill";
+import "@codeeditorland/output/Configuration/Polyfill/NativeModulePolyfill.js";
 
 export default {};

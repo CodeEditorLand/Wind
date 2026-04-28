@@ -1,4 +1,4 @@
-import "@codeeditorland/output/Polyfill/FileProtocolShim";
+import "@codeeditorland/output/Configuration/Polyfill/FileProtocolShim.js";
 var FileProtocolShim_default = {};
 export {
   FileProtocolShim_default as default

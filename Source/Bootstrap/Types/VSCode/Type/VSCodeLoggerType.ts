@@ -11,14 +11,14 @@ import type { Event, IDisposable } from "./VSCodeCommonType.js";
 // LogLevel from the real VS Code source - prevents numeric drift.
 // VS Code values: Off=0, Trace=1, Debug=2, Info=3, Warning=4, Error=5
 // (Wind previously had Trace=0…Off=6, which was inverted and incompatible.)
-export { LogLevel } from "@codeeditorland/output/vs/platform/log/common/log.js";
+export { LogLevel } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js";
 
 /**
  * Logger options interface
  */
 export interface ILoggerOptions {
 	name?: string;
-	logLevel?: import("@codeeditorland/output/vs/platform/log/common/log.js").LogLevel;
+	logLevel?: import("@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js").LogLevel;
 }
 
 /**

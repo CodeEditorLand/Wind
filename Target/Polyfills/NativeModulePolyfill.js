@@ -1,4 +1,4 @@
-import "@codeeditorland/output/Polyfill/NativeModulePolyfill";
+import "@codeeditorland/output/Configuration/Polyfill/NativeModulePolyfill.js";
 var NativeModulePolyfill_default = {};
 export {
   NativeModulePolyfill_default as default

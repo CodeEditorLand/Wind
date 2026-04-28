@@ -12,7 +12,7 @@
 import type {
 	IpcRenderer,
 	IpcRendererEvent,
-} from "@codeeditorland/output/vs/base/parts/sandbox/electron-browser/electronTypes";
+} from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/sandbox/electron-browser/electronTypes.js";
 
 import { ValidateIPCChannel } from "./ValidateIPCChannel.js";
 
