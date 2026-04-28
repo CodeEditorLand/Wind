@@ -239,16 +239,29 @@ const ipcMessagePort = {
 				if (Length > 1) {
 					HandshakeComplete = true;
 					try {
-						performance.mark("land:exthost:handshake:init-data-received", {
-							detail: { bytes: Length },
-						});
+						performance.mark(
+							"land:exthost:handshake:init-data-received",
+							{
+								detail: { bytes: Length },
+							},
+						);
 					} catch {}
 
 					// Log init data summary for debugging
 					try {
-						const Bytes = Data instanceof Uint8Array ? Data : new Uint8Array(Data);
-						const Text = new TextDecoder().decode(Bytes.slice(0, 500));
-						console.warn("[Extension Host] Init data received:", Length, "bytes, preview:", Text.slice(0, 200));
+						const Bytes =
+							Data instanceof Uint8Array
+								? Data
+								: new Uint8Array(Data);
+						const Text = new TextDecoder().decode(
+							Bytes.slice(0, 500),
+						);
+						console.warn(
+							"[Extension Host] Init data received:",
+							Length,
+							"bytes, preview:",
+							Text.slice(0, 200),
+						);
 					} catch {}
 
 					// Forward init data to Mountain for Cocoon
@@ -262,11 +275,22 @@ const ipcMessagePort = {
 					port1.postMessage(new Uint8Array([1]));
 
 					try {
-						performance.mark("land:exthost:handshake:initialized-sent");
+						performance.mark(
+							"land:exthost:handshake:initialized-sent",
+						);
 					} catch {}
-					console.warn("[Extension Host] Handshake complete - Initialized sent");
+					console.warn(
+						"[Extension Host] Handshake complete - Initialized sent",
+					);
 				} else {
-					console.warn("[Extension Host] Handshake: ignoring control byte", Length > 0 ? new Uint8Array(Data instanceof ArrayBuffer ? Data : Data)[0] : "empty");
+					console.warn(
+						"[Extension Host] Handshake: ignoring control byte",
+						Length > 0
+							? new Uint8Array(
+									Data instanceof ArrayBuffer ? Data : Data,
+								)[0]
+							: "empty",
+					);
 				}
 				return;
 			}
@@ -282,9 +306,19 @@ const ipcMessagePort = {
 			if (MessageCount <= 5) {
 				// Log first few RPC messages for debugging
 				try {
-					const Bytes = Data instanceof Uint8Array ? Data : new Uint8Array(Data);
-					const Preview = new TextDecoder().decode(Bytes.slice(0, 200));
-					console.warn(`[Extension Host] RPC #${MessageCount}:`, Length, "bytes, preview:", Preview.slice(0, 150));
+					const Bytes =
+						Data instanceof Uint8Array
+							? Data
+							: new Uint8Array(Data);
+					const Preview = new TextDecoder().decode(
+						Bytes.slice(0, 200),
+					);
+					console.warn(
+						`[Extension Host] RPC #${MessageCount}:`,
+						Length,
+						"bytes, preview:",
+						Preview.slice(0, 150),
+					);
 				} catch {}
 			}
 
@@ -315,7 +349,9 @@ const ipcMessagePort = {
 			try {
 				performance.mark("land:exthost:handshake:ready-sent");
 			} catch {}
-			console.warn("[Extension Host] Ready sent on MessagePort, waiting for init data...");
+			console.warn(
+				"[Extension Host] Ready sent on MessagePort, waiting for init data...",
+			);
 		}, 50);
 	},
 };

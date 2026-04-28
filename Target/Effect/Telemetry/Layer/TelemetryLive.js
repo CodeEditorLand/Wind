@@ -98,7 +98,9 @@ const TelemetryLive = Layer.effect(
       );
       if (typeof performance !== "undefined") {
         try {
-          performance.mark(`land:telemetry:${level}:${message.slice(0, 80)}`);
+          performance.mark(
+            `land:telemetry:${level}:${message.slice(0, 80)}`
+          );
         } catch {
         }
       }

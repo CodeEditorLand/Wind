@@ -62,7 +62,10 @@ export const LiveDecorationsServiceLayer = Layer.effect(
 				),
 
 			SetDecoration: (uri, decoration) =>
-				IPCService.invoke(Channel.DecorationsSet)([uri, decoration]).pipe(
+				IPCService.invoke(Channel.DecorationsSet)([
+					uri,
+					decoration,
+				]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeDecorationsProblem),
 				),

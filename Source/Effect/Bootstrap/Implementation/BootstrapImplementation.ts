@@ -79,7 +79,10 @@ const makeBootstrap = (): BootstrapService => ({
 				// Use Effect.either to catch fiber-level failures (missing services, etc.)
 				// JavaScript try/catch does NOT catch Effect failures from yield*.
 				const Outcome = yield* Effect.either(
-					Effect.suspend(() => Stage) as unknown as Effect.Effect<StageResult, unknown>,
+					Effect.suspend(() => Stage) as unknown as Effect.Effect<
+						StageResult,
+						unknown
+					>,
 				);
 				if (Either.isRight(Outcome)) {
 					Result = {

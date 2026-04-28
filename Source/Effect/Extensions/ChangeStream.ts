@@ -57,9 +57,9 @@ const ReadOptionalString = (
 	return typeof Value === "string" ? Value : undefined;
 };
 
-const FirstArgAsPayload = (
-	Frame: { readonly args: ReadonlyArray<unknown> },
-): Readonly<Record<string, unknown>> | null => {
+const FirstArgAsPayload = (Frame: {
+	readonly args: ReadonlyArray<unknown>;
+}): Readonly<Record<string, unknown>> | null => {
 	const First = Frame.args[0];
 	return First !== null && typeof First === "object"
 		? (First as Readonly<Record<string, unknown>>)
@@ -91,9 +91,7 @@ export default Effect.gen(function* () {
 				Location: ReadString(Payload, "location"),
 			};
 		}),
-		Stream.filter(
-			(Event): Event is ExtensionChange => Event !== null,
-		),
+		Stream.filter((Event): Event is ExtensionChange => Event !== null),
 	);
 
 	const Uninstalled = IPCService.events(SkyEvent.ExtensionsUninstalled).pipe(
@@ -110,9 +108,7 @@ export default Effect.gen(function* () {
 				Location: ReadOptionalString(Payload, "location"),
 			};
 		}),
-		Stream.filter(
-			(Event): Event is ExtensionChange => Event !== null,
-		),
+		Stream.filter((Event): Event is ExtensionChange => Event !== null),
 	);
 
 	return Stream.merge(Installed, Uninstalled) satisfies Stream.Stream<

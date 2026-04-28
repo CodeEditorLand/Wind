@@ -8,8 +8,7 @@
  */
 
 import type { Configuration } from "./Configuration.js";
-import BaseProperties from "./Properties.js";
-import type { Properties } from "./Properties.js";
+import BaseProperties, { type Properties } from "./Properties.js";
 
 export default async (
 	Config: Configuration,

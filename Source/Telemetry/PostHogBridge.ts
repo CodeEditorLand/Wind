@@ -14,8 +14,7 @@ import GetBrowser from "./PostHog/Browser.js";
 import ReadConfiguration from "./PostHog/Configuration.js";
 import Fallback from "./PostHog/Fallback.js";
 import ResolveDistinctIdentifier from "./PostHog/Identifier.js";
-import BaseProperties from "./PostHog/Properties.js";
-import type { Properties } from "./PostHog/Properties.js";
+import BaseProperties, { type Properties } from "./PostHog/Properties.js";
 
 const Configuration = ReadConfiguration();
 

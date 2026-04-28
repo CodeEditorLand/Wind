@@ -16,7 +16,9 @@ import type {
 
 // Inline trace - performance.mark() collected by build-baked OTELBridge.
 const _Trace = (Tag: string, Message: string): void => {
-	try { performance.mark(`land:${Tag}:${Message}`); } catch {}
+	try {
+		performance.mark(`land:${Tag}:${Message}`);
+	} catch {}
 };
 
 // Mirror a tagged line into Mountain's dev-log file sink so
@@ -52,14 +54,24 @@ const _TimedTrace = async <T>(
 ): Promise<T> => {
 	const MarkName = `land:${Tag}:${Label}`;
 	const StartMark = `${MarkName}:start`;
-	try { performance.mark(StartMark); } catch {}
+	try {
+		performance.mark(StartMark);
+	} catch {}
 	try {
 		const Result = await Fn();
-		try { performance.measure(MarkName, StartMark); } catch {}
+		try {
+			performance.measure(MarkName, StartMark);
+		} catch {}
 		return Result;
 	} catch (Error) {
-		try { performance.mark(`${MarkName}:error`, { detail: { error: String(Error) } }); } catch {}
-		try { performance.measure(MarkName, StartMark); } catch {}
+		try {
+			performance.mark(`${MarkName}:error`, {
+				detail: { error: String(Error) },
+			});
+		} catch {}
+		try {
+			performance.measure(MarkName, StartMark);
+		} catch {}
 		throw Error;
 	}
 };
@@ -120,9 +132,20 @@ const FireAndForgetChannels = new Set(["logger", "output"]);
 
 const FileSystemChannels = new Set(["localFilesystem"]);
 const FileSystemThrowCommands = new Set([
-	"stat", "readFile", "writeFile", "readdir", "mkdir",
-	"delete", "rename", "copy", "open", "close",
-	"read", "write", "realpath", "cloneFile",
+	"stat",
+	"readFile",
+	"writeFile",
+	"readdir",
+	"mkdir",
+	"delete",
+	"rename",
+	"copy",
+	"open",
+	"close",
+	"read",
+	"write",
+	"realpath",
+	"cloneFile",
 ]);
 
 const StubChannels: Record<string, Record<string, unknown>> = {
@@ -132,8 +155,11 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	keyboardLayout: {
 		getKeyboardLayoutData: {
 			keyboardLayoutInfo: {
-				model: "pc105", layout: "us", variant: "",
-				options: "", rules: "",
+				model: "pc105",
+				layout: "us",
+				variant: "",
+				options: "",
+				rules: "",
 			},
 			keyboardMapping: {},
 		},
@@ -346,7 +372,11 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		getDiagnostics: [],
 		getSystemInfo: {},
 		getPerformanceInfo: {},
-		reportWorkspaceStats: { configFiles: [], fileTypes: [], launchConfigFiles: [] },
+		reportWorkspaceStats: {
+			configFiles: [],
+			fileTypes: [],
+			launchConfigFiles: [],
+		},
 	},
 
 	// --- Batch 6: medium-priority channels stock VS Code exposes via the
@@ -471,18 +501,20 @@ async function InvokeMountain(
 			method: Method,
 			params: Params,
 		});
-		const Elapsed = (
-			typeof performance !== "undefined" ? performance.now() : Date.now()
-		) - Start;
+		const Elapsed =
+			(typeof performance !== "undefined"
+				? performance.now()
+				: Date.now()) - Start;
 		_DevLogForward(
 			"tauri-invoke",
 			`[TauriInvoke] method=${Method} ok=true elapsed_ms=${Elapsed.toFixed(2)}`,
 		);
 		return Value;
 	} catch (Error) {
-		const Elapsed = (
-			typeof performance !== "undefined" ? performance.now() : Date.now()
-		) - Start;
+		const Elapsed =
+			(typeof performance !== "undefined"
+				? performance.now()
+				: Date.now()) - Start;
 		_DevLogForward(
 			"tauri-invoke",
 			`[TauriInvoke] method=${Method} ok=false elapsed_ms=${Elapsed.toFixed(2)} err=${String(Error)}`,
@@ -550,10 +582,8 @@ class TauriChannel implements IChannel {
 				Arg !== undefined ? (Array.isArray(Arg) ? Arg : [Arg]) : [];
 
 			try {
-				const Result = await _TimedTrace(
-					"ipc",
-					MountainMethod,
-					() => InvokeMountain(MountainMethod, Params),
+				const Result = await _TimedTrace("ipc", MountainMethod, () =>
+					InvokeMountain(MountainMethod, Params),
 				);
 
 				if (
@@ -705,10 +735,7 @@ class TauriChannel implements IChannel {
 		// ----------------------------------------------------------------
 		// terminal - onTerminalData
 		// ----------------------------------------------------------------
-		if (
-			this.ChannelName === "terminal" &&
-			Event === "onTerminalData"
-		) {
+		if (this.ChannelName === "terminal" && Event === "onTerminalData") {
 			return ((Listener: (Data: unknown) => void) => {
 				const Unlisten = (window as any).__TAURI__?.event?.listen(
 					"sky://terminal/data",
@@ -781,10 +808,7 @@ class TauriChannel implements IChannel {
 		// ----------------------------------------------------------------
 		// lifecycle - onWillShutdown
 		// ----------------------------------------------------------------
-		if (
-			this.ChannelName === "lifecycle" &&
-			Event === "onWillShutdown"
-		) {
+		if (this.ChannelName === "lifecycle" && Event === "onWillShutdown") {
 			return ((Listener: (Data: unknown) => void) => {
 				const Unlisten = (window as any).__TAURI__?.event?.listen(
 					"sky://lifecycle/willShutdown",
@@ -801,10 +825,7 @@ class TauriChannel implements IChannel {
 		// ----------------------------------------------------------------
 		// lifecycle - onDidChangePhase
 		// ----------------------------------------------------------------
-		if (
-			this.ChannelName === "lifecycle" &&
-			Event === "onDidChangePhase"
-		) {
+		if (this.ChannelName === "lifecycle" && Event === "onDidChangePhase") {
 			return ((Listener: (Data: unknown) => void) => {
 				const Unlisten = (window as any).__TAURI__?.event?.listen(
 					"sky://lifecycle/phaseChanged",

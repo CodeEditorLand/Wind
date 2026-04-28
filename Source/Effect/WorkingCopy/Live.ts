@@ -38,7 +38,10 @@ export const LiveWorkingCopyServiceLayer = Layer.effect(
 				),
 
 			SetDirty: (uri, dirty) =>
-				IPCService.invoke(Channel.WorkingCopySetDirty)([uri, dirty]).pipe(
+				IPCService.invoke(Channel.WorkingCopySetDirty)([
+					uri,
+					dirty,
+				]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeWorkingCopyProblem),
 				),

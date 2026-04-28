@@ -90,7 +90,10 @@ export const LiveModelServiceLayer = Layer.effect(
 				),
 
 			UpdateContent: (uri, content) =>
-				IPCService.invoke(Channel.ModelUpdateContent)([uri, content]).pipe(
+				IPCService.invoke(Channel.ModelUpdateContent)([
+					uri,
+					content,
+				]).pipe(
 					Effect.mapError(MakeModelProblem),
 					Effect.flatMap((Result) => {
 						const Parsed = ParseTextModel(Result);

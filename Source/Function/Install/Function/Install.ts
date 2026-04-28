@@ -15,7 +15,9 @@ import { Fallback } from "./Fallback.js";
 import { ResolveConfiguration } from "./ResolveConfiguration.js";
 
 const _Trace = (Message: string): void => {
-	try { performance.mark(`land:install:${Message}`); } catch {}
+	try {
+		performance.mark(`land:install:${Message}`);
+	} catch {}
 };
 
 export default async function Install(): Promise<void> {
@@ -96,7 +98,9 @@ export default async function Install(): Promise<void> {
 
 		_Trace("done");
 	} catch (error: unknown) {
-		try { performance.mark(`land:install:error`); } catch {}
+		try {
+			performance.mark(`land:install:error`);
+		} catch {}
 		Fallback();
 	}
 }

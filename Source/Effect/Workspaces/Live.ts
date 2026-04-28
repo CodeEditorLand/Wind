@@ -18,9 +18,9 @@ import Channel from "../../IPC/Channel.js";
 import SkyEvent from "../../IPC/SkyEvent.js";
 import { IPC } from "../IPC.js";
 import type {
+	WorkspaceFolder,
 	WorkspacesChangeEvent,
 	WorkspacesService,
-	WorkspaceFolder,
 } from "./Interface/WorkspacesService.js";
 import { WorkspacesServiceTag } from "./Tag/WorkspacesServiceTag.js";
 import type { WorkspacesProblem } from "./Type/WorkspacesProblem.js";

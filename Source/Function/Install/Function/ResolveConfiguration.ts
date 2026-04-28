@@ -11,7 +11,9 @@
 import type { ISandboxConfiguration } from "@codeeditorland/output/vs/base/parts/sandbox/common/sandboxTypes";
 
 const DevLog = (Tag: string, ..._Args: unknown[]): void => {
-	try { performance.mark(`land:config:${Tag}`); } catch {}
+	try {
+		performance.mark(`land:config:${Tag}`);
+	} catch {}
 };
 
 /**

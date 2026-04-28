@@ -44,7 +44,10 @@ export const LiveOutputServiceLayer = Layer.effect(
 				),
 
 			Append: (channelName, text) =>
-				IPCService.invoke(Channel.OutputAppend)([channelName, text]).pipe(
+				IPCService.invoke(Channel.OutputAppend)([
+					channelName,
+					text,
+				]).pipe(
 					Effect.map(() => undefined as void),
 					Effect.mapError(MakeOutputProblem),
 				),
