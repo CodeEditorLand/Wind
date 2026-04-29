@@ -1,170 +1,181 @@
-# Changelog
+# Changelog - Wind
 
-All notable changes to Wind (UI Service Layer) are documented here.
-Format: [Keep a Changelog](https://keepachangelog.com/).
+Wind is our UI service layer - the Effect-TS-driven re-implementation
+of VS Code's workbench services that bridges the renderer to Mountain
+through Tauri IPC. This file records what we built in our voice,
+version by version. Format adapted from
+[Keep a Changelog](https://keepachangelog.com/).
 
-## [v2.1] - Q2 2026: Full Workbench Lift
+## [v2.1] - Full Workbench Lift, Tauri IPC Bridge
 
-### Added
-
-- 5 listen() event subscriptions: fileChange (`sky://vfs/fileChange`),
-  configuration (`sky://configuration/changed`), terminal
-  (`sky://terminal/data`), lifecycle willShutdown
-  (`sky://lifecycle/willShutdown`), lifecycle phaseChanged
-  (`sky://lifecycle/phaseChanged`)
-
-### Changed
-
-- TauriMainProcessService verified: 24 VS Code IPC channels routed to Mountain
-- ResolveConfiguration confirmed loading real Mountain paths
-
-## [v2.0] - Q1 2026: Editor Launch Sprint
-
-### April 8-16: Tauri IPC Bridge Sprint
-
-#### Added
-
-- `Source/Service/TauriMainProcessService.ts` (232 lines, April 8) - IPC
-  routing with 24 channel routes and 14 stub channels:
-  - Routed: localFilesystem, storage, configuration, textFile, extensions,
-    commands, terminal, output, notification, progress, quickInput, workspaces,
-    themes, search, environment, decorations, workingCopy, keybinding,
-    lifecycle, label, model, nativeHost, localPty, url, menubar, encryption,
-    extensionHostStarter, extensionhostdebugservice
-  - Stubbed: update, sign, policy, userDataProfiles, keyboardLayout,
-    sharedProcess, utilityProcessWorker, meteredConnection, webContentExtractor,
-    browserElements, NativeMcpDiscoveryHelper, sandboxHelper, mcpGateway,
-    browserViewGroup, externalTerminal
-- `Source/Polyfills/IPCRendererShim.ts` (373 lines) - binary IPC protocol
-  (created then consolidated)
-- `Source/Function/DevLog.ts` (72 lines, April 9) - development logging with
-  short mode and fire-and-forget semantics
-- MessageChannel for extension host IPC: Preload.ts +58 lines, init data →
-  Initialized byte ([1]) → Ready byte ([2]) after 50ms
-- Extension host protocol message forwarding to Mountain (+85 lines)
-- ResolveConfiguration: +111 lines for INativeWindowConfiguration, profiles,
-  colorScheme, accessibilitySupport; +94 lines for Mountain path resolution via
-  RPC
-
-#### Changed
-
-- Preload.ts grew from 99 lines (March) to 190+ lines with debugging
-  instrumentation
-- IPC naming: ipcMain → IPC (PascalCase convention)
-- Effect.either refactor for proper fiber-level failure handling in bootstrap
-
-#### Removed
-
-- 1,076 lines of legacy polyfills deleted (April 11):
-  ChildProcessPolyfill.ts (77), FileProtocolShim.ts (58),
-  FileSystemPolyfill.ts (44), NativeModulePolyfill.ts (62),
-  ProcessPolyfill.ts (36), SharedProcessProxy.ts (68)
-
-### January-March: Bootstrap + Preload Foundation
-
-#### Added
-
-- `Source/Preload.ts` (99 lines) - Tauri/Electron bridge
-- `Source/Bootstrap/Types/` - 30+ VS Code type mirror files:
-  BootstrapTypes.ts, Type/ subtree (BootstrapConfig, EnvironmentData, Mode,
-  Platform, StageResult, etc.)
-- `Source/Bootstrap/Types/VSCode/` - VSCodeConfigurationType,
-  VSCodeLoggerType, VSCodeWorkbenchOptionsType
-- TypeScript 5.9.3 → 6.0.2 upgrade (March 24)
-
-## [v1.3] - Q4 2025: Dependency Maintenance
-
-### Changed
-
-- effect: 3.18.0 → 3.19.14
-- @effect/platform: 0.92.0 → 0.94.1
-- @effect/language-service: 0.60.x → 0.63.2
-- No major Application/ restructures; module count stable
-
-## [v1.2] - Q3 2025: Full Stack Integration
+We finalised the substrate that lets the workbench talk to Mountain
+through our Tauri IPC instead of Electron's. By the end of this cycle
+we had 24 channel routes wired, 5 streaming subscriptions, and a clean
+preload + bootstrap that brings the editor up against a live Cocoon.
 
 ### Added
 
-- 100+ Application service modules following Define/Implement/Problem pattern:
-  - `Source/Application/{Service}/Define.ts` - interface
-  - `Source/Application/{Service}/Implement.ts` - Effect-TS implementation
-  - `Source/Application/{Service}/Problem.ts` - error types
-- Services: Command, Configuration, Dialog, Editor, EditorGroup, File,
-  FileSystem, Host, IPC, LanguageFeature, Logger, Marker, Notification,
-  Policy, UntitledTextEditor, and more
-- 300+ file infrastructure commit (September 12): template preparation
+- **Five streaming `listen()` subscriptions** for the renderer:
+  `sky://vfs/fileChange`, `sky://configuration/changed`,
+  `sky://terminal/data`, `sky://lifecycle/willShutdown`,
+  `sky://lifecycle/phaseChanged`. Each gives the workbench a live
+  feed without round-tripping invokes.
+- **`Source/Service/TauriMainProcessService.ts`** (~232 lines) - our
+  IPC routing surface with **24 routed channels** and **14 stub
+  channels**:
+  - **Routed**: `localFilesystem`, `storage`, `configuration`,
+    `textFile`, `extensions`, `commands`, `terminal`, `output`,
+    `notification`, `progress`, `quickInput`, `workspaces`,
+    `themes`, `search`, `environment`, `decorations`,
+    `workingCopy`, `keybinding`, `lifecycle`, `label`, `model`,
+    `nativeHost`, `localPty`, `url`, `menubar`, `encryption`,
+    `extensionHostStarter`, `extensionhostdebugservice`.
+  - **Stubbed**: `update`, `sign`, `policy`, `userDataProfiles`,
+    `keyboardLayout`, `sharedProcess`, `utilityProcessWorker`,
+    `meteredConnection`, `webContentExtractor`, `browserElements`,
+    `NativeMcpDiscoveryHelper`, `sandboxHelper`, `mcpGateway`,
+    `browserViewGroup`, `externalTerminal`. Each stub returns the
+    shape the workbench expects (mostly empty arrays / no-op
+    disposables) so the bootstrap doesn't crash on a missing
+    handler.
+- **MessageChannel for extension-host IPC** in `Preload.ts`
+  (~+58 lines): init data → Initialized byte (`[1]`) → Ready byte
+  (`[2]`) after 50 ms.
+- **Extension-host protocol message forwarding to Mountain**
+  (~+85 lines).
+- **`ResolveConfiguration`**: ~+111 lines covering
+  `INativeWindowConfiguration`, profiles, `colorScheme`,
+  `accessibilitySupport`; ~+94 lines for Mountain path resolution
+  via RPC.
+- **`Source/Function/DevLog.ts`** (~72 lines) - fire-and-forget dev
+  logging with short-mode formatting, mirrored to Mountain so
+  renderer-side logs land in the same trace stream.
 
 ### Changed
 
-- Effect-TS 3.17.x → 3.18.x
-- solid-js 1.9.x stable
-- @types/node 24.x
-
-## [v1.1] - Q2 2025: Architecture Buildout
-
-**May 30, 2025: the pivot point - Effect-TS + Application layer born.**
-
-### Added
-
-- `Source/Effect/` directory - Effect-TS service composition layer
-- `Source/Application/` directory - 50+ service modules (Dialog, FileDialog,
-  etc.) with Effect-TS-driven patterns
-- `Source/Configuration/ESBuild/` - build config restructure
-- effect, @effect/platform, @effect/experimental, @effect/language-service
-  dependencies
+- **`Preload.ts` grew** from ~99 lines to 190+ lines with debugging
+  instrumentation. We use it as the single bridge that mounts our
+  Tauri IPC under the names the workbench expects (`window.vscode`,
+  the channel proxy, etc.) before the workbench loads.
+- **IPC naming convention**: `ipcMain` → `IPC` for our PascalCase
+  rule.
+- **Effect.either refactor** in the bootstrap path so fiber-level
+  failures surface as proper `Either` results instead of getting
+  buried.
 
 ### Removed
 
-- Source/Element/Preview.scss
-- SolidJS evaluation concluded
+- **1,076 lines of legacy polyfills** deleted in one pass:
+  `ChildProcessPolyfill.ts` (77), `FileProtocolShim.ts` (58),
+  `FileSystemPolyfill.ts` (44), `NativeModulePolyfill.ts` (62),
+  `ProcessPolyfill.ts` (36), `SharedProcessProxy.ts` (68). All
+  superseded by Mountain-routed channels.
 
-## [v1.0] - Q1 2025: Integration Phase
+## [v2.0] - Editor Launch (Bootstrap + Preload Foundation)
 
-### Changed
-
-- deepmerge-ts: 7.1.4 → 7.1.5
-- solid-js: 1.9.4 → 1.9.5
-- CODE_OF_CONDUCT.md, CONTRIBUTING.md governance refresh
-- Target gen/delete cycles (CI/CD integration testing)
-
-## [v0.2] - Q4 2024: Architecture Solidification
+We built the renderer-side shape the bundled workbench needs to boot.
 
 ### Added
 
-- Target/ artifacts: 88 files generated (Context/*, Element/*, Function/*,
-  Interface/*, Script/Monaco/Theme/*.json, Stylesheet/*)
-- Monaco themes: Active4D.json (154 lines), Amoled.json (219 lines)
-- Stylesheet: Tippy/Dark.scss (132 lines), Tippy/Light.scss (41 lines)
+- **`Source/Preload.ts`** (99 lines) - the Tauri/Electron bridge
+  the workbench imports first.
+- **`Source/Bootstrap/Types/`** - 30+ VS Code type mirror files:
+  `BootstrapTypes.ts`, the `Type/` subtree
+  (`BootstrapConfig`, `EnvironmentData`, `Mode`, `Platform`,
+  `StageResult`, …), and `VSCode/` mirrors
+  (`VSCodeConfigurationType`, `VSCodeLoggerType`,
+  `VSCodeWorkbenchOptionsType`).
 
 ### Changed
 
-- solid-devtools: 0.31.2 → 0.31.7
-- CSS custom properties: `--Mute` action-form convention
+- TypeScript 5.9.3 → 6.0.2.
 
-## [v0.1] - Q3 2024: Rapid Development
+## [v1.3] - Dependency Maintenance
 
-### Changed
+Effect 3.18.0 → 3.19.14, `@effect/platform` 0.92.0 → 0.94.1,
+`@effect/language-service` 0.60.x → 0.63.2. No major
+`Application/` restructures; module count stable.
 
-- SCSS cleanup: Editor.scss reduced 42 lines; mixin borders/spacing refactored
-- solid-js: 1.8.19 → 1.9.1
-- monaco-editor: 0.51.0-rc2 → 0.52.0
-- @playform/build: 0.1.2 → 0.1.7
-- No new architectural folders; pure refinement
+## [v1.2] - Full-Stack Integration (Application Layer)
 
-## [v0.0] - Q2 2024: Project Inception
+We grew Wind from a UI shell into a 100+ module Effect-TS service
+layer following our Define / Implement / Problem pattern.
 
 ### Added
 
-- `Source/Context/` - React-style context primitives (Action, Connection,
-  Environment, Session, Store)
-- `Source/Element/` - SolidJS components (Editor.tsx, Button, Anchor, Tip,
-  Footer)
-- `Source/Library/` - helper functions (Create, Pad, Persist, Environment)
-- `Source/Function/` - utilities (Merge)
-- `Source/Stylesheet/` - SCSS (Element/*, Mixin/*)
-- `Source/Variable/` - ESBuild config, StringURL constant
+- **100+ application service modules**, each shaped as
+  `Source/Application/{Service}/{Define.ts, Implement.ts,
+  Problem.ts}` (interface, Effect-TS implementation, error types).
+  Coverage spans Command, Configuration, Dialog, Editor, EditorGroup,
+  File, FileSystem, Host, IPC, LanguageFeature, Logger, Marker,
+  Notification, Policy, UntitledTextEditor - and more.
+- **300+ file infrastructure commit** to scaffold the template
+  consistently across the surface.
 
-### Dependencies (First Release)
+### Changed
 
-- solid-js 1.8.x, monaco-editor 0.51.x, @playform/build 0.1.x,
-  @modular-forms/solid
+- Effect-TS 3.17.x → 3.18.x. SolidJS 1.9.x stable. `@types/node` 24.x.
+
+## [v1.1] - Architecture Buildout (Effect-TS Pivot)
+
+The pivot quarter. We adopted Effect-TS as our service composition
+runtime and stood up the `Application/` layer that v1.2 would build
+out.
+
+### Added
+
+- **`Source/Effect/`** directory - Effect-TS service composition.
+- **`Source/Application/`** directory - 50+ initial service modules
+  (Dialog, FileDialog, …) with Effect-TS-driven patterns.
+- **`Source/Configuration/ESBuild/`** - build-config restructure.
+- **Effect-TS dep set**: `effect`, `@effect/platform`,
+  `@effect/experimental`, `@effect/language-service`.
+
+### Removed
+
+- `Source/Element/Preview.scss`.
+- We concluded the SolidJS evaluation in this window - the bones we
+  kept landed under `Source/Context/` and `Source/Element/`; the
+  rest came out.
+
+## [v1.0] - Integration Phase
+
+`deepmerge-ts` 7.1.4 → 7.1.5. SolidJS 1.9.4 → 1.9.5. Refreshed
+`CODE_OF_CONDUCT.md` and `CONTRIBUTING.md`. Routine `Target/`
+gen/delete cycles for CI integration tests.
+
+## [v0.2] - Architecture Solidification
+
+We shipped the first generated `Target/` artefacts: 88 files across
+`Context/*`, `Element/*`, `Function/*`, `Interface/*`,
+`Script/Monaco/Theme/*.json`, `Stylesheet/*`. Monaco themes
+`Active4D.json` (154 lines) and `Amoled.json` (219 lines) landed,
+plus `Stylesheet/Tippy/{Dark.scss,Light.scss}`. SolidJS devtools
+0.31.2 → 0.31.7. We adopted the CSS action-form convention
+(`--Mute`, not `--Muted`).
+
+## [v0.1] - Rapid Development
+
+`Editor.scss` cleanup (42-line reduction); border/spacing mixins
+refactored. SolidJS 1.8.19 → 1.9.1. `monaco-editor` 0.51.0-rc2 →
+0.52.0. `@playform/build` 0.1.2 → 0.1.7. No new architectural
+folders - refinement only.
+
+## [v0.0] - Project Inception
+
+We laid the SolidJS-era bones:
+
+- **`Source/Context/`** - React-style context primitives (`Action`,
+  `Connection`, `Environment`, `Session`, `Store`).
+- **`Source/Element/`** - SolidJS components (`Editor.tsx`,
+  `Button`, `Anchor`, `Tip`, `Footer`).
+- **`Source/Library/`** - helpers (`Create`, `Pad`, `Persist`,
+  `Environment`).
+- **`Source/Function/`** - utilities (`Merge`).
+- **`Source/Stylesheet/`** - SCSS (`Element/*`, `Mixin/*`).
+- **`Source/Variable/`** - ESBuild config + `StringURL` constant.
+
+### First-release dependencies
+
+- SolidJS 1.8.x, `monaco-editor` 0.51.x, `@playform/build` 0.1.x,
+  `@modular-forms/solid`.
