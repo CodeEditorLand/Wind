@@ -39,7 +39,6 @@
  * Tauri channel is reference-counted so the subscription lives
  * exactly as long as any subscriber.
  *
- * Backlink: Land/.claude/tauri/Patches/14-StreamingGRPC.md (P14.5)
  */
 
 import type { Channel as TauriChannel } from "@tauri-apps/api/core";
