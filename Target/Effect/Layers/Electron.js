@@ -1,1 +1,20 @@
-import{Layer as e}from"effect";import{ConfigurationLive as v,ConfigurationWithSyncLive as t}from"../Configuration.js";import{IPCElectronLive as p}from"../IPC.js";import{MountainLive as r}from"../Mountain.js";import{SandboxLive as i}from"../Sandbox.js";import{TelemetryLive as o}from"../Telemetry.js";const f=e.empty.pipe(e.provideMerge(i)).pipe(e.provideMerge(p)).pipe(e.provideMerge(o)).pipe(e.provideMerge(v)).pipe(e.provideMerge(r)),d=e.empty.pipe(e.provideMerge(i)).pipe(e.provideMerge(p)).pipe(e.provideMerge(o)).pipe(e.provideMerge(t)).pipe(e.provideMerge(r)),y=e.empty.pipe(e.provideMerge(i)).pipe(e.provideMerge(p)).pipe(e.provideMerge(o)).pipe(e.provideMerge(t)).pipe(e.provideMerge(r));var c=d;export{f as ElectronBaseLayer,y as ElectronDevLayer,d as ElectronLiveLayer,c as default};
+import { Layer } from "effect";
+import {
+  ConfigurationLive,
+  ConfigurationWithSyncLive
+} from "../Configuration.js";
+import { IPCElectronLive } from "../IPC.js";
+import { MountainLive } from "../Mountain.js";
+import { SandboxLive } from "../Sandbox.js";
+import { TelemetryLive } from "../Telemetry.js";
+const ElectronBaseLayer = Layer.empty.pipe(Layer.provideMerge(SandboxLive)).pipe(Layer.provideMerge(IPCElectronLive)).pipe(Layer.provideMerge(TelemetryLive)).pipe(Layer.provideMerge(ConfigurationLive)).pipe(Layer.provideMerge(MountainLive));
+const ElectronLiveLayer = Layer.empty.pipe(Layer.provideMerge(SandboxLive)).pipe(Layer.provideMerge(IPCElectronLive)).pipe(Layer.provideMerge(TelemetryLive)).pipe(Layer.provideMerge(ConfigurationWithSyncLive)).pipe(Layer.provideMerge(MountainLive));
+const ElectronDevLayer = Layer.empty.pipe(Layer.provideMerge(SandboxLive)).pipe(Layer.provideMerge(IPCElectronLive)).pipe(Layer.provideMerge(TelemetryLive)).pipe(Layer.provideMerge(ConfigurationWithSyncLive)).pipe(Layer.provideMerge(MountainLive));
+var Electron_default = ElectronLiveLayer;
+export {
+  ElectronBaseLayer,
+  ElectronDevLayer,
+  ElectronLiveLayer,
+  Electron_default as default
+};
+//# sourceMappingURL=Electron.js.map

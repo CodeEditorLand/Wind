@@ -1,1 +1,61 @@
-import{Effect as y,Layer as I,SubscriptionRef as c}from"effect";import{Telemetry as g}from"../../Telemetry.js";import{ActivityBarTag as f}from"../Tag/ActivityBarTag.js";import{MakeCreateItem as B,MakeGetBadge as A,MakeGetItem as p,MakeRemoveItem as l,MakeSetActiveItem as k,MakeSetBadge as S,MakeUpdateItem as u}from"./ActivityBarHelper.js";const M=I.effect(f,y.gen(function*(){const t=yield*g,e=yield*c.make([]),a=yield*c.make(void 0),i=p(e),o=B(e,t),r=u(e,i,t),n=l(e,a,i,t),s=k(a,i,t),m=S(r),v=A(i);return yield*t.log("info","ActivityBar service initialized"),{createItem:o,updateItem:r,removeItem:n,getItem:i,items:e.get,itemsChanges:e.changes,setActiveItem:s,getActiveItem:a.get,activeItemChanges:a.changes,setBadge:m,getBadge:v,clearBadge:d=>m(d,void 0)}}));var G=M;export{M as ActivityBarLive,G as default};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { Effect, Layer, SubscriptionRef } from "effect";
+import { Telemetry } from "../../Telemetry.js";
+import { ActivityBarTag } from "../Tag/ActivityBarTag.js";
+import {
+  MakeCreateItem,
+  MakeGetBadge,
+  MakeGetItem,
+  MakeRemoveItem,
+  MakeSetActiveItem,
+  MakeSetBadge,
+  MakeUpdateItem
+} from "./ActivityBarHelper.js";
+const ActivityBarLive = Layer.effect(
+  ActivityBarTag,
+  Effect.gen(function* () {
+    const TelemetryService = yield* Telemetry;
+    const ItemsRef = yield* SubscriptionRef.make([]);
+    const ActiveItemRef = yield* SubscriptionRef.make(
+      void 0
+    );
+    const GetItem = MakeGetItem(ItemsRef);
+    const CreateItem = MakeCreateItem(ItemsRef, TelemetryService);
+    const UpdateItem = MakeUpdateItem(ItemsRef, GetItem, TelemetryService);
+    const RemoveItem = MakeRemoveItem(
+      ItemsRef,
+      ActiveItemRef,
+      GetItem,
+      TelemetryService
+    );
+    const SetActiveItem = MakeSetActiveItem(
+      ActiveItemRef,
+      GetItem,
+      TelemetryService
+    );
+    const SetBadge = MakeSetBadge(UpdateItem);
+    const GetBadge = MakeGetBadge(GetItem);
+    yield* TelemetryService.log("info", "ActivityBar service initialized");
+    return {
+      createItem: CreateItem,
+      updateItem: UpdateItem,
+      removeItem: RemoveItem,
+      getItem: GetItem,
+      items: ItemsRef.get,
+      itemsChanges: ItemsRef.changes,
+      setActiveItem: SetActiveItem,
+      getActiveItem: ActiveItemRef.get,
+      activeItemChanges: ActiveItemRef.changes,
+      setBadge: SetBadge,
+      getBadge: GetBadge,
+      clearBadge: /* @__PURE__ */ __name((Id) => SetBadge(Id, void 0), "clearBadge")
+    };
+  })
+);
+var ActivityBarImplementation_default = ActivityBarLive;
+export {
+  ActivityBarLive,
+  ActivityBarImplementation_default as default
+};
+//# sourceMappingURL=ActivityBarImplementation.js.map

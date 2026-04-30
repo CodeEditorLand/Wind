@@ -1,1 +1,24 @@
-class t extends Error{_tag="ActivityBarUpdateError";constructor(e,r){super(`Failed to update activity bar item '${e}': ${String(r)}`),this.cause=r,Object.setPrototypeOf(this,t.prototype)}get name(){return"ActivityBarUpdateError"}}var o=t;export{t as ActivityBarUpdateError,o as default};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+class ActivityBarUpdateError extends Error {
+  static {
+    __name(this, "ActivityBarUpdateError");
+  }
+  _tag = "ActivityBarUpdateError";
+  constructor(itemId, cause) {
+    super(
+      `Failed to update activity bar item '${itemId}': ${String(cause)}`
+    );
+    this.cause = cause;
+    Object.setPrototypeOf(this, ActivityBarUpdateError.prototype);
+  }
+  get name() {
+    return "ActivityBarUpdateError";
+  }
+}
+var ActivityBarUpdateError_default = ActivityBarUpdateError;
+export {
+  ActivityBarUpdateError,
+  ActivityBarUpdateError_default as default
+};
+//# sourceMappingURL=ActivityBarUpdateError.js.map

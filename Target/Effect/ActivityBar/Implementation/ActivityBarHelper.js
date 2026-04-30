@@ -1,1 +1,110 @@
-import{Effect as o,SubscriptionRef as y}from"effect";import{ActivityBarItemNotFoundError as m}from"../Error/ActivityBarItemNotFoundError.js";import{ActivityBarUpdateError as p}from"../Error/ActivityBarUpdateError.js";const v=()=>`activitybar-${Date.now()}-${Math.random().toString(36).substring(2,9)}`,E=(i,e)=>r=>o.gen(function*(){const t=v(),n={...r,id:t};return yield*y.modify(i,s=>[void 0,[...s,n].sort((f,d)=>f.position-d.position)]),yield*e.log("info",`Created activity bar item: ${t}`),n}),l=(i,e,r)=>(t,n)=>o.gen(function*(){if(!(yield*e(t)))return yield*o.fail(new m(t));try{const f=new Map;Object.entries(n).forEach(([a,c])=>{(a!=="badge"||c!==void 0)&&f.set(a,c)});const d=Object.fromEntries(f);yield*y.modify(i,a=>[void 0,a.map(c=>c.id===t?{...c,...d}:c).sort((c,u)=>c.position-u.position)]),yield*r.log("info",`Updated activity bar item: ${t}`)}catch(f){return yield*o.fail(new p(t,f))}}),g=(i,e,r,t)=>n=>o.gen(function*(){if(!(yield*r(n)))return yield*o.fail(new m(n));yield*y.modify(i,d=>[void 0,d.filter(a=>a.id!==n)]),(yield*e.get)===n&&(yield*y.set(e,void 0)),yield*t.log("info",`Removed activity bar item: ${n}`)}),A=i=>e=>o.map(i.get,r=>r.find(t=>t.id===e)),B=(i,e,r)=>t=>o.gen(function*(){if(!(yield*e(t)))return yield*o.fail(new m(t));yield*y.set(i,t),yield*r.log("info",`Set active activity bar item: ${t}`)}),b=i=>(e,r)=>r===void 0?i(e,{}):i(e,{badge:r}),I=i=>e=>o.map(i(e),r=>r?.badge);var C={MakeCreateItem:E,MakeUpdateItem:l,MakeRemoveItem:g,MakeGetItem:A,MakeSetActiveItem:B,MakeSetBadge:b,MakeGetBadge:I,GenerateItemId:v};export{v as GenerateItemId,E as MakeCreateItem,I as MakeGetBadge,A as MakeGetItem,g as MakeRemoveItem,B as MakeSetActiveItem,b as MakeSetBadge,l as MakeUpdateItem,C as default};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { Context, Effect, SubscriptionRef } from "effect";
+import { ActivityBarItemNotFoundError } from "../Error/ActivityBarItemNotFoundError.js";
+import { ActivityBarUpdateError } from "../Error/ActivityBarUpdateError.js";
+const GenerateItemId = /* @__PURE__ */ __name(() => `activitybar-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`, "GenerateItemId");
+const MakeCreateItem = /* @__PURE__ */ __name((ItemsRef, Telemetry) => {
+  return (Item) => Effect.gen(function* () {
+    const Id = GenerateItemId();
+    const NewItem = { ...Item, id: Id };
+    yield* SubscriptionRef.modify(ItemsRef, (Items) => [
+      void 0,
+      [...Items, NewItem].sort((a, b) => a.position - b.position)
+    ]);
+    yield* Telemetry.log("info", `Created activity bar item: ${Id}`);
+    return NewItem;
+  });
+}, "MakeCreateItem");
+const MakeUpdateItem = /* @__PURE__ */ __name((ItemsRef, GetItem, Telemetry) => {
+  return (Id, Updates) => Effect.gen(function* () {
+    const Existing = yield* GetItem(Id);
+    if (!Existing) {
+      return yield* Effect.fail(new ActivityBarItemNotFoundError(Id));
+    }
+    try {
+      const CleanUpdatesMap = /* @__PURE__ */ new Map();
+      Object.entries(Updates).forEach(([Key, Value]) => {
+        if (Key !== "badge" || Value !== void 0) {
+          CleanUpdatesMap.set(Key, Value);
+        }
+      });
+      const CleanUpdates = Object.fromEntries(CleanUpdatesMap);
+      yield* SubscriptionRef.modify(ItemsRef, (Items) => [
+        void 0,
+        Items.map(
+          (Item) => Item.id === Id ? { ...Item, ...CleanUpdates } : Item
+        ).sort((a, b) => a.position - b.position)
+      ]);
+      yield* Telemetry.log(
+        "info",
+        `Updated activity bar item: ${Id}`
+      );
+    } catch (Error2) {
+      return yield* Effect.fail(
+        new ActivityBarUpdateError(Id, Error2)
+      );
+    }
+  });
+}, "MakeUpdateItem");
+const MakeRemoveItem = /* @__PURE__ */ __name((ItemsRef, ActiveItemRef, GetItem, Telemetry) => {
+  return (Id) => Effect.gen(function* () {
+    const Existing = yield* GetItem(Id);
+    if (!Existing) {
+      return yield* Effect.fail(new ActivityBarItemNotFoundError(Id));
+    }
+    yield* SubscriptionRef.modify(ItemsRef, (Items) => [
+      void 0,
+      Items.filter((Item) => Item.id !== Id)
+    ]);
+    const CurrentActive = yield* ActiveItemRef.get;
+    if (CurrentActive === Id) {
+      yield* SubscriptionRef.set(ActiveItemRef, void 0);
+    }
+    yield* Telemetry.log("info", `Removed activity bar item: ${Id}`);
+  });
+}, "MakeRemoveItem");
+const MakeGetItem = /* @__PURE__ */ __name((ItemsRef) => {
+  return (Id) => Effect.map(
+    ItemsRef.get,
+    (Items) => Items.find((Item) => Item.id === Id)
+  );
+}, "MakeGetItem");
+const MakeSetActiveItem = /* @__PURE__ */ __name((ActiveItemRef, GetItem, Telemetry) => {
+  return (Id) => Effect.gen(function* () {
+    const Existing = yield* GetItem(Id);
+    if (!Existing) {
+      return yield* Effect.fail(new ActivityBarItemNotFoundError(Id));
+    }
+    yield* SubscriptionRef.set(ActiveItemRef, Id);
+    yield* Telemetry.log("info", `Set active activity bar item: ${Id}`);
+  });
+}, "MakeSetActiveItem");
+const MakeSetBadge = /* @__PURE__ */ __name((UpdateItem) => {
+  return (Id, Badge) => Badge === void 0 ? UpdateItem(Id, {}) : UpdateItem(Id, { badge: Badge });
+}, "MakeSetBadge");
+const MakeGetBadge = /* @__PURE__ */ __name((GetItem) => {
+  return (Id) => Effect.map(GetItem(Id), (Item) => Item?.badge);
+}, "MakeGetBadge");
+var ActivityBarHelper_default = {
+  MakeCreateItem,
+  MakeUpdateItem,
+  MakeRemoveItem,
+  MakeGetItem,
+  MakeSetActiveItem,
+  MakeSetBadge,
+  MakeGetBadge,
+  GenerateItemId
+};
+export {
+  GenerateItemId,
+  MakeCreateItem,
+  MakeGetBadge,
+  MakeGetItem,
+  MakeRemoveItem,
+  MakeSetActiveItem,
+  MakeSetBadge,
+  MakeUpdateItem,
+  ActivityBarHelper_default as default
+};
+//# sourceMappingURL=ActivityBarHelper.js.map

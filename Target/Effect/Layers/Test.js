@@ -1,1 +1,15 @@
-import{Layer as e}from"effect";import{ConfigurationMock as r}from"../Configuration.js";import{IPCMockLive as p}from"../IPC.js";import{MountainMockLive as o}from"../Mountain.js";import{SandboxMockLive as i}from"../Sandbox.js";import{TelemetryLive as t,TelemetryMockLive as m}from"../Telemetry.js";const M=e.empty.pipe(e.provideMerge(i)).pipe(e.provideMerge(p)).pipe(e.provideMerge(r)).pipe(e.provideMerge(m)).pipe(e.provideMerge(o)),a=e.empty.pipe(e.provideMerge(i)).pipe(e.provideMerge(p)).pipe(e.provideMerge(r)).pipe(e.provideMerge(t)).pipe(e.provideMerge(o));var c=M;export{M as TestLayer,a as TestWithTelemetryLayer,c as default};
+import { Layer } from "effect";
+import { ConfigurationMock } from "../Configuration.js";
+import { IPCMockLive } from "../IPC.js";
+import { MountainMockLive } from "../Mountain.js";
+import { SandboxMockLive } from "../Sandbox.js";
+import { TelemetryLive, TelemetryMockLive } from "../Telemetry.js";
+const TestLayer = Layer.empty.pipe(Layer.provideMerge(SandboxMockLive)).pipe(Layer.provideMerge(IPCMockLive)).pipe(Layer.provideMerge(ConfigurationMock)).pipe(Layer.provideMerge(TelemetryMockLive)).pipe(Layer.provideMerge(MountainMockLive));
+const TestWithTelemetryLayer = Layer.empty.pipe(Layer.provideMerge(SandboxMockLive)).pipe(Layer.provideMerge(IPCMockLive)).pipe(Layer.provideMerge(ConfigurationMock)).pipe(Layer.provideMerge(TelemetryLive)).pipe(Layer.provideMerge(MountainMockLive));
+var Test_default = TestLayer;
+export {
+  TestLayer,
+  TestWithTelemetryLayer,
+  Test_default as default
+};
+//# sourceMappingURL=Test.js.map

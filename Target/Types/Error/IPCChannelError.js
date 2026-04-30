@@ -1,1 +1,19 @@
-class a extends Error{constructor(r,n){super(`IPC channel '${r}' error: ${String(n)}`);this.channel=r;this.cause=n}channel;cause;_tag="IPCChannelError"}export{a as IPCChannelError};
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+class IPCChannelError extends Error {
+  constructor(channel, cause) {
+    super(`IPC channel '${channel}' error: ${String(cause)}`);
+    this.channel = channel;
+    this.cause = cause;
+  }
+  channel;
+  cause;
+  static {
+    __name(this, "IPCChannelError");
+  }
+  _tag = "IPCChannelError";
+}
+export {
+  IPCChannelError
+};
+//# sourceMappingURL=IPCChannelError.js.map
