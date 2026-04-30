@@ -7,23 +7,28 @@
  *      Dependency/Editor/src/`) via `WalkSourceTree`.
  *   2. Stream files through `IterateServiceDecorators` to yield
  *      one `ServiceDecoratorRecord` per `createDecorator(...)` site.
+ *      Cross-file resolution kicks in when the matching interface
+ *      is imported from a sibling file rather than declared inline.
  *   3. For each record, emit `<Wind>/Source/Effect/Generated/
  *      <DecoratorName>/<DecoratorName>Upstream.ts` via
  *      `EmitServiceSchema`.
  *   4. After all schemas land, emit a single
  *      `Effect/Generated/ServiceCatalog.ts` index of every
  *      decorator with metadata.
+ *   5. Run `EmitBridgeShapeBatch` over the curated manifest so
+ *      every Wind workbench service gets a generated `Pick<…>`
+ *      bridge shape grounded in real upstream source.
  *
  * The orchestrator is async-iterator-driven: records are emitted
  * as soon as their source file is parsed, no whole-tree buffering.
- * The catalog emit is the only step that holds every record in
- * memory at once (one row per decorator, ~500 entries - trivial).
+ * The catalog + bridge-shape passes hold the records in memory
+ * (one row per decorator, ~500 entries - trivial).
  *
  * Invoked by `Wind/Source/prepublishOnly.sh` ahead of the TS
  * compile step so the Wind compile picks up the freshly generated
- * schemas. The orchestrator never throws - every error path
- * returns a `CodegenProblem` so the caller can surface a clean
- * exit code.
+ * schemas + bridge shapes. The orchestrator never throws - every
+ * error path returns a `CodegenProblem` so the caller can surface
+ * a clean exit code.
  * @category Orchestration
  */
 
@@ -32,9 +37,11 @@ import { existsSync } from "node:fs";
 import type { CodegenProblem } from "./Type/CodegenProblem.js";
 import type { ServiceDecoratorRecord } from "./Type/ServiceDecoratorRecord.js";
 
+import { EmitBridgeShapeBatch } from "./Emit/EmitBridgeShapeBatch.js";
 import { EmitServiceCatalog } from "./Emit/EmitServiceCatalog.js";
 import { EmitServiceSchema } from "./Emit/EmitServiceSchema.js";
 import { IterateServiceDecorators } from "./Extract/IterateServiceDecorators.js";
+import { WorkbenchBridgeShapeManifest } from "./Manifest/WorkbenchBridgeShapeManifest.js";
 import { WalkSourceTree } from "./Walk/SourceTreeWalker.js";
 
 export interface RunCodegenOptions {
@@ -46,6 +53,8 @@ export interface RunCodegenOptions {
 export interface RunCodegenSummary {
 	readonly RecordsEmitted: number;
 	readonly CatalogPath: string;
+	readonly BridgeShapesEmitted: number;
+	readonly BridgeShapesSkipped: ReadonlyArray<string>;
 	readonly Failures: ReadonlyArray<CodegenProblem>;
 	readonly DurationMilliseconds: number;
 }
@@ -108,16 +117,30 @@ export const RunCodegen = async (
 		Failures.push(CatalogResult);
 		return CatalogResult;
 	}
-
-	const Elapsed = Math.round(performance.now() - Started);
 	Log(
 		`catalog: ${CatalogResult.OutputPath} (${CatalogResult.Entries} entries, ${CatalogResult.Bytes}B)`,
 	);
+
+	const BridgeShapeOutcome = await EmitBridgeShapeBatch({
+		Records,
+		Manifest: WorkbenchBridgeShapeManifest,
+		OutputRoot: options.OutputRoot,
+	});
+	for (const Failure of BridgeShapeOutcome.Failures) {
+		Failures.push(Failure);
+	}
+	Log(
+		`bridge shapes: ${BridgeShapeOutcome.Emitted} emitted, ${BridgeShapeOutcome.Skipped.length} skipped`,
+	);
+
+	const Elapsed = Math.round(performance.now() - Started);
 	Log(`done in ${Elapsed}ms`);
 
 	return {
 		RecordsEmitted: Records.length,
 		CatalogPath: CatalogResult.OutputPath,
+		BridgeShapesEmitted: BridgeShapeOutcome.Emitted,
+		BridgeShapesSkipped: BridgeShapeOutcome.Skipped,
 		Failures,
 		DurationMilliseconds: Elapsed,
 	};

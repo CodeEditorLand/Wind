@@ -1,0 +1,14 @@
+export {
+	WorkbenchProductServiceTag,
+	WorkbenchProduct,
+} from "./Tag/WorkbenchProductServiceTag.js";
+export type {
+	WorkbenchProductService,
+	WorkbenchProductSnapshot,
+} from "./Interface/WorkbenchProductService.js";
+export type { WorkbenchProductProblem } from "./Type/WorkbenchProductProblem.js";
+export type {
+	WorkbenchProductBridgeShape,
+	WorkbenchProductGlobals,
+} from "./Implementation/WorkbenchProductBridgeShape.js";
+export { WorkbenchProductLive } from "./Implementation/WorkbenchProductLive.js";

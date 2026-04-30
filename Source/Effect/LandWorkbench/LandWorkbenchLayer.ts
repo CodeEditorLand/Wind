@@ -16,13 +16,20 @@
 
 import { Layer } from "effect";
 
+import { WorkbenchActivityLive } from "../WorkbenchActivity/Implementation/WorkbenchActivityLive.js";
 import { WorkbenchClipboardLive } from "../WorkbenchClipboard/Implementation/WorkbenchClipboardLive.js";
 import { WorkbenchCommandLive } from "../WorkbenchCommand/Implementation/WorkbenchCommandLive.js";
+import { WorkbenchContextKeyLive } from "../WorkbenchContextKey/Implementation/WorkbenchContextKeyLive.js";
 import { WorkbenchDialogLive } from "../WorkbenchDialog/Implementation/WorkbenchDialogLive.js";
+import { WorkbenchEditorLive } from "../WorkbenchEditor/Implementation/WorkbenchEditorLive.js";
+import { WorkbenchExtensionLive } from "../WorkbenchExtension/Implementation/WorkbenchExtensionLive.js";
 import { WorkbenchHostLive } from "../WorkbenchHost/Implementation/WorkbenchHostLive.js";
 import { WorkbenchKeybindingLive } from "../WorkbenchKeybinding/Implementation/WorkbenchKeybindingLive.js";
+import { WorkbenchLayoutLive } from "../WorkbenchLayout/Implementation/WorkbenchLayoutLive.js";
 import { WorkbenchLifecycleLive } from "../WorkbenchLifecycle/Implementation/WorkbenchLifecycleLive.js";
 import { WorkbenchNotificationLive } from "../WorkbenchNotification/Implementation/WorkbenchNotificationLive.js";
+import { WorkbenchProductLive } from "../WorkbenchProduct/Implementation/WorkbenchProductLive.js";
+import { WorkbenchProgressLive } from "../WorkbenchProgress/Implementation/WorkbenchProgressLive.js";
 import { WorkbenchStorageLive } from "../WorkbenchStorage/Implementation/WorkbenchStorageLive.js";
 import { WorkbenchThemeLive } from "../WorkbenchTheme/Implementation/WorkbenchThemeLive.js";
 import { WorkbenchWorkspaceLive } from "../WorkbenchWorkspace/Implementation/WorkbenchWorkspaceLive.js";
@@ -30,15 +37,22 @@ import { UserSettingsLive } from "../UserSettings/Implementation/UserSettingsLiv
 
 export const LandWorkbenchLayer = Layer.mergeAll(
 	UserSettingsLive,
-	WorkbenchStorageLive,
-	WorkbenchLifecycleLive,
-	WorkbenchThemeLive,
-	WorkbenchCommandLive,
-	WorkbenchNotificationLive,
-	WorkbenchDialogLive,
+	WorkbenchActivityLive,
 	WorkbenchClipboardLive,
-	WorkbenchKeybindingLive,
+	WorkbenchCommandLive,
+	WorkbenchContextKeyLive,
+	WorkbenchDialogLive,
+	WorkbenchEditorLive,
+	WorkbenchExtensionLive,
 	WorkbenchHostLive,
+	WorkbenchKeybindingLive,
+	WorkbenchLayoutLive,
+	WorkbenchLifecycleLive,
+	WorkbenchNotificationLive,
+	WorkbenchProductLive,
+	WorkbenchProgressLive,
+	WorkbenchStorageLive,
+	WorkbenchThemeLive,
 	WorkbenchWorkspaceLive,
 );
 

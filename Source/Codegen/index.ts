@@ -48,6 +48,27 @@ export type {
 	ServiceCatalogEntryEmit,
 } from "./Emit/EmitServiceCatalog.js";
 
+export { EmitBridgeShape } from "./Emit/EmitBridgeShape.js";
+export type {
+	EmitBridgeShapeOptions,
+	EmitBridgeShapeOutcome,
+} from "./Emit/EmitBridgeShape.js";
+
+export { EmitBridgeShapeBatch } from "./Emit/EmitBridgeShapeBatch.js";
+export type {
+	BridgeShapeManifestEntry,
+	EmitBridgeShapeBatchOptions,
+	EmitBridgeShapeBatchSummary,
+} from "./Emit/EmitBridgeShapeBatch.js";
+
+export { ResolveInterfaceCrossFile } from "./Resolve/ResolveInterfaceCrossFile.js";
+export type {
+	ResolveOptions,
+	ResolveOutcome,
+} from "./Resolve/ResolveInterfaceCrossFile.js";
+
+export { WorkbenchBridgeShapeManifest } from "./Manifest/WorkbenchBridgeShapeManifest.js";
+
 export type { CodegenProblem } from "./Type/CodegenProblem.js";
 export type { ServiceDecoratorRecord } from "./Type/ServiceDecoratorRecord.js";
 export type {
