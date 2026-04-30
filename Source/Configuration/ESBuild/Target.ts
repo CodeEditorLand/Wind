@@ -12,4 +12,5 @@ export { Environment };
 export { default as BaseConfig } from "./Config/BaseConfig.js";
 export { default as TargetConfig } from "./Config/TargetConfig.js";
 export { default as CompileConfig } from "./Config/CompileConfig.js";
+export { default as CodegenConfig } from "./Config/CodegenConfig.js";
 export { sep, posix } from "./Constant/BoundConstant.js";

@@ -58,25 +58,55 @@ const StripJSDoc = (raw: string): string => {
 	return Cleaned.filter((line) => line.length > 0).join("\n");
 };
 
+// `<` / `>` are overloaded in TypeScript: they open / close generics
+// (`Foo<R>`) AND form arrow operators (`=>`) and comparison operators
+// (`<=`, `>=`). When SplitMembers tracks depth naively, a parameter
+// like `task: (...) => Promise<R>,\n` flips the depth back to 0
+// mid-method (the `>` of `=>` decrements), and the splitter
+// incorrectly treats the rest of the method's parameter list as a
+// new member. Skip `<` / `>` when they're part of an operator.
+const ShouldSkipAngle = (
+	source: string,
+	index: number,
+	char: string,
+	previousChar: string,
+): boolean => {
+	if (char === ">") {
+		// `=>` arrow OR `>=` comparison.
+		if (previousChar === "=") return true;
+		if (source[index + 1] === "=") return true;
+	}
+	if (char === "<") {
+		// `<=` comparison OR `<<` shift (rare in interface bodies but
+		// harmless to skip).
+		if (source[index + 1] === "=") return true;
+		if (source[index + 1] === "<") return true;
+	}
+	return false;
+};
+
 const SplitMembers = (inner: string): ReadonlyArray<string> => {
 	const Out: string[] = [];
 	let Depth = 0;
 	let Buffer = "";
 	let LastChar = "";
 	for (let i = 0; i < inner.length; i++) {
-		const Char = inner[i];
+		const Char = inner[i] ?? "";
 		Buffer += Char;
-		if (Char === "<" || Char === "(" || Char === "{" || Char === "[") {
-			Depth += 1;
-		} else if (Char === ">" || Char === ")" || Char === "}" || Char === "]") {
-			Depth = Math.max(0, Depth - 1);
+		const SkipAngle = ShouldSkipAngle(inner, i, Char, LastChar);
+		if (!SkipAngle) {
+			if (Char === "<" || Char === "(" || Char === "{" || Char === "[") {
+				Depth += 1;
+			} else if (Char === ">" || Char === ")" || Char === "}" || Char === "]") {
+				Depth = Math.max(0, Depth - 1);
+			}
 		}
 		if (Depth === 0 && (Char === ";" || (Char === "\n" && LastChar === ","))) {
 			const Trimmed = Buffer.trim();
 			if (Trimmed.length > 0) Out.push(Trimmed);
 			Buffer = "";
 		}
-		LastChar = Char ?? "";
+		LastChar = Char;
 	}
 	const Trailing = Buffer.trim();
 	if (Trailing.length > 0) Out.push(Trailing);
@@ -99,19 +129,25 @@ const SplitTopLevel = (
 	const Out: string[] = [];
 	let Depth = 0;
 	let Buffer = "";
+	let LastChar = "";
 	for (let i = 0; i < value.length; i++) {
-		const Char = value[i];
-		if (Char === "<" || Char === "(" || Char === "{" || Char === "[") {
-			Depth += 1;
-		} else if (Char === ">" || Char === ")" || Char === "}" || Char === "]") {
-			Depth = Math.max(0, Depth - 1);
+		const Char = value[i] ?? "";
+		const SkipAngle = ShouldSkipAngle(value, i, Char, LastChar);
+		if (!SkipAngle) {
+			if (Char === "<" || Char === "(" || Char === "{" || Char === "[") {
+				Depth += 1;
+			} else if (Char === ">" || Char === ")" || Char === "}" || Char === "]") {
+				Depth = Math.max(0, Depth - 1);
+			}
 		}
 		if (Char === delimiter && Depth === 0) {
 			Out.push(Buffer.trim());
 			Buffer = "";
+			LastChar = Char;
 			continue;
 		}
 		Buffer += Char;
+		LastChar = Char;
 	}
 	const Trailing = Buffer.trim();
 	if (Trailing.length > 0) Out.push(Trailing);

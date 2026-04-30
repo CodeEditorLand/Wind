@@ -35,11 +35,14 @@
 import { existsSync } from "node:fs";
 
 import type { CodegenProblem } from "./Type/CodegenProblem.js";
+import type { CommandRegistrationRecord } from "./Type/CommandRegistrationRecord.js";
 import type { ServiceDecoratorRecord } from "./Type/ServiceDecoratorRecord.js";
 
 import { EmitBridgeShapeBatch } from "./Emit/EmitBridgeShapeBatch.js";
+import { EmitCommandCatalog } from "./Emit/EmitCommandCatalog.js";
 import { EmitServiceCatalog } from "./Emit/EmitServiceCatalog.js";
 import { EmitServiceSchema } from "./Emit/EmitServiceSchema.js";
+import { IterateCommandRegistrations } from "./Extract/IterateCommandRegistrations.js";
 import { IterateServiceDecorators } from "./Extract/IterateServiceDecorators.js";
 import { WorkbenchBridgeShapeManifest } from "./Manifest/WorkbenchBridgeShapeManifest.js";
 import { WalkSourceTree } from "./Walk/SourceTreeWalker.js";
@@ -55,6 +58,8 @@ export interface RunCodegenSummary {
 	readonly CatalogPath: string;
 	readonly BridgeShapesEmitted: number;
 	readonly BridgeShapesSkipped: ReadonlyArray<string>;
+	readonly CommandCatalogPath: string;
+	readonly CommandsEmitted: number;
 	readonly Failures: ReadonlyArray<CodegenProblem>;
 	readonly DurationMilliseconds: number;
 }
@@ -133,6 +138,34 @@ export const RunCodegen = async (
 		`bridge shapes: ${BridgeShapeOutcome.Emitted} emitted, ${BridgeShapeOutcome.Skipped.length} skipped`,
 	);
 
+	// Second walk for command-registration extraction. Sharing the
+	// first walk would require materialising every record before the
+	// service-catalog emit step kicks in - which would defeat the
+	// async-iterator memory contract. The walker is fast and stat-
+	// only; running it twice is cheaper than buffering all records.
+	const CommandFiles = WalkSourceTree({
+		Root: options.SourceRoot,
+		IncludeExtensions: [".ts"],
+		ExcludeSegments: [],
+	});
+	const CommandRecords:CommandRegistrationRecord[] = [];
+	for await (const Record of IterateCommandRegistrations(CommandFiles)) {
+		CommandRecords.push(Record);
+	}
+	Log(`discovered ${CommandRecords.length} command registrations`);
+
+	const CommandCatalogResult = await EmitCommandCatalog({
+		Records: CommandRecords,
+		OutputRoot: options.OutputRoot,
+	});
+	if ("_tag" in CommandCatalogResult) {
+		Failures.push(CommandCatalogResult);
+		return CommandCatalogResult;
+	}
+	Log(
+		`command catalog: ${CommandCatalogResult.OutputPath} (${CommandCatalogResult.Entries} entries, ${CommandCatalogResult.Bytes}B)`,
+	);
+
 	const Elapsed = Math.round(performance.now() - Started);
 	Log(`done in ${Elapsed}ms`);
 
@@ -141,6 +174,8 @@ export const RunCodegen = async (
 		CatalogPath: CatalogResult.OutputPath,
 		BridgeShapesEmitted: BridgeShapeOutcome.Emitted,
 		BridgeShapesSkipped: BridgeShapeOutcome.Skipped,
+		CommandCatalogPath: CommandCatalogResult.OutputPath,
+		CommandsEmitted: CommandCatalogResult.Entries,
 		Failures,
 		DurationMilliseconds: Elapsed,
 	};

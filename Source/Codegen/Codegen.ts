@@ -45,7 +45,7 @@ const Main = async (): Promise<void> => {
 	}
 	// eslint-disable-next-line no-console
 	console.log(
-		`[Wind/Codegen] OK - ${Result.RecordsEmitted} services in ${Result.DurationMilliseconds}ms`,
+		`[Wind/Codegen] OK - ${Result.RecordsEmitted} services + ${Result.CommandsEmitted} commands in ${Result.DurationMilliseconds}ms`,
 	);
 };
 
