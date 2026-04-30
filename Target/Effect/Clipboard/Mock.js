@@ -1,13 +1,1 @@
-import { Layer } from "effect";
-import { MockClipboardService } from "./Implementation/MockClipboard.js";
-import { ClipboardServiceTag } from "./Tag/ClipboardServiceTag.js";
-const MockClipboardServiceLayer = Layer.succeed(
-  ClipboardServiceTag,
-  MockClipboardService
-);
-var Mock_default = MockClipboardServiceLayer;
-export {
-  MockClipboardServiceLayer,
-  Mock_default as default
-};
-//# sourceMappingURL=Mock.js.map
+import{Layer as r}from"effect";import{MockClipboardService as o}from"./Implementation/MockClipboard.js";import{ClipboardServiceTag as e}from"./Tag/ClipboardServiceTag.js";const i=r.succeed(e,o);var t=i;export{i as MockClipboardServiceLayer,t as default};

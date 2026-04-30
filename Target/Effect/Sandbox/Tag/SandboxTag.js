@@ -1,8 +1,1 @@
-import { Context } from "effect";
-const Sandbox = Context.GenericTag("Sandbox");
-var SandboxTag_default = Sandbox;
-export {
-  Sandbox,
-  SandboxTag_default as default
-};
-//# sourceMappingURL=SandboxTag.js.map
+import{Context as e}from"effect";const o=e.GenericTag("Sandbox");var t=o;export{o as Sandbox,t as default};

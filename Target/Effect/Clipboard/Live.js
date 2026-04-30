@@ -1,13 +1,1 @@
-import { Layer } from "effect";
-import { LiveBrowserClipboardService } from "./Implementation/BrowserClipboard.js";
-import { ClipboardServiceTag } from "./Tag/ClipboardServiceTag.js";
-const LiveClipboardServiceLayer = Layer.succeed(
-  ClipboardServiceTag,
-  LiveBrowserClipboardService
-);
-var Live_default = LiveClipboardServiceLayer;
-export {
-  LiveClipboardServiceLayer,
-  Live_default as default
-};
-//# sourceMappingURL=Live.js.map
+import{Layer as r}from"effect";import{LiveBrowserClipboardService as e}from"./Implementation/BrowserClipboard.js";import{ClipboardServiceTag as o}from"./Tag/ClipboardServiceTag.js";const i=r.succeed(o,e);var c=i;export{i as LiveClipboardServiceLayer,c as default};

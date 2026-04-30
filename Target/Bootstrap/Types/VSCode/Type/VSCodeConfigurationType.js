@@ -1,5 +1,1 @@
-import { ConfigurationTarget } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/api/common/extHostTypes.js";
-export {
-  ConfigurationTarget
-};
-//# sourceMappingURL=VSCodeConfigurationType.js.map
+import{ConfigurationTarget as t}from"@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/api/common/extHostTypes.js";export{t as ConfigurationTarget};
