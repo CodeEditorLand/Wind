@@ -488,28 +488,29 @@ async function InvokeMountain(
 
 	if (typeof Invoke !== "function") return undefined;
 
-	// `tauri-invoke` tag: per-invoke duration + ok/fail. Mirror of the
-	// Output copy - the Rust `ipc` tag already logs paired invoke/done
-	// lines with ns precision; this line captures the *render-side*
-	// elapsed time including Tauri transport, so a slow transport
-	// (webview message channel starvation) vs a slow handler (Echo
-	// backlog / lock contention) can be told apart.
+	// `tauri-invoke` tag: previously fired `_DevLogForward` after EVERY
+	// successful (and failed) `MountainIPCInvoke`. Even though
+	// Mountain's `dev_log!` macro silently drops disabled tags, the
+	// IPC ROUND TRIP that delivers the log line ALREADY HAPPENED -
+	// Tauri's invoke channel serialises the call and queues it behind
+	// any in-flight invokes. During extension boot this *doubled* IPC
+	// traffic and saturated the channel, queueing keystrokes (which
+	// share the same WebKit message channel as IPC replies on macOS)
+	// behind the log noise. Symptom: the user typed in the editor,
+	// nothing visible happened, then later switched focus and the
+	// queued keystrokes flushed into the new focused element. Mirror
+	// of the Output-side fix - drop the success-case forward; the
+	// Rust-side `[DEV:IPC] done: <method> ok=true t_ns=…` line
+	// already carries the same data at ns precision and is
+	// filterable via `Trace=ipc`. Failures still forward (rare,
+	// stack-trace context worth the cost).
 	const Start =
 		typeof performance !== "undefined" ? performance.now() : Date.now();
 	try {
-		const Value = await Invoke("MountainIPCInvoke", {
+		return await Invoke("MountainIPCInvoke", {
 			method: Method,
 			params: Params,
 		});
-		const Elapsed =
-			(typeof performance !== "undefined"
-				? performance.now()
-				: Date.now()) - Start;
-		_DevLogForward(
-			"tauri-invoke",
-			`[TauriInvoke] method=${Method} ok=true elapsed_ms=${Elapsed.toFixed(2)}`,
-		);
-		return Value;
 	} catch (Error) {
 		const Elapsed =
 			(typeof performance !== "undefined"
@@ -547,10 +548,10 @@ class TauriChannel implements IChannel {
 					Arg !== undefined ? (Array.isArray(Arg) ? Arg : [Arg]) : [],
 				).catch(() => {});
 			}
-			_DevLogForward(
-				"channel-stub",
-				`fire-and-forget channel=${this.ChannelName} cmd=${Command} route=${this.RoutePrefix ?? "<none>"}`,
-			);
+			// `_DevLogForward("channel-stub", "fire-and-forget …")`
+			// dropped here for the same IPC-saturation reason as the
+			// success-case `tauri-invoke` forward above. Mirror of the
+			// Output-side fix.
 			return undefined as T;
 		}
 
@@ -569,10 +570,14 @@ class TauriChannel implements IChannel {
 					? "noop"
 					: "value"
 				: "drift";
-			_DevLogForward(
-				"channel-stub",
-				`stub-hit channel=${this.ChannelName} cmd=${Command} disposition=${Disposition}`,
-			);
+			// Only forward for `drift` - the noteworthy case. `value` /
+			// `noop` are routine and would saturate the IPC channel.
+			if (Disposition === "drift") {
+				_DevLogForward(
+					"channel-stub",
+					`stub-hit channel=${this.ChannelName} cmd=${Command} disposition=${Disposition}`,
+				);
+			}
 			return (StubValue !== undefined ? StubValue : undefined) as T;
 		}
 
