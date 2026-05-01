@@ -14,10 +14,10 @@
 
 import type { IHostServiceUpstream } from "../../Generated/IHostService/IHostServiceUpstream.js";
 
-export type WorkbenchHostBridgeShapeGenerated = Pick<IHostServiceUpstream, "reload" | "restart" | "close" | "focus" | "openWindow" | "onDidChangeFocus" | "hadLastFocus">;
+export type WorkbenchHostBridgeShape = Pick<IHostServiceUpstream, "reload" | "restart" | "close" | "focus" | "openWindow" | "onDidChangeFocus" | "hadLastFocus">;
 
-export interface IHostServiceGlobals {
+export interface WorkbenchHostGlobals {
 	readonly __CEL_SERVICES__?: {
-		readonly HostService?: WorkbenchHostBridgeShapeGenerated | null;
+		readonly Host?: WorkbenchHostBridgeShape | null;
 	};
 }

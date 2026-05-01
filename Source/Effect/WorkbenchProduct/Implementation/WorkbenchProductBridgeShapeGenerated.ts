@@ -14,10 +14,10 @@
 
 import type { IProductServiceUpstream } from "../../Generated/IProductService/IProductServiceUpstream.js";
 
-export type WorkbenchProductBridgeShapeGenerated = Pick<IProductServiceUpstream, "nameLong" | "nameShort" | "version" | "commit" | "date" | "quality" | "applicationName" | "extensionsGallery">;
+export type WorkbenchProductBridgeShape = Pick<IProductServiceUpstream, "nameLong" | "nameShort" | "version" | "commit" | "date" | "quality" | "applicationName" | "extensionsGallery">;
 
-export interface IProductServiceGlobals {
+export interface WorkbenchProductGlobals {
 	readonly __CEL_SERVICES__?: {
-		readonly ProductService?: WorkbenchProductBridgeShapeGenerated | null;
+		readonly Product?: WorkbenchProductBridgeShape | null;
 	};
 }

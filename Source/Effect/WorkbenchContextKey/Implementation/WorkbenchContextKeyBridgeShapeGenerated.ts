@@ -14,10 +14,10 @@
 
 import type { IContextKeyServiceUpstream } from "../../Generated/IContextKeyService/IContextKeyServiceUpstream.js";
 
-export type WorkbenchContextKeyBridgeShapeGenerated = Pick<IContextKeyServiceUpstream, "getContextKeyValue" | "createKey" | "contextMatchesRules" | "onDidChangeContext">;
+export type WorkbenchContextKeyBridgeShape = Pick<IContextKeyServiceUpstream, "getContextKeyValue" | "createKey" | "contextMatchesRules" | "onDidChangeContext">;
 
-export interface IContextKeyServiceGlobals {
+export interface WorkbenchContextKeyGlobals {
 	readonly __CEL_SERVICES__?: {
-		readonly ContextKeyService?: WorkbenchContextKeyBridgeShapeGenerated | null;
+		readonly ContextKey?: WorkbenchContextKeyBridgeShape | null;
 	};
 }

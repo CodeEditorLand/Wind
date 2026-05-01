@@ -14,10 +14,10 @@
 
 import type { IStorageServiceUpstream } from "../../Generated/IStorageService/IStorageServiceUpstream.js";
 
-export type WorkbenchStorageBridgeShapeGenerated = Pick<IStorageServiceUpstream, "get" | "getBoolean" | "getNumber" | "getObject" | "store" | "remove" | "keys" | "onDidChangeValue">;
+export type WorkbenchStorageBridgeShape = Pick<IStorageServiceUpstream, "get" | "getBoolean" | "getNumber" | "getObject" | "store" | "remove" | "keys" | "onDidChangeValue">;
 
-export interface IStorageServiceGlobals {
+export interface WorkbenchStorageGlobals {
 	readonly __CEL_SERVICES__?: {
-		readonly StorageService?: WorkbenchStorageBridgeShapeGenerated | null;
+		readonly Storage?: WorkbenchStorageBridgeShape | null;
 	};
 }

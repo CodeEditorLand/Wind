@@ -14,10 +14,10 @@
 
 import type { ICommandServiceUpstream } from "../../Generated/ICommandService/ICommandServiceUpstream.js";
 
-export type WorkbenchCommandBridgeShapeGenerated = Pick<ICommandServiceUpstream, "executeCommand" | "onWillExecuteCommand" | "onDidExecuteCommand">;
+export type WorkbenchCommandBridgeShape = Pick<ICommandServiceUpstream, "executeCommand" | "onWillExecuteCommand" | "onDidExecuteCommand">;
 
-export interface ICommandServiceGlobals {
+export interface WorkbenchCommandGlobals {
 	readonly __CEL_SERVICES__?: {
-		readonly CommandService?: WorkbenchCommandBridgeShapeGenerated | null;
+		readonly Commands?: WorkbenchCommandBridgeShape | null;
 	};
 }

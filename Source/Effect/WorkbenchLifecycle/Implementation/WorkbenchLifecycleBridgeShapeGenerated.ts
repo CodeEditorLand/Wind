@@ -14,10 +14,10 @@
 
 import type { ILifecycleServiceUpstream } from "../../Generated/ILifecycleService/ILifecycleServiceUpstream.js";
 
-export type WorkbenchLifecycleBridgeShapeGenerated = Pick<ILifecycleServiceUpstream, "phase" | "when" | "onWillShutdown" | "onDidShutdown">;
+export type WorkbenchLifecycleBridgeShape = Pick<ILifecycleServiceUpstream, "phase" | "when" | "onWillShutdown" | "onDidShutdown">;
 
-export interface ILifecycleServiceGlobals {
+export interface WorkbenchLifecycleGlobals {
 	readonly __CEL_SERVICES__?: {
-		readonly LifecycleService?: WorkbenchLifecycleBridgeShapeGenerated | null;
+		readonly Lifecycle?: WorkbenchLifecycleBridgeShape | null;
 	};
 }

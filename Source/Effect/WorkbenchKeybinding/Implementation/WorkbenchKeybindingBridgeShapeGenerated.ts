@@ -14,10 +14,10 @@
 
 import type { IKeybindingServiceUpstream } from "../../Generated/IKeybindingService/IKeybindingServiceUpstream.js";
 
-export type WorkbenchKeybindingBridgeShapeGenerated = Pick<IKeybindingServiceUpstream, "lookupKeybindings" | "resolveKeyboardEvent" | "dispatchByUserSettingsLabel">;
+export type WorkbenchKeybindingBridgeShape = Pick<IKeybindingServiceUpstream, "lookupKeybindings" | "resolveKeyboardEvent" | "dispatchByUserSettingsLabel">;
 
-export interface IKeybindingServiceGlobals {
+export interface WorkbenchKeybindingGlobals {
 	readonly __CEL_SERVICES__?: {
-		readonly KeybindingService?: WorkbenchKeybindingBridgeShapeGenerated | null;
+		readonly Keybinding?: WorkbenchKeybindingBridgeShape | null;
 	};
 }

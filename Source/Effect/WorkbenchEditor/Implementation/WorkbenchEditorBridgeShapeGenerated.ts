@@ -14,10 +14,10 @@
 
 import type { IEditorServiceUpstream } from "../../Generated/IEditorService/IEditorServiceUpstream.js";
 
-export type WorkbenchEditorBridgeShapeGenerated = Pick<IEditorServiceUpstream, "activeEditorPane" | "openEditor" | "closeEditor" | "onDidActiveEditorChange">;
+export type WorkbenchEditorBridgeShape = Pick<IEditorServiceUpstream, "activeEditorPane" | "openEditor" | "closeEditor" | "onDidActiveEditorChange">;
 
-export interface IEditorServiceGlobals {
+export interface WorkbenchEditorGlobals {
 	readonly __CEL_SERVICES__?: {
-		readonly EditorService?: WorkbenchEditorBridgeShapeGenerated | null;
+		readonly Editor?: WorkbenchEditorBridgeShape | null;
 	};
 }

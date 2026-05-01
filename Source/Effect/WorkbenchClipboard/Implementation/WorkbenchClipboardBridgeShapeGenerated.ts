@@ -14,10 +14,10 @@
 
 import type { IClipboardServiceUpstream } from "../../Generated/IClipboardService/IClipboardServiceUpstream.js";
 
-export type WorkbenchClipboardBridgeShapeGenerated = Pick<IClipboardServiceUpstream, "readText" | "writeText" | "readResources" | "writeResources">;
+export type WorkbenchClipboardBridgeShape = Pick<IClipboardServiceUpstream, "readText" | "writeText" | "readResources" | "writeResources">;
 
-export interface IClipboardServiceGlobals {
+export interface WorkbenchClipboardGlobals {
 	readonly __CEL_SERVICES__?: {
-		readonly ClipboardService?: WorkbenchClipboardBridgeShapeGenerated | null;
+		readonly Clipboard?: WorkbenchClipboardBridgeShape | null;
 	};
 }

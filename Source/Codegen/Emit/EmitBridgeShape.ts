@@ -42,6 +42,19 @@ export interface EmitBridgeShapeOptions {
 	 * `<ServiceFolder>BridgeShape`.
 	 */
 	readonly BridgeFileName?: string;
+	/** Override the `__CEL_SERVICES__` accessor key. Defaults to
+	 * `decoratorName.replace(/^I/, "")`. Set to align with the
+	 * actual Output binding (e.g. `Clipboard` for `IClipboardService`).
+	 */
+	readonly AccessorName?: string;
+	/** Override the exported Globals interface name. Defaults to
+	 * `<decoratorName>Globals`.
+	 */
+	readonly GlobalsInterfaceName?: string;
+	/** Override the exported Pick<> type alias name. Defaults to
+	 * `BridgeFileName` with any trailing `Generated` suffix stripped.
+	 */
+	readonly ShapeTypeName?: string;
 }
 
 export interface EmitBridgeShapeOutcome {
@@ -59,11 +72,13 @@ const FormatOutput = (
 	record: ServiceDecoratorRecord,
 	pickedMembers: ReadonlyArray<string>,
 	bridgeFileName: string,
+	accessorName: string,
+	globalsInterfaceName: string,
+	shapeTypeName: string,
 ): string => {
 	const UpstreamModule = `../../Generated/${record.DecoratorName}/${record.DecoratorName}Upstream.js`;
 	const UpstreamType = `${record.DecoratorName}Upstream`;
 	const PickClause = FormatPickUnion(pickedMembers);
-	const ShapeName = bridgeFileName.replace(/Shape$/, "Shape");
 	return [
 		"/**",
 		` * @module Effect/${record.DecoratorName}/Bridge/${bridgeFileName}`,
@@ -81,11 +96,11 @@ const FormatOutput = (
 		"",
 		`import type { ${UpstreamType} } from "${UpstreamModule}";`,
 		"",
-		`export type ${ShapeName} = Pick<${UpstreamType}, ${PickClause}>;`,
+		`export type ${shapeTypeName} = Pick<${UpstreamType}, ${PickClause}>;`,
 		"",
-		`export interface ${record.DecoratorName}Globals {`,
+		`export interface ${globalsInterfaceName} {`,
 		"\treadonly __CEL_SERVICES__?: {",
-		`\t\treadonly ${record.DecoratorName.replace(/^I/, "")}?: ${ShapeName} | null;`,
+		`\t\treadonly ${accessorName}?: ${shapeTypeName} | null;`,
 		"\t};",
 		"}",
 		"",
@@ -103,7 +118,35 @@ export const EmitBridgeShape = async (
 	const FileName =
 		options.BridgeFileName ?? `${options.ServiceFolder}BridgeShape`;
 
-	const Output = FormatOutput(options.Record, ResolvedPicks, FileName);
+	// `ShapeTypeName` defaults to FileName with trailing `Generated`
+	// stripped so the exported type is e.g. `WorkbenchClipboardBridgeShape`
+	// even when the file is `WorkbenchClipboardBridgeShapeGenerated.ts`.
+	// This lets the hand-authored `BridgeShape.ts` collapse to a one-line
+	// `export type {...} from "./WorkbenchClipboardBridgeShapeGenerated.js"`.
+	const ShapeTypeName =
+		options.ShapeTypeName ?? FileName.replace(/Generated$/, "");
+	// `AccessorName` defaults to `decoratorName.replace(/^I/, "")` for
+	// backward-compat (so e.g. `IClipboardService` → `ClipboardService`).
+	// Output's `ExposeWorkbenchAccessor` typically exposes a shorter
+	// name (`Clipboard`); manifest entries opt in via `AccessorName`.
+	const AccessorName =
+		options.AccessorName ??
+		options.Record.DecoratorName.replace(/^I/, "");
+	// `GlobalsInterfaceName` defaults to `<DecoratorName>Globals`. Set
+	// to `Workbench<X>Globals` in manifest entries that want the
+	// hand-authored layer to re-export both Shape + Globals together.
+	const GlobalsInterfaceName =
+		options.GlobalsInterfaceName ??
+		`${options.Record.DecoratorName}Globals`;
+
+	const Output = FormatOutput(
+		options.Record,
+		ResolvedPicks,
+		FileName,
+		AccessorName,
+		GlobalsInterfaceName,
+		ShapeTypeName,
+	);
 	const OutputPath = join(
 		options.OutputRoot,
 		"Effect",

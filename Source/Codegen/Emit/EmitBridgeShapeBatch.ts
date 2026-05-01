@@ -22,6 +22,33 @@ export interface BridgeShapeManifestEntry {
 	readonly ServiceFolder: string;
 	readonly BridgeFileName?: string;
 	readonly PickMembers: ReadonlyArray<string>;
+	/**
+	 * Override for the `__CEL_SERVICES__` accessor key emitted in the
+	 * Globals interface. Defaults to `decoratorName.replace(/^I/, "")`
+	 * (e.g. `IClipboardService` → `ClipboardService`). Set this when
+	 * Output's `ExposeWorkbenchAccessor` exposes the service under a
+	 * shorter name (e.g. `Clipboard`, `Storage`, `Theme`, `Lifecycle`,
+	 * `Keybinding`, `Notification`, `Dialog`, `Host`, `Editor`,
+	 * `Workspace`, `Product`, `Progress`, `Activity`, `Command`,
+	 * `ContextKey`).
+	 */
+	readonly AccessorName?: string;
+	/**
+	 * Override for the exported globals interface name. Defaults to
+	 * `<decoratorName>Globals`. Set to e.g. `Workbench<X>Globals` to
+	 * line up with the hand-authored `BridgeShape.ts` re-exports so
+	 * Live layers can swap in the Generated shape via a one-line
+	 * `export type {...} from "./...Generated.js"`.
+	 */
+	readonly GlobalsInterfaceName?: string;
+	/**
+	 * Override for the exported Pick<> type alias name. Defaults to the
+	 * `BridgeFileName` verbatim (or `<ServiceFolder>BridgeShape` if
+	 * unset). When `BridgeFileName` ends in `Generated`, the suffix is
+	 * stripped so the exported type matches the hand-authored shape's
+	 * canonical name.
+	 */
+	readonly ShapeTypeName?: string;
 }
 
 export interface EmitBridgeShapeBatchOptions {
@@ -68,6 +95,9 @@ export const EmitBridgeShapeBatch = async (
 			ServiceFolder: Entry.ServiceFolder,
 			BridgeFileName: Entry.BridgeFileName,
 			PickMembers: Entry.PickMembers,
+			AccessorName: Entry.AccessorName,
+			GlobalsInterfaceName: Entry.GlobalsInterfaceName,
+			ShapeTypeName: Entry.ShapeTypeName,
 		});
 		if ("_tag" in Outcome) {
 			Failures.push(Outcome);

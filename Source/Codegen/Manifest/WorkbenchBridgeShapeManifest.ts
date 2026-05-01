@@ -25,6 +25,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "IClipboardService",
 		ServiceFolder: "WorkbenchClipboard",
 		BridgeFileName: "WorkbenchClipboardBridgeShapeGenerated",
+		AccessorName: "Clipboard",
+		GlobalsInterfaceName: "WorkbenchClipboardGlobals",
+		ShapeTypeName: "WorkbenchClipboardBridgeShape",
 		PickMembers: [
 			"readText",
 			"writeText",
@@ -37,6 +40,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "ICommandService",
 		ServiceFolder: "WorkbenchCommand",
 		BridgeFileName: "WorkbenchCommandBridgeShapeGenerated",
+		AccessorName: "Commands",
+		GlobalsInterfaceName: "WorkbenchCommandGlobals",
+		ShapeTypeName: "WorkbenchCommandBridgeShape",
 		PickMembers: [
 			"executeCommand",
 			"onWillExecuteCommand",
@@ -48,6 +54,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "IConfigurationService",
 		ServiceFolder: "UserSettings",
 		BridgeFileName: "UserSettingsBridgeShapeGenerated",
+		AccessorName: "Configuration",
+		GlobalsInterfaceName: "UserSettingsGlobals",
+		ShapeTypeName: "UserSettingsBridgeShape",
 		PickMembers: [
 			"getValue",
 			"updateValue",
@@ -60,6 +69,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "IContextKeyService",
 		ServiceFolder: "WorkbenchContextKey",
 		BridgeFileName: "WorkbenchContextKeyBridgeShapeGenerated",
+		AccessorName: "ContextKey",
+		GlobalsInterfaceName: "WorkbenchContextKeyGlobals",
+		ShapeTypeName: "WorkbenchContextKeyBridgeShape",
 		PickMembers: [
 			"getContextKeyValue",
 			"createKey",
@@ -72,6 +84,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "IDialogService",
 		ServiceFolder: "WorkbenchDialog",
 		BridgeFileName: "WorkbenchDialogBridgeShapeGenerated",
+		AccessorName: "Dialog",
+		GlobalsInterfaceName: "WorkbenchDialogGlobals",
+		ShapeTypeName: "WorkbenchDialogBridgeShape",
 		PickMembers: ["confirm", "prompt", "info", "warn", "error"],
 	},
 	{
@@ -79,6 +94,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "IEditorService",
 		ServiceFolder: "WorkbenchEditor",
 		BridgeFileName: "WorkbenchEditorBridgeShapeGenerated",
+		AccessorName: "Editor",
+		GlobalsInterfaceName: "WorkbenchEditorGlobals",
+		ShapeTypeName: "WorkbenchEditorBridgeShape",
 		PickMembers: [
 			"activeEditorPane",
 			"openEditor",
@@ -91,6 +109,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "IExtensionService",
 		ServiceFolder: "WorkbenchExtension",
 		BridgeFileName: "WorkbenchExtensionBridgeShapeGenerated",
+		AccessorName: "Extension",
+		GlobalsInterfaceName: "WorkbenchExtensionGlobals",
+		ShapeTypeName: "WorkbenchExtensionBridgeShape",
 		PickMembers: [
 			"extensions",
 			"activateById",
@@ -103,6 +124,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "IHostService",
 		ServiceFolder: "WorkbenchHost",
 		BridgeFileName: "WorkbenchHostBridgeShapeGenerated",
+		AccessorName: "Host",
+		GlobalsInterfaceName: "WorkbenchHostGlobals",
+		ShapeTypeName: "WorkbenchHostBridgeShape",
 		PickMembers: [
 			"reload",
 			"restart",
@@ -118,6 +142,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "IKeybindingService",
 		ServiceFolder: "WorkbenchKeybinding",
 		BridgeFileName: "WorkbenchKeybindingBridgeShapeGenerated",
+		AccessorName: "Keybinding",
+		GlobalsInterfaceName: "WorkbenchKeybindingGlobals",
+		ShapeTypeName: "WorkbenchKeybindingBridgeShape",
 		PickMembers: [
 			"lookupKeybindings",
 			"resolveKeyboardEvent",
@@ -129,6 +156,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "ILifecycleService",
 		ServiceFolder: "WorkbenchLifecycle",
 		BridgeFileName: "WorkbenchLifecycleBridgeShapeGenerated",
+		AccessorName: "Lifecycle",
+		GlobalsInterfaceName: "WorkbenchLifecycleGlobals",
+		ShapeTypeName: "WorkbenchLifecycleBridgeShape",
 		PickMembers: ["phase", "when", "onWillShutdown", "onDidShutdown"],
 	},
 	{
@@ -136,6 +166,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "INotificationService",
 		ServiceFolder: "WorkbenchNotification",
 		BridgeFileName: "WorkbenchNotificationBridgeShapeGenerated",
+		AccessorName: "Notification",
+		GlobalsInterfaceName: "WorkbenchNotificationGlobals",
+		ShapeTypeName: "WorkbenchNotificationBridgeShape",
 		PickMembers: ["notify", "info", "warn", "error"],
 	},
 	{
@@ -143,6 +176,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "IProductService",
 		ServiceFolder: "WorkbenchProduct",
 		BridgeFileName: "WorkbenchProductBridgeShapeGenerated",
+		AccessorName: "Product",
+		GlobalsInterfaceName: "WorkbenchProductGlobals",
+		ShapeTypeName: "WorkbenchProductBridgeShape",
 		PickMembers: [
 			"nameLong",
 			"nameShort",
@@ -159,6 +195,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "IProgressService",
 		ServiceFolder: "WorkbenchProgress",
 		BridgeFileName: "WorkbenchProgressBridgeShapeGenerated",
+		AccessorName: "Progress",
+		GlobalsInterfaceName: "WorkbenchProgressGlobals",
+		ShapeTypeName: "WorkbenchProgressBridgeShape",
 		PickMembers: ["withProgress"],
 	},
 	{
@@ -166,6 +205,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "IStorageService",
 		ServiceFolder: "WorkbenchStorage",
 		BridgeFileName: "WorkbenchStorageBridgeShapeGenerated",
+		AccessorName: "Storage",
+		GlobalsInterfaceName: "WorkbenchStorageGlobals",
+		ShapeTypeName: "WorkbenchStorageBridgeShape",
 		PickMembers: [
 			"get",
 			"getBoolean",
@@ -182,6 +224,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "IWorkbenchThemeService",
 		ServiceFolder: "WorkbenchTheme",
 		BridgeFileName: "WorkbenchThemeBridgeShapeGenerated",
+		AccessorName: "WorkbenchTheme",
+		GlobalsInterfaceName: "WorkbenchThemeGlobals",
+		ShapeTypeName: "WorkbenchThemeBridgeShape",
 		PickMembers: [
 			"getColorTheme",
 			"getColorThemes",
@@ -194,6 +239,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "IWorkspaceContextService",
 		ServiceFolder: "WorkbenchWorkspace",
 		BridgeFileName: "WorkbenchWorkspaceBridgeShapeGenerated",
+		AccessorName: "Workspace",
+		GlobalsInterfaceName: "WorkbenchWorkspaceGlobals",
+		ShapeTypeName: "WorkbenchWorkspaceBridgeShape",
 		PickMembers: [
 			"getWorkspace",
 			"getWorkspaceFolder",
@@ -205,6 +253,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "IActivityService",
 		ServiceFolder: "WorkbenchActivity",
 		BridgeFileName: "WorkbenchActivityBridgeShapeGenerated",
+		AccessorName: "Activity",
+		GlobalsInterfaceName: "WorkbenchActivityGlobals",
+		ShapeTypeName: "WorkbenchActivityBridgeShape",
 		PickMembers: [
 			"showViewContainerActivity",
 			"showViewActivity",
@@ -217,6 +268,9 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		DecoratorName: "IWorkbenchLayoutService",
 		ServiceFolder: "WorkbenchLayout",
 		BridgeFileName: "WorkbenchLayoutBridgeShapeGenerated",
+		AccessorName: "Layout",
+		GlobalsInterfaceName: "WorkbenchLayoutGlobals",
+		ShapeTypeName: "WorkbenchLayoutBridgeShape",
 		PickMembers: [
 			"isVisible",
 			"setPartHidden",
