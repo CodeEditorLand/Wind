@@ -118,10 +118,29 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 		(window as any).__Trace = (Paths as any).devLog;
 	}
 
-	// Read ?folder= from URL (set by pickFolderAndOpen navigation)
-	const FolderParam = new URLSearchParams(window.location.search).get(
+	// Read ?folder= from URL (set by pickFolderAndOpen navigation
+	// + Mountain's `BuildInitialUrl` which sources from
+	// `~/.land/workspaces/RecentlyOpened.json`'s top entry).
+	const FolderParamRaw = new URLSearchParams(window.location.search).get(
 		"folder",
 	);
+	// Defensive normalisation. RecentlyOpened.json stores workspace
+	// URIs with a trailing slash (`file:///.../Mountain/`); after
+	// `BuildInitialUrl` strips the `file://` prefix and percent-
+	// encodes the path, the URL-decoded `?folder=` value still ends
+	// in `/`. Constructing `URI{scheme:"file", path: ".../Mountain/"}`
+	// produces `URI.fsPath === ".../Mountain/"` (with trailing slash)
+	// which makes `IUriIdentityService.extUri.relativePath(workspaceFolder,
+	// fileUri)` and `ILabelService.getUriLabel(uri, { relative: true })`
+	// fail to compute relative paths on macOS APFS - the breadcrumb
+	// then renders the absolute `/Volumes/CORSAIR/...` path instead of
+	// the workspace-relative `Source > Foo > Bar` form. Strip a single
+	// trailing slash so the workspace folder URI matches the file URIs
+	// the workbench produces (which never carry a trailing slash on
+	// the parent directory part).
+	const FolderParam = FolderParamRaw
+		? FolderParamRaw.replace(/\/+$/, "") || "/"
+		: null;
 	const FolderUri = FolderParam
 		? { scheme: "file", path: FolderParam, authority: "" }
 		: undefined;
@@ -129,19 +148,20 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 	// ISingleFolderWorkspaceIdentifier for the Electron (desktop) workbench.
 	// The browser workbench reads `folderUri` but DesktopMain reads `workspace`.
 	// reviveIdentifier() in desktop.main.ts calls URI.revive() on workspace.uri.
-	const Workspace = FolderUri
-		? {
-				id: Array.from(FolderParam)
-					.reduce(
-						(Hash, Character) =>
-							((Hash << 5) - Hash + Character.charCodeAt(0)) | 0,
-						0,
-					)
-					.toString(16)
-					.replace("-", ""),
-				uri: FolderUri,
-			}
-		: undefined;
+	const Workspace =
+		FolderUri && FolderParam
+			? {
+					id: Array.from(FolderParam)
+						.reduce(
+							(Hash, Character) =>
+								((Hash << 5) - Hash + Character.charCodeAt(0)) | 0,
+							0,
+						)
+						.toString(16)
+						.replace("-", ""),
+					uri: FolderUri,
+				}
+			: undefined;
 
 	DevLog("config", "url:", window.location.href);
 	DevLog("config", "folderUri:", JSON.stringify(FolderUri));
