@@ -12,10 +12,9 @@ export interface IInlineChatSessionServiceUpstream {
 	_serviceBrand: undefined;
 	readonly onWillStartSession: Event<IActiveCodeEditor>;
 	readonly onDidChangeSessions: Event<this>;
-	dispose(): void;
-	createSession(editor: ICodeEditor): IInlineChatSession2;
-	getSessionByTextModel(uri: URI): IInlineChatSession2 | undefined;
-	getSessionBySessionUri(uri: URI): IInlineChatSession2 | undefined;
+	createSession(editor: ICodeEditor): IInlineChatSession;
+	getSessionByTextModel(uri: URI): IInlineChatSession | undefined;
+	getSessionBySessionUri(uri: URI): IInlineChatSession | undefined;
 }
 export const IInlineChatSessionServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
@@ -50,42 +49,32 @@ export const IInlineChatSessionServiceMembers: ReadonlyArray<InterfaceMemberReco
 	},
 	{
 		Kind: "Method",
-		Name: "dispose",
-		Readonly: false,
-		Optional: false,
-		TypeText: "void",
-		Parameters: [],
-		DocComment: null,
-		SourceLine: 41,
-	},
-	{
-		Kind: "Method",
 		Name: "createSession",
 		Readonly: false,
 		Optional: false,
-		TypeText: "IInlineChatSession2",
+		TypeText: "IInlineChatSession",
 		Parameters: [{ Name: "editor", TypeText: "ICodeEditor", Optional: false }],
 		DocComment: null,
-		SourceLine: 43,
+		SourceLine: 41,
 	},
 	{
 		Kind: "Method",
 		Name: "getSessionByTextModel",
 		Readonly: false,
 		Optional: false,
-		TypeText: "IInlineChatSession2 | undefined",
+		TypeText: "IInlineChatSession | undefined",
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
 		DocComment: null,
-		SourceLine: 44,
+		SourceLine: 42,
 	},
 	{
 		Kind: "Method",
 		Name: "getSessionBySessionUri",
 		Readonly: false,
 		Optional: false,
-		TypeText: "IInlineChatSession2 | undefined",
+		TypeText: "IInlineChatSession | undefined",
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
 		DocComment: null,
-		SourceLine: 45,
+		SourceLine: 43,
 	}
 ] as const;

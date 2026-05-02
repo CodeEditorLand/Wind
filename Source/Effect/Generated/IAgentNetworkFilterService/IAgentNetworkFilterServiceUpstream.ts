@@ -11,8 +11,9 @@ export const IAgentNetworkFilterServiceSourceLine = 18 as const;
 /**
  * Service that filters network requests made by agent tools (fetch tool,
  * integrated browser) based on the configured allowed/denied domain lists.
- * Filtering is active when the `chat.agent.networkFilter` setting is enabled,
- * or when the terminal sandbox service reports that sandboxing is enabled.
+ * Filtering is active for all callers when the `chat.agent.networkFilter` setting
+ * is enabled. When only sandboxing is enabled, filtering is active for fetch web
+ * page tool requests. This has to be revisited for integrated browser requests.
  * When both domain lists are empty, all domains are denied.
  * When a domain appears on the denied list it is always blocked, even if it
  * also matches an entry on the allowed list.
@@ -22,8 +23,9 @@ export interface IAgentNetworkFilterServiceUpstream {
 	/**
 	 * Service that filters network requests made by agent tools (fetch tool,
 	 * integrated browser) based on the configured allowed/denied domain lists.
-	 * Filtering is active when the `chat.agent.networkFilter` setting is enabled,
-	 * or when the terminal sandbox service reports that sandboxing is enabled.
+	 * Filtering is active for all callers when the `chat.agent.networkFilter` setting
+	 * is enabled. When only sandboxing is enabled, filtering is active for fetch web
+	 * page tool requests. This has to be revisited for integrated browser requests.
 	 * When both domain lists are empty, all domains are denied.
 	 * When a domain appears on the denied list it is always blocked, even if it
 	 * also matches an entry on the allowed list.
@@ -38,7 +40,7 @@ export const IAgentNetworkFilterServiceMembers: ReadonlyArray<InterfaceMemberRec
 		Optional: false,
 		TypeText: "undefined",
 		Parameters: [],
-		DocComment: "Service that filters network requests made by agent tools (fetch tool,\nintegrated browser) based on the configured allowed/denied domain lists.\nFiltering is active when the `chat.agent.networkFilter` setting is enabled,\nor when the terminal sandbox service reports that sandboxing is enabled.\nWhen both domain lists are empty, all domains are denied.\nWhen a domain appears on the denied list it is always blocked, even if it\nalso matches an entry on the allowed list.",
-		SourceLine: 31,
+		DocComment: "Service that filters network requests made by agent tools (fetch tool,\nintegrated browser) based on the configured allowed/denied domain lists.\nFiltering is active for all callers when the `chat.agent.networkFilter` setting\nis enabled. When only sandboxing is enabled, filtering is active for fetch web\npage tool requests. This has to be revisited for integrated browser requests.\nWhen both domain lists are empty, all domains are denied.\nWhen a domain appears on the denied list it is always blocked, even if it\nalso matches an entry on the allowed list.",
+		SourceLine: 34,
 	}
 ] as const;

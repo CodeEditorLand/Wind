@@ -10,8 +10,9 @@ export const IAgentHostSessionWorkingDirectoryResolverSourcePath = "vs/workbench
 export const IAgentHostSessionWorkingDirectoryResolverSourceLine = 11 as const;
 export interface IAgentHostSessionWorkingDirectoryResolverUpstream {
 	readonly _serviceBrand: undefined;
-	registerResolver(sessionType: string, resolver: (sessionResource: URI) => URI | undefined): IDisposable;
+	registerResolver(sessionType: string, resolver: (sessionResource: URI) => URI | undefined, isNewSession?: (sessionResource: URI) => boolean): IDisposable;
 	resolve(sessionResource: URI): URI | undefined;
+	isNewSession(sessionResource: URI): boolean;
 }
 export const IAgentHostSessionWorkingDirectoryResolverMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
@@ -30,7 +31,7 @@ export const IAgentHostSessionWorkingDirectoryResolverMembers: ReadonlyArray<Int
 		Readonly: false,
 		Optional: false,
 		TypeText: "IDisposable",
-		Parameters: [{ Name: "sessionType", TypeText: "string", Optional: false }, { Name: "resolver", TypeText: "(sessionResource: URI) => URI | undefined", Optional: false }],
+		Parameters: [{ Name: "sessionType", TypeText: "string", Optional: false }, { Name: "resolver", TypeText: "(sessionResource: URI) => URI | undefined", Optional: false }, { Name: "isNewSession", TypeText: "(sessionResource: URI) => boolean", Optional: true }],
 		DocComment: null,
 		SourceLine: 15,
 	},
@@ -43,5 +44,15 @@ export const IAgentHostSessionWorkingDirectoryResolverMembers: ReadonlyArray<Int
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }],
 		DocComment: null,
 		SourceLine: 16,
+	},
+	{
+		Kind: "Method",
+		Name: "isNewSession",
+		Readonly: false,
+		Optional: false,
+		TypeText: "boolean",
+		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }],
+		DocComment: null,
+		SourceLine: 17,
 	}
 ] as const;

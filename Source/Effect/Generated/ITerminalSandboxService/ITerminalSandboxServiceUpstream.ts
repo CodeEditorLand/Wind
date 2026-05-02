@@ -38,7 +38,7 @@ export interface ITerminalSandboxServiceUpstream {
 	 * Provided by the browser-layer caller so the common-layer service
 	 * does not import browser types directly.
 	 */
-	wrapCommand(command: string, requestUnsandboxedExecution?: boolean, shell?: string): ITerminalSandboxWrapResult;
+	wrapCommand(command: string, requestUnsandboxedExecution?: boolean, shell?: string, commandKeywords?: readonly string[], cwd?: URI): Promise<ITerminalSandboxWrapResult>;
 	/**
 	 * Abstraction over terminal operations needed by the install flow.
 	 * Provided by the browser-layer caller so the common-layer service
@@ -122,8 +122,8 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Name: "wrapCommand",
 		Readonly: false,
 		Optional: false,
-		TypeText: "ITerminalSandboxWrapResult",
-		Parameters: [{ Name: "command", TypeText: "string", Optional: false }, { Name: "requestUnsandboxedExecution", TypeText: "boolean", Optional: true }, { Name: "shell", TypeText: "string", Optional: true }],
+		TypeText: "Promise<ITerminalSandboxWrapResult>",
+		Parameters: [{ Name: "command", TypeText: "string", Optional: false }, { Name: "requestUnsandboxedExecution", TypeText: "boolean", Optional: true }, { Name: "shell", TypeText: "string", Optional: true }, { Name: "commandKeywords", TypeText: "readonly string[]", Optional: true }, { Name: "cwd", TypeText: "URI", Optional: true }],
 		DocComment: "Abstraction over terminal operations needed by the install flow.\nProvided by the browser-layer caller so the common-layer service\ndoes not import browser types directly.",
 		SourceLine: 76,
 	},

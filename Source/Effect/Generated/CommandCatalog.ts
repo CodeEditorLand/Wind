@@ -25,7 +25,7 @@ export interface CommandCatalogEntry {
 
 export const CommandCatalogVersion = "2026-05-01" as const;
 
-export const CommandCatalogTotal = 542 as const;
+export const CommandCatalogTotal = 544 as const;
 
 export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 	{
@@ -54,6 +54,13 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatEditing/chatEditingActions.ts",
 		SourceLine: 864,
+		HasKeybinding: false,
+	},
+	{
+		CommandIdentifier: "_chat.notifyQuestionCarouselAnswer",
+		Kind: "CommandsRegistry",
+		SourcePath: "vs/workbench/contrib/chat/browser/chat.contribution.ts",
+		SourceLine: 192,
 		HasKeybinding: false,
 	},
 	{
@@ -403,7 +410,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "_update.state",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/update/browser/update.ts",
-		SourceLine: 305,
+		SourceLine: 293,
 		HasKeybinding: false,
 	},
 	{
@@ -473,7 +480,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "0_chat",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/inlineChat/browser/inlineChatActions.ts",
-		SourceLine: 120,
+		SourceLine: 122,
 		HasKeybinding: false,
 	},
 	{
@@ -487,7 +494,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "1_chat",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/chatActions.ts",
-		SourceLine: 1724,
+		SourceLine: 1749,
 		HasKeybinding: false,
 	},
 	{
@@ -746,7 +753,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "3_file",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 523,
+		SourceLine: 466,
 		HasKeybinding: false,
 	},
 	{
@@ -795,7 +802,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "4_auxbar",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures.ts",
-		SourceLine: 454,
+		SourceLine: 458,
 		HasKeybinding: false,
 	},
 	{
@@ -942,7 +949,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "7_update",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/update/browser/update.ts",
-		SourceLine: 323,
+		SourceLine: 311,
 		HasKeybinding: false,
 	},
 	{
@@ -991,7 +998,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "agentSessionsControl",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/sessions/contrib/sessions/browser/sessionsTitleBarWidget.ts",
-		SourceLine: 338,
+		SourceLine: 337,
 		HasKeybinding: false,
 	},
 	{
@@ -1082,7 +1089,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "browser.closeAllInGroupShort",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures.ts",
-		SourceLine: 464,
+		SourceLine: 468,
 		HasKeybinding: false,
 	},
 	{
@@ -1117,21 +1124,21 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "chat.internal.explain",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSetup/chatSetupContributions.ts",
-		SourceLine: 520,
+		SourceLine: 524,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "chat.internal.fix",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSetup/chatSetupContributions.ts",
-		SourceLine: 579,
+		SourceLine: 583,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "chat.internal.review",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSetup/chatSetupContributions.ts",
-		SourceLine: 592,
+		SourceLine: 596,
 		HasKeybinding: false,
 	},
 	{
@@ -1376,7 +1383,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "copyPath",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 482,
+		SourceLine: 439,
 		HasKeybinding: false,
 	},
 	{
@@ -1474,14 +1481,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "delete",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 488,
+		SourceLine: 445,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "disable",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 681,
+		SourceLine: 624,
 		HasKeybinding: false,
 	},
 	{
@@ -1565,7 +1572,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "enable",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 693,
+		SourceLine: 636,
 		HasKeybinding: false,
 	},
 	{
@@ -2398,14 +2405,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "openAiManagement",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatManagement/chatManagement.contribution.ts",
-		SourceLine: 149,
+		SourceLine: 150,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "openChatCustomizations",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/chatActions.ts",
-		SourceLine: 1457,
+		SourceLine: 1482,
 		HasKeybinding: false,
 	},
 	{
@@ -2601,7 +2608,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "runPrompt",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 509,
+		SourceLine: 459,
 		HasKeybinding: false,
 	},
 	{
@@ -2762,14 +2769,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "showPlugin",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 625,
+		SourceLine: 568,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "showSessions",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/sessions/contrib/sessions/browser/sessionsTitleBarWidget.ts",
-		SourceLine: 346,
+		SourceLine: 345,
 		HasKeybinding: false,
 	},
 	{
@@ -2983,20 +2990,6 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		HasKeybinding: true,
 	},
 	{
-		CommandIdentifier: "troubleshootInline",
-		Kind: "MenuRegistry",
-		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 495,
-		HasKeybinding: false,
-	},
-	{
-		CommandIdentifier: "troubleshootItem",
-		Kind: "MenuRegistry",
-		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 516,
-		HasKeybinding: false,
-	},
-	{
 		CommandIdentifier: "type",
 		Kind: "KeybindingsRegistry",
 		SourcePath: "vs/workbench/contrib/files/browser/fileCommands.ts",
@@ -3007,7 +3000,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "uninstallPlugin",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 572,
+		SourceLine: 515,
 		HasKeybinding: false,
 	},
 	{
@@ -3091,7 +3084,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "update.showUpdateReleaseNotes",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/update/browser/update.ts",
-		SourceLine: 312,
+		SourceLine: 300,
 		HasKeybinding: false,
 	},
 	{
@@ -3284,6 +3277,13 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		HasKeybinding: true,
 	},
 	{
+		CommandIdentifier: "workbench.action.chat.openCopilotStatus",
+		Kind: "CommandsRegistry",
+		SourcePath: "vs/workbench/contrib/chat/browser/chatStatus/chatStatusEntry.ts",
+		SourceLine: 53,
+		HasKeybinding: false,
+	},
+	{
 		CommandIdentifier: "workbench.action.chat.openInSidebar",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/chatMoveActions.ts",
@@ -3368,6 +3368,13 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		HasKeybinding: true,
 	},
 	{
+		CommandIdentifier: "workbench.action.openGlobalKeybindings",
+		Kind: "MenuRegistry",
+		SourcePath: "vs/sessions/contrib/accountMenu/browser/account.contribution.ts",
+		SourceLine: 254,
+		HasKeybinding: false,
+	},
+	{
 		CommandIdentifier: "workbench.action.openIssueReporter",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/issue/common/issue.contribution.ts",
@@ -3378,7 +3385,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "workbench.action.openLanguageModelsJson",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatManagement/chatManagement.contribution.ts",
-		SourceLine: 165,
+		SourceLine: 166,
 		HasKeybinding: false,
 	},
 	{
@@ -3436,6 +3443,13 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		SourcePath: "vs/workbench/electron-browser/desktop.contribution.ts",
 		SourceLine: 72,
 		HasKeybinding: true,
+	},
+	{
+		CommandIdentifier: "workbench.action.selectTheme",
+		Kind: "MenuRegistry",
+		SourcePath: "vs/sessions/contrib/accountMenu/browser/account.contribution.ts",
+		SourceLine: 232,
+		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "workbench.action.showHover",
@@ -3595,7 +3609,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "workbench.action.toggleWindowAlwaysOnTop",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/sessions/browser/layoutActions.ts",
-		SourceLine: 148,
+		SourceLine: 150,
 		HasKeybinding: false,
 	},
 	{
