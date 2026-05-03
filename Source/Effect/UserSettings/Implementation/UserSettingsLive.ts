@@ -39,8 +39,8 @@ import type {
 	UserSettingsService,
 	UserSettingsTarget,
 } from "../Interface/UserSettingsService.js";
-import type { UserSettingsProblem } from "../Type/UserSettingsProblem.js";
 import { UserSettingsServiceTag } from "../Tag/UserSettingsServiceTag.js";
+import type { UserSettingsProblem } from "../Type/UserSettingsProblem.js";
 
 interface VSCodeConfigurationBridge {
 	readonly getValue: <T>(section: string) => T | undefined;
@@ -49,9 +49,10 @@ interface VSCodeConfigurationBridge {
 		value: unknown,
 		target: number,
 	) => Promise<void>;
-	readonly inspect?: <T>(
-		section: string,
-	) => { readonly userValue?: T; readonly defaultValue?: T };
+	readonly inspect?: <T>(section: string) => {
+		readonly userValue?: T;
+		readonly defaultValue?: T;
+	};
 	readonly onDidChangeConfiguration: (
 		listener: (event: { affectedKeys?: Iterable<string> }) => void,
 	) => { readonly dispose: () => void };
@@ -113,8 +114,7 @@ export const UserSettingsLive = Layer.effect(
 
 		const ProblemBridgeUnavailable: UserSettingsProblem = {
 			_tag: "UserSettingsBridgeUnavailable",
-			reason:
-				"globalThis.__CEL_SERVICES__.Configuration is null - the workbench hasn't injected its handles yet. Boot the workbench first or use UserSettingsStub for tests.",
+			reason: "globalThis.__CEL_SERVICES__.Configuration is null - the workbench hasn't injected its handles yet. Boot the workbench first or use UserSettingsStub for tests.",
 		};
 
 		const Service: UserSettingsService = {
@@ -189,53 +189,57 @@ export const UserSettingsLive = Layer.effect(
 					const Inspection = Bridge.inspect(Section);
 					return Inspection.userValue !== undefined;
 				}),
-			Changes: Stream.async<
-				UserSettingsChangeEvent,
-				UserSettingsProblem
-			>((Emit) => {
-				if (!Bridge) {
-					Emit.failCause({ _tag: "Fail", error: ProblemBridgeUnavailable } as never);
-					return Effect.void;
-				}
-				const Subscription = Bridge.onDidChangeConfiguration(
-					(VSEvent) => {
-						const Keys = new Set(VSEvent.affectedKeys ?? []);
-						Emit.single({
-							affectedKeys: Keys,
-							source: "Workspace",
-						});
-					},
-				);
-				const OverrideListener = (Event: Event) => {
-					const Detail = (Event as CustomEvent<{
-						readonly section: string;
-						readonly source: UserSettingsTarget;
-					}>).detail;
-					Emit.single({
-						affectedKeys: new Set([Detail.section]),
-						source: Detail.source,
-					});
-				};
-				try {
-					window.addEventListener(
-						"cel:user-settings-changed",
-						OverrideListener,
+			Changes: Stream.async<UserSettingsChangeEvent, UserSettingsProblem>(
+				(Emit) => {
+					if (!Bridge) {
+						Emit.failCause({
+							_tag: "Fail",
+							error: ProblemBridgeUnavailable,
+						} as never);
+						return Effect.void;
+					}
+					const Subscription = Bridge.onDidChangeConfiguration(
+						(VSEvent) => {
+							const Keys = new Set(VSEvent.affectedKeys ?? []);
+							Emit.single({
+								affectedKeys: Keys,
+								source: "Workspace",
+							});
+						},
 					);
-				} catch {
-					// no window - not registering, just clean up subscription
-				}
-				return Effect.sync(() => {
-					Subscription.dispose();
+					const OverrideListener = (Event: Event) => {
+						const Detail = (
+							Event as CustomEvent<{
+								readonly section: string;
+								readonly source: UserSettingsTarget;
+							}>
+						).detail;
+						Emit.single({
+							affectedKeys: new Set([Detail.section]),
+							source: Detail.source,
+						});
+					};
 					try {
-						window.removeEventListener(
+						window.addEventListener(
 							"cel:user-settings-changed",
 							OverrideListener,
 						);
 					} catch {
-						// see above
+						// no window - not registering, just clean up subscription
 					}
-				});
-			}),
+					return Effect.sync(() => {
+						Subscription.dispose();
+						try {
+							window.removeEventListener(
+								"cel:user-settings-changed",
+								OverrideListener,
+							);
+						} catch {
+							// see above
+						}
+					});
+				},
+			),
 		};
 
 		return Service;

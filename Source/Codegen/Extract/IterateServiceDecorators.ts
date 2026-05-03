@@ -16,13 +16,12 @@
  * @category Extract
  */
 
+import { ResolveInterfaceCrossFile } from "../Resolve/ResolveInterfaceCrossFile.js";
 import type { InterfaceMemberRecord } from "../Type/InterfaceMemberRecord.js";
 import type { ServiceDecoratorRecord } from "../Type/ServiceDecoratorRecord.js";
 import type { SourceFile } from "../Walk/SourceTreeWalker.js";
-
 import { ExtractDecoratorMatches } from "./ExtractDecoratorMatch.js";
 import { ExtractInterfaceMembers } from "./ExtractInterfaceMembers.js";
-import { ResolveInterfaceCrossFile } from "../Resolve/ResolveInterfaceCrossFile.js";
 
 const FindInterfaceDocComment = (
 	source: string,

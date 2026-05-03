@@ -5,20 +5,18 @@ import type {
 	WorkbenchKeybindingResolution,
 	WorkbenchKeybindingService,
 } from "../Interface/WorkbenchKeybindingService.js";
+import { WorkbenchKeybindingServiceTag } from "../Tag/WorkbenchKeybindingServiceTag.js";
 import type { WorkbenchKeybindingProblem } from "../Type/WorkbenchKeybindingProblem.js";
 import type {
 	UpstreamResolvedKeybinding,
 	WorkbenchKeybindingBridgeShape,
 	WorkbenchKeybindingGlobals,
 } from "./WorkbenchKeybindingBridgeShape.js";
-import { WorkbenchKeybindingServiceTag } from "../Tag/WorkbenchKeybindingServiceTag.js";
 
-const ResolveBridge = Effect.sync(
-	(): WorkbenchKeybindingBridgeShape | null => {
-		const Globals = globalThis as unknown as WorkbenchKeybindingGlobals;
-		return Globals.__CEL_SERVICES__?.Keybinding ?? null;
-	},
-);
+const ResolveBridge = Effect.sync((): WorkbenchKeybindingBridgeShape | null => {
+	const Globals = globalThis as unknown as WorkbenchKeybindingGlobals;
+	return Globals.__CEL_SERVICES__?.Keybinding ?? null;
+});
 
 const Unavailable: WorkbenchKeybindingProblem = {
 	_tag: "WorkbenchKeybindingBridgeUnavailable",
@@ -84,8 +82,9 @@ export const WorkbenchKeybindingLive = Layer.effect(
 			WorkbenchKeybindingProblem
 		>((Emit) => {
 			const Listener = (Event: Event) => {
-				const Detail = (Event as CustomEvent<WorkbenchKeybindingDispatch>)
-					.detail;
+				const Detail = (
+					Event as CustomEvent<WorkbenchKeybindingDispatch>
+				).detail;
 				Emit.single(Detail);
 			};
 			try {

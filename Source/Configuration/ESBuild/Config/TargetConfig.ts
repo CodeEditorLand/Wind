@@ -27,24 +27,14 @@ import BaseConfig from "./BaseConfig.js";
  * right of `??` here.
  */
 const PostHogDefines = {
-	"import.meta.env.Authorize": JSON.stringify(
-		process.env["Authorize"] ?? "",
-	),
+	"import.meta.env.Authorize": JSON.stringify(process.env["Authorize"] ?? ""),
 	"import.meta.env.Beam": JSON.stringify(
 		process.env["Beam"] ?? "https://eu.i.posthog.com",
 	),
-	"import.meta.env.Report": JSON.stringify(
-		process.env["Report"] ?? "true",
-	),
-	"import.meta.env.Replay": JSON.stringify(
-		process.env["Replay"] ?? "false",
-	),
-	"import.meta.env.Ask": JSON.stringify(
-		process.env["Ask"] ?? "false",
-	),
-	"import.meta.env.Brand": JSON.stringify(
-		process.env["Brand"] ?? "",
-	),
+	"import.meta.env.Report": JSON.stringify(process.env["Report"] ?? "true"),
+	"import.meta.env.Replay": JSON.stringify(process.env["Replay"] ?? "false"),
+	"import.meta.env.Ask": JSON.stringify(process.env["Ask"] ?? "false"),
+	"import.meta.env.Brand": JSON.stringify(process.env["Brand"] ?? ""),
 };
 
 /**

@@ -4,19 +4,17 @@ import type {
 	WorkbenchContextKeyChangeEvent,
 	WorkbenchContextKeyService,
 } from "../Interface/WorkbenchContextKeyService.js";
+import { WorkbenchContextKeyServiceTag } from "../Tag/WorkbenchContextKeyServiceTag.js";
 import type { WorkbenchContextKeyProblem } from "../Type/WorkbenchContextKeyProblem.js";
 import type {
 	WorkbenchContextKeyBridgeShape,
 	WorkbenchContextKeyGlobals,
 } from "./WorkbenchContextKeyBridgeShape.js";
-import { WorkbenchContextKeyServiceTag } from "../Tag/WorkbenchContextKeyServiceTag.js";
 
-const ResolveBridge = Effect.sync(
-	(): WorkbenchContextKeyBridgeShape | null => {
-		const Globals = globalThis as unknown as WorkbenchContextKeyGlobals;
-		return Globals.__CEL_SERVICES__?.ContextKey ?? null;
-	},
-);
+const ResolveBridge = Effect.sync((): WorkbenchContextKeyBridgeShape | null => {
+	const Globals = globalThis as unknown as WorkbenchContextKeyGlobals;
+	return Globals.__CEL_SERVICES__?.ContextKey ?? null;
+});
 
 const Unavailable: WorkbenchContextKeyProblem = {
 	_tag: "WorkbenchContextKeyBridgeUnavailable",

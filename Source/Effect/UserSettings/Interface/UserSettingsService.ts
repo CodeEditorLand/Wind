@@ -78,5 +78,8 @@ export interface UserSettingsService {
 	 * sections whose value changed; subscribers can `Read` the new
 	 * value with `Read(section)` after receiving an event.
 	 */
-	readonly Changes: Stream.Stream<UserSettingsChangeEvent, UserSettingsProblem>;
+	readonly Changes: Stream.Stream<
+		UserSettingsChangeEvent,
+		UserSettingsProblem
+	>;
 }

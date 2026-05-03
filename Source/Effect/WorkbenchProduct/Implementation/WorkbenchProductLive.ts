@@ -4,19 +4,17 @@ import type {
 	WorkbenchProductService,
 	WorkbenchProductSnapshot,
 } from "../Interface/WorkbenchProductService.js";
+import { WorkbenchProductServiceTag } from "../Tag/WorkbenchProductServiceTag.js";
 import type { WorkbenchProductProblem } from "../Type/WorkbenchProductProblem.js";
 import type {
 	WorkbenchProductBridgeShape,
 	WorkbenchProductGlobals,
 } from "./WorkbenchProductBridgeShape.js";
-import { WorkbenchProductServiceTag } from "../Tag/WorkbenchProductServiceTag.js";
 
-const ResolveBridge = Effect.sync(
-	(): WorkbenchProductBridgeShape | null => {
-		const Globals = globalThis as unknown as WorkbenchProductGlobals;
-		return Globals.__CEL_SERVICES__?.Product ?? null;
-	},
-);
+const ResolveBridge = Effect.sync((): WorkbenchProductBridgeShape | null => {
+	const Globals = globalThis as unknown as WorkbenchProductGlobals;
+	return Globals.__CEL_SERVICES__?.Product ?? null;
+});
 
 const Unavailable: WorkbenchProductProblem = {
 	_tag: "WorkbenchProductBridgeUnavailable",

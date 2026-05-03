@@ -30,7 +30,10 @@ const StripJSDocPrefix = (raw: string): string => {
 	const Lines = raw.split(/\r?\n/);
 	const Cleaned: string[] = [];
 	for (const Line of Lines) {
-		const Trimmed = Line.replace(/^\s*\/?\*+\/?/, "").replace(/\*+\/?$/, "");
+		const Trimmed = Line.replace(/^\s*\/?\*+\/?/, "").replace(
+			/\*+\/?$/,
+			"",
+		);
 		Cleaned.push(Trimmed.trim());
 	}
 	return Cleaned.filter((line) => line.length > 0).join("\n");

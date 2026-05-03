@@ -28,37 +28,40 @@ The Breath of `Land`: `VS Code` Environment & Services for `Tauri`.
 > serialize to JSON, send over a pipe, deserialize on the other side - in an
 > untyped, unstructured way.**
 
-_"Typed, `Effect-TS` native IPC. Workbench actions go through `Tauri` commands to
-`Rust` handlers, not an `Electron` JSON pipe."_
+_"Typed, `Effect-TS` native IPC. Workbench actions go through `Tauri` commands
+to `Rust` handlers, not an `Electron` JSON pipe."_
 
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://github.com/CodeEditorLand/Wind/tree/Current/LICENSE)
 [![NPM Version](https://img.shields.io/npm/v/@codeeditorland/wind.svg)](https://www.npmjs.com/package/@codeeditorland/wind)
 [![Tauri API Version](https://img.shields.io/badge/Tauri_API-v2.10.1-blue.svg)](https://www.npmjs.com/package/@tauri-apps/api)
 [![Effect Version](https://img.shields.io/badge/Effect-v3.19.18-blueviolet.svg)](https://www.npmjs.com/package/effect)
 
-Welcome to **Wind**&#x2001;🍃! This element is the vital **`Effect-TS` native service
-layer** that allows `Sky` (`Land`'s `VS Code`-based UI) to breathe and function
-within the **`Tauri`** shell. **Wind**&#x2001;🍃 meticulously recreates essential parts of
-the `VS Code` renderer environment, provides robust implementations of core
-services (like file dialogs and configuration), and integrates seamlessly with
-the `Mountain` backend via `Tauri` IPC. Rather than routing through an `Electron`
-IPC pipe with untyped JSON, `Wind` dispatches through typed `Tauri` commands whose
-handlers live in `Mountain`'s `Rust` core - all underpinned by **`Effect-TS`** for
-resilience and type safety.
+Welcome to **Wind**&#x2001;🍃! This element is the vital **`Effect-TS` native
+service layer** that allows `Sky` (`Land`'s `VS Code`-based UI) to breathe and
+function within the **`Tauri`** shell. **Wind**&#x2001;🍃 meticulously recreates
+essential parts of the `VS Code` renderer environment, provides robust
+implementations of core services (like file dialogs and configuration), and
+integrates seamlessly with the `Mountain` backend via `Tauri` IPC. Rather than
+routing through an `Electron` IPC pipe with untyped JSON, `Wind` dispatches
+through typed `Tauri` commands whose handlers live in `Mountain`'s `Rust` core -
+all underpinned by **`Effect-TS`** for resilience and type safety.
 
 **Wind**&#x2001;🍃 is engineered to:
 
 1. **Emulate the `VS Code` Sandbox:** Through a sophisticated
    [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)
-   script, it shims critical `Electron` and `Node.js` APIs that `VS Code`'s workbench
-   code expects, creating a compatible execution context inside the `Tauri` `WebView`.
-2. **Implement Core `VS Code` Services:** It provides frontend implementations for
-   key `VS Code` services via
+   script, it shims critical `Electron` and `Node.js` APIs that `VS Code`'s
+   workbench code expects, creating a compatible execution context inside the
+   `Tauri` `WebView`.
+2. **Implement Core `VS Code` Services:** It provides frontend implementations
+   for key `VS Code` services via
    [`Polyfills/NativeModulePolyfill.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Polyfills/NativeModulePolyfill.ts),
-   leveraging `Effect-TS` for highly reliable, composable, and maintainable logic.
-3. **Integrate with `Tauri` & Native Capabilities:** It offers a clean abstraction
-   layer over `Tauri` APIs for file operations, dialogs, and OS information,
-   making them accessible in a type-safe way through `Effect`-based wrappers.
+   leveraging `Effect-TS` for highly reliable, composable, and maintainable
+   logic.
+3. **Integrate with `Tauri` & Native Capabilities:** It offers a clean
+   abstraction layer over `Tauri` APIs for file operations, dialogs, and OS
+   information, making them accessible in a type-safe way through `Effect`-based
+   wrappers.
 
 ---
 
@@ -76,21 +79,23 @@ resilience and type safety.
   operations and service logic, ensuring that all potential failures are
   explicitly handled as typed, tagged errors for maximum robustness.
 - **Declarative Dependency Management:** Uses `Layer` and `Context.Tag` from
-  `Effect-TS` for clean dependency injection and composable service construction.
+  `Effect-TS` for clean dependency injection and composable service
+  construction.
 - **Clean Integration Layer:** Provides a clear abstraction layer over `Tauri`
-  APIs, isolating platform specifics and simplifying their usage within the application.
+  APIs, isolating platform specifics and simplifying their usage within the
+  application.
 
 ---
 
 ## Core Architecture Principles&#x2001;🏗️
 
-| Principle         | Description                                                                                                                                     | Key Components                                         |
-| :---------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------- |
-| **Compatibility** | High-fidelity `VS Code` renderer environment to maximize `Sky`'s reusability and minimize changes needed for `VS Code` UI components.           | `Preload.ts`, `Polyfills/`                             |
-| **Modularity**    | Components (preload, services, integrations) are organized into distinct, cohesive modules for clarity and maintainability.                     | `Effect/`, `Types/`, `Bootstrap/`                      |
-| **Robustness**    | `Effect-TS` for all service implementations and async operations, ensuring predictable error handling and composability.                        | All `Effect/` services with `Layer` and `Tag` patterns |
-| **Abstraction**   | Clean layer over `Tauri` APIs, replacing the untyped `Electron` IPC pipe with typed `Tauri` commands whose handlers live in `Rust`.             | `Preload.ts`, `Effect/IPC/`, `Effect/Mountain/`        |
-| **Integration**   | Seamlessly connect `Sky`'s frontend requests with `Mountain`'s backend capabilities through `Tauri`'s `invoke`/event system.                   | `Preload.ts` (`ipcRenderer` shim), `Effect/Mountain/`  |
+| Principle         | Description                                                                                                                           | Key Components                                         |
+| :---------------- | :------------------------------------------------------------------------------------------------------------------------------------ | :----------------------------------------------------- |
+| **Compatibility** | High-fidelity `VS Code` renderer environment to maximize `Sky`'s reusability and minimize changes needed for `VS Code` UI components. | `Preload.ts`, `Polyfills/`                             |
+| **Modularity**    | Components (preload, services, integrations) are organized into distinct, cohesive modules for clarity and maintainability.           | `Effect/`, `Types/`, `Bootstrap/`                      |
+| **Robustness**    | `Effect-TS` for all service implementations and async operations, ensuring predictable error handling and composability.              | All `Effect/` services with `Layer` and `Tag` patterns |
+| **Abstraction**   | Clean layer over `Tauri` APIs, replacing the untyped `Electron` IPC pipe with typed `Tauri` commands whose handlers live in `Rust`.   | `Preload.ts`, `Effect/IPC/`, `Effect/Mountain/`        |
+| **Integration**   | Seamlessly connect `Sky`'s frontend requests with `Mountain`'s backend capabilities through `Tauri`'s `invoke`/event system.          | `Preload.ts` (`ipcRenderer` shim), `Effect/Mountain/`  |
 
 ---
 
@@ -188,19 +193,21 @@ pnpm add @codeeditorland/wind
 
 **Key Dependencies:**
 
-| Package                          | Version  | Purpose                              |
-| :------------------------------- | :------- | :----------------------------------- |
-| `@tauri-apps/api`                | `2.10.1` | Tauri JS bridge                      |
-| `@tauri-apps/plugin-dialog`      | `2.6.0`  | Native OS file dialogs               |
-| `effect`                         | `3.19.18`| Structured concurrency & DI          |
-| `@effect/platform`               | `0.94.5` | Platform abstractions for Effect     |
+| Package                     | Version   | Purpose                          |
+| :-------------------------- | :-------- | :------------------------------- |
+| `@tauri-apps/api`           | `2.10.1`  | Tauri JS bridge                  |
+| `@tauri-apps/plugin-dialog` | `2.6.0`   | Native OS file dialogs           |
+| `effect`                    | `3.19.18` | Structured concurrency & DI      |
+| `@effect/platform`          | `0.94.5`  | Platform abstractions for Effect |
 
 ### Usage&#x2001;🚀
 
-`Wind` is primarily integrated via its `Preload.ts` script and its `Effect-TS` layers.
+`Wind` is primarily integrated via its `Preload.ts` script and its `Effect-TS`
+layers.
 
 1. **Integrate the Preload Script:** Configure your `tauri.config.json` to
-   include the bundled `Preload.js` from `Wind` in your main window's preload scripts.
+   include the bundled `Preload.js` from `Wind` in your main window's preload
+   scripts.
 
 2. **Use Services with `Effect-TS`:**
 
@@ -229,22 +236,22 @@ Runtime.runPromise(AppRuntime, InvokeEffect);
 
 ### Available Effect Services&#x2001;⚡
 
-| Service           | Import Path                                   | Description                             |
-| :---------------- | :-------------------------------------------- | :-------------------------------------- |
-| `IPC`             | `@codeeditorland/wind/Effect`                 | Inter-process communication via `Tauri` |
-| `Sandbox`         | `@codeeditorland/wind/Effect/Sandbox`         | Preload globals and environment         |
-| `Configuration`   | `@codeeditorland/wind/Effect/Configuration`   | Workbench configuration management      |
-| `Telemetry`       | `@codeeditorland/wind/Effect/Telemetry`       | Logging, spans, and metrics             |
-| `Mountain`        | `@codeeditorland/wind/Effect/Mountain`        | Backend RPC connection                  |
-| `MountainSync`    | `@codeeditorland/wind/Effect/MountainSync`    | Background synchronization              |
-| `Environment`     | `@codeeditorland/wind/Effect/Environment`     | System/platform detection               |
-| `Health`          | `@codeeditorland/wind/Effect/Health`          | Service health checks                   |
-| `Bootstrap`       | `@codeeditorland/wind/Effect/Bootstrap`       | Multi-stage bootstrap orchestration     |
-| `Clipboard`       | `@codeeditorland/wind/Effect/Clipboard`       | System clipboard access                 |
-| `ActivityBar`     | `@codeeditorland/wind/Effect/ActivityBar`     | `VS Code` activity bar management       |
-| `Panel`           | `@codeeditorland/wind/Effect/Panel`           | `VS Code` panel management              |
-| `Sidebar`         | `@codeeditorland/wind/Effect/Sidebar`         | `VS Code` sidebar management            |
-| `StatusBar`       | `@codeeditorland/wind/Effect/StatusBar`       | `VS Code` status bar management         |
+| Service         | Import Path                                 | Description                             |
+| :-------------- | :------------------------------------------ | :-------------------------------------- |
+| `IPC`           | `@codeeditorland/wind/Effect`               | Inter-process communication via `Tauri` |
+| `Sandbox`       | `@codeeditorland/wind/Effect/Sandbox`       | Preload globals and environment         |
+| `Configuration` | `@codeeditorland/wind/Effect/Configuration` | Workbench configuration management      |
+| `Telemetry`     | `@codeeditorland/wind/Effect/Telemetry`     | Logging, spans, and metrics             |
+| `Mountain`      | `@codeeditorland/wind/Effect/Mountain`      | Backend RPC connection                  |
+| `MountainSync`  | `@codeeditorland/wind/Effect/MountainSync`  | Background synchronization              |
+| `Environment`   | `@codeeditorland/wind/Effect/Environment`   | System/platform detection               |
+| `Health`        | `@codeeditorland/wind/Effect/Health`        | Service health checks                   |
+| `Bootstrap`     | `@codeeditorland/wind/Effect/Bootstrap`     | Multi-stage bootstrap orchestration     |
+| `Clipboard`     | `@codeeditorland/wind/Effect/Clipboard`     | System clipboard access                 |
+| `ActivityBar`   | `@codeeditorland/wind/Effect/ActivityBar`   | `VS Code` activity bar management       |
+| `Panel`         | `@codeeditorland/wind/Effect/Panel`         | `VS Code` panel management              |
+| `Sidebar`       | `@codeeditorland/wind/Effect/Sidebar`       | `VS Code` sidebar management            |
+| `StatusBar`     | `@codeeditorland/wind/Effect/StatusBar`     | `VS Code` status bar management         |
 
 ---
 
@@ -278,11 +285,11 @@ history of changes specific to **Wind**&#x2001;🍃.
 
 ## Funding \& Acknowledgements&#x2001;🙏🏻
 
-**Wind**&#x2001;🍃 is a core element of the **Land**&#x2001;🏞️ ecosystem. This project is funded
-through [NGI0 Commons Fund](https://NLnet.NL/commonsfund), a fund established by
-[NLnet](https://NLnet.NL) with financial support from the European Commission's
-[Next Generation Internet](https://ngi.eu) program. Learn more at the
-[NLnet project page](https://NLnet.NL/project/Land).
+**Wind**&#x2001;🍃 is a core element of the **Land**&#x2001;🏞️ ecosystem. This
+project is funded through [NGI0 Commons Fund](https://NLnet.NL/commonsfund), a
+fund established by [NLnet](https://NLnet.NL) with financial support from the
+European Commission's [Next Generation Internet](https://ngi.eu) program. Learn
+more at the [NLnet project page](https://NLnet.NL/project/Land).
 
 The project is operated by PlayForm, based in Sofia, Bulgaria.
 

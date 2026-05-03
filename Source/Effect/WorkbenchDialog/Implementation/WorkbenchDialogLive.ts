@@ -6,24 +6,21 @@ import type {
 	WorkbenchDialogPickOptions,
 	WorkbenchDialogService,
 } from "../Interface/WorkbenchDialogService.js";
+import { WorkbenchDialogServiceTag } from "../Tag/WorkbenchDialogServiceTag.js";
 import type { WorkbenchDialogProblem } from "../Type/WorkbenchDialogProblem.js";
 import type {
 	WorkbenchDialogBridgeShape,
 	WorkbenchDialogGlobals,
 } from "./WorkbenchDialogBridgeShape.js";
-import { WorkbenchDialogServiceTag } from "../Tag/WorkbenchDialogServiceTag.js";
 
-const ResolveBridge = Effect.sync(
-	(): WorkbenchDialogBridgeShape | null => {
-		const Globals = globalThis as unknown as WorkbenchDialogGlobals;
-		return Globals.__CEL_SERVICES__?.Dialog ?? null;
-	},
-);
+const ResolveBridge = Effect.sync((): WorkbenchDialogBridgeShape | null => {
+	const Globals = globalThis as unknown as WorkbenchDialogGlobals;
+	return Globals.__CEL_SERVICES__?.Dialog ?? null;
+});
 
 const Unavailable: WorkbenchDialogProblem = {
 	_tag: "WorkbenchDialogBridgeUnavailable",
-	reason:
-		"globalThis.__CEL_SERVICES__.Dialog is null - the workbench has not yet exposed its IDialogService handle.",
+	reason: "globalThis.__CEL_SERVICES__.Dialog is null - the workbench has not yet exposed its IDialogService handle.",
 };
 
 const ToError = (cause: unknown): Error =>
@@ -36,7 +33,10 @@ export const WorkbenchDialogLive = Layer.effect(
 
 		const Confirm = (
 			Options: WorkbenchDialogConfirmOptions,
-		): Effect.Effect<WorkbenchDialogConfirmResult, WorkbenchDialogProblem> =>
+		): Effect.Effect<
+			WorkbenchDialogConfirmResult,
+			WorkbenchDialogProblem
+		> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
 				return yield* Effect.tryPromise({
@@ -61,7 +61,9 @@ export const WorkbenchDialogLive = Layer.effect(
 		): Effect.Effect<number, WorkbenchDialogProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
-				const Buttons = Options.choices.map((Label) => ({ label: Label }));
+				const Buttons = Options.choices.map((Label) => ({
+					label: Label,
+				}));
 				const Result = yield* Effect.tryPromise({
 					try: () =>
 						Bridge.prompt({
@@ -70,7 +72,11 @@ export const WorkbenchDialogLive = Layer.effect(
 							buttons: Buttons,
 							cancelButton:
 								Options.cancelId !== undefined
-									? { label: Options.choices[Options.cancelId]! }
+									? {
+											label: Options.choices[
+												Options.cancelId
+											]!,
+										}
 									: undefined,
 						}),
 					catch: (Cause) =>

@@ -3,9 +3,9 @@ import type { WorkbenchLayoutPart } from "../Interface/WorkbenchLayoutService.js
 export interface WorkbenchLayoutBridgeShape {
 	readonly isVisible: (partId: string) => boolean;
 	readonly setPartHidden: (hidden: boolean, partId: string) => void;
-	readonly onDidChangePartVisibility: (
-		listener: () => void,
-	) => { readonly dispose: () => void };
+	readonly onDidChangePartVisibility: (listener: () => void) => {
+		readonly dispose: () => void;
+	};
 }
 
 export interface WorkbenchLayoutGlobals {
@@ -19,9 +19,7 @@ export interface WorkbenchLayoutGlobals {
  *   workbench.parts.titlebar / activitybar / sidebar / panel /
  *   auxiliarybar / statusbar / banner / editor.
  */
-export const WorkbenchLayoutPartId = (
-	part: WorkbenchLayoutPart,
-): string => {
+export const WorkbenchLayoutPartId = (part: WorkbenchLayoutPart): string => {
 	switch (part) {
 		case "ActivityBar":
 			return "workbench.parts.activitybar";

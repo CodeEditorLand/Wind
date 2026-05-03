@@ -6,6 +6,7 @@ import type {
 	WorkbenchWorkspaceService,
 	WorkbenchWorkspaceSnapshot,
 } from "../Interface/WorkbenchWorkspaceService.js";
+import { WorkbenchWorkspaceServiceTag } from "../Tag/WorkbenchWorkspaceServiceTag.js";
 import type { WorkbenchWorkspaceProblem } from "../Type/WorkbenchWorkspaceProblem.js";
 import type {
 	UpstreamWorkspace,
@@ -13,14 +14,11 @@ import type {
 	WorkbenchWorkspaceBridgeShape,
 	WorkbenchWorkspaceGlobals,
 } from "./WorkbenchWorkspaceBridgeShape.js";
-import { WorkbenchWorkspaceServiceTag } from "../Tag/WorkbenchWorkspaceServiceTag.js";
 
-const ResolveBridge = Effect.sync(
-	(): WorkbenchWorkspaceBridgeShape | null => {
-		const Globals = globalThis as unknown as WorkbenchWorkspaceGlobals;
-		return Globals.__CEL_SERVICES__?.Workspace ?? null;
-	},
-);
+const ResolveBridge = Effect.sync((): WorkbenchWorkspaceBridgeShape | null => {
+	const Globals = globalThis as unknown as WorkbenchWorkspaceGlobals;
+	return Globals.__CEL_SERVICES__?.Workspace ?? null;
+});
 
 const Unavailable: WorkbenchWorkspaceProblem = {
 	_tag: "WorkbenchWorkspaceBridgeUnavailable",
@@ -38,7 +36,9 @@ const ToFolder = (
 	index: folder.index,
 });
 
-const ToSnapshot = (workspace: UpstreamWorkspace): WorkbenchWorkspaceSnapshot => ({
+const ToSnapshot = (
+	workspace: UpstreamWorkspace,
+): WorkbenchWorkspaceSnapshot => ({
 	id: workspace.id,
 	folders: workspace.folders.map(ToFolder),
 	transient: workspace.transient ?? false,

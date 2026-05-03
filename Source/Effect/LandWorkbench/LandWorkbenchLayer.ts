@@ -16,6 +16,7 @@
 
 import { Layer } from "effect";
 
+import { UserSettingsLive } from "../UserSettings/Implementation/UserSettingsLive.js";
 import { WorkbenchActivityLive } from "../WorkbenchActivity/Implementation/WorkbenchActivityLive.js";
 import { WorkbenchClipboardLive } from "../WorkbenchClipboard/Implementation/WorkbenchClipboardLive.js";
 import { WorkbenchCommandLive } from "../WorkbenchCommand/Implementation/WorkbenchCommandLive.js";
@@ -33,7 +34,6 @@ import { WorkbenchProgressLive } from "../WorkbenchProgress/Implementation/Workb
 import { WorkbenchStorageLive } from "../WorkbenchStorage/Implementation/WorkbenchStorageLive.js";
 import { WorkbenchThemeLive } from "../WorkbenchTheme/Implementation/WorkbenchThemeLive.js";
 import { WorkbenchWorkspaceLive } from "../WorkbenchWorkspace/Implementation/WorkbenchWorkspaceLive.js";
-import { UserSettingsLive } from "../UserSettings/Implementation/UserSettingsLive.js";
 
 export const LandWorkbenchLayer = Layer.mergeAll(
 	UserSettingsLive,

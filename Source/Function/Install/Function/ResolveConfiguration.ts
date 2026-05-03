@@ -154,7 +154,8 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 					id: Array.from(FolderParam)
 						.reduce(
 							(Hash, Character) =>
-								((Hash << 5) - Hash + Character.charCodeAt(0)) | 0,
+								((Hash << 5) - Hash + Character.charCodeAt(0)) |
+								0,
 							0,
 						)
 						.toString(16)

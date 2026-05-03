@@ -33,9 +33,15 @@ const ReadString = (Key: string, Fallback: string): string => {
 	return Fallback;
 };
 
+// `Capture=false` is the master telemetry kill switch shared with
+// Mountain / Cocoon / Sky / Output / Build.sh. Distinct from
+// `.env.Land.Diagnostics`'s `Disable` (polyfill / shim kill switch).
+const TelemetryCaptureEnabled = ReadString("Capture", "true") !== "false";
+
 export default (): Configuration => ({
 	Key: ReadString("Authorize", DefaultKey),
 	Host: ReadString("Beam", DefaultHost),
-	Enabled: ReadString("Report", "true") !== "false",
+	Enabled:
+		TelemetryCaptureEnabled && ReadString("Report", "true") !== "false",
 	DistinctIdentifierSeed: ReadString("Brand", ""),
 });

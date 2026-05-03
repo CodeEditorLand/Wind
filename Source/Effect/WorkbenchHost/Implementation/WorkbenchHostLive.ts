@@ -1,12 +1,12 @@
 import { Effect, Layer, Stream } from "effect";
 
 import type { WorkbenchHostService } from "../Interface/WorkbenchHostService.js";
+import { WorkbenchHostServiceTag } from "../Tag/WorkbenchHostServiceTag.js";
 import type { WorkbenchHostProblem } from "../Type/WorkbenchHostProblem.js";
 import type {
 	WorkbenchHostBridgeShape,
 	WorkbenchHostGlobals,
 } from "./WorkbenchHostBridgeShape.js";
-import { WorkbenchHostServiceTag } from "../Tag/WorkbenchHostServiceTag.js";
 
 const ResolveBridge = Effect.sync((): WorkbenchHostBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchHostGlobals;
@@ -75,7 +75,9 @@ export const WorkbenchHostLive = Layer.effect(
 				if (!Bridge) return yield* Effect.fail(Unavailable);
 				yield* Wrap("openWindow", () =>
 					Bridge.openWindow(
-						Uris.map((Value) => ({ uri: { toString: () => Value } })),
+						Uris.map((Value) => ({
+							uri: { toString: () => Value },
+						})),
 					),
 				);
 			});

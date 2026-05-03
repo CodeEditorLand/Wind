@@ -1,19 +1,17 @@
 import { Effect, Layer } from "effect";
 
 import type { WorkbenchClipboardService } from "../Interface/WorkbenchClipboardService.js";
+import { WorkbenchClipboardServiceTag } from "../Tag/WorkbenchClipboardServiceTag.js";
 import type { WorkbenchClipboardProblem } from "../Type/WorkbenchClipboardProblem.js";
 import type {
 	WorkbenchClipboardBridgeShape,
 	WorkbenchClipboardGlobals,
 } from "./WorkbenchClipboardBridgeShape.js";
-import { WorkbenchClipboardServiceTag } from "../Tag/WorkbenchClipboardServiceTag.js";
 
-const ResolveBridge = Effect.sync(
-	(): WorkbenchClipboardBridgeShape | null => {
-		const Globals = globalThis as unknown as WorkbenchClipboardGlobals;
-		return Globals.__CEL_SERVICES__?.Clipboard ?? null;
-	},
-);
+const ResolveBridge = Effect.sync((): WorkbenchClipboardBridgeShape | null => {
+	const Globals = globalThis as unknown as WorkbenchClipboardGlobals;
+	return Globals.__CEL_SERVICES__?.Clipboard ?? null;
+});
 
 const Unavailable: WorkbenchClipboardProblem = {
 	_tag: "WorkbenchClipboardBridgeUnavailable",

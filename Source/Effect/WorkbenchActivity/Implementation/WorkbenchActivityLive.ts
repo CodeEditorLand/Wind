@@ -4,20 +4,18 @@ import type {
 	WorkbenchActivityBadge,
 	WorkbenchActivityService,
 } from "../Interface/WorkbenchActivityService.js";
+import { WorkbenchActivityServiceTag } from "../Tag/WorkbenchActivityServiceTag.js";
 import type { WorkbenchActivityProblem } from "../Type/WorkbenchActivityProblem.js";
 import type {
 	UpstreamWorkbenchBadge,
 	WorkbenchActivityBridgeShape,
 	WorkbenchActivityGlobals,
 } from "./WorkbenchActivityBridgeShape.js";
-import { WorkbenchActivityServiceTag } from "../Tag/WorkbenchActivityServiceTag.js";
 
-const ResolveBridge = Effect.sync(
-	(): WorkbenchActivityBridgeShape | null => {
-		const Globals = globalThis as unknown as WorkbenchActivityGlobals;
-		return Globals.__CEL_SERVICES__?.Activity ?? null;
-	},
-);
+const ResolveBridge = Effect.sync((): WorkbenchActivityBridgeShape | null => {
+	const Globals = globalThis as unknown as WorkbenchActivityGlobals;
+	return Globals.__CEL_SERVICES__?.Activity ?? null;
+});
 
 const Unavailable: WorkbenchActivityProblem = {
 	_tag: "WorkbenchActivityBridgeUnavailable",

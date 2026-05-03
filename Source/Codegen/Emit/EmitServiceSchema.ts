@@ -25,15 +25,12 @@ import { dirname, join } from "node:path";
 
 import type { CodegenProblem } from "../Type/CodegenProblem.js";
 import type {
-	InterfaceMemberRecord,
 	InterfaceMemberParameter,
+	InterfaceMemberRecord,
 } from "../Type/InterfaceMemberRecord.js";
 import type { ServiceDecoratorRecord } from "../Type/ServiceDecoratorRecord.js";
 
-const FormatDocComment = (
-	doc: string | null,
-	indent: string,
-): string => {
+const FormatDocComment = (doc: string | null, indent: string): string => {
 	if (!doc) return "";
 	const Lines = doc.split(/\r?\n/);
 	const Body = Lines.map((line) => `${indent} * ${line}`.trimEnd()).join(
@@ -65,7 +62,9 @@ const FormatMemberRecord = (
 		(parameter) =>
 			`{ Name: ${JSON.stringify(parameter.Name)}, TypeText: ${JSON.stringify(parameter.TypeText)}, Optional: ${parameter.Optional} }`,
 	).join(", ");
-	const DocText = member.DocComment ? JSON.stringify(member.DocComment) : "null";
+	const DocText = member.DocComment
+		? JSON.stringify(member.DocComment)
+		: "null";
 	const Trailing = index === total - 1 ? "" : ",";
 	return [
 		`\t{`,
@@ -109,11 +108,9 @@ const FormatOutput = (record: ServiceDecoratorRecord): string => {
 	const RecordList =
 		SortedMembers.length === 0
 			? ""
-			: SortedMembers
-					.map((member, index) =>
-						FormatMemberRecord(member, index, SortedMembers.length),
-					)
-					.join("\n");
+			: SortedMembers.map((member, index) =>
+					FormatMemberRecord(member, index, SortedMembers.length),
+				).join("\n");
 	const InterfaceDoc = FormatDocComment(record.InterfaceDocComment, "");
 	const DecoratorDoc = FormatDocComment(record.DecoratorDocComment, "");
 	const InterfaceTypeName = `${record.DecoratorName}Upstream`;
@@ -127,7 +124,9 @@ const FormatOutput = (record: ServiceDecoratorRecord): string => {
 		`export const ${record.DecoratorName}SourceLine = ${record.SourceLine} as const;`,
 		"",
 		DecoratorDoc.length > 0
-			? `// Decorator doc:\n${DecoratorDoc.split("\n").map((line) => `// ${line}`).join("\n")}`
+			? `// Decorator doc:\n${DecoratorDoc.split("\n")
+					.map((line) => `// ${line}`)
+					.join("\n")}`
 			: "",
 		"",
 		InterfaceDoc.length > 0 ? InterfaceDoc : "",
@@ -140,7 +139,11 @@ const FormatOutput = (record: ServiceDecoratorRecord): string => {
 		"] as const;",
 		"",
 	];
-	return Body.filter((part) => part !== "").join("\n").trim() + "\n";
+	return (
+		Body.filter((part) => part !== "")
+			.join("\n")
+			.trim() + "\n"
+	);
 };
 
 export const EmitServiceSchema = async (
@@ -153,7 +156,10 @@ export const EmitServiceSchema = async (
 		"Generated",
 		options.Record.DecoratorName,
 	);
-	const OutputPath = join(Folder, `${options.Record.DecoratorName}Upstream.ts`);
+	const OutputPath = join(
+		Folder,
+		`${options.Record.DecoratorName}Upstream.ts`,
+	);
 	try {
 		await mkdir(dirname(OutputPath), { recursive: true });
 		await writeFile(OutputPath, Output, "utf8");

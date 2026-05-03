@@ -5,21 +5,19 @@ import type {
 	WorkbenchProgressService,
 	WorkbenchProgressTaskOptions,
 } from "../Interface/WorkbenchProgressService.js";
-import type { WorkbenchProgressProblem } from "../Type/WorkbenchProgressProblem.js";
-import type {
-	UpstreamProgressReporter,
-	WorkbenchProgressBridgeShape,
-	WorkbenchProgressGlobals,
-} from "./WorkbenchProgressBridgeShape.js";
-import { WorkbenchProgressLocationCode } from "./WorkbenchProgressBridgeShape.js";
 import { WorkbenchProgressServiceTag } from "../Tag/WorkbenchProgressServiceTag.js";
+import type { WorkbenchProgressProblem } from "../Type/WorkbenchProgressProblem.js";
+import {
+	WorkbenchProgressLocationCode,
+	type UpstreamProgressReporter,
+	type WorkbenchProgressBridgeShape,
+	type WorkbenchProgressGlobals,
+} from "./WorkbenchProgressBridgeShape.js";
 
-const ResolveBridge = Effect.sync(
-	(): WorkbenchProgressBridgeShape | null => {
-		const Globals = globalThis as unknown as WorkbenchProgressGlobals;
-		return Globals.__CEL_SERVICES__?.Progress ?? null;
-	},
-);
+const ResolveBridge = Effect.sync((): WorkbenchProgressBridgeShape | null => {
+	const Globals = globalThis as unknown as WorkbenchProgressGlobals;
+	return Globals.__CEL_SERVICES__?.Progress ?? null;
+});
 
 const Unavailable: WorkbenchProgressProblem = {
 	_tag: "WorkbenchProgressBridgeUnavailable",
@@ -59,7 +57,9 @@ export const WorkbenchProgressLive = Layer.effect(
 						Bridge.withProgress(
 							{
 								title: Options.title,
-								location: WorkbenchProgressLocationCode(Options.location),
+								location: WorkbenchProgressLocationCode(
+									Options.location,
+								),
 								cancellable: Options.cancellable,
 								source: Options.source,
 							},

@@ -66,7 +66,7 @@ const FormatOutput = (
 	// `registerCommand` calls are usually re-registrations from
 	// extension-host shims or test fixtures).
 	const Seen = new Set<string>();
-	const Filtered:CommandRegistrationRecord[] = [];
+	const Filtered: CommandRegistrationRecord[] = [];
 	for (const Record of records) {
 		if (Seen.has(Record.CommandIdentifier)) continue;
 		Seen.add(Record.CommandIdentifier);
@@ -90,11 +90,11 @@ const FormatOutput = (
 		" * @category Generated",
 		" */",
 		"",
-		'export type CommandRegistrationKind =',
-		"\t| \"CommandsRegistry\"",
-		"\t| \"KeybindingsRegistry\"",
-		"\t| \"MenuRegistry\"",
-		"\t| \"ActionDescriptor\";",
+		"export type CommandRegistrationKind =",
+		'\t| "CommandsRegistry"',
+		'\t| "KeybindingsRegistry"',
+		'\t| "MenuRegistry"',
+		'\t| "ActionDescriptor";',
 		"",
 		"export interface CommandCatalogEntry {",
 		"\treadonly CommandIdentifier: string;",

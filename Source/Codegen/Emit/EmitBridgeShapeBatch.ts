@@ -14,7 +14,6 @@
 
 import type { CodegenProblem } from "../Type/CodegenProblem.js";
 import type { ServiceDecoratorRecord } from "../Type/ServiceDecoratorRecord.js";
-
 import { EmitBridgeShape } from "./EmitBridgeShape.js";
 
 export interface BridgeShapeManifestEntry {

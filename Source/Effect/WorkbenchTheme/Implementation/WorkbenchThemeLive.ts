@@ -5,31 +5,28 @@ import type {
 	WorkbenchThemeDescriptor,
 	WorkbenchThemeService,
 } from "../Interface/WorkbenchThemeService.js";
-import type { WorkbenchThemeProblem } from "../Type/WorkbenchThemeProblem.js";
-import type {
-	UpstreamWorkbenchColorTheme,
-	UpstreamWorkbenchTheme,
-	WorkbenchThemeBridgeShape,
-	WorkbenchThemeGlobals,
-} from "./WorkbenchThemeBridgeShape.js";
-import { WorkbenchThemeKindFromUpstream } from "./WorkbenchThemeBridgeShape.js";
 import { WorkbenchThemeServiceTag } from "../Tag/WorkbenchThemeServiceTag.js";
+import type { WorkbenchThemeProblem } from "../Type/WorkbenchThemeProblem.js";
+import {
+	WorkbenchThemeKindFromUpstream,
+	type UpstreamWorkbenchColorTheme,
+	type UpstreamWorkbenchTheme,
+	type WorkbenchThemeBridgeShape,
+	type WorkbenchThemeGlobals,
+} from "./WorkbenchThemeBridgeShape.js";
 
-const ResolveBridge = Effect.sync(
-	(): WorkbenchThemeBridgeShape | null => {
-		const Globals = globalThis as unknown as WorkbenchThemeGlobals;
-		return (
-			Globals.__CEL_SERVICES__?.WorkbenchTheme ??
-			Globals.__CEL_SERVICES__?.Theme ??
-			null
-		);
-	},
-);
+const ResolveBridge = Effect.sync((): WorkbenchThemeBridgeShape | null => {
+	const Globals = globalThis as unknown as WorkbenchThemeGlobals;
+	return (
+		Globals.__CEL_SERVICES__?.WorkbenchTheme ??
+		Globals.__CEL_SERVICES__?.Theme ??
+		null
+	);
+});
 
 const Unavailable: WorkbenchThemeProblem = {
 	_tag: "WorkbenchThemeBridgeUnavailable",
-	reason:
-		"globalThis.__CEL_SERVICES__.WorkbenchTheme is null - the workbench has not yet exposed its IWorkbenchThemeService handle.",
+	reason: "globalThis.__CEL_SERVICES__.WorkbenchTheme is null - the workbench has not yet exposed its IWorkbenchThemeService handle.",
 };
 
 const ToDescriptor = (
@@ -55,9 +52,7 @@ export const WorkbenchThemeLive = Layer.effect(
 
 		const List = Effect.gen(function* () {
 			if (!Bridge) return yield* Effect.fail(Unavailable);
-			const Themes = yield* Effect.promise(() =>
-				Bridge.getColorThemes(),
-			);
+			const Themes = yield* Effect.promise(() => Bridge.getColorThemes());
 			return Themes.map(ToDescriptor);
 		});
 

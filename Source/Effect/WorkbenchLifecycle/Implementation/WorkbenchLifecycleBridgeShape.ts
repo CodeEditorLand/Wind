@@ -9,9 +9,9 @@ export interface WorkbenchLifecycleBridgeShape {
 	readonly onWillShutdown: (
 		listener: (event: { reason: number }) => void,
 	) => { readonly dispose: () => void };
-	readonly onDidShutdown: (
-		listener: () => void,
-	) => { readonly dispose: () => void };
+	readonly onDidShutdown: (listener: () => void) => {
+		readonly dispose: () => void;
+	};
 }
 
 export interface WorkbenchLifecycleGlobals {

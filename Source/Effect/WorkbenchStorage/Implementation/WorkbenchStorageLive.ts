@@ -23,6 +23,7 @@ import type {
 	WorkbenchStorageService,
 	WorkbenchStorageTarget,
 } from "../Interface/WorkbenchStorageService.js";
+import { WorkbenchStorageServiceTag } from "../Tag/WorkbenchStorageServiceTag.js";
 import type { WorkbenchStorageProblem } from "../Type/WorkbenchStorageProblem.js";
 import type {
 	WorkbenchStorageBridgeShape,
@@ -33,16 +34,13 @@ import {
 	WorkbenchStorageScopeFromCode,
 	WorkbenchStorageTargetCode,
 } from "./WorkbenchStorageScopeCode.js";
-import { WorkbenchStorageServiceTag } from "../Tag/WorkbenchStorageServiceTag.js";
 
 const ResolveBridge = Effect.sync((): WorkbenchStorageBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchStorageGlobals;
 	return Globals.__CEL_SERVICES__?.Storage ?? null;
 });
 
-const BridgeUnavailable = (
-	Reason: string,
-): WorkbenchStorageProblem => ({
+const BridgeUnavailable = (Reason: string): WorkbenchStorageProblem => ({
 	_tag: "WorkbenchStorageBridgeUnavailable",
 	reason: Reason,
 });

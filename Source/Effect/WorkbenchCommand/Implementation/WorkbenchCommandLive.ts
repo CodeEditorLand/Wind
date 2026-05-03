@@ -4,13 +4,13 @@ import type {
 	WorkbenchCommandExecutedEvent,
 	WorkbenchCommandService,
 } from "../Interface/WorkbenchCommandService.js";
+import { WorkbenchCommandServiceTag } from "../Tag/WorkbenchCommandServiceTag.js";
 import type { WorkbenchCommandProblem } from "../Type/WorkbenchCommandProblem.js";
 import type {
 	WorkbenchCommandBridgeShape,
 	WorkbenchCommandGlobals,
 	WorkbenchCommandRegistryShape,
 } from "./WorkbenchCommandBridgeShape.js";
-import { WorkbenchCommandServiceTag } from "../Tag/WorkbenchCommandServiceTag.js";
 
 const ResolveBridges = Effect.sync(
 	(): {
@@ -27,8 +27,7 @@ const ResolveBridges = Effect.sync(
 
 const Unavailable: WorkbenchCommandProblem = {
 	_tag: "WorkbenchCommandBridgeUnavailable",
-	reason:
-		"globalThis.__CEL_SERVICES__.Commands is null - the workbench has not yet exposed its ICommandService handle.",
+	reason: "globalThis.__CEL_SERVICES__.Commands is null - the workbench has not yet exposed its ICommandService handle.",
 };
 
 const ToError = (cause: unknown): Error =>
@@ -46,8 +45,7 @@ export const WorkbenchCommandLive = Layer.effect(
 			Effect.gen(function* () {
 				if (!Commands) return yield* Effect.fail(Unavailable);
 				const Result = yield* Effect.tryPromise({
-					try: () =>
-						Commands.executeCommand<T>(CommandId, ...Args),
+					try: () => Commands.executeCommand<T>(CommandId, ...Args),
 					catch: (Cause) =>
 						({
 							_tag: "WorkbenchCommandExecutionFailed",
@@ -71,8 +69,7 @@ export const WorkbenchCommandLive = Layer.effect(
 			Effect.gen(function* () {
 				if (!Commands) return yield* Effect.fail(Unavailable);
 				yield* Effect.tryPromise({
-					try: () =>
-						Commands.executeCommand(CommandId, ...Args),
+					try: () => Commands.executeCommand(CommandId, ...Args),
 					catch: (Cause) =>
 						({
 							_tag: "WorkbenchCommandExecutionFailed",

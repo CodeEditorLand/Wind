@@ -34,10 +34,6 @@
 
 import { existsSync } from "node:fs";
 
-import type { CodegenProblem } from "./Type/CodegenProblem.js";
-import type { CommandRegistrationRecord } from "./Type/CommandRegistrationRecord.js";
-import type { ServiceDecoratorRecord } from "./Type/ServiceDecoratorRecord.js";
-
 import { EmitBridgeShapeBatch } from "./Emit/EmitBridgeShapeBatch.js";
 import { EmitCommandCatalog } from "./Emit/EmitCommandCatalog.js";
 import { EmitServiceCatalog } from "./Emit/EmitServiceCatalog.js";
@@ -45,6 +41,9 @@ import { EmitServiceSchema } from "./Emit/EmitServiceSchema.js";
 import { IterateCommandRegistrations } from "./Extract/IterateCommandRegistrations.js";
 import { IterateServiceDecorators } from "./Extract/IterateServiceDecorators.js";
 import { WorkbenchBridgeShapeManifest } from "./Manifest/WorkbenchBridgeShapeManifest.js";
+import type { CodegenProblem } from "./Type/CodegenProblem.js";
+import type { CommandRegistrationRecord } from "./Type/CommandRegistrationRecord.js";
+import type { ServiceDecoratorRecord } from "./Type/ServiceDecoratorRecord.js";
 import { WalkSourceTree } from "./Walk/SourceTreeWalker.js";
 
 export interface RunCodegenOptions {
@@ -148,7 +147,7 @@ export const RunCodegen = async (
 		IncludeExtensions: [".ts"],
 		ExcludeSegments: [],
 	});
-	const CommandRecords:CommandRegistrationRecord[] = [];
+	const CommandRecords: CommandRegistrationRecord[] = [];
 	for await (const Record of IterateCommandRegistrations(CommandFiles)) {
 		CommandRecords.push(Record);
 	}

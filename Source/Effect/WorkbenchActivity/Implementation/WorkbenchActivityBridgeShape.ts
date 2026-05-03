@@ -7,18 +7,26 @@ export interface UpstreamWorkbenchBadge {
 export interface WorkbenchActivityBridgeShape {
 	readonly showViewContainerActivity: (
 		viewContainerId: string,
-		activity: { readonly badge: UpstreamWorkbenchBadge; readonly priority?: number },
+		activity: {
+			readonly badge: UpstreamWorkbenchBadge;
+			readonly priority?: number;
+		},
 	) => { readonly dispose: () => void };
 	readonly showViewActivity: (
 		viewId: string,
-		activity: { readonly badge: UpstreamWorkbenchBadge; readonly priority?: number },
+		activity: {
+			readonly badge: UpstreamWorkbenchBadge;
+			readonly priority?: number;
+		},
 	) => { readonly dispose: () => void };
-	readonly showAccountsActivity: (
-		activity: { readonly badge: UpstreamWorkbenchBadge; readonly priority?: number },
-	) => { readonly dispose: () => void };
-	readonly showGlobalActivity: (
-		activity: { readonly badge: UpstreamWorkbenchBadge; readonly priority?: number },
-	) => { readonly dispose: () => void };
+	readonly showAccountsActivity: (activity: {
+		readonly badge: UpstreamWorkbenchBadge;
+		readonly priority?: number;
+	}) => { readonly dispose: () => void };
+	readonly showGlobalActivity: (activity: {
+		readonly badge: UpstreamWorkbenchBadge;
+		readonly priority?: number;
+	}) => { readonly dispose: () => void };
 }
 
 export interface WorkbenchActivityGlobals {

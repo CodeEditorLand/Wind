@@ -4,20 +4,18 @@ import type {
 	WorkbenchExtensionDescriptor,
 	WorkbenchExtensionService,
 } from "../Interface/WorkbenchExtensionService.js";
+import { WorkbenchExtensionServiceTag } from "../Tag/WorkbenchExtensionServiceTag.js";
 import type { WorkbenchExtensionProblem } from "../Type/WorkbenchExtensionProblem.js";
 import type {
 	UpstreamExtensionDescriptor,
 	WorkbenchExtensionBridgeShape,
 	WorkbenchExtensionGlobals,
 } from "./WorkbenchExtensionBridgeShape.js";
-import { WorkbenchExtensionServiceTag } from "../Tag/WorkbenchExtensionServiceTag.js";
 
-const ResolveBridge = Effect.sync(
-	(): WorkbenchExtensionBridgeShape | null => {
-		const Globals = globalThis as unknown as WorkbenchExtensionGlobals;
-		return Globals.__CEL_SERVICES__?.Extension ?? null;
-	},
-);
+const ResolveBridge = Effect.sync((): WorkbenchExtensionBridgeShape | null => {
+	const Globals = globalThis as unknown as WorkbenchExtensionGlobals;
+	return Globals.__CEL_SERVICES__?.Extension ?? null;
+});
 
 const Unavailable: WorkbenchExtensionProblem = {
 	_tag: "WorkbenchExtensionBridgeUnavailable",

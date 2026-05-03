@@ -6,20 +6,18 @@ import type {
 	WorkbenchEditorOpenInput,
 	WorkbenchEditorService,
 } from "../Interface/WorkbenchEditorService.js";
+import { WorkbenchEditorServiceTag } from "../Tag/WorkbenchEditorServiceTag.js";
 import type { WorkbenchEditorProblem } from "../Type/WorkbenchEditorProblem.js";
 import type {
 	UpstreamEditorPaneSnapshot,
 	WorkbenchEditorBridgeShape,
 	WorkbenchEditorGlobals,
 } from "./WorkbenchEditorBridgeShape.js";
-import { WorkbenchEditorServiceTag } from "../Tag/WorkbenchEditorServiceTag.js";
 
-const ResolveBridge = Effect.sync(
-	(): WorkbenchEditorBridgeShape | null => {
-		const Globals = globalThis as unknown as WorkbenchEditorGlobals;
-		return Globals.__CEL_SERVICES__?.Editor ?? null;
-	},
-);
+const ResolveBridge = Effect.sync((): WorkbenchEditorBridgeShape | null => {
+	const Globals = globalThis as unknown as WorkbenchEditorGlobals;
+	return Globals.__CEL_SERVICES__?.Editor ?? null;
+});
 
 const Unavailable: WorkbenchEditorProblem = {
 	_tag: "WorkbenchEditorBridgeUnavailable",
@@ -63,7 +61,10 @@ export const WorkbenchEditorLive = Layer.effect(
 
 		const Open = (
 			Input: WorkbenchEditorOpenInput,
-		): Effect.Effect<WorkbenchEditorActiveSnapshot, WorkbenchEditorProblem> =>
+		): Effect.Effect<
+			WorkbenchEditorActiveSnapshot,
+			WorkbenchEditorProblem
+		> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
 				const Pane = yield* Effect.tryPromise({
@@ -102,7 +103,9 @@ export const WorkbenchEditorLive = Layer.effect(
 						({
 							_tag: "WorkbenchEditorCloseFailed",
 							editorId:
-								Pane.input?.editorId ?? Pane.getId?.() ?? "<active>",
+								Pane.input?.editorId ??
+								Pane.getId?.() ??
+								"<active>",
 							error: ToError(Cause),
 						}) satisfies WorkbenchEditorProblem,
 				});
@@ -118,7 +121,9 @@ export const WorkbenchEditorLive = Layer.effect(
 			}
 			const Subscription = Bridge.onDidActiveEditorChange((Event) => {
 				Emit.single({
-					previous: Event.previous ? ToSnapshot(Event.previous) : null,
+					previous: Event.previous
+						? ToSnapshot(Event.previous)
+						: null,
 					current: ToSnapshot(Event.current),
 				});
 			});

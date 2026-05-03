@@ -24,10 +24,18 @@ import { LandWorkbenchRuntime } from "./LandWorkbenchRuntime.js";
 export interface CELWindGlobalShape {
 	readonly Layer: typeof LandWorkbenchLayer;
 	readonly RunPromise: <A, E>(
-		effect: Effect.Effect<A, E, Layer.Layer.Success<typeof LandWorkbenchLayer>>,
+		effect: Effect.Effect<
+			A,
+			E,
+			Layer.Layer.Success<typeof LandWorkbenchLayer>
+		>,
 	) => Promise<A>;
 	readonly RunPromiseExit: <A, E>(
-		effect: Effect.Effect<A, E, Layer.Layer.Success<typeof LandWorkbenchLayer>>,
+		effect: Effect.Effect<
+			A,
+			E,
+			Layer.Layer.Success<typeof LandWorkbenchLayer>
+		>,
 	) => Promise<{
 		readonly _tag: "Success" | "Failure";
 		readonly value?: A;
@@ -51,9 +59,8 @@ export const InstallLandWorkbench = (): CELWindGlobalShape => {
 		RunPromise: (effect) =>
 			LandWorkbenchRuntime.Get().runPromise(effect) as Promise<never>,
 		RunPromiseExit: async (effect) => {
-			const Exit = await LandWorkbenchRuntime.Get().runPromiseExit(
-				effect,
-			);
+			const Exit =
+				await LandWorkbenchRuntime.Get().runPromiseExit(effect);
 			if (Exit._tag === "Success") {
 				return { _tag: "Success", value: Exit.value as never };
 			}

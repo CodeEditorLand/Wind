@@ -42,7 +42,6 @@
  */
 
 import type { Channel as TauriChannel } from "@tauri-apps/api/core";
-
 import { Context, Effect, Layer, Queue, Stream } from "effect";
 
 /**
@@ -98,10 +97,14 @@ export const VineNotificationsLive = Layer.scoped(
 					Channel: Module.Channel,
 					invoke: Module.invoke,
 				})),
-			catch: (error) => new Error(`Failed to load @tauri-apps/api/core: ${String(error)}`),
+			catch: (error) =>
+				new Error(
+					`Failed to load @tauri-apps/api/core: ${String(error)}`,
+				),
 		});
 
-		const channel: TauriChannel<NotificationFrame> = new tauri.Channel<NotificationFrame>();
+		const channel: TauriChannel<NotificationFrame> =
+			new tauri.Channel<NotificationFrame>();
 
 		channel.onmessage = (frame: NotificationFrame) => {
 			Effect.runFork(Queue.offer(queue, frame));
@@ -109,8 +112,14 @@ export const VineNotificationsLive = Layer.scoped(
 
 		yield* Effect.acquireRelease(
 			Effect.tryPromise({
-				try: () => tauri.invoke<number>("vine_subscribe_notifications", { channel }),
-				catch: (error) => new Error(`vine_subscribe_notifications failed: ${String(error)}`),
+				try: () =>
+					tauri.invoke<number>("vine_subscribe_notifications", {
+						channel,
+					}),
+				catch: (error) =>
+					new Error(
+						`vine_subscribe_notifications failed: ${String(error)}`,
+					),
 			}),
 			() =>
 				Effect.gen(function* () {
@@ -142,7 +151,9 @@ export const SubscribeMethodPrefix = (prefix: string) =>
 	Effect.gen(function* () {
 		const stream = yield* VineNotifications;
 
-		return stream.pipe(Stream.filter((frame) => frame.method.startsWith(prefix)));
+		return stream.pipe(
+			Stream.filter((frame) => frame.method.startsWith(prefix)),
+		);
 	});
 
 /**

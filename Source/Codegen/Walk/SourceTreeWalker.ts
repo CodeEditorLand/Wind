@@ -15,7 +15,7 @@
  * @category Walk
  */
 
-import { readFile, readdir, stat } from "node:fs/promises";
+import { readdir, readFile, stat } from "node:fs/promises";
 import { join, relative, sep } from "node:path";
 
 export interface SourceFile {
@@ -85,7 +85,10 @@ export const WalkSourceTree = async function* (
 	while (Pending.length > 0) {
 		const Current = Pending.pop()!;
 		const RelativeFromRoot = relative(options.Root, Current);
-		if (RelativeFromRoot && HasExcludedSegment(RelativeFromRoot, Excludes)) {
+		if (
+			RelativeFromRoot &&
+			HasExcludedSegment(RelativeFromRoot, Excludes)
+		) {
 			continue;
 		}
 

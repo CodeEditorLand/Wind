@@ -7,9 +7,9 @@ export interface WorkbenchHostBridgeShape {
 		toOpen: ReadonlyArray<{ readonly uri?: { toString: () => string } }>,
 		options?: Record<string, unknown>,
 	) => Promise<void>;
-	readonly onDidChangeFocus?: (
-		listener: (focused: boolean) => void,
-	) => { readonly dispose: () => void };
+	readonly onDidChangeFocus?: (listener: (focused: boolean) => void) => {
+		readonly dispose: () => void;
+	};
 	readonly hadLastFocus?: () => boolean;
 }
 

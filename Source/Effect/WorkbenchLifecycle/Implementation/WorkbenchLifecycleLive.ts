@@ -15,31 +15,26 @@ import type {
 	WorkbenchLifecyclePhaseChange,
 	WorkbenchLifecycleService,
 } from "../Interface/WorkbenchLifecycleService.js";
+import { WorkbenchLifecycleServiceTag } from "../Tag/WorkbenchLifecycleServiceTag.js";
 import type {
 	WorkbenchLifecyclePhase,
 	WorkbenchLifecycleProblem,
 } from "../Type/WorkbenchLifecycleProblem.js";
-import type {
-	WorkbenchLifecycleBridgeShape,
-	WorkbenchLifecycleGlobals,
-} from "./WorkbenchLifecycleBridgeShape.js";
 import {
 	WorkbenchLifecyclePhaseCode,
 	WorkbenchLifecyclePhaseFromCode,
+	type WorkbenchLifecycleBridgeShape,
+	type WorkbenchLifecycleGlobals,
 } from "./WorkbenchLifecycleBridgeShape.js";
-import { WorkbenchLifecycleServiceTag } from "../Tag/WorkbenchLifecycleServiceTag.js";
 
-const ResolveBridge = Effect.sync(
-	(): WorkbenchLifecycleBridgeShape | null => {
-		const Globals = globalThis as unknown as WorkbenchLifecycleGlobals;
-		return Globals.__CEL_SERVICES__?.Lifecycle ?? null;
-	},
-);
+const ResolveBridge = Effect.sync((): WorkbenchLifecycleBridgeShape | null => {
+	const Globals = globalThis as unknown as WorkbenchLifecycleGlobals;
+	return Globals.__CEL_SERVICES__?.Lifecycle ?? null;
+});
 
 const Unavailable: WorkbenchLifecycleProblem = {
 	_tag: "WorkbenchLifecycleBridgeUnavailable",
-	reason:
-		"globalThis.__CEL_SERVICES__.Lifecycle is null - the workbench has not yet exposed its ILifecycleService handle.",
+	reason: "globalThis.__CEL_SERVICES__.Lifecycle is null - the workbench has not yet exposed its ILifecycleService handle.",
 };
 
 interface TauriBridge {
@@ -115,29 +110,31 @@ export const WorkbenchLifecycleLive = Layer.effect(
 			WorkbenchLifecycleProblem
 		>(() => Effect.void);
 
-		const OnWillShutdown = Stream.async<
-			void,
-			WorkbenchLifecycleProblem
-		>((Emit) => {
-			if (!Bridge) {
-				Emit.fail(Unavailable);
-				return Effect.void;
-			}
-			const Subscription = Bridge.onWillShutdown(() => Emit.single(undefined));
-			return Effect.sync(() => Subscription.dispose());
-		});
+		const OnWillShutdown = Stream.async<void, WorkbenchLifecycleProblem>(
+			(Emit) => {
+				if (!Bridge) {
+					Emit.fail(Unavailable);
+					return Effect.void;
+				}
+				const Subscription = Bridge.onWillShutdown(() =>
+					Emit.single(undefined),
+				);
+				return Effect.sync(() => Subscription.dispose());
+			},
+		);
 
-		const OnDidShutdown = Stream.async<
-			void,
-			WorkbenchLifecycleProblem
-		>((Emit) => {
-			if (!Bridge) {
-				Emit.fail(Unavailable);
-				return Effect.void;
-			}
-			const Subscription = Bridge.onDidShutdown(() => Emit.single(undefined));
-			return Effect.sync(() => Subscription.dispose());
-		});
+		const OnDidShutdown = Stream.async<void, WorkbenchLifecycleProblem>(
+			(Emit) => {
+				if (!Bridge) {
+					Emit.fail(Unavailable);
+					return Effect.void;
+				}
+				const Subscription = Bridge.onDidShutdown(() =>
+					Emit.single(undefined),
+				);
+				return Effect.sync(() => Subscription.dispose());
+			},
+		);
 
 		const Service: WorkbenchLifecycleService = {
 			Current,

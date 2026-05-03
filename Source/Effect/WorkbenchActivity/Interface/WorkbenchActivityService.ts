@@ -12,7 +12,10 @@ export interface WorkbenchActivityBadge {
 export interface WorkbenchActivityService {
 	readonly ShowBadge: (
 		badge: WorkbenchActivityBadge,
-	) => Effect.Effect<{ readonly dispose: () => void }, WorkbenchActivityProblem>;
+	) => Effect.Effect<
+		{ readonly dispose: () => void },
+		WorkbenchActivityProblem
+	>;
 
 	readonly Clear: (
 		viewContainerId: string,

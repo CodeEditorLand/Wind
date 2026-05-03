@@ -19,7 +19,9 @@ import { ManagedRuntime } from "effect";
 import { LandWorkbenchLayer } from "./LandWorkbenchLayer.js";
 
 interface LandWorkbenchRuntimeGlobal {
-	__CEL_WIND_RUNTIME__?: ReturnType<typeof ManagedRuntime.make<typeof LandWorkbenchLayer, never>>;
+	__CEL_WIND_RUNTIME__?: ReturnType<
+		typeof ManagedRuntime.make<typeof LandWorkbenchLayer, never>
+	>;
 }
 
 const ResolveRuntime = (): ReturnType<
@@ -27,9 +29,7 @@ const ResolveRuntime = (): ReturnType<
 > => {
 	const Globals = globalThis as unknown as LandWorkbenchRuntimeGlobal;
 	if (!Globals.__CEL_WIND_RUNTIME__) {
-		Globals.__CEL_WIND_RUNTIME__ = ManagedRuntime.make(
-			LandWorkbenchLayer,
-		);
+		Globals.__CEL_WIND_RUNTIME__ = ManagedRuntime.make(LandWorkbenchLayer);
 	}
 	return Globals.__CEL_WIND_RUNTIME__;
 };

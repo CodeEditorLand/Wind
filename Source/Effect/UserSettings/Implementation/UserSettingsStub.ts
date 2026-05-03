@@ -23,9 +23,8 @@ import type {
 const InitialState: ReadonlyMap<string, unknown> = new Map();
 
 export const MakeUserSettingsStub = Effect.gen(function* () {
-	const State = yield* SubscriptionRef.make<ReadonlyMap<string, unknown>>(
-		InitialState,
-	);
+	const State =
+		yield* SubscriptionRef.make<ReadonlyMap<string, unknown>>(InitialState);
 	const ChangesQueue = yield* Effect.acquireRelease(
 		Effect.sync(() => new Set<UserSettingsChangeEvent>()),
 		(set) => Effect.sync(() => set.clear()),

@@ -31,6 +31,10 @@ export const CaptureEvent = (
 	Event: string,
 	Properties: Properties = {},
 ): void => {
+	// Build-time gate: Vite folds `import.meta.env.DEV` to a literal in
+	// every chunk; production builds dead-code this entire function
+	// body so no string literals / payloads ship.
+	if (!import.meta.env.DEV) return;
 	if (!Configuration.Enabled) return;
 
 	const Enriched = Enrich(Properties);
@@ -55,6 +59,10 @@ export const CaptureError = (
 	Message: string,
 	Extra: Properties = {},
 ): void => {
+	// Build-time gate: Vite folds `import.meta.env.DEV` to a literal in
+	// every chunk; production builds dead-code this entire function
+	// body so no string literals / payloads ship.
+	if (!import.meta.env.DEV) return;
 	if (!Configuration.Enabled) return;
 
 	const Enriched = Enrich({
@@ -75,16 +83,25 @@ export const CaptureError = (
 
 	if (Browser?.capture) {
 		try {
-			Browser.capture("wind:error", Enriched);
+			Browser.capture("land:wind:error", Enriched);
 
 			return;
 		} catch {}
 	}
 
-	void Fallback(Configuration, DistinctIdentifier, "wind:error", Enriched);
+	void Fallback(
+		Configuration,
+		DistinctIdentifier,
+		"land:wind:error",
+		Enriched,
+	);
 };
 
 export const Initialize = (): void => {
+	// Build-time gate: Vite folds `import.meta.env.DEV` to a literal in
+	// every chunk; production builds dead-code this entire function
+	// body so no string literals / payloads ship.
+	if (!import.meta.env.DEV) return;
 	if (!Configuration.Enabled) return;
 
 	const Browser = GetBrowser();
@@ -95,7 +112,7 @@ export const Initialize = (): void => {
 		} catch {}
 	}
 
-	CaptureEvent("wind:session:start", {
+	CaptureEvent("land:wind:session:start", {
 		userAgent:
 			typeof navigator !== "undefined" ? navigator.userAgent : "node",
 	});

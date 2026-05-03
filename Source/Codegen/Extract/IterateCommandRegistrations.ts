@@ -46,7 +46,11 @@ const KindFor = (registrar: string): CommandRegistrationRecord["Kind"] => {
 
 const LineNumberAt = (contents: string, index: number): number => {
 	let Line = 1;
-	for (let Cursor = 0; Cursor < index && Cursor < contents.length; Cursor += 1) {
+	for (
+		let Cursor = 0;
+		Cursor < index && Cursor < contents.length;
+		Cursor += 1
+	) {
 		if (contents.charCodeAt(Cursor) === 10) Line += 1;
 	}
 	return Line;
@@ -63,7 +67,7 @@ const ScanArgumentBlock = (
 	// `weight: KeybindingWeight.WorkbenchContrib` lookup).
 	let Depth = 0;
 	let Cursor = openParenIndex;
-	let StringChar:string | null = null;
+	let StringChar: string | null = null;
 	for (; Cursor < contents.length; Cursor += 1) {
 		const Char = contents[Cursor];
 		if (StringChar) {
@@ -133,7 +137,7 @@ export const IterateCommandRegistrations = async function* (
 		// Reset the global regex's lastIndex per file so iterators
 		// don't share scan state across siblings.
 		RegistrarPattern.lastIndex = 0;
-		let Match:RegExpExecArray | null;
+		let Match: RegExpExecArray | null;
 		while ((Match = RegistrarPattern.exec(File.Contents)) !== null) {
 			const Registrar = Match[1];
 			if (!Registrar) continue;

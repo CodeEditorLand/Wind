@@ -17,10 +17,7 @@
  */
 
 export { RunCodegen } from "./RunCodegen.js";
-export type {
-	RunCodegenOptions,
-	RunCodegenSummary,
-} from "./RunCodegen.js";
+export type { RunCodegenOptions, RunCodegenSummary } from "./RunCodegen.js";
 
 export { WalkSourceTree } from "./Walk/SourceTreeWalker.js";
 export type {

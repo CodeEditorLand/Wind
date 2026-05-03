@@ -130,8 +130,7 @@ export const EmitBridgeShape = async (
 	// Output's `ExposeWorkbenchAccessor` typically exposes a shorter
 	// name (`Clipboard`); manifest entries opt in via `AccessorName`.
 	const AccessorName =
-		options.AccessorName ??
-		options.Record.DecoratorName.replace(/^I/, "");
+		options.AccessorName ?? options.Record.DecoratorName.replace(/^I/, "");
 	// `GlobalsInterfaceName` defaults to `<DecoratorName>Globals`. Set
 	// to `Workbench<X>Globals` in manifest entries that want the
 	// hand-authored layer to re-export both Shape + Globals together.

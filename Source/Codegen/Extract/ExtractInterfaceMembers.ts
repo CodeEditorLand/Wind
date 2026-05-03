@@ -52,7 +52,10 @@ const StripJSDoc = (raw: string): string => {
 	const Lines = raw.split(/\r?\n/);
 	const Cleaned: string[] = [];
 	for (const Line of Lines) {
-		const Trimmed = Line.replace(/^\s*\/?\*+\/?/, "").replace(/\*+\/?$/, "");
+		const Trimmed = Line.replace(/^\s*\/?\*+\/?/, "").replace(
+			/\*+\/?$/,
+			"",
+		);
 		Cleaned.push(Trimmed.trim());
 	}
 	return Cleaned.filter((line) => line.length > 0).join("\n");
@@ -97,11 +100,19 @@ const SplitMembers = (inner: string): ReadonlyArray<string> => {
 		if (!SkipAngle) {
 			if (Char === "<" || Char === "(" || Char === "{" || Char === "[") {
 				Depth += 1;
-			} else if (Char === ">" || Char === ")" || Char === "}" || Char === "]") {
+			} else if (
+				Char === ">" ||
+				Char === ")" ||
+				Char === "}" ||
+				Char === "]"
+			) {
 				Depth = Math.max(0, Depth - 1);
 			}
 		}
-		if (Depth === 0 && (Char === ";" || (Char === "\n" && LastChar === ","))) {
+		if (
+			Depth === 0 &&
+			(Char === ";" || (Char === "\n" && LastChar === ","))
+		) {
 			const Trimmed = Buffer.trim();
 			if (Trimmed.length > 0) Out.push(Trimmed);
 			Buffer = "";
@@ -113,9 +124,7 @@ const SplitMembers = (inner: string): ReadonlyArray<string> => {
 	return Out;
 };
 
-const ExtractMemberDocComment = (
-	beforeMember: string,
-): string | null => {
+const ExtractMemberDocComment = (beforeMember: string): string | null => {
 	const Match = /\/\*\*([\s\S]*?)\*\/\s*$/m.exec(beforeMember);
 	if (!Match) return null;
 	const Cleaned = StripJSDoc(Match[1] ?? "");
@@ -136,7 +145,12 @@ const SplitTopLevel = (
 		if (!SkipAngle) {
 			if (Char === "<" || Char === "(" || Char === "{" || Char === "[") {
 				Depth += 1;
-			} else if (Char === ">" || Char === ")" || Char === "}" || Char === "]") {
+			} else if (
+				Char === ">" ||
+				Char === ")" ||
+				Char === "}" ||
+				Char === "]"
+			) {
 				Depth = Math.max(0, Depth - 1);
 			}
 		}
@@ -187,7 +201,10 @@ const KindFromShape = (
 	) {
 		return "Event";
 	}
-	if (memberText.includes("(") && memberText.indexOf("(") < memberText.indexOf(":")) {
+	if (
+		memberText.includes("(") &&
+		memberText.indexOf("(") < memberText.indexOf(":")
+	) {
 		return "Method";
 	}
 	return "Property";
@@ -211,9 +228,10 @@ const ParseMember = (
 		? memberText.slice(ReadonlyMatch[0].length)
 		: memberText;
 
-	const MethodMatch = /^([A-Za-z0-9_$]+)(\?)?\s*\(([\s\S]*?)\)\s*:\s*([\s\S]+);?$/.exec(
-		StrippedReadonly.trim(),
-	);
+	const MethodMatch =
+		/^([A-Za-z0-9_$]+)(\?)?\s*\(([\s\S]*?)\)\s*:\s*([\s\S]+);?$/.exec(
+			StrippedReadonly.trim(),
+		);
 	if (MethodMatch) {
 		const Name = MethodMatch[1] ?? "";
 		const ReturnType = (MethodMatch[4] ?? "").replace(/;\s*$/, "").trim();
@@ -259,9 +277,14 @@ export const ExtractInterfaceMembers = (
 	const Inner = Block.Inner;
 	const Members = SplitMembers(Inner);
 	const Out: InterfaceMemberRecord[] = [];
-	let Cursor = Block.StartOffset + (source.indexOf("{", Block.StartOffset) - Block.StartOffset) + 1;
+	let Cursor =
+		Block.StartOffset +
+		(source.indexOf("{", Block.StartOffset) - Block.StartOffset) +
+		1;
 	for (const MemberText of Members) {
-		const RelativeOffset = Inner.indexOf(MemberText.split(/\s+/)[0] ?? MemberText);
+		const RelativeOffset = Inner.indexOf(
+			MemberText.split(/\s+/)[0] ?? MemberText,
+		);
 		const AbsoluteOffset = Cursor + Math.max(0, RelativeOffset);
 		const Parsed = ParseMember(MemberText, AbsoluteOffset, source);
 		if (Parsed) Out.push(Parsed);

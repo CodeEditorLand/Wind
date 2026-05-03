@@ -23,9 +23,7 @@ import type { InterfaceMemberRecord } from "../Type/InterfaceMemberRecord.js";
 const ImportLinePattern =
 	/import\s*(?:type\s*)?\{([^}]+)\}\s*from\s*['"]([^'"]+)['"]/g;
 
-const ParseImportSpecifiers = (
-	importBlock: string,
-): ReadonlyArray<string> => {
+const ParseImportSpecifiers = (importBlock: string): ReadonlyArray<string> => {
 	return importBlock
 		.split(",")
 		.map((entry) => {

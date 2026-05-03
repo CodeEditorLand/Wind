@@ -24,9 +24,7 @@ export interface WorkbenchEditorBridgeShape {
 		},
 		group?: number | "auto" | { readonly id: number },
 	) => Promise<UpstreamEditorPaneSnapshot | undefined>;
-	readonly closeEditor: (
-		editor: UpstreamEditorPaneSnapshot,
-	) => Promise<void>;
+	readonly closeEditor: (editor: UpstreamEditorPaneSnapshot) => Promise<void>;
 	readonly onDidActiveEditorChange: (
 		listener: (event: UpstreamEditorActiveChangedEvent) => void,
 	) => { readonly dispose: () => void };

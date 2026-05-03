@@ -2,11 +2,7 @@ import type { Effect, Stream } from "effect";
 
 import type { WorkbenchThemeProblem } from "../Type/WorkbenchThemeProblem.js";
 
-export type WorkbenchThemeKind =
-	| "vs"
-	| "vs-dark"
-	| "hc-black"
-	| "hc-light";
+export type WorkbenchThemeKind = "vs" | "vs-dark" | "hc-black" | "hc-light";
 
 export interface WorkbenchThemeDescriptor {
 	readonly id: string;

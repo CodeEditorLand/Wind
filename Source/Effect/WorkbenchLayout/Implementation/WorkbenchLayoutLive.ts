@@ -6,23 +6,19 @@ import type {
 	WorkbenchLayoutService,
 	WorkbenchLayoutSnapshot,
 } from "../Interface/WorkbenchLayoutService.js";
+import { WorkbenchLayoutServiceTag } from "../Tag/WorkbenchLayoutServiceTag.js";
 import type { WorkbenchLayoutProblem } from "../Type/WorkbenchLayoutProblem.js";
-import type {
-	WorkbenchLayoutBridgeShape,
-	WorkbenchLayoutGlobals,
-} from "./WorkbenchLayoutBridgeShape.js";
 import {
 	WorkbenchLayoutAllParts,
 	WorkbenchLayoutPartId,
+	type WorkbenchLayoutBridgeShape,
+	type WorkbenchLayoutGlobals,
 } from "./WorkbenchLayoutBridgeShape.js";
-import { WorkbenchLayoutServiceTag } from "../Tag/WorkbenchLayoutServiceTag.js";
 
-const ResolveBridge = Effect.sync(
-	(): WorkbenchLayoutBridgeShape | null => {
-		const Globals = globalThis as unknown as WorkbenchLayoutGlobals;
-		return Globals.__CEL_SERVICES__?.Layout ?? null;
-	},
-);
+const ResolveBridge = Effect.sync((): WorkbenchLayoutBridgeShape | null => {
+	const Globals = globalThis as unknown as WorkbenchLayoutGlobals;
+	return Globals.__CEL_SERVICES__?.Layout ?? null;
+});
 
 const Unavailable: WorkbenchLayoutProblem = {
 	_tag: "WorkbenchLayoutBridgeUnavailable",
@@ -37,9 +33,8 @@ export const WorkbenchLayoutLive = Layer.effect(
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 
-		const SnapshotPart = (
-			Part: WorkbenchLayoutPart,
-		): boolean => Bridge?.isVisible(WorkbenchLayoutPartId(Part)) ?? false;
+		const SnapshotPart = (Part: WorkbenchLayoutPart): boolean =>
+			Bridge?.isVisible(WorkbenchLayoutPartId(Part)) ?? false;
 
 		const Snapshot: Effect.Effect<
 			WorkbenchLayoutSnapshot,

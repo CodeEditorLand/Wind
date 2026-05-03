@@ -5,13 +5,13 @@ import type {
 	WorkbenchNotificationOptions,
 	WorkbenchNotificationService,
 } from "../Interface/WorkbenchNotificationService.js";
-import type { WorkbenchNotificationProblem } from "../Type/WorkbenchNotificationProblem.js";
-import type {
-	WorkbenchNotificationBridgeShape,
-	WorkbenchNotificationGlobals,
-} from "./WorkbenchNotificationBridgeShape.js";
-import { WorkbenchNotificationSeverityCode } from "./WorkbenchNotificationBridgeShape.js";
 import { WorkbenchNotificationServiceTag } from "../Tag/WorkbenchNotificationServiceTag.js";
+import type { WorkbenchNotificationProblem } from "../Type/WorkbenchNotificationProblem.js";
+import {
+	WorkbenchNotificationSeverityCode,
+	type WorkbenchNotificationBridgeShape,
+	type WorkbenchNotificationGlobals,
+} from "./WorkbenchNotificationBridgeShape.js";
 
 const ResolveBridge = Effect.sync(
 	(): WorkbenchNotificationBridgeShape | null => {
@@ -22,8 +22,7 @@ const ResolveBridge = Effect.sync(
 
 const Unavailable: WorkbenchNotificationProblem = {
 	_tag: "WorkbenchNotificationBridgeUnavailable",
-	reason:
-		"globalThis.__CEL_SERVICES__.Notification is null - the workbench has not yet exposed its INotificationService handle.",
+	reason: "globalThis.__CEL_SERVICES__.Notification is null - the workbench has not yet exposed its INotificationService handle.",
 };
 
 const ToError = (cause: unknown): Error =>
@@ -85,8 +84,9 @@ export const WorkbenchNotificationLive = Layer.effect(
 			WorkbenchNotificationProblem
 		>((Emit) => {
 			const Listener = (Event: Event) => {
-				const Detail = (Event as CustomEvent<WorkbenchNotificationDispatched>)
-					.detail;
+				const Detail = (
+					Event as CustomEvent<WorkbenchNotificationDispatched>
+				).detail;
 				Emit.single(Detail);
 			};
 			try {
