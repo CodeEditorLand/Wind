@@ -133,7 +133,7 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 	// which makes `IUriIdentityService.extUri.relativePath(workspaceFolder,
 	// fileUri)` and `ILabelService.getUriLabel(uri, { relative: true })`
 	// fail to compute relative paths on macOS APFS - the breadcrumb
-	// then renders the absolute `/Volumes/CORSAIR/...` path instead of
+	// then renders the absolute `/Volumes/<vol>/...` path instead of
 	// the workspace-relative `Source > Foo > Bar` form. Strip a single
 	// trailing slash so the workspace folder URI matches the file URIs
 	// the workbench produces (which never carry a trailing slash on
