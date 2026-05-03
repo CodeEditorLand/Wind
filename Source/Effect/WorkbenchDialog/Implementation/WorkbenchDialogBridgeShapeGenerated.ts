@@ -14,7 +14,10 @@
 
 import type { IDialogServiceUpstream } from "../../Generated/IDialogService/IDialogServiceUpstream.js";
 
-export type WorkbenchDialogBridgeShape = Pick<IDialogServiceUpstream, "confirm" | "prompt" | "info" | "warn" | "error">;
+export type WorkbenchDialogBridgeShape = Pick<
+	IDialogServiceUpstream,
+	"confirm" | "prompt" | "info" | "warn" | "error"
+>;
 
 export interface WorkbenchDialogGlobals {
 	readonly __CEL_SERVICES__?: {
