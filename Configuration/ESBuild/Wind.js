@@ -1,13 +1,13 @@
-import o from "./Config/BaseConfig.js";
-import r from "./Config/CompileConfig.js";
-import m from "./Config/TargetConfig.js";
-import { posix as C, sep as x } from "./Constant/BoundConstant.js";
-
+import BaseConfig from "./Config/BaseConfig.js";
+import CompileConfig from "./Config/CompileConfig.js";
+import TargetConfig from "./Config/TargetConfig.js";
 export * from "./Constant/EnvironmentConstant.js";
+import { sep, posix } from "./Constant/BoundConstant.js";
 export {
-	o as BaseConfig,
-	r as CompileConfig,
-	m as TargetConfig,
-	C as posix,
-	x as sep,
+  BaseConfig,
+  CompileConfig,
+  TargetConfig,
+  posix,
+  sep
 };
+//# sourceMappingURL=Wind.js.map
