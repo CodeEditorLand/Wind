@@ -55,7 +55,7 @@ all underpinned by **`Effect-TS`** for resilience and type safety.
    `Tauri` `WebView`.
 2. **Implement Core `VS Code` Services:** It provides frontend implementations
    for key `VS Code` services via
-   [`Polyfills/NativeModulePolyfill.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Polyfills/NativeModulePolyfill.ts),
+   [`Output/Source/Polyfill/Native/Module/Polyfill.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Polyfill/Native/Module/Polyfill.ts),
    leveraging `Effect-TS` for highly reliable, composable, and maintainable
    logic.
 3. **Integrate with `Tauri` & Native Capabilities:** It offers a clean
@@ -69,7 +69,7 @@ all underpinned by **`Effect-TS`** for resilience and type safety.
 
 - **Native Dialog Experience:** Implements dialog services for File Open/Save
   dialogs using `Tauri`'s native OS dialogs via
-  [`Polyfills/NativeModulePolyfill.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Polyfills/NativeModulePolyfill.ts).
+  [`Output/Source/Polyfill/Native/Module/Polyfill.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Polyfill/Native/Module/Polyfill.ts).
 - **`VS Code` Environment Compliance:** A sophisticated
   [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)
   script establishes the crucial `window.vscode` global object, shimming
