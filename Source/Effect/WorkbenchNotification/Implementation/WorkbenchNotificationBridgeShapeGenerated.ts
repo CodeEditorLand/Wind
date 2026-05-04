@@ -14,7 +14,10 @@
 
 import type { INotificationServiceUpstream } from "../../Generated/INotificationService/INotificationServiceUpstream.js";
 
-export type WorkbenchNotificationBridgeShape = Pick<INotificationServiceUpstream, "notify" | "info" | "warn" | "error">;
+export type WorkbenchNotificationBridgeShape = Pick<
+	INotificationServiceUpstream,
+	"notify" | "info" | "warn" | "error"
+>;
 
 export interface WorkbenchNotificationGlobals {
 	readonly __CEL_SERVICES__?: {
