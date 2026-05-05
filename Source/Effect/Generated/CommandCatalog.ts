@@ -23,7 +23,7 @@ export interface CommandCatalogEntry {
 	readonly HasKeybinding: boolean;
 }
 
-export const CommandCatalogVersion = "2026-05-04" as const;
+export const CommandCatalogVersion = "2026-05-05" as const;
 
 export const CommandCatalogTotal = 544 as const;
 
