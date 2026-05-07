@@ -14,10 +14,7 @@
 
 import type { IClipboardServiceUpstream } from "../../Generated/IClipboardService/IClipboardServiceUpstream.js";
 
-export type WorkbenchClipboardBridgeShape = Pick<
-	IClipboardServiceUpstream,
-	"readText" | "writeText" | "readResources" | "writeResources"
->;
+export type WorkbenchClipboardBridgeShape = Pick<IClipboardServiceUpstream, "readText" | "writeText" | "readResources" | "writeResources">;
 
 export interface WorkbenchClipboardGlobals {
 	readonly __CEL_SERVICES__?: {

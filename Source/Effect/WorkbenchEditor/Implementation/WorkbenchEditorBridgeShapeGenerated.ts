@@ -14,13 +14,7 @@
 
 import type { IEditorServiceUpstream } from "../../Generated/IEditorService/IEditorServiceUpstream.js";
 
-export type WorkbenchEditorBridgeShape = Pick<
-	IEditorServiceUpstream,
-	| "activeEditorPane"
-	| "openEditor"
-	| "closeEditor"
-	| "onDidActiveEditorChange"
->;
+export type WorkbenchEditorBridgeShape = Pick<IEditorServiceUpstream, "activeEditorPane" | "openEditor" | "closeEditor" | "onDidActiveEditorChange">;
 
 export interface WorkbenchEditorGlobals {
 	readonly __CEL_SERVICES__?: {
