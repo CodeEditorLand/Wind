@@ -12,6 +12,7 @@ export interface WorkbenchProgressBridgeShape {
 			readonly cancellable?: boolean;
 			readonly source?: string;
 		},
+
 		task: (progress: UpstreamProgressReporter) => Promise<T>,
 	) => Promise<T>;
 }
@@ -33,14 +34,19 @@ export const WorkbenchProgressLocationCode = (
 	switch (location) {
 		case "Explorer":
 			return 1;
+
 		case "Scm":
 			return 3;
+
 		case "Extensions":
 			return 5;
+
 		case "Window":
 			return 10;
+
 		case "Notification":
 			return 15;
+
 		case "Dialog":
 			return 20;
 	}

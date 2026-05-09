@@ -16,6 +16,7 @@ export default class StatusBarItemNotFoundError extends Error {
 
 	constructor(readonly itemId: string) {
 		super(`Status bar item '${itemId}' not found`);
+
 		Object.setPrototypeOf(this, StatusBarItemNotFoundError.prototype);
 	}
 

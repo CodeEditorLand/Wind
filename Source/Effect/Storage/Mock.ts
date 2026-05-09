@@ -5,6 +5,7 @@ import { StorageServiceTag } from "./Tag/StorageServiceTag.js";
 
 export const MockStorageServiceLayer = Layer.succeed(
 	StorageServiceTag,
+
 	StubStorageService,
 );
 

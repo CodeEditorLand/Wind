@@ -31,29 +31,38 @@ import type { IPCSubscriptionError } from "../IPC/Type/IPCError.js";
 export type ExtensionChange =
 	| {
 			readonly Kind: "Installed";
+
 			readonly Identifier: string;
+
 			readonly Version: string;
+
 			readonly Location: string;
 	  }
 	| {
 			readonly Kind: "Uninstalled";
+
 			readonly Identifier: string;
+
 			readonly Location: string | undefined;
 	  };
 
 const ReadString = (
 	Record: Readonly<Record<string, unknown>>,
+
 	Field: string,
 ): string => {
 	const Value = Record[Field];
+
 	return typeof Value === "string" ? Value : "";
 };
 
 const ReadOptionalString = (
 	Record: Readonly<Record<string, unknown>>,
+
 	Field: string,
 ): string | undefined => {
 	const Value = Record[Field];
+
 	return typeof Value === "string" ? Value : undefined;
 };
 
@@ -61,6 +70,7 @@ const FirstArgAsPayload = (Frame: {
 	readonly args: ReadonlyArray<unknown>;
 }): Readonly<Record<string, unknown>> | null => {
 	const First = Frame.args[0];
+
 	return First !== null && typeof First === "object"
 		? (First as Readonly<Record<string, unknown>>)
 		: null;
@@ -91,6 +101,7 @@ export default Effect.gen(function* () {
 				Location: ReadString(Payload, "location"),
 			};
 		}),
+
 		Stream.filter((Event): Event is ExtensionChange => Event !== null),
 	);
 
@@ -108,6 +119,7 @@ export default Effect.gen(function* () {
 				Location: ReadOptionalString(Payload, "location"),
 			};
 		}),
+
 		Stream.filter((Event): Event is ExtensionChange => Event !== null),
 	);
 

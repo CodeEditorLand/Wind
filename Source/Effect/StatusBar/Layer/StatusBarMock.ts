@@ -55,4 +55,5 @@ const makeMockStatusBar = (): StatusBarService => ({
 const StatusBarMockLive = Layer.succeed(StatusBarTag, makeMockStatusBar());
 
 export default StatusBarMockLive;
+
 export { makeMockStatusBar };

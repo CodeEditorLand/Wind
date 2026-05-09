@@ -16,6 +16,7 @@ export default class SidebarPanelNotFoundError extends Error {
 
 	constructor(panelId: string) {
 		super(`Sidebar panel '${panelId}' not found`);
+
 		Object.setPrototypeOf(this, SidebarPanelNotFoundError.prototype);
 	}
 

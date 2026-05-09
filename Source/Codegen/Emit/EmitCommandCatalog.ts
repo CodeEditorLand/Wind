@@ -32,28 +32,40 @@ import type { CommandRegistrationRecord } from "../Type/CommandRegistrationRecor
 
 export interface EmitCommandCatalogOptions {
 	readonly Records: ReadonlyArray<CommandRegistrationRecord>;
+
 	readonly OutputRoot: string;
 }
 
 export interface EmitCommandCatalogOutcome {
 	readonly OutputPath: string;
+
 	readonly Bytes: number;
+
 	readonly Entries: number;
 }
 
 const FormatEntry = (
 	entry: CommandRegistrationRecord,
+
 	index: number,
+
 	total: number,
 ): string => {
 	const Trailing = index === total - 1 ? "" : ",";
+
 	return [
 		`\t{`,
+
 		`\t\tCommandIdentifier: ${JSON.stringify(entry.CommandIdentifier)},`,
+
 		`\t\tKind: ${JSON.stringify(entry.Kind)},`,
+
 		`\t\tSourcePath: ${JSON.stringify(entry.SourcePath)},`,
+
 		`\t\tSourceLine: ${entry.SourceLine},`,
+
 		`\t\tHasKeybinding: ${entry.HasKeybinding ? "true" : "false"},`,
+
 		`\t}${Trailing}`,
 	].join("\n");
 };
@@ -66,18 +78,25 @@ const FormatOutput = (
 	// `registerCommand` calls are usually re-registrations from
 	// extension-host shims or test fixtures).
 	const Seen = new Set<string>();
+
 	const Filtered: CommandRegistrationRecord[] = [];
+
 	for (const Record of records) {
 		if (Seen.has(Record.CommandIdentifier)) continue;
+
 		Seen.add(Record.CommandIdentifier);
+
 		Filtered.push(Record);
 	}
+
 	const Sorted = [...Filtered].sort((a, b) =>
 		a.CommandIdentifier.localeCompare(b.CommandIdentifier),
 	);
+
 	const Body = Sorted.map((entry, index) =>
 		FormatEntry(entry, index, Sorted.length),
 	).join("\n");
+
 	const Header = [
 		"/**",
 		" * @module Effect/Generated/CommandCatalog",
@@ -90,29 +109,49 @@ const FormatOutput = (
 		" * @category Generated",
 		" */",
 		"",
+
 		"export type CommandRegistrationKind =",
+
 		'\t| "CommandsRegistry"',
+
 		'\t| "KeybindingsRegistry"',
+
 		'\t| "MenuRegistry"',
+
 		'\t| "ActionDescriptor";',
+
 		"",
+
 		"export interface CommandCatalogEntry {",
+
 		"\treadonly CommandIdentifier: string;",
+
 		"\treadonly Kind: CommandRegistrationKind;",
+
 		"\treadonly SourcePath: string;",
+
 		"\treadonly SourceLine: number;",
+
 		"\treadonly HasKeybinding: boolean;",
+
 		"}",
+
 		"",
+
 		`export const CommandCatalogVersion = ${JSON.stringify(
 			new Date().toISOString().slice(0, 10),
 		)} as const;`,
 		"",
+
 		`export const CommandCatalogTotal = ${Sorted.length} as const;`,
+
 		"",
+
 		"export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [",
 	];
+
 	const Footer = ["] as const;", ""];
+
 	return [...Header, Body, ...Footer].join("\n");
 };
 
@@ -120,24 +159,35 @@ export const EmitCommandCatalog = async (
 	options: EmitCommandCatalogOptions,
 ): Promise<EmitCommandCatalogOutcome | CodegenProblem> => {
 	const Output = FormatOutput(options.Records);
+
 	const OutputPath = join(
 		options.OutputRoot,
+
 		"Effect",
+
 		"Generated",
+
 		"CommandCatalog.ts",
 	);
+
 	try {
 		await mkdir(dirname(OutputPath), { recursive: true });
+
 		await writeFile(OutputPath, Output, "utf8");
+
 		return {
 			OutputPath,
+
 			Bytes: Buffer.byteLength(Output),
+
 			Entries: options.Records.length,
 		};
 	} catch (Cause) {
 		return {
 			_tag: "CodegenEmitFailed",
+
 			path: OutputPath,
+
 			error: Cause instanceof Error ? Cause : new Error(String(Cause)),
 		};
 	}

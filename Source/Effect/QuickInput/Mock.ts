@@ -5,6 +5,7 @@ import { QuickInputServiceTag } from "./Tag/QuickInputServiceTag.js";
 
 export const MockQuickInputServiceLayer = Layer.succeed(
 	QuickInputServiceTag,
+
 	StubQuickInputService,
 );
 

@@ -7,4 +7,5 @@ export class StorageServiceTag extends Context.Tag(
 )<StorageServiceTag, StorageService>() {}
 
 export const Storage = StorageServiceTag;
+
 export default StorageServiceTag;

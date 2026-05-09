@@ -26,7 +26,9 @@ import type { MountainSyncResult } from "../Type/MountainSyncType.js";
  */
 const SyncNowEffect = (
 	_mountain: MountainService,
+
 	_ipc: IPCService,
+
 	telemetry: TelemetryService,
 ): Effect.Effect<MountainSyncResult> =>
 	Effect.gen(function* () {

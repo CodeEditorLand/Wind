@@ -30,6 +30,7 @@ import { ActivityBarTag } from "./Tag/ActivityBarTag.js";
 
 // Error types
 export { default as ActivityBarItemNotFoundError } from "./Error/ActivityBarItemNotFoundError.js";
+
 export { default as ActivityBarUpdateError } from "./Error/ActivityBarUpdateError.js";
 
 // Type definitions

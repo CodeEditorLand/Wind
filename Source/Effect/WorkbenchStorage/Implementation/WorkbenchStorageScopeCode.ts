@@ -28,8 +28,10 @@ export const WorkbenchStorageScopeCode = (
 	switch (Scope) {
 		case "Application":
 			return -1;
+
 		case "Profile":
 			return 0;
+
 		case "Workspace":
 			return 1;
 	}
@@ -45,6 +47,7 @@ export const WorkbenchStorageTargetCode = (
 	switch (Target) {
 		case "User":
 			return 0;
+
 		case "Machine":
 			return 1;
 	}
@@ -56,10 +59,13 @@ export const WorkbenchStorageScopeFromCode = (
 	switch (Code) {
 		case -1:
 			return "Application";
+
 		case 0:
 			return "Profile";
+
 		case 1:
 			return "Workspace";
+
 		default:
 			return "Workspace";
 	}

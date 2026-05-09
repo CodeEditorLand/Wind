@@ -38,6 +38,7 @@ import {
  */
 export const ActivityBarLive = Layer.effect(
 	ActivityBarTag,
+
 	Effect.gen(function* () {
 		const TelemetryService = yield* Telemetry;
 
@@ -63,15 +64,20 @@ export const ActivityBarLive = Layer.effect(
 		// Atom: Remove an activity bar item
 		const RemoveItem = MakeRemoveItem(
 			ItemsRef,
+
 			ActiveItemRef,
+
 			GetItem,
+
 			TelemetryService,
 		);
 
 		// Atom: Set active item
 		const SetActiveItem = MakeSetActiveItem(
 			ActiveItemRef,
+
 			GetItem,
+
 			TelemetryService,
 		);
 

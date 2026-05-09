@@ -26,12 +26,17 @@ export const makeMockConfiguration = (
 	overrides?: Partial<ISandboxConfiguration>,
 ): ConfigurationService => {
 	const validate = MakeValidate();
+
 	const mockConfig: ISandboxConfiguration = {
 		zoomLevel: 0,
+
 		userEnv: {},
+
 		workspace: {
 			id: "mock-workspace",
+
 			uri: "mock://workspace",
+
 			name: "Mock Workspace",
 		},
 		...overrides,
@@ -39,10 +44,15 @@ export const makeMockConfiguration = (
 
 	return {
 		get: Effect.succeed(mockConfig),
+
 		fetch: Effect.succeed(mockConfig),
+
 		validate,
+
 		apply: () => Effect.void,
+
 		changes: Stream.empty,
+
 		refresh: Effect.succeed(mockConfig),
 	} satisfies ConfigurationService;
 };
@@ -53,6 +63,7 @@ export const makeMockConfiguration = (
  */
 export const ConfigurationMock = Layer.succeed(
 	ConfigurationTag,
+
 	makeMockConfiguration(),
 );
 

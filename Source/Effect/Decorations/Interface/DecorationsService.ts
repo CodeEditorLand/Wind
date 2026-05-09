@@ -8,8 +8,11 @@ import type { DecorationsProblem } from "../Type/DecorationsProblem.js";
  */
 export interface FileDecoration {
 	readonly badge?: string;
+
 	readonly tooltip?: string;
+
 	readonly color?: string;
+
 	readonly propagate?: boolean;
 }
 
@@ -25,6 +28,7 @@ export interface DecorationsService {
 	/** Get the decoration for a specific URI. Returns null when none applies. */
 	readonly GetDecoration: (
 		uri: string,
+
 		includeChildren: boolean,
 	) => Effect.Effect<FileDecoration | null, DecorationsProblem>;
 
@@ -36,6 +40,7 @@ export interface DecorationsService {
 	/** Register a decoration for a URI (overrides any existing decoration). */
 	readonly SetDecoration: (
 		uri: string,
+
 		decoration: FileDecoration,
 	) => Effect.Effect<void, DecorationsProblem>;
 

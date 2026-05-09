@@ -5,6 +5,7 @@ import { ThemesServiceTag } from "./Tag/ThemesServiceTag.js";
 
 export const MockThemesServiceLayer = Layer.succeed(
 	ThemesServiceTag,
+
 	StubThemesService,
 );
 

@@ -43,6 +43,7 @@ export interface ActivityBarService {
 	 */
 	readonly updateItem: (
 		id: string,
+
 		updates: Partial<Omit<ActivityBarItem, "id">>,
 	) => Effect.Effect<
 		void,
@@ -105,6 +106,7 @@ export interface ActivityBarService {
 	 */
 	readonly setBadge: (
 		id: string,
+
 		badge: ActivityBarBadge | undefined,
 	) => Effect.Effect<
 		void,

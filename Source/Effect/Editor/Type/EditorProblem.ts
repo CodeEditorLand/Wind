@@ -5,6 +5,8 @@ export type EditorProblem =
 	| { readonly _tag: "EditorOperationFailed"; readonly error: Error }
 	| {
 			readonly _tag: "EditorInvalidArgument";
+
 			readonly argument: string;
+
 			readonly reason: string;
 	  };

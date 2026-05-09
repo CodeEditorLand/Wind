@@ -21,6 +21,7 @@ const ResolveBridge = Effect.sync((): WorkbenchProgressBridgeShape | null => {
 
 const Unavailable: WorkbenchProgressProblem = {
 	_tag: "WorkbenchProgressBridgeUnavailable",
+
 	reason: "globalThis.__CEL_SERVICES__.Progress is null.",
 };
 
@@ -41,11 +42,13 @@ const ToReporter = (
 
 export const WorkbenchProgressLive = Layer.effect(
 	WorkbenchProgressServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 
 		const Run = <A>(
 			Options: WorkbenchProgressTaskOptions,
+
 			Body: (
 				reporter: WorkbenchProgressReporter,
 			) => Effect.Effect<A, WorkbenchProgressProblem>,
@@ -63,6 +66,7 @@ export const WorkbenchProgressLive = Layer.effect(
 								cancellable: Options.cancellable,
 								source: Options.source,
 							},
+
 							async (Reporter) =>
 								Effect.runPromise(Body(ToReporter(Reporter))),
 						),

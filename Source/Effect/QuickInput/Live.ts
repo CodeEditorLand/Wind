@@ -23,11 +23,13 @@ const MakeQuickInputProblem = (error: unknown): QuickInputProblem =>
 		? { _tag: "QuickInputOperationFailed", error }
 		: {
 				_tag: "QuickInputOperationFailed",
+
 				error: new Error(String(error)),
 			};
 
 export const LiveQuickInputServiceLayer = Layer.effect(
 	QuickInputServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -35,6 +37,7 @@ export const LiveQuickInputServiceLayer = Layer.effect(
 			ShowQuickPick: (items, options) =>
 				IPCService.invoke(Channel.QuickInputShowQuickPick)([
 					items,
+
 					options ?? {},
 				]).pipe(
 					Effect.map((Result) => {
@@ -47,6 +50,7 @@ export const LiveQuickInputServiceLayer = Layer.effect(
 							picked?: boolean;
 						};
 					}),
+
 					Effect.mapError(MakeQuickInputProblem),
 				),
 
@@ -57,6 +61,7 @@ export const LiveQuickInputServiceLayer = Layer.effect(
 					Effect.map((Result) =>
 						typeof Result === "string" ? Result : undefined,
 					),
+
 					Effect.mapError(MakeQuickInputProblem),
 				),
 		};

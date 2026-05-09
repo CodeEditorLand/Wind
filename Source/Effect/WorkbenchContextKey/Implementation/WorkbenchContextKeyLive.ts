@@ -18,6 +18,7 @@ const ResolveBridge = Effect.sync((): WorkbenchContextKeyBridgeShape | null => {
 
 const Unavailable: WorkbenchContextKeyProblem = {
 	_tag: "WorkbenchContextKeyBridgeUnavailable",
+
 	reason: "globalThis.__CEL_SERVICES__.ContextKey is null.",
 };
 
@@ -26,6 +27,7 @@ const ToError = (cause: unknown): Error =>
 
 export const WorkbenchContextKeyLive = Layer.effect(
 	WorkbenchContextKeyServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 
@@ -39,6 +41,7 @@ export const WorkbenchContextKeyLive = Layer.effect(
 
 		const Set = <T>(
 			Key: string,
+
 			Value: T,
 		): Effect.Effect<void, WorkbenchContextKeyProblem> =>
 			Effect.gen(function* () {

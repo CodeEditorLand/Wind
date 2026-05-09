@@ -13,11 +13,14 @@
  */
 export default class SidebarUpdateError extends Error {
 	readonly _tag = "SidebarUpdateError";
+
 	override readonly cause: unknown;
 
 	constructor(panelId: string, cause: unknown) {
 		super(`Failed to update sidebar panel '${panelId}': ${String(cause)}`);
+
 		this.cause = cause;
+
 		Object.setPrototypeOf(this, SidebarUpdateError.prototype);
 	}
 

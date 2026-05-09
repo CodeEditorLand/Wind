@@ -5,6 +5,7 @@ import { ModelServiceTag } from "./Tag/ModelServiceTag.js";
 
 export const MockModelServiceLayer = Layer.succeed(
 	ModelServiceTag,
+
 	StubModelService,
 );
 

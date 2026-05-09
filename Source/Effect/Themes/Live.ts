@@ -26,6 +26,7 @@ const MakeThemesProblem = (error: unknown): ThemesProblem =>
 
 export const LiveThemesServiceLayer = Layer.effect(
 	ThemesServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -48,6 +49,7 @@ export const LiveThemesServiceLayer = Layer.effect(
 								| "highContrastLight",
 						};
 					}),
+
 					Effect.mapError(MakeThemesProblem),
 				),
 
@@ -66,12 +68,14 @@ export const LiveThemesServiceLayer = Layer.effect(
 								}[])
 							: [],
 					),
+
 					Effect.mapError(MakeThemesProblem),
 				),
 
 			SetTheme: (themeId) =>
 				IPCService.invoke(Channel.ThemesSet)([themeId]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeThemesProblem),
 				),
 		};

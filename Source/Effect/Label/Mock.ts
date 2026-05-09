@@ -5,6 +5,7 @@ import { LabelServiceTag } from "./Tag/LabelServiceTag.js";
 
 export const MockLabelServiceLayer = Layer.succeed(
 	LabelServiceTag,
+
 	StubLabelService,
 );
 

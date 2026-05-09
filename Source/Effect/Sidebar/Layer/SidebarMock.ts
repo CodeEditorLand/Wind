@@ -56,4 +56,5 @@ const makeMockSidebar = (): SidebarService => ({
 const SidebarMockLive = Layer.succeed(SidebarTag, makeMockSidebar());
 
 export default SidebarMockLive;
+
 export { makeMockSidebar };

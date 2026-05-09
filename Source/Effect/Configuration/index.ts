@@ -30,7 +30,9 @@ import { ConfigurationTag } from "./Tag/ConfigurationTag.js";
 
 // Error types
 export { default as ConfigFetchError } from "./Error/ConfigFetchError.js";
+
 export { default as ConfigValidationError } from "./Error/ConfigValidationError.js";
+
 export { default as ConfigApplyError } from "./Error/ConfigApplyError.js";
 
 // Type definitions

@@ -11,10 +11,13 @@ import type { LifecycleProblem } from "../Type/LifecycleProblem.js";
 export const LifecyclePhase = {
 	/** Extension host not yet started. */
 	Starting: 1,
+
 	/** Extension host started; initial UI state restored. */
 	Ready: 2,
+
 	/** Editor state restored (workspace opened). */
 	Restored: 3,
+
 	/** Maximum phase - all deferred work complete. */
 	Eventually: 4,
 } as const;

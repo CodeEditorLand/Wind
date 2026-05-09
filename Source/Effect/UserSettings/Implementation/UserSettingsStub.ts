@@ -27,6 +27,7 @@ export const MakeUserSettingsStub = Effect.gen(function* () {
 		yield* SubscriptionRef.make<ReadonlyMap<string, unknown>>(InitialState);
 	const ChangesQueue = yield* Effect.acquireRelease(
 		Effect.sync(() => new Set<UserSettingsChangeEvent>()),
+
 		(set) => Effect.sync(() => set.clear()),
 	);
 

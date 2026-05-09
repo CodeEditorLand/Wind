@@ -34,12 +34,14 @@ const ResolveBridge = Effect.sync((): WorkbenchLifecycleBridgeShape | null => {
 
 const Unavailable: WorkbenchLifecycleProblem = {
 	_tag: "WorkbenchLifecycleBridgeUnavailable",
+
 	reason: "globalThis.__CEL_SERVICES__.Lifecycle is null - the workbench has not yet exposed its ILifecycleService handle.",
 };
 
 interface TauriBridge {
 	readonly invoke: (
 		command: string,
+
 		args?: Record<string, unknown>,
 	) => Promise<unknown>;
 }
@@ -47,13 +49,16 @@ interface TauriBridge {
 interface TauriGlobal {
 	readonly __TAURI__?: {
 		readonly invoke?: TauriBridge["invoke"];
+
 		readonly core?: { readonly invoke?: TauriBridge["invoke"] };
 	};
+
 	readonly __TAURI_INTERNALS__?: { readonly invoke?: TauriBridge["invoke"] };
 }
 
 const ResolveTauriInvoke = (): TauriBridge["invoke"] | null => {
 	const G = globalThis as unknown as TauriGlobal;
+
 	return (
 		G.__TAURI_INTERNALS__?.invoke ??
 		G.__TAURI__?.core?.invoke ??
@@ -64,6 +69,7 @@ const ResolveTauriInvoke = (): TauriBridge["invoke"] | null => {
 
 export const WorkbenchLifecycleLive = Layer.effect(
 	WorkbenchLifecycleServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 

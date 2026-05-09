@@ -16,10 +16,15 @@
  */
 export interface IPCBlockError {
 	readonly _tag: "IPCBlockError";
+
 	readonly channel: string;
+
 	readonly reason: string;
+
 	readonly message: string;
+
 	readonly name: string;
+
 	readonly cause: string;
 }
 
@@ -35,6 +40,7 @@ export interface IPCBlockError {
  */
 const CreateIPCBlockError = (
 	channel: string,
+
 	reason: string,
 ): IPCBlockError => ({
 	_tag: "IPCBlockError",

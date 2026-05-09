@@ -20,7 +20,9 @@ export interface KeybindingService {
 	 */
 	readonly AddKeybinding: (
 		commandId: string,
+
 		keybinding: string,
+
 		when?: string,
 	) => Effect.Effect<void, KeybindingProblem>;
 

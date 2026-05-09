@@ -27,6 +27,7 @@ const MakeTerminalProblem = (error: unknown): TerminalProblem =>
 
 export const LiveTerminalServiceLayer = Layer.effect(
 	TerminalServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -40,33 +41,39 @@ export const LiveTerminalServiceLayer = Layer.effect(
 							name: Info.name ?? "terminal",
 						};
 					}),
+
 					Effect.mapError(MakeTerminalProblem),
 				),
 
 			SendText: (id, text) =>
 				IPCService.invoke(Channel.TerminalSendText)([id, text]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeTerminalProblem),
 				),
 
 			Dispose: (id) =>
 				IPCService.invoke(Channel.TerminalDispose)([id]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeTerminalProblem),
 				),
 
 			Show: (id, preserveFocus) =>
 				IPCService.invoke(Channel.TerminalShow)([
 					id,
+
 					preserveFocus ?? false,
 				]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeTerminalProblem),
 				),
 
 			Hide: (id) =>
 				IPCService.invoke(Channel.TerminalHide)([id]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeTerminalProblem),
 				),
 		};

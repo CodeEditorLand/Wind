@@ -12,5 +12,6 @@
  */
 export interface IPCMessage {
 	readonly channel: string;
+
 	readonly args: ReadonlyArray<unknown>;
 }

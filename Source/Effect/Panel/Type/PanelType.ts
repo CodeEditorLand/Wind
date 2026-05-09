@@ -26,14 +26,19 @@ export type PanelViewType =
 export interface PanelView {
 	/** Unique identifier for the panel view */
 	readonly id: string;
+
 	/** Display title shown in the panel tab */
 	readonly title: string;
+
 	/** Type of panel view content */
 	readonly type: PanelViewType;
+
 	/** Priority for ordering - lower values appear first */
 	readonly priority: number;
+
 	/** Whether the panel view is currently visible */
 	readonly visible: boolean;
+
 	/** Whether the panel view is maximized (taking full height) */
 	readonly maximized: boolean;
 }

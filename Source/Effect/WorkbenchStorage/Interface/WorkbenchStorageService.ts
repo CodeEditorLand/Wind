@@ -30,45 +30,56 @@ export type WorkbenchStorageTarget = "User" | "Machine";
 
 export interface WorkbenchStorageChangeEvent {
 	readonly key: string;
+
 	readonly scope: WorkbenchStorageScope;
+
 	readonly target?: WorkbenchStorageTarget;
 }
 
 export interface WorkbenchStorageService {
 	readonly Get: (
 		key: string,
+
 		scope: WorkbenchStorageScope,
 	) => Effect.Effect<string | undefined, WorkbenchStorageProblem>;
 
 	readonly GetBoolean: (
 		key: string,
+
 		scope: WorkbenchStorageScope,
 	) => Effect.Effect<boolean | undefined, WorkbenchStorageProblem>;
 
 	readonly GetNumber: (
 		key: string,
+
 		scope: WorkbenchStorageScope,
 	) => Effect.Effect<number | undefined, WorkbenchStorageProblem>;
 
 	readonly GetObject: <T = unknown>(
 		key: string,
+
 		scope: WorkbenchStorageScope,
 	) => Effect.Effect<T | undefined, WorkbenchStorageProblem>;
 
 	readonly Store: (
 		key: string,
+
 		value: string | number | boolean | object,
+
 		scope: WorkbenchStorageScope,
+
 		target: WorkbenchStorageTarget,
 	) => Effect.Effect<void, WorkbenchStorageProblem>;
 
 	readonly Remove: (
 		key: string,
+
 		scope: WorkbenchStorageScope,
 	) => Effect.Effect<void, WorkbenchStorageProblem>;
 
 	readonly Keys: (
 		scope: WorkbenchStorageScope,
+
 		target: WorkbenchStorageTarget,
 	) => Effect.Effect<readonly string[], WorkbenchStorageProblem>;
 

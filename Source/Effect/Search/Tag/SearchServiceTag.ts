@@ -8,4 +8,5 @@ export class SearchServiceTag extends Context.Tag("Application/SearchService")<
 >() {}
 
 export const Search = SearchServiceTag;
+
 export default SearchServiceTag;

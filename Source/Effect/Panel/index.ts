@@ -25,6 +25,7 @@ export { default as PanelTag, Panel } from "./Tag/PanelTag.js";
 
 // Layers
 export { default as PanelLive } from "./Layer/PanelLive.js";
+
 export { default as PanelMockLive } from "./Layer/PanelMock.js";
 
 // Mock factory (for direct usage without Layer)
@@ -32,4 +33,5 @@ export { makeMockPanel } from "./Layer/PanelMock.js";
 
 // Errors
 export { default as PanelViewNotFoundError } from "./Error/PanelViewNotFoundError.js";
+
 export { default as PanelUpdateError } from "./Error/PanelUpdateError.js";

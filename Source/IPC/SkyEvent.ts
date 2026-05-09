@@ -25,7 +25,9 @@ export default {
 
 	// --- Debug ---
 	DebugRegister: "sky://debug/register",
+
 	DebugStart: "sky://debug/start",
+
 	DebugStop: "sky://debug/stop",
 
 	// --- Diagnostics ---
@@ -33,24 +35,31 @@ export default {
 
 	// --- Dialog ---
 	DialogOpen: "sky://dialog/open",
+
 	DialogSave: "sky://dialog/save",
 
 	// --- Documents ---
 	DocumentsOpen: "sky://documents/open",
+
 	DocumentsRenamed: "sky://documents/renamed",
+
 	DocumentsSaved: "sky://documents/saved",
 
 	// --- Editor ---
 	EditorApplyEdits: "sky://editor/applyEdits",
+
 	EditorOpenDocument: "sky://editor/openDocument",
+
 	EditorSaveAll: "sky://editor/saveAll",
 
 	// --- Extensions ---
 	ExtensionsInstalled: "sky://extensions/installed",
+
 	ExtensionsUninstalled: "sky://extensions/uninstalled",
 
 	// --- ExtHost ---
 	ExtHostDebugClose: "sky://exthost/debug-close",
+
 	ExtHostDebugReload: "sky://exthost/debug-reload",
 
 	// --- Input ---
@@ -58,10 +67,12 @@ export default {
 
 	// --- Language ---
 	LanguageConfigure: "sky://language/configure",
+
 	LanguagesSetDocumentLanguage: "sky://languages/setDocumentLanguage",
 
 	// --- Lifecycle ---
 	LifecyclePhaseChanged: "sky://lifecycle/phaseChanged",
+
 	LifecycleWillShutdown: "sky://lifecycle/willShutdown",
 
 	// --- Native ---
@@ -69,25 +80,39 @@ export default {
 
 	// --- Notifications ---
 	NotificationProgressBegin: "sky://notification/progress-begin",
+
 	NotificationProgressEnd: "sky://notification/progress-end",
+
 	NotificationProgressUpdate: "sky://notification/progress-update",
+
 	NotificationShow: "sky://notification/show",
 
 	// --- Output ---
 	OutputAppend: "sky://output/append",
+
 	OutputClear: "sky://output/clear",
+
 	OutputCreate: "sky://output/create",
+
 	OutputDispose: "sky://output/dispose",
+
 	OutputReplace: "sky://output/replace",
+
 	OutputReveal: "sky://output/reveal",
+
 	OutputShow: "sky://output/show",
 
 	// --- Progress ---
 	ProgressBegin: "sky://progress/begin",
+
 	ProgressComplete: "sky://progress/complete",
+
 	ProgressEnd: "sky://progress/end",
+
 	ProgressReport: "sky://progress/report",
+
 	ProgressStart: "sky://progress/start",
+
 	ProgressUpdate: "sky://progress/update",
 
 	// --- QuickPick ---
@@ -95,10 +120,15 @@ export default {
 
 	// --- Source Control ---
 	SCMGroupChanged: "sky://scm/group/changed",
+
 	SCMProviderAdded: "sky://scm/provider/added",
+
 	SCMProviderChanged: "sky://scm/provider/changed",
+
 	SCMProviderRemoved: "sky://scm/provider/removed",
+
 	SCMRegister: "sky://scm/register",
+
 	SCMUpdateGroup: "sky://scm/updateGroup",
 
 	// --- Status bar ---
@@ -106,31 +136,48 @@ export default {
 	// `sky://status-bar/message` fork has been collapsed onto
 	// `sky://statusbar/set-message`.
 	StatusBarCreate: "sky://statusbar/create",
+
 	StatusBarDispose: "sky://statusbar/dispose",
+
 	StatusBarDisposeEntry: "sky://statusbar/dispose-entry",
+
 	StatusBarDisposeMessage: "sky://statusbar/dispose-message",
+
 	StatusBarSetEntry: "sky://statusbar/set-entry",
+
 	StatusBarSetMessage: "sky://statusbar/set-message",
+
 	StatusBarUpdate: "sky://statusbar/update",
 
 	// --- Task ---
 	TaskExecute: "sky://task/execute",
+
 	TaskTerminate: "sky://task/terminate",
 
 	// --- Terminal ---
 	TerminalClosed: "sky://terminal/closed",
+
 	TerminalCreate: "sky://terminal/create",
+
 	TerminalData: "sky://terminal/data",
+
 	TerminalExit: "sky://terminal/exit",
+
 	TerminalHide: "sky://terminal/hide",
+
 	TerminalOpened: "sky://terminal/opened",
+
 	TerminalProcessId: "sky://terminal/processId",
+
 	TerminalResize: "sky://terminal/resize",
+
 	TerminalShow: "sky://terminal/show",
 
 	// --- Test ---
 	TestRegistered: "sky://test/registered",
+
 	TestRunStarted: "sky://test/run-started",
+
 	TestRunStatusChanged: "sky://test/run-status-changed",
 
 	// --- Theme ---
@@ -141,19 +188,30 @@ export default {
 	// `sky://treeView/register` camelCase fork has been collapsed onto
 	// `TreeViewCreate` - a single channel every listener subscribes to.
 	TreeViewCreate: "sky://tree-view/create",
+
 	TreeViewDispose: "sky://tree-view/dispose",
+
 	TreeViewNodeExpanded: "sky://tree-view/node-expanded",
+
 	TreeViewRefresh: "sky://tree-view/refresh",
+
 	TreeViewRestoreState: "sky://tree-view/restore-state",
+
 	TreeViewReveal: "sky://tree-view/reveal",
+
 	TreeViewSelectionChanged: "sky://tree-view/selection-changed",
+
 	TreeViewSetBadge: "sky://tree-view/set-badge",
+
 	TreeViewSetMessage: "sky://tree-view/set-message",
+
 	TreeViewSetTitle: "sky://tree-view/set-title",
 
 	// --- UI ---
 	UIShowInputBoxRequest: "sky://ui/show-input-box-request",
+
 	UIShowMessageRequest: "sky://ui/show-message-request",
+
 	UIShowQuickPickRequest: "sky://ui/show-quick-pick-request",
 
 	// --- Virtual file system ---
@@ -166,13 +224,21 @@ export default {
 	// `sky://webview/setHtml` inline; those emit sites have been migrated
 	// to the enum so Sky only ever sees the kebab-case form.
 	WebviewCreate: "sky://webview/create",
+
 	WebviewCreated: "sky://webview/created",
+
 	WebviewDispose: "sky://webview/dispose",
+
 	WebviewDisposed: "sky://webview/disposed",
+
 	WebviewMessage: "sky://webview/message",
+
 	WebviewOptionsChanged: "sky://webview/options-changed",
+
 	WebviewPostMessage: "sky://webview/post-message",
+
 	WebviewRevealed: "sky://webview/revealed",
+
 	WebviewSetHTML: "sky://webview/set-html",
 
 	// --- Window ---
@@ -180,5 +246,6 @@ export default {
 
 	// --- Workspace ---
 	WorkspaceApplyEdit: "sky://workspace/applyEdit",
+
 	WorkspacesChanged: "sky://workspaces/changed",
 } as const satisfies Readonly<Record<string, `sky://${string}`>>;

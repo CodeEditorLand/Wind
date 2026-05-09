@@ -29,6 +29,7 @@ import type { NetworkRestrictionConfig } from "../Type/NetworkRestrictionConfig.
  */
 export const IsInternalURL = (
 	Config: NetworkRestrictionConfig,
+
 	Url: string,
 ): boolean => {
 	try {
@@ -67,6 +68,7 @@ export const IsInternalURL = (
  */
 export const IsBlockedURL = (
 	Config: NetworkRestrictionConfig,
+
 	Url: string,
 ): boolean => {
 	// Check telemetry endpoints
@@ -132,6 +134,7 @@ export const IsBlockedURL = (
  */
 export const IsAllowedURL = (
 	Config: NetworkRestrictionConfig,
+
 	Url: string,
 ): boolean => {
 	if (Config.allowedDomains.length === 0) {
@@ -177,8 +180,11 @@ export const IsIPCAllowed = (Channel: string): boolean => {
 
 const helpers = {
 	IsInternalURL,
+
 	IsBlockedURL,
+
 	IsAllowedURL,
+
 	IsIPCAllowed,
 };
 

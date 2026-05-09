@@ -20,6 +20,7 @@ const ResolveBridge = Effect.sync((): WorkbenchKeybindingBridgeShape | null => {
 
 const Unavailable: WorkbenchKeybindingProblem = {
 	_tag: "WorkbenchKeybindingBridgeUnavailable",
+
 	reason: "globalThis.__CEL_SERVICES__.Keybinding is null.",
 };
 
@@ -28,7 +29,9 @@ const ToError = (cause: unknown): Error =>
 
 const ToResolution = (
 	binding: UpstreamResolvedKeybinding,
+
 	commandId: string | null,
+
 	args: ReadonlyArray<unknown>,
 ): WorkbenchKeybindingResolution => ({
 	commandId: commandId ?? binding.getCommand?.() ?? null,
@@ -40,6 +43,7 @@ const KEYBINDING_DISPATCH_EVENT = "cel:keybinding-dispatched";
 
 export const WorkbenchKeybindingLive = Layer.effect(
 	WorkbenchKeybindingServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 
@@ -96,6 +100,7 @@ export const WorkbenchKeybindingLive = Layer.effect(
 				try {
 					window.removeEventListener(
 						KEYBINDING_DISPATCH_EVENT,
+
 						Listener,
 					);
 				} catch {

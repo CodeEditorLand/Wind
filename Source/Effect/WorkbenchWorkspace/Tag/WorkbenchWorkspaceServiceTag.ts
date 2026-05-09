@@ -7,4 +7,5 @@ export class WorkbenchWorkspaceServiceTag extends Context.Tag(
 )<WorkbenchWorkspaceServiceTag, WorkbenchWorkspaceService>() {}
 
 export const WorkbenchWorkspace = WorkbenchWorkspaceServiceTag;
+
 export default WorkbenchWorkspaceServiceTag;

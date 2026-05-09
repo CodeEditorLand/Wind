@@ -32,6 +32,7 @@ export const GenerateItemId = (): string =>
  */
 export const MakeCreateItem = (
 	ItemsRef: SubscriptionRef.SubscriptionRef<ReadonlyArray<ActivityBarItem>>,
+
 	Telemetry: TelemetryService,
 ) => {
 	return (
@@ -43,6 +44,7 @@ export const MakeCreateItem = (
 
 			yield* SubscriptionRef.modify(ItemsRef, (Items) => [
 				undefined,
+
 				[...Items, NewItem].sort((a, b) => a.position - b.position),
 			]);
 
@@ -56,11 +58,14 @@ export const MakeCreateItem = (
  */
 export const MakeUpdateItem = (
 	ItemsRef: SubscriptionRef.SubscriptionRef<ReadonlyArray<ActivityBarItem>>,
+
 	GetItem: (Id: string) => Effect.Effect<ActivityBarItem | undefined, never>,
+
 	Telemetry: TelemetryService,
 ) => {
 	return (
 		Id: string,
+
 		Updates: Partial<Omit<ActivityBarItem, "id">>,
 	): Effect.Effect<
 		void,
@@ -86,6 +91,7 @@ export const MakeUpdateItem = (
 
 				yield* SubscriptionRef.modify(ItemsRef, (Items) => [
 					undefined,
+
 					Items.map((Item) =>
 						Item.id === Id ? { ...Item, ...CleanUpdates } : Item,
 					).sort((a, b) => a.position - b.position),
@@ -93,6 +99,7 @@ export const MakeUpdateItem = (
 
 				yield* Telemetry.log(
 					"info",
+
 					`Updated activity bar item: ${Id}`,
 				);
 			} catch (Error) {
@@ -108,8 +115,11 @@ export const MakeUpdateItem = (
  */
 export const MakeRemoveItem = (
 	ItemsRef: SubscriptionRef.SubscriptionRef<ReadonlyArray<ActivityBarItem>>,
+
 	ActiveItemRef: SubscriptionRef.SubscriptionRef<string | undefined>,
+
 	GetItem: (Id: string) => Effect.Effect<ActivityBarItem | undefined, never>,
+
 	Telemetry: TelemetryService,
 ) => {
 	return (Id: string): Effect.Effect<void, ActivityBarItemNotFoundError> =>
@@ -122,6 +132,7 @@ export const MakeRemoveItem = (
 
 			yield* SubscriptionRef.modify(ItemsRef, (Items) => [
 				undefined,
+
 				Items.filter((Item) => Item.id !== Id),
 			]);
 
@@ -152,7 +163,9 @@ export const MakeGetItem = (
  */
 export const MakeSetActiveItem = (
 	ActiveItemRef: SubscriptionRef.SubscriptionRef<string | undefined>,
+
 	GetItem: (Id: string) => Effect.Effect<ActivityBarItem | undefined, never>,
+
 	Telemetry: TelemetryService,
 ) => {
 	return (Id: string): Effect.Effect<void, ActivityBarItemNotFoundError> =>
@@ -174,6 +187,7 @@ export const MakeSetActiveItem = (
 export const MakeSetBadge = (
 	UpdateItem: (
 		Id: string,
+
 		Updates: Partial<Omit<ActivityBarItem, "id">>,
 	) => Effect.Effect<
 		void,
@@ -182,6 +196,7 @@ export const MakeSetBadge = (
 ) => {
 	return (
 		Id: string,
+
 		Badge: ActivityBarBadge | undefined,
 	): Effect.Effect<
 		void,
@@ -204,11 +219,18 @@ export const MakeGetBadge = (
 
 export default {
 	MakeCreateItem,
+
 	MakeUpdateItem,
+
 	MakeRemoveItem,
+
 	MakeGetItem,
+
 	MakeSetActiveItem,
+
 	MakeSetBadge,
+
 	MakeGetBadge,
+
 	GenerateItemId,
 };

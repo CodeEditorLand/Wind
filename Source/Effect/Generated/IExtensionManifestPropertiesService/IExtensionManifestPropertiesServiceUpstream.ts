@@ -16,6 +16,7 @@ export interface IExtensionManifestPropertiesServiceUpstream {
 	canExecuteOnUI(manifest: IExtensionManifest): boolean;
 	canExecuteOnWorkspace(manifest: IExtensionManifest): boolean;
 	canExecuteOnWeb(manifest: IExtensionManifest): boolean;
+	canExecuteOnSessionsWindow(manifest: IExtensionManifest): boolean;
 	getExtensionKind(manifest: IExtensionManifest): ExtensionKind[];
 	getUserConfiguredExtensionKind(extensionIdentifier: IExtensionIdentifier): ExtensionKind[] | undefined;
 	getExtensionUntrustedWorkspaceSupportType(manifest: IExtensionManifest): ExtensionUntrustedWorkspaceSupportType;
@@ -30,7 +31,7 @@ export const IExtensionManifestPropertiesServiceMembers: ReadonlyArray<Interface
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: null,
-		SourceLine: 26,
+		SourceLine: 40,
 	},
 	{
 		Kind: "Method",
@@ -40,7 +41,7 @@ export const IExtensionManifestPropertiesServiceMembers: ReadonlyArray<Interface
 		TypeText: "boolean",
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
 		DocComment: null,
-		SourceLine: 28,
+		SourceLine: 42,
 	},
 	{
 		Kind: "Method",
@@ -50,7 +51,7 @@ export const IExtensionManifestPropertiesServiceMembers: ReadonlyArray<Interface
 		TypeText: "boolean",
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
 		DocComment: null,
-		SourceLine: 29,
+		SourceLine: 43,
 	},
 	{
 		Kind: "Method",
@@ -60,7 +61,7 @@ export const IExtensionManifestPropertiesServiceMembers: ReadonlyArray<Interface
 		TypeText: "boolean",
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
 		DocComment: null,
-		SourceLine: 30,
+		SourceLine: 44,
 	},
 	{
 		Kind: "Method",
@@ -70,7 +71,7 @@ export const IExtensionManifestPropertiesServiceMembers: ReadonlyArray<Interface
 		TypeText: "boolean",
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
 		DocComment: null,
-		SourceLine: 32,
+		SourceLine: 46,
 	},
 	{
 		Kind: "Method",
@@ -80,7 +81,7 @@ export const IExtensionManifestPropertiesServiceMembers: ReadonlyArray<Interface
 		TypeText: "boolean",
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
 		DocComment: null,
-		SourceLine: 33,
+		SourceLine: 47,
 	},
 	{
 		Kind: "Method",
@@ -90,7 +91,17 @@ export const IExtensionManifestPropertiesServiceMembers: ReadonlyArray<Interface
 		TypeText: "boolean",
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
 		DocComment: null,
-		SourceLine: 34,
+		SourceLine: 48,
+	},
+	{
+		Kind: "Method",
+		Name: "canExecuteOnSessionsWindow",
+		Readonly: false,
+		Optional: false,
+		TypeText: "boolean",
+		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
+		DocComment: null,
+		SourceLine: 49,
 	},
 	{
 		Kind: "Method",
@@ -100,7 +111,7 @@ export const IExtensionManifestPropertiesServiceMembers: ReadonlyArray<Interface
 		TypeText: "ExtensionKind[]",
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
 		DocComment: null,
-		SourceLine: 36,
+		SourceLine: 51,
 	},
 	{
 		Kind: "Method",
@@ -110,7 +121,7 @@ export const IExtensionManifestPropertiesServiceMembers: ReadonlyArray<Interface
 		TypeText: "ExtensionKind[] | undefined",
 		Parameters: [{ Name: "extensionIdentifier", TypeText: "IExtensionIdentifier", Optional: false }],
 		DocComment: null,
-		SourceLine: 37,
+		SourceLine: 52,
 	},
 	{
 		Kind: "Method",
@@ -120,7 +131,7 @@ export const IExtensionManifestPropertiesServiceMembers: ReadonlyArray<Interface
 		TypeText: "ExtensionUntrustedWorkspaceSupportType",
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
 		DocComment: null,
-		SourceLine: 38,
+		SourceLine: 53,
 	},
 	{
 		Kind: "Method",
@@ -130,6 +141,6 @@ export const IExtensionManifestPropertiesServiceMembers: ReadonlyArray<Interface
 		TypeText: "ExtensionVirtualWorkspaceSupportType",
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
 		DocComment: null,
-		SourceLine: 39,
+		SourceLine: 54,
 	}
 ] as const;

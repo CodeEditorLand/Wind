@@ -26,6 +26,7 @@ export { default as MountainSyncTag } from "./Tag/MountainSyncTag.js";
 
 // Layers
 export { default as MountainSyncLive } from "./Layer/MountainSyncLive.js";
+
 export { default as MountainSyncMock } from "./Layer/MountainSyncMock.js";
 
 // Mock factory (for direct usage without Layer)

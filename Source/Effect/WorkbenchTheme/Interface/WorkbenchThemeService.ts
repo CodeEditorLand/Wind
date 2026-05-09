@@ -6,12 +6,15 @@ export type WorkbenchThemeKind = "vs" | "vs-dark" | "hc-black" | "hc-light";
 
 export interface WorkbenchThemeDescriptor {
 	readonly id: string;
+
 	readonly label: string;
+
 	readonly kind: WorkbenchThemeKind;
 }
 
 export interface WorkbenchThemeChangeEvent {
 	readonly previous: WorkbenchThemeDescriptor | undefined;
+
 	readonly current: WorkbenchThemeDescriptor;
 }
 

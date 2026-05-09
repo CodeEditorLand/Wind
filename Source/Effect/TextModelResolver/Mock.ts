@@ -5,6 +5,7 @@ import { TextModelResolverServiceTag } from "./Tag/TextModelResolverServiceTag.j
 
 export const MockTextModelResolverServiceLayer = Layer.succeed(
 	TextModelResolverServiceTag,
+
 	StubTextModelResolverService,
 );
 

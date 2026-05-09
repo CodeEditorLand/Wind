@@ -11,9 +11,13 @@
  */
 export interface UriComponents {
 	scheme: string;
+
 	authority?: string;
+
 	path: string;
+
 	query?: string;
+
 	fragment?: string;
 }
 
@@ -22,9 +26,14 @@ export interface UriComponents {
  */
 export interface URI {
 	scheme: string;
+
 	authority?: string;
+
 	path: string;
+
 	query?: string;
+
 	fragment?: string;
+
 	toString(): string;
 }

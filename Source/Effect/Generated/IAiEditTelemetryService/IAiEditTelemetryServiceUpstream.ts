@@ -12,6 +12,7 @@ export interface IAiEditTelemetryServiceUpstream {
 	readonly _serviceBrand: undefined;
 	createSuggestionId(data: Omit<IEditTelemetryCodeSuggestedData, 'suggestionId'>): EditSuggestionId;
 	handleCodeAccepted(data: IEditTelemetryCodeAcceptedData): void;
+	handleCodeRejected(data: IEditTelemetryCodeRejectedData): void;
 }
 export const IAiEditTelemetryServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
@@ -43,5 +44,15 @@ export const IAiEditTelemetryServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Parameters: [{ Name: "data", TypeText: "IEditTelemetryCodeAcceptedData", Optional: false }],
 		DocComment: null,
 		SourceLine: 17,
+	},
+	{
+		Kind: "Method",
+		Name: "handleCodeRejected",
+		Readonly: false,
+		Optional: false,
+		TypeText: "void",
+		Parameters: [{ Name: "data", TypeText: "IEditTelemetryCodeRejectedData", Optional: false }],
+		DocComment: null,
+		SourceLine: 19,
 	}
 ] as const;

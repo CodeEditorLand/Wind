@@ -5,6 +5,7 @@ import { NotificationServiceTag } from "./Tag/NotificationServiceTag.js";
 
 export const MockNotificationServiceLayer = Layer.succeed(
 	NotificationServiceTag,
+
 	StubNotificationService,
 );
 

@@ -13,6 +13,7 @@ export interface WorkbenchContextKeyService {
 
 	readonly Set: <T>(
 		key: string,
+
 		value: T,
 	) => Effect.Effect<void, WorkbenchContextKeyProblem>;
 

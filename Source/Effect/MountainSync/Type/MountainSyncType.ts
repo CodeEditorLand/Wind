@@ -28,12 +28,16 @@ export type SyncStatus = "idle" | "syncing" | "paused" | "error";
 export interface SyncConfig {
 	/** Whether synchronization is enabled */
 	readonly enabled: boolean;
+
 	/** Time interval between sync operations in milliseconds */
 	readonly syncIntervalMs: number;
+
 	/** Whether to automatically retry failed sync operations */
 	readonly autoRetry: boolean;
+
 	/** Maximum number of retry attempts for failed operations */
 	readonly maxRetries: number;
+
 	/** Number of items to sync in each batch operation */
 	readonly batchSize: number;
 }
@@ -45,12 +49,16 @@ export interface SyncConfig {
 export interface SyncStats {
 	/** Timestamp of the last successful sync operation */
 	readonly lastSyncTime: number;
+
 	/** Total number of sync operations performed */
 	readonly syncCount: number;
+
 	/** Number of successful sync operations */
 	readonly successCount: number;
+
 	/** Number of failed sync operations */
 	readonly errorCount: number;
+
 	/** Total number of items successfully synchronized */
 	readonly itemsSynced: number;
 }
@@ -62,10 +70,13 @@ export interface SyncStats {
 export interface MountainSyncResult {
 	/** Whether the sync operation completed successfully */
 	readonly success: boolean;
+
 	/** Number of items synchronized during this operation */
 	readonly itemsSynced: number;
+
 	/** Duration of the sync operation in milliseconds */
 	readonly duration: number;
+
 	/** Error details if the operation failed */
 	readonly error?: Error;
 }

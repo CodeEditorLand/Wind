@@ -17,6 +17,7 @@ export interface LabelService {
 	 */
 	readonly GetUriLabel: (
 		uri: string,
+
 		options?: { readonly relative?: boolean },
 	) => Effect.Effect<string, LabelProblem>;
 

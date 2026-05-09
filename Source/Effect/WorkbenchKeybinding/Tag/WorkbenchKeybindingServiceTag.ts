@@ -7,4 +7,5 @@ export class WorkbenchKeybindingServiceTag extends Context.Tag(
 )<WorkbenchKeybindingServiceTag, WorkbenchKeybindingService>() {}
 
 export const WorkbenchKeybinding = WorkbenchKeybindingServiceTag;
+
 export default WorkbenchKeybindingServiceTag;

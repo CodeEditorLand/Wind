@@ -35,6 +35,7 @@ const UriToPath = (uri: string): string =>
 
 export const LiveFilesServiceLayer = Layer.effect(
 	FilesServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -50,6 +51,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 							return new Uint8Array(Result as number[]);
 						return new Uint8Array();
 					}),
+
 					Effect.mapError(MakeFilesProblem),
 				);
 			},
@@ -58,9 +60,11 @@ export const LiveFilesServiceLayer = Layer.effect(
 				const Path = UriToPath(uri);
 				return IPCService.invoke(Channel.FileWrite)([
 					Path,
+
 					Array.from(content),
 				]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeFilesProblem),
 				);
 			},
@@ -84,6 +88,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 							mtime: Metadata.mtime ?? 0,
 						};
 					}),
+
 					Effect.mapError(MakeFilesProblem),
 				);
 			},
@@ -107,6 +112,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 							},
 						);
 					}),
+
 					Effect.mapError(MakeFilesProblem),
 				);
 			},
@@ -115,6 +121,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 				const Path = UriToPath(uri);
 				return IPCService.invoke(Channel.FileMkdir)([Path]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeFilesProblem),
 				);
 			},
@@ -123,9 +130,11 @@ export const LiveFilesServiceLayer = Layer.effect(
 				const Path = UriToPath(uri);
 				return IPCService.invoke(Channel.FileDelete)([
 					Path,
+
 					options ?? {},
 				]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeFilesProblem),
 				);
 			},
@@ -135,10 +144,13 @@ export const LiveFilesServiceLayer = Layer.effect(
 				const TargetPath = UriToPath(target);
 				return IPCService.invoke(Channel.FileMove)([
 					SourcePath,
+
 					TargetPath,
+
 					options ?? {},
 				]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeFilesProblem),
 				);
 			},
@@ -148,10 +160,13 @@ export const LiveFilesServiceLayer = Layer.effect(
 				const TargetPath = UriToPath(target);
 				return IPCService.invoke(Channel.FileCopy)([
 					SourcePath,
+
 					TargetPath,
+
 					options ?? {},
 				]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeFilesProblem),
 				);
 			},
@@ -160,6 +175,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 				const Path = UriToPath(uri);
 				return IPCService.invoke(Channel.FileExists)([Path]).pipe(
 					Effect.map((Result) => Boolean(Result)),
+
 					Effect.mapError(MakeFilesProblem),
 				);
 			},
@@ -175,6 +191,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 								// No-op until notify crate integration is complete
 							},
 						})),
+
 						Effect.mapError(MakeFilesProblem),
 					);
 			},
@@ -194,6 +211,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 					Effect.map((Result) =>
 						Array.isArray(Result) ? (Result as string[]) : [],
 					),
+
 					Effect.mapError(MakeFilesProblem),
 				),
 
@@ -204,6 +222,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 					Effect.map((Result) =>
 						typeof Result === "string" ? Result : undefined,
 					),
+
 					Effect.mapError(MakeFilesProblem),
 				),
 		};

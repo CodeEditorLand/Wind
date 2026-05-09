@@ -14,7 +14,9 @@ import type { ProcessEnvironment } from "./ProcessEnvironment.js";
  */
 export interface Workspace {
 	id: string;
+
 	uri: string;
+
 	name: string;
 }
 
@@ -23,9 +25,13 @@ export interface Workspace {
  */
 export interface ISandboxConfiguration {
 	readonly readonly?: boolean;
+
 	readonly userEnv?: ProcessEnvironment;
+
 	readonly zoomLevel?: number;
+
 	readonly workspace?: Workspace;
+
 	// Additional VSCode-specific config
 	readonly [key: string]: unknown;
 }

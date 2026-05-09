@@ -27,9 +27,11 @@ export const DetectPlatform = (): Platform => {
 	if (PlatformStr.includes("win")) {
 		return "win32";
 	}
+
 	if (PlatformStr.includes("mac")) {
 		return "darwin";
 	}
+
 	if (PlatformStr.includes("linux") || PlatformStr.includes("ubuntu")) {
 		return "linux";
 	}
@@ -49,6 +51,7 @@ export const DetectArchitecture = (): Architecture => {
 
 	// Try to detect from user agent
 	const UserAgent = navigator.userAgent.toLowerCase();
+
 	if (UserAgent.includes("arm") || UserAgent.includes("aarch64")) {
 		return "arm64";
 	}
@@ -95,9 +98,13 @@ export const GetUserAgent = (): string => {
 
 const helpers = {
 	DetectPlatform,
+
 	DetectArchitecture,
+
 	DetectLocale,
+
 	DetectTimezone,
+
 	GetUserAgent,
 };
 

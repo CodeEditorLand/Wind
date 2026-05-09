@@ -14,7 +14,10 @@ import type { ILogger, ILoggerOptions } from "../Type/VSCodeLoggerType.js";
  */
 export interface IVSCodeLoggerService {
 	_serviceBrand: undefined;
+
 	createLogger(file: string, options?: ILoggerOptions): ILogger;
+
 	getLogger(file: string): ILogger | undefined;
+
 	dispose(): void;
 }

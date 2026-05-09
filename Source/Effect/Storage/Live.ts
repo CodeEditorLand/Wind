@@ -26,6 +26,7 @@ const MakeStorageProblem = (error: unknown): StorageProblem =>
 
 export const LiveStorageServiceLayer = Layer.effect(
 	StorageServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -33,18 +34,21 @@ export const LiveStorageServiceLayer = Layer.effect(
 			Get: (key) =>
 				IPCService.invoke(Channel.StorageGet)([key]).pipe(
 					Effect.map((Result) => Result),
+
 					Effect.mapError(MakeStorageProblem),
 				),
 
 			Set: (key, value) =>
 				IPCService.invoke(Channel.StorageSet)([key, value]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeStorageProblem),
 				),
 
 			Delete: (key) =>
 				IPCService.invoke(Channel.StorageDelete)([key]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeStorageProblem),
 				),
 
@@ -55,6 +59,7 @@ export const LiveStorageServiceLayer = Layer.effect(
 							? (Result as readonly string[])
 							: [],
 					),
+
 					Effect.mapError(MakeStorageProblem),
 				),
 		};

@@ -289,6 +289,6 @@ export const IChatEntitlementServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "Promise<void>",
 		Parameters: [{ Name: "token", TypeText: "CancellationToken", Optional: false }],
 		DocComment: "Signed out",
-		SourceLine: 199,
+		SourceLine: 204,
 	}
 ] as const;

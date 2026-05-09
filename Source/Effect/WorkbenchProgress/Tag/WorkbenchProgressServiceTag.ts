@@ -7,4 +7,5 @@ export class WorkbenchProgressServiceTag extends Context.Tag(
 )<WorkbenchProgressServiceTag, WorkbenchProgressService>() {}
 
 export const WorkbenchProgress = WorkbenchProgressServiceTag;
+
 export default WorkbenchProgressServiceTag;

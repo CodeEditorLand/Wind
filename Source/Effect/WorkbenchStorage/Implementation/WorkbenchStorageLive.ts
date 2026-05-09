@@ -50,6 +50,7 @@ const ToError = (Cause: unknown): Error =>
 
 export const WorkbenchStorageLive = Layer.effect(
 	WorkbenchStorageServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 		const Unavailable = BridgeUnavailable(
@@ -58,6 +59,7 @@ export const WorkbenchStorageLive = Layer.effect(
 
 		const Get = (
 			Key: string,
+
 			Scope: WorkbenchStorageScope,
 		): Effect.Effect<string | undefined, WorkbenchStorageProblem> =>
 			Effect.gen(function* () {
@@ -76,6 +78,7 @@ export const WorkbenchStorageLive = Layer.effect(
 
 		const GetBoolean = (
 			Key: string,
+
 			Scope: WorkbenchStorageScope,
 		): Effect.Effect<boolean | undefined, WorkbenchStorageProblem> =>
 			Effect.gen(function* () {
@@ -83,6 +86,7 @@ export const WorkbenchStorageLive = Layer.effect(
 				try {
 					return Bridge.getBoolean(
 						Key,
+
 						WorkbenchStorageScopeCode(Scope),
 					);
 				} catch (Cause) {
@@ -97,6 +101,7 @@ export const WorkbenchStorageLive = Layer.effect(
 
 		const GetNumber = (
 			Key: string,
+
 			Scope: WorkbenchStorageScope,
 		): Effect.Effect<number | undefined, WorkbenchStorageProblem> =>
 			Effect.gen(function* () {
@@ -104,6 +109,7 @@ export const WorkbenchStorageLive = Layer.effect(
 				try {
 					return Bridge.getNumber(
 						Key,
+
 						WorkbenchStorageScopeCode(Scope),
 					);
 				} catch (Cause) {
@@ -118,6 +124,7 @@ export const WorkbenchStorageLive = Layer.effect(
 
 		const GetObject = <T = unknown>(
 			Key: string,
+
 			Scope: WorkbenchStorageScope,
 		): Effect.Effect<T | undefined, WorkbenchStorageProblem> =>
 			Effect.gen(function* () {
@@ -125,6 +132,7 @@ export const WorkbenchStorageLive = Layer.effect(
 				try {
 					return Bridge.getObject<T>(
 						Key,
+
 						WorkbenchStorageScopeCode(Scope),
 					);
 				} catch (Cause) {
@@ -139,8 +147,11 @@ export const WorkbenchStorageLive = Layer.effect(
 
 		const Store = (
 			Key: string,
+
 			Value: string | number | boolean | object,
+
 			Scope: WorkbenchStorageScope,
+
 			Target: WorkbenchStorageTarget,
 		): Effect.Effect<void, WorkbenchStorageProblem> =>
 			Effect.gen(function* () {
@@ -148,8 +159,11 @@ export const WorkbenchStorageLive = Layer.effect(
 				try {
 					Bridge.store(
 						Key,
+
 						Value,
+
 						WorkbenchStorageScopeCode(Scope),
+
 						WorkbenchStorageTargetCode(Target),
 					);
 				} catch (Cause) {
@@ -164,6 +178,7 @@ export const WorkbenchStorageLive = Layer.effect(
 
 		const Remove = (
 			Key: string,
+
 			Scope: WorkbenchStorageScope,
 		): Effect.Effect<void, WorkbenchStorageProblem> =>
 			Effect.gen(function* () {
@@ -182,12 +197,14 @@ export const WorkbenchStorageLive = Layer.effect(
 
 		const Keys = (
 			Scope: WorkbenchStorageScope,
+
 			Target: WorkbenchStorageTarget,
 		): Effect.Effect<readonly string[], WorkbenchStorageProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
 				return Bridge.keys(
 					WorkbenchStorageScopeCode(Scope),
+
 					WorkbenchStorageTargetCode(Target),
 				);
 			});
@@ -202,8 +219,11 @@ export const WorkbenchStorageLive = Layer.effect(
 			}
 			const Subscription = Bridge.onDidChangeValue(
 				-1,
+
 				undefined,
+
 				undefined,
+
 				(VSEvent) => {
 					Emit.single({
 						key: VSEvent.key,

@@ -30,6 +30,7 @@ const MakeDecorationsProblem = (error: unknown): DecorationsProblem => ({
 
 export const LiveDecorationsServiceLayer = Layer.effect(
 	DecorationsServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -37,11 +38,13 @@ export const LiveDecorationsServiceLayer = Layer.effect(
 			GetDecoration: (uri, includeChildren) =>
 				IPCService.invoke(Channel.DecorationsGet)([
 					uri,
+
 					includeChildren,
 				]).pipe(
 					Effect.map((Result) =>
 						Result != null ? (Result as FileDecoration) : null,
 					),
+
 					Effect.mapError(MakeDecorationsProblem),
 				),
 
@@ -58,21 +61,25 @@ export const LiveDecorationsServiceLayer = Layer.effect(
 						}
 						return Map_ as ReadonlyMap<string, FileDecoration>;
 					}),
+
 					Effect.mapError(MakeDecorationsProblem),
 				),
 
 			SetDecoration: (uri, decoration) =>
 				IPCService.invoke(Channel.DecorationsSet)([
 					uri,
+
 					decoration,
 				]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeDecorationsProblem),
 				),
 
 			ClearDecoration: (uri) =>
 				IPCService.invoke(Channel.DecorationsClear)([uri]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeDecorationsProblem),
 				),
 		};

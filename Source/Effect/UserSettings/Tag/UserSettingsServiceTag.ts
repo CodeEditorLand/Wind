@@ -15,4 +15,5 @@ export class UserSettingsServiceTag extends Context.Tag(
 )<UserSettingsServiceTag, UserSettingsService>() {}
 
 export const UserSettings = UserSettingsServiceTag;
+
 export default UserSettingsServiceTag;

@@ -25,6 +25,7 @@ const MakeLabelProblem = (error: unknown): LabelProblem => ({
 
 export const LiveLabelServiceLayer = Layer.effect(
 	LabelServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -32,11 +33,13 @@ export const LiveLabelServiceLayer = Layer.effect(
 			GetUriLabel: (uri, options) =>
 				IPCService.invoke(Channel.LabelGetURI)([
 					uri,
+
 					options?.relative ?? false,
 				]).pipe(
 					Effect.map((Result) =>
 						typeof Result === "string" ? Result : uri,
 					),
+
 					Effect.mapError(MakeLabelProblem),
 				),
 
@@ -45,6 +48,7 @@ export const LiveLabelServiceLayer = Layer.effect(
 					Effect.map((Result) =>
 						typeof Result === "string" ? Result : "",
 					),
+
 					Effect.mapError(MakeLabelProblem),
 				),
 
@@ -55,6 +59,7 @@ export const LiveLabelServiceLayer = Layer.effect(
 							? Result
 							: (uri.split("/").pop() ?? uri),
 					),
+
 					Effect.mapError(MakeLabelProblem),
 				),
 		};

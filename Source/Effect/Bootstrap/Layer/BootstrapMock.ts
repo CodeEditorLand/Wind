@@ -91,6 +91,7 @@ export const makeMockBootstrap = (): BootstrapService => ({
  */
 export const BootstrapMock = Layer.effect(
 	BootstrapTag,
+
 	Effect.succeed(makeMockBootstrap()),
 );
 

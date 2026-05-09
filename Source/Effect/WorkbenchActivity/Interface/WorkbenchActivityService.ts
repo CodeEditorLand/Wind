@@ -4,8 +4,11 @@ import type { WorkbenchActivityProblem } from "../Type/WorkbenchActivityProblem.
 
 export interface WorkbenchActivityBadge {
 	readonly viewContainerId: string;
+
 	readonly count?: number;
+
 	readonly text?: string;
+
 	readonly priority?: number;
 }
 

@@ -5,6 +5,7 @@ import { WorkspacesServiceTag } from "./Tag/WorkspacesServiceTag.js";
 
 export const MockWorkspacesServiceLayer = Layer.succeed(
 	WorkspacesServiceTag,
+
 	StubWorkspacesService,
 );
 

@@ -4,8 +4,11 @@ import type { TextModelResolverService } from "../Interface/TextModelResolverSer
 
 const StubModel = {
 	uri: "",
+
 	content: "",
+
 	version: 1,
+
 	languageId: "plaintext",
 } as const;
 
@@ -17,7 +20,9 @@ export const StubTextModelResolverService: TextModelResolverService = {
 				// no-op stub
 			},
 		}),
+
 	HasModel: (_uri) => Effect.succeed(false),
+
 	Reload: (uri) => Effect.succeed({ ...StubModel, uri }),
 };
 

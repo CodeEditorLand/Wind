@@ -5,6 +5,7 @@ import { FilesServiceTag } from "./Tag/FilesServiceTag.js";
 
 export const MockFilesServiceLayer = Layer.succeed(
 	FilesServiceTag,
+
 	StubFilesService,
 );
 

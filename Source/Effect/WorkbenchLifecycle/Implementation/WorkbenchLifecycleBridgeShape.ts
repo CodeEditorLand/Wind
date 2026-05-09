@@ -5,10 +5,13 @@
  */
 export interface WorkbenchLifecycleBridgeShape {
 	readonly phase: number;
+
 	readonly when: (phase: number) => Promise<void>;
+
 	readonly onWillShutdown: (
 		listener: (event: { reason: number }) => void,
 	) => { readonly dispose: () => void };
+
 	readonly onDidShutdown: (listener: () => void) => {
 		readonly dispose: () => void;
 	};
@@ -26,10 +29,13 @@ export const WorkbenchLifecyclePhaseCode = (
 	switch (phase) {
 		case "Starting":
 			return 1;
+
 		case "Ready":
 			return 2;
+
 		case "Restored":
 			return 3;
+
 		case "Eventually":
 			return 4;
 	}
@@ -41,12 +47,16 @@ export const WorkbenchLifecyclePhaseFromCode = (
 	switch (code) {
 		case 1:
 			return "Starting";
+
 		case 2:
 			return "Ready";
+
 		case 3:
 			return "Restored";
+
 		case 4:
 			return "Eventually";
+
 		default:
 			return "Starting";
 	}

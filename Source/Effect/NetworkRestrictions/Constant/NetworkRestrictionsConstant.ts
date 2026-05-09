@@ -20,32 +20,54 @@ import type { NetworkRestrictionConfig } from "../Type/NetworkRestrictionConfig.
  */
 export const DEFAULT_NETWORK_RESTRICTIONS = {
 	blockHTTP: true,
+
 	blockHTTPS: true,
+
 	blockWebSocket: true,
+
 	blockMarketplace: true,
+
 	blockExtensionUpdates: true,
+
 	blockTelemetry: true,
+
 	blockExtensionTelemetry: true,
+
 	allowInternal: true,
+
 	allowLocalhost: true,
+
 	allowMountain: true,
+
 	logBlocked: true,
+
 	allowedDomains: [],
+
 	blockedDomains: [
 		// Microsoft telemetry endpoints
 		"*.microsoft.com",
+
 		"*.azureedge.net",
+
 		"*.vscode.azure.net",
+
 		"*.vscode-remote.azureedge.net",
+
 		"*.vscode-remote.azureedge-extentions.azureedge.net",
+
 		"*.vscode-extensions.azureedge.net",
+
 		// Microsoft marketplace
 		"*.marketplace.visualstudio.com",
+
 		"*.marketplace.extensions.visualstudio.com",
+
 		// Extension telemetry
 		"*.gallery.vsassets.io",
+
 		// Update servers
 		"*.update.code.visualstudio.com",
+
 		"*.vscode-update.azurewebsites.net",
 	],
 } satisfies NetworkRestrictionConfig;
@@ -59,9 +81,13 @@ export const DEFAULT_NETWORK_RESTRICTIONS = {
  */
 export const TelemetryEndpoint = [
 	"vortex.data.microsoft.com",
+
 	"vortex.data.microsoft.com/collect/v1",
+
 	"*.telemetry.vscode.azure.net",
+
 	"*.vscode-extensions.azureedge.net",
+
 	"*.vscode-telemetry.microsoft.com",
 ];
 
@@ -70,7 +96,9 @@ export const TelemetryEndpoint = [
  */
 export const MarketplaceEndpoint = [
 	"*.marketplace.visualstudio.com",
+
 	"*.marketplace.extensions.visualstudio.com",
+
 	"*.gallery.vsassets.io",
 ];
 
@@ -79,6 +107,7 @@ export const MarketplaceEndpoint = [
  */
 export const UpdateEndpoint = [
 	"*.update.code.visualstudio.com",
+
 	"*.vscode-update.azurewebsites.net",
 ];
 
@@ -87,6 +116,7 @@ export const UpdateEndpoint = [
  */
 export const AiEndpoint = [
 	"*.api.githubcopilot.com",
+
 	"*.copilot.githubusercontent.com",
 ];
 
@@ -99,13 +129,21 @@ export const AiEndpoint = [
  */
 export const ALLOWED_IPC_CHANNELS = [
 	"vscode:",
+
 	"vscode:workspace",
+
 	"vscode:file",
+
 	"vscode:editor",
+
 	"vscode:terminal",
+
 	"vscode:debug",
+
 	"vscode:sandbox",
+
 	"vscode:mountain",
+
 	"vscode:ipc",
 ];
 
@@ -114,18 +152,27 @@ export const ALLOWED_IPC_CHANNELS = [
  */
 export const BLOCKED_IPC_CHANNELS = [
 	"vscode:telemetryAppender",
+
 	"vscode:telemetryLog",
+
 	"vscode:customEndpointTelemetry",
+
 	"vscode:extensions.*",
 ];
 
 const constants = {
 	DEFAULT_NETWORK_RESTRICTIONS,
+
 	TelemetryEndpoint,
+
 	MarketplaceEndpoint,
+
 	UpdateEndpoint,
+
 	AiEndpoint,
+
 	ALLOWED_IPC_CHANNELS,
+
 	BLOCKED_IPC_CHANNELS,
 } as const;
 

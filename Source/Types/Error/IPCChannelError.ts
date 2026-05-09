@@ -14,6 +14,7 @@ export class IPCChannelError extends Error {
 
 	constructor(
 		readonly channel: string,
+
 		override readonly cause: unknown,
 	) {
 		super(`IPC channel '${channel}' error: ${String(cause)}`);

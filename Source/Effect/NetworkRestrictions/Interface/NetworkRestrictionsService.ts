@@ -23,8 +23,11 @@ import type { NetworkRestrictionConfig } from "../Type/NetworkRestrictionConfig.
  */
 export interface BlockedRequest {
 	readonly timestamp: number;
+
 	readonly type: "http" | "https" | "websocket" | "ipc";
+
 	readonly target: string;
+
 	readonly reason: string;
 }
 
@@ -45,6 +48,7 @@ export interface NetworkRestrictionsService {
 	/** Block a URL (used by window.fetch override) */
 	readonly blockURL: (
 		url: string,
+
 		reason: string,
 	) => Effect.Effect<void, never>;
 

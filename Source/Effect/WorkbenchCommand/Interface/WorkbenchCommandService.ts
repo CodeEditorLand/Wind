@@ -4,17 +4,20 @@ import type { WorkbenchCommandProblem } from "../Type/WorkbenchCommandProblem.js
 
 export interface WorkbenchCommandExecutedEvent {
 	readonly commandId: string;
+
 	readonly args: ReadonlyArray<unknown>;
 }
 
 export interface WorkbenchCommandService {
 	readonly Execute: <T = unknown>(
 		commandId: string,
+
 		args: ReadonlyArray<unknown>,
 	) => Effect.Effect<T, WorkbenchCommandProblem>;
 
 	readonly ExecuteVoid: (
 		commandId: string,
+
 		args: ReadonlyArray<unknown>,
 	) => Effect.Effect<void, WorkbenchCommandProblem>;
 

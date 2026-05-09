@@ -48,7 +48,9 @@ export interface FileSystemProviderService {
 	 */
 	readonly writeFile: (
 		uri: string,
+
 		content: Uint8Array,
+
 		options?: { create?: boolean; overwrite?: boolean },
 	) => Effect.Effect<void, FileSystemProviderError>;
 
@@ -69,6 +71,7 @@ export interface FileSystemProviderService {
 	 */
 	readonly copy: (
 		source: string,
+
 		destination: string,
 	) => Effect.Effect<void, FileSystemProviderError>;
 
@@ -80,6 +83,7 @@ export interface FileSystemProviderService {
 	 */
 	readonly move: (
 		source: string,
+
 		destination: string,
 	) => Effect.Effect<void, FileSystemProviderError>;
 
@@ -100,6 +104,7 @@ export interface FileSystemProviderService {
 	 */
 	readonly mkdir: (
 		uri: string,
+
 		options?: { recursive?: boolean },
 	) => Effect.Effect<void, FileSystemProviderError>;
 
@@ -120,9 +125,13 @@ export interface FileSystemProviderService {
 	readonly stat: (uri: string) => Effect.Effect<
 		{
 			type: number;
+
 			size: number;
+
 			ctime: number;
+
 			mtime: number;
+
 			permissions?: number;
 		},
 		FileSystemProviderError

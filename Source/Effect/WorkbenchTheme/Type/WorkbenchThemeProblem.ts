@@ -1,6 +1,7 @@
 export type WorkbenchThemeProblem =
 	| {
 			readonly _tag: "WorkbenchThemeBridgeUnavailable";
+
 			readonly reason: string;
 	  }
 	| { readonly _tag: "WorkbenchThemeNotFound"; readonly themeId: string }

@@ -68,34 +68,44 @@
 // ── Tag resolution ──────────────────────────────────────────────────────
 
 let CachedTags: string[] | null = null;
+
 let CachedShort: boolean | null = null;
 
 const GetEnabledTags = (): string[] => {
 	if (CachedTags !== null) return CachedTags;
+
 	const Raw =
 		(window as any).__Trace ??
 		(typeof localStorage !== "undefined"
 			? localStorage.getItem("Trace")
 			: null);
+
 	CachedTags = Raw
 		? String(Raw)
 				.split(",")
 				.map((S: string) => S.trim().toLowerCase())
 		: [];
+
 	return CachedTags;
 };
 
 const IsShort = (): boolean => {
 	if (CachedShort !== null) return CachedShort;
+
 	CachedShort = GetEnabledTags().includes("short");
+
 	return CachedShort;
 };
 
 const IsEnabled = (Tag: string): boolean => {
 	const Tags = GetEnabledTags();
+
 	if (Tags.length === 0) return false;
+
 	if (IsShort()) return true;
+
 	const Lower = Tag.toLowerCase();
+
 	return Tags.some((T) => T === "all" || T === Lower);
 };
 
@@ -110,13 +120,16 @@ const AliasPath = (Input: string): string =>
 // ── Dedup buffer ────────────────────────────────────────────────────────
 
 let DedupKey = "";
+
 let DedupCount = 0;
 
 const FlushDedup = (): void => {
 	if (DedupCount > 1) {
 		console.log(`  (x${DedupCount})`);
 	}
+
 	DedupKey = "";
+
 	DedupCount = 0;
 };
 
@@ -136,17 +149,23 @@ const DevLog = (Tag: string, ...Args: unknown[]): void => {
 
 	if (IsShort()) {
 		const Message = Args.map(String).join(" ");
+
 		const Aliased = AliasPath(Message);
+
 		const Key = `${TagUpper}:${Aliased}`;
 
 		if (Key === DedupKey) {
 			DedupCount++;
+
 			return;
 		}
 
 		FlushDedup();
+
 		DedupKey = Key;
+
 		DedupCount = 1;
+
 		console.log(`[DEV:${TagUpper}]`, Aliased);
 	} else {
 		console.log(`[DEV:${TagUpper}]`, ...Args);
@@ -156,7 +175,9 @@ const DevLog = (Tag: string, ...Args: unknown[]): void => {
 /** Force-reset the cache (call after changing window.__Trace). */
 DevLog.reset = () => {
 	CachedTags = null;
+
 	CachedShort = null;
+
 	FlushDedup();
 };
 

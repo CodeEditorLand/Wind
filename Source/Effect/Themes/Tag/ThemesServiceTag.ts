@@ -8,4 +8,5 @@ export class ThemesServiceTag extends Context.Tag("Application/ThemesService")<
 >() {}
 
 export const Themes = ThemesServiceTag;
+
 export default ThemesServiceTag;

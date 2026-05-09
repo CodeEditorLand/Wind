@@ -26,6 +26,7 @@ const ResolveBridge = Effect.sync((): WorkbenchThemeBridgeShape | null => {
 
 const Unavailable: WorkbenchThemeProblem = {
 	_tag: "WorkbenchThemeBridgeUnavailable",
+
 	reason: "globalThis.__CEL_SERVICES__.WorkbenchTheme is null - the workbench has not yet exposed its IWorkbenchThemeService handle.",
 };
 
@@ -42,6 +43,7 @@ const ToError = (cause: unknown): Error =>
 
 export const WorkbenchThemeLive = Layer.effect(
 	WorkbenchThemeServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 

@@ -12,10 +12,13 @@
 export interface WorkbenchData {
 	/** Whether the workbench has been initialized */
 	initialized: boolean;
+
 	/** Whether the workbench is currently running */
 	running: boolean;
+
 	/** Whether all services are ready */
 	servicesReady: boolean;
+
 	/** Optional error if workbench failed to start */
 	error?: Error;
 }

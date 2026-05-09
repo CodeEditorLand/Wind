@@ -17,10 +17,15 @@ import { FileSystemErrorCode } from "../Type/FileSystemType.js";
  */
 const VsCodeErrorCodeToken: Record<FileSystemErrorCode, string> = {
 	[FileSystemErrorCode.FileNotFound]: "EntryNotFound",
+
 	[FileSystemErrorCode.FileExists]: "EntryExists",
+
 	[FileSystemErrorCode.NoPermissions]: "NoPermissions",
+
 	[FileSystemErrorCode.InvalidPath]: "Unknown",
+
 	[FileSystemErrorCode.NotSupported]: "Unknown",
+
 	[FileSystemErrorCode.Unknown]: "Unknown",
 };
 
@@ -44,12 +49,16 @@ const VsCodeErrorCodeToken: Record<FileSystemErrorCode, string> = {
  */
 export class FileSystemProviderError extends Error {
 	_tag: string;
+
 	readonly code: FileSystemErrorCode;
 
 	constructor(message: string, code: FileSystemErrorCode, cause?: unknown) {
 		super(message, cause ? { cause } : undefined);
+
 		this.name = `${VsCodeErrorCodeToken[code] ?? "Unknown"} (FileSystemError)`;
+
 		this._tag = "FileSystemProviderError";
+
 		this.code = code;
 	}
 }
@@ -61,9 +70,12 @@ export class FileNotFoundError extends FileSystemProviderError {
 	constructor(path: string, cause?: unknown) {
 		super(
 			`File not found: ${path}`,
+
 			FileSystemErrorCode.FileNotFound,
+
 			cause,
 		);
+
 		this._tag = "FileNotFoundError";
 	}
 }
@@ -75,9 +87,12 @@ export class FileExistsError extends FileSystemProviderError {
 	constructor(path: string, cause?: unknown) {
 		super(
 			`File already exists: ${path}`,
+
 			FileSystemErrorCode.FileExists,
+
 			cause,
 		);
+
 		this._tag = "FileExistsError";
 	}
 }
@@ -89,9 +104,12 @@ export class PermissionError extends FileSystemProviderError {
 	constructor(path: string, cause?: unknown) {
 		super(
 			`Permission denied: ${path}`,
+
 			FileSystemErrorCode.NoPermissions,
+
 			cause,
 		);
+
 		this._tag = "PermissionError";
 	}
 }
@@ -102,6 +120,7 @@ export class PermissionError extends FileSystemProviderError {
 export class InvalidPathError extends FileSystemProviderError {
 	constructor(path: string, cause?: unknown) {
 		super(`Invalid path: ${path}`, FileSystemErrorCode.InvalidPath, cause);
+
 		this._tag = "InvalidPathError";
 	}
 }
@@ -113,9 +132,12 @@ export class NotSupportedError extends FileSystemProviderError {
 	constructor(operation: string, cause?: unknown) {
 		super(
 			`Operation not supported: ${operation}`,
+
 			FileSystemErrorCode.NotSupported,
+
 			cause,
 		);
+
 		this._tag = "NotSupportedError";
 	}
 }
@@ -127,9 +149,12 @@ export class UnknownFileSystemError extends FileSystemProviderError {
 	constructor(message: string, cause?: unknown) {
 		super(
 			`Unknown file system error: ${message}`,
+
 			FileSystemErrorCode.Unknown,
+
 			cause,
 		);
+
 		this._tag = "UnknownFileSystemError";
 	}
 }
@@ -208,7 +233,9 @@ export function isUnknownFileSystemError(
  */
 export function toFileSystemProviderError(
 	error: unknown,
+
 	context: string,
+
 	contextValue?: string,
 ): FileSystemProviderError {
 	// Check if it's already a FileSystemProviderError
@@ -217,30 +244,35 @@ export function toFileSystemProviderError(
 	}
 
 	const message = error instanceof Error ? error.message : String(error);
+
 	const fullMessage = contextValue
 		? `${context} (${contextValue}): ${message}`
 		: `${context}: ${message}`;
 
 	// Try to infer error type from message
 	const lowerMessage = message.toLowerCase();
+
 	if (
 		lowerMessage.includes("not found") ||
 		lowerMessage.includes("no such")
 	) {
 		return new FileNotFoundError(contextValue ?? context, error);
 	}
+
 	if (
 		lowerMessage.includes("already exists") ||
 		lowerMessage.includes("exists")
 	) {
 		return new FileExistsError(contextValue ?? context, error);
 	}
+
 	if (
 		lowerMessage.includes("permission") ||
 		lowerMessage.includes("denied")
 	) {
 		return new PermissionError(contextValue ?? context, error);
 	}
+
 	if (
 		lowerMessage.includes("invalid") ||
 		lowerMessage.includes("malformed")

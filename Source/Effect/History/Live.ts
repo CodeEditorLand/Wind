@@ -29,6 +29,7 @@ const MakeHistoryProblem = (error: unknown): HistoryProblem => ({
 
 export const LiveHistoryServiceLayer = Layer.effect(
 	HistoryServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -36,36 +37,42 @@ export const LiveHistoryServiceLayer = Layer.effect(
 			GoBack: () =>
 				IPCService.invoke(Channel.HistoryGoBack)([]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeHistoryProblem),
 				),
 
 			GoForward: () =>
 				IPCService.invoke(Channel.HistoryGoForward)([]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeHistoryProblem),
 				),
 
 			CanGoBack: () =>
 				IPCService.invoke(Channel.HistoryCanGoBack)([]).pipe(
 					Effect.map((Result) => Result === true),
+
 					Effect.mapError(MakeHistoryProblem),
 				),
 
 			CanGoForward: () =>
 				IPCService.invoke(Channel.HistoryCanGoForward)([]).pipe(
 					Effect.map((Result) => Result === true),
+
 					Effect.mapError(MakeHistoryProblem),
 				),
 
 			Push: (uri) =>
 				IPCService.invoke(Channel.HistoryPush)([uri]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeHistoryProblem),
 				),
 
 			Clear: () =>
 				IPCService.invoke(Channel.HistoryClear)([]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeHistoryProblem),
 				),
 
@@ -76,6 +83,7 @@ export const LiveHistoryServiceLayer = Layer.effect(
 							? (Result as readonly string[])
 							: [],
 					),
+
 					Effect.mapError(MakeHistoryProblem),
 				),
 		};

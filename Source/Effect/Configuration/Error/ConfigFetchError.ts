@@ -13,6 +13,7 @@
 
 export class ConfigFetchError extends Error {
 	readonly _tag = "ConfigFetchError";
+
 	constructor(override readonly cause: unknown) {
 		super(`Failed to fetch configuration: ${String(cause)}`);
 	}

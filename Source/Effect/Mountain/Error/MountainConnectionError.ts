@@ -13,7 +13,9 @@
 
 export class MountainConnectionError extends Error {
 	readonly _tag = "MountainConnectionError";
+
 	override readonly cause: unknown;
+
 	constructor(cause: unknown) {
 		super(`Failed to connect to Mountain backend: ${String(cause)}`);
 	}

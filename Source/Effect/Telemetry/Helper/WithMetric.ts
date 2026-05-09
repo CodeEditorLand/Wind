@@ -34,7 +34,9 @@ import { Telemetry } from "../../Telemetry.js";
  */
 export default function withMetric<A, E, R>(
 	name: string,
+
 	effect: Effect.Effect<A, E, R>,
+
 	labels?: Record<string, string>,
 ) {
 	return Effect.gen(function* () {
@@ -45,10 +47,13 @@ export default function withMetric<A, E, R>(
 			Effect.tap(() =>
 				telemetry.recordMetric(
 					`${name}_duration`,
+
 					Date.now() - startTime,
+
 					labels,
 				),
 			),
+
 			Effect.tapError((error) =>
 				telemetry.log("error", `${name} failed`, {
 					error: String(error),

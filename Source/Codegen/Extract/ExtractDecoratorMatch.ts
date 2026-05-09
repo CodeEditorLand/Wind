@@ -17,9 +17,13 @@
 
 export interface DecoratorMatch {
 	readonly DecoratorName: string;
+
 	readonly InterfaceName: string;
+
 	readonly DecoratorTag: string;
+
 	readonly SourceLine: number;
+
 	readonly DocComment: string | null;
 }
 
@@ -32,6 +36,7 @@ const StripJSDocPrefix = (raw: string): string => {
 	for (const Line of Lines) {
 		const Trimmed = Line.replace(/^\s*\/?\*+\/?/, "").replace(
 			/\*+\/?$/,
+
 			"",
 		);
 		Cleaned.push(Trimmed.trim());
@@ -41,6 +46,7 @@ const StripJSDocPrefix = (raw: string): string => {
 
 const PrecedingDocComment = (
 	source: string,
+
 	declarationStart: number,
 ): string | null => {
 	const Slice = source.slice(0, declarationStart);

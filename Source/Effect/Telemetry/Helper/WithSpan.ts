@@ -34,7 +34,9 @@ import { Telemetry } from "../../Telemetry.js";
  */
 export default function withSpan<A, E, R>(
 	name: string,
+
 	effect: Effect.Effect<A, E, R>,
+
 	labels?: Record<string, string>,
 ) {
 	return Effect.gen(function* () {
@@ -43,6 +45,7 @@ export default function withSpan<A, E, R>(
 
 		return effect.pipe(
 			Effect.tap(() => span.end(true)),
+
 			Effect.catchAll((error) =>
 				Effect.gen(function* () {
 					yield* span.end(false, String(error));

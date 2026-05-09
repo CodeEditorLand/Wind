@@ -88,6 +88,7 @@ export class VineNotifications extends Context.Tag("Land/Vine/Notifications")<
  */
 export const VineNotificationsLive = Layer.scoped(
 	VineNotifications,
+
 	Effect.gen(function* () {
 		const queue = yield* Queue.unbounded<NotificationFrame>();
 
@@ -121,6 +122,7 @@ export const VineNotificationsLive = Layer.scoped(
 						`vine_subscribe_notifications failed: ${String(error)}`,
 					),
 			}),
+
 			() =>
 				Effect.gen(function* () {
 					// The Rust drain task exits when the Channel closes

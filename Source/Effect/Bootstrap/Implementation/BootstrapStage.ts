@@ -30,6 +30,7 @@ import type { StageResult } from "../Type/BootstrapType.js";
  */
 export const stage0_Environment = withSpan(
 	"stage0_environment",
+
 	Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
 		const environment = yield* EnvironmentTag;
@@ -40,10 +41,12 @@ export const stage0_Environment = withSpan(
 
 		telemetry.log(
 			"info",
+
 			`[Bootstrap] Environment: ${envInfo.platform}/${envInfo.architecture}`,
 		);
 		telemetry.log(
 			"info",
+
 			`[Bootstrap] Locale: ${envInfo.locale}, Timezone: ${envInfo.timezone}`,
 		);
 
@@ -62,6 +65,7 @@ export const stage0_Environment = withSpan(
  */
 export const stage1_Preload = withSpan(
 	"stage1_preload",
+
 	Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
 		const sandbox = yield* Sandbox;
@@ -87,6 +91,7 @@ export const stage1_Preload = withSpan(
  */
 export const stage2_Configuration = withSpan(
 	"stage2_configuration",
+
 	Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
 		// Ensure configuration is loaded
@@ -111,11 +116,13 @@ export const stage2_Configuration = withSpan(
  */
 export const stage3_Services = withSpan(
 	"stage3_services",
+
 	Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
 
 		telemetry.log(
 			"info",
+
 			"[Bootstrap] Stage 3: Connecting to Mountain backend...",
 		);
 
@@ -139,11 +146,13 @@ export const stage3_Services = withSpan(
  */
 export const stage4_Preparation = withSpan(
 	"stage4_preparation",
+
 	Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
 
 		telemetry.log(
 			"info",
+
 			"[Bootstrap] Stage 4: Preparing workbench resources...",
 		);
 
@@ -166,11 +175,13 @@ export const stage4_Preparation = withSpan(
  */
 export const stage5_Initialization = withSpan(
 	"stage5_initialization",
+
 	Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
 
 		telemetry.log(
 			"info",
+
 			"[Bootstrap] Stage 5: Initializing VSCode workbench...",
 		);
 
@@ -202,6 +213,7 @@ export const stage5_Initialization = withSpan(
  */
 export const stage6_HealthCheck = withSpan(
 	"stage6_healthcheck",
+
 	Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
 		const health = yield* HealthTag;
@@ -212,6 +224,7 @@ export const stage6_HealthCheck = withSpan(
 
 		telemetry.log(
 			"info",
+
 			`[Bootstrap] Health check result: ${systemHealth.overallStatus}`,
 		);
 
@@ -230,10 +243,16 @@ export const stage6_HealthCheck = withSpan(
 
 export default {
 	stage0_Environment,
+
 	stage1_Preload,
+
 	stage2_Configuration,
+
 	stage3_Services,
+
 	stage4_Preparation,
+
 	stage5_Initialization,
+
 	stage6_HealthCheck,
 };

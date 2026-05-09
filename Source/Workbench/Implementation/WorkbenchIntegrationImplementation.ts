@@ -62,8 +62,10 @@ interface VSCodeWorkspace {
 interface VSCodeWorkspaceFolder {
 	/** URI of the workspace folder */
 	readonly uri: string;
+
 	/** Name of the workspace folder */
 	readonly name: string;
+
 	/** Index of the workspace folder */
 	readonly index: number;
 }
@@ -82,7 +84,9 @@ interface VSCodeFileSystemProvider {
 	 */
 	readonly writeFile: (
 		uri: string,
+
 		content: Uint8Array,
+
 		options?: { create?: boolean; overwrite?: boolean },
 	) => Promise<void>;
 
@@ -111,6 +115,7 @@ interface VSCodeFileSystemProvider {
 	 */
 	readonly mkdir: (
 		uri: string,
+
 		options?: { recursive?: boolean },
 	) => Promise<void>;
 
@@ -124,9 +129,13 @@ interface VSCodeFileSystemProvider {
 	 */
 	readonly stat: (uri: string) => Promise<{
 		type: number;
+
 		size: number;
+
 		ctime: number;
+
 		mtime: number;
+
 		permissions?: number;
 	}>;
 }
@@ -137,6 +146,7 @@ interface VSCodeFileSystemProvider {
 interface VSCodeAPI {
 	/** Workspace API */
 	readonly workspace?: VSCodeWorkspace;
+
 	/** IPC renderer (from Wind preload) */
 	readonly ipcRenderer?: {
 		readonly invoke: (
@@ -144,10 +154,13 @@ interface VSCodeAPI {
 			...args: unknown[]
 		) => Promise<unknown>;
 	};
+
 	/** Process information (from Wind preload) */
 	readonly process?: {
 		readonly platform: string;
+
 		readonly arch: string;
+
 		readonly type: string;
 	};
 }
@@ -159,24 +172,32 @@ interface VSCodeAPI {
 interface WorkbenchIntegrationContext {
 	/** Current initialization state */
 	readonly stateRef: Ref.Ref<WorkbenchInitState>;
+
 	/** Queue for state change notifications */
 	readonly stateQueue: Queue.Queue<WorkbenchInitState>;
+
 	/** Provider registration result */
 	readonly registrationResultRef: Ref.Ref<
 		ProviderRegistrationResult | undefined
 	>;
+
 	/** Workspace context */
 	readonly workspaceContextRef: Ref.Ref<WorkspaceContext | undefined>;
+
 	/** Debug mode flag */
 	readonly debugModeRef: Ref.Ref<boolean>;
+
 	/** List of diagnostic messages */
 	readonly messagesRef: Ref.Ref<
 		ReadonlyArray<{
 			type: "info" | "warning" | "error";
+
 			message: string;
+
 			timestamp: number;
 		}>
 	>;
+
 	/** Whether default providers were unregistered */
 	readonly defaultProvidersUnregisteredRef: Ref.Ref<boolean>;
 }
@@ -190,7 +211,9 @@ interface WorkbenchIntegrationContext {
  */
 const updateState = (
 	context: WorkbenchIntegrationContext,
+
 	state: WorkbenchState,
+
 	error?: Error,
 ) =>
 	Effect.gen(function* () {
@@ -208,11 +231,14 @@ const updateState = (
  */
 const addMessage = (
 	context: WorkbenchIntegrationContext,
+
 	type: "info" | "warning" | "error",
+
 	message: string,
 ) =>
 	Ref.update(context.messagesRef, (messages) => [
 		...messages,
+
 		{ type, message, timestamp: Date.now() },
 	]);
 
@@ -231,16 +257,20 @@ const debugLog = (context: WorkbenchIntegrationContext, message: string) =>
  */
 const toWorkbenchError = (
 	error: unknown,
+
 	code: WorkbenchIntegrationErrorCode,
 ): WorkbenchIntegrationError => {
 	if (error instanceof WorkbenchIntegrationError) {
 		return error;
 	}
+
 	if (error instanceof Error) {
 		return new WorkbenchIntegrationError(error.message, code);
 	}
+
 	return new WorkbenchIntegrationError(
 		String(error),
+
 		WorkbenchIntegrationErrorCode.Unknown,
 	);
 };
@@ -274,6 +304,7 @@ const getVSCodeAPI = (): VSCodeAPI | undefined => {
 	if (typeof window === "undefined") {
 		return undefined;
 	}
+
 	return (window as { vscode?: VSCodeAPI }).vscode;
 };
 
@@ -282,7 +313,9 @@ const getVSCodeAPI = (): VSCodeAPI | undefined => {
  */
 const pollUntil = (
 	condition: () => boolean,
+
 	timeout: number,
+
 	interval: number = DEFAULT_POLL_INTERVAL,
 ): Effect.Effect<void> =>
 	Effect.gen(function* () {
@@ -298,6 +331,7 @@ const pollUntil = (
 		return yield* Effect.fail(
 			new WorkbenchIntegrationError(
 				`Timeout after ${timeout}ms waiting for condition to be met`,
+
 				WorkbenchIntegrationErrorCode.InitTimeout,
 			),
 		);
@@ -375,6 +409,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 			yield* updateState(context, WorkbenchState.WaitingForReady);
 			yield* debugLog(
 				context,
+
 				`Waiting for workbench to be ready (timeout: ${timeout}ms)...`,
 			);
 
@@ -384,6 +419,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 						(_) =>
 							new WorkbenchIntegrationError(
 								`VSCode API not available after ${timeout}ms`,
+
 								WorkbenchIntegrationErrorCode.InitTimeout,
 							),
 					),
@@ -401,6 +437,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 						(_) =>
 							new WorkbenchIntegrationError(
 								`Monaco editor not available after ${timeout}ms`,
+
 								WorkbenchIntegrationErrorCode.InitTimeout,
 							),
 					),
@@ -415,6 +452,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 			yield* debugLog(context, "Workbench is ready");
 			yield* updateState(
 				context,
+
 				WorkbenchState.ReadyForProviderRegistration,
 			);
 		});
@@ -423,6 +461,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 		Effect.gen(function* () {
 			yield* debugLog(
 				context,
+
 				"Unregistering default VSCode providers...",
 			);
 
@@ -431,18 +470,22 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 			// This is logged for diagnostic purposes
 			yield* addMessage(
 				context,
+
 				"info",
+
 				"Default providers will be overridden by Mountain provider",
 			);
 
 			yield* Ref.set(defaultProvidersUnregisteredRef, true);
 			yield* updateState(
 				context,
+
 				WorkbenchState.DefaultProvidersUnregistered,
 			);
 
 			yield* debugLog(
 				context,
+
 				"Default providers unregistered (overridden)",
 			);
 		});
@@ -453,15 +496,18 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 		Effect.gen(function* () {
 			yield* debugLog(
 				context,
+
 				`Registering Mountain provider for scheme: ${scheme}...`,
 			);
 
 			const fileSystemProviderService = yield* FileSystemProviderTag;
 			const provider = yield* Effect.mapError(
 				fileSystemProviderService.getProvider,
+
 				(_) =>
 					new WorkbenchIntegrationError(
 						"Failed to get file system provider",
+
 						WorkbenchIntegrationErrorCode.FileSystemProviderUnavailable,
 					),
 			);
@@ -475,7 +521,9 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 				writeFile: (uriStr: string, content: Uint8Array, options) =>
 					provider.writeFile(
 						URI.parse(uriStr),
+
 						content,
+
 						options
 							? {
 									create: options.create ?? true,
@@ -487,11 +535,13 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 				copy: (sourceStr: string, destinationStr: string) =>
 					provider.copy(
 						URI.parse(sourceStr),
+
 						URI.parse(destinationStr),
 					),
 				move: (sourceStr: string, destinationStr: string) =>
 					provider.move(
 						URI.parse(sourceStr),
+
 						URI.parse(destinationStr),
 					),
 				readdir: (uriStr: string) =>
@@ -514,6 +564,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 				return yield* Effect.fail(
 					new WorkbenchIntegrationError(
 						"VSCode API not available for provider registration",
+
 						WorkbenchIntegrationErrorCode.ServiceUnavailable,
 					),
 				);
@@ -538,16 +589,20 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 			yield* Ref.set(context.registrationResultRef, result);
 			yield* updateState(
 				context,
+
 				WorkbenchState.MountainProviderRegistered,
 			);
 
 			yield* addMessage(
 				context,
+
 				"info",
+
 				`Mountain provider registered for scheme: ${scheme}`,
 			);
 			yield* debugLog(
 				context,
+
 				`Mountain provider registered successfully for scheme: ${scheme}`,
 			);
 
@@ -559,6 +614,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 			Effect.gen(function* () {
 				yield* debugLog(
 					context,
+
 					`Configuring workspace: ${workspaceContext.name}...`,
 				);
 
@@ -567,6 +623,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 					return yield* Effect.fail(
 						new WorkbenchIntegrationError(
 							"VSCode API not available for workspace configuration",
+
 							WorkbenchIntegrationErrorCode.ServiceUnavailable,
 						),
 					);
@@ -584,7 +641,9 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 
 				yield* addMessage(
 					context,
+
 					"info",
+
 					`Workspace configured: ${workspaceContext.name}`,
 				);
 				yield* debugLog(context, `Workspace configured successfully`);
@@ -598,14 +657,17 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 			yield* debugLog(context, "Initializing workbench integration...");
 			yield* debugLog(
 				context,
+
 				`  - Workspace root: ${config.workspaceRootUri}`,
 			);
 			yield* debugLog(
 				context,
+
 				`  - File scheme: ${config.fileScheme ?? "file"}`,
 			);
 			yield* debugLog(
 				context,
+
 				`  - Override default providers: ${config.overrideDefaultProviders ?? false}`,
 			);
 
@@ -628,6 +690,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 				return yield* Effect.fail(
 					toWorkbenchError(
 						regResult.error,
+
 						WorkbenchIntegrationErrorCode.ProviderRegistrationFailed,
 					),
 				);
@@ -652,11 +715,14 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 
 			yield* addMessage(
 				context,
+
 				"info",
+
 				"Workbench integration complete",
 			);
 			yield* debugLog(
 				context,
+
 				"Workbench integration initialized successfully",
 			);
 		});
@@ -732,6 +798,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 
 export const WorkbenchIntegrationLiveLayer = Layer.effect(
 	WorkbenchIntegrationTag,
+
 	WorkbenchIntegrationServiceLive,
 ).pipe(Layer.provide(FileSystemProviderLive));
 

@@ -27,6 +27,7 @@ export { default as TelemetryTag, Telemetry } from "./Tag/TelemetryTag.js";
 
 // Layers
 export { default as TelemetryLive } from "./Layer/TelemetryLive.js";
+
 export { default as TelemetryMockLive } from "./Layer/TelemetryMock.js";
 
 // Mock factory (for direct usage without Layer)
@@ -34,6 +35,7 @@ export { makeMockTelemetry } from "./Layer/TelemetryMock.js";
 
 // Helper functions
 export { default as withSpan } from "./Helper/WithSpan.js";
+
 export { default as withMetric } from "./Helper/WithMetric.js";
 
 // Errors

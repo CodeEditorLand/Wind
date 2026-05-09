@@ -32,6 +32,7 @@ export interface PanelService {
 	/** Update an existing panel view */
 	readonly updateView: (
 		id: string,
+
 		updates: Partial<Omit<PanelView, "id">>,
 	) => Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError>;
 

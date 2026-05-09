@@ -5,6 +5,7 @@ import { TextFileServiceTag } from "./Tag/TextFileServiceTag.js";
 
 export const MockTextFileServiceLayer = Layer.succeed(
 	TextFileServiceTag,
+
 	StubTextFileService,
 );
 

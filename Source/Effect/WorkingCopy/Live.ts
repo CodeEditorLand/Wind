@@ -27,6 +27,7 @@ const MakeWorkingCopyProblem = (error: unknown): WorkingCopyProblem => ({
 
 export const LiveWorkingCopyServiceLayer = Layer.effect(
 	WorkingCopyServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -34,15 +35,18 @@ export const LiveWorkingCopyServiceLayer = Layer.effect(
 			IsDirty: (uri) =>
 				IPCService.invoke(Channel.WorkingCopyIsDirty)([uri]).pipe(
 					Effect.map((Result) => Result === true),
+
 					Effect.mapError(MakeWorkingCopyProblem),
 				),
 
 			SetDirty: (uri, dirty) =>
 				IPCService.invoke(Channel.WorkingCopySetDirty)([
 					uri,
+
 					dirty,
 				]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeWorkingCopyProblem),
 				),
 
@@ -53,6 +57,7 @@ export const LiveWorkingCopyServiceLayer = Layer.effect(
 							? (Result as readonly string[])
 							: [],
 					),
+
 					Effect.mapError(MakeWorkingCopyProblem),
 				),
 
@@ -61,6 +66,7 @@ export const LiveWorkingCopyServiceLayer = Layer.effect(
 					Effect.map((Result) =>
 						typeof Result === "number" ? Result : 0,
 					),
+
 					Effect.mapError(MakeWorkingCopyProblem),
 				),
 		};

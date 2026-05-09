@@ -28,6 +28,7 @@ const MakeTextFileProblem = (error: unknown): TextFileProblem =>
 
 export const LiveTextFileServiceLayer = Layer.effect(
 	TextFileServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -37,27 +38,32 @@ export const LiveTextFileServiceLayer = Layer.effect(
 					Effect.map((Result) =>
 						typeof Result === "string" ? Result : String(Result),
 					),
+
 					Effect.mapError(MakeTextFileProblem),
 				),
 
 			Write: (uri, content) =>
 				IPCService.invoke(Channel.TextFileWrite)([
 					UriToPath(uri),
+
 					content,
 				]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeTextFileProblem),
 				),
 
 			Save: (uri) =>
 				IPCService.invoke(Channel.TextFileSave)([UriToPath(uri)]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeTextFileProblem),
 				),
 
 			SaveAll: () =>
 				IPCService.invoke(Channel.TextFileSave)([]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeTextFileProblem),
 				),
 
@@ -66,6 +72,7 @@ export const LiveTextFileServiceLayer = Layer.effect(
 			Revert: (uri) =>
 				IPCService.invoke(Channel.TextFileRead)([UriToPath(uri)]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeTextFileProblem),
 				),
 		};

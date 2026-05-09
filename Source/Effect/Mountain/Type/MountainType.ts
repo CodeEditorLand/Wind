@@ -26,12 +26,16 @@ export type MountainConnectionState =
 export interface SyncResource {
 	/** Type of the resource being synced */
 	readonly type: "configuration" | "services" | "state" | "files";
+
 	/** Unique identifier for the resource */
 	readonly id: string;
+
 	/** The resource data */
 	readonly data: unknown;
+
 	/** Timestamp when resource was synced */
 	readonly timestamp: number;
+
 	/** Hash of the resource data for change detection */
 	readonly hash: string;
 }
@@ -42,10 +46,13 @@ export interface SyncResource {
 export interface SyncResult {
 	/** Whether the sync was successful */
 	readonly success: boolean;
+
 	/** Number of resources that were synced */
 	readonly resourcesSynced: number;
+
 	/** Any errors that occurred during sync */
 	readonly errors: ReadonlyArray<string>;
+
 	/** Duration of the sync operation */
 	readonly duration: number;
 }

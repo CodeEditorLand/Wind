@@ -24,11 +24,17 @@ export interface EnvironmentService {
 	readonly getInfo: Effect.Effect<
 		{
 			readonly platform: Platform;
+
 			readonly architecture: Architecture;
+
 			readonly locale: string;
+
 			readonly timezone: string;
+
 			readonly userAgent: string;
+
 			readonly isSecureContext: boolean;
+
 			readonly language: string;
 		},
 		never

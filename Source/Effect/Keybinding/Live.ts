@@ -27,6 +27,7 @@ const MakeKeybindingProblem = (error: unknown): KeybindingProblem => ({
 
 export const LiveKeybindingServiceLayer = Layer.effect(
 	KeybindingServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -34,16 +35,20 @@ export const LiveKeybindingServiceLayer = Layer.effect(
 			AddKeybinding: (commandId, keybinding, when) =>
 				IPCService.invoke(Channel.KeybindingAdd)([
 					commandId,
+
 					keybinding,
+
 					when ?? null,
 				]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeKeybindingProblem),
 				),
 
 			RemoveKeybinding: (commandId) =>
 				IPCService.invoke(Channel.KeybindingRemove)([commandId]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeKeybindingProblem),
 				),
 
@@ -52,6 +57,7 @@ export const LiveKeybindingServiceLayer = Layer.effect(
 					Effect.map((Result) =>
 						typeof Result === "string" ? Result : null,
 					),
+
 					Effect.mapError(MakeKeybindingProblem),
 				),
 
@@ -66,6 +72,7 @@ export const LiveKeybindingServiceLayer = Layer.effect(
 								}>)
 							: [],
 					),
+
 					Effect.mapError(MakeKeybindingProblem),
 				),
 		};

@@ -11,18 +11,26 @@ export interface NotificationAction {
 export interface NotificationService {
 	readonly Show: (
 		message: string,
+
 		severity: NotificationSeverity,
+
 		actions?: readonly NotificationAction[],
 	) => Effect.Effect<string | undefined, NotificationProblem>;
+
 	readonly ShowProgress: (
 		title: string,
+
 		cancellable: boolean,
 	) => Effect.Effect<string, NotificationProblem>;
+
 	readonly UpdateProgress: (
 		id: string,
+
 		increment: number,
+
 		message?: string,
 	) => Effect.Effect<void, NotificationProblem>;
+
 	readonly EndProgress: (
 		id: string,
 	) => Effect.Effect<void, NotificationProblem>;

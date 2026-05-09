@@ -25,6 +25,7 @@ const MakeSearchProblem = (error: unknown): SearchProblem =>
 
 export const LiveSearchServiceLayer = Layer.effect(
 	SearchServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -32,11 +33,17 @@ export const LiveSearchServiceLayer = Layer.effect(
 			FindInFiles: (options) =>
 				IPCService.invoke(Channel.SearchFindInFiles)([
 					options.pattern,
+
 					options.isRegex ?? false,
+
 					options.isCaseSensitive ?? false,
+
 					options.isWordMatch ?? false,
+
 					options.include ?? "**",
+
 					options.exclude ?? "",
+
 					options.maxResults ?? 1000,
 				]).pipe(
 					Effect.map((Result) =>
@@ -48,12 +55,14 @@ export const LiveSearchServiceLayer = Layer.effect(
 								}[])
 							: [],
 					),
+
 					Effect.mapError(MakeSearchProblem),
 				),
 
 			FindFiles: (options) =>
 				IPCService.invoke(Channel.SearchFindFiles)([
 					options.pattern,
+
 					options.maxResults ?? 500,
 				]).pipe(
 					Effect.map((Result) =>
@@ -61,6 +70,7 @@ export const LiveSearchServiceLayer = Layer.effect(
 							? (Result as readonly string[])
 							: [],
 					),
+
 					Effect.mapError(MakeSearchProblem),
 				),
 		};

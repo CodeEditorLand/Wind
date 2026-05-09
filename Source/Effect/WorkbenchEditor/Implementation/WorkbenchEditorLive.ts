@@ -21,6 +21,7 @@ const ResolveBridge = Effect.sync((): WorkbenchEditorBridgeShape | null => {
 
 const Unavailable: WorkbenchEditorProblem = {
 	_tag: "WorkbenchEditorBridgeUnavailable",
+
 	reason: "globalThis.__CEL_SERVICES__.Editor is null.",
 };
 
@@ -33,21 +34,29 @@ const ToSnapshot = (
 	if (!pane) {
 		return {
 			resource: null,
+
 			editorId: null,
+
 			groupId: null,
+
 			languageId: null,
 		};
 	}
+
 	return {
 		resource: pane.input?.resource?.toString() ?? null,
+
 		editorId: pane.input?.editorId ?? pane.getId?.() ?? null,
+
 		groupId: pane.group?.id ?? null,
+
 		languageId: null,
 	};
 };
 
 export const WorkbenchEditorLive = Layer.effect(
 	WorkbenchEditorServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 
@@ -73,11 +82,13 @@ export const WorkbenchEditorLive = Layer.effect(
 							{
 								resource: { toString: () => Input.resource },
 							},
+
 							{
 								preserveFocus: Input.preserveFocus,
 								preview: Input.preview,
 								pinned: Input.pinned,
 							},
+
 							typeof Input.columnIndex === "number"
 								? { id: Input.columnIndex }
 								: undefined,

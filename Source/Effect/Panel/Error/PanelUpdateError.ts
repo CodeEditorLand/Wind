@@ -13,11 +13,14 @@
  */
 export default class PanelUpdateError extends Error {
 	readonly _tag = "PanelUpdateError";
+
 	override readonly cause: unknown;
 
 	constructor(viewId: string, cause: unknown) {
 		super(`Failed to update panel view '${viewId}': ${String(cause)}`);
+
 		this.cause = cause;
+
 		Object.setPrototypeOf(this, PanelUpdateError.prototype);
 	}
 

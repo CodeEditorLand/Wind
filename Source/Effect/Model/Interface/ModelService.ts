@@ -8,10 +8,13 @@ import type { ModelProblem } from "../Type/ModelProblem.js";
 export interface TextModel {
 	/** URI identifying this text document. */
 	readonly uri: string;
+
 	/** Current text content of the model. */
 	readonly content: string;
+
 	/** Monotonically increasing version number, incremented on each edit. */
 	readonly version: number;
+
 	/** Language identifier (e.g. "typescript", "rust", "json"). */
 	readonly languageId: string;
 }
@@ -56,6 +59,7 @@ export interface ModelService {
 	 */
 	readonly UpdateContent: (
 		uri: string,
+
 		content: string,
 	) => Effect.Effect<TextModel, ModelProblem>;
 }

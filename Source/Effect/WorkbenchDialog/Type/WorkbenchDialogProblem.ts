@@ -1,6 +1,7 @@
 export type WorkbenchDialogProblem =
 	| {
 			readonly _tag: "WorkbenchDialogBridgeUnavailable";
+
 			readonly reason: string;
 	  }
 	| { readonly _tag: "WorkbenchDialogCancelled" }

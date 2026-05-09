@@ -23,6 +23,6 @@ export const ILoggerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: "An operation to flush the contents. Can be synchronous.",
-		SourceLine: 173,
+		SourceLine: 277,
 	}
 ] as const;

@@ -17,17 +17,26 @@ export type InterfaceMemberKind =
 
 export interface InterfaceMemberParameter {
 	readonly Name: string;
+
 	readonly TypeText: string;
+
 	readonly Optional: boolean;
 }
 
 export interface InterfaceMemberRecord {
 	readonly Kind: InterfaceMemberKind;
+
 	readonly Name: string;
+
 	readonly Readonly: boolean;
+
 	readonly Optional: boolean;
+
 	readonly TypeText: string;
+
 	readonly Parameters: ReadonlyArray<InterfaceMemberParameter>;
+
 	readonly DocComment: string | null;
+
 	readonly SourceLine: number;
 }

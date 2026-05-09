@@ -28,9 +28,13 @@ import SyncNowEffect from "./MountainSyncHelper.js";
  */
 const defaultSyncConfig: SyncConfig = {
 	enabled: true,
+
 	syncIntervalMs: 5000,
+
 	autoRetry: true,
+
 	maxRetries: 3,
+
 	batchSize: 100,
 };
 
@@ -45,16 +49,24 @@ const defaultSyncConfig: SyncConfig = {
  */
 const makeMountainSync = (
 	Mountain: MountainService,
+
 	IPC: IPCService,
+
 	TelemetryService: TelemetryService,
 ): MountainSyncService => {
 	// Internal state management
 	let SyncFiber: Fiber.Fiber<void, never> | null = null;
+
 	let SyncStatus: SyncStatus = "idle";
+
 	let LastSyncTime = 0;
+
 	let SyncCount = 0;
+
 	let SuccessCount = 0;
+
 	let ErrorCount = 0;
+
 	let ItemsSynced = 0;
 
 	return {
@@ -68,6 +80,7 @@ const makeMountainSync = (
 				if (!FullConfig.enabled) {
 					yield* TelemetryService.log(
 						"info",
+
 						"[MountainSync] Sync disabled in config",
 					);
 					return;
@@ -75,6 +88,7 @@ const makeMountainSync = (
 
 				yield* TelemetryService.log(
 					"info",
+
 					`[MountainSync] Starting sync with ${FullConfig.syncIntervalMs}ms interval`,
 				);
 
@@ -90,7 +104,9 @@ const makeMountainSync = (
 
 							const Result = yield* SyncNowEffect(
 								Mountain,
+
 								IPC,
+
 								TelemetryService,
 							);
 
@@ -103,12 +119,14 @@ const makeMountainSync = (
 								SuccessCount++;
 								yield* TelemetryService.log(
 									"info",
+
 									`[MountainSync] Synced ${Result.itemsSynced} items in ${Result.duration}ms`,
 								);
 							} else if (FullConfig.autoRetry) {
 								ErrorCount++;
 								yield* TelemetryService.log(
 									"warn",
+
 									`[MountainSync] Sync failed, will retry: ${Result.error?.message}`,
 								);
 							}
@@ -127,6 +145,7 @@ const makeMountainSync = (
 					SyncStatus = "idle";
 					yield* TelemetryService.log(
 						"info",
+
 						"[MountainSync] Stopped",
 					);
 				}
@@ -152,6 +171,7 @@ const makeMountainSync = (
 				SyncStatus = "paused";
 				yield* TelemetryService.log(
 					"info",
+
 					"[MountainSync] Pausing...",
 				);
 			}),
@@ -161,6 +181,7 @@ const makeMountainSync = (
 				SyncStatus = "syncing";
 				yield* TelemetryService.log(
 					"info",
+
 					"[MountainSync] Resuming...",
 				);
 			}),

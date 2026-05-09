@@ -38,8 +38,11 @@ export type {
 	IDisposable,
 	IFileSystemProvider,
 } from "./Type/FileSystemType.js";
+
 export { FileType, fileTypeToString } from "./Type/FileType.js";
+
 export { URI } from "./Type/URI.js";
+
 export { FileSystemErrorCode } from "./Type/FileSystemType.js";
 
 // ============================================================================

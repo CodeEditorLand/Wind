@@ -27,14 +27,20 @@ const MakeModelProblem = (error: unknown): ModelProblem => ({
 
 const ParseTextModel = (raw: unknown): TextModel | null => {
 	if (raw == null || typeof raw !== "object") return null;
+
 	const R = raw as Record<string, unknown>;
+
 	if (typeof R["uri"] !== "string") return null;
+
 	return {
 		uri: R["uri"] as string,
+
 		content:
 			typeof R["content"] === "string" ? (R["content"] as string) : "",
+
 		version:
 			typeof R["version"] === "number" ? (R["version"] as number) : 1,
+
 		languageId:
 			typeof R["languageId"] === "string"
 				? (R["languageId"] as string)
@@ -44,6 +50,7 @@ const ParseTextModel = (raw: unknown): TextModel | null => {
 
 export const LiveModelServiceLayer = Layer.effect(
 	ModelServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -51,6 +58,7 @@ export const LiveModelServiceLayer = Layer.effect(
 			OpenModel: (uri) =>
 				IPCService.invoke(Channel.ModelOpen)([uri]).pipe(
 					Effect.mapError(MakeModelProblem),
+
 					Effect.flatMap((Result) => {
 						const Parsed = ParseTextModel(Result);
 						return Parsed
@@ -67,12 +75,14 @@ export const LiveModelServiceLayer = Layer.effect(
 			CloseModel: (uri) =>
 				IPCService.invoke(Channel.ModelClose)([uri]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeModelProblem),
 				),
 
 			GetModel: (uri) =>
 				IPCService.invoke(Channel.ModelGet)([uri]).pipe(
 					Effect.map((Result) => ParseTextModel(Result)),
+
 					Effect.mapError(MakeModelProblem),
 				),
 
@@ -86,15 +96,18 @@ export const LiveModelServiceLayer = Layer.effect(
 							return Parsed ? [Parsed] : [];
 						}) as readonly TextModel[];
 					}),
+
 					Effect.mapError(MakeModelProblem),
 				),
 
 			UpdateContent: (uri, content) =>
 				IPCService.invoke(Channel.ModelUpdateContent)([
 					uri,
+
 					content,
 				]).pipe(
 					Effect.mapError(MakeModelProblem),
+
 					Effect.flatMap((Result) => {
 						const Parsed = ParseTextModel(Result);
 						return Parsed

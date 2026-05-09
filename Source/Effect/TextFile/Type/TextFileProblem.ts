@@ -5,6 +5,8 @@ export type TextFileProblem =
 	| { readonly _tag: "TextFileOperationFailed"; readonly error: Error }
 	| {
 			readonly _tag: "TextFileInvalidArgument";
+
 			readonly argument: string;
+
 			readonly reason: string;
 	  };

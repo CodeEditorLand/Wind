@@ -17,12 +17,16 @@ import type { Platform } from "./Platform.js";
 export interface EnvironmentData {
 	/** Runtime platform */
 	platform: Platform;
+
 	/** Execution mode */
 	mode: Mode;
+
 	/** Browser user agent string */
 	userAgent: string;
+
 	/** Browser/system language */
 	language: string;
+
 	/** System timezone */
 	timezone: string;
 }

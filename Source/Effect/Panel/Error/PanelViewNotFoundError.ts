@@ -16,6 +16,7 @@ export default class PanelViewNotFoundError extends Error {
 
 	constructor(viewId: string) {
 		super(`Panel view '${viewId}' not found`);
+
 		Object.setPrototypeOf(this, PanelViewNotFoundError.prototype);
 	}
 

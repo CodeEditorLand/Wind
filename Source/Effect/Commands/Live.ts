@@ -25,6 +25,7 @@ const MakeCommandsOperationFailed = (error: unknown): CommandsProblem => ({
 
 export const LiveCommandsServiceLayer = Layer.effect(
 	CommandsServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -60,6 +61,7 @@ export const LiveCommandsServiceLayer = Layer.effect(
 					args[0] ?? null,
 				]).pipe(
 					Effect.map((Result) => Result as T),
+
 					Effect.mapError(MakeCommandsOperationFailed),
 				);
 			},
@@ -76,6 +78,7 @@ export const LiveCommandsServiceLayer = Layer.effect(
 							? (Result as readonly string[])
 							: [],
 					),
+
 					Effect.mapError(MakeCommandsOperationFailed),
 				),
 		};

@@ -132,11 +132,13 @@ const ipcRenderer = {
 	invoke: async (channel: string, ...args: unknown[]): Promise<unknown> => {
 		const invokeArgs: any =
 			args.length === 0 ? undefined : args.length === 1 ? args[0] : args;
+
 		return tauriInvoke(channel, invokeArgs) as Promise<unknown>;
 	},
 
 	on: (
 		channel: string,
+
 		listener: (event: unknown, ...args: unknown[]) => void,
 	) => {
 		listen(channel, (event) => {
@@ -149,11 +151,13 @@ const ipcRenderer = {
 
 	once: (
 		channel: string,
+
 		listener: (event: unknown, ...args: unknown[]) => void,
 	) => {
 		const wrappedListener = (event: unknown) => {
 			listener(event, (event as any).payload || event);
 		};
+
 		listen(channel, wrappedListener as any).then((Unlisten) => {
 			// Remove after first call
 			setTimeout(() => Unlisten(), 0);
@@ -162,19 +166,24 @@ const ipcRenderer = {
 
 	removeListener: (
 		channel: string,
+
 		_listener: (event: unknown, ...args: unknown[]) => void,
 	) => {
 		const Cleanup = CleanupMap.get(channel);
+
 		if (Cleanup) {
 			Cleanup();
+
 			CleanupMap.delete(channel);
 		}
 	},
 
 	removeAllListeners: (channel: string) => {
 		const Cleanup = CleanupMap.get(channel);
+
 		if (Cleanup) {
 			Cleanup();
+
 			CleanupMap.delete(channel);
 		}
 	},
@@ -199,6 +208,7 @@ const ipcMessagePort = {
 		port1.start();
 
 		let HandshakeComplete = false;
+
 		let MessageCount = 0;
 
 		const ForwardToMountain = (Data: ArrayBuffer | Uint8Array) => {
@@ -213,6 +223,7 @@ const ipcMessagePort = {
 					Data instanceof Uint8Array
 						? Array.from(Data)
 						: Array.from(new Uint8Array(Data));
+
 				Invoke("MountainIPCInvoke", {
 					method: "cocoon:extensionHostMessage",
 					params: [{ data: Bytes, responseChannel }],
@@ -222,6 +233,7 @@ const ipcMessagePort = {
 
 		port1.onmessage = (Event: MessageEvent) => {
 			const Data = Event.data;
+
 			const Length =
 				Data instanceof ArrayBuffer
 					? Data.byteLength
@@ -238,9 +250,11 @@ const ipcMessagePort = {
 				// messages are control (Ready=2, Initialized=1, Terminate=3).
 				if (Length > 1) {
 					HandshakeComplete = true;
+
 					try {
 						performance.mark(
 							"land:exthost:handshake:init-data-received",
+
 							{
 								detail: { bytes: Length },
 							},
@@ -253,13 +267,18 @@ const ipcMessagePort = {
 							Data instanceof Uint8Array
 								? Data
 								: new Uint8Array(Data);
+
 						const Text = new TextDecoder().decode(
 							Bytes.slice(0, 500),
 						);
+
 						console.warn(
 							"[Extension Host] Init data received:",
+
 							Length,
+
 							"bytes, preview:",
+
 							Text.slice(0, 200),
 						);
 					} catch {}
@@ -279,12 +298,14 @@ const ipcMessagePort = {
 							"land:exthost:handshake:initialized-sent",
 						);
 					} catch {}
+
 					console.warn(
 						"[Extension Host] Handshake complete - Initialized sent",
 					);
 				} else {
 					console.warn(
 						"[Extension Host] Handshake: ignoring control byte",
+
 						Length > 0
 							? new Uint8Array(
 									Data instanceof ArrayBuffer ? Data : Data,
@@ -292,11 +313,13 @@ const ipcMessagePort = {
 							: "empty",
 					);
 				}
+
 				return;
 			}
 
 			// Post-handshake: forward extension host protocol messages (RPC)
 			MessageCount++;
+
 			try {
 				performance.mark(`land:exthost:rpc:${MessageCount}`, {
 					detail: { bytes: Length },
@@ -310,13 +333,18 @@ const ipcMessagePort = {
 						Data instanceof Uint8Array
 							? Data
 							: new Uint8Array(Data);
+
 					const Preview = new TextDecoder().decode(
 						Bytes.slice(0, 200),
 					);
+
 					console.warn(
 						`[Extension Host] RPC #${MessageCount}:`,
+
 						Length,
+
 						"bytes, preview:",
+
 						Preview.slice(0, 150),
 					);
 				} catch {}
@@ -331,9 +359,11 @@ const ipcMessagePort = {
 
 		// Listen for Cocoon → workbench messages via Tauri events
 		const TauriListen = (window as any).__TAURI__?.event?.listen;
+
 		if (typeof TauriListen === "function") {
 			TauriListen(
 				"cocoon:extensionHostReply",
+
 				(Event: { payload: { data: number[] } }) => {
 					if (Event?.payload?.data) {
 						port1.postMessage(new Uint8Array(Event.payload.data));
@@ -365,6 +395,7 @@ const webFrame = {
 		// Tauri doesn't have direct webFrame control, use CSS transform
 		document.documentElement.style.setProperty(
 			"--zoom-level",
+
 			String(level),
 		);
 	},
@@ -380,21 +411,28 @@ const process = {
 		: (navigator.platform || "unknown").toLowerCase().includes("mac")
 			? "darwin"
 			: "linux",
+
 	arch: "x64", // FUTURE: Detect from Tauri - arch detection requires Tauri platform info
 	env: {},
+
 	versions: {
 		node: "20.0.0", // Placeholder
 		chrome: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || "unknown",
+
 		electron: "30.0.0", // Placeholder for compatibility
 	},
+
 	cwd: () => "/app",
+
 	shellEnv: async () => ({}),
+
 	getProcessMemoryInfo: async () => ({
 		workingSetSize: 0,
 		peakWorkingSetSize: 0,
 		privateBytes: 0,
 		sharedBytes: 0,
 	}),
+
 	on: (_type: string, _callback: (error: Error) => void) => {
 		// No-op in browser context
 	},
@@ -414,7 +452,9 @@ const context = {
 			const Config = await tauriInvoke(
 				"mountain_get_workbench_configuration",
 			);
+
 			CachedConfiguration = Config;
+
 			return Config;
 		} catch (error) {
 			throw error;
@@ -444,10 +484,15 @@ const webUtils = {
 
 const Globals = {
 	ipcRenderer,
+
 	ipcMessagePort,
+
 	webFrame,
+
 	process,
+
 	context,
+
 	webUtils,
 };
 
@@ -464,11 +509,14 @@ const Globals = {
 const _PreloadShimLog = (Message: string): void => {
 	try {
 		const Internals = (window as any).__TAURI_INTERNALS__;
+
 		const Invoke =
 			(window as any).__TAURI__?.core?.invoke ??
 			(window as any).__TAURI__?.invoke ??
 			Internals?.invoke;
+
 		if (typeof Invoke !== "function") return;
+
 		Invoke("RenderDevLog", {
 			Tag: "preload-shim",
 			Message,

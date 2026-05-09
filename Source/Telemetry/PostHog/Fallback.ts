@@ -12,8 +12,11 @@ import BaseProperties, { type Properties } from "./Properties.js";
 
 export default async (
 	Config: Configuration,
+
 	DistinctIdentifier: string,
+
 	Event: string,
+
 	Properties: Properties,
 ): Promise<void> => {
 	if (typeof fetch === "undefined") return;

@@ -7,4 +7,5 @@ export class WorkbenchThemeServiceTag extends Context.Tag(
 )<WorkbenchThemeServiceTag, WorkbenchThemeService>() {}
 
 export const WorkbenchTheme = WorkbenchThemeServiceTag;
+
 export default WorkbenchThemeServiceTag;

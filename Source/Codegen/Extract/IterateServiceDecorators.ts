@@ -25,15 +25,21 @@ import { ExtractInterfaceMembers } from "./ExtractInterfaceMembers.js";
 
 const FindInterfaceDocComment = (
 	source: string,
+
 	interfaceName: string,
 ): string | null => {
 	const Pattern = new RegExp(
 		`((?:\\s*\\/\\*\\*[\\s\\S]*?\\*\\/\\s*)*)(?:export\\s+)?interface\\s+${interfaceName}\\b`,
 	);
+
 	const Match = Pattern.exec(source);
+
 	if (!Match) return null;
+
 	const DocBlock = /\/\*\*([\s\S]*?)\*\//.exec(Match[1] ?? "");
+
 	if (!DocBlock) return null;
+
 	return (DocBlock[1] ?? "")
 		.split(/\r?\n/)
 		.map((line) =>
@@ -48,31 +54,40 @@ const FindInterfaceDocComment = (
 
 const ResolveMembersForRecord = async (
 	file: SourceFile,
+
 	interfaceName: string,
 ): Promise<{
 	readonly Members: ReadonlyArray<InterfaceMemberRecord>;
+
 	readonly DocComment: string | null;
 }> => {
 	const InlineMembers = ExtractInterfaceMembers(file.Contents, interfaceName);
+
 	if (InlineMembers.length > 0) {
 		return {
 			Members: InlineMembers,
+
 			DocComment: FindInterfaceDocComment(file.Contents, interfaceName),
 		};
 	}
+
 	const CrossFile = await ResolveInterfaceCrossFile({
 		InterfaceName: interfaceName,
 		DecoratorFilePath: file.AbsolutePath,
 		DecoratorFileContents: file.Contents,
 	});
+
 	if (CrossFile) {
 		return {
 			Members: CrossFile.Members,
+
 			DocComment: null,
 		};
 	}
+
 	return {
 		Members: [],
+
 		DocComment: null,
 	};
 };
@@ -82,20 +97,31 @@ export const IterateServiceDecorators = async function* (
 ): AsyncIterableIterator<ServiceDecoratorRecord> {
 	for await (const File of files) {
 		const Matches = ExtractDecoratorMatches(File.Contents);
+
 		if (Matches.length === 0) continue;
+
 		for (const Match of Matches) {
 			const Resolved = await ResolveMembersForRecord(
 				File,
+
 				Match.InterfaceName,
 			);
+
 			yield {
 				DecoratorName: Match.DecoratorName,
+
 				DecoratorTag: Match.DecoratorTag,
+
 				InterfaceName: Match.InterfaceName,
+
 				SourcePath: File.SourcePath,
+
 				SourceLine: Match.SourceLine,
+
 				Members: Resolved.Members,
+
 				DecoratorDocComment: Match.DocComment,
+
 				InterfaceDocComment: Resolved.DocComment,
 			};
 		}

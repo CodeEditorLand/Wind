@@ -10,69 +10,58 @@ export const ITerminalSandboxServiceSourcePath = "vs/platform/sandbox/common/ter
 export const ITerminalSandboxServiceSourceLine = 13 as const;
 export interface ITerminalSandboxServiceUpstream {
 	/**
-	 * Abstraction over terminal operations needed by the install flow.
-	 * Provided by the browser-layer caller so the common-layer service
-	 * does not import browser types directly.
+	 * Normalized command name without path or executable suffix.
+	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
 	 */
 	readonly _serviceBrand: undefined;
 	/**
-	 * Abstraction over terminal operations needed by the install flow.
-	 * Provided by the browser-layer caller so the common-layer service
-	 * does not import browser types directly.
+	 * Normalized command name without path or executable suffix.
+	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
 	 */
 	isEnabled(): Promise<boolean>;
 	/**
-	 * Abstraction over terminal operations needed by the install flow.
-	 * Provided by the browser-layer caller so the common-layer service
-	 * does not import browser types directly.
+	 * Normalized command name without path or executable suffix.
+	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
+	 */
+	isSandboxAllowNetworkEnabled(): Promise<boolean>;
+	/**
+	 * Normalized command name without path or executable suffix.
+	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
 	 */
 	getOS(): Promise<OperatingSystem>;
 	/**
-	 * Abstraction over terminal operations needed by the install flow.
-	 * Provided by the browser-layer caller so the common-layer service
-	 * does not import browser types directly.
+	 * Normalized command name without path or executable suffix.
+	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
 	 */
 	checkForSandboxingPrereqs(forceRefresh?: boolean): Promise<ITerminalSandboxPrerequisiteCheckResult>;
 	/**
-	 * Abstraction over terminal operations needed by the install flow.
-	 * Provided by the browser-layer caller so the common-layer service
-	 * does not import browser types directly.
-	 */
-	wrapCommand(command: string, requestUnsandboxedExecution?: boolean, shell?: string, commandKeywords?: readonly string[], cwd?: URI): Promise<ITerminalSandboxWrapResult>;
-	/**
-	 * Abstraction over terminal operations needed by the install flow.
-	 * Provided by the browser-layer caller so the common-layer service
-	 * does not import browser types directly.
+	 * Normalized command name without path or executable suffix.
+	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
 	 */
 	getSandboxConfigPath(forceRefresh?: boolean): Promise<string | undefined>;
 	/**
-	 * Abstraction over terminal operations needed by the install flow.
-	 * Provided by the browser-layer caller so the common-layer service
-	 * does not import browser types directly.
+	 * Normalized command name without path or executable suffix.
+	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
 	 */
 	getTempDir(): URI | undefined;
 	/**
-	 * Abstraction over terminal operations needed by the install flow.
-	 * Provided by the browser-layer caller so the common-layer service
-	 * does not import browser types directly.
+	 * Normalized command name without path or executable suffix.
+	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
 	 */
 	setNeedsForceUpdateConfigFile(): void;
 	/**
-	 * Abstraction over terminal operations needed by the install flow.
-	 * Provided by the browser-layer caller so the common-layer service
-	 * does not import browser types directly.
+	 * Normalized command name without path or executable suffix.
+	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
 	 */
 	getResolvedNetworkDomains(): ITerminalSandboxResolvedNetworkDomains;
 	/**
-	 * Abstraction over terminal operations needed by the install flow.
-	 * Provided by the browser-layer caller so the common-layer service
-	 * does not import browser types directly.
+	 * Normalized command name without path or executable suffix.
+	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
 	 */
 	getMissingSandboxDependencies(): Promise<string[]>;
 	/**
-	 * Abstraction over terminal operations needed by the install flow.
-	 * Provided by the browser-layer caller so the common-layer service
-	 * does not import browser types directly.
+	 * Normalized command name without path or executable suffix.
+	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
 	 */
 	installMissingSandboxDependencies(missingDependencies: string[], sessionResource: URI | undefined, token: CancellationToken, options: ISandboxDependencyInstallOptions): Promise<ISandboxDependencyInstallResult>;
 }
@@ -84,8 +73,8 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "undefined",
 		Parameters: [],
-		DocComment: "Abstraction over terminal operations needed by the install flow.\nProvided by the browser-layer caller so the common-layer service\ndoes not import browser types directly.",
-		SourceLine: 72,
+		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
+		SourceLine: 86,
 	},
 	{
 		Kind: "Method",
@@ -94,8 +83,18 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "Promise<boolean>",
 		Parameters: [],
-		DocComment: "Abstraction over terminal operations needed by the install flow.\nProvided by the browser-layer caller so the common-layer service\ndoes not import browser types directly.",
-		SourceLine: 73,
+		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
+		SourceLine: 87,
+	},
+	{
+		Kind: "Method",
+		Name: "isSandboxAllowNetworkEnabled",
+		Readonly: false,
+		Optional: false,
+		TypeText: "Promise<boolean>",
+		Parameters: [],
+		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
+		SourceLine: 88,
 	},
 	{
 		Kind: "Method",
@@ -104,8 +103,8 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "Promise<OperatingSystem>",
 		Parameters: [],
-		DocComment: "Abstraction over terminal operations needed by the install flow.\nProvided by the browser-layer caller so the common-layer service\ndoes not import browser types directly.",
-		SourceLine: 74,
+		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
+		SourceLine: 89,
 	},
 	{
 		Kind: "Method",
@@ -114,18 +113,8 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "Promise<ITerminalSandboxPrerequisiteCheckResult>",
 		Parameters: [{ Name: "forceRefresh", TypeText: "boolean", Optional: true }],
-		DocComment: "Abstraction over terminal operations needed by the install flow.\nProvided by the browser-layer caller so the common-layer service\ndoes not import browser types directly.",
-		SourceLine: 75,
-	},
-	{
-		Kind: "Method",
-		Name: "wrapCommand",
-		Readonly: false,
-		Optional: false,
-		TypeText: "Promise<ITerminalSandboxWrapResult>",
-		Parameters: [{ Name: "command", TypeText: "string", Optional: false }, { Name: "requestUnsandboxedExecution", TypeText: "boolean", Optional: true }, { Name: "shell", TypeText: "string", Optional: true }, { Name: "commandKeywords", TypeText: "readonly string[]", Optional: true }, { Name: "cwd", TypeText: "URI", Optional: true }],
-		DocComment: "Abstraction over terminal operations needed by the install flow.\nProvided by the browser-layer caller so the common-layer service\ndoes not import browser types directly.",
-		SourceLine: 76,
+		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
+		SourceLine: 90,
 	},
 	{
 		Kind: "Method",
@@ -134,8 +123,8 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "Promise<string | undefined>",
 		Parameters: [{ Name: "forceRefresh", TypeText: "boolean", Optional: true }],
-		DocComment: "Abstraction over terminal operations needed by the install flow.\nProvided by the browser-layer caller so the common-layer service\ndoes not import browser types directly.",
-		SourceLine: 77,
+		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
+		SourceLine: 97,
 	},
 	{
 		Kind: "Method",
@@ -144,8 +133,8 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "URI | undefined",
 		Parameters: [],
-		DocComment: "Abstraction over terminal operations needed by the install flow.\nProvided by the browser-layer caller so the common-layer service\ndoes not import browser types directly.",
-		SourceLine: 78,
+		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
+		SourceLine: 98,
 	},
 	{
 		Kind: "Method",
@@ -154,8 +143,8 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "void",
 		Parameters: [],
-		DocComment: "Abstraction over terminal operations needed by the install flow.\nProvided by the browser-layer caller so the common-layer service\ndoes not import browser types directly.",
-		SourceLine: 79,
+		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
+		SourceLine: 99,
 	},
 	{
 		Kind: "Method",
@@ -164,8 +153,8 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "ITerminalSandboxResolvedNetworkDomains",
 		Parameters: [],
-		DocComment: "Abstraction over terminal operations needed by the install flow.\nProvided by the browser-layer caller so the common-layer service\ndoes not import browser types directly.",
-		SourceLine: 80,
+		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
+		SourceLine: 100,
 	},
 	{
 		Kind: "Method",
@@ -174,8 +163,8 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "Promise<string[]>",
 		Parameters: [],
-		DocComment: "Abstraction over terminal operations needed by the install flow.\nProvided by the browser-layer caller so the common-layer service\ndoes not import browser types directly.",
-		SourceLine: 81,
+		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
+		SourceLine: 101,
 	},
 	{
 		Kind: "Method",
@@ -184,7 +173,7 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "Promise<ISandboxDependencyInstallResult>",
 		Parameters: [{ Name: "missingDependencies", TypeText: "string[]", Optional: false }, { Name: "sessionResource", TypeText: "URI | undefined", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }, { Name: "options", TypeText: "ISandboxDependencyInstallOptions", Optional: false }],
-		DocComment: "Abstraction over terminal operations needed by the install flow.\nProvided by the browser-layer caller so the common-layer service\ndoes not import browser types directly.",
-		SourceLine: 82,
+		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
+		SourceLine: 102,
 	}
 ] as const;

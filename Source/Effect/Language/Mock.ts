@@ -5,6 +5,7 @@ import { LanguageServiceTag } from "./Tag/LanguageServiceTag.js";
 
 export const MockLanguageServiceLayer = Layer.succeed(
 	LanguageServiceTag,
+
 	StubLanguageService,
 );
 

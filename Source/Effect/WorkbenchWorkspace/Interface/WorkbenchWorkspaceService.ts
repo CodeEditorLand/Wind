@@ -4,20 +4,27 @@ import type { WorkbenchWorkspaceProblem } from "../Type/WorkbenchWorkspaceProble
 
 export interface WorkbenchWorkspaceFolder {
 	readonly uri: string;
+
 	readonly name: string;
+
 	readonly index: number;
 }
 
 export interface WorkbenchWorkspaceSnapshot {
 	readonly id: string;
+
 	readonly folders: ReadonlyArray<WorkbenchWorkspaceFolder>;
+
 	readonly transient: boolean;
+
 	readonly configuration: string | null;
 }
 
 export interface WorkbenchWorkspaceFolderEvent {
 	readonly added: ReadonlyArray<WorkbenchWorkspaceFolder>;
+
 	readonly removed: ReadonlyArray<WorkbenchWorkspaceFolder>;
+
 	readonly changed: ReadonlyArray<WorkbenchWorkspaceFolder>;
 }
 

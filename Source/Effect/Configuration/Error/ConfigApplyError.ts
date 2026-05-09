@@ -13,8 +13,10 @@
 
 export class ConfigApplyError extends Error {
 	readonly _tag = "ConfigApplyError";
+
 	constructor(
 		readonly key: string,
+
 		override readonly cause: unknown,
 	) {
 		super(`Failed to apply configuration for '${key}': ${String(cause)}`);

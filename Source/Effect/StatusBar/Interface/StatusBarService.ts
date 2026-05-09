@@ -31,6 +31,7 @@ export interface StatusBarService {
 	/** Update an existing status bar item */
 	readonly updateItem: (
 		id: string,
+
 		updates: Partial<Omit<StatusBarItem, "id">>,
 	) => Effect.Effect<void, StatusBarItemNotFoundError | StatusBarUpdateError>;
 
@@ -53,6 +54,7 @@ export interface StatusBarService {
 	/** Set the visibility of a status bar item */
 	readonly setItemVisibility: (
 		id: string,
+
 		visible: boolean,
 	) => Effect.Effect<void, StatusBarItemNotFoundError>;
 
@@ -64,6 +66,7 @@ export interface StatusBarService {
 	/** Set the text of a status bar item */
 	readonly setItemText: (
 		id: string,
+
 		text: string,
 	) => Effect.Effect<void, StatusBarItemNotFoundError | StatusBarUpdateError>;
 }

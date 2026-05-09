@@ -15,14 +15,18 @@ export interface ExtensionsService {
 	readonly GetExtension: (
 		id: string,
 	) => Effect.Effect<unknown | undefined, ExtensionsProblem>;
+
 	readonly GetAllExtensions: () => Effect.Effect<
 		readonly unknown[],
 		ExtensionsProblem
 	>;
+
 	readonly IsActive: (
 		id: string,
 	) => Effect.Effect<boolean, ExtensionsProblem>;
+
 	readonly Activate: (id: string) => Effect.Effect<void, ExtensionsProblem>;
+
 	/**
 	 * Install a local `.vsix` file. `VsixPath` is accepted as either a plain
 	 * path or a `file://` URI - Mountain's handler normalises both.
@@ -34,6 +38,7 @@ export interface ExtensionsService {
 	readonly InstallVsix: (
 		VsixPath: string,
 	) => Effect.Effect<unknown, ExtensionsProblem>;
+
 	/**
 	 * Uninstall an installed extension by identifier (e.g. "publisher.name").
 	 * Resolves with `true` once Mountain has removed the install directory

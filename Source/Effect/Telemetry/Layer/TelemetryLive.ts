@@ -34,6 +34,7 @@ import type {
  */
 const TelemetryLive = Layer.effect(
 	TelemetryTag,
+
 	Effect.gen(function* () {
 		// Storage for metrics and spans
 		const metricsRef = yield* SubscriptionRef.make<
@@ -51,7 +52,9 @@ const TelemetryLive = Layer.effect(
 		// Atom: Record a metric
 		const recordMetric = (
 			name: string,
+
 			value: number,
+
 			labels?: Record<string, string>,
 		): Effect.Effect<void, never> =>
 			Effect.gen(function* () {
@@ -68,9 +71,12 @@ const TelemetryLive = Layer.effect(
 					[];
 				yield* SubscriptionRef.set(
 					metricsRef,
+
 					HashMap.set(
 						currentMetrics,
+
 						name,
+
 						[...existing, metric].slice(-1000),
 					),
 				);
@@ -78,8 +84,10 @@ const TelemetryLive = Layer.effect(
 				const currentEvents = yield* eventsRef.get;
 				yield* SubscriptionRef.set(
 					eventsRef,
+
 					[
 						...currentEvents,
+
 						{
 							type: "metric" as const,
 							timestamp: Date.now(),
@@ -92,6 +100,7 @@ const TelemetryLive = Layer.effect(
 		// Atom: Start a span
 		const startSpan = (
 			name: string,
+
 			labels?: Record<string, string>,
 		): Effect.Effect<SpanHandle, never> =>
 			Effect.sync((): SpanHandle => {
@@ -99,6 +108,7 @@ const TelemetryLive = Layer.effect(
 
 				const end = (
 					success: boolean,
+
 					error?: string | undefined,
 				): Effect.Effect<void, never> =>
 					Effect.gen(function* () {
@@ -120,9 +130,12 @@ const TelemetryLive = Layer.effect(
 							) || [];
 						yield* SubscriptionRef.set(
 							spansRef,
+
 							HashMap.set(
 								currentSpans,
+
 								name,
+
 								[...existing, span].slice(-1000),
 							),
 						);
@@ -130,8 +143,10 @@ const TelemetryLive = Layer.effect(
 						const currentEvents = yield* eventsRef.get;
 						yield* SubscriptionRef.set(
 							eventsRef,
+
 							[
 								...currentEvents,
+
 								{
 									type: "span" as const,
 									timestamp: Date.now(),
@@ -147,7 +162,9 @@ const TelemetryLive = Layer.effect(
 		// Atom: Log an event
 		const log = (
 			level: TelemetryLog["level"],
+
 			message: string,
+
 			context?: Record<string, unknown>,
 		): Effect.Effect<void, never> =>
 			Effect.gen(function* () {
@@ -160,8 +177,10 @@ const TelemetryLive = Layer.effect(
 				const currentEvents = yield* eventsRef.get;
 				yield* SubscriptionRef.set(
 					eventsRef,
+
 					[
 						...currentEvents,
+
 						{
 							type: "log" as const,
 							timestamp: Date.now(),
@@ -207,6 +226,7 @@ const TelemetryLive = Layer.effect(
 					if (spans.length === 0) return 0;
 					const total = spans.reduce(
 						(sum, s) => sum + (s.duration || 0),
+
 						0,
 					);
 					return total / spans.length;

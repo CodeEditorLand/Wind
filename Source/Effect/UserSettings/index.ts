@@ -14,11 +14,15 @@ export {
 	UserSettingsServiceTag,
 	UserSettings,
 } from "./Tag/UserSettingsServiceTag.js";
+
 export type {
 	UserSettingsService,
 	UserSettingsTarget,
 	UserSettingsChangeEvent,
 } from "./Interface/UserSettingsService.js";
+
 export type { UserSettingsProblem } from "./Type/UserSettingsProblem.js";
+
 export { UserSettingsLive } from "./Implementation/UserSettingsLive.js";
+
 export { MakeUserSettingsStub } from "./Implementation/UserSettingsStub.js";

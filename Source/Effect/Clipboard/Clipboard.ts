@@ -40,6 +40,7 @@ export { ClipboardServiceTag, Clipboard } from "./Tag/ClipboardServiceTag.js";
 
 // Implementations
 export { LiveBrowserClipboardService } from "./Implementation/BrowserClipboard.js";
+
 export { MockClipboardService } from "./Implementation/MockClipboard.js";
 
 // Helpers
@@ -54,4 +55,5 @@ export {
 
 // Layers
 export { default as LiveClipboardServiceLayer } from "./Live.js";
+
 export { default as MockClipboardServiceLayer } from "./Mock.js";

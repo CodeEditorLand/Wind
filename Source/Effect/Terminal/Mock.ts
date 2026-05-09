@@ -5,6 +5,7 @@ import { TerminalServiceTag } from "./Tag/TerminalServiceTag.js";
 
 export const MockTerminalServiceLayer = Layer.succeed(
 	TerminalServiceTag,
+
 	StubTerminalService,
 );
 

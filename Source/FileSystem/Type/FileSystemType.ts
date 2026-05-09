@@ -25,6 +25,7 @@ export type { IStat } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/pl
 export interface IFileWriteOptions {
 	/** If true, create the file if it doesn't exist */
 	readonly create: boolean;
+
 	/** If true, overwrite existing file */
 	readonly overwrite: boolean;
 }
@@ -39,6 +40,7 @@ export interface IFileWriteOptions {
 export interface IWatchOptions {
 	/** Whether to watch recursively (for directories) */
 	readonly recursive: boolean;
+
 	/** Whether to watch for file creation */
 	readonly exclusive?: boolean;
 }
@@ -84,7 +86,9 @@ export interface IFileSystemProvider {
 	 */
 	writeFile: (
 		uri: URI,
+
 		content: Uint8Array,
+
 		options?: IFileWriteOptions,
 	) => Promise<void>;
 
@@ -171,9 +175,11 @@ export interface IFileSystemProvider {
 export class FileSystemError extends Error {
 	constructor(
 		message: string,
+
 		public readonly code: FileSystemErrorCode,
 	) {
 		super(message);
+
 		this.name = "FileSystemError";
 	}
 }
@@ -184,14 +190,19 @@ export class FileSystemError extends Error {
 export enum FileSystemErrorCode {
 	/** File not found */
 	FileNotFound = "FileNotFound",
+
 	/** File already exists */
 	FileExists = "FileExists",
+
 	/** Permission denied */
 	NoPermissions = "NoPermissions",
+
 	/** Invalid file path or URI */
 	InvalidPath = "InvalidPath",
+
 	/** Operation not supported */
 	NotSupported = "NotSupported",
+
 	/** Unknown error */
 	Unknown = "Unknown",
 }

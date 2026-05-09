@@ -64,4 +64,5 @@ const makeMockPanel = (): PanelService => ({
 const PanelMockLive = Layer.succeed(PanelTag, makeMockPanel());
 
 export default PanelMockLive;
+
 export { makeMockPanel };

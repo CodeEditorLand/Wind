@@ -31,6 +31,7 @@ export type UserSettingsTarget =
 
 export interface UserSettingsChangeEvent {
 	readonly affectedKeys: ReadonlySet<string>;
+
 	readonly source: UserSettingsTarget;
 }
 
@@ -62,7 +63,9 @@ export interface UserSettingsService {
 	 */
 	readonly Write: (
 		section: string,
+
 		value: unknown,
+
 		target: UserSettingsTarget,
 	) => Effect.Effect<void, UserSettingsProblem>;
 

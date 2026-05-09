@@ -16,6 +16,7 @@
  */
 export interface ActivityBarBadge {
 	readonly text: string;
+
 	readonly color?: string;
 }
 
@@ -24,10 +25,15 @@ export interface ActivityBarBadge {
  */
 export interface ActivityBarItem {
 	readonly id: string;
+
 	readonly title: string;
+
 	readonly icon: string;
+
 	readonly command: string;
+
 	readonly position: number;
+
 	readonly badge?: ActivityBarBadge;
 }
 

@@ -37,22 +37,39 @@ import { WorkbenchWorkspaceLive } from "../WorkbenchWorkspace/Implementation/Wor
 
 export const LandWorkbenchLayer = Layer.mergeAll(
 	UserSettingsLive,
+
 	WorkbenchActivityLive,
+
 	WorkbenchClipboardLive,
+
 	WorkbenchCommandLive,
+
 	WorkbenchContextKeyLive,
+
 	WorkbenchDialogLive,
+
 	WorkbenchEditorLive,
+
 	WorkbenchExtensionLive,
+
 	WorkbenchHostLive,
+
 	WorkbenchKeybindingLive,
+
 	WorkbenchLayoutLive,
+
 	WorkbenchLifecycleLive,
+
 	WorkbenchNotificationLive,
+
 	WorkbenchProductLive,
+
 	WorkbenchProgressLive,
+
 	WorkbenchStorageLive,
+
 	WorkbenchThemeLive,
+
 	WorkbenchWorkspaceLive,
 );
 

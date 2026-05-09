@@ -15,7 +15,9 @@ import type { ProcessEnvironment } from "./ProcessEnvironment.js";
  */
 export interface ProcessMemoryInfo {
 	readonly private: number;
+
 	readonly residentSet: number;
+
 	readonly shared: number;
 }
 
@@ -24,18 +26,28 @@ export interface ProcessMemoryInfo {
  */
 export interface SandboxNodeProcess {
 	readonly platform: NodeJS.Platform;
+
 	readonly arch: string;
+
 	readonly env: ProcessEnvironment;
+
 	readonly versions: {
 		readonly node: string;
+
 		readonly chrome: string;
+
 		readonly electron: string;
 	};
+
 	readonly cwd: () => string;
+
 	readonly shellEnv: () => Promise<ProcessEnvironment>;
+
 	readonly getProcessMemoryInfo: () => Promise<ProcessMemoryInfo>;
+
 	readonly on: (
 		type: "uncaughtException" | "unhandledRejection",
+
 		callback: (error: Error) => void,
 	) => void;
 }

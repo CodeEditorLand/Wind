@@ -19,9 +19,14 @@ export interface IWebSocketFactory {
  */
 export interface IWebSocket {
 	readonly onData: Event<ArrayBuffer>;
+
 	readonly onOpen: Event<void>;
+
 	readonly onClose: Event<void>;
+
 	readonly onError: Event<any>;
+
 	send(data: ArrayBuffer): void;
+
 	close(): void;
 }

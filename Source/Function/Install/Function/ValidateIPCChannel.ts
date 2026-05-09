@@ -13,7 +13,9 @@
  */
 export function ValidateIPCChannel(Channel: string): boolean {
 	if (!Channel || typeof Channel !== "string") return false;
+
 	if (typeof navigator !== "undefined" && !Channel.startsWith("vscode:"))
 		return false;
+
 	return true;
 }

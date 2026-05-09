@@ -4,13 +4,17 @@ import type { WorkbenchKeybindingProblem } from "../Type/WorkbenchKeybindingProb
 
 export interface WorkbenchKeybindingResolution {
 	readonly commandId: string | null;
+
 	readonly chord: string;
+
 	readonly args: ReadonlyArray<unknown>;
 }
 
 export interface WorkbenchKeybindingDispatch {
 	readonly chord: string;
+
 	readonly commandId: string | null;
+
 	readonly when: number;
 }
 

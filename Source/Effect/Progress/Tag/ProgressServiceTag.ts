@@ -7,4 +7,5 @@ export class ProgressServiceTag extends Context.Tag(
 )<ProgressServiceTag, ProgressService>() {}
 
 export const Progress = ProgressServiceTag;
+
 export default ProgressServiceTag;

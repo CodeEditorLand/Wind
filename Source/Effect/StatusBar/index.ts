@@ -24,6 +24,7 @@ export { default as StatusBarTag, StatusBar } from "./Tag/StatusBarTag.js";
 
 // Layers
 export { default as StatusBarLive } from "./Layer/StatusBarLive.js";
+
 export { default as StatusBarMockLive } from "./Layer/StatusBarMock.js";
 
 // Mock factory (for direct usage without Layer)
@@ -31,4 +32,5 @@ export { makeMockStatusBar } from "./Layer/StatusBarMock.js";
 
 // Errors
 export { default as StatusBarItemNotFoundError } from "./Error/StatusBarItemNotFoundError.js";
+
 export { default as StatusBarUpdateError } from "./Error/StatusBarUpdateError.js";

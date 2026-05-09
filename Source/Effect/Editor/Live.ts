@@ -30,6 +30,7 @@ const MakeEditorProblem = (error: unknown): EditorProblem =>
 
 export const LiveEditorServiceLayer = Layer.effect(
 	EditorServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 		const CommandsService = yield* Commands;
@@ -65,7 +66,9 @@ export const LiveEditorServiceLayer = Layer.effect(
 				// If that is not yet registered, fall back to the native file opener.
 				CommandsService.ExecuteCommand(
 					"vscode.open",
+
 					uri,
+
 					options ?? {},
 				).pipe(Effect.mapError(MakeEditorProblem)),
 
@@ -74,6 +77,7 @@ export const LiveEditorServiceLayer = Layer.effect(
 					"workbench.action.closeActiveEditor",
 				).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeEditorProblem),
 				),
 
@@ -86,28 +90,35 @@ export const LiveEditorServiceLayer = Layer.effect(
 			SetSelections: (_selections) =>
 				CommandsService.ExecuteCommand(
 					"editor.action.setSelection",
+
 					_selections,
 				).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeEditorProblem),
 				),
 
 			RevealRange: (range, revealType) =>
 				CommandsService.ExecuteCommand(
 					"editor.revealRange",
+
 					range,
+
 					revealType ?? 0,
 				).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeEditorProblem),
 				),
 
 			ApplyDecorations: (_editor, decorations) =>
 				CommandsService.ExecuteCommand(
 					"editor.applyDecorations",
+
 					decorations,
 				).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeEditorProblem),
 				),
 		};

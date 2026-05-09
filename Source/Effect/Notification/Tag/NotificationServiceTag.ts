@@ -7,4 +7,5 @@ export class NotificationServiceTag extends Context.Tag(
 )<NotificationServiceTag, NotificationService>() {}
 
 export const Notification = NotificationServiceTag;
+
 export default NotificationServiceTag;

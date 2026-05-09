@@ -6,10 +6,15 @@
 
 // Main interfaces
 export type { IVSCodeWorkbenchOptions } from "./Interface/VSCodeWorkbenchOptions.js";
+
 export type { IVSCodeServiceCollection } from "./Interface/VSCodeServiceCollection.js";
+
 export type { IVSCodeServiceIdentifier } from "./Interface/VSCodeServiceIdentifier.js";
+
 export type { IVSCodeEnvironmentService } from "./Interface/VSCodeEnvironmentService.js";
+
 export type { IVSCodeConfigurationService } from "./Interface/VSCodeConfigurationService.js";
+
 export type { IVSCodeLoggerService } from "./Interface/VSCodeLoggerService.js";
 
 // Supporting types - all sourced from @codeeditorland/output via VSCodeWorkbenchOptionsType.ts

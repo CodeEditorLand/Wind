@@ -7,6 +7,7 @@ import type {
 
 export interface WorkbenchLifecyclePhaseChange {
 	readonly from: WorkbenchLifecyclePhase;
+
 	readonly to: WorkbenchLifecyclePhase;
 }
 

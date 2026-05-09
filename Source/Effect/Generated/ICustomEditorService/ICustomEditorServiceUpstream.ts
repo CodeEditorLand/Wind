@@ -27,7 +27,7 @@ export const ICustomEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> =
 		TypeText: "any",
 		Parameters: [],
 		DocComment: null,
-		SourceLine: 31,
+		SourceLine: 34,
 	},
 	{
 		Kind: "Property",
@@ -37,7 +37,7 @@ export const ICustomEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> =
 		TypeText: "ICustomEditorModelManager",
 		Parameters: [],
 		DocComment: null,
-		SourceLine: 33,
+		SourceLine: 36,
 	},
 	{
 		Kind: "Method",
@@ -47,7 +47,7 @@ export const ICustomEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> =
 		TypeText: "CustomEditorInfo | undefined",
 		Parameters: [{ Name: "viewType", TypeText: "string", Optional: false }],
 		DocComment: null,
-		SourceLine: 35,
+		SourceLine: 38,
 	},
 	{
 		Kind: "Method",
@@ -57,7 +57,7 @@ export const ICustomEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> =
 		TypeText: "CustomEditorInfoCollection",
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
 		DocComment: null,
-		SourceLine: 36,
+		SourceLine: 39,
 	},
 	{
 		Kind: "Method",
@@ -67,7 +67,7 @@ export const ICustomEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> =
 		TypeText: "CustomEditorInfoCollection",
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
 		DocComment: null,
-		SourceLine: 37,
+		SourceLine: 40,
 	},
 	{
 		Kind: "Method",
@@ -77,7 +77,7 @@ export const ICustomEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> =
 		TypeText: "CustomEditorInfoCollection",
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
 		DocComment: null,
-		SourceLine: 38,
+		SourceLine: 41,
 	},
 	{
 		Kind: "Method",
@@ -87,7 +87,7 @@ export const ICustomEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> =
 		TypeText: "IDisposable",
 		Parameters: [{ Name: "viewType", TypeText: "string", Optional: false }, { Name: "options", TypeText: "CustomEditorCapabilities", Optional: false }],
 		DocComment: null,
-		SourceLine: 40,
+		SourceLine: 43,
 	},
 	{
 		Kind: "Method",
@@ -97,6 +97,6 @@ export const ICustomEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> =
 		TypeText: "CustomEditorCapabilities | undefined",
 		Parameters: [{ Name: "viewType", TypeText: "string", Optional: false }],
 		DocComment: null,
-		SourceLine: 41,
+		SourceLine: 44,
 	}
 ] as const;

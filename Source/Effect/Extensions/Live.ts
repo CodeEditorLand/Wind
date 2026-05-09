@@ -36,11 +36,13 @@ const MakeExtensionsProblem = (error: unknown): ExtensionsProblem =>
 		? { _tag: "ExtensionsOperationFailed", error }
 		: {
 				_tag: "ExtensionsOperationFailed",
+
 				error: new Error(String(error)),
 			};
 
 export const LiveExtensionsServiceLayer = Layer.effect(
 	ExtensionsServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -52,6 +54,7 @@ export const LiveExtensionsServiceLayer = Layer.effect(
 							? undefined
 							: Result,
 					),
+
 					Effect.mapError(MakeExtensionsProblem),
 				),
 
@@ -62,12 +65,14 @@ export const LiveExtensionsServiceLayer = Layer.effect(
 							? (Result as readonly unknown[])
 							: [],
 					),
+
 					Effect.mapError(MakeExtensionsProblem),
 				),
 
 			IsActive: (id) =>
 				IPCService.invoke(Channel.ExtensionsIsActive)([id]).pipe(
 					Effect.map((Result) => Boolean(Result)),
+
 					Effect.mapError(MakeExtensionsProblem),
 				),
 
@@ -79,6 +84,7 @@ export const LiveExtensionsServiceLayer = Layer.effect(
 				// extension exists, which matches the legacy stub behaviour.
 				IPCService.invoke(Channel.ExtensionsGet)([id]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeExtensionsProblem),
 				),
 
@@ -92,6 +98,7 @@ export const LiveExtensionsServiceLayer = Layer.effect(
 					Identifier,
 				]).pipe(
 					Effect.map((Result) => Result === true),
+
 					Effect.mapError(MakeExtensionsProblem),
 				),
 		};

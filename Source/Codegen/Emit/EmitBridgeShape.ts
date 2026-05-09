@@ -27,30 +27,37 @@ import type { ServiceDecoratorRecord } from "../Type/ServiceDecoratorRecord.js";
 export interface EmitBridgeShapeOptions {
 	/** Decorator record from `IterateServiceDecorators`. */
 	readonly Record: ServiceDecoratorRecord;
+
 	/** Member names that the Wind bridge actually consumes. Empty
 	 * picks every member. Use this to scope the bridge's surface
 	 * down to what the Live layer needs.
 	 */
 	readonly PickMembers: ReadonlyArray<string>;
+
 	/** Wind's `Source/` directory. */
 	readonly OutputRoot: string;
+
 	/** Wind subfolder under `Effect/` to land the bridge in
 	 * (`Workbench<X>` for the workbench-tier services).
 	 */
 	readonly ServiceFolder: string;
+
 	/** Filename without extension. Defaults to
 	 * `<ServiceFolder>BridgeShape`.
 	 */
 	readonly BridgeFileName?: string;
+
 	/** Override the `__CEL_SERVICES__` accessor key. Defaults to
 	 * `decoratorName.replace(/^I/, "")`. Set to align with the
 	 * actual Output binding (e.g. `Clipboard` for `IClipboardService`).
 	 */
 	readonly AccessorName?: string;
+
 	/** Override the exported Globals interface name. Defaults to
 	 * `<decoratorName>Globals`.
 	 */
 	readonly GlobalsInterfaceName?: string;
+
 	/** Override the exported Pick<> type alias name. Defaults to
 	 * `BridgeFileName` with any trailing `Generated` suffix stripped.
 	 */
@@ -59,26 +66,37 @@ export interface EmitBridgeShapeOptions {
 
 export interface EmitBridgeShapeOutcome {
 	readonly OutputPath: string;
+
 	readonly Bytes: number;
+
 	readonly PickedMembers: ReadonlyArray<string>;
 }
 
 const FormatPickUnion = (members: ReadonlyArray<string>): string => {
 	if (members.length === 0) return "never";
+
 	return members.map((m) => JSON.stringify(m)).join(" | ");
 };
 
 const FormatOutput = (
 	record: ServiceDecoratorRecord,
+
 	pickedMembers: ReadonlyArray<string>,
+
 	bridgeFileName: string,
+
 	accessorName: string,
+
 	globalsInterfaceName: string,
+
 	shapeTypeName: string,
 ): string => {
 	const UpstreamModule = `../../Generated/${record.DecoratorName}/${record.DecoratorName}Upstream.js`;
+
 	const UpstreamType = `${record.DecoratorName}Upstream`;
+
 	const PickClause = FormatPickUnion(pickedMembers);
+
 	return [
 		"/**",
 		` * @module Effect/${record.DecoratorName}/Bridge/${bridgeFileName}`,
@@ -94,15 +112,25 @@ const FormatOutput = (
 		" * @category Generated",
 		" */",
 		"",
+
 		`import type { ${UpstreamType} } from "${UpstreamModule}";`,
+
 		"",
+
 		`export type ${shapeTypeName} = Pick<${UpstreamType}, ${PickClause}>;`,
+
 		"",
+
 		`export interface ${globalsInterfaceName} {`,
+
 		"\treadonly __CEL_SERVICES__?: {",
+
 		`\t\treadonly ${accessorName}?: ${shapeTypeName} | null;`,
+
 		"\t};",
+
 		"}",
+
 		"",
 	].join("\n");
 };
@@ -125,12 +153,14 @@ export const EmitBridgeShape = async (
 	// `export type {...} from "./WorkbenchClipboardBridgeShapeGenerated.js"`.
 	const ShapeTypeName =
 		options.ShapeTypeName ?? FileName.replace(/Generated$/, "");
+
 	// `AccessorName` defaults to `decoratorName.replace(/^I/, "")` for
 	// backward-compat (so e.g. `IClipboardService` → `ClipboardService`).
 	// Output's `ExposeWorkbenchAccessor` typically exposes a shorter
 	// name (`Clipboard`); manifest entries opt in via `AccessorName`.
 	const AccessorName =
 		options.AccessorName ?? options.Record.DecoratorName.replace(/^I/, "");
+
 	// `GlobalsInterfaceName` defaults to `<DecoratorName>Globals`. Set
 	// to `Workbench<X>Globals` in manifest entries that want the
 	// hand-authored layer to re-export both Shape + Globals together.
@@ -140,31 +170,48 @@ export const EmitBridgeShape = async (
 
 	const Output = FormatOutput(
 		options.Record,
+
 		ResolvedPicks,
+
 		FileName,
+
 		AccessorName,
+
 		GlobalsInterfaceName,
+
 		ShapeTypeName,
 	);
+
 	const OutputPath = join(
 		options.OutputRoot,
+
 		"Effect",
+
 		options.ServiceFolder,
+
 		"Implementation",
+
 		`${FileName}.ts`,
 	);
+
 	try {
 		await mkdir(dirname(OutputPath), { recursive: true });
+
 		await writeFile(OutputPath, Output, "utf8");
+
 		return {
 			OutputPath,
+
 			Bytes: Buffer.byteLength(Output),
+
 			PickedMembers: ResolvedPicks,
 		};
 	} catch (Cause) {
 		return {
 			_tag: "CodegenEmitFailed",
+
 			path: OutputPath,
+
 			error: Cause instanceof Error ? Cause : new Error(String(Cause)),
 		};
 	}

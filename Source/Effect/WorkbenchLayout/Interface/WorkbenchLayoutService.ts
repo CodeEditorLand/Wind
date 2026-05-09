@@ -13,11 +13,13 @@ export type WorkbenchLayoutPart =
 
 export interface WorkbenchLayoutSnapshot {
 	readonly visible: ReadonlyMap<WorkbenchLayoutPart, boolean>;
+
 	readonly maximized: ReadonlyMap<WorkbenchLayoutPart, boolean>;
 }
 
 export interface WorkbenchLayoutChange {
 	readonly part: WorkbenchLayoutPart;
+
 	readonly visible: boolean;
 }
 
@@ -29,6 +31,7 @@ export interface WorkbenchLayoutService {
 
 	readonly SetVisible: (
 		part: WorkbenchLayoutPart,
+
 		visible: boolean,
 	) => Effect.Effect<void, WorkbenchLayoutProblem>;
 

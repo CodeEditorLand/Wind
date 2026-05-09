@@ -23,9 +23,9 @@ export interface CommandCatalogEntry {
 	readonly HasKeybinding: boolean;
 }
 
-export const CommandCatalogVersion = "2026-05-07" as const;
+export const CommandCatalogVersion = "2026-05-09" as const;
 
-export const CommandCatalogTotal = 544 as const;
+export const CommandCatalogTotal = 550 as const;
 
 export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 	{
@@ -60,7 +60,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "_chat.notifyQuestionCarouselAnswer",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chat.contribution.ts",
-		SourceLine: 192,
+		SourceLine: 197,
 		HasKeybinding: false,
 	},
 	{
@@ -68,6 +68,13 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatImageUtils.ts",
 		SourceLine: 165,
+		HasKeybinding: false,
+	},
+	{
+		CommandIdentifier: "_developer.getConfigurationInformation",
+		Kind: "CommandsRegistry",
+		SourcePath: "vs/workbench/contrib/preferences/browser/preferencesActions.ts",
+		SourceLine: 159,
 		HasKeybinding: false,
 	},
 	{
@@ -235,14 +242,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "_executeWorkspaceSymbolProvider",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/search/browser/search.contribution.ts",
-		SourceLine: 391,
+		SourceLine: 351,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "_extensions.manage",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-		SourceLine: 329,
+		SourceLine: 349,
 		HasKeybinding: false,
 	},
 	{
@@ -298,14 +305,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "_getAllCommands",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/preferences/browser/preferencesActions.ts",
-		SourceLine: 86,
+		SourceLine: 209,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "_getAllSettings",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/preferences/browser/preferencesActions.ts",
-		SourceLine: 76,
+		SourceLine: 82,
 		HasKeybinding: false,
 	},
 	{
@@ -431,7 +438,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "_workbench.changes",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-		SourceLine: 568,
+		SourceLine: 571,
 		HasKeybinding: false,
 	},
 	{
@@ -459,7 +466,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "_workbench.openMultiDiffEditor",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-		SourceLine: 583,
+		SourceLine: 586,
 		HasKeybinding: false,
 	},
 	{
@@ -494,7 +501,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "1_chat",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/chatActions.ts",
-		SourceLine: 1749,
+		SourceLine: 1748,
 		HasKeybinding: false,
 	},
 	{
@@ -536,7 +543,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "1_editor",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 669,
+		SourceLine: 682,
 		HasKeybinding: false,
 	},
 	{
@@ -550,21 +557,21 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "1_focus_index",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 1013,
+		SourceLine: 1026,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "1_history_nav",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 901,
+		SourceLine: 914,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "1_new",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/userDataProfile/browser/userDataProfile.ts",
-		SourceLine: 205,
+		SourceLine: 201,
 		HasKeybinding: false,
 	},
 	{
@@ -585,14 +592,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "1_sideBySide",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 913,
+		SourceLine: 926,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "1_split",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 705,
+		SourceLine: 718,
 		HasKeybinding: false,
 	},
 	{
@@ -613,14 +620,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "2_any",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 933,
+		SourceLine: 946,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "2_appearance",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 697,
+		SourceLine: 710,
 		HasKeybinding: false,
 	},
 	{
@@ -634,14 +641,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "2_configuration",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/userDataProfile/browser/userDataProfile.ts",
-		SourceLine: 184,
+		SourceLine: 180,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "2_editor_nav",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 1005,
+		SourceLine: 1018,
 		HasKeybinding: false,
 	},
 	{
@@ -662,7 +669,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "2_next_prev",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 1061,
+		SourceLine: 1074,
 		HasKeybinding: false,
 	},
 	{
@@ -697,7 +704,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "2_split_in_group",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 753,
+		SourceLine: 766,
 		HasKeybinding: false,
 	},
 	{
@@ -718,7 +725,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "3_any_used",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 951,
+		SourceLine: 964,
 		HasKeybinding: false,
 	},
 	{
@@ -739,7 +746,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "3_directional",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 1081,
+		SourceLine: 1094,
 		HasKeybinding: false,
 	},
 	{
@@ -753,7 +760,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "3_file",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 466,
+		SourceLine: 498,
 		HasKeybinding: false,
 	},
 	{
@@ -767,7 +774,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "3_new_window",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 779,
+		SourceLine: 792,
 		HasKeybinding: false,
 	},
 	{
@@ -788,7 +795,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "3_workbench_layout_move",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/actions/layoutActions.ts",
-		SourceLine: 231,
+		SourceLine: 232,
 		HasKeybinding: false,
 	},
 	{
@@ -830,14 +837,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "4_group",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 969,
+		SourceLine: 982,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "4_layouts",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 803,
+		SourceLine: 816,
 		HasKeybinding: false,
 	},
 	{
@@ -858,7 +865,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "4_sort",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-		SourceLine: 1206,
+		SourceLine: 1226,
 		HasKeybinding: false,
 	},
 	{
@@ -893,7 +900,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "5_group_used",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 987,
+		SourceLine: 1000,
 		HasKeybinding: false,
 	},
 	{
@@ -998,7 +1005,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "agentSessionsControl",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/sessions/contrib/sessions/browser/sessionsTitleBarWidget.ts",
-		SourceLine: 337,
+		SourceLine: 353,
 		HasKeybinding: false,
 	},
 	{
@@ -1012,7 +1019,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "applyActions",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/sessions/contrib/applyCommitsToParentRepo/browser/applyChangesToParentRepo.ts",
-		SourceLine: 167,
+		SourceLine: 168,
 		HasKeybinding: false,
 	},
 	{
@@ -1096,7 +1103,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "Category",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-		SourceLine: 1077,
+		SourceLine: 1097,
 		HasKeybinding: false,
 	},
 	{
@@ -1124,21 +1131,21 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "chat.internal.explain",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSetup/chatSetupContributions.ts",
-		SourceLine: 524,
+		SourceLine: 544,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "chat.internal.fix",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSetup/chatSetupContributions.ts",
-		SourceLine: 583,
+		SourceLine: 603,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "chat.internal.review",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSetup/chatSetupContributions.ts",
-		SourceLine: 596,
+		SourceLine: 616,
 		HasKeybinding: false,
 	},
 	{
@@ -1166,7 +1173,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "chat.sessionsOrientation",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/agentSessionsActions.ts",
-		SourceLine: 67,
+		SourceLine: 68,
 		HasKeybinding: false,
 	},
 	{
@@ -1215,21 +1222,21 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "closeEditor",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 659,
+		SourceLine: 672,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "closeEditorGroup",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 665,
+		SourceLine: 678,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "closeEditorsInGroup",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 661,
+		SourceLine: 674,
 		HasKeybinding: false,
 	},
 	{
@@ -1243,7 +1250,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "closeOtherEditors",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 663,
+		SourceLine: 676,
 		HasKeybinding: false,
 	},
 	{
@@ -1264,7 +1271,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "closePinnedEditor",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 660,
+		SourceLine: 673,
 		HasKeybinding: false,
 	},
 	{
@@ -1292,14 +1299,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "closeRightEditors",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 664,
+		SourceLine: 677,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "closeSavedEditors",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 662,
+		SourceLine: 675,
 		HasKeybinding: false,
 	},
 	{
@@ -1341,7 +1348,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "config.window.nativeTabs",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/electron-browser/desktop.contribution.ts",
-		SourceLine: 106,
+		SourceLine: 105,
 		HasKeybinding: false,
 	},
 	{
@@ -1355,7 +1362,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "configureLayout",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/actions/layoutActions.ts",
-		SourceLine: 173,
+		SourceLine: 174,
 		HasKeybinding: false,
 	},
 	{
@@ -1383,7 +1390,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "copyPath",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 439,
+		SourceLine: 471,
 		HasKeybinding: false,
 	},
 	{
@@ -1481,14 +1488,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "delete",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 445,
+		SourceLine: 477,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "disable",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 624,
+		SourceLine: 656,
 		HasKeybinding: false,
 	},
 	{
@@ -1502,7 +1509,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "editor",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/chat/electron-browser/chat.contribution.ts",
-		SourceLine: 258,
+		SourceLine: 338,
 		HasKeybinding: false,
 	},
 	{
@@ -1558,21 +1565,21 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "editorCommand.activeEditorCopy.description",
 		Kind: "KeybindingsRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-		SourceLine: 193,
+		SourceLine: 196,
 		HasKeybinding: true,
 	},
 	{
 		CommandIdentifier: "editorCommand.activeEditorMove.description",
 		Kind: "KeybindingsRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-		SourceLine: 174,
+		SourceLine: 177,
 		HasKeybinding: true,
 	},
 	{
 		CommandIdentifier: "enable",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 636,
+		SourceLine: 668,
 		HasKeybinding: false,
 	},
 	{
@@ -1607,7 +1614,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "extension.open",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-		SourceLine: 339,
+		SourceLine: 359,
 		HasKeybinding: false,
 	},
 	{
@@ -1649,21 +1656,21 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "filterAgentSessions",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/agentSessions.contribution.ts",
-		SourceLine: 55,
+		SourceLine: 56,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "filterExtensions",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-		SourceLine: 990,
+		SourceLine: 1010,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "filterSessions",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/sessions/contrib/sessions/browser/views/sessionsViewActions.ts",
-		SourceLine: 130,
+		SourceLine: 134,
 		HasKeybinding: false,
 	},
 	{
@@ -1733,7 +1740,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "group",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-		SourceLine: 218,
+		SourceLine: 221,
 		HasKeybinding: false,
 	},
 	{
@@ -1817,7 +1824,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "ignoreTrimWhitespace.label",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 642,
+		SourceLine: 655,
 		HasKeybinding: false,
 	},
 	{
@@ -1880,7 +1887,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "keepEditor",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 656,
+		SourceLine: 669,
 		HasKeybinding: false,
 	},
 	{
@@ -1900,8 +1907,8 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 	{
 		CommandIdentifier: "label",
 		Kind: "MenuRegistry",
-		SourcePath: "vs/workbench/contrib/chat/browser/planReviewFeedback/planReviewFeedbackEditorActions.ts",
-		SourceLine: 159,
+		SourcePath: "vs/workbench/contrib/chat/browser/chatEditing/chatEditingEditorActions.ts",
+		SourceLine: 638,
 		HasKeybinding: false,
 	},
 	{
@@ -2216,14 +2223,21 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "miPreferencesExtensions",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-		SourceLine: 620,
+		SourceLine: 640,
+		HasKeybinding: false,
+	},
+	{
+		CommandIdentifier: "miSearch",
+		Kind: "MenuRegistry",
+		SourcePath: "vs/sessions/contrib/search/browser/search.contribution.ts",
+		SourceLine: 41,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "miSelectTheme",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/themes/browser/themes.contribution.ts",
-		SourceLine: 904,
+		SourceLine: 909,
 		HasKeybinding: false,
 	},
 	{
@@ -2398,7 +2412,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "open",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/userDataProfile/browser/userDataProfile.ts",
-		SourceLine: 314,
+		SourceLine: 312,
 		HasKeybinding: false,
 	},
 	{
@@ -2412,7 +2426,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "openChatCustomizations",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/chatActions.ts",
-		SourceLine: 1482,
+		SourceLine: 1481,
 		HasKeybinding: false,
 	},
 	{
@@ -2430,6 +2444,13 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		HasKeybinding: true,
 	},
 	{
+		CommandIdentifier: "openSearch",
+		Kind: "MenuRegistry",
+		SourcePath: "vs/sessions/contrib/search/browser/search.contribution.ts",
+		SourceLine: 30,
+		HasKeybinding: false,
+	},
+	{
 		CommandIdentifier: "paste",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/webview/browser/webview.contribution.ts",
@@ -2444,6 +2465,13 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		HasKeybinding: false,
 	},
 	{
+		CommandIdentifier: "phone",
+		Kind: "CommandsRegistry",
+		SourcePath: "vs/sessions/browser/workbench.ts",
+		SourceLine: 529,
+		HasKeybinding: false,
+	},
+	{
 		CommandIdentifier: "pin",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
@@ -2454,7 +2482,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "pinEditor",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 657,
+		SourceLine: 670,
+		HasKeybinding: false,
+	},
+	{
+		CommandIdentifier: "planReviewFeedback.navStatus.label",
+		Kind: "MenuRegistry",
+		SourcePath: "vs/workbench/contrib/chat/browser/planReviewFeedback/planReviewFeedbackEditorActions.ts",
+		SourceLine: 127,
 		HasKeybinding: false,
 	},
 	{
@@ -2608,7 +2643,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "runPrompt",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 459,
+		SourceLine: 491,
 		HasKeybinding: false,
 	},
 	{
@@ -2699,7 +2734,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "selectTheme.label",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/themes/browser/themes.contribution.ts",
-		SourceLine: 911,
+		SourceLine: 916,
 		HasKeybinding: false,
 	},
 	{
@@ -2713,7 +2748,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "sessionsViewPane.find",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/sessions/contrib/sessions/browser/views/sessionsViewActions.ts",
-		SourceLine: 138,
+		SourceLine: 142,
 		HasKeybinding: false,
 	},
 	{
@@ -2741,7 +2776,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "showExtensions",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-		SourceLine: 629,
+		SourceLine: 649,
 		HasKeybinding: false,
 	},
 	{
@@ -2769,14 +2804,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "showPlugin",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 568,
+		SourceLine: 600,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "showSessions",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/sessions/contrib/sessions/browser/sessionsTitleBarWidget.ts",
-		SourceLine: 345,
+		SourceLine: 361,
 		HasKeybinding: false,
 	},
 	{
@@ -2853,7 +2888,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "swapDiffSides",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/diffEditorCommands.ts",
-		SourceLine: 275,
+		SourceLine: 291,
 		HasKeybinding: false,
 	},
 	{
@@ -2866,8 +2901,8 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 	{
 		CommandIdentifier: "tabBar",
 		Kind: "MenuRegistry",
-		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 376,
+		SourcePath: "vs/workbench/browser/workbench.zenMode.contribution.ts",
+		SourceLine: 88,
 		HasKeybinding: false,
 	},
 	{
@@ -2881,21 +2916,21 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "themes",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/themes/browser/themes.contribution.ts",
-		SourceLine: 898,
+		SourceLine: 903,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "themes.selectIconTheme.label",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/themes/browser/themes.contribution.ts",
-		SourceLine: 919,
+		SourceLine: 924,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "themes.selectProductIconTheme.label",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/themes/browser/themes.contribution.ts",
-		SourceLine: 927,
+		SourceLine: 932,
 		HasKeybinding: false,
 	},
 	{
@@ -2951,7 +2986,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "toggleInlineView",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/diffEditorCommands.ts",
-		SourceLine: 266,
+		SourceLine: 282,
 		HasKeybinding: false,
 	},
 	{
@@ -3000,7 +3035,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "uninstallPlugin",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 515,
+		SourceLine: 547,
 		HasKeybinding: false,
 	},
 	{
@@ -3028,7 +3063,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "unpinEditor",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 658,
+		SourceLine: 671,
 		HasKeybinding: false,
 	},
 	{
@@ -3095,6 +3130,13 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		HasKeybinding: false,
 	},
 	{
+		CommandIdentifier: "updateIndicatorTitleBarAction",
+		Kind: "MenuRegistry",
+		SourcePath: "vs/workbench/contrib/update/browser/updateTitleBarEntry.ts",
+		SourceLine: 124,
+		HasKeybinding: false,
+	},
+	{
 		CommandIdentifier: "useInlineViewWhenSpaceIsLimited",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/editor/browser/widget/diffEditor/diffEditor.contribution.ts",
@@ -3126,21 +3168,21 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "vscode.changes",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-		SourceLine: 554,
+		SourceLine: 557,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "vscode.diff",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-		SourceLine: 500,
+		SourceLine: 503,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "vscode.getEditorLayout",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-		SourceLine: 410,
+		SourceLine: 413,
 		HasKeybinding: false,
 	},
 	{
@@ -3154,7 +3196,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "vscode.open",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-		SourceLine: 441,
+		SourceLine: 444,
 		HasKeybinding: false,
 	},
 	{
@@ -3210,7 +3252,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "vscode.setEditorLayout",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-		SourceLine: 373,
+		SourceLine: 376,
 		HasKeybinding: false,
 	},
 	{
@@ -3280,7 +3322,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "workbench.action.chat.openCopilotStatus",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatStatus/chatStatusEntry.ts",
-		SourceLine: 53,
+		SourceLine: 54,
 		HasKeybinding: false,
 	},
 	{
@@ -3307,8 +3349,8 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 	{
 		CommandIdentifier: "workbench.action.exitZenMode",
 		Kind: "KeybindingsRegistry",
-		SourcePath: "vs/workbench/browser/actions/layoutActions.ts",
-		SourceLine: 765,
+		SourcePath: "vs/workbench/browser/workbench.zenMode.contribution.ts",
+		SourceLine: 130,
 		HasKeybinding: true,
 	},
 	{
@@ -3364,14 +3406,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "workbench.action.openEditorAtIndexN",
 		Kind: "KeybindingsRegistry",
 		SourcePath: "vs/sessions/contrib/sessions/browser/views/sessionsViewActions.ts",
-		SourceLine: 116,
+		SourceLine: 120,
 		HasKeybinding: true,
 	},
 	{
 		CommandIdentifier: "workbench.action.openGlobalKeybindings",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/sessions/contrib/accountMenu/browser/account.contribution.ts",
-		SourceLine: 254,
+		SourceLine: 153,
 		HasKeybinding: false,
 	},
 	{
@@ -3406,7 +3448,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "workbench.action.previewColorTheme",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/themes/browser/themes.contribution.ts",
-		SourceLine: 644,
+		SourceLine: 649,
 		HasKeybinding: false,
 	},
 	{
@@ -3427,7 +3469,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "workbench.action.quickOpenPreviousEditor",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/browser/actions/quickAccessActions.ts",
-		SourceLine: 196,
+		SourceLine: 197,
 		HasKeybinding: false,
 	},
 	{
@@ -3441,14 +3483,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "workbench.action.quit",
 		Kind: "KeybindingsRegistry",
 		SourcePath: "vs/workbench/electron-browser/desktop.contribution.ts",
-		SourceLine: 72,
+		SourceLine: 71,
 		HasKeybinding: true,
 	},
 	{
 		CommandIdentifier: "workbench.action.selectTheme",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/sessions/contrib/accountMenu/browser/account.contribution.ts",
-		SourceLine: 232,
+		SourceLine: 131,
 		HasKeybinding: false,
 	},
 	{
@@ -3602,7 +3644,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "workbench.action.toggleMenuBar",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/actions/layoutActions.ts",
-		SourceLine: 809,
+		SourceLine: 760,
 		HasKeybinding: false,
 	},
 	{
@@ -3637,7 +3679,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "workbench.editor.enablePreview",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-		SourceLine: 1302,
+		SourceLine: 1338,
 		HasKeybinding: false,
 	},
 	{
@@ -3672,7 +3714,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "workbench.extensions.installExtension",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-		SourceLine: 351,
+		SourceLine: 371,
 		HasKeybinding: false,
 	},
 	{
@@ -3686,14 +3728,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "workbench.extensions.search",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-		SourceLine: 488,
+		SourceLine: 508,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "workbench.extensions.uninstallExtension",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-		SourceLine: 452,
+		SourceLine: 472,
 		HasKeybinding: false,
 	},
 	{
@@ -3707,7 +3749,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "workbench.profiles.actions.manageProfiles",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/userDataProfile/browser/userDataProfile.ts",
-		SourceLine: 396,
+		SourceLine: 397,
 		HasKeybinding: false,
 	},
 	{
@@ -3805,7 +3847,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "z_clear",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-		SourceLine: 679,
+		SourceLine: 692,
 		HasKeybinding: false,
 	},
 	{
@@ -3826,7 +3868,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "z_Exit",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/electron-browser/desktop.contribution.ts",
-		SourceLine: 128,
+		SourceLine: 127,
 		HasKeybinding: false,
 	},
 	{

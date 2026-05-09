@@ -24,9 +24,14 @@ import type { WebUtils } from "./WebUtils.js";
  */
 export interface SandboxGlobals {
 	readonly ipcRenderer: IPCRenderer;
+
 	readonly ipcMessagePort: IPCMessagePort;
+
 	readonly webFrame: WebFrame;
+
 	readonly process: SandboxNodeProcess;
+
 	readonly context: SandboxContext;
+
 	readonly webUtils: WebUtils;
 }

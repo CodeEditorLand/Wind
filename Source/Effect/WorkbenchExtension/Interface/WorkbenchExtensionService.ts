@@ -4,10 +4,15 @@ import type { WorkbenchExtensionProblem } from "../Type/WorkbenchExtensionProble
 
 export interface WorkbenchExtensionDescriptor {
 	readonly identifier: string;
+
 	readonly version: string;
+
 	readonly displayName: string | null;
+
 	readonly publisher: string | null;
+
 	readonly isBuiltin: boolean;
+
 	readonly extensionLocation: string;
 }
 

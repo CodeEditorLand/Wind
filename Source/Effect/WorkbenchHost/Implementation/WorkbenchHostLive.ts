@@ -15,6 +15,7 @@ const ResolveBridge = Effect.sync((): WorkbenchHostBridgeShape | null => {
 
 const Unavailable: WorkbenchHostProblem = {
 	_tag: "WorkbenchHostBridgeUnavailable",
+
 	reason: "globalThis.__CEL_SERVICES__.Host is null.",
 };
 
@@ -23,6 +24,7 @@ const ToError = (cause: unknown): Error =>
 
 const Wrap = <A>(
 	Operation: string,
+
 	Run: () => Promise<A>,
 ): Effect.Effect<A, WorkbenchHostProblem> =>
 	Effect.tryPromise({
@@ -37,6 +39,7 @@ const Wrap = <A>(
 
 export const WorkbenchHostLive = Layer.effect(
 	WorkbenchHostServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 

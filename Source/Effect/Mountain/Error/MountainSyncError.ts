@@ -13,10 +13,14 @@
 
 export class MountainSyncError extends Error {
 	readonly _tag = "MountainSyncError";
+
 	readonly resource: string;
+
 	override readonly cause: unknown;
+
 	constructor(resource: string, cause: unknown) {
 		super(`Mountain sync for '${resource}' failed: ${String(cause)}`);
+
 		this.resource = resource;
 	}
 }

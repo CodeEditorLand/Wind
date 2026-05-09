@@ -14,16 +14,22 @@
 export type UserSettingsProblem =
 	| {
 			readonly _tag: "UserSettingsBridgeUnavailable";
+
 			readonly reason: string;
 	  }
 	| {
 			readonly _tag: "UserSettingsReadFailed";
+
 			readonly section: string;
+
 			readonly error: Error;
 	  }
 	| {
 			readonly _tag: "UserSettingsWriteRejected";
+
 			readonly section: string;
+
 			readonly target: string;
+
 			readonly reason: string;
 	  };

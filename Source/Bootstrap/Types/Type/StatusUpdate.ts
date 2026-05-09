@@ -17,14 +17,19 @@ import type { StageName } from "./StageName.js";
 export interface StatusUpdate {
 	/** Stage this update is for */
 	stage: StageName;
+
 	/** Current status of the stage */
 	status: "pending" | "running" | "success" | "error" | "warning";
+
 	/** Human-readable status message */
 	message: string;
+
 	/** Progress percentage (0-100) */
 	progress: number;
+
 	/** Optional duration if completed */
 	duration?: number;
+
 	/** Optional error if status is error */
 	error?: Error;
 }

@@ -17,10 +17,12 @@ export {
 	IPCElectronLive,
 	IPCMockLive,
 } from "./IPC.js";
+
 export type { IPCService } from "./IPC.js";
 
 // Sandbox (Preload globals)
 export { Sandbox, SandboxLive, SandboxMockLive } from "./Sandbox/index.js";
+
 export type { SandboxService } from "./Sandbox/index.js";
 
 // Configuration
@@ -29,6 +31,7 @@ export {
 	ConfigurationLive,
 	ConfigurationWithSyncLive,
 } from "./Configuration.js";
+
 export type { ConfigurationService } from "./Configuration.js";
 
 // Telemetry (Logging, Spans, Metrics)
@@ -39,10 +42,12 @@ export {
 	withSpan,
 	withMetric,
 } from "./Telemetry/index.js";
+
 export type { TelemetryService } from "./Telemetry/index.js";
 
 // Mountain (Backend connection & RPC)
 export { Mountain, MountainLive, MountainMockLive } from "./Mountain/index.js";
+
 export type {
 	MountainService,
 	MountainConnectionState,
@@ -55,6 +60,7 @@ export {
 	MountainSyncLive,
 	MountainSyncMock,
 } from "./MountainSync/index.js";
+
 export type {
 	MountainSyncService,
 	SyncConfig,
@@ -65,8 +71,11 @@ export type {
 
 // Environment (System detection)
 export { EnvironmentTag } from "./Environment/index.js";
+
 export { EnvironmentLive } from "./Environment/index.js";
+
 export { EnvironmentMock } from "./Environment/index.js";
+
 export type {
 	EnvironmentService,
 	EnvironmentInfo,
@@ -76,6 +85,7 @@ export type {
 
 // Health (Service health checks)
 export { HealthTag, HealthLive, HealthMock } from "./Health/index.js";
+
 export type {
 	HealthService,
 	ServiceHealth,
@@ -90,6 +100,7 @@ export {
 	BootstrapMock,
 	runBootstrap,
 } from "./Bootstrap/index.js";
+
 export type {
 	BootstrapService,
 	BootstrapOptions,
@@ -103,6 +114,7 @@ export {
 	LiveClipboardServiceLayer,
 	MockClipboardServiceLayer,
 } from "./Clipboard.js";
+
 export type { ClipboardService, ClipboardProblem } from "./Clipboard.js";
 
 // ActivityBar (VSCode activity bar management)
@@ -111,6 +123,7 @@ export {
 	ActivityBarLive,
 	ActivityBarMockLive,
 } from "./ActivityBar/index.js";
+
 export type {
 	ActivityBarService,
 	ActivityBarItem,
@@ -120,6 +133,7 @@ export type {
 
 // Panel (VSCode bottom panel management)
 export { Panel, PanelLive, PanelMockLive } from "./Panel/index.js";
+
 export type {
 	PanelService,
 	PanelView,
@@ -129,6 +143,7 @@ export type {
 
 // Sidebar (VSCode sidebar management)
 export { Sidebar, SidebarLive, SidebarMockLive } from "./Sidebar/index.js";
+
 export type {
 	SidebarService,
 	SidebarPanel,
@@ -141,6 +156,7 @@ export {
 	StatusBarLive,
 	StatusBarMockLive,
 } from "./StatusBar/index.js";
+
 export type {
 	StatusBarService,
 	StatusBarItem,
@@ -152,6 +168,7 @@ export {
 	WorkbenchIntegrationTag as Workbench,
 	WorkbenchIntegrationLiveLayer as WorkbenchLive,
 } from "../Workbench/index.js";
+
 export type {
 	WorkbenchIntegrationService,
 	WorkbenchState,
@@ -161,6 +178,7 @@ export type {
 	WorkspaceContext,
 	WorkbenchDiagnostics,
 } from "../Workbench/index.js";
+
 export { WorkbenchIntegrationErrorCode } from "../Workbench/index.js";
 
 // ============================================================================
@@ -224,6 +242,7 @@ export {
 	FileSystemProviderTag,
 	FileSystemProviderLive,
 } from "../FileSystem/index.js";
+
 export type { FileSystemProviderService } from "../FileSystem/index.js";
 
 // ============================================================================
@@ -236,25 +255,47 @@ export type { FileSystemProviderService } from "../FileSystem/index.js";
 // would otherwise drift as each service evolves.
 
 export * from "./Commands.js";
+
 export * from "./Decorations.js";
+
 export * from "./Editor.js";
+
 export * from "./Extensions.js";
+
 export * from "./Files.js";
+
 export * from "./History.js";
+
 export * from "./Keybinding.js";
+
 export * from "./Label.js";
+
 export * from "./Language.js";
+
 export * from "./Lifecycle.js";
+
 export * from "./Model.js";
+
 export * from "./Notification.js";
+
 export * from "./Output.js";
+
 export * from "./Progress.js";
+
 export * from "./QuickInput.js";
+
 export * from "./Search.js";
+
 export * from "./Storage.js";
+
 export * from "./Terminal.js";
+
 export * from "./TextFile.js";
+
 export * from "./TextModelResolver.js";
+
 export * from "./Themes.js";
+
 export * from "./WorkingCopy.js";
+
 export * from "./Workspaces.js";

@@ -29,8 +29,11 @@
 
 // Error types
 export { default as CreateNetworkBlockError } from "./NetworkRestrictions/Error/NetworkBlockError.js";
+
 export type { NetworkBlockError } from "./NetworkRestrictions/Error/NetworkBlockError.js";
+
 export { default as CreateIPCBlockError } from "./NetworkRestrictions/Error/IPCBlockError.js";
+
 export type { IPCBlockError } from "./NetworkRestrictions/Error/IPCBlockError.js";
 
 // Types

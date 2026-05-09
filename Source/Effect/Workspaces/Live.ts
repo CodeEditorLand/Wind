@@ -30,6 +30,7 @@ const MakeWorkspacesProblem = (error: unknown): WorkspacesProblem =>
 		? { _tag: "WorkspacesOperationFailed", error }
 		: {
 				_tag: "WorkspacesOperationFailed",
+
 				error: new Error(String(error)),
 			};
 
@@ -42,30 +43,43 @@ const MakeWorkspacesProblem = (error: unknown): WorkspacesProblem =>
  */
 const CoerceFolder = (Entry: unknown): WorkspaceFolder | undefined => {
 	if (!Entry || typeof Entry !== "object") return undefined;
+
 	const Record = Entry as Record<string, unknown>;
+
 	const Uri = Record["uri"];
+
 	const Name = Record["name"];
+
 	const Index = Record["index"];
+
 	if (typeof Uri !== "string") return undefined;
+
 	return {
 		uri: Uri,
+
 		name: typeof Name === "string" ? Name : "",
+
 		index: typeof Index === "number" ? Index : 0,
 	};
 };
 
 const CoerceFolderArray = (Value: unknown): readonly WorkspaceFolder[] => {
 	if (!Array.isArray(Value)) return [];
+
 	const Out: WorkspaceFolder[] = [];
+
 	for (const Entry of Value) {
 		const Folder = CoerceFolder(Entry);
+
 		if (Folder) Out.push(Folder);
 	}
+
 	return Out;
 };
 
 export const LiveWorkspacesServiceLayer = Layer.effect(
 	WorkspacesServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -81,21 +95,25 @@ export const LiveWorkspacesServiceLayer = Layer.effect(
 								}[])
 							: [],
 					),
+
 					Effect.mapError(MakeWorkspacesProblem),
 				),
 
 			AddFolder: (uri, name) =>
 				IPCService.invoke(Channel.WorkspacesAddFolder)([
 					uri,
+
 					name ?? "",
 				]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeWorkspacesProblem),
 				),
 
 			RemoveFolder: (uri) =>
 				IPCService.invoke(Channel.WorkspacesRemoveFolder)([uri]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeWorkspacesProblem),
 				),
 
@@ -104,6 +122,7 @@ export const LiveWorkspacesServiceLayer = Layer.effect(
 					Effect.map((Result) =>
 						typeof Result === "string" ? Result : undefined,
 					),
+
 					Effect.mapError(MakeWorkspacesProblem),
 				),
 
@@ -129,6 +148,7 @@ export const LiveWorkspacesServiceLayer = Layer.effect(
 							folders: CoerceFolderArray(Payload["folders"]),
 						};
 					}),
+
 					Stream.mapError(MakeWorkspacesProblem),
 				),
 		};

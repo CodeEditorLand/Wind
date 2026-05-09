@@ -10,9 +10,13 @@ export const StubModelService: ModelService = {
 			version: 1,
 			languageId: "plaintext",
 		}),
+
 	CloseModel: (_uri) => Effect.void,
+
 	GetModel: (_uri) => Effect.succeed(null),
+
 	GetAllModels: () => Effect.succeed([]),
+
 	UpdateContent: (uri, content) =>
 		Effect.succeed({
 			uri,

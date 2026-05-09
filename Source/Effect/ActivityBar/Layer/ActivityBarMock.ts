@@ -33,6 +33,7 @@ export const ActivityBarMockLive = Layer.succeed(ActivityBarTag, {
 		}),
 	updateItem: (
 		_id: string,
+
 		_updates: Partial<import("../Type/ActivityBarType.js").ActivityBarItem>,
 	) => Effect.void,
 	removeItem: (_id: string) => Effect.void,

@@ -22,6 +22,7 @@ const ResolveBridge = Effect.sync(
 
 const Unavailable: WorkbenchNotificationProblem = {
 	_tag: "WorkbenchNotificationBridgeUnavailable",
+
 	reason: "globalThis.__CEL_SERVICES__.Notification is null - the workbench has not yet exposed its INotificationService handle.",
 };
 
@@ -42,6 +43,7 @@ const PublishLocal = (event: WorkbenchNotificationDispatched): void => {
 
 export const WorkbenchNotificationLive = Layer.effect(
 	WorkbenchNotificationServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 

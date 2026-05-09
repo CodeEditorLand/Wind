@@ -12,5 +12,6 @@ export default (Seed: string): string => {
 
 	const Username =
 		process.env["USER"] ?? process.env["USERNAME"] ?? "unknown";
+
 	return `land-dev-wind-${Username}`;
 };

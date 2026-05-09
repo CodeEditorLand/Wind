@@ -7,4 +7,5 @@ export class WorkspacesServiceTag extends Context.Tag(
 )<WorkspacesServiceTag, WorkspacesService>() {}
 
 export const Workspaces = WorkspacesServiceTag;
+
 export default WorkspacesServiceTag;

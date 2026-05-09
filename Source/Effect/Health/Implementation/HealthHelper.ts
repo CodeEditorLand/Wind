@@ -9,9 +9,13 @@ import type { HealthStatus, ServiceHealth } from "../Type/HealthType.js";
 
 export const CreateServiceHealth = (
 	Name: string,
+
 	Status: HealthStatus,
+
 	Message: string,
+
 	ResponseTime: number,
+
 	Details?: Readonly<Record<string, unknown>>,
 ): ServiceHealth =>
 	({
@@ -25,7 +29,9 @@ export const CreateServiceHealth = (
 
 export const CreateServiceHealthWithNoResponseTime = (
 	Name: string,
+
 	Status: HealthStatus,
+
 	Message: string,
 ): ServiceHealth =>
 	({

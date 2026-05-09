@@ -75,6 +75,7 @@ export const CreateFormatNotSupportedError = (
  */
 export const CreateSizeExceededError = (
 	Size: number,
+
 	Limit: number,
 ): ClipboardProblem => ({
 	_tag: "ClipboardSizeExceeded",
@@ -84,10 +85,15 @@ export const CreateSizeExceededError = (
 
 const helpers = {
 	CreateNotAvailableError,
+
 	CreateReadError,
+
 	CreateWriteError,
+
 	CreatePermissionDeniedError,
+
 	CreateFormatNotSupportedError,
+
 	CreateSizeExceededError,
 };
 

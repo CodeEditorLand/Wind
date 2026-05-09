@@ -5,6 +5,7 @@ import { WorkingCopyServiceTag } from "./Tag/WorkingCopyServiceTag.js";
 
 export const MockWorkingCopyServiceLayer = Layer.succeed(
 	WorkingCopyServiceTag,
+
 	StubWorkingCopyService,
 );
 

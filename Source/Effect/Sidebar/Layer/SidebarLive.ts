@@ -32,6 +32,7 @@ import type { CreateSidebarPanel, SidebarPanel } from "../Type/SidebarType.js";
  */
 const SidebarLive = Layer.effect(
 	SidebarTag,
+
 	Effect.gen(function* () {
 		const TelemetryService = yield* Telemetry;
 
@@ -55,6 +56,7 @@ const SidebarLive = Layer.effect(
 
 				yield* SubscriptionRef.modify(PanelsRef, (Panels) => [
 					undefined,
+
 					[...Panels, NewPanel].sort(
 						(a, b) => a.priority - b.priority,
 					),
@@ -62,6 +64,7 @@ const SidebarLive = Layer.effect(
 
 				yield* TelemetryService.log(
 					"info",
+
 					`Created sidebar panel: ${Id}`,
 				);
 				return NewPanel;
@@ -70,6 +73,7 @@ const SidebarLive = Layer.effect(
 		// Atom: Update an existing sidebar panel
 		const UpdatePanel = (
 			Id: string,
+
 			updates: Partial<Omit<SidebarPanel, "id">>,
 		): Effect.Effect<
 			void,
@@ -87,6 +91,7 @@ const SidebarLive = Layer.effect(
 				try {
 					yield* SubscriptionRef.modify(PanelsRef, (Panels) => [
 						undefined,
+
 						Panels.map((Panel) =>
 							Panel.id === Id ? { ...Panel, ...updates } : Panel,
 						).sort((a, b) => a.priority - b.priority),
@@ -94,6 +99,7 @@ const SidebarLive = Layer.effect(
 
 					yield* TelemetryService.log(
 						"info",
+
 						`Updated sidebar panel: ${Id}`,
 					);
 				} catch (error) {
@@ -118,6 +124,7 @@ const SidebarLive = Layer.effect(
 
 				yield* SubscriptionRef.modify(PanelsRef, (Panels) => [
 					undefined,
+
 					Panels.filter((Panel) => Panel.id !== Id),
 				]);
 
@@ -129,6 +136,7 @@ const SidebarLive = Layer.effect(
 
 				yield* TelemetryService.log(
 					"info",
+
 					`Removed sidebar panel: ${Id}`,
 				);
 			});
@@ -163,6 +171,7 @@ const SidebarLive = Layer.effect(
 				// Expand the panel when setting it as active
 				yield* SubscriptionRef.modify(PanelsRef, (Panels) => [
 					undefined,
+
 					Panels.map((Panel) =>
 						Panel.id === Id
 							? { ...Panel, collapsed: false }
@@ -173,6 +182,7 @@ const SidebarLive = Layer.effect(
 				yield* SubscriptionRef.set(ActivePanelRef, Id);
 				yield* TelemetryService.log(
 					"info",
+
 					`Set active sidebar panel: ${Id}`,
 				);
 			});
@@ -202,6 +212,7 @@ const SidebarLive = Layer.effect(
 				yield* UpdatePanel(Id, { collapsed: !Existing.collapsed });
 				yield* TelemetryService.log(
 					"info",
+
 					`Toggled sidebar panel: ${Id}`,
 				);
 			});
@@ -217,6 +228,7 @@ const SidebarLive = Layer.effect(
 				yield* UpdatePanel(Id, { collapsed: true });
 				yield* TelemetryService.log(
 					"info",
+
 					`Collapsed sidebar panel: ${Id}`,
 				);
 			});
@@ -232,6 +244,7 @@ const SidebarLive = Layer.effect(
 				yield* UpdatePanel(Id, { collapsed: false });
 				yield* TelemetryService.log(
 					"info",
+
 					`Expanded sidebar panel: ${Id}`,
 				);
 			});

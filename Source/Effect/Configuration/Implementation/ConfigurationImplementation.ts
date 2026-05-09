@@ -35,6 +35,7 @@ import { MakeApply, MakeValidate } from "./ConfigurationHelper.js";
  */
 export const ConfigurationLive = Layer.effect(
 	ConfigurationTag,
+
 	Effect.gen(function* () {
 		const SandboxService = yield* Sandbox;
 		const IPCService = yield* IPC;
@@ -114,6 +115,7 @@ export const ConfigurationLive = Layer.effect(
  */
 export const ConfigurationWithSyncLive = Layer.effect(
 	ConfigurationTag,
+
 	Effect.gen(function* () {
 		const SandboxService = yield* Sandbox;
 		const IPCService = yield* IPC;
@@ -200,16 +202,19 @@ export const ConfigurationWithSyncLive = Layer.effect(
 											) {
 												yield* SubscriptionRef.set(
 													ConfigRef,
+
 													ValidatedConfig,
 												);
 												yield* Apply(ValidatedConfig);
 											}
 										});
 									}),
+
 									Effect.catchAll((error) =>
 										Effect.sync(() => {
 											console.error(
 												"[Configuration] Sync error:",
+
 												error,
 											);
 										}),
@@ -217,6 +222,7 @@ export const ConfigurationWithSyncLive = Layer.effect(
 								);
 							}
 						}),
+
 						Schedule.spaced("5 seconds"),
 					);
 				}

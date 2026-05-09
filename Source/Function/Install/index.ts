@@ -6,11 +6,16 @@
 
 // Main installation function
 export { default } from "./Function/Install.js";
+
 export { default as Install } from "./Function/Install.js";
 
 // Helper functions
 export { CreateIPCRenderer } from "./Function/CreateIPCRenderer.js";
+
 export { CreateProcess } from "./Function/CreateProcess.js";
+
 export { ResolveConfiguration } from "./Function/ResolveConfiguration.js";
+
 export { ValidateIPCChannel } from "./Function/ValidateIPCChannel.js";
+
 export { Fallback } from "./Function/Fallback.js";

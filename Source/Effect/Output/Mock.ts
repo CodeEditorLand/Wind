@@ -5,6 +5,7 @@ import { OutputServiceTag } from "./Tag/OutputServiceTag.js";
 
 export const MockOutputServiceLayer = Layer.succeed(
 	OutputServiceTag,
+
 	StubOutputService,
 );
 

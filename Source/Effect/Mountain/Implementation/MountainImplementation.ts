@@ -44,6 +44,7 @@ import type {
  */
 export const MountainLive = Layer.effect(
 	MountainTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 		const ConfigurationService = yield* Configuration;
@@ -62,18 +63,21 @@ export const MountainLive = Layer.effect(
 		// Retry schedule: exponential backoff with max 30s
 		const RetrySchedule = Schedule.exponential("100 millis").pipe(
 			Schedule.union(Schedule.spaced("5 seconds")),
+
 			Schedule.intersect(Schedule.recurs(10)),
 		);
 
 		// Helper: withSpan using captured telemetry (no external dependencies)
 		const WithSpanLocal = <A, E>(
 			Name: string,
+
 			EffectPayload: Effect.Effect<A, E, never>,
 		): Effect.Effect<A, E, never> =>
 			Effect.gen(function* () {
 				const Span = yield* TelemetryService.startSpan(Name);
 				return yield* EffectPayload.pipe(
 					Effect.tap(() => Span.end(true)),
+
 					Effect.catchAll((Error) =>
 						Effect.gen(function* () {
 							const ErrorValue = Error as Error;
@@ -90,10 +94,12 @@ export const MountainLive = Layer.effect(
 			Effect.gen(function* () {
 				yield* SubscriptionRef.modify(StateRef, () => [
 					undefined,
+
 					State,
 				]);
 				yield* TelemetryService.log(
 					"info",
+
 					`Mountain state: ${State._tag}`,
 				);
 			});
@@ -127,6 +133,7 @@ export const MountainLive = Layer.effect(
 							};
 						},
 					),
+
 					Effect.mapError(
 						(Error) => new MountainConnectionError(Error),
 					),
@@ -144,12 +151,14 @@ export const MountainLive = Layer.effect(
 				});
 				yield* TelemetryService.log(
 					"info",
+
 					`Connected to Mountain v${Status.version}`,
 				);
 			}) satisfies Effect.Effect<void, MountainConnectionError, never>;
 
 			return yield* Effect.retry(
 				WithSpanLocal("mountain_connect", ConnectionEffect),
+
 				RetrySchedule,
 			).pipe(
 				Effect.catchAll((Error) =>
@@ -161,6 +170,7 @@ export const MountainLive = Layer.effect(
 						yield* SetState({ _tag: "Error", error: ErrorObj });
 						yield* TelemetryService.log(
 							"error",
+
 							`Failed to connect: ${ErrorObj.message}`,
 						);
 						yield* Effect.fail(Error as MountainConnectionError);
@@ -193,7 +203,9 @@ export const MountainLive = Layer.effect(
 					Effect.mapError(
 						(Error) => new MountainRPCError(Method, Error),
 					),
+
 					Effect.tap(() => Span.end(true)),
+
 					Effect.catchAll((Error) =>
 						Effect.gen(function* () {
 							const ErrorMessage =
@@ -229,6 +241,7 @@ export const MountainLive = Layer.effect(
 
 				yield* TelemetryService.log(
 					"info",
+
 					`Starting sync for ${ResourceType}`,
 				);
 
@@ -259,8 +272,10 @@ export const MountainLive = Layer.effect(
 
 								yield* SubscriptionRef.modify(
 									SyncEventsRef,
+
 									(Events) => [
 										undefined,
+
 										[...Events, Resource].slice(-1000),
 									],
 								);
@@ -288,8 +303,10 @@ export const MountainLive = Layer.effect(
 
 							yield* SubscriptionRef.modify(
 								SyncEventsRef,
+
 								(Events) => [
 									undefined,
+
 									[...Events, Resource].slice(-1000),
 								],
 							);
@@ -316,8 +333,10 @@ export const MountainLive = Layer.effect(
 
 							yield* SubscriptionRef.modify(
 								SyncEventsRef,
+
 								(Events) => [
 									undefined,
+
 									[...Events, Resource].slice(-1000),
 								],
 							);
@@ -381,6 +400,7 @@ export const MountainLive = Layer.effect(
 					};
 					return { version: APIStatus.version ?? "unknown" };
 				}),
+
 				Effect.mapError((Error) => new MountainConnectionError(Error)),
 			);
 			return Status.version;
@@ -392,6 +412,7 @@ export const MountainLive = Layer.effect(
 				RPC(Channel.MountainGetStatus)().pipe(
 					Effect.map((Status: any) => Status.connected === true),
 				),
+
 				() => Effect.succeed(false),
 			);
 		});
@@ -403,6 +424,7 @@ export const MountainLive = Layer.effect(
 					? Effect.gen(function* () {
 							yield* TelemetryService.log(
 								"info",
+
 								"Starting background sync",
 							);
 
@@ -411,6 +433,7 @@ export const MountainLive = Layer.effect(
 								Effect.catchAll((Error) =>
 									TelemetryService.log(
 										"error",
+
 										`Initial config sync failed: ${Error.message}`,
 									),
 								),
@@ -425,11 +448,13 @@ export const MountainLive = Layer.effect(
 										Effect.catchAll((Error) =>
 											TelemetryService.log(
 												"error",
+
 												`Periodic sync failed: ${Error.message}`,
 											),
 										),
 									),
 								),
+
 								Effect.fork,
 							);
 
@@ -440,6 +465,7 @@ export const MountainLive = Layer.effect(
 										S._tag === "Disconnected" ||
 										S._tag === "Error",
 								),
+
 								Stream.runForEach(() =>
 									Fiber.interrupt(SyncFiber),
 								),

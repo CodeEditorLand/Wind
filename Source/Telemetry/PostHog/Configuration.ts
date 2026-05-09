@@ -9,8 +9,11 @@
 
 export type Configuration = {
 	readonly Key: string;
+
 	readonly Host: string;
+
 	readonly Enabled: boolean;
+
 	readonly DistinctIdentifierSeed: string;
 };
 

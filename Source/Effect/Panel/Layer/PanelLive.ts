@@ -36,6 +36,7 @@ import type {
  */
 const PanelLive = Layer.effect(
 	PanelTag,
+
 	Effect.gen(function* () {
 		const TelemetryService = yield* Telemetry;
 
@@ -59,11 +60,13 @@ const PanelLive = Layer.effect(
 
 				yield* SubscriptionRef.modify(ViewsRef, (Views) => [
 					undefined,
+
 					[...Views, NewView].sort((a, b) => a.priority - b.priority),
 				]);
 
 				yield* TelemetryService.log(
 					"info",
+
 					`Created panel view: ${Id}`,
 				);
 				return NewView;
@@ -72,6 +75,7 @@ const PanelLive = Layer.effect(
 		// Atom: Update an existing panel view
 		const UpdateView = (
 			Id: string,
+
 			updates: Partial<Omit<PanelView, "id">>,
 		): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
 			Effect.gen(function* () {
@@ -84,6 +88,7 @@ const PanelLive = Layer.effect(
 				try {
 					yield* SubscriptionRef.modify(ViewsRef, (Views) => [
 						undefined,
+
 						Views.map((View) =>
 							View.id === Id ? { ...View, ...updates } : View,
 						).sort((a, b) => a.priority - b.priority),
@@ -91,6 +96,7 @@ const PanelLive = Layer.effect(
 
 					yield* TelemetryService.log(
 						"info",
+
 						`Updated panel view: ${Id}`,
 					);
 				} catch (error) {
@@ -111,6 +117,7 @@ const PanelLive = Layer.effect(
 
 				yield* SubscriptionRef.modify(ViewsRef, (Views) => [
 					undefined,
+
 					Views.filter((View) => View.id !== Id),
 				]);
 
@@ -122,6 +129,7 @@ const PanelLive = Layer.effect(
 
 				yield* TelemetryService.log(
 					"info",
+
 					`Removed panel view: ${Id}`,
 				);
 			});
@@ -154,6 +162,7 @@ const PanelLive = Layer.effect(
 				// Show the view when setting it as active
 				yield* SubscriptionRef.modify(ViewsRef, (Views) => [
 					undefined,
+
 					Views.map((View) =>
 						View.id === Id
 							? { ...View, visible: true, maximized: false }
@@ -164,6 +173,7 @@ const PanelLive = Layer.effect(
 				yield* SubscriptionRef.set(ActiveViewRef, Id);
 				yield* TelemetryService.log(
 					"info",
+
 					`Set active panel view: ${Id}`,
 				);
 			});
@@ -206,6 +216,7 @@ const PanelLive = Layer.effect(
 				yield* UpdateView(Id, { visible: !Existing.visible });
 				yield* TelemetryService.log(
 					"info",
+
 					`Toggled panel view: ${Id}`,
 				);
 			});
@@ -218,6 +229,7 @@ const PanelLive = Layer.effect(
 				// Restore all other views first
 				yield* SubscriptionRef.modify(ViewsRef, (Views) => [
 					undefined,
+
 					Views.map((View) =>
 						View.id === Id
 							? { ...View, maximized: true }
@@ -227,6 +239,7 @@ const PanelLive = Layer.effect(
 
 				yield* TelemetryService.log(
 					"info",
+
 					`Maximized panel view: ${Id}`,
 				);
 			});
@@ -239,6 +252,7 @@ const PanelLive = Layer.effect(
 				yield* UpdateView(Id, { maximized: false });
 				yield* TelemetryService.log(
 					"info",
+
 					`Restored panel view: ${Id}`,
 				);
 			});

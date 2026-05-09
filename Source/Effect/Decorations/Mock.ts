@@ -5,6 +5,7 @@ import { DecorationsServiceTag } from "./Tag/DecorationsServiceTag.js";
 
 export const MockDecorationsServiceLayer = Layer.succeed(
 	DecorationsServiceTag,
+
 	StubDecorationsService,
 );
 

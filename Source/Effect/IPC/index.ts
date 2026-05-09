@@ -32,6 +32,7 @@ export {
 	IPCTauriLive as default,
 	IPCTauriLive as IPCElectronLive,
 } from "./Live.js";
+
 export { MockIPCLive } from "./Mock.js";
 
 // Error helpers

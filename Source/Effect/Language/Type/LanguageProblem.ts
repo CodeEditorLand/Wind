@@ -5,6 +5,8 @@ export type LanguageProblem =
 	| { readonly _tag: "LanguageOperationFailed"; readonly error: Error }
 	| {
 			readonly _tag: "LanguageInvalidArgument";
+
 			readonly argument: string;
+
 			readonly reason: string;
 	  };

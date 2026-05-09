@@ -7,4 +7,5 @@ export class QuickInputServiceTag extends Context.Tag(
 )<QuickInputServiceTag, QuickInputService>() {}
 
 export const QuickInput = QuickInputServiceTag;
+
 export default QuickInputServiceTag;

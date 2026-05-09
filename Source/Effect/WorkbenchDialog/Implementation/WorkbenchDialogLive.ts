@@ -20,6 +20,7 @@ const ResolveBridge = Effect.sync((): WorkbenchDialogBridgeShape | null => {
 
 const Unavailable: WorkbenchDialogProblem = {
 	_tag: "WorkbenchDialogBridgeUnavailable",
+
 	reason: "globalThis.__CEL_SERVICES__.Dialog is null - the workbench has not yet exposed its IDialogService handle.",
 };
 
@@ -28,6 +29,7 @@ const ToError = (cause: unknown): Error =>
 
 export const WorkbenchDialogLive = Layer.effect(
 	WorkbenchDialogServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 

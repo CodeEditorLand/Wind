@@ -7,4 +7,5 @@ export class WorkbenchClipboardServiceTag extends Context.Tag(
 )<WorkbenchClipboardServiceTag, WorkbenchClipboardService>() {}
 
 export const WorkbenchClipboard = WorkbenchClipboardServiceTag;
+
 export default WorkbenchClipboardServiceTag;

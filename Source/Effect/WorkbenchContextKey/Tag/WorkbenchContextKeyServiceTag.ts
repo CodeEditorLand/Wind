@@ -7,4 +7,5 @@ export class WorkbenchContextKeyServiceTag extends Context.Tag(
 )<WorkbenchContextKeyServiceTag, WorkbenchContextKeyService>() {}
 
 export const WorkbenchContextKey = WorkbenchContextKeyServiceTag;
+
 export default WorkbenchContextKeyServiceTag;

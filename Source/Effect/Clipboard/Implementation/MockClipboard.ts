@@ -21,12 +21,19 @@ import type { ClipboardService } from "../Interface/ClipboardService.js";
  */
 export const MockClipboardService: ClipboardService = {
 	readText: () => Effect.succeed("mock clipboard text"),
+
 	writeText: (_text: string) => Effect.void,
+
 	readHTML: () => Effect.succeed(""),
+
 	writeHTML: () => Effect.void,
+
 	readImage: () => Effect.succeed(new Blob()),
+
 	writeImage: () => Effect.void,
+
 	hasText: () => Effect.succeed(true),
+
 	clear: () => Effect.void,
 };
 

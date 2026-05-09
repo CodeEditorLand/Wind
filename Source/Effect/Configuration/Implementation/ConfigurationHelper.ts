@@ -32,6 +32,7 @@ const ValidateConfiguration = (
 
 	if (!Config || typeof Config !== "object") {
 		Issues.push({ path: "", message: "Configuration must be an object" });
+
 		return Issues;
 	}
 
@@ -72,6 +73,7 @@ const ValidateConfiguration = (
 				string,
 				unknown
 			>;
+
 			if (
 				Workspace["id"] !== undefined &&
 				typeof Workspace["id"] !== "string"
@@ -81,6 +83,7 @@ const ValidateConfiguration = (
 					message: "Must be a string",
 				});
 			}
+
 			if (
 				Workspace["uri"] !== undefined &&
 				typeof Workspace["uri"] !== "string"
@@ -169,9 +172,11 @@ const MakeApply = () => {
  */
 const GetConfigValue = <T>(
 	Config: ISandboxConfiguration,
+
 	Path: string,
 ): T | undefined => {
 	const Parts = Path.split(".");
+
 	let Current: unknown = Config;
 
 	for (const Part of Parts) {

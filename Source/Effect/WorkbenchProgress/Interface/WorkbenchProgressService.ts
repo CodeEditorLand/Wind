@@ -12,14 +12,18 @@ export type WorkbenchProgressLocation =
 
 export interface WorkbenchProgressTaskOptions {
 	readonly title: string;
+
 	readonly location: WorkbenchProgressLocation;
+
 	readonly cancellable?: boolean;
+
 	readonly source?: string;
 }
 
 export interface WorkbenchProgressReporter {
 	readonly Report: (
 		fraction: number,
+
 		message: string | undefined,
 	) => Effect.Effect<void, WorkbenchProgressProblem>;
 }
@@ -27,6 +31,7 @@ export interface WorkbenchProgressReporter {
 export interface WorkbenchProgressService {
 	readonly Run: <A>(
 		options: WorkbenchProgressTaskOptions,
+
 		body: (
 			reporter: WorkbenchProgressReporter,
 		) => Effect.Effect<A, WorkbenchProgressProblem>,

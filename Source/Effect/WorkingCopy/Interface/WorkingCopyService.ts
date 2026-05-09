@@ -19,6 +19,7 @@ export interface WorkingCopyService {
 	/** Mark a resource as dirty or clean. */
 	readonly SetDirty: (
 		uri: string,
+
 		dirty: boolean,
 	) => Effect.Effect<void, WorkingCopyProblem>;
 

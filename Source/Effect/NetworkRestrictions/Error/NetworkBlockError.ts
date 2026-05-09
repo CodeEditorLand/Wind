@@ -16,10 +16,15 @@
  */
 export interface NetworkBlockError {
 	readonly _tag: "NetworkBlockError";
+
 	readonly url: string;
+
 	readonly reason: string;
+
 	readonly message: string;
+
 	readonly name: string;
+
 	readonly cause: string;
 }
 
@@ -35,6 +40,7 @@ export interface NetworkBlockError {
  */
 const CreateNetworkBlockError = (
 	url: string,
+
 	reason: string,
 ): NetworkBlockError => ({
 	_tag: "NetworkBlockError",

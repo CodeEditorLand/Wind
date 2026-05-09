@@ -13,13 +13,18 @@
  */
 export default class StatusBarUpdateError extends Error {
 	readonly _tag = "StatusBarUpdateError";
+
 	override readonly cause: unknown;
+
 	readonly itemId: string;
 
 	constructor(itemId: string, cause: unknown) {
 		super(`Failed to update status bar item '${itemId}': ${String(cause)}`);
+
 		this.itemId = itemId;
+
 		this.cause = cause;
+
 		Object.setPrototypeOf(this, StatusBarUpdateError.prototype);
 	}
 

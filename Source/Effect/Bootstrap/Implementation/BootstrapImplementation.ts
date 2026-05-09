@@ -46,18 +46,22 @@ const makeBootstrap = (): BootstrapService => ({
 
 			TelemetryService.log(
 				"info",
+
 				"[Bootstrap] ===============================================",
 			);
 			TelemetryService.log(
 				"info",
+
 				"[Bootstrap] Wind VSCode Workbench Bootstrap",
 			);
 			TelemetryService.log(
 				"info",
+
 				"[Bootstrap] Debug mode: " + debugMode,
 			);
 			TelemetryService.log(
 				"info",
+
 				"[Bootstrap] ===============================================",
 			);
 
@@ -111,18 +115,22 @@ const makeBootstrap = (): BootstrapService => ({
 
 			TelemetryService.log(
 				"info",
+
 				"[Bootstrap] ===============================================",
 			);
 			TelemetryService.log(
 				"info",
+
 				`[Bootstrap] ${AllSuccess ? "✓ Bootstrap completed successfully" : "✗ Bootstrap failed"}`,
 			);
 			TelemetryService.log(
 				"info",
+
 				`[Bootstrap] Total duration: ${TotalDuration}ms`,
 			);
 			TelemetryService.log(
 				"info",
+
 				"[Bootstrap] ===============================================",
 			);
 
@@ -132,6 +140,7 @@ const makeBootstrap = (): BootstrapService => ({
 				for (const Failed of FailedStages) {
 					TelemetryService.log(
 						"error",
+
 						`[Bootstrap]   - ${Failed.stageName}: ${Failed.error?.message || "Unknown error"}`,
 					);
 				}
@@ -152,6 +161,7 @@ const makeBootstrap = (): BootstrapService => ({
  */
 export const BootstrapLive = Layer.effect(
 	BootstrapTag,
+
 	Effect.succeed(makeBootstrap()),
 );
 

@@ -5,6 +5,7 @@ import { KeybindingServiceTag } from "./Tag/KeybindingServiceTag.js";
 
 export const MockKeybindingServiceLayer = Layer.succeed(
 	KeybindingServiceTag,
+
 	StubKeybindingService,
 );
 

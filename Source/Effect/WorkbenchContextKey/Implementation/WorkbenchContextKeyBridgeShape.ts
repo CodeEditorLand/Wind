@@ -1,9 +1,12 @@
 export interface WorkbenchContextKeyBridgeShape {
 	readonly getContextKeyValue: <T>(key: string) => T | undefined;
+
 	readonly createKey: <T>(
 		key: string,
+
 		defaultValue: T | undefined,
 	) => { readonly set: (value: T) => void; readonly reset: () => void };
+
 	readonly contextMatchesRules: (
 		rules:
 			| {
@@ -11,6 +14,7 @@ export interface WorkbenchContextKeyBridgeShape {
 			  }
 			| string,
 	) => boolean;
+
 	readonly onDidChangeContext: (
 		listener: (event: {
 			readonly affectsSome: (keys: Set<string>) => boolean;

@@ -19,6 +19,7 @@ export interface TerminalService {
 
 	readonly SendText: (
 		id: number,
+
 		text: string,
 	) => Effect.Effect<void, TerminalProblem>;
 
@@ -26,6 +27,7 @@ export interface TerminalService {
 
 	readonly Show: (
 		id: number,
+
 		preserveFocus?: boolean,
 	) => Effect.Effect<void, TerminalProblem>;
 

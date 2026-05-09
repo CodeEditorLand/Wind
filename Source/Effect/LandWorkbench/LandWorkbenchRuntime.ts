@@ -28,19 +28,25 @@ const ResolveRuntime = (): ReturnType<
 	typeof ManagedRuntime.make<typeof LandWorkbenchLayer, never>
 > => {
 	const Globals = globalThis as unknown as LandWorkbenchRuntimeGlobal;
+
 	if (!Globals.__CEL_WIND_RUNTIME__) {
 		Globals.__CEL_WIND_RUNTIME__ = ManagedRuntime.make(LandWorkbenchLayer);
 	}
+
 	return Globals.__CEL_WIND_RUNTIME__;
 };
 
 export const LandWorkbenchRuntime = {
 	Get: ResolveRuntime,
+
 	Dispose: async (): Promise<void> => {
 		const Globals = globalThis as unknown as LandWorkbenchRuntimeGlobal;
+
 		const Existing = Globals.__CEL_WIND_RUNTIME__;
+
 		if (Existing) {
 			await Existing.dispose();
+
 			Globals.__CEL_WIND_RUNTIME__ = undefined;
 		}
 	},

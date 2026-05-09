@@ -16,18 +16,26 @@ import type { IPCRendererEvent } from "../Type/IPCRendererEvent.js";
  */
 export interface IPCRenderer {
 	readonly send: (channel: string, ...args: unknown[]) => void;
+
 	readonly invoke: (channel: string, ...args: unknown[]) => Promise<unknown>;
+
 	readonly on: (
 		channel: string,
+
 		listener: (event: unknown, ...args: unknown[]) => void,
 	) => () => void;
+
 	readonly once: (
 		channel: string,
+
 		listener: (event: unknown, ...args: unknown[]) => void,
 	) => void;
+
 	readonly removeListener: (
 		channel: string,
+
 		listener: (event: unknown, ...args: unknown[]) => void,
 	) => void;
+
 	readonly removeAllListeners: (channel: string) => void;
 }

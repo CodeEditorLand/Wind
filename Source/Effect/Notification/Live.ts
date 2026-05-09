@@ -25,11 +25,13 @@ const MakeNotificationProblem = (error: unknown): NotificationProblem =>
 		? { _tag: "NotificationOperationFailed", error }
 		: {
 				_tag: "NotificationOperationFailed",
+
 				error: new Error(String(error)),
 			};
 
 export const LiveNotificationServiceLayer = Layer.effect(
 	NotificationServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -37,18 +39,22 @@ export const LiveNotificationServiceLayer = Layer.effect(
 			Show: (message, severity, actions) =>
 				IPCService.invoke(Channel.NotificationShow)([
 					message,
+
 					severity,
+
 					actions ?? [],
 				]).pipe(
 					Effect.map((Result) =>
 						typeof Result === "string" ? Result : undefined,
 					),
+
 					Effect.mapError(MakeNotificationProblem),
 				),
 
 			ShowProgress: (title, cancellable) =>
 				IPCService.invoke(Channel.NotificationShowProgress)([
 					title,
+
 					cancellable,
 				]).pipe(
 					Effect.map((Result) =>
@@ -56,22 +62,27 @@ export const LiveNotificationServiceLayer = Layer.effect(
 							? Result
 							: `progress-${Date.now()}`,
 					),
+
 					Effect.mapError(MakeNotificationProblem),
 				),
 
 			UpdateProgress: (id, increment, message) =>
 				IPCService.invoke(Channel.NotificationUpdateProgress)([
 					id,
+
 					increment,
+
 					message ?? "",
 				]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeNotificationProblem),
 				),
 
 			EndProgress: (id) =>
 				IPCService.invoke(Channel.NotificationEndProgress)([id]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeNotificationProblem),
 				),
 		};

@@ -27,6 +27,7 @@ const MakeOutputProblem = (error: unknown): OutputProblem =>
 
 export const LiveOutputServiceLayer = Layer.effect(
 	OutputServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -40,36 +41,43 @@ export const LiveOutputServiceLayer = Layer.effect(
 						ActiveChannels.add(name);
 						return { name };
 					}),
+
 					Effect.mapError(MakeOutputProblem),
 				),
 
 			Append: (channelName, text) =>
 				IPCService.invoke(Channel.OutputAppend)([
 					channelName,
+
 					text,
 				]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeOutputProblem),
 				),
 
 			AppendLine: (channelName, line) =>
 				IPCService.invoke(Channel.OutputAppendLine)([
 					channelName,
+
 					line,
 				]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeOutputProblem),
 				),
 
 			Clear: (channelName) =>
 				IPCService.invoke(Channel.OutputClear)([channelName]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeOutputProblem),
 				),
 
 			Show: (channelName) =>
 				IPCService.invoke(Channel.OutputShow)([channelName]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeOutputProblem),
 				),
 

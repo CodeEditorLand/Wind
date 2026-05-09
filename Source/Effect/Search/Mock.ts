@@ -5,6 +5,7 @@ import { SearchServiceTag } from "./Tag/SearchServiceTag.js";
 
 export const MockSearchServiceLayer = Layer.succeed(
 	SearchServiceTag,
+
 	StubSearchService,
 );
 

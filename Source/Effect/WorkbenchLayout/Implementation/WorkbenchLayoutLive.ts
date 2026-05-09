@@ -22,6 +22,7 @@ const ResolveBridge = Effect.sync((): WorkbenchLayoutBridgeShape | null => {
 
 const Unavailable: WorkbenchLayoutProblem = {
 	_tag: "WorkbenchLayoutBridgeUnavailable",
+
 	reason: "globalThis.__CEL_SERVICES__.Layout is null.",
 };
 
@@ -30,6 +31,7 @@ const ToError = (cause: unknown): Error =>
 
 export const WorkbenchLayoutLive = Layer.effect(
 	WorkbenchLayoutServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 
@@ -53,6 +55,7 @@ export const WorkbenchLayoutLive = Layer.effect(
 
 		const SetVisible = (
 			Part: WorkbenchLayoutPart,
+
 			Visible: boolean,
 		): Effect.Effect<void, WorkbenchLayoutProblem> =>
 			Effect.gen(function* () {
@@ -61,6 +64,7 @@ export const WorkbenchLayoutLive = Layer.effect(
 					try: () =>
 						Bridge.setPartHidden(
 							!Visible,
+
 							WorkbenchLayoutPartId(Part),
 						),
 					catch: (Cause) =>

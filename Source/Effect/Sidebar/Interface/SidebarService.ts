@@ -28,6 +28,7 @@ export interface SidebarService {
 	/** Update an existing sidebar panel */
 	readonly updatePanel: (
 		id: string,
+
 		updates: Partial<Omit<SidebarPanel, "id">>,
 	) => Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError>;
 

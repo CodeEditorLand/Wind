@@ -70,16 +70,19 @@ export {
 
 // Implementations
 export { LiveBrowserClipboardService } from "./Clipboard/Implementation/BrowserClipboard.js";
+
 export { MockClipboardService } from "./Clipboard/Implementation/MockClipboard.js";
 
 export { LiveLayer, MockLayer };
 
 // Backward compatibility aliases - match old naming convention
 export const LiveClipboardServiceLayer = LiveLayer;
+
 export const MockClipboardServiceLayer = MockLayer;
 
 // Short aliases
 export const LiveClipboard = LiveLayer;
+
 export const MockClipboard = MockLayer;
 
 // Error helpers

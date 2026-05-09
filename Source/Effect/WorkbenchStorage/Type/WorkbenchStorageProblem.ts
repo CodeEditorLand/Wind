@@ -10,23 +10,33 @@
 export type WorkbenchStorageProblem =
 	| {
 			readonly _tag: "WorkbenchStorageBridgeUnavailable";
+
 			readonly reason: string;
 	  }
 	| {
 			readonly _tag: "WorkbenchStorageReadFailed";
+
 			readonly key: string;
+
 			readonly scope: number;
+
 			readonly error: Error;
 	  }
 	| {
 			readonly _tag: "WorkbenchStorageWriteFailed";
+
 			readonly key: string;
+
 			readonly scope: number;
+
 			readonly error: Error;
 	  }
 	| {
 			readonly _tag: "WorkbenchStorageRemoveFailed";
+
 			readonly key: string;
+
 			readonly scope: number;
+
 			readonly error: Error;
 	  };

@@ -7,4 +7,5 @@ export class WorkbenchActivityServiceTag extends Context.Tag(
 )<WorkbenchActivityServiceTag, WorkbenchActivityService>() {}
 
 export const WorkbenchActivity = WorkbenchActivityServiceTag;
+
 export default WorkbenchActivityServiceTag;

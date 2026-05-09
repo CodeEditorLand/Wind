@@ -15,9 +15,13 @@
  */
 export interface IPCInvokeError {
 	readonly _tag: "IPCInvokeError";
+
 	readonly channel: string;
+
 	readonly cause: unknown;
+
 	readonly message: string;
+
 	readonly name: string;
 }
 
@@ -26,9 +30,13 @@ export interface IPCInvokeError {
  */
 export interface IPCSendError {
 	readonly _tag: "IPCSendError";
+
 	readonly channel: string;
+
 	readonly cause: unknown;
+
 	readonly message: string;
+
 	readonly name: string;
 }
 
@@ -37,9 +45,13 @@ export interface IPCSendError {
  */
 export interface IPCSubscriptionError {
 	readonly _tag: "IPCSubscriptionError";
+
 	readonly channel: string;
+
 	readonly cause: unknown;
+
 	readonly message: string;
+
 	readonly name: string;
 }
 
@@ -52,6 +64,7 @@ export interface IPCSubscriptionError {
  */
 const CreateIPCInvokeError = (
 	channel: string,
+
 	cause: unknown,
 ): IPCInvokeError => ({
 	_tag: "IPCInvokeError",
@@ -77,6 +90,7 @@ const CreateIPCSendError = (channel: string, cause: unknown): IPCSendError => ({
  */
 const CreateIPCSubscriptionError = (
 	channel: string,
+
 	cause: unknown,
 ): IPCSubscriptionError => ({
 	_tag: "IPCSubscriptionError",
@@ -90,6 +104,8 @@ export { CreateIPCInvokeError, CreateIPCSendError, CreateIPCSubscriptionError };
 
 export default {
 	CreateIPCInvokeError,
+
 	CreateIPCSendError,
+
 	CreateIPCSubscriptionError,
 };

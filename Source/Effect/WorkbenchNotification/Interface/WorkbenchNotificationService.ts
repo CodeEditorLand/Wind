@@ -7,14 +7,19 @@ import type {
 
 export interface WorkbenchNotificationOptions {
 	readonly severity: WorkbenchNotificationSeverity;
+
 	readonly message: string;
+
 	readonly source?: string;
+
 	readonly silent?: boolean;
 }
 
 export interface WorkbenchNotificationDispatched {
 	readonly severity: WorkbenchNotificationSeverity;
+
 	readonly message: string;
+
 	readonly source: string | undefined;
 }
 

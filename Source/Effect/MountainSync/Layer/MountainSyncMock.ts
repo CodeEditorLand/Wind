@@ -60,8 +60,10 @@ const makeMockMountainSync = () => ({
  */
 const MountainSyncMock = Layer.effect(
 	MountainSyncTag,
+
 	Effect.succeed(makeMockMountainSync()),
 );
 
 export default MountainSyncMock;
+
 export { makeMockMountainSync };

@@ -8,14 +8,19 @@
 
 // Main interfaces
 export type { IVSCodeWorkbenchOptions } from "./VSCode/Interface/VSCodeWorkbenchOptions.js";
+
 export type { IVSCodeServiceCollection } from "./VSCode/Interface/VSCodeServiceCollection.js";
+
 export type { IVSCodeServiceIdentifier } from "./VSCode/Interface/VSCodeServiceIdentifier.js";
+
 export type { IVSCodeEnvironmentService } from "./VSCode/Interface/VSCodeEnvironmentService.js";
+
 export type {
 	IVSCodeConfigurationService,
 	Event as ConfigurationEvent,
 	IDisposable as ConfigurationDisposable,
 } from "./VSCode/Interface/VSCodeConfigurationService.js";
+
 export type { IVSCodeLoggerService } from "./VSCode/Interface/VSCodeLoggerService.js";
 
 // Configuration types

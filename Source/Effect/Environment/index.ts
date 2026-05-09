@@ -29,6 +29,7 @@
 
 // Types
 export type { Platform, Architecture } from "./Type/EnvironmentType.js";
+
 export type { EnvironmentInfo } from "./Type/EnvironmentType.js";
 
 // Interface

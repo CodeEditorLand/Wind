@@ -5,6 +5,7 @@ import { EditorServiceTag } from "./Tag/EditorServiceTag.js";
 
 export const MockEditorServiceLayer = Layer.succeed(
 	EditorServiceTag,
+
 	StubEditorService,
 );
 

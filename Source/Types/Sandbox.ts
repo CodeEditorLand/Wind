@@ -10,6 +10,7 @@
 // IPC Message envelope
 export interface IPCMessage {
 	readonly channel: string;
+
 	readonly args: ReadonlyArray<unknown>;
 }
 
@@ -19,14 +20,17 @@ export interface IPCRenderer {
 	readonly invoke: (channel: string, ...args: unknown[]) => Promise<unknown>;
 	readonly on: (
 		channel: string,
+
 		listener: (event: unknown, ...args: unknown[]) => void,
 	) => () => void;
 	readonly once: (
 		channel: string,
+
 		listener: (event: unknown, ...args: unknown[]) => void,
 	) => void;
 	readonly removeListener: (
 		channel: string,
+
 		listener: (event: unknown, ...args: unknown[]) => void,
 	) => void;
 	readonly removeAllListeners: (channel: string) => void;
@@ -67,6 +71,7 @@ export interface SandboxNodeProcess {
 	}>;
 	readonly on: (
 		type: "uncaughtException" | "unhandledRejection",
+
 		callback: (error: Error) => void,
 	) => void;
 }
@@ -118,6 +123,7 @@ export class IPCChannelError extends Error {
 	readonly _tag = "IPCChannelError";
 	constructor(
 		readonly channel: string,
+
 		override readonly cause: unknown,
 	) {
 		super(`IPC channel '${channel}' error: ${String(cause)}`);

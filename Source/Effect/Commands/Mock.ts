@@ -5,6 +5,7 @@ import { CommandsServiceTag } from "./Tag/CommandsServiceTag.js";
 
 export const MockCommandsServiceLayer = Layer.succeed(
 	CommandsServiceTag,
+
 	StubCommandsService,
 );
 

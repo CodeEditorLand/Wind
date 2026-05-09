@@ -30,6 +30,7 @@ export default async function Install(): Promise<void> {
 		) {
 			return;
 		}
+
 		(
 			window as unknown as { polyfillInstalled: boolean }
 		).polyfillInstalled = true;
@@ -37,12 +38,16 @@ export default async function Install(): Promise<void> {
 		_Trace("start");
 
 		const Configuration = await ResolveConfiguration();
+
 		const IPCRenderer = CreateIPCRenderer();
+
 		const Process = CreateProcess(Configuration);
 
 		const preloadGlobals = {
 			ipcRenderer: IPCRenderer,
+
 			process: Process,
+
 			configuration: Configuration,
 		};
 
@@ -50,13 +55,19 @@ export default async function Install(): Promise<void> {
 
 		const Globals: IMainWindowSandboxGlobals = {
 			ipcRenderer: IPCRenderer,
+
 			process: Process,
+
 			context: {
 				configuration: () => Configuration,
+
 				resolveConfiguration: async () => Configuration,
 			},
+
 			webFrame: { setZoomLevel: () => {} },
+
 			webUtils: { getPathForFile: (file: File) => file.name },
+
 			ipcMessagePort: {
 				acquire: (ResponseChannel: string, Nonce: string) => {
 					_Trace(`acquire:${ResponseChannel}`);
@@ -66,25 +77,33 @@ export default async function Install(): Promise<void> {
 					);
 
 					const { port1, port2 } = new MessageChannel();
+
 					window.postMessage(Nonce, "*", [port2]);
 
 					if (IsExtensionHost) {
 						port1.start();
+
 						let Done = false;
+
 						port1.onmessage = (Event: MessageEvent) => {
 							if (Done) return;
+
 							const Data = Event.data;
+
 							const Length =
 								Data instanceof ArrayBuffer
 									? Data.byteLength
 									: Data instanceof Uint8Array
 										? Data.byteLength
 										: 0;
+
 							if (Length > 1) {
 								Done = true;
+
 								port1.postMessage(new Uint8Array([1]));
 							}
 						};
+
 						setTimeout(() => {
 							port1.postMessage(new Uint8Array([2]));
 						}, 50);
@@ -94,6 +113,7 @@ export default async function Install(): Promise<void> {
 		};
 
 		(window as any).vscode = Globals;
+
 		(window as any).__WIND_PRELOAD_READY__ = true;
 
 		_Trace("done");
@@ -101,6 +121,7 @@ export default async function Install(): Promise<void> {
 		try {
 			performance.mark(`land:install:error`);
 		} catch {}
+
 		Fallback();
 	}
 }

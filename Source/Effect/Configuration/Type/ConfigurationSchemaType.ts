@@ -16,6 +16,7 @@
 export interface ConfigSchemaIssue {
 	/** Path to the configuration property with the issue */
 	readonly path: string;
+
 	/** Description of the validation issue */
 	readonly message: string;
 }

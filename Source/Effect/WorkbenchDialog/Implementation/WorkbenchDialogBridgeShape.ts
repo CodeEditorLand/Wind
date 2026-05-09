@@ -6,6 +6,7 @@ export interface WorkbenchDialogBridgeShape {
 		readonly cancelButton?: string;
 		readonly type?: string;
 	}) => Promise<{ confirmed: boolean; checkboxChecked?: boolean }>;
+
 	readonly prompt: (prompt: {
 		readonly message: string;
 		readonly detail?: string;
@@ -13,8 +14,11 @@ export interface WorkbenchDialogBridgeShape {
 		readonly cancelButton?: { label: string; run?: unknown };
 		readonly type?: string;
 	}) => Promise<{ readonly result: unknown }>;
+
 	readonly info: (message: string, detail?: string) => Promise<unknown>;
+
 	readonly warn: (message: string, detail?: string) => Promise<unknown>;
+
 	readonly error: (message: string, detail?: string) => Promise<unknown>;
 }
 

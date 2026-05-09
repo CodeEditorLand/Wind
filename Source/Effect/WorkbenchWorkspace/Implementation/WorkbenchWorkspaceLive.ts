@@ -22,6 +22,7 @@ const ResolveBridge = Effect.sync((): WorkbenchWorkspaceBridgeShape | null => {
 
 const Unavailable: WorkbenchWorkspaceProblem = {
 	_tag: "WorkbenchWorkspaceBridgeUnavailable",
+
 	reason: "globalThis.__CEL_SERVICES__.Workspace is null.",
 };
 
@@ -49,6 +50,7 @@ const ToSnapshot = (
 
 export const WorkbenchWorkspaceLive = Layer.effect(
 	WorkbenchWorkspaceServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 

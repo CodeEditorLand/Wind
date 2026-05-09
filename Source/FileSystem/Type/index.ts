@@ -6,7 +6,9 @@
  */
 
 export { FileType, fileTypeToString } from "./FileType.js";
+
 export { URI } from "./URI.js";
+
 export type {
 	IStat,
 	IFileWriteOptions,
@@ -15,4 +17,5 @@ export type {
 	IFileSystemProvider,
 	FileSystemError,
 } from "./FileSystemType.js";
+
 export { FileSystemErrorCode } from "./FileSystemType.js";

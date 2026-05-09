@@ -21,6 +21,7 @@ export { default as SidebarTag, Sidebar } from "./Tag/SidebarTag.js";
 
 // Layers
 export { default as SidebarLive } from "./Layer/SidebarLive.js";
+
 export { default as SidebarMockLive } from "./Layer/SidebarMock.js";
 
 // Mock factory (for direct usage without Layer)
@@ -28,4 +29,5 @@ export { makeMockSidebar } from "./Layer/SidebarMock.js";
 
 // Errors
 export { default as SidebarPanelNotFoundError } from "./Error/SidebarPanelNotFoundError.js";
+
 export { default as SidebarUpdateError } from "./Error/SidebarUpdateError.js";

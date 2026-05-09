@@ -10,6 +10,8 @@ export type Properties = Record<string, unknown>;
 
 export default {
 	$tier: "wind",
+
 	$component: "wind",
+
 	$lib: "wind-posthog-bridge",
 };

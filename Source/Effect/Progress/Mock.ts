@@ -5,6 +5,7 @@ import { ProgressServiceTag } from "./Tag/ProgressServiceTag.js";
 
 export const MockProgressServiceLayer = Layer.succeed(
 	ProgressServiceTag,
+
 	StubProgressService,
 );
 

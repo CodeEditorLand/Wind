@@ -13,10 +13,14 @@
 
 export class MountainRPCError extends Error {
 	readonly _tag = "MountainRPCError";
+
 	readonly method: string;
+
 	override readonly cause: unknown;
+
 	constructor(method: string, cause: unknown) {
 		super(`Mountain RPC '${method}' failed: ${String(cause)}`);
+
 		this.method = method;
 	}
 }

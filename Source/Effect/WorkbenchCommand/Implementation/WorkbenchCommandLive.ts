@@ -27,6 +27,7 @@ const ResolveBridges = Effect.sync(
 
 const Unavailable: WorkbenchCommandProblem = {
 	_tag: "WorkbenchCommandBridgeUnavailable",
+
 	reason: "globalThis.__CEL_SERVICES__.Commands is null - the workbench has not yet exposed its ICommandService handle.",
 };
 
@@ -35,11 +36,13 @@ const ToError = (cause: unknown): Error =>
 
 export const WorkbenchCommandLive = Layer.effect(
 	WorkbenchCommandServiceTag,
+
 	Effect.gen(function* () {
 		const { Commands, Registry } = yield* ResolveBridges;
 
 		const Execute = <T = unknown>(
 			CommandId: string,
+
 			Args: ReadonlyArray<unknown>,
 		): Effect.Effect<T, WorkbenchCommandProblem> =>
 			Effect.gen(function* () {
@@ -64,6 +67,7 @@ export const WorkbenchCommandLive = Layer.effect(
 
 		const ExecuteVoid = (
 			CommandId: string,
+
 			Args: ReadonlyArray<unknown>,
 		): Effect.Effect<void, WorkbenchCommandProblem> =>
 			Effect.gen(function* () {

@@ -19,9 +19,9 @@ export interface ServiceCatalogEntry {
 	readonly MemberCount: number;
 }
 
-export const ServiceCatalogVersion = "2026-05-07" as const;
+export const ServiceCatalogVersion = "2026-05-09" as const;
 
-export const ServiceCatalogTotal = 483 as const;
+export const ServiceCatalogTotal = 487 as const;
 
 export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 	{
@@ -113,6 +113,14 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		MemberCount: 4,
 	},
 	{
+		DecoratorName: "IAgentHostCompletions",
+		DecoratorTag: "agentHostCompletions",
+		InterfaceName: "IAgentHostCompletions",
+		SourcePath: "vs/platform/agentHost/node/agentHostCompletions.ts",
+		SourceLine: 12,
+		MemberCount: 1,
+	},
+	{
 		DecoratorName: "IAgentHostFileSystemService",
 		DecoratorTag: "agentHostFileSystemService",
 		InterfaceName: "IAgentHostFileSystemService",
@@ -145,11 +153,19 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		MemberCount: 9,
 	},
 	{
+		DecoratorName: "IAgentHostPermissionService",
+		DecoratorTag: "agentHostPermissionService",
+		InterfaceName: "IAgentHostPermissionService",
+		SourcePath: "vs/platform/agentHost/common/agentHostPermissionService.ts",
+		SourceLine: 53,
+		MemberCount: 1,
+	},
+	{
 		DecoratorName: "IAgentHostService",
 		DecoratorTag: "agentHostService",
 		InterfaceName: "IAgentHostService",
 		SourcePath: "vs/platform/agentHost/common/agentService.ts",
-		SourceLine: 651,
+		SourceLine: 756,
 		MemberCount: 4,
 	},
 	{
@@ -165,8 +181,8 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "agentHostTerminalManager",
 		InterfaceName: "IAgentHostTerminalManager",
 		SourcePath: "vs/platform/agentHost/node/agentHostTerminalManager.ts",
-		SourceLine: 28,
-		MemberCount: 15,
+		SourceLine: 30,
+		MemberCount: 16,
 	},
 	{
 		DecoratorName: "IAgentHostTerminalService",
@@ -213,7 +229,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "agentService",
 		InterfaceName: "IAgentService",
 		SourcePath: "vs/platform/agentHost/common/agentService.ts",
-		SourceLine: 496,
+		SourceLine: 556,
 		MemberCount: 1,
 	},
 	{
@@ -245,7 +261,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "aiCustomizationItemsModel",
 		InterfaceName: "IAICustomizationItemsModel",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationItemsModel.ts",
-		SourceLine: 40,
+		SourceLine: 44,
 		MemberCount: 1,
 	},
 	{
@@ -262,7 +278,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		InterfaceName: "IAiEditTelemetryService",
 		SourcePath: "vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts",
 		SourceLine: 10,
-		MemberCount: 3,
+		MemberCount: 4,
 	},
 	{
 		DecoratorName: "IAiEmbeddingVectorService",
@@ -309,7 +325,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "applicationStorageMainService",
 		InterfaceName: "IApplicationStorageMainService",
 		SourcePath: "vs/platform/storage/electron-main/storageMainService.ts",
-		SourceLine: 351,
+		SourceLine: 331,
 		MemberCount: 11,
 	},
 	{
@@ -581,7 +597,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "chatDebugService",
 		InterfaceName: "IChatDebugService",
 		SourcePath: "vs/workbench/contrib/chat/common/chatDebugService.ts",
-		SourceLine: 126,
+		SourceLine: 127,
 		MemberCount: 1,
 	},
 	{
@@ -621,7 +637,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "chatInputNotificationService",
 		InterfaceName: "IChatInputNotificationService",
 		SourcePath: "vs/workbench/contrib/chat/browser/widget/input/chatInputNotificationService.ts",
-		SourceLine: 33,
+		SourceLine: 34,
 		MemberCount: 2,
 	},
 	{
@@ -645,8 +661,8 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "chatModeService",
 		InterfaceName: "IChatModeService",
 		SourcePath: "vs/workbench/contrib/chat/common/chatModes.ts",
-		SourceLine: 31,
-		MemberCount: 4,
+		SourceLine: 32,
+		MemberCount: 1,
 	},
 	{
 		DecoratorName: "IChatOutputRendererService",
@@ -655,6 +671,14 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		SourcePath: "vs/workbench/contrib/chat/browser/chatOutputItemRenderer.ts",
 		SourceLine: 36,
 		MemberCount: 3,
+	},
+	{
+		DecoratorName: "IChatPhoneInputPresenter",
+		DecoratorTag: "chatPhoneInputPresenter",
+		InterfaceName: "IChatPhoneInputPresenter",
+		SourcePath: "vs/workbench/contrib/chat/browser/widget/input/chatPhoneInputPresenter.ts",
+		SourceLine: 52,
+		MemberCount: 1,
 	},
 	{
 		DecoratorName: "IChatResponseResourceFileSystemProvider",
@@ -669,7 +693,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "IChatService",
 		InterfaceName: "IChatService",
 		SourcePath: "vs/workbench/contrib/chat/common/chatService/chatService.ts",
-		SourceLine: 1522,
+		SourceLine: 1536,
 		MemberCount: 33,
 	},
 	{
@@ -677,7 +701,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "chatSessionsService",
 		InterfaceName: "IChatSessionsService",
 		SourcePath: "vs/workbench/contrib/chat/common/chatSessionsService.ts",
-		SourceLine: 369,
+		SourceLine: 448,
 		MemberCount: 23,
 	},
 	{
@@ -721,6 +745,14 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		MemberCount: 3,
 	},
 	{
+		DecoratorName: "IChatToolRiskAssessmentService",
+		DecoratorTag: "chatToolRiskAssessmentService",
+		InterfaceName: "IChatToolRiskAssessmentService",
+		SourcePath: "vs/workbench/contrib/chat/browser/tools/chatToolRiskAssessmentService.ts",
+		SourceLine: 28,
+		MemberCount: 1,
+	},
+	{
 		DecoratorName: "IChatTransferService",
 		DecoratorTag: "chatTransferService",
 		InterfaceName: "IChatTransferService",
@@ -761,6 +793,22 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		MemberCount: 1,
 	},
 	{
+		DecoratorName: "IClaudeAgentSdkService",
+		DecoratorTag: "claudeAgentSdkService",
+		InterfaceName: "IClaudeAgentSdkService",
+		SourcePath: "vs/platform/agentHost/node/claude/claudeAgentSdkService.ts",
+		SourceLine: 14,
+		MemberCount: 1,
+	},
+	{
+		DecoratorName: "IClaudeProxyService",
+		DecoratorTag: "claudeProxyService",
+		InterfaceName: "IClaudeProxyService",
+		SourcePath: "vs/platform/agentHost/node/claude/claudeProxyService.ts",
+		SourceLine: 70,
+		MemberCount: 1,
+	},
+	{
 		DecoratorName: "IClipboardService",
 		DecoratorTag: "clipboardService",
 		InterfaceName: "IClipboardService",
@@ -797,7 +845,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "codeReviewService",
 		InterfaceName: "ICodeReviewService",
 		SourcePath: "vs/sessions/contrib/codeReview/browser/codeReviewService.ts",
-		SourceLine: 158,
+		SourceLine: 157,
 		MemberCount: 1,
 	},
 	{
@@ -861,15 +909,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "copilotApiService",
 		InterfaceName: "ICopilotApiService",
 		SourcePath: "vs/platform/agentHost/node/shared/copilotApiService.ts",
-		SourceLine: 71,
-		MemberCount: 1,
-	},
-	{
-		DecoratorName: "ICrossAppIPCService",
-		DecoratorTag: "crossAppIPCService",
-		InterfaceName: "ICrossAppIPCService",
-		SourcePath: "vs/platform/crossAppIpc/electron-main/crossAppIpcService.ts",
-		SourceLine: 13,
+		SourceLine: 167,
 		MemberCount: 1,
 	},
 	{
@@ -1230,7 +1270,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		InterfaceName: "IExtensionManifestPropertiesService",
 		SourcePath: "vs/workbench/services/extensions/common/extensionManifestPropertiesService.ts",
 		SourceLine: 23,
-		MemberCount: 11,
+		MemberCount: 12,
 	},
 	{
 		DecoratorName: "IExtensionRecommendationNotificationService",
@@ -1693,8 +1733,8 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "sessionsGitHubService",
 		InterfaceName: "IGitHubService",
 		SourcePath: "vs/sessions/contrib/github/browser/githubService.ts",
-		SourceLine: 59,
-		MemberCount: 1,
+		SourceLine: 64,
+		MemberCount: 4,
 	},
 	{
 		DecoratorName: "IGitService",
@@ -1933,8 +1973,8 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "ILanguageModelsService",
 		InterfaceName: "ILanguageModelsService",
 		SourcePath: "vs/workbench/contrib/chat/common/languageModels.ts",
-		SourceLine: 320,
-		MemberCount: 16,
+		SourceLine: 324,
+		MemberCount: 15,
 	},
 	{
 		DecoratorName: "ILanguageModelStatsService",
@@ -2037,7 +2077,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "localPtyService",
 		InterfaceName: "ILocalPtyService",
 		SourcePath: "vs/platform/terminal/common/terminal.ts",
-		SourceLine: 1243,
+		SourceLine: 1246,
 		MemberCount: 0,
 	},
 	{
@@ -2213,7 +2253,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "menuService",
 		InterfaceName: "IMenuService",
 		SourcePath: "vs/platform/actions/common/actions.ts",
-		SourceLine: 367,
+		SourceLine: 369,
 		MemberCount: 1,
 	},
 	{
@@ -2245,7 +2285,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "nativeHostMainService",
 		InterfaceName: "INativeHostMainService",
 		SourcePath: "vs/platform/native/electron-main/nativeHostMainService.ts",
-		SourceLine: 56,
+		SourceLine: 55,
 		MemberCount: 0,
 	},
 	{
@@ -2253,7 +2293,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "nativeHostService",
 		InterfaceName: "INativeHostService",
 		SourcePath: "vs/platform/native/common/native.ts",
-		SourceLine: 305,
+		SourceLine: 297,
 		MemberCount: 0,
 	},
 	{
@@ -2621,7 +2661,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "ptyService",
 		InterfaceName: "IPtyService",
 		SourcePath: "vs/platform/terminal/common/terminal.ts",
-		SourceLine: 393,
+		SourceLine: 396,
 		MemberCount: 38,
 	},
 	{
@@ -2669,7 +2709,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "remoteAgentHostService",
 		InterfaceName: "IRemoteAgentHostService",
 		SourcePath: "vs/platform/agentHost/common/remoteAgentHostService.ts",
-		SourceLine: 122,
+		SourceLine: 185,
 		MemberCount: 1,
 	},
 	{
@@ -2781,7 +2821,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "secretStorageService",
 		InterfaceName: "ISecretStorageService",
 		SourcePath: "vs/platform/secrets/common/secrets.ts",
-		SourceLine: 84,
+		SourceLine: 86,
 		MemberCount: 2,
 	},
 	{
@@ -2817,14 +2857,6 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		MemberCount: 1,
 	},
 	{
-		DecoratorName: "ISessionsConfigurationService",
-		DecoratorTag: "sessionsConfigurationService",
-		InterfaceName: "ISessionsConfigurationService",
-		SourcePath: "vs/sessions/contrib/chat/browser/sessionsConfigurationService.ts",
-		SourceLine: 121,
-		MemberCount: 1,
-	},
-	{
 		DecoratorName: "ISessionsListModelService",
 		DecoratorTag: "sessionsListModelService",
 		InterfaceName: "ISessionsListModelService",
@@ -2849,20 +2881,20 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		MemberCount: 4,
 	},
 	{
-		DecoratorName: "ISharedKeychainMainService",
-		DecoratorTag: "sharedKeychainMainService",
-		InterfaceName: "ISharedKeychainMainService",
-		SourcePath: "vs/platform/secrets/common/sharedKeychainService.ts",
-		SourceLine: 23,
-		MemberCount: 0,
+		DecoratorName: "ISessionsSetUpService",
+		DecoratorTag: "sessionsSetUpService",
+		InterfaceName: "ISessionsSetUpService",
+		SourcePath: "vs/sessions/browser/sessionsSetUpService.ts",
+		SourceLine: 40,
+		MemberCount: 1,
 	},
 	{
-		DecoratorName: "ISharedKeychainService",
-		DecoratorTag: "sharedKeychainService",
-		InterfaceName: "ISharedKeychainService",
-		SourcePath: "vs/platform/secrets/common/sharedKeychainService.ts",
-		SourceLine: 13,
-		MemberCount: 5,
+		DecoratorName: "ISessionsTasksService",
+		DecoratorTag: "sessionsTasksService",
+		InterfaceName: "ISessionsTasksService",
+		SourcePath: "vs/sessions/contrib/chat/browser/sessionsTasksService.ts",
+		SourceLine: 142,
+		MemberCount: 1,
 	},
 	{
 		DecoratorName: "ISharedProcessLifecycleService",
@@ -2989,7 +3021,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "storageMainService",
 		InterfaceName: "IStorageMainService",
 		SourcePath: "vs/platform/storage/electron-main/storageMainService.ts",
-		SourceLine: 27,
+		SourceLine: 26,
 		MemberCount: 1,
 	},
 	{
@@ -3109,7 +3141,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "terminalLogService",
 		InterfaceName: "ITerminalLogService",
 		SourcePath: "vs/platform/terminal/common/terminal.ts",
-		SourceLine: 1252,
+		SourceLine: 1255,
 		MemberCount: 0,
 	},
 	{
@@ -3273,14 +3305,6 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		MemberCount: 1,
 	},
 	{
-		DecoratorName: "IThemeImporterService",
-		DecoratorTag: "IThemeImporterService",
-		InterfaceName: "IThemeImporterService",
-		SourcePath: "vs/sessions/services/vscode/common/themeImporter.ts",
-		SourceLine: 12,
-		MemberCount: 1,
-	},
-	{
 		DecoratorName: "IThemeMainService",
 		DecoratorTag: "themeMainService",
 		InterfaceName: "IThemeMainService",
@@ -3311,6 +3335,14 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		SourcePath: "vs/workbench/services/title/browser/titleService.ts",
 		SourceLine: 10,
 		MemberCount: 1,
+	},
+	{
+		DecoratorName: "IToolResultCompressor",
+		DecoratorTag: "IToolResultCompressor",
+		InterfaceName: "IToolResultCompressor",
+		SourcePath: "vs/workbench/contrib/chat/common/tools/toolResultCompressor.ts",
+		SourceLine: 9,
+		MemberCount: 2,
 	},
 	{
 		DecoratorName: "ITreeSitterLibraryService",
@@ -3349,7 +3381,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "tunnelAgentHostHostingService",
 		InterfaceName: "ITunnelAgentHostHostingService",
 		SourcePath: "vs/platform/agentHost/common/tunnelAgentHost.ts",
-		SourceLine: 243,
+		SourceLine: 252,
 		MemberCount: 1,
 	},
 	{
@@ -3493,7 +3525,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "IUserDataProfilesService",
 		InterfaceName: "IUserDataProfilesService",
 		SourcePath: "vs/platform/userDataProfile/common/userDataProfile.ts",
-		SourceLine: 119,
+		SourceLine: 133,
 		MemberCount: 15,
 	},
 	{

@@ -26,20 +26,25 @@ export interface TelemetryService {
 	/** Record a metric value with optional labels */
 	readonly recordMetric: (
 		name: string,
+
 		value: number,
+
 		labels?: Record<string, string>,
 	) => Effect.Effect<void, never>;
 
 	/** Start a timed span and return a handle for ending it */
 	readonly startSpan: (
 		name: string,
+
 		labels?: Record<string, string>,
 	) => Effect.Effect<SpanHandle, never>;
 
 	/** Log an event at the specified level */
 	readonly log: (
 		level: TelemetryLog["level"],
+
 		message: string,
+
 		context?: Record<string, unknown>,
 	) => Effect.Effect<void, never>;
 

@@ -22,7 +22,7 @@ export interface IWindowsMainServiceUpstream {
 	openEmptyWindow(openConfig: IOpenEmptyConfiguration, options?: IOpenEmptyWindowOptions): Promise<ICodeWindow[]>;
 	openExtensionDevelopmentHostWindow(extensionDevelopmentPath: string[], openConfig: IOpenConfiguration): Promise<ICodeWindow[]>;
 	openExistingWindow(window: ICodeWindow, openConfig: IOpenConfiguration): void;
-	openAgentsWindow(openConfig: IOpenConfiguration): Promise<ICodeWindow[]>;
+	openAgentsWindow(openConfig: IOpenConfiguration, folderUri?: URI): Promise<ICodeWindow[]>;
 	sendToFocused(channel: string): void;
 	sendToOpeningWindow(channel: string): void;
 	sendToAll(channel: string, payload?: unknown, windowIdsToIgnore?: number[]): void;
@@ -170,7 +170,7 @@ export const IWindowsMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = 
 		Readonly: false,
 		Optional: false,
 		TypeText: "Promise<ICodeWindow[]>",
-		Parameters: [{ Name: "openConfig", TypeText: "IOpenConfiguration", Optional: false }],
+		Parameters: [{ Name: "openConfig", TypeText: "IOpenConfiguration", Optional: false }, { Name: "folderUri", TypeText: "URI", Optional: true }],
 		DocComment: null,
 		SourceLine: 44,
 	},

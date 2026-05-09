@@ -12,5 +12,6 @@
  */
 export interface IVSCodeServiceIdentifier {
 	_serviceBrand: undefined;
+
 	toString(): string;
 }

@@ -18,9 +18,13 @@ import { EmitBridgeShape } from "./EmitBridgeShape.js";
 
 export interface BridgeShapeManifestEntry {
 	readonly DecoratorName: string;
+
 	readonly ServiceFolder: string;
+
 	readonly BridgeFileName?: string;
+
 	readonly PickMembers: ReadonlyArray<string>;
+
 	/**
 	 * Override for the `__CEL_SERVICES__` accessor key emitted in the
 	 * Globals interface. Defaults to `decoratorName.replace(/^I/, "")`
@@ -32,6 +36,7 @@ export interface BridgeShapeManifestEntry {
 	 * `ContextKey`).
 	 */
 	readonly AccessorName?: string;
+
 	/**
 	 * Override for the exported globals interface name. Defaults to
 	 * `<decoratorName>Globals`. Set to e.g. `Workbench<X>Globals` to
@@ -40,6 +45,7 @@ export interface BridgeShapeManifestEntry {
 	 * `export type {...} from "./...Generated.js"`.
 	 */
 	readonly GlobalsInterfaceName?: string;
+
 	/**
 	 * Override for the exported Pick<> type alias name. Defaults to the
 	 * `BridgeFileName` verbatim (or `<ServiceFolder>BridgeShape` if
@@ -52,14 +58,19 @@ export interface BridgeShapeManifestEntry {
 
 export interface EmitBridgeShapeBatchOptions {
 	readonly Records: ReadonlyArray<ServiceDecoratorRecord>;
+
 	readonly Manifest: ReadonlyArray<BridgeShapeManifestEntry>;
+
 	readonly OutputRoot: string;
+
 	readonly Log?: (message: string) => void;
 }
 
 export interface EmitBridgeShapeBatchSummary {
 	readonly Emitted: number;
+
 	readonly Skipped: ReadonlyArray<string>;
+
 	readonly Failures: ReadonlyArray<CodegenProblem>;
 }
 
@@ -72,22 +83,30 @@ export const EmitBridgeShapeBatch = async (
 	options: EmitBridgeShapeBatchOptions,
 ): Promise<EmitBridgeShapeBatchSummary> => {
 	const Log = options.Log ?? DefaultLog;
+
 	const RecordIndex = new Map<string, ServiceDecoratorRecord>();
+
 	for (const Record of options.Records) {
 		RecordIndex.set(Record.DecoratorName, Record);
 	}
 
 	let Emitted = 0;
+
 	const Skipped: string[] = [];
+
 	const Failures: CodegenProblem[] = [];
 
 	for (const Entry of options.Manifest) {
 		const Record = RecordIndex.get(Entry.DecoratorName);
+
 		if (!Record) {
 			Skipped.push(Entry.DecoratorName);
+
 			Log(`skipped ${Entry.DecoratorName}: decorator record not found`);
+
 			continue;
 		}
+
 		const Outcome = await EmitBridgeShape({
 			Record,
 			OutputRoot: options.OutputRoot,
@@ -98,12 +117,17 @@ export const EmitBridgeShapeBatch = async (
 			GlobalsInterfaceName: Entry.GlobalsInterfaceName,
 			ShapeTypeName: Entry.ShapeTypeName,
 		});
+
 		if ("_tag" in Outcome) {
 			Failures.push(Outcome);
+
 			Log(`failed ${Entry.DecoratorName}: ${Outcome._tag}`);
+
 			continue;
 		}
+
 		Emitted += 1;
+
 		Log(
 			`emitted ${Outcome.OutputPath} (picked: ${Outcome.PickedMembers.length})`,
 		);

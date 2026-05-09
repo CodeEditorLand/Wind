@@ -32,6 +32,7 @@ let NextHandle = 1;
 
 export const LiveLanguageServiceLayer = Layer.effect(
 	LanguageServiceTag,
+
 	Effect.gen(function* () {
 		/** Active provider registrations keyed by handle. */
 		const ActiveProviders = new Map<
@@ -49,7 +50,9 @@ export const LiveLanguageServiceLayer = Layer.effect(
 
 		const RegisterProvider = (
 			type: string,
+
 			selector: string,
+
 			provider: unknown,
 		): Effect.Effect<{ readonly dispose: () => void }, LanguageProblem> =>
 			Effect.try({

@@ -40,6 +40,7 @@ export const makeHealthChecker = (): HealthService => ({
 					const TelemetryTime = Date.now() - StartTime;
 					return yield* TelemetryService.log(
 						"info",
+
 						"[Health] Telemetry health check",
 					).pipe(
 						Effect.map(
@@ -52,6 +53,7 @@ export const makeHealthChecker = (): HealthService => ({
 									responseTime: TelemetryTime,
 								}) satisfies ServiceHealth,
 						),
+
 						Effect.catchAll(() =>
 							Effect.succeed({
 								serviceName: "Telemetry",
@@ -78,6 +80,7 @@ export const makeHealthChecker = (): HealthService => ({
 									details: { version } as const,
 								}) satisfies ServiceHealth,
 						),
+
 						Effect.catchAll((error) =>
 							Effect.succeed({
 								serviceName: "Mountain",
@@ -114,6 +117,7 @@ export const makeHealthChecker = (): HealthService => ({
 									responseTime: ConfigTime,
 								}) satisfies ServiceHealth,
 						),
+
 						Effect.catchAll(() =>
 							Effect.succeed({
 								serviceName: "Configuration",
@@ -199,6 +203,7 @@ export const makeHealthChecker = (): HealthService => ({
 
 export const HealthLive = Layer.effect(
 	HealthTag,
+
 	Effect.succeed(makeHealthChecker()),
 );
 
@@ -260,5 +265,6 @@ export const makeMockHealth = (
 
 export const HealthMock = Layer.effect(
 	HealthTag,
+
 	Effect.succeed(makeMockHealth()),
 );

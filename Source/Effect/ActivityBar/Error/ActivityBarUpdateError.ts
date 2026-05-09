@@ -13,13 +13,17 @@
 
 export class ActivityBarUpdateError extends Error {
 	readonly _tag = "ActivityBarUpdateError";
+
 	constructor(itemId: string, cause: unknown) {
 		super(
 			`Failed to update activity bar item '${itemId}': ${String(cause)}`,
 		);
+
 		this.cause = cause;
+
 		Object.setPrototypeOf(this, ActivityBarUpdateError.prototype);
 	}
+
 	override get name() {
 		return "ActivityBarUpdateError";
 	}

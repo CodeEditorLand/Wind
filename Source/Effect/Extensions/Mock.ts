@@ -5,6 +5,7 @@ import { ExtensionsServiceTag } from "./Tag/ExtensionsServiceTag.js";
 
 export const MockExtensionsServiceLayer = Layer.succeed(
 	ExtensionsServiceTag,
+
 	StubExtensionsService,
 );
 

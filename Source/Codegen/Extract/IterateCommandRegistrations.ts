@@ -58,6 +58,7 @@ const LineNumberAt = (contents: string, index: number): number => {
 
 const ScanArgumentBlock = (
 	contents: string,
+
 	openParenIndex: number,
 ): { argumentText: string; closeParenIndex: number } | null => {
 	// Scan forward from `openParenIndex` (which points to `(`) and

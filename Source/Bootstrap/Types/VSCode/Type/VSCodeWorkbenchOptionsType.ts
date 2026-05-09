@@ -25,9 +25,13 @@ export type {
 
 // Types sourced from VS Code sub-packages
 export type { IAuthenticationProvider } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/authentication/common/authentication.js";
+
 export type { IProductConfiguration } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/product.js";
+
 export type { ISecretStorageProvider } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/secrets/common/secrets.js";
+
 export type { IUpdateProvider } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/update/browser/updateService.js";
+
 export type { IURLCallbackProvider as IUrlCallbackProvider } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/workbench/services/url/browser/urlService.js";
 
 // IWorkspace / IWorkspaceFolder - VS Code uses IWorkspaceToOpen | IFolderToOpen | undefined.

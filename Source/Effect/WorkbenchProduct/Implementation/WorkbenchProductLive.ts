@@ -18,11 +18,13 @@ const ResolveBridge = Effect.sync((): WorkbenchProductBridgeShape | null => {
 
 const Unavailable: WorkbenchProductProblem = {
 	_tag: "WorkbenchProductBridgeUnavailable",
+
 	reason: "globalThis.__CEL_SERVICES__.Product is null.",
 };
 
 export const WorkbenchProductLive = Layer.effect(
 	WorkbenchProductServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 

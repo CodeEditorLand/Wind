@@ -23,6 +23,7 @@ import { LandWorkbenchRuntime } from "./LandWorkbenchRuntime.js";
 
 export interface CELWindGlobalShape {
 	readonly Layer: typeof LandWorkbenchLayer;
+
 	readonly RunPromise: <A, E>(
 		effect: Effect.Effect<
 			A,
@@ -30,6 +31,7 @@ export interface CELWindGlobalShape {
 			Layer.Layer.Success<typeof LandWorkbenchLayer>
 		>,
 	) => Promise<A>;
+
 	readonly RunPromiseExit: <A, E>(
 		effect: Effect.Effect<
 			A,
@@ -38,9 +40,12 @@ export interface CELWindGlobalShape {
 		>,
 	) => Promise<{
 		readonly _tag: "Success" | "Failure";
+
 		readonly value?: A;
+
 		readonly cause?: Cause.Cause<E>;
 	}>;
+
 	readonly Dispose: () => Promise<void>;
 }
 
@@ -52,38 +57,48 @@ const InstallEvent = "cel:wind-ready";
 
 export const InstallLandWorkbench = (): CELWindGlobalShape => {
 	const Globals = globalThis as unknown as CELWindGlobals;
+
 	if (Globals.__CEL_WIND__) return Globals.__CEL_WIND__;
 
 	const Bridge: CELWindGlobalShape = {
 		Layer: LandWorkbenchLayer,
+
 		RunPromise: (effect) =>
 			LandWorkbenchRuntime.Get().runPromise(effect) as Promise<never>,
+
 		RunPromiseExit: async (effect) => {
 			const Exit =
 				await LandWorkbenchRuntime.Get().runPromiseExit(effect);
+
 			if (Exit._tag === "Success") {
 				return { _tag: "Success", value: Exit.value as never };
 			}
+
 			return { _tag: "Failure", cause: Exit.cause as never };
 		},
+
 		Dispose: () => LandWorkbenchRuntime.Dispose(),
 	};
 
 	Globals.__CEL_WIND__ = Bridge;
+
 	try {
 		window.dispatchEvent(new Event(InstallEvent));
 	} catch {
 		// no window in tests; nothing to dispatch
 	}
+
 	return Bridge;
 };
 
 export const CELWind = (): CELWindGlobalShape => {
 	const Globals = globalThis as unknown as CELWindGlobals;
+
 	if (!Globals.__CEL_WIND__) {
 		throw new Error(
 			"[Wind] __CEL_WIND__ not installed. Call InstallLandWorkbench() once after __CEL_SERVICES__ is populated.",
 		);
 	}
+
 	return Globals.__CEL_WIND__;
 };

@@ -10,10 +10,13 @@ import type { Properties } from "./Properties.js";
 
 export type BrowserClient = {
 	readonly capture?: (Event: string, Properties?: Properties) => void;
+
 	readonly captureException?: (
 		Error: unknown,
+
 		Properties?: Properties,
 	) => void;
+
 	readonly register?: (Properties: Properties) => void;
 };
 

@@ -63,4 +63,5 @@ export {
 
 // Backward compatibility - re-export as Environment
 export const Environment = EnvTag;
+
 export type { EnvironmentInfo as Type } from "./Environment/index.js";

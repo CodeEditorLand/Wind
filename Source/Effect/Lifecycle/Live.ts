@@ -29,6 +29,7 @@ const MakeLifecycleProblem = (error: unknown): LifecycleProblem => ({
 
 export const LiveLifecycleServiceLayer = Layer.effect(
 	LifecycleServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -41,24 +42,28 @@ export const LiveLifecycleServiceLayer = Layer.effect(
 								? Result
 								: 1) as LifecyclePhaseValue,
 					),
+
 					Effect.mapError(MakeLifecycleProblem),
 				),
 
 			WhenPhase: (phase) =>
 				IPCService.invoke(Channel.LifecycleWhenPhase)([phase]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeLifecycleProblem),
 				),
 
 			RequestShutdown: () =>
 				IPCService.invoke(Channel.LifecycleRequestShutdown)([]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeLifecycleProblem),
 				),
 
 			AdvancePhase: (phase) =>
 				IPCService.invoke(Channel.LifecycleAdvancePhase)([phase]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeLifecycleProblem),
 				),
 		};

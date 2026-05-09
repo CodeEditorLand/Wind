@@ -12,15 +12,20 @@
  */
 export default class TelemetryCollectionError extends Error {
 	readonly _tag = "TelemetryCollectionError";
+
 	readonly operation: string;
+
 	override readonly cause: unknown;
 
 	constructor(operation: string, cause: unknown) {
 		super(
 			`Telemetry collection failed for '${operation}': ${String(cause)}`,
 		);
+
 		this.operation = operation;
+
 		this.cause = cause;
+
 		Object.setPrototypeOf(this, TelemetryCollectionError.prototype);
 	}
 

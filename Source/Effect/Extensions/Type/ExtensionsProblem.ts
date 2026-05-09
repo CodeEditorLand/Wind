@@ -5,6 +5,8 @@ export type ExtensionsProblem =
 	| { readonly _tag: "ExtensionsOperationFailed"; readonly error: Error }
 	| {
 			readonly _tag: "ExtensionsInvalidArgument";
+
 			readonly argument: string;
+
 			readonly reason: string;
 	  };

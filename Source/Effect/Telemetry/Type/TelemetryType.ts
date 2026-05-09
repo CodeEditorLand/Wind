@@ -17,10 +17,13 @@ import type { Effect } from "effect";
 export interface TelemetryMetric {
 	/** Name/identifier of the metric */
 	readonly name: string;
+
 	/** Numeric value of the metric */
 	readonly value: number;
+
 	/** Timestamp when the metric was recorded */
 	readonly timestamp: number;
+
 	/** Optional labels for categorizing the metric */
 	readonly labels: Readonly<Record<string, string>> | undefined;
 }
@@ -32,16 +35,22 @@ export interface TelemetryMetric {
 export interface TelemetrySpan {
 	/** Name of the operation */
 	readonly name: string;
+
 	/** Start timestamp in milliseconds */
 	readonly startTime: number;
+
 	/** End timestamp in milliseconds */
 	readonly endTime?: number;
+
 	/** Duration in milliseconds */
 	readonly duration?: number;
+
 	/** Whether the operation succeeded */
 	readonly success: boolean;
+
 	/** Error message if the operation failed */
 	readonly error?: string;
+
 	/** Optional labels for categorizing the span */
 	readonly labels?: Readonly<Record<string, string>>;
 }
@@ -53,8 +62,10 @@ export interface TelemetrySpan {
 export interface TelemetryLog {
 	/** Log level: debug, info, warn, or error */
 	readonly level: "debug" | "info" | "warn" | "error";
+
 	/** Log message */
 	readonly message: string;
+
 	/** Additional context data */
 	readonly context?: Record<string, unknown>;
 }
@@ -66,8 +77,10 @@ export interface TelemetryLog {
 export interface TelemetryEvent {
 	/** Type of event */
 	readonly type: "metric" | "span" | "log";
+
 	/** Timestamp when the event occurred */
 	readonly timestamp: number;
+
 	/** Event data (metric, span, or log) */
 	readonly data: TelemetryMetric | TelemetrySpan | TelemetryLog;
 }
@@ -84,6 +97,7 @@ export interface SpanHandle {
 	 */
 	readonly end: (
 		success: boolean,
+
 		error?: string,
 	) => Effect.Effect<void, never>;
 }

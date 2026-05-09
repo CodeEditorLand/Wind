@@ -21,6 +21,7 @@ export interface TextModelResolverService {
 	readonly Resolve: (uri: string) => Effect.Effect<
 		{
 			readonly model: TextModel;
+
 			readonly dispose: () => void;
 		},
 		TextModelResolverProblem

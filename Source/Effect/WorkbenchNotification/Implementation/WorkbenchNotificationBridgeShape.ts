@@ -7,8 +7,11 @@ export interface WorkbenchNotificationBridgeShape {
 		readonly source?: string;
 		readonly silent?: boolean;
 	}) => unknown;
+
 	readonly info: (message: string) => unknown;
+
 	readonly warn: (message: string) => unknown;
+
 	readonly error: (message: string) => unknown;
 }
 
@@ -27,8 +30,10 @@ export const WorkbenchNotificationSeverityCode = (
 	switch (severity) {
 		case "Info":
 			return 1;
+
 		case "Warning":
 			return 2;
+
 		case "Error":
 			return 3;
 	}

@@ -35,6 +35,7 @@ import type {
  */
 const StatusBarLive = Layer.effect(
 	StatusBarTag,
+
 	Effect.gen(function* () {
 		const TelemetryService = yield* Telemetry;
 
@@ -53,11 +54,13 @@ const StatusBarLive = Layer.effect(
 
 				yield* SubscriptionRef.modify(ItemsRef, (Items) => [
 					undefined,
+
 					[...Items, NewItem].sort((a, b) => a.priority - b.priority),
 				]);
 
 				yield* TelemetryService.log(
 					"info",
+
 					`Created status bar item: ${Id}`,
 				);
 				return NewItem;
@@ -66,6 +69,7 @@ const StatusBarLive = Layer.effect(
 		// Atom: Update an existing status bar item
 		const UpdateItem = (
 			Id: string,
+
 			updates: Partial<Omit<StatusBarItem, "id">>,
 		): Effect.Effect<
 			void,
@@ -83,6 +87,7 @@ const StatusBarLive = Layer.effect(
 				try {
 					yield* SubscriptionRef.modify(ItemsRef, (Items) => [
 						undefined,
+
 						Items.map((Item) =>
 							Item.id === Id ? { ...Item, ...updates } : Item,
 						).sort((a, b) => a.priority - b.priority),
@@ -90,6 +95,7 @@ const StatusBarLive = Layer.effect(
 
 					yield* TelemetryService.log(
 						"info",
+
 						`Updated status bar item: ${Id}`,
 					);
 				} catch (error) {
@@ -114,11 +120,13 @@ const StatusBarLive = Layer.effect(
 
 				yield* SubscriptionRef.modify(ItemsRef, (Items) => [
 					undefined,
+
 					Items.filter((Item) => Item.id !== Id),
 				]);
 
 				yield* TelemetryService.log(
 					"info",
+
 					`Removed status bar item: ${Id}`,
 				);
 			});
@@ -140,6 +148,7 @@ const StatusBarLive = Layer.effect(
 		// Atom: Set item visibility
 		const SetItemVisibility = (
 			Id: string,
+
 			visible: boolean,
 		): Effect.Effect<void, StatusBarItemNotFoundError> =>
 			Effect.gen(function* () {
@@ -169,6 +178,7 @@ const StatusBarLive = Layer.effect(
 		// Atom: Set item text
 		const SetItemText = (
 			Id: string,
+
 			text: string,
 		): Effect.Effect<
 			void,

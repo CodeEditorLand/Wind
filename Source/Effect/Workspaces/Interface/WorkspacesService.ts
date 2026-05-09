@@ -4,7 +4,9 @@ import type { WorkspacesProblem } from "../Type/WorkspacesProblem.js";
 
 export interface WorkspaceFolder {
 	readonly uri: string;
+
 	readonly name: string;
+
 	readonly index: number;
 }
 
@@ -17,7 +19,9 @@ export interface WorkspaceFolder {
  */
 export interface WorkspacesChangeEvent {
 	readonly added: readonly WorkspaceFolder[];
+
 	readonly removed: readonly WorkspaceFolder[];
+
 	readonly folders: readonly WorkspaceFolder[];
 }
 
@@ -26,17 +30,22 @@ export interface WorkspacesService {
 		readonly WorkspaceFolder[],
 		WorkspacesProblem
 	>;
+
 	readonly AddFolder: (
 		uri: string,
+
 		name?: string,
 	) => Effect.Effect<void, WorkspacesProblem>;
+
 	readonly RemoveFolder: (
 		uri: string,
 	) => Effect.Effect<void, WorkspacesProblem>;
+
 	readonly GetName: () => Effect.Effect<
 		string | undefined,
 		WorkspacesProblem
 	>;
+
 	/**
 	 * Stream of workspace folder mutations emitted by Mountain. Consumers that
 	 * cache `GetFolders()` results should subscribe to this stream to

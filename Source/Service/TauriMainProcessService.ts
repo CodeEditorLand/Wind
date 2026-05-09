@@ -31,11 +31,14 @@ const _Trace = (Tag: string, Message: string): void => {
 const _DevLogForward = (Tag: string, Message: string): void => {
 	try {
 		const Internals = (window as any).__TAURI_INTERNALS__;
+
 		const Invoke =
 			(window as any).__TAURI__?.core?.invoke ??
 			(window as any).__TAURI__?.invoke ??
 			Internals?.invoke;
+
 		if (typeof Invoke !== "function") return;
+
 		Invoke("RenderDevLog", {
 			Tag,
 			Message,
@@ -49,19 +52,26 @@ const _DevLogForward = (Tag: string, Message: string): void => {
 // OTELBridge picks up the measure as a span with real duration.
 const _TimedTrace = async <T>(
 	Tag: string,
+
 	Label: string,
+
 	Fn: () => Promise<T>,
 ): Promise<T> => {
 	const MarkName = `land:${Tag}:${Label}`;
+
 	const StartMark = `${MarkName}:start`;
+
 	try {
 		performance.mark(StartMark);
 	} catch {}
+
 	try {
 		const Result = await Fn();
+
 		try {
 			performance.measure(MarkName, StartMark);
 		} catch {}
+
 		return Result;
 	} catch (Error) {
 		try {
@@ -69,9 +79,11 @@ const _TimedTrace = async <T>(
 				detail: { error: String(Error) },
 			});
 		} catch {}
+
 		try {
 			performance.measure(MarkName, StartMark);
 		} catch {}
+
 		throw Error;
 	}
 };
@@ -82,11 +94,17 @@ const _TimedTrace = async <T>(
 
 const ChannelRouteMap: Record<string, string> = {
 	localFilesystem: "file",
+
 	storage: "storage",
+
 	logger: "logger",
+
 	configuration: "configuration",
+
 	textFile: "textFile",
+
 	extensions: "extensions",
+
 	// Route the Extensions-sidebar IPC channels into Mountain's
 	// existing `extensions:*` handlers. See the twin comment in
 	// `Element/Output/Source/Service/TauriMainProcessService.ts` -
@@ -94,31 +112,56 @@ const ChannelRouteMap: Record<string, string> = {
 	// workbench flavour, so the mapping has to be duplicated here to
 	// keep them aligned.
 	extensionManagement: "extensions",
+
 	extensionGallery: "extensions",
+
 	commands: "commands",
+
 	terminal: "terminal",
+
 	output: "output",
+
 	notification: "notification",
+
 	progress: "progress",
+
 	quickInput: "quickInput",
+
 	workspaces: "workspaces",
+
 	themes: "themes",
+
 	search: "search",
+
 	environment: "environment",
+
 	decorations: "decorations",
+
 	workingCopy: "workingCopy",
+
 	keybinding: "keybinding",
+
 	lifecycle: "lifecycle",
+
 	label: "label",
+
 	model: "model",
+
 	nativeHost: "nativeHost",
+
 	localPty: "localPty",
+
 	// update: stubbed - Mountain doesn't implement IUpdateService yet
 	url: "url",
+
 	menubar: "menubar",
+
 	encryption: "encryption",
+
 	extensionHostStarter: "extensionHostStarter",
+
 	extensionhostdebugservice: "extensionhostdebugservice",
+
 	// Git: the built-in `git` extension's `MainProcessService.getChannel("localGit")`
 	// path. Stock VS Code backs this with `ILocalGitService` in the shared
 	// process; Land routes every method (`exec`, `clone`, `pull`, `checkout`,
@@ -131,57 +174,91 @@ const ChannelRouteMap: Record<string, string> = {
 const FireAndForgetChannels = new Set(["logger", "output"]);
 
 const FileSystemChannels = new Set(["localFilesystem"]);
+
 const FileSystemThrowCommands = new Set([
 	"stat",
+
 	"readFile",
+
 	"writeFile",
+
 	"readdir",
+
 	"mkdir",
+
 	"delete",
+
 	"rename",
+
 	"copy",
+
 	"open",
+
 	"close",
+
 	"read",
+
 	"write",
+
 	"realpath",
+
 	"cloneFile",
 ]);
 
 const StubChannels: Record<string, Record<string, unknown>> = {
 	sign: { sign: "", createNewMessage: "", validate: true },
+
 	policy: { serialize: {}, registerPolicyChange: undefined },
+
 	userDataProfiles: {},
+
 	keyboardLayout: {
 		getKeyboardLayoutData: {
 			keyboardLayoutInfo: {
 				model: "pc105",
+
 				layout: "us",
+
 				variant: "",
+
 				options: "",
+
 				rules: "",
 			},
+
 			keyboardMapping: {},
 		},
 	},
+
 	sharedProcess: {},
+
 	utilityProcessWorker: {
 		createWorker: { onDidTerminate: new Promise(() => {}) },
+
 		disposeWorker: undefined,
 	},
+
 	meteredConnection: {},
+
 	webContentExtractor: {},
+
 	browserElements: {},
+
 	NativeMcpDiscoveryHelper: { load: undefined },
+
 	sandboxHelper: {},
+
 	mcpGateway: {},
+
 	browserViewGroup: {},
 
 	// Fix: terminals.windows - IExternalTerminalService.getDefaultTerminalForPlatforms()
 	externalTerminal: {
 		getDefaultTerminalForPlatforms: {
 			windows: "cmd.exe",
+
 			linux: "/usr/bin/x-terminal-emulator",
+
 			osx: "Terminal.app",
 		},
 	},
@@ -189,11 +266,17 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	// Fix: update.setInternalOrg - IUpdateService methods
 	update: {
 		checkForUpdates: { updateType: 0 },
+
 		downloadUpdate: undefined,
+
 		applyUpdate: undefined,
+
 		quitAndInstall: undefined,
+
 		isLatestVersion: true,
+
 		setInternalOrg: undefined,
+
 		_getInitialState: { type: 0 },
 	},
 
@@ -206,8 +289,11 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	// so the Wind/Output lockstep rule holds.
 	webview: {
 		setIgnoreMenuShortcuts: undefined,
+
 		setContextMenuVisible: undefined,
+
 		hideReference: undefined,
+
 		showReference: undefined,
 	},
 
@@ -218,7 +304,9 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	// boot. Mirror of Output copy.
 	watcher: {
 		watch: undefined,
+
 		unwatch: undefined,
+
 		setVerboseLogging: undefined,
 	},
 
@@ -231,7 +319,9 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	// stock VS Code when no extension claims the URI.
 	urlHandler: {
 		registerHandler: undefined,
+
 		open: false,
+
 		create: undefined,
 	},
 
@@ -256,9 +346,13 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	// maps to the same service's config-based counterpart - also empty.
 	extensionTipsService: {
 		getImportantExecutableBasedTips: [],
+
 		getOtherExecutableBasedTips: [],
+
 		getAllWorkspacesTips: [],
+
 		getConfigBasedTips: [],
+
 		getImportantExecutableBasedTipsForExecutable: [],
 	},
 
@@ -270,15 +364,23 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	// Mountain-side MCP gallery.
 	mcpManagement: {
 		getInstalled: [],
+
 		install: undefined,
+
 		uninstall: undefined,
+
 		getGalleryServers: [],
+
 		getLatest: undefined,
 	},
+
 	mcpWorkbenchManagement: {
 		getInstalled: [],
+
 		getLocalServers: [],
+
 		install: undefined,
+
 		uninstall: undefined,
 	},
 
@@ -290,30 +392,46 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	// synced so the workbench treats sync as disabled.
 	userDataSync: {
 		_getInitialData: [0, [], null],
+
 		accept: undefined,
+
 		resolveContent: null,
+
 		replace: undefined,
+
 		reset: undefined,
+
 		stop: undefined,
+
 		pull: undefined,
+
 		hasPreviouslySynced: false,
+
 		hasLocalData: false,
+
 		turnOn: undefined,
+
 		turnOff: undefined,
 	},
+
 	// `IUserDataSyncAccountService._getInitialData` returns the account or
 	// `undefined` when no account is signed in. Channel name is
 	// `userDataSyncAccount` - matches `userDataSyncIpc.ts:51` callsite.
 	userDataSyncAccount: {
 		_getInitialData: undefined,
+
 		getAccount: undefined,
 	},
+
 	userDataSyncStoreManagement: {
 		_getInitialData: null,
 	},
+
 	userDataAutoSync: {
 		triggerSync: undefined,
+
 		turnOn: undefined,
+
 		turnOff: undefined,
 	},
 
@@ -323,8 +441,10 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	// matching the absence of the ML detector in Land.
 	languageDetection: {
 		detectLanguage: null,
+
 		provideLanguageDetectionHints: { fileExtensions: { extensions: [] } },
 	},
+
 	// Fix: `telemetryAppender` channel - stock VS Code's
 	// TelemetryChannelAppender posts every single event through the
 	// shared-process `telemetryAppender` IPC channel. Land has no
@@ -336,6 +456,7 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	// a Tauri round-trip each time.
 	telemetryAppender: {
 		log: undefined,
+
 		flush: undefined,
 	},
 
@@ -369,12 +490,18 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	// contributes no workspace-derived biases and continues.
 	diagnostics: {
 		getWorkspaceFileExtensions: { extensions: [] },
+
 		getDiagnostics: [],
+
 		getSystemInfo: {},
+
 		getPerformanceInfo: {},
+
 		reportWorkspaceStats: {
 			configFiles: [],
+
 			fileTypes: [],
+
 			launchConfigFiles: [],
 		},
 	},

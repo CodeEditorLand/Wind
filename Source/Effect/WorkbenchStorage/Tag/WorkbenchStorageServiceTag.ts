@@ -15,4 +15,5 @@ export class WorkbenchStorageServiceTag extends Context.Tag(
 )<WorkbenchStorageServiceTag, WorkbenchStorageService>() {}
 
 export const WorkbenchStorage = WorkbenchStorageServiceTag;
+
 export default WorkbenchStorageServiceTag;

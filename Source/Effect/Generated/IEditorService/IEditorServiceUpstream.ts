@@ -39,7 +39,7 @@ export const IEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: "Open an editor in the currently active group.",
-		SourceLine: 138,
+		SourceLine: 148,
 	},
 	{
 		Kind: "Method",
@@ -49,7 +49,7 @@ export const IEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Promise<IEditorPane | undefined>",
 		Parameters: [{ Name: "editor", TypeText: "ITextResourceEditorInput | IUntitledTextResourceEditorInput", Optional: false }, { Name: "group", TypeText: "PreferredGroup", Optional: true }],
 		DocComment: "Open an editor in the currently active group.",
-		SourceLine: 267,
+		SourceLine: 277,
 	},
 	{
 		Kind: "Method",
@@ -59,7 +59,7 @@ export const IEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Promise<ITextDiffEditorPane | undefined>",
 		Parameters: [{ Name: "editor", TypeText: "ITextResourceDiffEditorInput | IResourceDiffEditorInput", Optional: false }, { Name: "group", TypeText: "PreferredGroup", Optional: true }],
 		DocComment: "Open an editor in the currently active group.",
-		SourceLine: 267,
+		SourceLine: 277,
 	},
 	{
 		Kind: "Method",
@@ -69,7 +69,7 @@ export const IEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Promise<IEditorPane | undefined>",
 		Parameters: [{ Name: "editor", TypeText: "IUntypedEditorInput", Optional: false }, { Name: "group", TypeText: "PreferredGroup", Optional: true }],
 		DocComment: "Open an editor in the currently active group.",
-		SourceLine: 267,
+		SourceLine: 277,
 	},
 	{
 		Kind: "Method",
@@ -79,6 +79,6 @@ export const IEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "readonly IEditorIdentifier[]",
 		Parameters: [{ Name: "editor", TypeText: "IResourceEditorInputIdentifier", Optional: false }, { Name: "options", TypeText: "IFindEditorOptions", Optional: true }],
 		DocComment: "Open an editor in the currently active group.",
-		SourceLine: 345,
+		SourceLine: 355,
 	}
 ] as const;

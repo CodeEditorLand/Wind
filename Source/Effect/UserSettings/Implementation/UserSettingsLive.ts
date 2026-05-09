@@ -44,15 +44,21 @@ import type { UserSettingsProblem } from "../Type/UserSettingsProblem.js";
 
 interface VSCodeConfigurationBridge {
 	readonly getValue: <T>(section: string) => T | undefined;
+
 	readonly updateValue: (
 		section: string,
+
 		value: unknown,
+
 		target: number,
 	) => Promise<void>;
+
 	readonly inspect?: <T>(section: string) => {
 		readonly userValue?: T;
+
 		readonly defaultValue?: T;
 	};
+
 	readonly onDidChangeConfiguration: (
 		listener: (event: { affectedKeys?: Iterable<string> }) => void,
 	) => { readonly dispose: () => void };
@@ -62,6 +68,7 @@ interface CELGlobals {
 	readonly __CEL_SERVICES__?: {
 		readonly Configuration?: VSCodeConfigurationBridge | null;
 	};
+
 	__CEL_OVERRIDE_CONFIG__?: Record<string, unknown>;
 }
 
@@ -79,12 +86,16 @@ const TargetCode = (Target: UserSettingsTarget): number => {
 	switch (Target) {
 		case "Application":
 			return 8;
+
 		case "Profile":
 			return 1;
+
 		case "Workspace":
 			return 4;
+
 		case "WorkspaceFolder":
 			return 5;
+
 		case "Memory":
 			return 7;
 	}
@@ -92,10 +103,13 @@ const TargetCode = (Target: UserSettingsTarget): number => {
 
 const WriteOverride = (Section: string, Value: unknown): void => {
 	const Globals = globalThis as unknown as CELGlobals;
+
 	if (!Globals.__CEL_OVERRIDE_CONFIG__) {
 		Globals.__CEL_OVERRIDE_CONFIG__ = {};
 	}
+
 	Globals.__CEL_OVERRIDE_CONFIG__[Section] = Value;
+
 	try {
 		window.dispatchEvent(
 			new CustomEvent("cel:user-settings-changed", {
@@ -109,6 +123,7 @@ const WriteOverride = (Section: string, Value: unknown): void => {
 
 export const UserSettingsLive = Layer.effect(
 	UserSettingsServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 
@@ -166,7 +181,9 @@ export const UserSettingsLive = Layer.effect(
 						try: () =>
 							Bridge.updateValue(
 								Section,
+
 								Value,
+
 								TargetCode(Target),
 							),
 						catch: (Error) =>
@@ -222,6 +239,7 @@ export const UserSettingsLive = Layer.effect(
 					try {
 						window.addEventListener(
 							"cel:user-settings-changed",
+
 							OverrideListener,
 						);
 					} catch {
@@ -232,6 +250,7 @@ export const UserSettingsLive = Layer.effect(
 						try {
 							window.removeEventListener(
 								"cel:user-settings-changed",
+
 								OverrideListener,
 							);
 						} catch {

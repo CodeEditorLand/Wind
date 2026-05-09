@@ -38,6 +38,7 @@ import MountainSyncTag from "../Tag/MountainSyncTag.js";
  */
 const MountainSyncLive = Layer.effect(
 	MountainSyncTag,
+
 	Effect.gen(function* () {
 		const mountain = yield* MountainTag;
 		const ipc = yield* IPCTag;

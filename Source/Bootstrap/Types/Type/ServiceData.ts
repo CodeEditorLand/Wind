@@ -12,8 +12,10 @@
 export interface ServiceData {
 	/** List of successfully registered service names */
 	servicesRegistered: string[];
+
 	/** List of services that failed to register */
 	servicesFailed: string[];
+
 	/** Total number of services */
 	serviceCount: number;
 }

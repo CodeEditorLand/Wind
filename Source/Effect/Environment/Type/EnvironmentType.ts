@@ -26,10 +26,16 @@ export type Architecture = "x64" | "arm64" | "arm" | "web";
  */
 export interface EnvironmentInfo {
 	readonly platform: Platform;
+
 	readonly architecture: Architecture;
+
 	readonly locale: string;
+
 	readonly timezone: string;
+
 	readonly userAgent: string;
+
 	readonly isSecureContext: boolean;
+
 	readonly language: string;
 }

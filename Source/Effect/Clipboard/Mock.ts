@@ -21,6 +21,7 @@ import { ClipboardServiceTag } from "./Tag/ClipboardServiceTag.js";
  */
 export const MockClipboardServiceLayer = Layer.succeed(
 	ClipboardServiceTag,
+
 	MockClipboardService,
 );
 

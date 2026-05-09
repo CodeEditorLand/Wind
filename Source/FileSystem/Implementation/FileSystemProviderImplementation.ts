@@ -36,13 +36,20 @@ import { URI } from "../Type/URI";
  */
 const MountainCommands = {
 	READ: "file:read",
+
 	WRITE: "file:write",
+
 	STAT: "file:stat",
+
 	DELETE: "file:delete",
+
 	MKDIR: "file:mkdir",
+
 	RMDIR: "file:delete", // Mountain doesn't have rmdir, uses delete
 	READDIR: "file:readdir",
+
 	COPY: "file:copy",
+
 	MOVE: "file:move",
 } as const;
 
@@ -68,9 +75,11 @@ export const FileSystemProviderTag =
 function uriToPath(uri: URI): string {
 	// fsPath is a getter on the real VS Code URI, not a method call.
 	const path = uri.fsPath;
+
 	if (!path) {
 		throw new InvalidPathError(uri.toString());
 	}
+
 	return path;
 }
 
@@ -97,13 +106,18 @@ function toIStat(stats: {
 	accessed?: number;
 }): {
 	type: number;
+
 	size: number;
+
 	ctime: number;
+
 	mtime: number;
+
 	permissions?: number;
 } {
 	// Determine file type
 	let type: FileType;
+
 	if (stats.is_directory) {
 		type = FileType.Directory;
 	} else if (stats.is_file) {
@@ -114,8 +128,11 @@ function toIStat(stats: {
 
 	return {
 		type,
+
 		size: stats.size ?? 0,
+
 		ctime: stats.created ?? stats.modified ?? Date.now(),
+
 		mtime: stats.modified ?? Date.now(),
 	};
 }
@@ -182,7 +199,9 @@ const createProvider = (
 
 		async writeFile(
 			uri: URI,
+
 			content: Uint8Array,
+
 			options?: IFileWriteOptions,
 		): Promise<void> {
 			const path = uriToPath(uri);
@@ -210,6 +229,7 @@ const createProvider = (
 
 		async copy(source: URI, destination: URI): Promise<void> {
 			const sourcePath = uriToPath(source);
+
 			const destPath = uriToPath(destination);
 
 			try {
@@ -217,7 +237,9 @@ const createProvider = (
 			} catch (error) {
 				throw toFileSystemProviderError(
 					error,
+
 					"copy",
+
 					`${sourcePath} -> ${destPath}`,
 				);
 			}
@@ -225,6 +247,7 @@ const createProvider = (
 
 		async move(source: URI, destination: URI): Promise<void> {
 			const sourcePath = uriToPath(source);
+
 			const destPath = uriToPath(destination);
 
 			try {
@@ -232,7 +255,9 @@ const createProvider = (
 			} catch (error) {
 				throw toFileSystemProviderError(
 					error,
+
 					"move",
+
 					`${sourcePath} -> ${destPath}`,
 				);
 			}
@@ -264,6 +289,7 @@ const createProvider = (
 
 		async mkdir(
 			uri: URI,
+
 			options: { recursive?: boolean } = {},
 		): Promise<void> {
 			const path = uriToPath(uri);
@@ -271,7 +297,9 @@ const createProvider = (
 			try {
 				await invoke(
 					MountainCommands.MKDIR,
+
 					path,
+
 					options.recursive ?? true,
 				);
 			} catch (error) {
@@ -292,9 +320,13 @@ const createProvider = (
 
 		async stat(uri: URI): Promise<{
 			type: number;
+
 			size: number;
+
 			ctime: number;
+
 			mtime: number;
+
 			permissions?: number;
 		}> {
 			const path = uriToPath(uri);
@@ -347,6 +379,7 @@ const createProvider = (
  */
 export const FileSystemProviderLive = Layer.effect(
 	FileSystemProviderTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -386,12 +419,15 @@ export const FileSystemProviderLive = Layer.effect(
 					try: () =>
 						provider.copy(
 							URI.parse(source),
+
 							URI.parse(destination),
 						),
 					catch: (error) =>
 						toFileSystemProviderError(
 							error,
+
 							"copy",
+
 							`${source} -> ${destination}`,
 						),
 				}),
@@ -400,12 +436,15 @@ export const FileSystemProviderLive = Layer.effect(
 					try: () =>
 						provider.move(
 							URI.parse(source),
+
 							URI.parse(destination),
 						),
 					catch: (error) =>
 						toFileSystemProviderError(
 							error,
+
 							"move",
+
 							`${source} -> ${destination}`,
 						),
 				}),
@@ -422,18 +461,21 @@ export const FileSystemProviderLive = Layer.effect(
 						),
 					),
 				),
+
 			mkdir: (uri: string, options = {}) =>
 				Effect.tryPromise({
 					try: () => provider.mkdir(URI.parse(uri), options),
 					catch: (error) =>
 						toFileSystemProviderError(error, "mkdir", uri),
 				}),
+
 			rmdir: (uri: string) =>
 				Effect.tryPromise({
 					try: () => provider.rmdir(URI.parse(uri)),
 					catch: (error) =>
 						toFileSystemProviderError(error, "rmdir", uri),
 				}),
+
 			stat: (uri: string) =>
 				Effect.tryPromise({
 					try: () => provider.stat(URI.parse(uri)),
@@ -449,4 +491,5 @@ export const FileSystemProviderLive = Layer.effect(
 // ============================================================================
 
 export { MountainCommands };
+
 export default FileSystemProviderLive;

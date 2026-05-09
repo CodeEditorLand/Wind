@@ -13,10 +13,13 @@
 
 export class ActivityBarItemNotFoundError extends Error {
 	readonly _tag = "ActivityBarItemNotFoundError";
+
 	constructor(itemId: string) {
 		super(`Activity bar item '${itemId}' not found`);
+
 		Object.setPrototypeOf(this, ActivityBarItemNotFoundError.prototype);
 	}
+
 	override get name() {
 		return "ActivityBarItemNotFoundError";
 	}

@@ -51,6 +51,7 @@ import {
  */
 export const NetworkRestrictionsLive = Layer.effect(
 	NetworkRestrictions,
+
 	Effect.gen(function* () {
 		const TelemetryService = yield* Telemetry;
 
@@ -92,6 +93,7 @@ export const NetworkRestrictionsLive = Layer.effect(
 					return yield* Effect.fail(
 						CreateNetworkBlockError(
 							Url,
+
 							"URL is blocked by network restrictions",
 						),
 					);
@@ -107,6 +109,7 @@ export const NetworkRestrictionsLive = Layer.effect(
 						return yield* Effect.fail(
 							CreateNetworkBlockError(
 								Url,
+
 								"HTTP requests are blocked",
 							),
 						);
@@ -118,6 +121,7 @@ export const NetworkRestrictionsLive = Layer.effect(
 						return yield* Effect.fail(
 							CreateNetworkBlockError(
 								Url,
+
 								"HTTPS requests are blocked",
 							),
 						);
@@ -130,6 +134,7 @@ export const NetworkRestrictionsLive = Layer.effect(
 		// Atom: Block a URL
 		const BlockURL: NetworkRestrictionsService["blockURL"] = (
 			Url: string,
+
 			Reason: string,
 		) =>
 			Effect.gen(function* () {
@@ -138,12 +143,14 @@ export const NetworkRestrictionsLive = Layer.effect(
 				if (CurrentConfig.logBlocked) {
 					yield* TelemetryService.log(
 						"warn",
+
 						`[NetworkRestrictions] Blocked URL: ${Url} - ${Reason}`,
 					);
 
 					// Add to blocked requests log
 					yield* Ref.update(BlockedRequestsRef, (Logs) => [
 						...Logs,
+
 						{
 							timestamp: Date.now(),
 							type: Url.startsWith("https:") ? "https" : "http",
@@ -163,6 +170,7 @@ export const NetworkRestrictionsLive = Layer.effect(
 					return yield* Effect.fail(
 						CreateIPCBlockError(
 							Channel,
+
 							"IPC channel is blocked by network restrictions",
 						),
 					);
@@ -185,6 +193,7 @@ export const NetworkRestrictionsLive = Layer.effect(
 				} as NetworkRestrictionConfig);
 				yield* TelemetryService.log(
 					"info",
+
 					`[NetworkRestrictions] Configuration updated`,
 				);
 			});
@@ -204,6 +213,7 @@ export const NetworkRestrictionsLive = Layer.effect(
 					yield* Ref.set(TelemetryLevelRef, Level);
 					yield* TelemetryService.log(
 						"info",
+
 						`[NetworkRestrictions] Telemetry level set to: ${Level}`,
 					);
 				});
@@ -214,6 +224,7 @@ export const NetworkRestrictionsLive = Layer.effect(
 
 		yield* TelemetryService.log(
 			"info",
+
 			"[NetworkRestrictions] Network restrictions service initialized",
 		);
 

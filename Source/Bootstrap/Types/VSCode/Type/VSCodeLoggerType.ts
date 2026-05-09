@@ -18,6 +18,7 @@ export { LogLevel } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/plat
  */
 export interface ILoggerOptions {
 	name?: string;
+
 	logLevel?: import("@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/log/common/log.js").LogLevel;
 }
 
@@ -26,9 +27,13 @@ export interface ILoggerOptions {
  */
 export interface ILogger {
 	trace(message: string, ...args: any[]): void;
+
 	debug(message: string, ...args: any[]): void;
+
 	info(message: string, ...args: any[]): void;
+
 	warn(message: string, ...args: any[]): void;
+
 	error(message: string, ...args: any[]): void;
 }
 

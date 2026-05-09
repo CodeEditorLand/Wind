@@ -26,6 +26,7 @@ const MakeResolverProblem = (error: unknown): TextModelResolverProblem => ({
 
 export const LiveTextModelResolverServiceLayer = Layer.effect(
 	TextModelResolverServiceTag,
+
 	Effect.gen(function* () {
 		const ModelService = yield* ModelServiceTag;
 
@@ -57,12 +58,14 @@ export const LiveTextModelResolverServiceLayer = Layer.effect(
 							},
 						};
 					}),
+
 					Effect.mapError(MakeResolverProblem),
 				),
 
 			HasModel: (uri) =>
 				ModelService.GetModel(uri).pipe(
 					Effect.map((Result) => Result !== null),
+
 					Effect.mapError(MakeResolverProblem),
 				),
 

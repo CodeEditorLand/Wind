@@ -5,6 +5,7 @@ import { LifecycleServiceTag } from "./Tag/LifecycleServiceTag.js";
 
 export const MockLifecycleServiceLayer = Layer.succeed(
 	LifecycleServiceTag,
+
 	StubLifecycleService,
 );
 

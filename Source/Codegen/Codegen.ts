@@ -18,31 +18,45 @@ import { RunCodegen } from "./RunCodegen.js";
 
 const Main = async (): Promise<void> => {
 	const Cwd = process.cwd();
+
 	const SourceRoot = resolve(
 		Cwd,
+
 		"..",
+
 		"..",
+
 		"Dependency",
+
 		"Microsoft",
+
 		"Dependency",
+
 		"Editor",
+
 		"src",
 	);
+
 	const OutputRoot = resolve(Cwd, "Source");
 
 	const Result = await RunCodegen({ SourceRoot, OutputRoot });
+
 	if ("_tag" in Result) {
 		// eslint-disable-next-line no-console
 		console.error(`[Wind/Codegen] FAILED: ${Result._tag}`);
+
 		process.exit(1);
 	}
+
 	if (Result.Failures.length > 0) {
 		// eslint-disable-next-line no-console
 		console.error(
 			`[Wind/Codegen] completed with ${Result.Failures.length} failures`,
 		);
+
 		process.exit(2);
 	}
+
 	// eslint-disable-next-line no-console
 	console.log(
 		`[Wind/Codegen] OK - ${Result.RecordsEmitted} services + ${Result.CommandsEmitted} commands in ${Result.DurationMilliseconds}ms`,

@@ -17,10 +17,14 @@ export interface HealthService {
 	readonly checkService: (
 		serviceName: string,
 	) => Effect.Effect<ServiceHealth, never>;
+
 	readonly checkAllServices: () => Effect.Effect<SystemHealth, never>;
+
 	readonly getOverallStatus: () => Effect.Effect<HealthStatus, never>;
+
 	readonly monitorService: (
 		serviceName: string,
+
 		intervalMs: number,
 	) => Effect.Effect<void, never>;
 }

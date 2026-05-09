@@ -24,30 +24,39 @@ export function CreateIPCRenderer(): IpcRenderer {
 		send: (Channel: string): void => {
 			if (!ValidateIPCChannel(Channel)) return;
 		},
+
 		invoke: async (Channel: string): Promise<unknown> => {
 			if (!ValidateIPCChannel(Channel)) {
 				throw new Error(`Invalid IPC channel: ${Channel}`);
 			}
+
 			return {};
 		},
+
 		on: (
 			_Channel: string,
+
 			_Listener: (event: IpcRendererEvent) => void,
 		): IpcRenderer => {
 			return self;
 		},
+
 		once: (
 			_Channel: string,
+
 			_Listener: (event: IpcRendererEvent) => void,
 		): IpcRenderer => {
 			return self;
 		},
+
 		removeListener: (
 			_Channel: string,
+
 			_Listener: (event: IpcRendererEvent) => void,
 		): IpcRenderer => {
 			return self;
 		},
 	};
+
 	return self;
 }

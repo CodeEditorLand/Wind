@@ -25,6 +25,6 @@ export const IEditorResolverServiceMembers: ReadonlyArray<InterfaceMemberRecord>
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: "If we didn't resolve an editor dictates what to do with the opening state\nABORT = Do not continue with opening the editor\nNONE = Continue as if the resolution has been disabled as the service could not resolve one",
-		SourceLine: 126,
+		SourceLine: 134,
 	}
 ] as const;

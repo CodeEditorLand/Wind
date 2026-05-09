@@ -53,11 +53,17 @@ const MakeLiveEnvironment: EnvironmentService = {
 			typeof window !== "undefined" && window.isSecureContext,
 		language: DetectLocale().split("-")[0] || "en",
 	})),
+
 	getPlatform: Effect.sync(DetectPlatform),
+
 	getArchitecture: Effect.sync(DetectArchitecture),
+
 	isWindows: Effect.map(Effect.sync(DetectPlatform), (p) => p === "win32"),
+
 	isMac: Effect.map(Effect.sync(DetectPlatform), (p) => p === "darwin"),
+
 	isLinux: Effect.map(Effect.sync(DetectPlatform), (p) => p === "linux"),
+
 	isWeb: Effect.map(Effect.sync(DetectPlatform), (p) => p === "web"),
 };
 
@@ -66,6 +72,7 @@ const MakeLiveEnvironment: EnvironmentService = {
  */
 export const EnvironmentLive = Layer.effect(
 	EnvironmentTag,
+
 	Effect.succeed(MakeLiveEnvironment),
 );
 
@@ -91,22 +98,34 @@ export const makeMockEnvironment = (
 ): EnvironmentService => {
 	const mockInfo = {
 		platform: "web" as const,
+
 		architecture: "x64" as const,
+
 		locale: "en-US",
+
 		timezone: "UTC",
+
 		userAgent: "Mock",
+
 		isSecureContext: true,
+
 		language: "en",
 		...overrides,
 	};
 
 	return {
 		getInfo: Effect.sync(() => mockInfo),
+
 		getPlatform: Effect.sync(() => mockInfo.platform),
+
 		getArchitecture: Effect.sync(() => mockInfo.architecture),
+
 		isWindows: Effect.sync(() => mockInfo.platform === "win32"),
+
 		isMac: Effect.sync(() => mockInfo.platform === "darwin"),
+
 		isLinux: Effect.sync(() => mockInfo.platform === "linux"),
+
 		isWeb: Effect.sync(() => mockInfo.platform === "web"),
 	};
 };
@@ -116,6 +135,7 @@ export const makeMockEnvironment = (
  */
 export const EnvironmentMock = Layer.effect(
 	EnvironmentTag,
+
 	Effect.succeed(makeMockEnvironment()),
 );
 

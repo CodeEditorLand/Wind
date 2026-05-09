@@ -19,6 +19,7 @@ const ResolveBridge = Effect.sync((): WorkbenchExtensionBridgeShape | null => {
 
 const Unavailable: WorkbenchExtensionProblem = {
 	_tag: "WorkbenchExtensionBridgeUnavailable",
+
 	reason: "globalThis.__CEL_SERVICES__.Extension is null.",
 };
 
@@ -38,6 +39,7 @@ const ToDescriptor = (
 
 export const WorkbenchExtensionLive = Layer.effect(
 	WorkbenchExtensionServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 
@@ -58,6 +60,7 @@ export const WorkbenchExtensionLive = Layer.effect(
 					try: () =>
 						Bridge.activateById(
 							{ value: ExtensionId },
+
 							{
 								startup: false,
 								extensionId: { value: ExtensionId },

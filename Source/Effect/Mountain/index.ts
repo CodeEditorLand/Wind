@@ -30,8 +30,11 @@ import { MountainTag } from "./Tag/MountainTag.js";
 
 // Error types
 export { default as MountainConnectionError } from "./Error/MountainConnectionError.js";
+
 export { default as MountainRPCError } from "./Error/MountainRPCError.js";
+
 export { default as MountainSyncError } from "./Error/MountainSyncError.js";
+
 export { default as MountainStateError } from "./Error/MountainStateError.js";
 
 // Type definitions

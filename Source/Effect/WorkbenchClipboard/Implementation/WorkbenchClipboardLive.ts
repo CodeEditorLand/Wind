@@ -15,6 +15,7 @@ const ResolveBridge = Effect.sync((): WorkbenchClipboardBridgeShape | null => {
 
 const Unavailable: WorkbenchClipboardProblem = {
 	_tag: "WorkbenchClipboardBridgeUnavailable",
+
 	reason: "globalThis.__CEL_SERVICES__.Clipboard is null.",
 };
 
@@ -23,6 +24,7 @@ const ToError = (cause: unknown): Error =>
 
 export const WorkbenchClipboardLive = Layer.effect(
 	WorkbenchClipboardServiceTag,
+
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
 

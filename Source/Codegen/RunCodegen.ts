@@ -48,18 +48,27 @@ import { WalkSourceTree } from "./Walk/SourceTreeWalker.js";
 
 export interface RunCodegenOptions {
 	readonly SourceRoot: string;
+
 	readonly OutputRoot: string;
+
 	readonly Log?: (message: string) => void;
 }
 
 export interface RunCodegenSummary {
 	readonly RecordsEmitted: number;
+
 	readonly CatalogPath: string;
+
 	readonly BridgeShapesEmitted: number;
+
 	readonly BridgeShapesSkipped: ReadonlyArray<string>;
+
 	readonly CommandCatalogPath: string;
+
 	readonly CommandsEmitted: number;
+
 	readonly Failures: ReadonlyArray<CodegenProblem>;
+
 	readonly DurationMilliseconds: number;
 }
 
@@ -72,16 +81,19 @@ export const RunCodegen = async (
 	options: RunCodegenOptions,
 ): Promise<RunCodegenSummary | CodegenProblem> => {
 	const Log = options.Log ?? DefaultLog;
+
 	const Started = performance.now();
 
 	if (!existsSync(options.SourceRoot)) {
 		return {
 			_tag: "CodegenSourceTreeMissing",
+
 			path: options.SourceRoot,
 		};
 	}
 
 	Log(`source root: ${options.SourceRoot}`);
+
 	Log(`output root: ${options.OutputRoot}`);
 
 	const Files = WalkSourceTree({
@@ -91,21 +103,27 @@ export const RunCodegen = async (
 	});
 
 	const Records: ServiceDecoratorRecord[] = [];
+
 	const Failures: CodegenProblem[] = [];
 
 	for await (const Record of IterateServiceDecorators(Files)) {
 		Records.push(Record);
+
 		const SchemaResult = await EmitServiceSchema({
 			Record,
 			OutputRoot: options.OutputRoot,
 		});
+
 		if ("_tag" in SchemaResult) {
 			Failures.push(SchemaResult);
+
 			Log(
 				`failed to emit schema for ${Record.DecoratorName}: ${SchemaResult._tag}`,
 			);
+
 			continue;
 		}
+
 		Log(
 			`emitted ${SchemaResult.OutputPath} (${SchemaResult.Members} members, ${SchemaResult.Bytes}B)`,
 		);
@@ -117,10 +135,13 @@ export const RunCodegen = async (
 		Records,
 		OutputRoot: options.OutputRoot,
 	});
+
 	if ("_tag" in CatalogResult) {
 		Failures.push(CatalogResult);
+
 		return CatalogResult;
 	}
+
 	Log(
 		`catalog: ${CatalogResult.OutputPath} (${CatalogResult.Entries} entries, ${CatalogResult.Bytes}B)`,
 	);
@@ -130,9 +151,11 @@ export const RunCodegen = async (
 		Manifest: WorkbenchBridgeShapeManifest,
 		OutputRoot: options.OutputRoot,
 	});
+
 	for (const Failure of BridgeShapeOutcome.Failures) {
 		Failures.push(Failure);
 	}
+
 	Log(
 		`bridge shapes: ${BridgeShapeOutcome.Emitted} emitted, ${BridgeShapeOutcome.Skipped.length} skipped`,
 	);
@@ -147,35 +170,49 @@ export const RunCodegen = async (
 		IncludeExtensions: [".ts"],
 		ExcludeSegments: [],
 	});
+
 	const CommandRecords: CommandRegistrationRecord[] = [];
+
 	for await (const Record of IterateCommandRegistrations(CommandFiles)) {
 		CommandRecords.push(Record);
 	}
+
 	Log(`discovered ${CommandRecords.length} command registrations`);
 
 	const CommandCatalogResult = await EmitCommandCatalog({
 		Records: CommandRecords,
 		OutputRoot: options.OutputRoot,
 	});
+
 	if ("_tag" in CommandCatalogResult) {
 		Failures.push(CommandCatalogResult);
+
 		return CommandCatalogResult;
 	}
+
 	Log(
 		`command catalog: ${CommandCatalogResult.OutputPath} (${CommandCatalogResult.Entries} entries, ${CommandCatalogResult.Bytes}B)`,
 	);
 
 	const Elapsed = Math.round(performance.now() - Started);
+
 	Log(`done in ${Elapsed}ms`);
 
 	return {
 		RecordsEmitted: Records.length,
+
 		CatalogPath: CatalogResult.OutputPath,
+
 		BridgeShapesEmitted: BridgeShapeOutcome.Emitted,
+
 		BridgeShapesSkipped: BridgeShapeOutcome.Skipped,
+
 		CommandCatalogPath: CommandCatalogResult.OutputPath,
+
 		CommandsEmitted: CommandCatalogResult.Entries,
+
 		Failures,
+
 		DurationMilliseconds: Elapsed,
 	};
 };
