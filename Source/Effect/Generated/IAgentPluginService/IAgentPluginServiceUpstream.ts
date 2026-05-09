@@ -5,52 +5,86 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentPluginServiceTag = "agentPluginService" as const;
+
 export const IAgentPluginServiceSourcePath = "vs/workbench/contrib/chat/common/plugins/agentPluginService.ts" as const;
+
 export const IAgentPluginServiceSourceLine = 17 as const;
+
 export interface IAgentPluginServiceUpstream {
+
 	/**
 	 * URI where this hook is defined -- not unique, multiple hooks may be in a manifest
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * URI where this hook is defined -- not unique, multiple hooks may be in a manifest
 	 */
 	readonly plugins: IObservable<readonly IAgentPlugin[]>;
+
 	/**
 	 * URI where this hook is defined -- not unique, multiple hooks may be in a manifest
 	 */
 	readonly enablementModel: IEnablementModel;
 }
+
 export const IAgentPluginServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "URI where this hook is defined -- not unique, multiple hooks may be in a manifest",
+
 		SourceLine: 51,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "plugins",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IObservable<readonly IAgentPlugin[]>",
+
 		Parameters: [],
+
 		DocComment: "URI where this hook is defined -- not unique, multiple hooks may be in a manifest",
+
 		SourceLine: 51,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "enablementModel",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IEnablementModel",
+
 		Parameters: [],
+
 		DocComment: "URI where this hook is defined -- not unique, multiple hooks may be in a manifest",
+
 		SourceLine: 51,
 	}
 ] as const;

@@ -1,1 +1,14 @@
-import t from"./TargetConfig.js";const i=(await import("deepmerge-ts")).deepmergeCustom({mergeArrays:!1});var r=async e=>i(await t(e),{bundle:!0,outbase:"Target",tsconfig:"Configuration/tsconfig/Target/Compile.json",plugins:[],allowOverwrite:!0});export{r as default};
+import t from "./TargetConfig.js";
+
+const i = (await import("deepmerge-ts")).deepmergeCustom({ mergeArrays: !1 });
+
+var r = async (e) =>
+	i(await t(e), {
+		bundle: !0,
+		outbase: "Target",
+		tsconfig: "Configuration/tsconfig/Target/Compile.json",
+		plugins: [],
+		allowOverwrite: !0,
+	});
+
+export { r as default };

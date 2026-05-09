@@ -5,29 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAquariumServiceTag = "aquariumService" as const;
+
 export const IAquariumServiceSourcePath = "vs/sessions/contrib/aquarium/browser/aquariumOverlay.ts" as const;
+
 export const IAquariumServiceSourceLine = 67 as const;
+
 // Decorator doc:
 // /**
 //  * Soft margin where fish start to turn back.
 //  */
 // 
 export interface IAquariumServiceUpstream {
+
 	/**
 	 * Soft margin where fish start to turn back.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IAquariumServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Soft margin where fish start to turn back.",
+
 		SourceLine: 70,
 	}
 ] as const;

@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IDataChannelServiceTag = "dataChannelService" as const;
+
 export const IDataChannelServiceSourcePath = "vs/platform/dataChannel/common/dataChannel.ts" as const;
+
 export const IDataChannelServiceSourceLine = 9 as const;
+
 export interface IDataChannelServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidSendData: Event<IDataChannelEvent>;
 }
+
 export const IDataChannelServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 12,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidSendData",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<IDataChannelEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 12,
 	}
 ] as const;

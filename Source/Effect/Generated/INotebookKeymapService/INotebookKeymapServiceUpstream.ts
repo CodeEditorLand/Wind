@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const INotebookKeymapServiceTag = "notebookKeymapService" as const;
+
 export const INotebookKeymapServiceSourcePath = "vs/workbench/contrib/notebook/common/notebookKeymapService.ts" as const;
+
 export const INotebookKeymapServiceSourceLine = 8 as const;
+
 export interface INotebookKeymapServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const INotebookKeymapServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 11,
 	}
 ] as const;

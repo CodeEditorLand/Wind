@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtHostTestingTag = "IExtHostTesting" as const;
+
 export const IExtHostTestingSourcePath = "vs/workbench/api/common/extHostTesting.ts" as const;
+
 export const IExtHostTestingSourceLine = 50 as const;
+
 export interface IExtHostTestingUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const IExtHostTestingMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 52,
 	}
 ] as const;

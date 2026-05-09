@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IHostServiceTag = "hostService" as const;
+
 export const IHostServiceSourcePath = "vs/workbench/services/host/browser/host.ts" as const;
+
 export const IHostServiceSourceLine = 13 as const;
+
 /**
  * A set of methods supported in both web and native environments.
  * @see {@link INativeHostService} for methods that are specific to native
@@ -15,12 +19,14 @@ export const IHostServiceSourceLine = 13 as const;
  */
 
 export interface IHostServiceUpstream {
+
 	/**
 	 * A set of methods supported in both web and native environments.
 	 * @see {@link INativeHostService} for methods that are specific to native
 	 * environments.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * A set of methods supported in both web and native environments.
 	 * @see {@link INativeHostService} for methods that are specific to native
@@ -28,25 +34,43 @@ export interface IHostServiceUpstream {
 	 */
 	getWindows(options: { includeAuxiliaryWindows: false }): Promise<Array<IOpenedMainWindow>>;
 }
+
 export const IHostServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "A set of methods supported in both web and native environments.\n@see {@link INativeHostService} for methods that are specific to native\nenvironments.",
+
 		SourceLine: 39,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getWindows",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<Array<IOpenedMainWindow>>",
+
 		Parameters: [{ Name: "options", TypeText: "{ includeAuxiliaryWindows: false }", Optional: false }],
+
 		DocComment: "A set of methods supported in both web and native environments.\n@see {@link INativeHostService} for methods that are specific to native\nenvironments.",
+
 		SourceLine: 122,
 	}
 ] as const;

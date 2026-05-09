@@ -5,43 +5,77 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IBreadcrumbsServiceTag = "IEditorBreadcrumbsService" as const;
+
 export const IBreadcrumbsServiceSourcePath = "vs/workbench/browser/parts/editor/breadcrumbs.ts" as const;
+
 export const IBreadcrumbsServiceSourceLine = 18 as const;
+
 export interface IBreadcrumbsServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	register(group: GroupIdentifier, widget: BreadcrumbsWidget): IDisposable;
+
 	getWidget(group: GroupIdentifier): BreadcrumbsWidget | undefined;
 }
+
 export const IBreadcrumbsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 22,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "register",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "group", TypeText: "GroupIdentifier", Optional: false }, { Name: "widget", TypeText: "BreadcrumbsWidget", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 24,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getWidget",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "BreadcrumbsWidget | undefined",
+
 		Parameters: [{ Name: "group", TypeText: "GroupIdentifier", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 26,
 	}
 ] as const;

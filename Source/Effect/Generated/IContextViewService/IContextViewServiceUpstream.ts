@@ -5,76 +5,140 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IContextViewServiceTag = "contextViewService" as const;
+
 export const IContextViewServiceSourcePath = "vs/platform/contextview/browser/contextView.ts" as const;
+
 export const IContextViewServiceSourceLine = 17 as const;
+
 export interface IContextViewServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	showContextView(delegate: IContextViewDelegate, container?: HTMLElement, shadowRoot?: boolean): IOpenContextView;
+
 	hideContextView(data?: any): void;
+
 	getContextViewElement(): HTMLElement;
+
 	layout(): void;
+
 	anchorAlignment?: AnchorAlignment;
 }
+
 export const IContextViewServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 21,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "showContextView",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IOpenContextView",
+
 		Parameters: [{ Name: "delegate", TypeText: "IContextViewDelegate", Optional: false }, { Name: "container", TypeText: "HTMLElement", Optional: true }, { Name: "shadowRoot", TypeText: "boolean", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "hideContextView",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "data", TypeText: "any", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 24,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getContextViewElement",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "HTMLElement",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 25,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "layout",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 26,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "anchorAlignment",
+
 		Readonly: false,
+
 		Optional: true,
+
 		TypeText: "AnchorAlignment",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 27,
 	}
 ] as const;

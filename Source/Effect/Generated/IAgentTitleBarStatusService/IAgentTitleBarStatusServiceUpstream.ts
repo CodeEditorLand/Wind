@@ -5,29 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentTitleBarStatusServiceTag = "agentTitleBarStatusService" as const;
+
 export const IAgentTitleBarStatusServiceSourcePath = "vs/workbench/contrib/chat/browser/agentSessions/experiments/agentTitleBarStatusService.ts" as const;
+
 export const IAgentTitleBarStatusServiceSourceLine = 84 as const;
+
 // Decorator doc:
 // /**
 //  * Default mode showing workspace name + session stats
 //  */
 // 
 export interface IAgentTitleBarStatusServiceUpstream {
+
 	/**
 	 * Default mode showing workspace name + session stats
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IAgentTitleBarStatusServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Default mode showing workspace name + session stats",
+
 		SourceLine: 32,
 	}
 ] as const;

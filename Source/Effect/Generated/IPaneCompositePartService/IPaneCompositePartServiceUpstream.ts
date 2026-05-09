@@ -5,65 +5,119 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IPaneCompositePartServiceTag = "paneCompositePartService" as const;
+
 export const IPaneCompositePartServiceSourcePath = "vs/workbench/services/panecomposite/browser/panecomposite.ts" as const;
+
 export const IPaneCompositePartServiceSourceLine = 14 as const;
+
 export interface IPaneCompositePartServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidPaneCompositeOpen: Event<{ composite: IPaneComposite; viewContainerLocation: ViewContainerLocation }>;
+
 	readonly onDidPaneCompositeClose: Event<{ composite: IPaneComposite; viewContainerLocation: ViewContainerLocation }>;
+
 	getRegistryId(viewContainerLocation: ViewContainerLocation): string;
+
 	getPartId(viewContainerLocation: ViewContainerLocation): SINGLE_WINDOW_PARTS;
 }
+
 export const IPaneCompositePartServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidPaneCompositeOpen",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<{ composite: IPaneComposite; viewContainerLocation: ViewContainerLocation }>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidPaneCompositeClose",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<{ composite: IPaneComposite; viewContainerLocation: ViewContainerLocation }>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getRegistryId",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "string",
+
 		Parameters: [{ Name: "viewContainerLocation", TypeText: "ViewContainerLocation", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getPartId",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "SINGLE_WINDOW_PARTS",
+
 		Parameters: [{ Name: "viewContainerLocation", TypeText: "ViewContainerLocation", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 25,
 	}
 ] as const;

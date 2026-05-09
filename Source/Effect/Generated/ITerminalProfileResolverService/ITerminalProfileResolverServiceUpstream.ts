@@ -5,116 +5,200 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITerminalProfileResolverServiceTag = "terminalProfileResolverService" as const;
+
 export const ITerminalProfileResolverServiceSourcePath = "vs/workbench/contrib/terminal/common/terminal.ts" as const;
+
 export const ITerminalProfileResolverServiceSourceLine = 45 as const;
+
 export interface ITerminalProfileResolverServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly defaultProfileName: string | undefined;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	resolveShellLaunchConfig(shellLaunchConfig: IShellLaunchConfig, options: IShellLaunchConfigResolveOptions): Promise<void>;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	getDefaultProfile(options: IShellLaunchConfigResolveOptions): Promise<ITerminalProfile>;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	getDefaultShell(options: IShellLaunchConfigResolveOptions): Promise<string>;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	getDefaultShellArgs(options: IShellLaunchConfigResolveOptions): Promise<SingleOrMany<string>>;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	getDefaultIcon(): TerminalIcon & ThemeIcon;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	getEnvironment(remoteAuthority: string | undefined): Promise<IProcessEnvironment>;
 }
+
 export const ITerminalProfileResolverServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 47,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "defaultProfileName",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "string | undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 47,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resolveShellLaunchConfig",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "shellLaunchConfig", TypeText: "IShellLaunchConfig", Optional: false }, { Name: "options", TypeText: "IShellLaunchConfigResolveOptions", Optional: false }],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 55,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getDefaultProfile",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ITerminalProfile>",
+
 		Parameters: [{ Name: "options", TypeText: "IShellLaunchConfigResolveOptions", Optional: false }],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 56,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getDefaultShell",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<string>",
+
 		Parameters: [{ Name: "options", TypeText: "IShellLaunchConfigResolveOptions", Optional: false }],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 57,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getDefaultShellArgs",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<SingleOrMany<string>>",
+
 		Parameters: [{ Name: "options", TypeText: "IShellLaunchConfigResolveOptions", Optional: false }],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 58,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getDefaultIcon",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "TerminalIcon & ThemeIcon",
+
 		Parameters: [],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 59,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getEnvironment",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IProcessEnvironment>",
+
 		Parameters: [{ Name: "remoteAuthority", TypeText: "string | undefined", Optional: false }],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 60,
 	}
 ] as const;

@@ -5,208 +5,392 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IUserDataSyncStoreServiceTag = "IUserDataSyncStoreService" as const;
+
 export const IUserDataSyncStoreServiceSourcePath = "vs/platform/userDataSync/common/userDataSync.ts" as const;
+
 export const IUserDataSyncStoreServiceSourceLine = 253 as const;
+
 export interface IUserDataSyncStoreServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidChangeDonotMakeRequestsUntil: Event<void>;
+
 	readonly donotMakeRequestsUntil: Date | undefined;
+
 	readonly onTokenFailed: Event<UserDataSyncErrorCode>;
+
 	readonly onTokenSucceed: Event<void>;
+
 	setAuthToken(token: string, type: string): void;
+
 	manifest(oldValue: IUserDataManifest | null, headers?: IHeaders): Promise<IUserDataManifest | null>;
+
 	readResource(resource: ServerResource, oldValue: IUserData | null, collection?: string, headers?: IHeaders): Promise<IUserData>;
+
 	writeResource(resource: ServerResource, content: string, ref: string | null, collection?: string, headers?: IHeaders): Promise<string>;
+
 	deleteResource(resource: ServerResource, ref: string | null, collection?: string): Promise<void>;
+
 	getAllResourceRefs(resource: ServerResource, collection?: string): Promise<IResourceRefHandle[]>;
+
 	resolveResourceContent(resource: ServerResource, ref: string, collection?: string, headers?: IHeaders): Promise<string | null>;
+
 	getAllCollections(headers?: IHeaders): Promise<string[]>;
+
 	createCollection(headers?: IHeaders): Promise<string>;
+
 	deleteCollection(collection?: string, headers?: IHeaders): Promise<void>;
+
 	getLatestData(headers?: IHeaders): Promise<IUserDataSyncLatestData | null>;
+
 	getActivityData(): Promise<VSBufferReadableStream>;
+
 	clear(): Promise<void>;
 }
+
 export const IUserDataSyncStoreServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 255,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeDonotMakeRequestsUntil",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 255,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "donotMakeRequestsUntil",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Date | undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 255,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onTokenFailed",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<UserDataSyncErrorCode>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 255,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onTokenSucceed",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 255,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setAuthToken",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "token", TypeText: "string", Optional: false }, { Name: "type", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 261,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "manifest",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IUserDataManifest | null>",
+
 		Parameters: [{ Name: "oldValue", TypeText: "IUserDataManifest | null", Optional: false }, { Name: "headers", TypeText: "IHeaders", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 263,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "readResource",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IUserData>",
+
 		Parameters: [{ Name: "resource", TypeText: "ServerResource", Optional: false }, { Name: "oldValue", TypeText: "IUserData | null", Optional: false }, { Name: "collection", TypeText: "string", Optional: true }, { Name: "headers", TypeText: "IHeaders", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 264,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "writeResource",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<string>",
+
 		Parameters: [{ Name: "resource", TypeText: "ServerResource", Optional: false }, { Name: "content", TypeText: "string", Optional: false }, { Name: "ref", TypeText: "string | null", Optional: false }, { Name: "collection", TypeText: "string", Optional: true }, { Name: "headers", TypeText: "IHeaders", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 265,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "deleteResource",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "resource", TypeText: "ServerResource", Optional: false }, { Name: "ref", TypeText: "string | null", Optional: false }, { Name: "collection", TypeText: "string", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 266,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getAllResourceRefs",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IResourceRefHandle[]>",
+
 		Parameters: [{ Name: "resource", TypeText: "ServerResource", Optional: false }, { Name: "collection", TypeText: "string", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 267,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resolveResourceContent",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<string | null>",
+
 		Parameters: [{ Name: "resource", TypeText: "ServerResource", Optional: false }, { Name: "ref", TypeText: "string", Optional: false }, { Name: "collection", TypeText: "string", Optional: true }, { Name: "headers", TypeText: "IHeaders", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 268,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getAllCollections",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<string[]>",
+
 		Parameters: [{ Name: "headers", TypeText: "IHeaders", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 270,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "createCollection",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<string>",
+
 		Parameters: [{ Name: "headers", TypeText: "IHeaders", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 271,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "deleteCollection",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "collection", TypeText: "string", Optional: true }, { Name: "headers", TypeText: "IHeaders", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 272,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getLatestData",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IUserDataSyncLatestData | null>",
+
 		Parameters: [{ Name: "headers", TypeText: "IHeaders", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 274,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getActivityData",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<VSBufferReadableStream>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 275,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "clear",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 277,
 	}
 ] as const;

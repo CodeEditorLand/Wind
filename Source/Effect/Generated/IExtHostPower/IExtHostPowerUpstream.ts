@@ -5,11 +5,17 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtHostPowerTag = "IExtHostPower" as const;
+
 export const IExtHostPowerSourcePath = "vs/workbench/api/common/extHostPower.ts" as const;
+
 export const IExtHostPowerSourceLine = 123 as const;
+
 export interface IExtHostPowerUpstream {
+
 	// (no members extracted in same file - resolve cross-file)
 }
+
 export const IExtHostPowerMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

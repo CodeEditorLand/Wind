@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IWorkbenchIssueServiceTag = "workbenchIssueService" as const;
+
 export const IWorkbenchIssueServiceSourcePath = "vs/workbench/contrib/issue/common/issue.ts" as const;
+
 export const IWorkbenchIssueServiceSourceLine = 104 as const;
+
 export interface IWorkbenchIssueServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	openReporter(dataOverrides?: Partial<IssueReporterData>): Promise<void>;
 }
+
 export const IWorkbenchIssueServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 107,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "openReporter",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "dataOverrides", TypeText: "Partial<IssueReporterData>", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 108,
 	}
 ] as const;

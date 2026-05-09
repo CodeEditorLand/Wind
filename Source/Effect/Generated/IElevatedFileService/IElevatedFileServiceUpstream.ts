@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IElevatedFileServiceTag = "elevatedFileService" as const;
+
 export const IElevatedFileServiceSourcePath = "vs/workbench/services/files/common/elevatedFileService.ts" as const;
+
 export const IElevatedFileServiceSourceLine = 11 as const;
+
 export interface IElevatedFileServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const IElevatedFileServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 15,
 	}
 ] as const;

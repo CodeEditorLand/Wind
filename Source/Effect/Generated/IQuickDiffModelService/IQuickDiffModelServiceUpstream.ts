@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IQuickDiffModelServiceTag = "IQuickDiffModelService" as const;
+
 export const IQuickDiffModelServiceSourcePath = "vs/workbench/contrib/scm/browser/quickDiffModel.ts" as const;
+
 export const IQuickDiffModelServiceSourceLine = 34 as const;
+
 export interface IQuickDiffModelServiceUpstream {
+
 	_serviceBrand: undefined;
 }
+
 export const IQuickDiffModelServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 47,
 	}
 ] as const;

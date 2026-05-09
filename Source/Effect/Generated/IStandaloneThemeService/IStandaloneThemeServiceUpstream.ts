@@ -5,76 +5,140 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IStandaloneThemeServiceTag = "themeService" as const;
+
 export const IStandaloneThemeServiceSourcePath = "vs/editor/standalone/common/standaloneTheme.ts" as const;
+
 export const IStandaloneThemeServiceSourceLine = 11 as const;
+
 export interface IStandaloneThemeServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	setTheme(themeName: string): void;
+
 	setAutoDetectHighContrast(autoDetectHighContrast: boolean): void;
+
 	defineTheme(themeName: string, themeData: IStandaloneThemeData): void;
+
 	getColorTheme(): IStandaloneTheme;
+
 	setColorMapOverride(colorMapOverride: Color[] | null): void;
 }
+
 export const IStandaloneThemeServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 30,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setTheme",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "themeName", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 32,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setAutoDetectHighContrast",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "autoDetectHighContrast", TypeText: "boolean", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 34,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "defineTheme",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "themeName", TypeText: "string", Optional: false }, { Name: "themeData", TypeText: "IStandaloneThemeData", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 36,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getColorTheme",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IStandaloneTheme",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 38,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setColorMapOverride",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "colorMapOverride", TypeText: "Color[] | null", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 40,
 	}
 ] as const;

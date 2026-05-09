@@ -5,54 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtHostTerminalShellIntegrationTag = "IExtHostTerminalShellIntegration" as const;
+
 export const IExtHostTerminalShellIntegrationSourcePath = "vs/workbench/api/common/extHostTerminalShellIntegration.ts" as const;
+
 export const IExtHostTerminalShellIntegrationSourceLine = 24 as const;
+
 export interface IExtHostTerminalShellIntegrationUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidChangeTerminalShellIntegration: Event<vscode.TerminalShellIntegrationChangeEvent>;
+
 	readonly onDidStartTerminalShellExecution: Event<vscode.TerminalShellExecutionStartEvent>;
+
 	readonly onDidEndTerminalShellExecution: Event<vscode.TerminalShellExecutionEndEvent>;
 }
+
 export const IExtHostTerminalShellIntegrationMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeTerminalShellIntegration",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<vscode.TerminalShellIntegrationChangeEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidStartTerminalShellExecution",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<vscode.TerminalShellExecutionStartEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidEndTerminalShellExecution",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<vscode.TerminalShellExecutionEndEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	}
 ] as const;

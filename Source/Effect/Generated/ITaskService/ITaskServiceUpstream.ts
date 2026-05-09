@@ -5,426 +5,740 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITaskServiceTag = "taskService" as const;
+
 export const ITaskServiceSourcePath = "vs/workbench/contrib/tasks/common/taskService.ts" as const;
+
 export const ITaskServiceSourceLine = 28 as const;
+
 export interface ITaskServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidStateChange: Event<ITaskEvent>;
+
 	readonly onDidReconnectToTasks: Event<void>;
+
 	readonly onDidChangeTaskSystemInfo: Event<void>;
+
 	readonly onDidChangeTaskConfig: Event<void>;
+
 	readonly hasTaskSystemInfo: boolean;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	isReconnected: boolean;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	supportsMultipleTaskExecutions: boolean;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	configureAction(): Action;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	run(task: Task | undefined, options?: IProblemMatcherRunOptions, runSource?: TaskRunSource): Promise<ITaskSummary | undefined>;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	inTerminal(): boolean;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	getActiveTasks(): Promise<Task[]>;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	getBusyTasks(): Promise<Task[]>;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	terminate(task: Task): Promise<ITaskTerminateResponse>;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	tasks(filter?: ITaskFilter): Promise<Task[]>;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	rerun(terminalInstanceId: number): void;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	taskTypes(): string[];
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	getWorkspaceTasks(runSource?: TaskRunSource): Promise<Map<string, IWorkspaceFolderTaskResult>>;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	getSavedTasks(type: 'persistent' | 'historical'): Promise<(Task | ConfiguringTask)[]>;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	removeRecentlyUsedTask(taskRecentlyUsedKey: string): void;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	getTerminalsForTasks(tasks: SingleOrMany<Task>): URI[] | undefined;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	getTaskProblems(instanceId: number): Map<string, { resources: URI[]; markers: IMarkerData[] }> | undefined;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	tryResolveTask(configuringTask: ConfiguringTask): Promise<Task | undefined>;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	createSorter(): TaskSorter;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	getTaskDescription(task: Task | ConfiguringTask): string | undefined;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	customize(task: ContributedTask | CustomTask | ConfiguringTask, properties?: {}, openConfig?: boolean): Promise<void>;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	openConfig(task: CustomTask | ConfiguringTask | undefined): Promise<boolean>;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	registerTaskProvider(taskProvider: ITaskProvider, type: string): IDisposable;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	registerTaskSystem(scheme: string, taskSystemInfo: ITaskSystemInfo): void;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	registerSupportedExecutions(custom?: boolean, shell?: boolean, process?: boolean): void;
+
 	/**
 	 * Fired when task providers are registered or unregistered
 	 */
 	extensionCallbackTaskComplete(task: Task, result: number | undefined): Promise<void>;
 }
+
 export const ITaskServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 67,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidStateChange",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITaskEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 67,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidReconnectToTasks",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 67,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeTaskSystemInfo",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 67,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeTaskConfig",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 67,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "hasTaskSystemInfo",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 67,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "isReconnected",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 71,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "supportsMultipleTaskExecutions",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 73,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "configureAction",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Action",
+
 		Parameters: [],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 75,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "run",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ITaskSummary | undefined>",
+
 		Parameters: [{ Name: "task", TypeText: "Task | undefined", Optional: false }, { Name: "options", TypeText: "IProblemMatcherRunOptions", Optional: true }, { Name: "runSource", TypeText: "TaskRunSource", Optional: true }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 76,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "inTerminal",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 77,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getActiveTasks",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<Task[]>",
+
 		Parameters: [],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 78,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getBusyTasks",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<Task[]>",
+
 		Parameters: [],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 79,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "terminate",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ITaskTerminateResponse>",
+
 		Parameters: [{ Name: "task", TypeText: "Task", Optional: false }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 80,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "tasks",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<Task[]>",
+
 		Parameters: [{ Name: "filter", TypeText: "ITaskFilter", Optional: true }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 81,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "rerun",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "terminalInstanceId", TypeText: "number", Optional: false }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 82,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "taskTypes",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "string[]",
+
 		Parameters: [],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 88,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getWorkspaceTasks",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<Map<string, IWorkspaceFolderTaskResult>>",
+
 		Parameters: [{ Name: "runSource", TypeText: "TaskRunSource", Optional: true }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 89,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getSavedTasks",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<(Task | ConfiguringTask)[]>",
+
 		Parameters: [{ Name: "type", TypeText: "'persistent' | 'historical'", Optional: false }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 90,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeRecentlyUsedTask",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "taskRecentlyUsedKey", TypeText: "string", Optional: false }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 91,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getTerminalsForTasks",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "URI[] | undefined",
+
 		Parameters: [{ Name: "tasks", TypeText: "SingleOrMany<Task>", Optional: false }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 92,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getTaskProblems",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Map<string, { resources: URI[]; markers: IMarkerData[] }> | undefined",
+
 		Parameters: [{ Name: "instanceId", TypeText: "number", Optional: false }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 93,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "tryResolveTask",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<Task | undefined>",
+
 		Parameters: [{ Name: "configuringTask", TypeText: "ConfiguringTask", Optional: false }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 98,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "createSorter",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "TaskSorter",
+
 		Parameters: [],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 99,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getTaskDescription",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "string | undefined",
+
 		Parameters: [{ Name: "task", TypeText: "Task | ConfiguringTask", Optional: false }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 101,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "customize",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "task", TypeText: "ContributedTask | CustomTask | ConfiguringTask", Optional: false }, { Name: "properties", TypeText: "{}", Optional: true }, { Name: "openConfig", TypeText: "boolean", Optional: true }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 102,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "openConfig",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<boolean>",
+
 		Parameters: [{ Name: "task", TypeText: "CustomTask | ConfiguringTask | undefined", Optional: false }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 103,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerTaskProvider",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "taskProvider", TypeText: "ITaskProvider", Optional: false }, { Name: "type", TypeText: "string", Optional: false }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 105,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerTaskSystem",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "scheme", TypeText: "string", Optional: false }, { Name: "taskSystemInfo", TypeText: "ITaskSystemInfo", Optional: false }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 107,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerSupportedExecutions",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "custom", TypeText: "boolean", Optional: true }, { Name: "shell", TypeText: "boolean", Optional: true }, { Name: "process", TypeText: "boolean", Optional: true }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 111,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "extensionCallbackTaskComplete",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "task", TypeText: "Task", Optional: false }, { Name: "result", TypeText: "number | undefined", Optional: false }],
+
 		DocComment: "Fired when task providers are registered or unregistered",
+
 		SourceLine: 113,
 	}
 ] as const;

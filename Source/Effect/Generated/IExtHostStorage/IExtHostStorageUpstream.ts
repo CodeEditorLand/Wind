@@ -5,11 +5,17 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtHostStorageTag = "IExtHostStorage" as const;
+
 export const IExtHostStorageSourcePath = "vs/workbench/api/common/extHostStorage.ts" as const;
+
 export const IExtHostStorageSourceLine = 75 as const;
+
 export interface IExtHostStorageUpstream {
+
 	// (no members extracted in same file - resolve cross-file)
 }
+
 export const IExtHostStorageMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

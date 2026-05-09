@@ -5,11 +5,17 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IEditSessionsLogServiceTag = "IEditSessionsLogService" as const;
+
 export const IEditSessionsLogServiceSourcePath = "vs/workbench/contrib/editSessions/common/editSessions.ts" as const;
+
 export const IEditSessionsLogServiceSourceLine = 46 as const;
+
 export interface IEditSessionsLogServiceUpstream {
+
 	// (no members extracted in same file - resolve cross-file)
 }
+
 export const IEditSessionsLogServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

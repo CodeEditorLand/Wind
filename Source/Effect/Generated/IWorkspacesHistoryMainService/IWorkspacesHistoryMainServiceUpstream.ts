@@ -5,76 +5,140 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IWorkspacesHistoryMainServiceTag = "workspacesHistoryMainService" as const;
+
 export const IWorkspacesHistoryMainServiceSourcePath = "vs/platform/workspaces/electron-main/workspacesHistoryMainService.ts" as const;
+
 export const IWorkspacesHistoryMainServiceSourceLine = 30 as const;
+
 export interface IWorkspacesHistoryMainServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidChangeRecentlyOpened: CommonEvent<void>;
+
 	addRecentlyOpened(recents: IRecent[]): Promise<void>;
+
 	getRecentlyOpened(): Promise<IRecentlyOpened>;
+
 	removeRecentlyOpened(paths: URI[]): Promise<void>;
+
 	clearRecentlyOpened(options?: { confirm?: boolean }): Promise<void>;
 }
+
 export const IWorkspacesHistoryMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 34,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeRecentlyOpened",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "CommonEvent<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 34,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "addRecentlyOpened",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "recents", TypeText: "IRecent[]", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 38,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getRecentlyOpened",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IRecentlyOpened>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 39,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeRecentlyOpened",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "paths", TypeText: "URI[]", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 40,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "clearRecentlyOpened",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "options", TypeText: "{ confirm?: boolean }", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 41,
 	}
 ] as const;

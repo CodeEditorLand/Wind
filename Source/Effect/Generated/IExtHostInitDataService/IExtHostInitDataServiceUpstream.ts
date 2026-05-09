@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtHostInitDataServiceTag = "IExtHostInitDataService" as const;
+
 export const IExtHostInitDataServiceSourcePath = "vs/workbench/api/common/extHostInitDataService.ts" as const;
+
 export const IExtHostInitDataServiceSourceLine = 9 as const;
+
 export interface IExtHostInitDataServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const IExtHostInitDataServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 12,
 	}
 ] as const;

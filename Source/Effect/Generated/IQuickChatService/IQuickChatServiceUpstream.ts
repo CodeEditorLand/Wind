@@ -5,141 +5,235 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IQuickChatServiceTag = "quickChatService" as const;
+
 export const IQuickChatServiceSourcePath = "vs/workbench/contrib/chat/browser/chat.ts" as const;
+
 export const IQuickChatServiceSourceLine = 169 as const;
+
 // Decorator doc:
 // /**
 //  * A workspace item that can be selected in the workspace picker.
 //  */
 // 
 export interface IQuickChatServiceUpstream {
+
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	readonly onDidClose: Event<void>;
+
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	readonly enabled: boolean;
+
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	readonly focused: boolean;
+
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	toggle(options?: IQuickChatOpenOptions): void;
+
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	focus(): void;
+
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	open(options?: IQuickChatOpenOptions): void;
+
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	close(): void;
+
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	openInChatView(): void;
 }
+
 export const IQuickChatServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "A workspace item that can be selected in the workspace picker.",
+
 		SourceLine: 171,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidClose",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: "A workspace item that can be selected in the workspace picker.",
+
 		SourceLine: 171,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "enabled",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [],
+
 		DocComment: "A workspace item that can be selected in the workspace picker.",
+
 		SourceLine: 171,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "focused",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [],
+
 		DocComment: "A workspace item that can be selected in the workspace picker.",
+
 		SourceLine: 171,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "toggle",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "options", TypeText: "IQuickChatOpenOptions", Optional: true }],
+
 		DocComment: "A workspace item that can be selected in the workspace picker.",
+
 		SourceLine: 177,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "focus",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: "A workspace item that can be selected in the workspace picker.",
+
 		SourceLine: 178,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "open",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "options", TypeText: "IQuickChatOpenOptions", Optional: true }],
+
 		DocComment: "A workspace item that can be selected in the workspace picker.",
+
 		SourceLine: 179,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "close",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: "A workspace item that can be selected in the workspace picker.",
+
 		SourceLine: 180,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "openInChatView",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: "A workspace item that can be selected in the workspace picker.",
+
 		SourceLine: 181,
 	}
 ] as const;

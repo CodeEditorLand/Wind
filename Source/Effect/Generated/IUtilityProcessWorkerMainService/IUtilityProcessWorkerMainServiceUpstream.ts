@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IUtilityProcessWorkerMainServiceTag = "utilityProcessWorker" as const;
+
 export const IUtilityProcessWorkerMainServiceSourcePath = "vs/platform/utilityProcess/electron-main/utilityProcessWorkerMainService.ts" as const;
+
 export const IUtilityProcessWorkerMainServiceSourceLine = 18 as const;
+
 export interface IUtilityProcessWorkerMainServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const IUtilityProcessWorkerMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 22,
 	}
 ] as const;

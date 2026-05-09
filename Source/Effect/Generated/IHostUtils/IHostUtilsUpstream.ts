@@ -5,85 +5,139 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IHostUtilsTag = "IHostUtils" as const;
+
 export const IHostUtilsSourcePath = "vs/workbench/api/common/extHostExtensionService.ts" as const;
+
 export const IHostUtilsSourceLine = 60 as const;
+
 // Decorator doc:
 // /**
 //  * Old test runner API, as exported from `vscode/lib/testrunner`
 //  */
 // 
 export interface IHostUtilsUpstream {
+
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	readonly pid: number | undefined;
+
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	exit(code: number): void;
+
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	fsExists?(path: string): Promise<boolean>;
+
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	fsRealpath?(path: string): Promise<string>;
 }
+
 export const IHostUtilsMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
+
 		SourceLine: 63,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "pid",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "number | undefined",
+
 		Parameters: [],
+
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
+
 		SourceLine: 63,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "exit",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "code", TypeText: "number", Optional: false }],
+
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
+
 		SourceLine: 65,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "fsExists",
+
 		Readonly: false,
+
 		Optional: true,
+
 		TypeText: "Promise<boolean>",
+
 		Parameters: [{ Name: "path", TypeText: "string", Optional: false }],
+
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
+
 		SourceLine: 66,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "fsRealpath",
+
 		Readonly: false,
+
 		Optional: true,
+
 		TypeText: "Promise<string>",
+
 		Parameters: [{ Name: "path", TypeText: "string", Optional: false }],
+
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
+
 		SourceLine: 67,
 	}
 ] as const;

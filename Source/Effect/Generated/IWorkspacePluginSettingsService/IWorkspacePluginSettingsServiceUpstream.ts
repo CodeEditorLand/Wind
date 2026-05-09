@@ -5,29 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IWorkspacePluginSettingsServiceTag = "workspacePluginSettingsService" as const;
+
 export const IWorkspacePluginSettingsServiceSourcePath = "vs/workbench/contrib/chat/common/plugins/workspacePluginSettingsService.ts" as const;
+
 export const IWorkspacePluginSettingsServiceSourceLine = 33 as const;
+
 // Decorator doc:
 // /**
 //  * Copilot CLI settings folder inside `.github/`.
 //  */
 // 
 export interface IWorkspacePluginSettingsServiceUpstream {
+
 	/**
 	 * Copilot CLI settings folder inside `.github/`.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IWorkspacePluginSettingsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Copilot CLI settings folder inside `.github/`.",
+
 		SourceLine: 36,
 	}
 ] as const;

@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IFileDialogServiceTag = "fileDialogService" as const;
+
 export const IFileDialogServiceSourcePath = "vs/platform/dialogs/common/dialogs.ts" as const;
+
 export const IFileDialogServiceSourceLine = 523 as const;
+
 // Decorator doc:
 // /**
 //  * Allows to enforce use of custom dialog even in native environments.
@@ -18,20 +22,30 @@ export const IFileDialogServiceSourceLine = 523 as const;
  */
 
 export interface IFileDialogServiceUpstream {
+
 	/**
 	 * Allows to enforce use of custom dialog even in native environments.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IFileDialogServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Allows to enforce use of custom dialog even in native environments.",
+
 		SourceLine: 530,
 	}
 ] as const;

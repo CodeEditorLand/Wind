@@ -5,28 +5,42 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IMeteredConnectionServiceTag = "meteredConnectionService" as const;
+
 export const IMeteredConnectionServiceSourcePath = "vs/platform/meteredConnection/common/meteredConnection.ts" as const;
+
 export const IMeteredConnectionServiceSourceLine = 11 as const;
+
 /**
  * Service to report on metered connection status.
  */
 
 export interface IMeteredConnectionServiceUpstream {
+
 	/**
 	 * Service to report on metered connection status.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IMeteredConnectionServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Service to report on metered connection status.",
+
 		SourceLine: 17,
 	}
 ] as const;

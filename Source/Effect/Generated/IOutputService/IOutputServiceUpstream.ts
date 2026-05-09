@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IOutputServiceTag = "outputService" as const;
+
 export const IOutputServiceSourcePath = "vs/workbench/services/output/common/output.ts" as const;
+
 export const IOutputServiceSourceLine = 71 as const;
+
 // Decorator doc:
 // /**
 //  * Mime type used by the output editor.
@@ -18,20 +22,30 @@ export const IOutputServiceSourceLine = 71 as const;
  */
 
 export interface IOutputServiceUpstream {
+
 	/**
 	 * Mime type used by the output editor.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IOutputServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Mime type used by the output editor.",
+
 		SourceLine: 77,
 	}
 ] as const;

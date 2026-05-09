@@ -5,45 +5,69 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IUserInteractionServiceTag = "userInteractionService" as const;
+
 export const IUserInteractionServiceSourcePath = "vs/platform/userInteraction/browser/userInteractionService.ts" as const;
+
 export const IUserInteractionServiceSourceLine = 12 as const;
+
 /**
  * Used to track user UI interactions such as focus and hover states.
  * This allows mocking these interactions in tests and simulating specific states.
  */
 
 export interface IUserInteractionServiceUpstream {
+
 	/**
 	 * Used to track user UI interactions such as focus and hover states.
 	 * This allows mocking these interactions in tests and simulating specific states.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Used to track user UI interactions such as focus and hover states.
 	 * This allows mocking these interactions in tests and simulating specific states.
 	 */
 	createDomFocusTracker(element: HTMLElement): IFocusTracker;
 }
+
 export const IUserInteractionServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Used to track user UI interactions such as focus and hover states.\nThis allows mocking these interactions in tests and simulating specific states.",
+
 		SourceLine: 26,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "createDomFocusTracker",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IFocusTracker",
+
 		Parameters: [{ Name: "element", TypeText: "HTMLElement", Optional: false }],
+
 		DocComment: "Used to track user UI interactions such as focus and hover states.\nThis allows mocking these interactions in tests and simulating specific states.",
+
 		SourceLine: 46,
 	}
 ] as const;

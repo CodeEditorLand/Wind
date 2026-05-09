@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISandboxHelperServiceTag = "sandboxHelperService" as const;
+
 export const ISandboxHelperServiceSourcePath = "vs/platform/sandbox/common/sandboxHelperService.ts" as const;
+
 export const ISandboxHelperServiceSourceLine = 8 as const;
+
 export interface ISandboxHelperServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	checkSandboxDependencies(): Promise<ISandboxDependencyStatus | undefined>;
 }
+
 export const ISandboxHelperServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 16,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "checkSandboxDependencies",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ISandboxDependencyStatus | undefined>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 17,
 	}
 ] as const;

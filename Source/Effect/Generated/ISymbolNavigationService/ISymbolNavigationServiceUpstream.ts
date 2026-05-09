@@ -5,54 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISymbolNavigationServiceTag = "ISymbolNavigationService" as const;
+
 export const ISymbolNavigationServiceSourcePath = "vs/editor/contrib/gotoSymbol/browser/symbolNavigation.ts" as const;
+
 export const ISymbolNavigationServiceSourceLine = 26 as const;
+
 export interface ISymbolNavigationServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	reset(): void;
+
 	put(anchor: OneReference): void;
+
 	revealNext(source: ICodeEditor): Promise<any>;
 }
+
 export const ISymbolNavigationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 29,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "reset",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 30,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "put",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "anchor", TypeText: "OneReference", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 31,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "revealNext",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<any>",
+
 		Parameters: [{ Name: "source", TypeText: "ICodeEditor", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 32,
 	}
 ] as const;

@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IPromptsServiceTag = "IPromptsService" as const;
+
 export const IPromptsServiceSourcePath = "vs/workbench/contrib/chat/common/promptSyntax/service/promptsService.ts" as const;
+
 export const IPromptsServiceSourceLine = 109 as const;
+
 // Decorator doc:
 // /**
 //  * A single structured debug detail entry from the instructions context computer.
@@ -18,34 +22,54 @@ export const IPromptsServiceSourceLine = 109 as const;
  */
 
 export interface IPromptsServiceUpstream {
+
 	/**
 	 * A single structured debug detail entry from the instructions context computer.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * A single structured debug detail entry from the instructions context computer.
 	 */
 	getPromptLocationLabel(promptPath: IPromptPath): string;
 }
+
 export const IPromptsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "A single structured debug detail entry from the instructions context computer.",
+
 		SourceLine: 547,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getPromptLocationLabel",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "string",
+
 		Parameters: [{ Name: "promptPath", TypeText: "IPromptPath", Optional: false }],
+
 		DocComment: "A single structured debug detail entry from the instructions context computer.",
+
 		SourceLine: 631,
 	}
 ] as const;

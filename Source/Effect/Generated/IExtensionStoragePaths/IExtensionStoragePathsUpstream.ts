@@ -5,65 +5,119 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtensionStoragePathsTag = "IExtensionStoragePaths" as const;
+
 export const IExtensionStoragePathsSourcePath = "vs/workbench/api/common/extHostStoragePaths.ts" as const;
+
 export const IExtensionStoragePathsSourceLine = 14 as const;
+
 export interface IExtensionStoragePathsUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	whenReady: Promise<any>;
+
 	workspaceValue(extension: IExtensionDescription): URI | undefined;
+
 	globalValue(extension: IExtensionDescription): URI;
+
 	onWillDeactivateAll(): void;
 }
+
 export const IExtensionStoragePathsMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 17,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "whenReady",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<any>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "workspaceValue",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "URI | undefined",
+
 		Parameters: [{ Name: "extension", TypeText: "IExtensionDescription", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 19,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "globalValue",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "URI",
+
 		Parameters: [{ Name: "extension", TypeText: "IExtensionDescription", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 20,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "onWillDeactivateAll",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 21,
 	}
 ] as const;

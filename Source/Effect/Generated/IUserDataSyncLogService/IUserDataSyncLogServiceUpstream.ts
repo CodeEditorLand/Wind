@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IUserDataSyncLogServiceTag = "IUserDataSyncLogService" as const;
+
 export const IUserDataSyncLogServiceSourcePath = "vs/platform/userDataSync/common/userDataSync.ts" as const;
+
 export const IUserDataSyncLogServiceSourceLine = 653 as const;
+
 // Decorator doc:
 // /**
 //  * Checks if resource enabled was explicitly configured before,
@@ -15,7 +19,9 @@ export const IUserDataSyncLogServiceSourceLine = 653 as const;
 //  */
 // 
 export interface IUserDataSyncLogServiceUpstream {
+
 	// (no members extracted in same file - resolve cross-file)
 }
+
 export const IUserDataSyncLogServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

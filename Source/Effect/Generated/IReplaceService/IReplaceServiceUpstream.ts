@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IReplaceServiceTag = "replaceService" as const;
+
 export const IReplaceServiceSourcePath = "vs/workbench/contrib/search/browser/replace.ts" as const;
+
 export const IReplaceServiceSourceLine = 10 as const;
+
 export interface IReplaceServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const IReplaceServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 14,
 	}
 ] as const;

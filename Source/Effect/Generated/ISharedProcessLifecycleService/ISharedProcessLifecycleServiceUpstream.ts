@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISharedProcessLifecycleServiceTag = "sharedProcessLifecycleService" as const;
+
 export const ISharedProcessLifecycleServiceSourcePath = "vs/platform/lifecycle/node/sharedProcessLifecycleService.ts" as const;
+
 export const ISharedProcessLifecycleServiceSourceLine = 11 as const;
+
 export interface ISharedProcessLifecycleServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const ISharedProcessLifecycleServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 15,
 	}
 ] as const;

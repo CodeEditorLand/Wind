@@ -5,81 +5,135 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITextFileServiceTag = "textFileService" as const;
+
 export const ITextFileServiceSourcePath = "vs/workbench/services/textfile/common/textfiles.ts" as const;
+
 export const ITextFileServiceSourceLine = 23 as const;
+
 export interface ITextFileServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Access to the manager of text file editor models providing further
 	 * methods to work with them.
 	 */
 	getEncodedReadable(resource: URI | undefined, value: string, options?: IWriteTextFileOptions): Promise<VSBuffer | VSBufferReadable>;
+
 	/**
 	 * Access to the manager of text file editor models providing further
 	 * methods to work with them.
 	 */
 	getEncodedReadable(resource: URI | undefined, value?: ITextSnapshot, options?: IWriteTextFileOptions): Promise<VSBufferReadable | undefined>;
+
 	/**
 	 * Access to the manager of text file editor models providing further
 	 * methods to work with them.
 	 */
 	getEncodedReadable(resource: URI | undefined, value?: string, options?: IWriteTextFileOptions): Promise<VSBuffer | VSBufferReadable | undefined>;
+
 	/**
 	 * Access to the manager of text file editor models providing further
 	 * methods to work with them.
 	 */
 	getEncodedReadable(resource: URI | undefined, value?: string | ITextSnapshot, options?: IWriteTextFileOptions): Promise<VSBuffer | VSBufferReadable | undefined>;
 }
+
 export const ITextFileServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 27,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getEncodedReadable",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<VSBuffer | VSBufferReadable>",
+
 		Parameters: [{ Name: "resource", TypeText: "URI | undefined", Optional: false }, { Name: "value", TypeText: "string", Optional: false }, { Name: "options", TypeText: "IWriteTextFileOptions", Optional: true }],
+
 		DocComment: "Access to the manager of text file editor models providing further\nmethods to work with them.",
+
 		SourceLine: 106,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getEncodedReadable",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<VSBufferReadable | undefined>",
+
 		Parameters: [{ Name: "resource", TypeText: "URI | undefined", Optional: false }, { Name: "value", TypeText: "ITextSnapshot", Optional: true }, { Name: "options", TypeText: "IWriteTextFileOptions", Optional: true }],
+
 		DocComment: "Access to the manager of text file editor models providing further\nmethods to work with them.",
+
 		SourceLine: 106,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getEncodedReadable",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<VSBuffer | VSBufferReadable | undefined>",
+
 		Parameters: [{ Name: "resource", TypeText: "URI | undefined", Optional: false }, { Name: "value", TypeText: "string", Optional: true }, { Name: "options", TypeText: "IWriteTextFileOptions", Optional: true }],
+
 		DocComment: "Access to the manager of text file editor models providing further\nmethods to work with them.",
+
 		SourceLine: 106,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getEncodedReadable",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<VSBuffer | VSBufferReadable | undefined>",
+
 		Parameters: [{ Name: "resource", TypeText: "URI | undefined", Optional: false }, { Name: "value", TypeText: "string | ITextSnapshot", Optional: true }, { Name: "options", TypeText: "IWriteTextFileOptions", Optional: true }],
+
 		DocComment: "Access to the manager of text file editor models providing further\nmethods to work with them.",
+
 		SourceLine: 106,
 	}
 ] as const;

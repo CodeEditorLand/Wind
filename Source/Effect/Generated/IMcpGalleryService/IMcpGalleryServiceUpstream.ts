@@ -5,76 +5,140 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IMcpGalleryServiceTag = "IMcpGalleryService" as const;
+
 export const IMcpGalleryServiceSourcePath = "vs/platform/mcp/common/mcpManagement.ts" as const;
+
 export const IMcpGalleryServiceSourceLine = 167 as const;
+
 export interface IMcpGalleryServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	isEnabled(): boolean;
+
 	query(options?: IQueryOptions, token?: CancellationToken): Promise<IIterativePager<IGalleryMcpServer>>;
+
 	getMcpServersFromGallery(infos: { name: string; id?: string }[]): Promise<IGalleryMcpServer[]>;
+
 	getMcpServer(url: string): Promise<IGalleryMcpServer | undefined>;
+
 	getReadme(extension: IGalleryMcpServer, token: CancellationToken): Promise<string>;
 }
+
 export const IMcpGalleryServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 169,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isEnabled",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 170,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "query",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IIterativePager<IGalleryMcpServer>>",
+
 		Parameters: [{ Name: "options", TypeText: "IQueryOptions", Optional: true }, { Name: "token", TypeText: "CancellationToken", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 171,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getMcpServersFromGallery",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IGalleryMcpServer[]>",
+
 		Parameters: [{ Name: "infos", TypeText: "{ name: string; id?: string }[]", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 172,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getMcpServer",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IGalleryMcpServer | undefined>",
+
 		Parameters: [{ Name: "url", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 173,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getReadme",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<string>",
+
 		Parameters: [{ Name: "extension", TypeText: "IGalleryMcpServer", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 174,
 	}
 ] as const;

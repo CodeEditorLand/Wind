@@ -5,29 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentHostPermissionServiceTag = "agentHostPermissionService" as const;
+
 export const IAgentHostPermissionServiceSourcePath = "vs/platform/agentHost/common/agentHostPermissionService.ts" as const;
+
 export const IAgentHostPermissionServiceSourceLine = 53 as const;
+
 // Decorator doc:
 // /**
 //  * Configuration key for persisted per-host filesystem grants.
 //  */
 // 
 export interface IAgentHostPermissionServiceUpstream {
+
 	/**
 	 * Configuration key for persisted per-host filesystem grants.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IAgentHostPermissionServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Configuration key for persisted per-host filesystem grants.",
+
 		SourceLine: 56,
 	}
 ] as const;

@@ -5,76 +5,140 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtensionManagementServerServiceTag = "extensionManagementServerService" as const;
+
 export const IExtensionManagementServerServiceSourcePath = "vs/workbench/services/extensionManagement/common/extensionManagement.ts" as const;
+
 export const IExtensionManagementServerServiceSourceLine = 35 as const;
+
 export interface IExtensionManagementServerServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly localExtensionManagementServer: IExtensionManagementServer | null;
+
 	readonly remoteExtensionManagementServer: IExtensionManagementServer | null;
+
 	readonly webExtensionManagementServer: IExtensionManagementServer | null;
+
 	getExtensionManagementServer(extension: IExtension): IExtensionManagementServer | null;
+
 	getExtensionInstallLocation(extension: IExtension): ExtensionInstallLocation | null;
 }
+
 export const IExtensionManagementServerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 37,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "localExtensionManagementServer",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IExtensionManagementServer | null",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 37,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "remoteExtensionManagementServer",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IExtensionManagementServer | null",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 37,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "webExtensionManagementServer",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IExtensionManagementServer | null",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 37,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getExtensionManagementServer",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IExtensionManagementServer | null",
+
 		Parameters: [{ Name: "extension", TypeText: "IExtension", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 41,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getExtensionInstallLocation",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ExtensionInstallLocation | null",
+
 		Parameters: [{ Name: "extension", TypeText: "IExtension", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 42,
 	}
 ] as const;

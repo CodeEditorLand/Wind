@@ -5,43 +5,77 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IChatOutputRendererServiceTag = "chatOutputRendererService" as const;
+
 export const IChatOutputRendererServiceSourcePath = "vs/workbench/contrib/chat/browser/chatOutputItemRenderer.ts" as const;
+
 export const IChatOutputRendererServiceSourceLine = 36 as const;
+
 export interface IChatOutputRendererServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	registerRenderer(mime: string, renderer: IChatOutputItemRenderer, options: RegisterOptions): IDisposable;
+
 	renderOutputPart(mime: string, data: Uint8Array, parent: HTMLElement, webviewOptions: RenderOutputPartWebviewOptions, token: CancellationToken): Promise<RenderedOutputPart>;
 }
+
 export const IChatOutputRendererServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 39,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerRenderer",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "mime", TypeText: "string", Optional: false }, { Name: "renderer", TypeText: "IChatOutputItemRenderer", Optional: false }, { Name: "options", TypeText: "RegisterOptions", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 41,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "renderOutputPart",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<RenderedOutputPart>",
+
 		Parameters: [{ Name: "mime", TypeText: "string", Optional: false }, { Name: "data", TypeText: "Uint8Array", Optional: false }, { Name: "parent", TypeText: "HTMLElement", Optional: false }, { Name: "webviewOptions", TypeText: "RenderOutputPartWebviewOptions", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 43,
 	}
 ] as const;

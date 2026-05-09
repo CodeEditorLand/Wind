@@ -5,109 +5,203 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtensionStorageServiceTag = "IExtensionStorageService" as const;
+
 export const IExtensionStorageServiceSourcePath = "vs/platform/extensionManagement/common/extensionStorage.ts" as const;
+
 export const IExtensionStorageServiceSourceLine = 24 as const;
+
 export interface IExtensionStorageServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidChangeExtensionStorageToSync: Event<void>;
+
 	getExtensionState(extension: IExtension | IGalleryExtension | string, global: boolean): IStringDictionary<unknown> | undefined;
+
 	getExtensionStateRaw(extension: IExtension | IGalleryExtension | string, global: boolean): string | undefined;
+
 	setExtensionState(extension: IExtension | IGalleryExtension | string, state: object | undefined, global: boolean): void;
+
 	setKeysForSync(extensionIdWithVersion: IExtensionIdWithVersion, keys: string[]): void;
+
 	getKeysForSync(extensionIdWithVersion: IExtensionIdWithVersion): string[] | undefined;
+
 	addToMigrationList(from: string, to: string): void;
+
 	getSourceExtensionToMigrate(target: string): string | undefined;
 }
+
 export const IExtensionStorageServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 27,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeExtensionStorageToSync",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 27,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getExtensionState",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IStringDictionary<unknown> | undefined",
+
 		Parameters: [{ Name: "extension", TypeText: "IExtension | IGalleryExtension | string", Optional: false }, { Name: "global", TypeText: "boolean", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 29,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getExtensionStateRaw",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "string | undefined",
+
 		Parameters: [{ Name: "extension", TypeText: "IExtension | IGalleryExtension | string", Optional: false }, { Name: "global", TypeText: "boolean", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 30,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setExtensionState",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "extension", TypeText: "IExtension | IGalleryExtension | string", Optional: false }, { Name: "state", TypeText: "object | undefined", Optional: false }, { Name: "global", TypeText: "boolean", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 31,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setKeysForSync",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "extensionIdWithVersion", TypeText: "IExtensionIdWithVersion", Optional: false }, { Name: "keys", TypeText: "string[]", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 34,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getKeysForSync",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "string[] | undefined",
+
 		Parameters: [{ Name: "extensionIdWithVersion", TypeText: "IExtensionIdWithVersion", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 35,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "addToMigrationList",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "from", TypeText: "string", Optional: false }, { Name: "to", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 37,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getSourceExtensionToMigrate",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "string | undefined",
+
 		Parameters: [{ Name: "target", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 38,
 	}
 ] as const;

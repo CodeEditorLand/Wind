@@ -5,120 +5,224 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtensionHostProfileServiceTag = "extensionHostProfileService" as const;
+
 export const IExtensionHostProfileServiceSourcePath = "vs/workbench/contrib/extensions/electron-browser/runtimeExtensionsEditor.ts" as const;
+
 export const IExtensionHostProfileServiceSourceLine = 41 as const;
+
 export interface IExtensionHostProfileServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidChangeState: Event<void>;
+
 	readonly onDidChangeLastProfile: Event<void>;
+
 	readonly state: ProfileSessionState;
+
 	readonly lastProfile: IExtensionHostProfile | null;
+
 	lastProfileSavedTo: URI | undefined;
+
 	startProfiling(): void;
+
 	stopProfiling(): void;
+
 	getUnresponsiveProfile(extensionId: ExtensionIdentifier): IExtensionHostProfile | undefined;
+
 	setUnresponsiveProfile(extensionId: ExtensionIdentifier, profile: IExtensionHostProfile): void;
 }
+
 export const IExtensionHostProfileServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 53,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeState",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 53,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeLastProfile",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 53,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "state",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "ProfileSessionState",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 53,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "lastProfile",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IExtensionHostProfile | null",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 53,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "lastProfileSavedTo",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "URI | undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 60,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "startProfiling",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 62,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "stopProfiling",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 63,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getUnresponsiveProfile",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IExtensionHostProfile | undefined",
+
 		Parameters: [{ Name: "extensionId", TypeText: "ExtensionIdentifier", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 65,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setUnresponsiveProfile",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "extensionId", TypeText: "ExtensionIdentifier", Optional: false }, { Name: "profile", TypeText: "IExtensionHostProfile", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 66,
 	}
 ] as const;

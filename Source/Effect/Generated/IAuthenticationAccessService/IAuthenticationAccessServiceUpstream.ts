@@ -5,12 +5,19 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAuthenticationAccessServiceTag = "IAuthenticationAccessService" as const;
+
 export const IAuthenticationAccessServiceSourcePath = "vs/workbench/services/authentication/browser/authenticationAccessService.ts" as const;
+
 export const IAuthenticationAccessServiceSourceLine = 15 as const;
+
 export interface IAuthenticationAccessServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidChangeExtensionSessionAccess: Event<{ providerId: string; accountName: string }>;
+
 	/**
 	 * Check extension access to an account
 	 * @param providerId The id of the authentication provider
@@ -20,6 +27,7 @@ export interface IAuthenticationAccessServiceUpstream {
 	 * if they haven't made a choice yet
 	 */
 	readAllowedExtensions(providerId: string, accountName: string): AllowedExtension[];
+
 	/**
 	 * Check extension access to an account
 	 * @param providerId The id of the authentication provider
@@ -29,6 +37,7 @@ export interface IAuthenticationAccessServiceUpstream {
 	 * if they haven't made a choice yet
 	 */
 	updateAllowedExtensions(providerId: string, accountName: string, extensions: AllowedExtension[]): void;
+
 	/**
 	 * Check extension access to an account
 	 * @param providerId The id of the authentication provider
@@ -39,55 +48,100 @@ export interface IAuthenticationAccessServiceUpstream {
 	 */
 	removeAllowedExtensions(providerId: string, accountName: string): void;
 }
+
 export const IAuthenticationAccessServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 17,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeExtensionSessionAccess",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<{ providerId: string; accountName: string }>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 17,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "readAllowedExtensions",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "AllowedExtension[]",
+
 		Parameters: [{ Name: "providerId", TypeText: "string", Optional: false }, { Name: "accountName", TypeText: "string", Optional: false }],
+
 		DocComment: "Check extension access to an account\n@param providerId The id of the authentication provider\n@param accountName The account name that access is checked for\n@param extensionId The id of the extension requesting access\n@returns Returns true or false if the user has opted to permanently grant or disallow access, and undefined\nif they haven't made a choice yet",
+
 		SourceLine: 30,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "updateAllowedExtensions",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "providerId", TypeText: "string", Optional: false }, { Name: "accountName", TypeText: "string", Optional: false }, { Name: "extensions", TypeText: "AllowedExtension[]", Optional: false }],
+
 		DocComment: "Check extension access to an account\n@param providerId The id of the authentication provider\n@param accountName The account name that access is checked for\n@param extensionId The id of the extension requesting access\n@returns Returns true or false if the user has opted to permanently grant or disallow access, and undefined\nif they haven't made a choice yet",
+
 		SourceLine: 31,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeAllowedExtensions",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "providerId", TypeText: "string", Optional: false }, { Name: "accountName", TypeText: "string", Optional: false }],
+
 		DocComment: "Check extension access to an account\n@param providerId The id of the authentication provider\n@param accountName The account name that access is checked for\n@param extensionId The id of the extension requesting access\n@returns Returns true or false if the user has opted to permanently grant or disallow access, and undefined\nif they haven't made a choice yet",
+
 		SourceLine: 32,
 	}
 ] as const;

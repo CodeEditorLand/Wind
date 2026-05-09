@@ -5,54 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAuxiliaryWindowServiceTag = "auxiliaryWindowService" as const;
+
 export const IAuxiliaryWindowServiceSourcePath = "vs/workbench/services/auxiliaryWindow/browser/auxiliaryWindowService.ts" as const;
+
 export const IAuxiliaryWindowServiceSourceLine = 32 as const;
+
 export interface IAuxiliaryWindowServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidOpenAuxiliaryWindow: Event<IAuxiliaryWindowOpenEvent>;
+
 	open(options?: IAuxiliaryWindowOpenOptions): Promise<IAuxiliaryWindow>;
+
 	getWindow(windowId: number): IAuxiliaryWindow | undefined;
 }
+
 export const IAuxiliaryWindowServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 59,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidOpenAuxiliaryWindow",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<IAuxiliaryWindowOpenEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 59,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "open",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IAuxiliaryWindow>",
+
 		Parameters: [{ Name: "options", TypeText: "IAuxiliaryWindowOpenOptions", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 63,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getWindow",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IAuxiliaryWindow | undefined",
+
 		Parameters: [{ Name: "windowId", TypeText: "number", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 65,
 	}
 ] as const;

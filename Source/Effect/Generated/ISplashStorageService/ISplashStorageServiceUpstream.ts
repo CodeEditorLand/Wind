@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISplashStorageServiceTag = "ISplashStorageService" as const;
+
 export const ISplashStorageServiceSourcePath = "vs/workbench/contrib/splash/browser/splash.ts" as const;
+
 export const ISplashStorageServiceSourceLine = 9 as const;
+
 export interface ISplashStorageServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	saveWindowSplash(splash: IPartsSplash): Promise<void>;
 }
+
 export const ISplashStorageServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 13,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "saveWindowSplash",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "splash", TypeText: "IPartsSplash", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 15,
 	}
 ] as const;

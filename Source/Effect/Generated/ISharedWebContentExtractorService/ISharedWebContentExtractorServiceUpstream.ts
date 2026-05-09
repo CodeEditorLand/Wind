@@ -5,45 +5,69 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISharedWebContentExtractorServiceTag = "ISharedWebContentExtractorService" as const;
+
 export const ISharedWebContentExtractorServiceSourcePath = "vs/platform/webContentExtractor/common/webContentExtractor.ts" as const;
+
 export const ISharedWebContentExtractorServiceSourceLine = 12 as const;
+
 /**
  * Whether to allow cross-authority redirects on the web content.
  * 'false' by default.
  */
 
 export interface ISharedWebContentExtractorServiceUpstream {
+
 	/**
 	 * Whether to allow cross-authority redirects on the web content.
 	 * 'false' by default.
 	 */
 	_serviceBrand: undefined;
+
 	/**
 	 * Whether to allow cross-authority redirects on the web content.
 	 * 'false' by default.
 	 */
 	readImage(uri: URI, token: CancellationToken): Promise<VSBuffer | undefined>;
 }
+
 export const ISharedWebContentExtractorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Whether to allow cross-authority redirects on the web content.\n'false' by default.",
+
 		SourceLine: 41,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "readImage",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<VSBuffer | undefined>",
+
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }],
+
 		DocComment: "Whether to allow cross-authority redirects on the web content.\n'false' by default.",
+
 		SourceLine: 42,
 	}
 ] as const;

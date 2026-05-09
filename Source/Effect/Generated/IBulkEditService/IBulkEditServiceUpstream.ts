@@ -5,54 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IBulkEditServiceTag = "IWorkspaceEditService" as const;
+
 export const IBulkEditServiceSourcePath = "vs/editor/browser/services/bulkEditService.ts" as const;
+
 export const IBulkEditServiceSourceLine = 17 as const;
+
 export interface IBulkEditServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	hasPreviewHandler(): boolean;
+
 	setPreviewHandler(handler: IBulkEditPreviewHandler): IDisposable;
+
 	apply(edit: ResourceEdit[] | WorkspaceEdit, options?: IBulkEditOptions): Promise<IBulkEditResult>;
 }
+
 export const IBulkEditServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 119,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "hasPreviewHandler",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 121,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setPreviewHandler",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "handler", TypeText: "IBulkEditPreviewHandler", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 123,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "apply",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IBulkEditResult>",
+
 		Parameters: [{ Name: "edit", TypeText: "ResourceEdit[] | WorkspaceEdit", Optional: false }, { Name: "options", TypeText: "IBulkEditOptions", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 125,
 	}
 ] as const;

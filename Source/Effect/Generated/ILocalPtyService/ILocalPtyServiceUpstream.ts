@@ -5,16 +5,22 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ILocalPtyServiceTag = "localPtyService" as const;
+
 export const ILocalPtyServiceSourcePath = "vs/platform/terminal/common/terminal.ts" as const;
+
 export const ILocalPtyServiceSourceLine = 1246 as const;
+
 // Decorator doc:
 // /**
 //  * Simulated latency applied to all calls made to the pty host
 //  */
 // 
 export interface ILocalPtyServiceUpstream {
+
 	// (no members extracted in same file - resolve cross-file)
 }
+
 export const ILocalPtyServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

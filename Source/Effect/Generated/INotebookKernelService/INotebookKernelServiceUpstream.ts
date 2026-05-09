@@ -5,182 +5,326 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const INotebookKernelServiceTag = "INotebookKernelService" as const;
+
 export const INotebookKernelServiceSourcePath = "vs/workbench/contrib/notebook/common/notebookKernelService.ts" as const;
+
 export const INotebookKernelServiceSourceLine = 111 as const;
+
 export interface INotebookKernelServiceUpstream {
+
 	_serviceBrand: undefined;
+
 	readonly onDidAddKernel: Event<INotebookKernel>;
+
 	readonly onDidRemoveKernel: Event<INotebookKernel>;
+
 	readonly onDidChangeSelectedNotebooks: Event<ISelectedNotebooksChangeEvent>;
+
 	readonly onDidChangeNotebookAffinity: Event<void>;
+
 	readonly onDidNotebookVariablesUpdate: Event<URI>;
+
 	registerKernel(kernel: INotebookKernel): IDisposable;
+
 	getMatchingKernel(notebook: INotebookTextModelLike): INotebookKernelMatchResult;
+
 	/**
 	 * Returns the selected or only available kernel.
 	 */
 	registerNotebookKernelDetectionTask(task: INotebookKernelDetectionTask): IDisposable;
+
 	/**
 	 * Returns the selected or only available kernel.
 	 */
 	getKernelDetectionTasks(notebook: INotebookTextModelLike): INotebookKernelDetectionTask[];
+
 	/**
 	 * Returns the selected or only available kernel.
 	 */
 	getSourceActions(notebook: INotebookTextModelLike, contextKeyService: IContextKeyService | undefined): ISourceAction[];
+
 	/**
 	 * Returns the selected or only available kernel.
 	 */
 	getRunningSourceActions(notebook: INotebookTextModelLike): ISourceAction[];
+
 	/**
 	 * Returns the selected or only available kernel.
 	 */
 	registerKernelSourceActionProvider(viewType: string, provider: IKernelSourceActionProvider): IDisposable;
+
 	/**
 	 * Returns the selected or only available kernel.
 	 */
 	getKernelSourceActions2(notebook: INotebookTextModelLike): Promise<INotebookKernelSourceAction[]>;
 }
+
 export const INotebookKernelServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 114,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidAddKernel",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<INotebookKernel>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 116,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidRemoveKernel",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<INotebookKernel>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 116,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeSelectedNotebooks",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ISelectedNotebooksChangeEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 116,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeNotebookAffinity",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 116,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidNotebookVariablesUpdate",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<URI>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 116,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerKernel",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "kernel", TypeText: "INotebookKernel", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 121,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getMatchingKernel",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "INotebookKernelMatchResult",
+
 		Parameters: [{ Name: "notebook", TypeText: "INotebookTextModelLike", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 123,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerNotebookKernelDetectionTask",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "task", TypeText: "INotebookKernelDetectionTask", Optional: false }],
+
 		DocComment: "Returns the selected or only available kernel.",
+
 		SourceLine: 148,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getKernelDetectionTasks",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "INotebookKernelDetectionTask[]",
+
 		Parameters: [{ Name: "notebook", TypeText: "INotebookTextModelLike", Optional: false }],
+
 		DocComment: "Returns the selected or only available kernel.",
+
 		SourceLine: 149,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getSourceActions",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ISourceAction[]",
+
 		Parameters: [{ Name: "notebook", TypeText: "INotebookTextModelLike", Optional: false }, { Name: "contextKeyService", TypeText: "IContextKeyService | undefined", Optional: false }],
+
 		DocComment: "Returns the selected or only available kernel.",
+
 		SourceLine: 154,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getRunningSourceActions",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ISourceAction[]",
+
 		Parameters: [{ Name: "notebook", TypeText: "INotebookTextModelLike", Optional: false }],
+
 		DocComment: "Returns the selected or only available kernel.",
+
 		SourceLine: 155,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerKernelSourceActionProvider",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "viewType", TypeText: "string", Optional: false }, { Name: "provider", TypeText: "IKernelSourceActionProvider", Optional: false }],
+
 		DocComment: "Returns the selected or only available kernel.",
+
 		SourceLine: 156,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getKernelSourceActions2",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<INotebookKernelSourceAction[]>",
+
 		Parameters: [{ Name: "notebook", TypeText: "INotebookTextModelLike", Optional: false }],
+
 		DocComment: "Returns the selected or only available kernel.",
+
 		SourceLine: 157,
 	}
 ] as const;

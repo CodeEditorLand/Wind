@@ -5,43 +5,77 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITreeViewsDnDServiceTag = "treeViewsDndService" as const;
+
 export const ITreeViewsDnDServiceSourcePath = "vs/editor/common/services/treeViewsDndService.ts" as const;
+
 export const ITreeViewsDnDServiceSourceLine = 12 as const;
+
 export interface ITreeViewsDnDServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	removeDragOperationTransfer(uuid: string | undefined): Promise<T | undefined> | undefined;
+
 	addDragOperationTransfer(uuid: string, transferPromise: Promise<T | undefined>): void;
 }
+
 export const ITreeViewsDnDServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 7,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeDragOperationTransfer",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<T | undefined> | undefined",
+
 		Parameters: [{ Name: "uuid", TypeText: "string | undefined", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 9,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "addDragOperationTransfer",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "uuid", TypeText: "string", Optional: false }, { Name: "transferPromise", TypeText: "Promise<T | undefined>", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 10,
 	}
 ] as const;

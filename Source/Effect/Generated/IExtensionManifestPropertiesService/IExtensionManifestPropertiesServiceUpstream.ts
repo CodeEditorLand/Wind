@@ -5,142 +5,266 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtensionManifestPropertiesServiceTag = "extensionManifestPropertiesService" as const;
+
 export const IExtensionManifestPropertiesServiceSourcePath = "vs/workbench/services/extensions/common/extensionManifestPropertiesService.ts" as const;
+
 export const IExtensionManifestPropertiesServiceSourceLine = 23 as const;
+
 export interface IExtensionManifestPropertiesServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	prefersExecuteOnUI(manifest: IExtensionManifest): boolean;
+
 	prefersExecuteOnWorkspace(manifest: IExtensionManifest): boolean;
+
 	prefersExecuteOnWeb(manifest: IExtensionManifest): boolean;
+
 	canExecuteOnUI(manifest: IExtensionManifest): boolean;
+
 	canExecuteOnWorkspace(manifest: IExtensionManifest): boolean;
+
 	canExecuteOnWeb(manifest: IExtensionManifest): boolean;
+
 	canExecuteOnSessionsWindow(manifest: IExtensionManifest): boolean;
+
 	getExtensionKind(manifest: IExtensionManifest): ExtensionKind[];
+
 	getUserConfiguredExtensionKind(extensionIdentifier: IExtensionIdentifier): ExtensionKind[] | undefined;
+
 	getExtensionUntrustedWorkspaceSupportType(manifest: IExtensionManifest): ExtensionUntrustedWorkspaceSupportType;
+
 	getExtensionVirtualWorkspaceSupportType(manifest: IExtensionManifest): ExtensionVirtualWorkspaceSupportType;
 }
+
 export const IExtensionManifestPropertiesServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 40,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "prefersExecuteOnUI",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 42,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "prefersExecuteOnWorkspace",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 43,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "prefersExecuteOnWeb",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 44,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "canExecuteOnUI",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 46,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "canExecuteOnWorkspace",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 47,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "canExecuteOnWeb",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 48,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "canExecuteOnSessionsWindow",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 49,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getExtensionKind",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ExtensionKind[]",
+
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 51,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getUserConfiguredExtensionKind",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ExtensionKind[] | undefined",
+
 		Parameters: [{ Name: "extensionIdentifier", TypeText: "IExtensionIdentifier", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 52,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getExtensionUntrustedWorkspaceSupportType",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ExtensionUntrustedWorkspaceSupportType",
+
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 53,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getExtensionVirtualWorkspaceSupportType",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ExtensionVirtualWorkspaceSupportType",
+
 		Parameters: [{ Name: "manifest", TypeText: "IExtensionManifest", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 54,
 	}
 ] as const;

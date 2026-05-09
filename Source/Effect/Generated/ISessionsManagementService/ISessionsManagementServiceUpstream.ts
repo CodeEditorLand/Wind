@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISessionsManagementServiceTag = "sessionsManagementService" as const;
+
 export const ISessionsManagementServiceSourcePath = "vs/sessions/services/sessions/common/sessionsManagement.ts" as const;
+
 export const ISessionsManagementServiceSourceLine = 136 as const;
+
 // Decorator doc:
 // /**
 //  * Event fired when sessions change within a provider.
@@ -18,20 +22,30 @@ export const ISessionsManagementServiceSourceLine = 136 as const;
  */
 
 export interface ISessionsManagementServiceUpstream {
+
 	/**
 	 * Event fired when sessions change within a provider.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ISessionsManagementServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Event fired when sessions change within a provider.",
+
 		SourceLine: 40,
 	}
 ] as const;

@@ -5,10 +5,15 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtensionServiceTag = "extensionService" as const;
+
 export const IExtensionServiceSourcePath = "vs/workbench/services/extensions/common/extensions.ts" as const;
+
 export const IExtensionServiceSourceLine = 38 as const;
+
 export interface IExtensionServiceUpstream {
+
 	/**
 	 * e.g.
 	 * ```
@@ -22,15 +27,24 @@ export interface IExtensionServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IExtensionServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "e.g.\n```\n{\nstartTime: 1511954813493000,\nendTime: 1511954835590000,\ndeltas: [ 100, 1500, 123456, 1500, 100000 ],\nids: [ 'idle', 'self', 'extension1', 'self', 'idle' ]\n}\n```",
+
 		SourceLine: 413,
 	}
 ] as const;

@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentHostFileSystemServiceTag = "agentHostFileSystemService" as const;
+
 export const IAgentHostFileSystemServiceSourcePath = "vs/platform/agentHost/common/agentHostFileSystemService.ts" as const;
+
 export const IAgentHostFileSystemServiceSourceLine = 16 as const;
+
 export interface IAgentHostFileSystemServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const IAgentHostFileSystemServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 19,
 	}
 ] as const;

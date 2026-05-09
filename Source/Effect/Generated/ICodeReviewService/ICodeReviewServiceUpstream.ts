@@ -5,29 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ICodeReviewServiceTag = "codeReviewService" as const;
+
 export const ICodeReviewServiceSourcePath = "vs/sessions/contrib/codeReview/browser/codeReviewService.ts" as const;
+
 export const ICodeReviewServiceSourceLine = 157 as const;
+
 // Decorator doc:
 // /**
 //  * Shape of a single comment as returned by the code review command.
 //  */
 // 
 export interface ICodeReviewServiceUpstream {
+
 	/**
 	 * Shape of a single comment as returned by the code review command.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ICodeReviewServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Shape of a single comment as returned by the code review command.",
+
 		SourceLine: 160,
 	}
 ] as const;

@@ -5,120 +5,224 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IModelServiceTag = "modelService" as const;
+
 export const IModelServiceSourcePath = "vs/editor/common/services/model.ts" as const;
+
 export const IModelServiceSourceLine = 14 as const;
+
 export interface IModelServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onModelAdded: Event<ITextModel>;
+
 	readonly onModelRemoved: Event<ITextModel>;
+
 	readonly onModelLanguageChanged: Event<{ readonly model: ITextModel; readonly oldLanguageId: string }>;
+
 	createModel(value: string | ITextBufferFactory, languageSelection: ILanguageSelection | null, resource?: URI, isForSimpleWidget?: boolean): ITextModel;
+
 	updateModel(model: ITextModel, value: string | ITextBufferFactory, reason?: TextModelEditSource): void;
+
 	destroyModel(resource: URI): void;
+
 	getModels(): ITextModel[];
+
 	getCreationOptions(language: string, resource: URI, isForSimpleWidget: boolean): ITextModelCreationOptions;
+
 	getModel(resource: URI): ITextModel | null;
 }
+
 export const IModelServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 19,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onModelAdded",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITextModel>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 19,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onModelRemoved",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITextModel>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 19,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onModelLanguageChanged",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<{ readonly model: ITextModel; readonly oldLanguageId: string }>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 19,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "createModel",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ITextModel",
+
 		Parameters: [{ Name: "value", TypeText: "string | ITextBufferFactory", Optional: false }, { Name: "languageSelection", TypeText: "ILanguageSelection | null", Optional: false }, { Name: "resource", TypeText: "URI", Optional: true }, { Name: "isForSimpleWidget", TypeText: "boolean", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 21,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "updateModel",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "model", TypeText: "ITextModel", Optional: false }, { Name: "value", TypeText: "string | ITextBufferFactory", Optional: false }, { Name: "reason", TypeText: "TextModelEditSource", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "destroyModel",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 25,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getModels",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ITextModel[]",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 27,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getCreationOptions",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ITextModelCreationOptions",
+
 		Parameters: [{ Name: "language", TypeText: "string", Optional: false }, { Name: "resource", TypeText: "URI", Optional: false }, { Name: "isForSimpleWidget", TypeText: "boolean", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 29,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getModel",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ITextModel | null",
+
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 31,
 	}
 ] as const;

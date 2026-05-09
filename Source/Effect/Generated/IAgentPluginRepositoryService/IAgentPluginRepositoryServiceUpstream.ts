@@ -5,28 +5,42 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentPluginRepositoryServiceTag = "agentPluginRepositoryService" as const;
+
 export const IAgentPluginRepositoryServiceSourcePath = "vs/workbench/contrib/chat/common/plugins/agentPluginRepositoryService.ts" as const;
+
 export const IAgentPluginRepositoryServiceSourceLine = 11 as const;
+
 /**
  * Options for ensuring a marketplace repository is available locally.
  */
 
 export interface IAgentPluginRepositoryServiceUpstream {
+
 	/**
 	 * Options for ensuring a marketplace repository is available locally.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IAgentPluginRepositoryServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Options for ensuring a marketplace repository is available locally.",
+
 		SourceLine: 44,
 	}
 ] as const;

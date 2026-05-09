@@ -5,85 +5,139 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IUntitledTextEditorServiceTag = "untitledTextEditorService" as const;
+
 export const IUntitledTextEditorServiceSourcePath = "vs/workbench/services/untitled/common/untitledTextEditorService.ts" as const;
+
 export const IUntitledTextEditorServiceSourceLine = 16 as const;
+
 export interface IUntitledTextEditorServiceUpstream {
+
 	/**
 	 * Initial value of the untitled editor. An untitled editor with initial
 	 * value is dirty right from the beginning.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Initial value of the untitled editor. An untitled editor with initial
 	 * value is dirty right from the beginning.
 	 */
 	create(options?: INewUntitledTextEditorWithAssociatedResourceOptions): IUntitledTextEditorModel;
+
 	/**
 	 * Initial value of the untitled editor. An untitled editor with initial
 	 * value is dirty right from the beginning.
 	 */
 	create(options?: IExistingUntitledTextEditorOptions): IUntitledTextEditorModel;
+
 	/**
 	 * Initial value of the untitled editor. An untitled editor with initial
 	 * value is dirty right from the beginning.
 	 */
 	resolve(options?: INewUntitledTextEditorWithAssociatedResourceOptions): Promise<IUntitledTextEditorModel>;
+
 	/**
 	 * Initial value of the untitled editor. An untitled editor with initial
 	 * value is dirty right from the beginning.
 	 */
 	resolve(options?: IExistingUntitledTextEditorOptions): Promise<IUntitledTextEditorModel>;
 }
+
 export const IUntitledTextEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Initial value of the untitled editor. An untitled editor with initial\nvalue is dirty right from the beginning.",
+
 		SourceLine: 78,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "create",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IUntitledTextEditorModel",
+
 		Parameters: [{ Name: "options", TypeText: "INewUntitledTextEditorWithAssociatedResourceOptions", Optional: true }],
+
 		DocComment: "Initial value of the untitled editor. An untitled editor with initial\nvalue is dirty right from the beginning.",
+
 		SourceLine: 117,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "create",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IUntitledTextEditorModel",
+
 		Parameters: [{ Name: "options", TypeText: "IExistingUntitledTextEditorOptions", Optional: true }],
+
 		DocComment: "Initial value of the untitled editor. An untitled editor with initial\nvalue is dirty right from the beginning.",
+
 		SourceLine: 117,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resolve",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IUntitledTextEditorModel>",
+
 		Parameters: [{ Name: "options", TypeText: "INewUntitledTextEditorWithAssociatedResourceOptions", Optional: true }],
+
 		DocComment: "Initial value of the untitled editor. An untitled editor with initial\nvalue is dirty right from the beginning.",
+
 		SourceLine: 138,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resolve",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IUntitledTextEditorModel>",
+
 		Parameters: [{ Name: "options", TypeText: "IExistingUntitledTextEditorOptions", Optional: true }],
+
 		DocComment: "Initial value of the untitled editor. An untitled editor with initial\nvalue is dirty right from the beginning.",
+
 		SourceLine: 138,
 	}
 ] as const;

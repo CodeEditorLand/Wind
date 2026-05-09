@@ -5,10 +5,15 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IWorkspaceEditingServiceTag = "workspaceEditingService" as const;
+
 export const IWorkspaceEditingServiceSourcePath = "vs/workbench/services/workspaces/common/workspaceEditing.ts" as const;
+
 export const IWorkspaceEditingServiceSourceLine = 12 as const;
+
 export interface IWorkspaceEditingServiceUpstream {
+
 	/**
 	 * An event that is fired after entering a workspace. Clients can join the entering
 	 * by providing a promise from the join method. This allows for long running operations
@@ -17,15 +22,24 @@ export interface IWorkspaceEditingServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IWorkspaceEditingServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "An event that is fired after entering a workspace. Clients can join the entering\nby providing a promise from the join method. This allows for long running operations\nto complete (e.g. to migrate data into the new workspace) before the workspace\nis fully entered.",
+
 		SourceLine: 29,
 	}
 ] as const;

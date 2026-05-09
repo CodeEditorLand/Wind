@@ -5,65 +5,119 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IMcpResourceScannerServiceTag = "IMcpResourceScannerService" as const;
+
 export const IMcpResourceScannerServiceSourcePath = "vs/platform/mcp/common/mcpResourceScannerService.ts" as const;
+
 export const IMcpResourceScannerServiceSourceLine = 45 as const;
+
 export interface IMcpResourceScannerServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	scanMcpServers(mcpResource: URI, target?: McpResourceTarget): Promise<IScannedMcpServers>;
+
 	addMcpServers(servers: IInstallableMcpServer[], mcpResource: URI, target?: McpResourceTarget): Promise<void>;
+
 	updateSandboxConfig(updateFn: (data: IScannedMcpServers) => IScannedMcpServers, mcpResource: URI, target?: McpResourceTarget): Promise<void>;
+
 	removeMcpServers(serverNames: string[], mcpResource: URI, target?: McpResourceTarget): Promise<void>;
 }
+
 export const IMcpResourceScannerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 47,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "scanMcpServers",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IScannedMcpServers>",
+
 		Parameters: [{ Name: "mcpResource", TypeText: "URI", Optional: false }, { Name: "target", TypeText: "McpResourceTarget", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 48,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "addMcpServers",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "servers", TypeText: "IInstallableMcpServer[]", Optional: false }, { Name: "mcpResource", TypeText: "URI", Optional: false }, { Name: "target", TypeText: "McpResourceTarget", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 49,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "updateSandboxConfig",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "updateFn", TypeText: "(data: IScannedMcpServers) => IScannedMcpServers", Optional: false }, { Name: "mcpResource", TypeText: "URI", Optional: false }, { Name: "target", TypeText: "McpResourceTarget", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 50,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeMcpServers",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "serverNames", TypeText: "string[]", Optional: false }, { Name: "mcpResource", TypeText: "URI", Optional: false }, { Name: "target", TypeText: "McpResourceTarget", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 51,
 	}
 ] as const;

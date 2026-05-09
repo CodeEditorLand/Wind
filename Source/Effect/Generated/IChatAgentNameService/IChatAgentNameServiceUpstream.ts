@@ -5,43 +5,67 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IChatAgentNameServiceTag = "chatAgentNameService" as const;
+
 export const IChatAgentNameServiceSourcePath = "vs/workbench/contrib/chat/common/participants/chatAgents.ts" as const;
+
 export const IChatAgentNameServiceSourceLine = 686 as const;
+
 // Decorator doc:
 // /**
 //  * This is string, not ContextKeyExpression, because dealing with serializing/deserializing is hard and need a better pattern for this
 //  */
 // 
 export interface IChatAgentNameServiceUpstream {
+
 	/**
 	 * This is string, not ContextKeyExpression, because dealing with serializing/deserializing is hard and need a better pattern for this
 	 */
 	_serviceBrand: undefined;
+
 	/**
 	 * This is string, not ContextKeyExpression, because dealing with serializing/deserializing is hard and need a better pattern for this
 	 */
 	getAgentNameRestriction(chatAgentData: IChatAgentData): boolean;
 }
+
 export const IChatAgentNameServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "This is string, not ContextKeyExpression, because dealing with serializing/deserializing is hard and need a better pattern for this",
+
 		SourceLine: 689,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getAgentNameRestriction",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "chatAgentData", TypeText: "IChatAgentData", Optional: false }],
+
 		DocComment: "This is string, not ContextKeyExpression, because dealing with serializing/deserializing is hard and need a better pattern for this",
+
 		SourceLine: 690,
 	}
 ] as const;

@@ -5,43 +5,77 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IWorkspaceIdentityServiceTag = "IWorkspaceIdentityService" as const;
+
 export const IWorkspaceIdentityServiceSourcePath = "vs/workbench/services/workspaces/common/workspaceIdentityService.ts" as const;
+
 export const IWorkspaceIdentityServiceSourceLine = 16 as const;
+
 export interface IWorkspaceIdentityServiceUpstream {
+
 	_serviceBrand: undefined;
+
 	matches(folders: IWorkspaceStateFolder[], cancellationToken: CancellationToken): Promise<((obj: unknown) => unknown) | false>;
+
 	getWorkspaceStateFolders(cancellationToken: CancellationToken): Promise<IWorkspaceStateFolder[]>;
 }
+
 export const IWorkspaceIdentityServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "matches",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<((obj: unknown) => unknown) | false>",
+
 		Parameters: [{ Name: "folders", TypeText: "IWorkspaceStateFolder[]", Optional: false }, { Name: "cancellationToken", TypeText: "CancellationToken", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 19,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getWorkspaceStateFolders",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IWorkspaceStateFolder[]>",
+
 		Parameters: [{ Name: "cancellationToken", TypeText: "CancellationToken", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 20,
 	}
 ] as const;

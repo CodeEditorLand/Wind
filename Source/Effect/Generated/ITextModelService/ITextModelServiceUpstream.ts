@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITextModelServiceTag = "textModelService" as const;
+
 export const ITextModelServiceSourcePath = "vs/editor/common/services/resolverService.ts" as const;
+
 export const ITextModelServiceSourceLine = 14 as const;
+
 export interface ITextModelServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const ITextModelServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 17,
 	}
 ] as const;

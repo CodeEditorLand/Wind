@@ -5,43 +5,77 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IChatToolOutputStateCacheTag = "IChatToolOutputStateCache" as const;
+
 export const IChatToolOutputStateCacheSourcePath = "vs/workbench/contrib/chat/browser/widget/chatContentParts/toolInvocationParts/chatToolOutputStateCache.ts" as const;
+
 export const IChatToolOutputStateCacheSourceLine = 18 as const;
+
 export interface IChatToolOutputStateCacheUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	get(toolCallId: string): IOutputState | undefined;
+
 	set(toolCallId: string, state: IOutputState): void;
 }
+
 export const IChatToolOutputStateCacheMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 21,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "get",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IOutputState | undefined",
+
 		Parameters: [{ Name: "toolCallId", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "set",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "toolCallId", TypeText: "string", Optional: false }, { Name: "state", TypeText: "IOutputState", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 24,
 	}
 ] as const;

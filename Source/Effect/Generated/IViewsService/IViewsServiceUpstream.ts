@@ -5,153 +5,287 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IViewsServiceTag = "viewsService" as const;
+
 export const IViewsServiceSourcePath = "vs/workbench/services/views/common/viewsService.ts" as const;
+
 export const IViewsServiceSourceLine = 12 as const;
+
 export interface IViewsServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidChangeFocusedView: Event<void>;
+
 	isViewContainerVisible(id: string): boolean;
+
 	isViewContainerActive(id: string): boolean;
+
 	openViewContainer(id: string, focus?: boolean): Promise<IPaneComposite | null>;
+
 	closeViewContainer(id: string): void;
+
 	getVisibleViewContainer(location: ViewContainerLocation): ViewContainer | null;
+
 	getActiveViewPaneContainerWithId(viewContainerId: string): IViewPaneContainer | null;
+
 	getFocusedView(): IViewDescriptor | null;
+
 	getFocusedViewName(): string;
+
 	isViewVisible(id: string): boolean;
+
 	closeView(id: string): void;
+
 	getViewProgressIndicator(id: string): IProgressIndicator | undefined;
 }
+
 export const IViewsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 15,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeFocusedView",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 15,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isViewContainerVisible",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 19,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isViewContainerActive",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 20,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "openViewContainer",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IPaneComposite | null>",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }, { Name: "focus", TypeText: "boolean", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 21,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "closeViewContainer",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 22,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getVisibleViewContainer",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ViewContainer | null",
+
 		Parameters: [{ Name: "location", TypeText: "ViewContainerLocation", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getActiveViewPaneContainerWithId",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IViewPaneContainer | null",
+
 		Parameters: [{ Name: "viewContainerId", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 24,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getFocusedView",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IViewDescriptor | null",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 25,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getFocusedViewName",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "string",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 26,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isViewVisible",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 31,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "closeView",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 33,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getViewProgressIndicator",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IProgressIndicator | undefined",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 36,
 	}
 ] as const;

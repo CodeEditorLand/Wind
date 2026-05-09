@@ -5,197 +5,341 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IKeybindingServiceTag = "keybindingService" as const;
+
 export const IKeybindingServiceSourcePath = "vs/platform/keybinding/common/keybinding.ts" as const;
+
 export const IKeybindingServiceSourceLine = 41 as const;
+
 export interface IKeybindingServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly inChordMode: boolean;
+
 	readonly onDidUpdateKeybindings: Event<void>;
+
 	/**
 	 * Returns none, one or many (depending on keyboard layout)!
 	 */
 	resolveKeyboardEvent(keyboardEvent: IKeyboardEvent): ResolvedKeybinding;
+
 	/**
 	 * Returns none, one or many (depending on keyboard layout)!
 	 */
 	resolveUserBinding(userBinding: string): ResolvedKeybinding[];
+
 	/**
 	 * Returns none, one or many (depending on keyboard layout)!
 	 */
 	dispatchByUserSettingsLabel(userSettingsLabel: string, target: IContextKeyServiceTarget): void;
+
 	/**
 	 * Returns none, one or many (depending on keyboard layout)!
 	 */
 	getDefaultKeybindingsContent(): string;
+
 	/**
 	 * Returns none, one or many (depending on keyboard layout)!
 	 */
 	getDefaultKeybindings(): readonly ResolvedKeybindingItem[];
+
 	/**
 	 * Returns none, one or many (depending on keyboard layout)!
 	 */
 	getKeybindings(): readonly ResolvedKeybindingItem[];
+
 	/**
 	 * Returns none, one or many (depending on keyboard layout)!
 	 */
 	customKeybindingsCount(): number;
+
 	/**
 	 * Returns none, one or many (depending on keyboard layout)!
 	 */
 	registerSchemaContribution(contribution: KeybindingsSchemaContribution): IDisposable;
+
 	/**
 	 * Returns none, one or many (depending on keyboard layout)!
 	 */
 	toggleLogging(): boolean;
+
 	/**
 	 * Returns none, one or many (depending on keyboard layout)!
 	 */
 	_dumpDebugInfo(): string;
+
 	/**
 	 * Returns none, one or many (depending on keyboard layout)!
 	 */
 	_dumpDebugInfoJSON(): string;
 }
+
 export const IKeybindingServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 44,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "inChordMode",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 44,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidUpdateKeybindings",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 44,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resolveKeyboardEvent",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ResolvedKeybinding",
+
 		Parameters: [{ Name: "keyboardEvent", TypeText: "IKeyboardEvent", Optional: false }],
+
 		DocComment: "Returns none, one or many (depending on keyboard layout)!",
+
 		SourceLine: 55,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resolveUserBinding",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ResolvedKeybinding[]",
+
 		Parameters: [{ Name: "userBinding", TypeText: "string", Optional: false }],
+
 		DocComment: "Returns none, one or many (depending on keyboard layout)!",
+
 		SourceLine: 57,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "dispatchByUserSettingsLabel",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "userSettingsLabel", TypeText: "string", Optional: false }, { Name: "target", TypeText: "IContextKeyServiceTarget", Optional: false }],
+
 		DocComment: "Returns none, one or many (depending on keyboard layout)!",
+
 		SourceLine: 77,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getDefaultKeybindingsContent",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "string",
+
 		Parameters: [],
+
 		DocComment: "Returns none, one or many (depending on keyboard layout)!",
+
 		SourceLine: 91,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getDefaultKeybindings",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "readonly ResolvedKeybindingItem[]",
+
 		Parameters: [],
+
 		DocComment: "Returns none, one or many (depending on keyboard layout)!",
+
 		SourceLine: 93,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getKeybindings",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "readonly ResolvedKeybindingItem[]",
+
 		Parameters: [],
+
 		DocComment: "Returns none, one or many (depending on keyboard layout)!",
+
 		SourceLine: 95,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "customKeybindingsCount",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "number",
+
 		Parameters: [],
+
 		DocComment: "Returns none, one or many (depending on keyboard layout)!",
+
 		SourceLine: 97,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerSchemaContribution",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "contribution", TypeText: "KeybindingsSchemaContribution", Optional: false }],
+
 		DocComment: "Returns none, one or many (depending on keyboard layout)!",
+
 		SourceLine: 105,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "toggleLogging",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [],
+
 		DocComment: "Returns none, one or many (depending on keyboard layout)!",
+
 		SourceLine: 107,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "_dumpDebugInfo",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "string",
+
 		Parameters: [],
+
 		DocComment: "Returns none, one or many (depending on keyboard layout)!",
+
 		SourceLine: 115,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "_dumpDebugInfoJSON",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "string",
+
 		Parameters: [],
+
 		DocComment: "Returns none, one or many (depending on keyboard layout)!",
+
 		SourceLine: 116,
 	}
 ] as const;

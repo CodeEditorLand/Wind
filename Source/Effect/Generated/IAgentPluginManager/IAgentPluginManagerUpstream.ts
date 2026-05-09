@@ -5,28 +5,42 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentPluginManagerTag = "agentPluginManager" as const;
+
 export const IAgentPluginManagerSourcePath = "vs/platform/agentHost/common/agentPluginManager.ts" as const;
+
 export const IAgentPluginManagerSourceLine = 10 as const;
+
 /**
  * A synced customization with its local plugin directory (when available).
  */
 
 export interface IAgentPluginManagerUpstream {
+
 	/**
 	 * A synced customization with its local plugin directory (when available).
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IAgentPluginManagerMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "A synced customization with its local plugin directory (when available).",
+
 		SourceLine: 30,
 	}
 ] as const;

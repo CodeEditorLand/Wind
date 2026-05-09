@@ -5,76 +5,140 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const INotebookLoggingServiceTag = "INotebookLoggingService" as const;
+
 export const INotebookLoggingServiceSourcePath = "vs/workbench/contrib/notebook/common/notebookLoggingService.ts" as const;
+
 export const INotebookLoggingServiceSourceLine = 8 as const;
+
 export interface INotebookLoggingServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	info(category: string, output: string): void;
+
 	warn(category: string, output: string): void;
+
 	error(category: string, output: string): void;
+
 	debug(category: string, output: string): void;
+
 	trace(category: string, output: string): void;
 }
+
 export const INotebookLoggingServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 11,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "info",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "category", TypeText: "string", Optional: false }, { Name: "output", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 12,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "warn",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "category", TypeText: "string", Optional: false }, { Name: "output", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 13,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "error",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "category", TypeText: "string", Optional: false }, { Name: "output", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 14,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "debug",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "category", TypeText: "string", Optional: false }, { Name: "output", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 15,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "trace",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "category", TypeText: "string", Optional: false }, { Name: "output", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 16,
 	}
 ] as const;

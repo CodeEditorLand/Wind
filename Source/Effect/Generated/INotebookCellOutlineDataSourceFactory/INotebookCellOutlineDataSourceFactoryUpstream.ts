@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const INotebookCellOutlineDataSourceFactoryTag = "INotebookCellOutlineDataSourceFactory" as const;
+
 export const INotebookCellOutlineDataSourceFactorySourcePath = "vs/workbench/contrib/notebook/browser/viewModel/notebookOutlineDataSourceFactory.ts" as const;
+
 export const INotebookCellOutlineDataSourceFactorySourceLine = 23 as const;
+
 export interface INotebookCellOutlineDataSourceFactoryUpstream {
+
 	getOrCreate(editor: INotebookEditor): IReference<NotebookCellOutlineDataSource>;
 }
+
 export const INotebookCellOutlineDataSourceFactoryMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Method",
+
 		Name: "getOrCreate",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IReference<NotebookCellOutlineDataSource>",
+
 		Parameters: [{ Name: "editor", TypeText: "INotebookEditor", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 26,
 	}
 ] as const;

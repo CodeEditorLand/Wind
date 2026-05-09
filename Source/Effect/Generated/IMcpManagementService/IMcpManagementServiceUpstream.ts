@@ -5,153 +5,287 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IMcpManagementServiceTag = "IMcpManagementService" as const;
+
 export const IMcpManagementServiceSourcePath = "vs/platform/mcp/common/mcpManagement.ts" as const;
+
 export const IMcpManagementServiceSourceLine = 223 as const;
+
 export interface IMcpManagementServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onInstallMcpServer: Event<InstallMcpServerEvent>;
+
 	readonly onDidInstallMcpServers: Event<readonly InstallMcpServerResult[]>;
+
 	readonly onDidUpdateMcpServers: Event<readonly InstallMcpServerResult[]>;
+
 	readonly onUninstallMcpServer: Event<UninstallMcpServerEvent>;
+
 	readonly onDidUninstallMcpServer: Event<DidUninstallMcpServerEvent>;
+
 	getInstalled(mcpResource?: URI): Promise<ILocalMcpServer[]>;
+
 	canInstall(server: IGalleryMcpServer | IInstallableMcpServer): true | IMarkdownString;
+
 	install(server: IInstallableMcpServer, options?: InstallOptions): Promise<ILocalMcpServer>;
+
 	installFromGallery(server: IGalleryMcpServer, options?: InstallOptions): Promise<ILocalMcpServer>;
+
 	updateMetadata(local: ILocalMcpServer, server: IGalleryMcpServer, profileLocation?: URI): Promise<ILocalMcpServer>;
+
 	uninstall(server: ILocalMcpServer, options?: UninstallOptions): Promise<void>;
+
 	getMcpServerConfigurationFromManifest(manifest: IGalleryMcpServerConfiguration, packageType: RegistryType): McpServerConfigurationParseResult;
 }
+
 export const IMcpManagementServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 225,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onInstallMcpServer",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<InstallMcpServerEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 225,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidInstallMcpServers",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<readonly InstallMcpServerResult[]>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 225,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidUpdateMcpServers",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<readonly InstallMcpServerResult[]>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 225,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onUninstallMcpServer",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<UninstallMcpServerEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 225,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidUninstallMcpServer",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<DidUninstallMcpServerEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 225,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getInstalled",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ILocalMcpServer[]>",
+
 		Parameters: [{ Name: "mcpResource", TypeText: "URI", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 231,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "canInstall",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "true | IMarkdownString",
+
 		Parameters: [{ Name: "server", TypeText: "IGalleryMcpServer | IInstallableMcpServer", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 232,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "install",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ILocalMcpServer>",
+
 		Parameters: [{ Name: "server", TypeText: "IInstallableMcpServer", Optional: false }, { Name: "options", TypeText: "InstallOptions", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 233,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "installFromGallery",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ILocalMcpServer>",
+
 		Parameters: [{ Name: "server", TypeText: "IGalleryMcpServer", Optional: false }, { Name: "options", TypeText: "InstallOptions", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 234,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "updateMetadata",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ILocalMcpServer>",
+
 		Parameters: [{ Name: "local", TypeText: "ILocalMcpServer", Optional: false }, { Name: "server", TypeText: "IGalleryMcpServer", Optional: false }, { Name: "profileLocation", TypeText: "URI", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 235,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "uninstall",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "server", TypeText: "ILocalMcpServer", Optional: false }, { Name: "options", TypeText: "UninstallOptions", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 236,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getMcpServerConfigurationFromManifest",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "McpServerConfigurationParseResult",
+
 		Parameters: [{ Name: "manifest", TypeText: "IGalleryMcpServerConfiguration", Optional: false }, { Name: "packageType", TypeText: "RegistryType", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 238,
 	}
 ] as const;

@@ -5,141 +5,235 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtensionsProfileScannerServiceTag = "IExtensionsProfileScannerService" as const;
+
 export const IExtensionsProfileScannerServiceSourcePath = "vs/platform/extensionManagement/common/extensionsProfileScannerService.ts" as const;
+
 export const IExtensionsProfileScannerServiceSourceLine = 75 as const;
+
 // Decorator doc:
 // /**
 //  * Error when trying to scan extensions from a profile that does not exist.
 //  */
 // 
 export interface IExtensionsProfileScannerServiceUpstream {
+
 	/**
 	 * Error when trying to scan extensions from a profile that does not exist.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Error when trying to scan extensions from a profile that does not exist.
 	 */
 	readonly onAddExtensions: Event<ProfileExtensionsEvent>;
+
 	/**
 	 * Error when trying to scan extensions from a profile that does not exist.
 	 */
 	readonly onDidAddExtensions: Event<DidAddProfileExtensionsEvent>;
+
 	/**
 	 * Error when trying to scan extensions from a profile that does not exist.
 	 */
 	readonly onRemoveExtensions: Event<ProfileExtensionsEvent>;
+
 	/**
 	 * Error when trying to scan extensions from a profile that does not exist.
 	 */
 	readonly onDidRemoveExtensions: Event<DidRemoveProfileExtensionsEvent>;
+
 	/**
 	 * Error when trying to scan extensions from a profile that does not exist.
 	 */
 	scanProfileExtensions(profileLocation: URI, options?: IProfileExtensionsScanOptions): Promise<IScannedProfileExtension[]>;
+
 	/**
 	 * Error when trying to scan extensions from a profile that does not exist.
 	 */
 	addExtensionsToProfile(extensions: [IExtension, Metadata | undefined][], profileLocation: URI, keepExistingVersions?: boolean): Promise<IScannedProfileExtension[]>;
+
 	/**
 	 * Error when trying to scan extensions from a profile that does not exist.
 	 */
 	updateMetadata(extensions: [IExtension, Metadata | undefined][], profileLocation: URI): Promise<IScannedProfileExtension[]>;
+
 	/**
 	 * Error when trying to scan extensions from a profile that does not exist.
 	 */
 	removeExtensionsFromProfile(extensions: IExtensionIdentifier[], profileLocation: URI): Promise<void>;
 }
+
 export const IExtensionsProfileScannerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Error when trying to scan extensions from a profile that does not exist.",
+
 		SourceLine: 77,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onAddExtensions",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ProfileExtensionsEvent>",
+
 		Parameters: [],
+
 		DocComment: "Error when trying to scan extensions from a profile that does not exist.",
+
 		SourceLine: 77,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidAddExtensions",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<DidAddProfileExtensionsEvent>",
+
 		Parameters: [],
+
 		DocComment: "Error when trying to scan extensions from a profile that does not exist.",
+
 		SourceLine: 77,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onRemoveExtensions",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ProfileExtensionsEvent>",
+
 		Parameters: [],
+
 		DocComment: "Error when trying to scan extensions from a profile that does not exist.",
+
 		SourceLine: 77,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidRemoveExtensions",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<DidRemoveProfileExtensionsEvent>",
+
 		Parameters: [],
+
 		DocComment: "Error when trying to scan extensions from a profile that does not exist.",
+
 		SourceLine: 77,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "scanProfileExtensions",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IScannedProfileExtension[]>",
+
 		Parameters: [{ Name: "profileLocation", TypeText: "URI", Optional: false }, { Name: "options", TypeText: "IProfileExtensionsScanOptions", Optional: true }],
+
 		DocComment: "Error when trying to scan extensions from a profile that does not exist.",
+
 		SourceLine: 84,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "addExtensionsToProfile",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IScannedProfileExtension[]>",
+
 		Parameters: [{ Name: "extensions", TypeText: "[IExtension, Metadata | undefined][]", Optional: false }, { Name: "profileLocation", TypeText: "URI", Optional: false }, { Name: "keepExistingVersions", TypeText: "boolean", Optional: true }],
+
 		DocComment: "Error when trying to scan extensions from a profile that does not exist.",
+
 		SourceLine: 85,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "updateMetadata",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IScannedProfileExtension[]>",
+
 		Parameters: [{ Name: "extensions", TypeText: "[IExtension, Metadata | undefined][]", Optional: false }, { Name: "profileLocation", TypeText: "URI", Optional: false }],
+
 		DocComment: "Error when trying to scan extensions from a profile that does not exist.",
+
 		SourceLine: 86,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeExtensionsFromProfile",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "extensions", TypeText: "IExtensionIdentifier[]", Optional: false }, { Name: "profileLocation", TypeText: "URI", Optional: false }],
+
 		DocComment: "Error when trying to scan extensions from a profile that does not exist.",
+
 		SourceLine: 87,
 	}
 ] as const;

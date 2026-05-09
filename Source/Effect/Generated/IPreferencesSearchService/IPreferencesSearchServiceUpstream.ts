@@ -5,54 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IPreferencesSearchServiceTag = "preferencesSearchService" as const;
+
 export const IPreferencesSearchServiceSourcePath = "vs/workbench/contrib/preferences/common/preferences.ts" as const;
+
 export const IPreferencesSearchServiceSourceLine = 37 as const;
+
 export interface IPreferencesSearchServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	getLocalSearchProvider(filter: string): ISearchProvider;
+
 	getRemoteSearchProvider(filter: string, newExtensionsOnly?: boolean): ISearchProvider | undefined;
+
 	getAiSearchProvider(filter: string): IAiSearchProvider | undefined;
 }
+
 export const IPreferencesSearchServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 40,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getLocalSearchProvider",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ISearchProvider",
+
 		Parameters: [{ Name: "filter", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 42,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getRemoteSearchProvider",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ISearchProvider | undefined",
+
 		Parameters: [{ Name: "filter", TypeText: "string", Optional: false }, { Name: "newExtensionsOnly", TypeText: "boolean", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 43,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getAiSearchProvider",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IAiSearchProvider | undefined",
+
 		Parameters: [{ Name: "filter", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 44,
 	}
 ] as const;

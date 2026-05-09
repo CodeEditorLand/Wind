@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IUpdateServiceTag = "updateService" as const;
+
 export const IUpdateServiceSourcePath = "vs/platform/update/common/update.ts" as const;
+
 export const IUpdateServiceSourceLine = 104 as const;
+
 // Decorator doc:
 // /**
 //  * Updates are run as a state machine:
@@ -29,6 +33,7 @@ export const IUpdateServiceSourceLine = 104 as const;
 //  */
 // 
 export interface IUpdateServiceUpstream {
+
 	/**
 	 * Updates are run as a state machine:
 	 * Uninitialized
@@ -48,6 +53,7 @@ export interface IUpdateServiceUpstream {
 	 * Overwriting: A newer update is being downloaded to replace the pending update (darwin).
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Updates are run as a state machine:
 	 * Uninitialized
@@ -67,6 +73,7 @@ export interface IUpdateServiceUpstream {
 	 * Overwriting: A newer update is being downloaded to replace the pending update (darwin).
 	 */
 	readonly onStateChange: Event<State>;
+
 	/**
 	 * Updates are run as a state machine:
 	 * Uninitialized
@@ -86,6 +93,7 @@ export interface IUpdateServiceUpstream {
 	 * Overwriting: A newer update is being downloaded to replace the pending update (darwin).
 	 */
 	readonly state: State;
+
 	/**
 	 * Updates are run as a state machine:
 	 * Uninitialized
@@ -105,6 +113,7 @@ export interface IUpdateServiceUpstream {
 	 * Overwriting: A newer update is being downloaded to replace the pending update (darwin).
 	 */
 	checkForUpdates(explicit: boolean): Promise<void>;
+
 	/**
 	 * Updates are run as a state machine:
 	 * Uninitialized
@@ -124,6 +133,7 @@ export interface IUpdateServiceUpstream {
 	 * Overwriting: A newer update is being downloaded to replace the pending update (darwin).
 	 */
 	downloadUpdate(explicit: boolean): Promise<void>;
+
 	/**
 	 * Updates are run as a state machine:
 	 * Uninitialized
@@ -143,6 +153,7 @@ export interface IUpdateServiceUpstream {
 	 * Overwriting: A newer update is being downloaded to replace the pending update (darwin).
 	 */
 	applyUpdate(): Promise<void>;
+
 	/**
 	 * Updates are run as a state machine:
 	 * Uninitialized
@@ -162,6 +173,7 @@ export interface IUpdateServiceUpstream {
 	 * Overwriting: A newer update is being downloaded to replace the pending update (darwin).
 	 */
 	quitAndInstall(): Promise<void>;
+
 	/**
 	 * Updates are run as a state machine:
 	 * Uninitialized
@@ -181,6 +193,7 @@ export interface IUpdateServiceUpstream {
 	 * Overwriting: A newer update is being downloaded to replace the pending update (darwin).
 	 */
 	_applySpecificUpdate(packagePath: string): Promise<void>;
+
 	/**
 	 * Updates are run as a state machine:
 	 * Uninitialized
@@ -201,95 +214,176 @@ export interface IUpdateServiceUpstream {
 	 */
 	setInternalOrg(internalOrg: string | undefined): Promise<void>;
 }
+
 export const IUpdateServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Updates are run as a state machine:\nUninitialized\n↓\nIdle\n↓  ↑\nChecking for Updates  →  Available for Download\n↓                    ↓\n←   Overwriting\nDownloading              ↑\n→      Ready\n↓                    ↑\nDownloaded      →     Updating\nAvailable: There is an update available for download (linux, darwin on metered connection).\nReady: Code will be updated as soon as it restarts (win32, darwin).\nDownloaded: There is an update ready to be installed in the background (win32).\nOverwriting: A newer update is being downloaded to replace the pending update (darwin).",
+
 		SourceLine: 107,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onStateChange",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<State>",
+
 		Parameters: [],
+
 		DocComment: "Updates are run as a state machine:\nUninitialized\n↓\nIdle\n↓  ↑\nChecking for Updates  →  Available for Download\n↓                    ↓\n←   Overwriting\nDownloading              ↑\n→      Ready\n↓                    ↑\nDownloaded      →     Updating\nAvailable: There is an update available for download (linux, darwin on metered connection).\nReady: Code will be updated as soon as it restarts (win32, darwin).\nDownloaded: There is an update ready to be installed in the background (win32).\nOverwriting: A newer update is being downloaded to replace the pending update (darwin).",
+
 		SourceLine: 107,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "state",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "State",
+
 		Parameters: [],
+
 		DocComment: "Updates are run as a state machine:\nUninitialized\n↓\nIdle\n↓  ↑\nChecking for Updates  →  Available for Download\n↓                    ↓\n←   Overwriting\nDownloading              ↑\n→      Ready\n↓                    ↑\nDownloaded      →     Updating\nAvailable: There is an update available for download (linux, darwin on metered connection).\nReady: Code will be updated as soon as it restarts (win32, darwin).\nDownloaded: There is an update ready to be installed in the background (win32).\nOverwriting: A newer update is being downloaded to replace the pending update (darwin).",
+
 		SourceLine: 107,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "checkForUpdates",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "explicit", TypeText: "boolean", Optional: false }],
+
 		DocComment: "Updates are run as a state machine:\nUninitialized\n↓\nIdle\n↓  ↑\nChecking for Updates  →  Available for Download\n↓                    ↓\n←   Overwriting\nDownloading              ↑\n→      Ready\n↓                    ↑\nDownloaded      →     Updating\nAvailable: There is an update available for download (linux, darwin on metered connection).\nReady: Code will be updated as soon as it restarts (win32, darwin).\nDownloaded: There is an update ready to be installed in the background (win32).\nOverwriting: A newer update is being downloaded to replace the pending update (darwin).",
+
 		SourceLine: 112,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "downloadUpdate",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "explicit", TypeText: "boolean", Optional: false }],
+
 		DocComment: "Updates are run as a state machine:\nUninitialized\n↓\nIdle\n↓  ↑\nChecking for Updates  →  Available for Download\n↓                    ↓\n←   Overwriting\nDownloading              ↑\n→      Ready\n↓                    ↑\nDownloaded      →     Updating\nAvailable: There is an update available for download (linux, darwin on metered connection).\nReady: Code will be updated as soon as it restarts (win32, darwin).\nDownloaded: There is an update ready to be installed in the background (win32).\nOverwriting: A newer update is being downloaded to replace the pending update (darwin).",
+
 		SourceLine: 113,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "applyUpdate",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [],
+
 		DocComment: "Updates are run as a state machine:\nUninitialized\n↓\nIdle\n↓  ↑\nChecking for Updates  →  Available for Download\n↓                    ↓\n←   Overwriting\nDownloading              ↑\n→      Ready\n↓                    ↑\nDownloaded      →     Updating\nAvailable: There is an update available for download (linux, darwin on metered connection).\nReady: Code will be updated as soon as it restarts (win32, darwin).\nDownloaded: There is an update ready to be installed in the background (win32).\nOverwriting: A newer update is being downloaded to replace the pending update (darwin).",
+
 		SourceLine: 114,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "quitAndInstall",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [],
+
 		DocComment: "Updates are run as a state machine:\nUninitialized\n↓\nIdle\n↓  ↑\nChecking for Updates  →  Available for Download\n↓                    ↓\n←   Overwriting\nDownloading              ↑\n→      Ready\n↓                    ↑\nDownloaded      →     Updating\nAvailable: There is an update available for download (linux, darwin on metered connection).\nReady: Code will be updated as soon as it restarts (win32, darwin).\nDownloaded: There is an update ready to be installed in the background (win32).\nOverwriting: A newer update is being downloaded to replace the pending update (darwin).",
+
 		SourceLine: 115,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "_applySpecificUpdate",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "packagePath", TypeText: "string", Optional: false }],
+
 		DocComment: "Updates are run as a state machine:\nUninitialized\n↓\nIdle\n↓  ↑\nChecking for Updates  →  Available for Download\n↓                    ↓\n←   Overwriting\nDownloading              ↑\n→      Ready\n↓                    ↑\nDownloaded      →     Updating\nAvailable: There is an update available for download (linux, darwin on metered connection).\nReady: Code will be updated as soon as it restarts (win32, darwin).\nDownloaded: There is an update ready to be installed in the background (win32).\nOverwriting: A newer update is being downloaded to replace the pending update (darwin).",
+
 		SourceLine: 121,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setInternalOrg",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "internalOrg", TypeText: "string | undefined", Optional: false }],
+
 		DocComment: "Updates are run as a state machine:\nUninitialized\n↓\nIdle\n↓  ↑\nChecking for Updates  →  Available for Download\n↓                    ↓\n←   Overwriting\nDownloading              ↑\n→      Ready\n↓                    ↑\nDownloaded      →     Updating\nAvailable: There is an update available for download (linux, darwin on metered connection).\nReady: Code will be updated as soon as it restarts (win32, darwin).\nDownloaded: There is an update ready to be installed in the background (win32).\nOverwriting: A newer update is being downloaded to replace the pending update (darwin).",
+
 		SourceLine: 122,
 	}
 ] as const;

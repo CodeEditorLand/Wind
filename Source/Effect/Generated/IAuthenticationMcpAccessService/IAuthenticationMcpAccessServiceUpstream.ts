@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAuthenticationMcpAccessServiceTag = "IAuthenticationMcpAccessService" as const;
+
 export const IAuthenticationMcpAccessServiceSourcePath = "vs/workbench/services/authentication/browser/authenticationMcpAccessService.ts" as const;
+
 export const IAuthenticationMcpAccessServiceSourceLine = 27 as const;
+
 // Decorator doc:
 // /**
 //  * If true or undefined, the extension is allowed to use the account
@@ -16,30 +20,35 @@ export const IAuthenticationMcpAccessServiceSourceLine = 27 as const;
 //  */
 // 
 export interface IAuthenticationMcpAccessServiceUpstream {
+
 	/**
 	 * If true or undefined, the extension is allowed to use the account
 	 * If false, the extension is not allowed to use the account
 	 * TODO: undefined shouldn't be a valid value, but it is for now
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * If true or undefined, the extension is allowed to use the account
 	 * If false, the extension is not allowed to use the account
 	 * TODO: undefined shouldn't be a valid value, but it is for now
 	 */
 	readonly onDidChangeMcpSessionAccess: Event<{ providerId: string; accountName: string }>;
+
 	/**
 	 * If true or undefined, the extension is allowed to use the account
 	 * If false, the extension is not allowed to use the account
 	 * TODO: undefined shouldn't be a valid value, but it is for now
 	 */
 	readAllowedMcpServers(providerId: string, accountName: string): AllowedMcpServer[];
+
 	/**
 	 * If true or undefined, the extension is allowed to use the account
 	 * If false, the extension is not allowed to use the account
 	 * TODO: undefined shouldn't be a valid value, but it is for now
 	 */
 	updateAllowedMcpServers(providerId: string, accountName: string, mcpServers: AllowedMcpServer[]): void;
+
 	/**
 	 * If true or undefined, the extension is allowed to use the account
 	 * If false, the extension is not allowed to use the account
@@ -47,55 +56,100 @@ export interface IAuthenticationMcpAccessServiceUpstream {
 	 */
 	removeAllowedMcpServers(providerId: string, accountName: string): void;
 }
+
 export const IAuthenticationMcpAccessServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "If true or undefined, the extension is allowed to use the account\nIf false, the extension is not allowed to use the account\nTODO: undefined shouldn't be a valid value, but it is for now",
+
 		SourceLine: 29,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeMcpSessionAccess",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<{ providerId: string; accountName: string }>",
+
 		Parameters: [],
+
 		DocComment: "If true or undefined, the extension is allowed to use the account\nIf false, the extension is not allowed to use the account\nTODO: undefined shouldn't be a valid value, but it is for now",
+
 		SourceLine: 29,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "readAllowedMcpServers",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "AllowedMcpServer[]",
+
 		Parameters: [{ Name: "providerId", TypeText: "string", Optional: false }, { Name: "accountName", TypeText: "string", Optional: false }],
+
 		DocComment: "If true or undefined, the extension is allowed to use the account\nIf false, the extension is not allowed to use the account\nTODO: undefined shouldn't be a valid value, but it is for now",
+
 		SourceLine: 42,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "updateAllowedMcpServers",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "providerId", TypeText: "string", Optional: false }, { Name: "accountName", TypeText: "string", Optional: false }, { Name: "mcpServers", TypeText: "AllowedMcpServer[]", Optional: false }],
+
 		DocComment: "If true or undefined, the extension is allowed to use the account\nIf false, the extension is not allowed to use the account\nTODO: undefined shouldn't be a valid value, but it is for now",
+
 		SourceLine: 43,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeAllowedMcpServers",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "providerId", TypeText: "string", Optional: false }, { Name: "accountName", TypeText: "string", Optional: false }],
+
 		DocComment: "If true or undefined, the extension is allowed to use the account\nIf false, the extension is not allowed to use the account\nTODO: undefined shouldn't be a valid value, but it is for now",
+
 		SourceLine: 44,
 	}
 ] as const;

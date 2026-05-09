@@ -5,76 +5,140 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IBannerServiceTag = "bannerService" as const;
+
 export const IBannerServiceSourcePath = "vs/workbench/services/banner/browser/bannerService.ts" as const;
+
 export const IBannerServiceSourceLine = 22 as const;
+
 export interface IBannerServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	focus(): void;
+
 	focusNextAction(): void;
+
 	focusPreviousAction(): void;
+
 	hide(id: string): void;
+
 	show(item: IBannerItem): void;
 }
+
 export const IBannerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 25,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "focus",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 27,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "focusNextAction",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 28,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "focusPreviousAction",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 29,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "hide",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 30,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "show",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "item", TypeText: "IBannerItem", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 31,
 	}
 ] as const;

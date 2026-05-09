@@ -5,87 +5,161 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISnippetsServiceTag = "snippetService" as const;
+
 export const ISnippetsServiceSourcePath = "vs/workbench/contrib/snippets/browser/snippets.ts" as const;
+
 export const ISnippetsServiceSourceLine = 10 as const;
+
 export interface ISnippetsServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	getSnippetFiles(): Promise<Iterable<SnippetFile>>;
+
 	isEnabled(snippet: Snippet): boolean;
+
 	updateEnablement(snippet: Snippet, enabled: boolean): void;
+
 	updateUsageTimestamp(snippet: Snippet): void;
+
 	getSnippets(languageId: string | undefined, resourceUri?: URI, opt?: ISnippetGetOptions): Promise<Snippet[]>;
+
 	getSnippetsSync(languageId: string, resourceUri?: URI, opt?: ISnippetGetOptions): Snippet[];
 }
+
 export const ISnippetsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 21,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getSnippetFiles",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<Iterable<SnippetFile>>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isEnabled",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "snippet", TypeText: "Snippet", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 25,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "updateEnablement",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "snippet", TypeText: "Snippet", Optional: false }, { Name: "enabled", TypeText: "boolean", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 27,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "updateUsageTimestamp",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "snippet", TypeText: "Snippet", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 29,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getSnippets",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<Snippet[]>",
+
 		Parameters: [{ Name: "languageId", TypeText: "string | undefined", Optional: false }, { Name: "resourceUri", TypeText: "URI", Optional: true }, { Name: "opt", TypeText: "ISnippetGetOptions", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 31,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getSnippetsSync",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Snippet[]",
+
 		Parameters: [{ Name: "languageId", TypeText: "string", Optional: false }, { Name: "resourceUri", TypeText: "URI", Optional: true }, { Name: "opt", TypeText: "ISnippetGetOptions", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 33,
 	}
 ] as const;

@@ -5,11 +5,17 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtHostOutputServiceTag = "IExtHostOutputService" as const;
+
 export const IExtHostOutputServiceSourcePath = "vs/workbench/api/common/extHostOutput.ts" as const;
+
 export const IExtHostOutputServiceSourceLine = 307 as const;
+
 export interface IExtHostOutputServiceUpstream {
+
 	// (no members extracted in same file - resolve cross-file)
 }
+
 export const IExtHostOutputServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

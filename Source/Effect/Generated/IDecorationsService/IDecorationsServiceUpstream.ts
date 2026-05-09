@@ -5,54 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IDecorationsServiceTag = "IFileDecorationsService" as const;
+
 export const IDecorationsServiceSourcePath = "vs/workbench/services/decorations/common/decorations.ts" as const;
+
 export const IDecorationsServiceSourceLine = 14 as const;
+
 export interface IDecorationsServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidChangeDecorations: Event<IResourceDecorationChangeEvent>;
+
 	registerDecorationsProvider(provider: IDecorationsProvider): IDisposable;
+
 	getDecoration(uri: URI, includeChildren: boolean): IDecoration | undefined;
 }
+
 export const IDecorationsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 45,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeDecorations",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<IResourceDecorationChangeEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 45,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerDecorationsProvider",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "provider", TypeText: "IDecorationsProvider", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 49,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getDecoration",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDecoration | undefined",
+
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }, { Name: "includeChildren", TypeText: "boolean", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 51,
 	}
 ] as const;

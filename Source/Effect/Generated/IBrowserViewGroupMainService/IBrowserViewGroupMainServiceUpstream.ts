@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IBrowserViewGroupMainServiceTag = "browserViewGroupMainService" as const;
+
 export const IBrowserViewGroupMainServiceSourcePath = "vs/platform/browserView/electron-main/browserViewGroupMainService.ts" as const;
+
 export const IBrowserViewGroupMainServiceSourceLine = 15 as const;
+
 export interface IBrowserViewGroupMainServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const IBrowserViewGroupMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	}
 ] as const;

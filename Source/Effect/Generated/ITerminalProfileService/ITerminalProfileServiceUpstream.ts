@@ -5,211 +5,355 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITerminalProfileServiceTag = "terminalProfileService" as const;
+
 export const ITerminalProfileServiceSourcePath = "vs/workbench/contrib/terminal/common/terminal.ts" as const;
+
 export const ITerminalProfileServiceSourceLine = 73 as const;
+
 // Decorator doc:
 // /**
 //  * Resolves the icon of a shell launch config if this will use the default profile
 //  */
 // 
 export interface ITerminalProfileServiceUpstream {
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	readonly availableProfiles: ITerminalProfile[];
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	readonly contributedProfiles: IExtensionTerminalProfile[];
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	readonly profilesReady: Promise<void>;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	readonly onDidChangeAvailableProfiles: Event<ITerminalProfile[]>;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	getPlatformKey(): Promise<string>;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	refreshAvailableProfiles(): void;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	getDefaultProfileName(): string | undefined;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	getDefaultProfile(os?: OperatingSystem): ITerminalProfile | undefined;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	getContributedDefaultProfile(shellLaunchConfig: IShellLaunchConfig): Promise<IExtensionTerminalProfile | undefined>;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	registerContributedProfile(args: IRegisterContributedProfileArgs): Promise<void>;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	registerInternalContributedProfile(profile: IExtensionTerminalProfile): IDisposable;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	getContributedProfileProvider(extensionIdentifier: string, id: string): ITerminalProfileProvider | undefined;
+
 	/**
 	 * Resolves the icon of a shell launch config if this will use the default profile
 	 */
 	registerTerminalProfileProvider(extensionIdentifier: string, id: string, profileProvider: ITerminalProfileProvider): IDisposable;
 }
+
 export const ITerminalProfileServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 75,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "availableProfiles",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "ITerminalProfile[]",
+
 		Parameters: [],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 75,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "contributedProfiles",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IExtensionTerminalProfile[]",
+
 		Parameters: [],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 75,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "profilesReady",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 75,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeAvailableProfiles",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITerminalProfile[]>",
+
 		Parameters: [],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 75,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getPlatformKey",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<string>",
+
 		Parameters: [],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 79,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "refreshAvailableProfiles",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 80,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getDefaultProfileName",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "string | undefined",
+
 		Parameters: [],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 81,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getDefaultProfile",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ITerminalProfile | undefined",
+
 		Parameters: [{ Name: "os", TypeText: "OperatingSystem", Optional: true }],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 82,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getContributedDefaultProfile",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IExtensionTerminalProfile | undefined>",
+
 		Parameters: [{ Name: "shellLaunchConfig", TypeText: "IShellLaunchConfig", Optional: false }],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 84,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerContributedProfile",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "args", TypeText: "IRegisterContributedProfileArgs", Optional: false }],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 85,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerInternalContributedProfile",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "profile", TypeText: "IExtensionTerminalProfile", Optional: false }],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 86,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getContributedProfileProvider",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ITerminalProfileProvider | undefined",
+
 		Parameters: [{ Name: "extensionIdentifier", TypeText: "string", Optional: false }, { Name: "id", TypeText: "string", Optional: false }],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 87,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerTerminalProfileProvider",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "extensionIdentifier", TypeText: "string", Optional: false }, { Name: "id", TypeText: "string", Optional: false }, { Name: "profileProvider", TypeText: "ITerminalProfileProvider", Optional: false }],
+
 		DocComment: "Resolves the icon of a shell launch config if this will use the default profile",
+
 		SourceLine: 88,
 	}
 ] as const;

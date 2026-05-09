@@ -5,28 +5,42 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IWorkbenchMcpGatewayServiceTag = "IWorkbenchMcpGatewayService" as const;
+
 export const IWorkbenchMcpGatewayServiceSourcePath = "vs/workbench/contrib/mcp/common/mcpGatewayService.ts" as const;
+
 export const IWorkbenchMcpGatewayServiceSourceLine = 11 as const;
+
 /**
  * A single server entry exposed by the gateway at the workbench layer.
  */
 
 export interface IWorkbenchMcpGatewayServiceUpstream {
+
 	/**
 	 * A single server entry exposed by the gateway at the workbench layer.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IWorkbenchMcpGatewayServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "A single server entry exposed by the gateway at the workbench layer.",
+
 		SourceLine: 45,
 	}
 ] as const;

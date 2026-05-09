@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITerminalInstanceServiceTag = "terminalInstanceService" as const;
+
 export const ITerminalInstanceServiceSourcePath = "vs/workbench/contrib/terminal/browser/terminal.ts" as const;
+
 export const ITerminalInstanceServiceSourceLine = 44 as const;
+
 /**
  * A terminal contribution that gets created whenever a terminal is created. A contribution has
  * access to the process manager through the constructor and provides a method for when xterm.js has
@@ -15,18 +19,21 @@ export const ITerminalInstanceServiceSourceLine = 44 as const;
  */
 
 export interface ITerminalInstanceServiceUpstream {
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	getRegisteredBackends(): IterableIterator<ITerminalBackend>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
@@ -34,35 +41,62 @@ export interface ITerminalInstanceServiceUpstream {
 	 */
 	didRegisterBackend(backend: ITerminalBackend): void;
 }
+
 export const ITerminalInstanceServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 67,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getRegisteredBackends",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IterableIterator<ITerminalBackend>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 101,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "didRegisterBackend",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "backend", TypeText: "ITerminalBackend", Optional: false }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 102,
 	}
 ] as const;

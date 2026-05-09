@@ -5,54 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITrustedDomainServiceTag = "ITrustedDomainService" as const;
+
 export const ITrustedDomainServiceSourcePath = "vs/workbench/contrib/url/common/trustedDomainService.ts" as const;
+
 export const ITrustedDomainServiceSourceLine = 10 as const;
+
 export interface ITrustedDomainServiceUpstream {
+
 	_serviceBrand: undefined;
+
 	readonly onDidChangeTrustedDomains: Event<void>;
+
 	readonly trustedDomains: string[];
+
 	isValid(resource: URI): boolean;
 }
+
 export const ITrustedDomainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 13,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeTrustedDomains",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 14,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "trustedDomains",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "string[]",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 14,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isValid",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 15,
 	}
 ] as const;

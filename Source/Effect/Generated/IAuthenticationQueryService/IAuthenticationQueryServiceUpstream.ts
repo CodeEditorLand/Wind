@@ -5,29 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAuthenticationQueryServiceTag = "IAuthenticationQueryService" as const;
+
 export const IAuthenticationQueryServiceSourcePath = "vs/workbench/services/authentication/common/authenticationQuery.ts" as const;
+
 export const IAuthenticationQueryServiceSourceLine = 463 as const;
+
 // Decorator doc:
 // /**
 //  * Statistics about authentication usage
 //  */
 // 
 export interface IAuthenticationQueryServiceUpstream {
+
 	/**
 	 * Statistics about authentication usage
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IAuthenticationQueryServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Statistics about authentication usage",
+
 		SourceLine: 465,
 	}
 ] as const;

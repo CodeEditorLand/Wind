@@ -5,54 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITerminalLinkProviderServiceTag = "terminalLinkProviderService" as const;
+
 export const ITerminalLinkProviderServiceSourcePath = "vs/workbench/contrib/terminalContrib/links/browser/links.ts" as const;
+
 export const ITerminalLinkProviderServiceSourceLine = 19 as const;
+
 export interface ITerminalLinkProviderServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly linkProviders: ReadonlySet<ITerminalExternalLinkProvider>;
+
 	readonly onDidAddLinkProvider: Event<ITerminalExternalLinkProvider>;
+
 	readonly onDidRemoveLinkProvider: Event<ITerminalExternalLinkProvider>;
 }
+
 export const ITerminalLinkProviderServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 21,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "linkProviders",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "ReadonlySet<ITerminalExternalLinkProvider>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 21,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidAddLinkProvider",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITerminalExternalLinkProvider>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 21,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidRemoveLinkProvider",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITerminalExternalLinkProvider>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 21,
 	}
 ] as const;

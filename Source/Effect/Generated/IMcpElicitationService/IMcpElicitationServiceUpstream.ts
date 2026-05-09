@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IMcpElicitationServiceTag = "IMcpElicitationService" as const;
+
 export const IMcpElicitationServiceSourcePath = "vs/workbench/contrib/mcp/common/mcpTypes.ts" as const;
+
 export const IMcpElicitationServiceSourceLine = 1020 as const;
+
 // Decorator doc:
 // /**
 //  * An McpCollection contains McpServers. There may be multiple collections for
@@ -15,21 +19,31 @@ export const IMcpElicitationServiceSourceLine = 1020 as const;
 //  */
 // 
 export interface IMcpElicitationServiceUpstream {
+
 	/**
 	 * An McpCollection contains McpServers. There may be multiple collections for
 	 * different locations servers are discovered.
 	 */
 	_serviceBrand: undefined;
 }
+
 export const IMcpElicitationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "An McpCollection contains McpServers. There may be multiple collections for\ndifferent locations servers are discovered.",
+
 		SourceLine: 984,
 	}
 ] as const;

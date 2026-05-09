@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ILocalGitServiceTag = "localGitService" as const;
+
 export const ILocalGitServiceSourcePath = "vs/platform/git/common/localGitService.ts" as const;
+
 export const ILocalGitServiceSourceLine = 8 as const;
+
 /**
  * Low-level service for executing git commands on the local machine.
  * Used in the shared process where Node.js APIs are available.
@@ -15,48 +19,56 @@ export const ILocalGitServiceSourceLine = 8 as const;
  */
 
 export interface ILocalGitServiceUpstream {
+
 	/**
 	 * Low-level service for executing git commands on the local machine.
 	 * Used in the shared process where Node.js APIs are available.
 	 * All path arguments are native file-system paths.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Low-level service for executing git commands on the local machine.
 	 * Used in the shared process where Node.js APIs are available.
 	 * All path arguments are native file-system paths.
 	 */
 	clone(operationId: string, cloneUrl: string, targetPath: string, ref?: string): Promise<void>;
+
 	/**
 	 * Low-level service for executing git commands on the local machine.
 	 * Used in the shared process where Node.js APIs are available.
 	 * All path arguments are native file-system paths.
 	 */
 	pull(operationId: string, repoPath: string): Promise<boolean>;
+
 	/**
 	 * Low-level service for executing git commands on the local machine.
 	 * Used in the shared process where Node.js APIs are available.
 	 * All path arguments are native file-system paths.
 	 */
 	checkout(operationId: string, repoPath: string, treeish: string, detached?: boolean): Promise<void>;
+
 	/**
 	 * Low-level service for executing git commands on the local machine.
 	 * Used in the shared process where Node.js APIs are available.
 	 * All path arguments are native file-system paths.
 	 */
 	revParse(repoPath: string, ref: string): Promise<string>;
+
 	/**
 	 * Low-level service for executing git commands on the local machine.
 	 * Used in the shared process where Node.js APIs are available.
 	 * All path arguments are native file-system paths.
 	 */
 	fetch(operationId: string, repoPath: string): Promise<void>;
+
 	/**
 	 * Low-level service for executing git commands on the local machine.
 	 * Used in the shared process where Node.js APIs are available.
 	 * All path arguments are native file-system paths.
 	 */
 	revListCount(repoPath: string, fromRef: string, toRef: string): Promise<number>;
+
 	/**
 	 * Low-level service for executing git commands on the local machine.
 	 * Used in the shared process where Node.js APIs are available.
@@ -64,85 +76,157 @@ export interface ILocalGitServiceUpstream {
 	 */
 	cancel(operationId: string): Promise<void>;
 }
+
 export const ILocalGitServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Low-level service for executing git commands on the local machine.\nUsed in the shared process where Node.js APIs are available.\nAll path arguments are native file-system paths.",
+
 		SourceLine: 16,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "clone",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "operationId", TypeText: "string", Optional: false }, { Name: "cloneUrl", TypeText: "string", Optional: false }, { Name: "targetPath", TypeText: "string", Optional: false }, { Name: "ref", TypeText: "string", Optional: true }],
+
 		DocComment: "Low-level service for executing git commands on the local machine.\nUsed in the shared process where Node.js APIs are available.\nAll path arguments are native file-system paths.",
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "pull",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<boolean>",
+
 		Parameters: [{ Name: "operationId", TypeText: "string", Optional: false }, { Name: "repoPath", TypeText: "string", Optional: false }],
+
 		DocComment: "Low-level service for executing git commands on the local machine.\nUsed in the shared process where Node.js APIs are available.\nAll path arguments are native file-system paths.",
+
 		SourceLine: 19,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "checkout",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "operationId", TypeText: "string", Optional: false }, { Name: "repoPath", TypeText: "string", Optional: false }, { Name: "treeish", TypeText: "string", Optional: false }, { Name: "detached", TypeText: "boolean", Optional: true }],
+
 		DocComment: "Low-level service for executing git commands on the local machine.\nUsed in the shared process where Node.js APIs are available.\nAll path arguments are native file-system paths.",
+
 		SourceLine: 20,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "revParse",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<string>",
+
 		Parameters: [{ Name: "repoPath", TypeText: "string", Optional: false }, { Name: "ref", TypeText: "string", Optional: false }],
+
 		DocComment: "Low-level service for executing git commands on the local machine.\nUsed in the shared process where Node.js APIs are available.\nAll path arguments are native file-system paths.",
+
 		SourceLine: 21,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "fetch",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "operationId", TypeText: "string", Optional: false }, { Name: "repoPath", TypeText: "string", Optional: false }],
+
 		DocComment: "Low-level service for executing git commands on the local machine.\nUsed in the shared process where Node.js APIs are available.\nAll path arguments are native file-system paths.",
+
 		SourceLine: 22,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "revListCount",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<number>",
+
 		Parameters: [{ Name: "repoPath", TypeText: "string", Optional: false }, { Name: "fromRef", TypeText: "string", Optional: false }, { Name: "toRef", TypeText: "string", Optional: false }],
+
 		DocComment: "Low-level service for executing git commands on the local machine.\nUsed in the shared process where Node.js APIs are available.\nAll path arguments are native file-system paths.",
+
 		SourceLine: 23,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "cancel",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "operationId", TypeText: "string", Optional: false }],
+
 		DocComment: "Low-level service for executing git commands on the local machine.\nUsed in the shared process where Node.js APIs are available.\nAll path arguments are native file-system paths.",
+
 		SourceLine: 24,
 	}
 ] as const;

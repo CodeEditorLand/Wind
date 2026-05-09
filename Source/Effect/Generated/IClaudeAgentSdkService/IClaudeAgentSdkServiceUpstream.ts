@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IClaudeAgentSdkServiceTag = "claudeAgentSdkService" as const;
+
 export const IClaudeAgentSdkServiceSourcePath = "vs/platform/agentHost/node/claude/claudeAgentSdkService.ts" as const;
+
 export const IClaudeAgentSdkServiceSourceLine = 14 as const;
+
 /**
  * Lazy wrapper over `@anthropic-ai/claude-agent-sdk` for the agent host
  * Claude provider. The interface grows phase-by-phase; Phase 5 introduces
@@ -18,6 +22,7 @@ export const IClaudeAgentSdkServiceSourceLine = 14 as const;
  */
 
 export interface IClaudeAgentSdkServiceUpstream {
+
 	/**
 	 * Lazy wrapper over `@anthropic-ai/claude-agent-sdk` for the agent host
 	 * Claude provider. The interface grows phase-by-phase; Phase 5 introduces
@@ -28,15 +33,24 @@ export interface IClaudeAgentSdkServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IClaudeAgentSdkServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Lazy wrapper over `@anthropic-ai/claude-agent-sdk` for the agent host\nClaude provider. The interface grows phase-by-phase; Phase 5 introduces\nthe decorator so {@link import('./claudeAgent.js').ClaudeAgent} can take\nit as a constructor dependency. Phase 6 adds {@link startup} for\nmaterialization. Method surfaces are added in subsequent slices alongside\nthe tests that exercise them.",
+
 		SourceLine: 25,
 	}
 ] as const;

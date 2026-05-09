@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAccessibleViewInformationServiceTag = "accessibleViewInformationService" as const;
+
 export const IAccessibleViewInformationServiceSourcePath = "vs/workbench/services/accessibility/common/accessibleViewInformationService.ts" as const;
+
 export const IAccessibleViewInformationServiceSourceLine = 16 as const;
+
 export interface IAccessibleViewInformationServiceUpstream {
+
 	_serviceBrand: undefined;
+
 	hasShownAccessibleView(viewId: string): boolean;
 }
+
 export const IAccessibleViewInformationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 12,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "hasShownAccessibleView",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "viewId", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 13,
 	}
 ] as const;

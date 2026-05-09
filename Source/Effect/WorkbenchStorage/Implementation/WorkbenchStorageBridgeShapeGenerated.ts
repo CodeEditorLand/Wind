@@ -14,7 +14,17 @@
 
 import type { IStorageServiceUpstream } from "../../Generated/IStorageService/IStorageServiceUpstream.js";
 
-export type WorkbenchStorageBridgeShape = Pick<IStorageServiceUpstream, "get" | "getBoolean" | "getNumber" | "getObject" | "store" | "remove" | "keys" | "onDidChangeValue">;
+export type WorkbenchStorageBridgeShape = Pick<
+	IStorageServiceUpstream,
+	| "get"
+	| "getBoolean"
+	| "getNumber"
+	| "getObject"
+	| "store"
+	| "remove"
+	| "keys"
+	| "onDidChangeValue"
+>;
 
 export interface WorkbenchStorageGlobals {
 	readonly __CEL_SERVICES__?: {

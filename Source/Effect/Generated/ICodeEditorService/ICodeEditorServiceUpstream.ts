@@ -5,379 +5,683 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ICodeEditorServiceTag = "codeEditorService" as const;
+
 export const ICodeEditorServiceSourcePath = "vs/editor/browser/services/codeEditorService.ts" as const;
+
 export const ICodeEditorServiceSourceLine = 15 as const;
+
 export interface ICodeEditorServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onWillCreateCodeEditor: Event<void>;
+
 	readonly onCodeEditorAdd: Event<ICodeEditor>;
+
 	readonly onCodeEditorRemove: Event<ICodeEditor>;
+
 	readonly onWillCreateDiffEditor: Event<void>;
+
 	readonly onDiffEditorAdd: Event<IDiffEditor>;
+
 	readonly onDiffEditorRemove: Event<IDiffEditor>;
+
 	readonly onDidChangeTransientModelProperty: Event<ITextModel>;
+
 	readonly onDecorationTypeRegistered: Event<string>;
+
 	willCreateCodeEditor(): void;
+
 	addCodeEditor(editor: ICodeEditor): void;
+
 	removeCodeEditor(editor: ICodeEditor): void;
+
 	listCodeEditors(): readonly ICodeEditor[];
+
 	willCreateDiffEditor(): void;
+
 	addDiffEditor(editor: IDiffEditor): void;
+
 	removeDiffEditor(editor: IDiffEditor): void;
+
 	listDiffEditors(): readonly IDiffEditor[];
+
 	/**
 	 * Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.
 	 */
 	registerDecorationType(description: string, key: string, options: IDecorationRenderOptions, parentTypeKey?: string, editor?: ICodeEditor): IDisposable;
+
 	/**
 	 * Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.
 	 */
 	listDecorationTypes(): string[];
+
 	/**
 	 * Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.
 	 */
 	removeDecorationType(key: string): void;
+
 	/**
 	 * Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.
 	 */
 	resolveDecorationOptions(typeKey: string, writable: boolean): IModelDecorationOptions;
+
 	/**
 	 * Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.
 	 */
 	resolveDecorationCSSRules(decorationTypeKey: string): CSSRuleList | null;
+
 	/**
 	 * Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.
 	 */
 	setModelProperty(resource: URI, key: string, value: unknown): void;
+
 	/**
 	 * Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.
 	 */
 	getModelProperty(resource: URI, key: string): unknown;
+
 	/**
 	 * Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.
 	 */
 	setTransientModelProperty(model: ITextModel, key: string, value: unknown): void;
+
 	/**
 	 * Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.
 	 */
 	getTransientModelProperty(model: ITextModel, key: string): unknown;
+
 	/**
 	 * Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.
 	 */
 	getTransientModelProperties(model: ITextModel): [string, unknown][] | undefined;
+
 	/**
 	 * Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.
 	 */
 	getActiveCodeEditor(): ICodeEditor | null;
+
 	/**
 	 * Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.
 	 */
 	openCodeEditor(input: ITextResourceEditorInput, source: ICodeEditor | null, sideBySide?: boolean): Promise<ICodeEditor | null>;
+
 	/**
 	 * Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.
 	 */
 	registerCodeEditorOpenHandler(handler: ICodeEditorOpenHandler): IDisposable;
 }
+
 export const ICodeEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onWillCreateCodeEditor",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onCodeEditorAdd",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ICodeEditor>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onCodeEditorRemove",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ICodeEditor>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onWillCreateDiffEditor",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDiffEditorAdd",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<IDiffEditor>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDiffEditorRemove",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<IDiffEditor>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeTransientModelProperty",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITextModel>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDecorationTypeRegistered",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<string>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "willCreateCodeEditor",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 31,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "addCodeEditor",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "editor", TypeText: "ICodeEditor", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 32,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeCodeEditor",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "editor", TypeText: "ICodeEditor", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 33,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "listCodeEditors",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "readonly ICodeEditor[]",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 34,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "willCreateDiffEditor",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 36,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "addDiffEditor",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "editor", TypeText: "IDiffEditor", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 37,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeDiffEditor",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "editor", TypeText: "IDiffEditor", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 38,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "listDiffEditors",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "readonly IDiffEditor[]",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 39,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerDecorationType",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "description", TypeText: "string", Optional: false }, { Name: "key", TypeText: "string", Optional: false }, { Name: "options", TypeText: "IDecorationRenderOptions", Optional: false }, { Name: "parentTypeKey", TypeText: "string", Optional: true }, { Name: "editor", TypeText: "ICodeEditor", Optional: true }],
+
 		DocComment: "Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.",
+
 		SourceLine: 46,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "listDecorationTypes",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "string[]",
+
 		Parameters: [],
+
 		DocComment: "Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.",
+
 		SourceLine: 47,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeDecorationType",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "key", TypeText: "string", Optional: false }],
+
 		DocComment: "Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.",
+
 		SourceLine: 48,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resolveDecorationOptions",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IModelDecorationOptions",
+
 		Parameters: [{ Name: "typeKey", TypeText: "string", Optional: false }, { Name: "writable", TypeText: "boolean", Optional: false }],
+
 		DocComment: "Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.",
+
 		SourceLine: 49,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resolveDecorationCSSRules",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "CSSRuleList | null",
+
 		Parameters: [{ Name: "decorationTypeKey", TypeText: "string", Optional: false }],
+
 		DocComment: "Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.",
+
 		SourceLine: 50,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setModelProperty",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }, { Name: "key", TypeText: "string", Optional: false }, { Name: "value", TypeText: "unknown", Optional: false }],
+
 		DocComment: "Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.",
+
 		SourceLine: 52,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getModelProperty",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "unknown",
+
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }, { Name: "key", TypeText: "string", Optional: false }],
+
 		DocComment: "Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.",
+
 		SourceLine: 53,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setTransientModelProperty",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "model", TypeText: "ITextModel", Optional: false }, { Name: "key", TypeText: "string", Optional: false }, { Name: "value", TypeText: "unknown", Optional: false }],
+
 		DocComment: "Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.",
+
 		SourceLine: 55,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getTransientModelProperty",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "unknown",
+
 		Parameters: [{ Name: "model", TypeText: "ITextModel", Optional: false }, { Name: "key", TypeText: "string", Optional: false }],
+
 		DocComment: "Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.",
+
 		SourceLine: 56,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getTransientModelProperties",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "[string, unknown][] | undefined",
+
 		Parameters: [{ Name: "model", TypeText: "ITextModel", Optional: false }],
+
 		DocComment: "Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.",
+
 		SourceLine: 57,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getActiveCodeEditor",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ICodeEditor | null",
+
 		Parameters: [],
+
 		DocComment: "Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.",
+
 		SourceLine: 59,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "openCodeEditor",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ICodeEditor | null>",
+
 		Parameters: [{ Name: "input", TypeText: "ITextResourceEditorInput", Optional: false }, { Name: "source", TypeText: "ICodeEditor | null", Optional: false }, { Name: "sideBySide", TypeText: "boolean", Optional: true }],
+
 		DocComment: "Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.",
+
 		SourceLine: 60,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerCodeEditorOpenHandler",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "handler", TypeText: "ICodeEditorOpenHandler", Optional: false }],
+
 		DocComment: "Returns the current focused code editor (if the focus is in the editor or in an editor widget) or null.",
+
 		SourceLine: 61,
 	}
 ] as const;

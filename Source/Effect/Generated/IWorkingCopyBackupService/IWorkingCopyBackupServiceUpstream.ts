@@ -5,30 +5,44 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IWorkingCopyBackupServiceTag = "workingCopyBackupService" as const;
+
 export const IWorkingCopyBackupServiceSourcePath = "vs/workbench/services/workingCopy/common/workingCopyBackup.ts" as const;
+
 export const IWorkingCopyBackupServiceSourceLine = 11 as const;
+
 /**
  * A resolved working copy backup carries the backup value
  * as well as associated metadata with it.
  */
 
 export interface IWorkingCopyBackupServiceUpstream {
+
 	/**
 	 * A resolved working copy backup carries the backup value
 	 * as well as associated metadata with it.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IWorkingCopyBackupServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "A resolved working copy backup carries the backup value\nas well as associated metadata with it.",
+
 		SourceLine: 39,
 	}
 ] as const;

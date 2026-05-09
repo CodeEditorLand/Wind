@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IMcpServiceTag = "IMcpService" as const;
+
 export const IMcpServiceSourcePath = "vs/workbench/contrib/mcp/common/mcpTypes.ts" as const;
+
 export const IMcpServiceSourceLine = 278 as const;
+
 // Decorator doc:
 // /**
 //  * An McpCollection contains McpServers. There may be multiple collections for
@@ -15,36 +19,56 @@ export const IMcpServiceSourceLine = 278 as const;
 //  */
 // 
 export interface IMcpServiceUpstream {
+
 	/**
 	 * An McpCollection contains McpServers. There may be multiple collections for
 	 * different locations servers are discovered.
 	 */
 	_serviceBrand: undefined;
+
 	/**
 	 * An McpCollection contains McpServers. There may be multiple collections for
 	 * different locations servers are discovered.
 	 */
 	readonly servers: IObservable<readonly IMcpServer[]>;
 }
+
 export const IMcpServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "An McpCollection contains McpServers. There may be multiple collections for\ndifferent locations servers are discovered.",
+
 		SourceLine: 247,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "servers",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IObservable<readonly IMcpServer[]>",
+
 		Parameters: [],
+
 		DocComment: "An McpCollection contains McpServers. There may be multiple collections for\ndifferent locations servers are discovered.",
+
 		SourceLine: 248,
 	}
 ] as const;

@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtHostFileSystemInfoTag = "IExtHostFileSystemInfo" as const;
+
 export const IExtHostFileSystemInfoSourcePath = "vs/workbench/api/common/extHostFileSystemInfo.ts" as const;
+
 export const IExtHostFileSystemInfoSourceLine = 57 as const;
+
 export interface IExtHostFileSystemInfoUpstream {
+
 	readonly extUri: IExtUri;
 }
+
 export const IExtHostFileSystemInfoMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "extUri",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IExtUri",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 55,
 	}
 ] as const;

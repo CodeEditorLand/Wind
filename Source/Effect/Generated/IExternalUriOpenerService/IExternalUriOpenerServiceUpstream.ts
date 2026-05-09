@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExternalUriOpenerServiceTag = "externalUriOpenerService" as const;
+
 export const IExternalUriOpenerServiceSourcePath = "vs/workbench/contrib/externalUriOpener/common/externalUriOpenerService.ts" as const;
+
 export const IExternalUriOpenerServiceSourceLine = 24 as const;
+
 export interface IExternalUriOpenerServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const IExternalUriOpenerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 40,
 	}
 ] as const;
