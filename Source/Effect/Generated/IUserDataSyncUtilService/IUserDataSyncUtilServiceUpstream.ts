@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IUserDataSyncUtilServiceTag = "IUserDataSyncUtilService" as const;
-
 export const IUserDataSyncUtilServiceSourcePath = "vs/platform/userDataSync/common/userDataSync.ts" as const;
-
 export const IUserDataSyncUtilServiceSourceLine = 645 as const;
-
 // Decorator doc:
 // /**
 //  * Checks if resource enabled was explicitly configured before,
@@ -19,106 +15,66 @@ export const IUserDataSyncUtilServiceSourceLine = 645 as const;
 //  */
 // 
 export interface IUserDataSyncUtilServiceUpstream {
-
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	resolveUserBindings(userbindings: string[]): Promise<IStringDictionary<string>>;
-
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	resolveFormattingOptions(resource: URI): Promise<FormattingOptions>;
-
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	resolveDefaultCoreIgnoredSettings(): Promise<string[]>;
 }
-
 export const IUserDataSyncUtilServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
-
 		SourceLine: 647,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "resolveUserBindings",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IStringDictionary<string>>",
-
 		Parameters: [{ Name: "userbindings", TypeText: "string[]", Optional: false }],
-
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
-
 		SourceLine: 648,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "resolveFormattingOptions",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<FormattingOptions>",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
-
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
-
 		SourceLine: 649,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "resolveDefaultCoreIgnoredSettings",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<string[]>",
-
 		Parameters: [],
-
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
-
 		SourceLine: 650,
 	}
 ] as const;

@@ -5,235 +5,141 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatWidgetServiceTag = "chatWidgetService" as const;
-
 export const IChatWidgetServiceSourcePath = "vs/workbench/contrib/chat/browser/chat.ts" as const;
-
 export const IChatWidgetServiceSourceLine = 108 as const;
-
 // Decorator doc:
 // /**
 //  * A workspace item that can be selected in the workspace picker.
 //  */
 // 
 export interface IChatWidgetServiceUpstream {
-
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	readonly onDidAddWidget: Event<IChatWidget>;
-
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	getAllWidgets(): ReadonlyArray<IChatWidget>;
-
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	getWidgetByInputUri(uri: URI): IChatWidget | undefined;
-
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	openSession(sessionResource: URI, target?: typeof ChatViewPaneTarget, options?: IChatEditorOptions): Promise<IChatWidget | undefined>;
-
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	openSession(sessionResource: URI, target?: PreferredGroup, options?: IChatEditorOptions): Promise<IChatWidget | undefined>;
-
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	openSession(sessionResource: URI, target?: typeof ChatViewPaneTarget | PreferredGroup, options?: IChatEditorOptions): Promise<IChatWidget | undefined>;
-
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	getWidgetBySessionResource(sessionResource: URI): IChatWidget | undefined;
-
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	getWidgetsByLocations(location: ChatAgentLocation): ReadonlyArray<IChatWidget>;
 }
-
 export const IChatWidgetServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "A workspace item that can be selected in the workspace picker.",
-
 		SourceLine: 112,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidAddWidget",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<IChatWidget>",
-
 		Parameters: [],
-
 		DocComment: "A workspace item that can be selected in the workspace picker.",
-
 		SourceLine: 112,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getAllWidgets",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "ReadonlyArray<IChatWidget>",
-
 		Parameters: [],
-
 		DocComment: "A workspace item that can be selected in the workspace picker.",
-
 		SourceLine: 151,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getWidgetByInputUri",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IChatWidget | undefined",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
-
 		DocComment: "A workspace item that can be selected in the workspace picker.",
-
 		SourceLine: 152,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "openSession",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IChatWidget | undefined>",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }, { Name: "target", TypeText: "typeof ChatViewPaneTarget", Optional: true }, { Name: "options", TypeText: "IChatEditorOptions", Optional: true }],
-
 		DocComment: "A workspace item that can be selected in the workspace picker.",
-
 		SourceLine: 153,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "openSession",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IChatWidget | undefined>",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }, { Name: "target", TypeText: "PreferredGroup", Optional: true }, { Name: "options", TypeText: "IChatEditorOptions", Optional: true }],
-
 		DocComment: "A workspace item that can be selected in the workspace picker.",
-
 		SourceLine: 153,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "openSession",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IChatWidget | undefined>",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }, { Name: "target", TypeText: "typeof ChatViewPaneTarget | PreferredGroup", Optional: true }, { Name: "options", TypeText: "IChatEditorOptions", Optional: true }],
-
 		DocComment: "A workspace item that can be selected in the workspace picker.",
-
 		SourceLine: 153,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getWidgetBySessionResource",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IChatWidget | undefined",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }],
-
 		DocComment: "A workspace item that can be selected in the workspace picker.",
-
 		SourceLine: 157,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getWidgetsByLocations",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "ReadonlyArray<IChatWidget>",
-
 		Parameters: [{ Name: "location", TypeText: "ChatAgentLocation", Optional: false }],
-
 		DocComment: "A workspace item that can be selected in the workspace picker.",
-
 		SourceLine: 159,
 	}
 ] as const;

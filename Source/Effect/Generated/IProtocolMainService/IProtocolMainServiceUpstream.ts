@@ -5,39 +5,25 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IProtocolMainServiceTag = "protocolMainService" as const;
-
 export const IProtocolMainServiceSourcePath = "vs/platform/protocol/electron-main/protocol.ts" as const;
-
 export const IProtocolMainServiceSourceLine = 10 as const;
-
 export interface IProtocolMainServiceUpstream {
-
 	/**
 	 * A `URI` that a renderer can use to retrieve the
 	 * object via `ipcRenderer.invoke(resource.toString())`
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IProtocolMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "A `URI` that a renderer can use to retrieve the\nobject via `ipcRenderer.invoke(resource.toString())`",
-
 		SourceLine: 32,
 	}
 ] as const;

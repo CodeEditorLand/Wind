@@ -14,10 +14,7 @@
 
 import type { IExtensionServiceUpstream } from "../../Generated/IExtensionService/IExtensionServiceUpstream.js";
 
-export type WorkbenchExtensionBridgeShape = Pick<
-	IExtensionServiceUpstream,
-	"extensions" | "activateById" | "activateByEvent" | "onDidChangeExtensions"
->;
+export type WorkbenchExtensionBridgeShape = Pick<IExtensionServiceUpstream, "extensions" | "activateById" | "activateByEvent" | "onDidChangeExtensions">;
 
 export interface WorkbenchExtensionGlobals {
 	readonly __CEL_SERVICES__?: {

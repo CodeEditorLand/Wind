@@ -5,308 +5,164 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtensionsScannerServiceTag = "IExtensionsScannerService" as const;
-
 export const IExtensionsScannerServiceSourcePath = "vs/platform/extensionManagement/common/extensionsScannerService.ts" as const;
-
 export const IExtensionsScannerServiceSourceLine = 140 as const;
-
 export interface IExtensionsScannerServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly systemExtensionsLocation: URI;
-
 	readonly userExtensionsLocation: URI;
-
 	readonly onDidChangeCache: Event<ExtensionType>;
-
 	scanAllExtensions(systemScanOptions: SystemExtensionsScanOptions, userScanOptions: UserExtensionsScanOptions): Promise<IScannedExtension[]>;
-
 	scanSystemExtensions(scanOptions: SystemExtensionsScanOptions): Promise<IScannedExtension[]>;
-
 	scanUserExtensions(scanOptions: UserExtensionsScanOptions): Promise<IScannedExtension[]>;
-
 	scanAllUserExtensions(): Promise<IScannedExtension[]>;
-
 	scanExtensionsUnderDevelopment(existingExtensions: IScannedExtension[], scanOptions: ScanOptions): Promise<IScannedExtension[]>;
-
 	scanExistingExtension(extensionLocation: URI, extensionType: ExtensionType, scanOptions: ScanOptions): Promise<IScannedExtension | null>;
-
 	scanMultipleExtensions(extensionLocations: URI[], extensionType: ExtensionType, scanOptions: ScanOptions): Promise<IScannedExtension[]>;
-
 	scanOneOrMultipleExtensions(extensionLocation: URI, extensionType: ExtensionType, scanOptions: ScanOptions): Promise<IScannedExtension[]>;
-
 	updateManifestMetadata(extensionLocation: URI, metadata: ManifestMetadata): Promise<void>;
-
 	initializeDefaultProfileExtensions(): Promise<void>;
 }
-
 export const IExtensionsScannerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 142,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "systemExtensionsLocation",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "URI",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 142,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "userExtensionsLocation",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "URI",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 142,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeCache",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<ExtensionType>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 142,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "scanAllExtensions",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IScannedExtension[]>",
-
 		Parameters: [{ Name: "systemScanOptions", TypeText: "SystemExtensionsScanOptions", Optional: false }, { Name: "userScanOptions", TypeText: "UserExtensionsScanOptions", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 148,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "scanSystemExtensions",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IScannedExtension[]>",
-
 		Parameters: [{ Name: "scanOptions", TypeText: "SystemExtensionsScanOptions", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 149,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "scanUserExtensions",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IScannedExtension[]>",
-
 		Parameters: [{ Name: "scanOptions", TypeText: "UserExtensionsScanOptions", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 150,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "scanAllUserExtensions",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IScannedExtension[]>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 151,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "scanExtensionsUnderDevelopment",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IScannedExtension[]>",
-
 		Parameters: [{ Name: "existingExtensions", TypeText: "IScannedExtension[]", Optional: false }, { Name: "scanOptions", TypeText: "ScanOptions", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 153,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "scanExistingExtension",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IScannedExtension | null>",
-
 		Parameters: [{ Name: "extensionLocation", TypeText: "URI", Optional: false }, { Name: "extensionType", TypeText: "ExtensionType", Optional: false }, { Name: "scanOptions", TypeText: "ScanOptions", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 154,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "scanMultipleExtensions",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IScannedExtension[]>",
-
 		Parameters: [{ Name: "extensionLocations", TypeText: "URI[]", Optional: false }, { Name: "extensionType", TypeText: "ExtensionType", Optional: false }, { Name: "scanOptions", TypeText: "ScanOptions", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 155,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "scanOneOrMultipleExtensions",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IScannedExtension[]>",
-
 		Parameters: [{ Name: "extensionLocation", TypeText: "URI", Optional: false }, { Name: "extensionType", TypeText: "ExtensionType", Optional: false }, { Name: "scanOptions", TypeText: "ScanOptions", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 156,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "updateManifestMetadata",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "extensionLocation", TypeText: "URI", Optional: false }, { Name: "metadata", TypeText: "ManifestMetadata", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 158,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "initializeDefaultProfileExtensions",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 159,
 	}
 ] as const;

@@ -5,42 +5,28 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IProgressServiceTag = "progressService" as const;
-
 export const IProgressServiceSourcePath = "vs/platform/progress/common/progress.ts" as const;
-
 export const IProgressServiceSourceLine = 13 as const;
-
 /**
  * A progress service that can be used to report progress to various locations of the UI.
  */
 
 export interface IProgressServiceUpstream {
-
 	/**
 	 * A progress service that can be used to report progress to various locations of the UI.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IProgressServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "A progress service that can be used to report progress to various locations of the UI.",
-
 		SourceLine: 20,
 	}
 ] as const;

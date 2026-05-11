@@ -5,17 +5,11 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtHostConsumerFileSystemTag = "IExtHostConsumerFileSystem" as const;
-
 export const IExtHostConsumerFileSystemSourcePath = "vs/workbench/api/common/extHostFileSystemConsumer.ts" as const;
-
 export const IExtHostConsumerFileSystemSourceLine = 260 as const;
-
 export interface IExtHostConsumerFileSystemUpstream {
-
 	// (no members extracted in same file - resolve cross-file)
 }
-
 export const IExtHostConsumerFileSystemMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

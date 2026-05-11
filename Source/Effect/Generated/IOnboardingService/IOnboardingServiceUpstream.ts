@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IOnboardingServiceTag = "onboardingService" as const;
-
 export const IOnboardingServiceSourcePath = "vs/workbench/contrib/welcomeOnboarding/common/onboardingService.ts" as const;
-
 export const IOnboardingServiceSourceLine = 9 as const;
-
 export interface IOnboardingServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IOnboardingServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 12,
 	}
 ] as const;

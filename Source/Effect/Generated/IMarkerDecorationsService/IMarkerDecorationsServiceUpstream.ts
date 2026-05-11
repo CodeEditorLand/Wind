@@ -5,119 +5,65 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IMarkerDecorationsServiceTag = "markerDecorationsService" as const;
-
 export const IMarkerDecorationsServiceSourcePath = "vs/editor/common/services/markerDecorations.ts" as const;
-
 export const IMarkerDecorationsServiceSourceLine = 14 as const;
-
 export interface IMarkerDecorationsServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly onDidChangeMarker: Event<ITextModel>;
-
 	getMarker(uri: URI, decoration: IModelDecoration): IMarker | null;
-
 	getLiveMarkers(uri: URI): [Range, IMarker][];
-
 	addMarkerSuppression(uri: URI, range: Range): IDisposable;
 }
-
 export const IMarkerDecorationsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 17,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeMarker",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<ITextModel>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 17,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getMarker",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IMarker | null",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }, { Name: "decoration", TypeText: "IModelDecoration", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 21,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getLiveMarkers",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "[Range, IMarker][]",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 23,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "addMarkerSuppression",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }, { Name: "range", TypeText: "Range", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 25,
 	}
 ] as const;

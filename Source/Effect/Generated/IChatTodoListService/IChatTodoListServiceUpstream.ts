@@ -5,119 +5,65 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatTodoListServiceTag = "chatTodoListService" as const;
-
 export const IChatTodoListServiceSourcePath = "vs/workbench/contrib/chat/common/tools/chatTodoListService.ts" as const;
-
 export const IChatTodoListServiceSourceLine = 26 as const;
-
 export interface IChatTodoListServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly onDidUpdateTodos: Event<URI>;
-
 	getTodos(sessionResource: URI): IChatTodo[];
-
 	setTodos(sessionResource: URI, todos: IChatTodo[]): void;
-
 	migrateTodos(oldSessionResource: URI, newSessionResource: URI): void;
 }
-
 export const IChatTodoListServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 29,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidUpdateTodos",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<URI>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 29,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getTodos",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IChatTodo[]",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 31,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "setTodos",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }, { Name: "todos", TypeText: "IChatTodo[]", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 32,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "migrateTodos",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "oldSessionResource", TypeText: "URI", Optional: false }, { Name: "newSessionResource", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 33,
 	}
 ] as const;

@@ -5,17 +5,11 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const INativeHostMainServiceTag = "nativeHostMainService" as const;
-
 export const INativeHostMainServiceSourcePath = "vs/platform/native/electron-main/nativeHostMainService.ts" as const;
-
 export const INativeHostMainServiceSourceLine = 55 as const;
-
 export interface INativeHostMainServiceUpstream {
-
 	// (no members extracted in same file - resolve cross-file)
 }
-
 export const INativeHostMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

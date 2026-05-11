@@ -5,19 +5,12 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ILabelServiceTag = "labelService" as const;
-
 export const ILabelServiceSourcePath = "vs/platform/label/common/label.ts" as const;
-
 export const ILabelServiceSourceLine = 12 as const;
-
 export interface ILabelServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly onDidChangeFormatters: Event<IFormatterChangeEvent>;
-
 	/**
 	 * Gets the human readable label for a uri.
 	 * If `relative` is passed returns a label relative to the workspace root that the uri belongs to.
@@ -26,7 +19,6 @@ export interface ILabelServiceUpstream {
 	 * If `appendWorkspaceSuffix` is passed, will append the name of the workspace to the label.
 	 */
 	getUriBasenameLabel(resource: URI): string;
-
 	/**
 	 * Gets the human readable label for a uri.
 	 * If `relative` is passed returns a label relative to the workspace root that the uri belongs to.
@@ -35,7 +27,6 @@ export interface ILabelServiceUpstream {
 	 * If `appendWorkspaceSuffix` is passed, will append the name of the workspace to the label.
 	 */
 	getWorkspaceLabel(workspace: (IWorkspaceIdentifier | ISingleFolderWorkspaceIdentifier | URI | IWorkspace), options?: { verbose: Verbosity }): string;
-
 	/**
 	 * Gets the human readable label for a uri.
 	 * If `relative` is passed returns a label relative to the workspace root that the uri belongs to.
@@ -44,7 +35,6 @@ export interface ILabelServiceUpstream {
 	 * If `appendWorkspaceSuffix` is passed, will append the name of the workspace to the label.
 	 */
 	getHostLabel(scheme: string, authority?: string): string;
-
 	/**
 	 * Gets the human readable label for a uri.
 	 * If `relative` is passed returns a label relative to the workspace root that the uri belongs to.
@@ -53,7 +43,6 @@ export interface ILabelServiceUpstream {
 	 * If `appendWorkspaceSuffix` is passed, will append the name of the workspace to the label.
 	 */
 	getHostTooltip(scheme: string, authority?: string): string | undefined;
-
 	/**
 	 * Gets the human readable label for a uri.
 	 * If `relative` is passed returns a label relative to the workspace root that the uri belongs to.
@@ -62,7 +51,6 @@ export interface ILabelServiceUpstream {
 	 * If `appendWorkspaceSuffix` is passed, will append the name of the workspace to the label.
 	 */
 	getSeparator(scheme: string, authority?: string): '/' | '\\';
-
 	/**
 	 * Gets the human readable label for a uri.
 	 * If `relative` is passed returns a label relative to the workspace root that the uri belongs to.
@@ -72,157 +60,85 @@ export interface ILabelServiceUpstream {
 	 */
 	registerFormatter(formatter: ResourceLabelFormatter): IDisposable;
 }
-
 export const ILabelServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 16,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeFormatters",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<IFormatterChangeEvent>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 16,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getUriBasenameLabel",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "string",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
-
 		DocComment: "Gets the human readable label for a uri.\nIf `relative` is passed returns a label relative to the workspace root that the uri belongs to.\nIf `noPrefix` is passed does not tildify the label and also does not prepand the root name for relative labels in a multi root scenario.\nIf `separator` is passed, will use that over the defined path separator of the formatter.\nIf `appendWorkspaceSuffix` is passed, will append the name of the workspace to the label.",
-
 		SourceLine: 26,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getWorkspaceLabel",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "string",
-
 		Parameters: [{ Name: "workspace", TypeText: "(IWorkspaceIdentifier | ISingleFolderWorkspaceIdentifier | URI | IWorkspace)", Optional: false }, { Name: "options", TypeText: "{ verbose: Verbosity }", Optional: true }],
-
 		DocComment: "Gets the human readable label for a uri.\nIf `relative` is passed returns a label relative to the workspace root that the uri belongs to.\nIf `noPrefix` is passed does not tildify the label and also does not prepand the root name for relative labels in a multi root scenario.\nIf `separator` is passed, will use that over the defined path separator of the formatter.\nIf `appendWorkspaceSuffix` is passed, will append the name of the workspace to the label.",
-
 		SourceLine: 27,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getHostLabel",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "string",
-
 		Parameters: [{ Name: "scheme", TypeText: "string", Optional: false }, { Name: "authority", TypeText: "string", Optional: true }],
-
 		DocComment: "Gets the human readable label for a uri.\nIf `relative` is passed returns a label relative to the workspace root that the uri belongs to.\nIf `noPrefix` is passed does not tildify the label and also does not prepand the root name for relative labels in a multi root scenario.\nIf `separator` is passed, will use that over the defined path separator of the formatter.\nIf `appendWorkspaceSuffix` is passed, will append the name of the workspace to the label.",
-
 		SourceLine: 28,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getHostTooltip",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "string | undefined",
-
 		Parameters: [{ Name: "scheme", TypeText: "string", Optional: false }, { Name: "authority", TypeText: "string", Optional: true }],
-
 		DocComment: "Gets the human readable label for a uri.\nIf `relative` is passed returns a label relative to the workspace root that the uri belongs to.\nIf `noPrefix` is passed does not tildify the label and also does not prepand the root name for relative labels in a multi root scenario.\nIf `separator` is passed, will use that over the defined path separator of the formatter.\nIf `appendWorkspaceSuffix` is passed, will append the name of the workspace to the label.",
-
 		SourceLine: 29,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getSeparator",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "'/' | '\\\\'",
-
 		Parameters: [{ Name: "scheme", TypeText: "string", Optional: false }, { Name: "authority", TypeText: "string", Optional: true }],
-
 		DocComment: "Gets the human readable label for a uri.\nIf `relative` is passed returns a label relative to the workspace root that the uri belongs to.\nIf `noPrefix` is passed does not tildify the label and also does not prepand the root name for relative labels in a multi root scenario.\nIf `separator` is passed, will use that over the defined path separator of the formatter.\nIf `appendWorkspaceSuffix` is passed, will append the name of the workspace to the label.",
-
 		SourceLine: 30,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerFormatter",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "formatter", TypeText: "ResourceLabelFormatter", Optional: false }],
-
 		DocComment: "Gets the human readable label for a uri.\nIf `relative` is passed returns a label relative to the workspace root that the uri belongs to.\nIf `noPrefix` is passed does not tildify the label and also does not prepand the root name for relative labels in a multi root scenario.\nIf `separator` is passed, will use that over the defined path separator of the formatter.\nIf `appendWorkspaceSuffix` is passed, will append the name of the workspace to the label.",
-
 		SourceLine: 32,
 	}
 ] as const;

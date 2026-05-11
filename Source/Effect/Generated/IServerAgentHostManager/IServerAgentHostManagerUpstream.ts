@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IServerAgentHostManagerTag = "serverAgentHostManager" as const;
-
 export const IServerAgentHostManagerSourcePath = "vs/server/node/serverAgentHostManager.ts" as const;
-
 export const IServerAgentHostManagerSourceLine = 16 as const;
-
 /**
  * Server-specific agent host manager. Eagerly starts the agent host process,
  * handles crash recovery, and tracks both active agent sessions and connected
@@ -22,7 +18,6 @@ export const IServerAgentHostManagerSourceLine = 16 as const;
  */
 
 export interface IServerAgentHostManagerUpstream {
-
 	/**
 	 * Server-specific agent host manager. Eagerly starts the agent host process,
 	 * handles crash recovery, and tracks both active agent sessions and connected
@@ -33,24 +28,15 @@ export interface IServerAgentHostManagerUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IServerAgentHostManagerMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Server-specific agent host manager. Eagerly starts the agent host process,\nhandles crash recovery, and tracks both active agent sessions and connected\nWebSocket clients via {@link IServerLifetimeService} to keep the server\nalive while either signal is active.\nThe lifetime token is held when active sessions > 0 OR connected clients > 0.\nIt is released only when both are zero.",
-
 		SourceLine: 28,
 	}
 ] as const;

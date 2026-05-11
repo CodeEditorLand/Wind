@@ -5,161 +5,87 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IQuickDiffServiceTag = "quickDiff" as const;
-
 export const IQuickDiffServiceSourcePath = "vs/workbench/contrib/scm/common/quickDiff.ts" as const;
-
 export const IQuickDiffServiceSourceLine = 23 as const;
-
 export interface IQuickDiffServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly onDidChangeQuickDiffProviders: Event<void>;
-
 	readonly providers: readonly QuickDiffProvider[];
-
 	addQuickDiffProvider(quickDiff: QuickDiffProvider): IDisposable;
-
 	getQuickDiffs(uri: URI, language?: string, isSynchronized?: boolean): Promise<QuickDiff[]>;
-
 	toggleQuickDiffProviderVisibility(id: string): void;
-
 	isQuickDiffProviderVisible(id: string): boolean;
 }
-
 export const IQuickDiffServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 105,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeQuickDiffProviders",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<void>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 105,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "providers",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "readonly QuickDiffProvider[]",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 105,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "addQuickDiffProvider",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "quickDiff", TypeText: "QuickDiffProvider", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 109,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getQuickDiffs",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<QuickDiff[]>",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }, { Name: "language", TypeText: "string", Optional: true }, { Name: "isSynchronized", TypeText: "boolean", Optional: true }],
-
 		DocComment: null,
-
 		SourceLine: 110,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "toggleQuickDiffProviderVisibility",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 111,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "isQuickDiffProviderVisible",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 112,
 	}
 ] as const;

@@ -5,15 +5,10 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ITerminalChatServiceTag = "terminalChatService" as const;
-
 export const ITerminalChatServiceSourcePath = "vs/workbench/contrib/terminal/browser/terminal.ts" as const;
-
 export const ITerminalChatServiceSourceLine = 45 as const;
-
 export interface ITerminalChatServiceUpstream {
-
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
@@ -21,24 +16,15 @@ export interface ITerminalChatServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const ITerminalChatServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-
 		SourceLine: 134,
 	}
 ] as const;

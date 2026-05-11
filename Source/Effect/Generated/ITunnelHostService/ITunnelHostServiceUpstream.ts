@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ITunnelHostServiceTag = "tunnelHostService" as const;
-
 export const ITunnelHostServiceSourcePath = "vs/sessions/contrib/tunnelHost/common/tunnelHost.ts" as const;
-
 export const ITunnelHostServiceSourceLine = 10 as const;
-
 export interface ITunnelHostServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const ITunnelHostServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 13,
 	}
 ] as const;

@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAICustomizationItemsModelTag = "aiCustomizationItemsModel" as const;
-
 export const IAICustomizationItemsModelSourcePath = "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationItemsModel.ts" as const;
-
 export const IAICustomizationItemsModelSourceLine = 44 as const;
-
 // Decorator doc:
 // /**
 //  * The set of sections whose items are sourced from the customization
@@ -32,7 +28,6 @@ export const IAICustomizationItemsModelSourceLine = 44 as const;
  */
 
 export interface IAICustomizationItemsModelUpstream {
-
 	/**
 	 * The set of sections whose items are sourced from the customization
 	 * harness pipeline (extension-contributed providers, sync providers,
@@ -43,24 +38,15 @@ export interface IAICustomizationItemsModelUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IAICustomizationItemsModelMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "The set of sections whose items are sourced from the customization\nharness pipeline (extension-contributed providers, sync providers,\nand the prompts-service fallback). McpServers / Models have their\nown dedicated services and are not modeled here. Plugins keep a\ndedicated count observable because remote harnesses can contribute\nplugin rows through the same provider pipeline.",
-
 		SourceLine: 56,
 	}
 ] as const;

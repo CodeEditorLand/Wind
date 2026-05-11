@@ -5,43 +5,29 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatTipServiceTag = "chatTipService" as const;
-
 export const IChatTipServiceSourcePath = "vs/workbench/contrib/chat/browser/chatTipService.ts" as const;
-
 export const IChatTipServiceSourceLine = 58 as const;
-
 // Decorator doc:
 // /**
 //  * @deprecated Use TipTrackingCommands.AttachFilesReferenceUsed
 //  */
 // 
 export interface IChatTipServiceUpstream {
-
 	/**
 	 * @deprecated Use TipTrackingCommands.AttachFilesReferenceUsed
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IChatTipServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "@deprecated Use TipTrackingCommands.AttachFilesReferenceUsed",
-
 		SourceLine: 67,
 	}
 ] as const;

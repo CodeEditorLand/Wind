@@ -5,39 +5,25 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IWorkingCopyEditorServiceTag = "workingCopyEditorService" as const;
-
 export const IWorkingCopyEditorServiceSourcePath = "vs/workbench/services/workingCopy/common/workingCopyEditorService.ts" as const;
-
 export const IWorkingCopyEditorServiceSourceLine = 15 as const;
-
 export interface IWorkingCopyEditorServiceUpstream {
-
 	/**
 	 * Whether the handler is capable of opening the specific backup in
 	 * an editor.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IWorkingCopyEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Whether the handler is capable of opening the specific backup in\nan editor.",
-
 		SourceLine: 38,
 	}
 ] as const;

@@ -5,39 +5,25 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IOpenerServiceTag = "openerService" as const;
-
 export const IOpenerServiceSourcePath = "vs/platform/opener/common/opener.ts" as const;
-
 export const IOpenerServiceSourceLine = 12 as const;
-
 export interface IOpenerServiceUpstream {
-
 	/**
 	 * Signals that the intent is to open an editor to the side
 	 * of the currently active editor.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IOpenerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Signals that the intent is to open an editor to the side\nof the currently active editor.",
-
 		SourceLine: 76,
 	}
 ] as const;

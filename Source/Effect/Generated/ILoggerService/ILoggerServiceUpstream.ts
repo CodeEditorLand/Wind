@@ -5,38 +5,24 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ILoggerServiceTag = "loggerService" as const;
-
 export const ILoggerServiceSourcePath = "vs/platform/log/common/log.ts" as const;
-
 export const ILoggerServiceSourceLine = 22 as const;
-
 export interface ILoggerServiceUpstream {
-
 	/**
 	 * An operation to flush the contents. Can be synchronous.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const ILoggerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "An operation to flush the contents. Can be synchronous.",
-
 		SourceLine: 277,
 	}
 ] as const;

@@ -5,266 +5,142 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAuxiliaryWindowsMainServiceTag = "auxiliaryWindowsMainService" as const;
-
 export const IAuxiliaryWindowsMainServiceSourcePath = "vs/platform/auxiliaryWindow/electron-main/auxiliaryWindows.ts" as const;
-
 export const IAuxiliaryWindowsMainServiceSourceLine = 11 as const;
-
 export interface IAuxiliaryWindowsMainServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly onDidMaximizeWindow: Event<IAuxiliaryWindow>;
-
 	readonly onDidUnmaximizeWindow: Event<IAuxiliaryWindow>;
-
 	readonly onDidChangeFullScreen: Event<{ window: IAuxiliaryWindow; fullscreen: boolean }>;
-
 	readonly onDidChangeAlwaysOnTop: Event<{ window: IAuxiliaryWindow; alwaysOnTop: boolean }>;
-
 	readonly onDidTriggerSystemContextMenu: Event<{ readonly window: IAuxiliaryWindow; readonly x: number; readonly y: number }>;
-
 	createWindow(details: HandlerDetails): BrowserWindowConstructorOptions;
-
 	registerWindow(webContents: WebContents): void;
-
 	getWindowByWebContents(webContents: WebContents): IAuxiliaryWindow | undefined;
-
 	getFocusedWindow(): IAuxiliaryWindow | undefined;
-
 	getLastActiveWindow(): IAuxiliaryWindow | undefined;
-
 	getWindows(): readonly IAuxiliaryWindow[];
 }
-
 export const IAuxiliaryWindowsMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 15,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidMaximizeWindow",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<IAuxiliaryWindow>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 15,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidUnmaximizeWindow",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<IAuxiliaryWindow>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 15,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeFullScreen",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<{ window: IAuxiliaryWindow; fullscreen: boolean }>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 15,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeAlwaysOnTop",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<{ window: IAuxiliaryWindow; alwaysOnTop: boolean }>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 15,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidTriggerSystemContextMenu",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<{ readonly window: IAuxiliaryWindow; readonly x: number; readonly y: number }>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 15,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "createWindow",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "BrowserWindowConstructorOptions",
-
 		Parameters: [{ Name: "details", TypeText: "HandlerDetails", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 23,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerWindow",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "webContents", TypeText: "WebContents", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 24,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getWindowByWebContents",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IAuxiliaryWindow | undefined",
-
 		Parameters: [{ Name: "webContents", TypeText: "WebContents", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 26,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getFocusedWindow",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IAuxiliaryWindow | undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 28,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getLastActiveWindow",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IAuxiliaryWindow | undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 29,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getWindows",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "readonly IAuxiliaryWindow[]",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 31,
 	}
 ] as const;

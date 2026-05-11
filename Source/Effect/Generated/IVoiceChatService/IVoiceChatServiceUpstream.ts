@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IVoiceChatServiceTag = "voiceChatService" as const;
-
 export const IVoiceChatServiceSourcePath = "vs/workbench/contrib/chat/common/voiceChatService.ts" as const;
-
 export const IVoiceChatServiceSourceLine = 18 as const;
-
 export interface IVoiceChatServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IVoiceChatServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 27,
 	}
 ] as const;

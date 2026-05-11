@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ILanguageDetectionServiceTag = "ILanguageDetectionService" as const;
-
 export const ILanguageDetectionServiceSourcePath = "vs/workbench/services/languageDetection/common/languageDetectionWorkerService.ts" as const;
-
 export const ILanguageDetectionServiceSourceLine = 9 as const;
-
 export interface ILanguageDetectionServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const ILanguageDetectionServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 14,
 	}
 ] as const;

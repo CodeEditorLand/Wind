@@ -5,43 +5,29 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IWebviewViewServiceTag = "webviewViewService" as const;
-
 export const IWebviewViewServiceSourcePath = "vs/workbench/contrib/webviewView/browser/webviewViewService.ts" as const;
-
 export const IWebviewViewServiceSourceLine = 72 as const;
-
 // Decorator doc:
 // /**
 //  * A webview shown in a view pane.
 //  */
 // 
 export interface IWebviewViewServiceUpstream {
-
 	/**
 	 * A webview shown in a view pane.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IWebviewViewServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "A webview shown in a view pane.",
-
 		SourceLine: 76,
 	}
 ] as const;

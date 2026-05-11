@@ -5,22 +5,16 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtHostWorkspaceTag = "IExtHostWorkspace" as const;
-
 export const IExtHostWorkspaceSourcePath = "vs/workbench/api/common/extHostWorkspace.ts" as const;
-
 export const IExtHostWorkspaceSourceLine = 1022 as const;
-
 // Decorator doc:
 // /**
 //  * Note, null/undefined have different and important meanings for "exclude"
 //  */
 // 
 export interface IExtHostWorkspaceUpstream {
-
 	// (no members extracted in same file - resolve cross-file)
 }
-
 export const IExtHostWorkspaceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

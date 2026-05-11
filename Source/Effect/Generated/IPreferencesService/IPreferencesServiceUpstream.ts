@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IPreferencesServiceTag = "preferencesService" as const;
-
 export const IPreferencesServiceSourcePath = "vs/workbench/services/preferences/common/preferences.ts" as const;
-
 export const IPreferencesServiceSourceLine = 251 as const;
-
 // Decorator doc:
 // /**
 //  * The ways a setting could match a query,
@@ -19,556 +15,336 @@ export const IPreferencesServiceSourceLine = 251 as const;
 //  */
 // 
 export interface IPreferencesServiceUpstream {
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	readonly onDidDefaultSettingsContentChanged: Event<URI>;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	userSettingsResource: URI;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	workspaceSettingsResource: URI | null;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	getFolderSettingsResource(resource: URI): URI | null;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	createPreferencesEditorModel(uri: URI): Promise<IPreferencesEditorModel<ISetting> | null>;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	getDefaultSettingsContent(uri: URI): string | undefined;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	hasDefaultSettingsContent(uri: URI): boolean;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	createSettings2EditorModel(): Settings2EditorModel;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	openRawDefaultSettings(): Promise<IEditorPane | undefined>;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	openSettings(options?: IOpenSettingsOptions): Promise<IEditorPane | undefined>;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	openApplicationSettings(options?: IOpenSettingsOptions): Promise<IEditorPane | undefined>;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	openUserSettings(options?: IOpenSettingsOptions): Promise<IEditorPane | undefined>;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	openRemoteSettings(options?: IOpenSettingsOptions): Promise<IEditorPane | undefined>;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	openWorkspaceSettings(options?: IOpenSettingsOptions): Promise<IEditorPane | undefined>;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	openFolderSettings(options: IOpenSettingsOptions & { folderUri: IOpenSettingsOptions['folderUri'] }): Promise<IEditorPane | undefined>;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	openGlobalKeybindingSettings(textual: boolean, options?: IOpenKeybindingsEditorOptions): Promise<void>;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	openDefaultKeybindingsFile(): Promise<IEditorPane | undefined>;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	openLanguageSpecificSettings(languageId: string, options?: IOpenSettingsOptions): Promise<IEditorPane | undefined>;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	getEditableSettingsURI(configurationTarget: ConfigurationTarget, resource?: URI): Promise<URI | null>;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	getSetting(settingId: string): ISetting | undefined;
-
 	/**
 	 * The ways a setting could match a query,
 	 * sorted in increasing order of relevance.
 	 */
 	createSplitJsonEditorInput(configurationTarget: ConfigurationTarget, resource: URI): EditorInput;
 }
-
 export const IPreferencesServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 254,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidDefaultSettingsContentChanged",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<URI>",
-
 		Parameters: [],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 254,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "userSettingsResource",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "URI",
-
 		Parameters: [],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 258,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "workspaceSettingsResource",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "URI | null",
-
 		Parameters: [],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 259,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getFolderSettingsResource",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "URI | null",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 260,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "createPreferencesEditorModel",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IPreferencesEditorModel<ISetting> | null>",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 262,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getDefaultSettingsContent",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "string | undefined",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 263,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "hasDefaultSettingsContent",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 264,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "createSettings2EditorModel",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Settings2EditorModel",
-
 		Parameters: [],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 265,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "openRawDefaultSettings",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IEditorPane | undefined>",
-
 		Parameters: [],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 269,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "openSettings",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IEditorPane | undefined>",
-
 		Parameters: [{ Name: "options", TypeText: "IOpenSettingsOptions", Optional: true }],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 270,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "openApplicationSettings",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IEditorPane | undefined>",
-
 		Parameters: [{ Name: "options", TypeText: "IOpenSettingsOptions", Optional: true }],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 271,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "openUserSettings",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IEditorPane | undefined>",
-
 		Parameters: [{ Name: "options", TypeText: "IOpenSettingsOptions", Optional: true }],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 272,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "openRemoteSettings",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IEditorPane | undefined>",
-
 		Parameters: [{ Name: "options", TypeText: "IOpenSettingsOptions", Optional: true }],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 273,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "openWorkspaceSettings",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IEditorPane | undefined>",
-
 		Parameters: [{ Name: "options", TypeText: "IOpenSettingsOptions", Optional: true }],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 274,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "openFolderSettings",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IEditorPane | undefined>",
-
 		Parameters: [{ Name: "options", TypeText: "IOpenSettingsOptions & { folderUri: IOpenSettingsOptions['folderUri'] }", Optional: false }],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 275,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "openGlobalKeybindingSettings",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "textual", TypeText: "boolean", Optional: false }, { Name: "options", TypeText: "IOpenKeybindingsEditorOptions", Optional: true }],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 276,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "openDefaultKeybindingsFile",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IEditorPane | undefined>",
-
 		Parameters: [],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 277,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "openLanguageSpecificSettings",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IEditorPane | undefined>",
-
 		Parameters: [{ Name: "languageId", TypeText: "string", Optional: false }, { Name: "options", TypeText: "IOpenSettingsOptions", Optional: true }],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 278,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getEditableSettingsURI",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<URI | null>",
-
 		Parameters: [{ Name: "configurationTarget", TypeText: "ConfigurationTarget", Optional: false }, { Name: "resource", TypeText: "URI", Optional: true }],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 279,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getSetting",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "ISetting | undefined",
-
 		Parameters: [{ Name: "settingId", TypeText: "string", Optional: false }],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 280,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "createSplitJsonEditorInput",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "EditorInput",
-
 		Parameters: [{ Name: "configurationTarget", TypeText: "ConfigurationTarget", Optional: false }, { Name: "resource", TypeText: "URI", Optional: false }],
-
 		DocComment: "The ways a setting could match a query,\nsorted in increasing order of relevance.",
-
 		SourceLine: 282,
 	}
 ] as const;

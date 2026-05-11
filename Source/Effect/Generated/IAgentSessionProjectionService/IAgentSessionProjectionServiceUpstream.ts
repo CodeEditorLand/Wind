@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAgentSessionProjectionServiceTag = "agentSessionProjectionService" as const;
-
 export const IAgentSessionProjectionServiceSourcePath = "vs/workbench/contrib/chat/browser/agentSessions/experiments/agentSessionProjectionService.ts" as const;
-
 export const IAgentSessionProjectionServiceSourceLine = 76 as const;
-
 // Decorator doc:
 // /**
 //  * Provider types that support agent session projection mode.
@@ -19,31 +15,21 @@ export const IAgentSessionProjectionServiceSourceLine = 76 as const;
 //  */
 // 
 export interface IAgentSessionProjectionServiceUpstream {
-
 	/**
 	 * Provider types that support agent session projection mode.
 	 * Only sessions from these providers will trigger projection mode.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IAgentSessionProjectionServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Provider types that support agent session projection mode.\nOnly sessions from these providers will trigger projection mode.",
-
 		SourceLine: 42,
 	}
 ] as const;

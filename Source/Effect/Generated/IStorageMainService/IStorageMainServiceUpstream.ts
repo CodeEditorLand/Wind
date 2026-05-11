@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IStorageMainServiceTag = "storageMainService" as const;
-
 export const IStorageMainServiceSourcePath = "vs/platform/storage/electron-main/storageMainService.ts" as const;
-
 export const IStorageMainServiceSourceLine = 26 as const;
-
 export interface IStorageMainServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IStorageMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 35,
 	}
 ] as const;

@@ -5,38 +5,24 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IUtilityProcessWorkerWorkbenchServiceTag = "utilityProcessWorkerWorkbenchService" as const;
-
 export const IUtilityProcessWorkerWorkbenchServiceSourcePath = "vs/workbench/services/utilityProcess/electron-browser/utilityProcessWorkerWorkbenchService.ts" as const;
-
 export const IUtilityProcessWorkerWorkbenchServiceSourceLine = 17 as const;
-
 export interface IUtilityProcessWorkerWorkbenchServiceUpstream {
-
 	/**
 	 * A IPC client to communicate to the worker process.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IUtilityProcessWorkerWorkbenchServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "A IPC client to communicate to the worker process.",
-
 		SourceLine: 40,
 	}
 ] as const;

@@ -5,59 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatMarkdownAnchorServiceTag = "chatMarkdownAnchorService" as const;
-
 export const IChatMarkdownAnchorServiceSourcePath = "vs/workbench/contrib/chat/browser/widget/chatContentParts/chatMarkdownAnchorService.ts" as const;
-
 export const IChatMarkdownAnchorServiceSourceLine = 12 as const;
-
 export interface IChatMarkdownAnchorServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * Returns the currently focused anchor if any
 	 */
 	register(widget: InlineAnchorWidget): IDisposable;
 }
-
 export const IChatMarkdownAnchorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 16,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "register",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "widget", TypeText: "InlineAnchorWidget", Optional: false }],
-
 		DocComment: "Returns the currently focused anchor if any",
-
 		SourceLine: 23,
 	}
 ] as const;

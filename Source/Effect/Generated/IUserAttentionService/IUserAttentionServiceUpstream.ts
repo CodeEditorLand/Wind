@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IUserAttentionServiceTag = "userAttentionService" as const;
-
 export const IUserAttentionServiceSourcePath = "vs/workbench/services/userAttention/common/userAttentionService.ts" as const;
-
 export const IUserAttentionServiceSourceLine = 10 as const;
-
 /**
  * Service that tracks whether the user is actively paying attention to VS Code.
  * This is determined by:
@@ -20,7 +16,6 @@ export const IUserAttentionServiceSourceLine = 10 as const;
  */
 
 export interface IUserAttentionServiceUpstream {
-
 	/**
 	 * Service that tracks whether the user is actively paying attention to VS Code.
 	 * This is determined by:
@@ -28,7 +23,6 @@ export interface IUserAttentionServiceUpstream {
 	 * * User has performed some activity (keyboard/mouse) within the last minute
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * Service that tracks whether the user is actively paying attention to VS Code.
 	 * This is determined by:
@@ -37,43 +31,25 @@ export interface IUserAttentionServiceUpstream {
 	 */
 	readonly isVsCodeFocused: IObservable<boolean>;
 }
-
 export const IUserAttentionServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Service that tracks whether the user is actively paying attention to VS Code.\nThis is determined by:\n* VS Code window has focus\n* User has performed some activity (keyboard/mouse) within the last minute",
-
 		SourceLine: 20,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "isVsCodeFocused",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "IObservable<boolean>",
-
 		Parameters: [],
-
 		DocComment: "Service that tracks whether the user is actively paying attention to VS Code.\nThis is determined by:\n* VS Code window has focus\n* User has performed some activity (keyboard/mouse) within the last minute",
-
 		SourceLine: 20,
 	}
 ] as const;

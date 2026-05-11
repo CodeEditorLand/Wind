@@ -5,42 +5,28 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IServerLifetimeServiceTag = "serverLifetimeService" as const;
-
 export const IServerLifetimeServiceSourcePath = "vs/server/node/serverLifetimeService.ts" as const;
-
 export const IServerLifetimeServiceSourceLine = 10 as const;
-
 /**
  * Options controlling the auto-shutdown behaviour.
  */
 
 export interface IServerLifetimeServiceUpstream {
-
 	/**
 	 * Options controlling the auto-shutdown behaviour.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IServerLifetimeServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Options controlling the auto-shutdown behaviour.",
-
 		SourceLine: 29,
 	}
 ] as const;

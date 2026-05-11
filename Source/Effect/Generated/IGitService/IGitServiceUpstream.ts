@@ -5,98 +5,54 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IGitServiceTag = "gitService" as const;
-
 export const IGitServiceSourcePath = "vs/workbench/contrib/git/common/gitService.ts" as const;
-
 export const IGitServiceSourceLine = 96 as const;
-
 export interface IGitServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly repositories: Iterable<IGitRepository>;
-
 	setDelegate(delegate: IGitExtensionDelegate): IDisposable;
-
 	openRepository(uri: URI): Promise<IGitRepository | undefined>;
 }
-
 export const IGitServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 99,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "repositories",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Iterable<IGitRepository>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 99,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "setDelegate",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "delegate", TypeText: "IGitExtensionDelegate", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 103,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "openRepository",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IGitRepository | undefined>",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 105,
 	}
 ] as const;

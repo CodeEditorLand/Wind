@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IRemoteAgentHostServiceTag = "remoteAgentHostService" as const;
-
 export const IRemoteAgentHostServiceSourcePath = "vs/platform/agentHost/common/remoteAgentHostService.ts" as const;
-
 export const IRemoteAgentHostServiceSourceLine = 185 as const;
-
 // Decorator doc:
 // /**
 //  * Connection status for a remote agent host.
@@ -28,7 +24,6 @@ export const IRemoteAgentHostServiceSourceLine = 185 as const;
  */
 
 export interface IRemoteAgentHostServiceUpstream {
-
 	/**
 	 * Connection status for a remote agent host.
 	 * Discriminated by `kind`. The `incompatible` variant carries the rejection
@@ -37,24 +32,15 @@ export interface IRemoteAgentHostServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IRemoteAgentHostServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Connection status for a remote agent host.\nDiscriminated by `kind`. The `incompatible` variant carries the rejection\nmessage returned by the host (typically when its protocol version is not\ncompatible with anything the client offered) so the UI can surface it.",
-
 		SourceLine: 194,
 	}
 ] as const;

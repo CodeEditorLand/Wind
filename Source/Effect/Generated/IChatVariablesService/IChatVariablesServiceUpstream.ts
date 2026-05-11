@@ -5,77 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatVariablesServiceTag = "IChatVariablesService" as const;
-
 export const IChatVariablesServiceSourcePath = "vs/workbench/contrib/chat/common/attachments/chatVariables.ts" as const;
-
 export const IChatVariablesServiceSourceLine = 45 as const;
-
 export interface IChatVariablesServiceUpstream {
-
 	_serviceBrand: undefined;
-
 	getDynamicVariables(sessionResource: URI): ReadonlyArray<IDynamicVariable>;
-
 	getSelectedToolAndToolSets(sessionResource: URI): IToolAndToolSetEnablementMap;
 }
-
 export const IChatVariablesServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 48,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getDynamicVariables",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "ReadonlyArray<IDynamicVariable>",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 49,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getSelectedToolAndToolSets",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IToolAndToolSetEnablementMap",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 50,
 	}
 ] as const;

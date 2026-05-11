@@ -5,56 +5,32 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ICanonicalUriServiceTag = "canonicalUriIdentityService" as const;
-
 export const ICanonicalUriServiceSourcePath = "vs/platform/workspace/common/canonicalUri.ts" as const;
-
 export const ICanonicalUriServiceSourceLine = 16 as const;
-
 export interface ICanonicalUriServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	registerCanonicalUriProvider(provider: ICanonicalUriProvider): IDisposable;
 }
-
 export const ICanonicalUriServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 19,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerCanonicalUriProvider",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "provider", TypeText: "ICanonicalUriProvider", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 20,
 	}
 ] as const;

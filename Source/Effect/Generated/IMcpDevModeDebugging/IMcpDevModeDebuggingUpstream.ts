@@ -5,56 +5,32 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IMcpDevModeDebuggingTag = "mcpDevModeDebugging" as const;
-
 export const IMcpDevModeDebuggingSourcePath = "vs/workbench/contrib/mcp/common/mcpDevMode.ts" as const;
-
 export const IMcpDevModeDebuggingSourceLine = 114 as const;
-
 export interface IMcpDevModeDebuggingUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	transform(definition: McpServerDefinition, launch: McpServerLaunch): Promise<McpServerLaunch>;
 }
-
 export const IMcpDevModeDebuggingMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 109,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "transform",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<McpServerLaunch>",
-
 		Parameters: [{ Name: "definition", TypeText: "McpServerDefinition", Optional: false }, { Name: "launch", TypeText: "McpServerLaunch", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 111,
 	}
 ] as const;

@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IImageResizeServiceTag = "imageResizeMainService" as const;
-
 export const IImageResizeServiceSourcePath = "vs/platform/imageResize/common/imageResizeService.ts" as const;
-
 export const IImageResizeServiceSourceLine = 8 as const;
-
 export interface IImageResizeServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IImageResizeServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 13,
 	}
 ] as const;

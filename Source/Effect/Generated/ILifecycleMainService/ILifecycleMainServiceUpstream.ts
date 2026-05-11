@@ -5,38 +5,24 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ILifecycleMainServiceTag = "lifecycleMainService" as const;
-
 export const ILifecycleMainServiceSourcePath = "vs/platform/lifecycle/electron-main/lifecycleMainService.ts" as const;
-
 export const ILifecycleMainServiceSourceLine = 24 as const;
-
 export interface ILifecycleMainServiceUpstream {
-
 	/**
 	 * The window that is loaded to a new workspace.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const ILifecycleMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "The window that is loaded to a new workspace.",
-
 		SourceLine: 89,
 	}
 ] as const;

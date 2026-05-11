@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExplorerServiceTag = "explorerService" as const;
-
 export const IExplorerServiceSourcePath = "vs/workbench/contrib/files/browser/files.ts" as const;
-
 export const IExplorerServiceSourceLine = 50 as const;
-
 // Decorator doc:
 // /**
 //  * Selects and reveal the file element provided by the given resource if its found in the explorer.
@@ -19,325 +15,175 @@ export const IExplorerServiceSourceLine = 50 as const;
 //  */
 // 
 export interface IExplorerServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly roots: ExplorerItem[];
-
 	readonly sortOrderConfiguration: ISortOrderConfiguration;
-
 	getContext(respectMultiSelection: boolean, ignoreNestedChildren?: boolean): ExplorerItem[];
-
 	hasViewFocus(): boolean;
-
 	setEditable(stat: ExplorerItem, data: IEditableData | null): Promise<void>;
-
 	getEditable(): { stat: ExplorerItem; data: IEditableData } | undefined;
-
 	getEditableData(stat: ExplorerItem): IEditableData | undefined;
-
 	findClosest(resource: URI): ExplorerItem | null;
-
 	findClosestRoot(resource: URI): ExplorerItem | null;
-
 	refresh(): Promise<void>;
-
 	setToCopy(stats: ExplorerItem[], cut: boolean): Promise<void>;
-
 	isCut(stat: ExplorerItem): boolean;
-
 	applyBulkEdit(edit: ResourceFileEdit[], options: { undoLabel: string; progressLabel: string; confirmBeforeUndo?: boolean; progressLocation?: ProgressLocation.Explorer | ProgressLocation.Window }): Promise<void>;
-
 	/**
 	 * Selects and reveal the file element provided by the given resource if its found in the explorer.
 	 * Will try to resolve the path in case the explorer is not yet expanded to the file yet.
 	 */
 	registerView(contextAndRefreshProvider: IExplorerView): void;
 }
-
 export const IExplorerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 23,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "roots",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "ExplorerItem[]",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 23,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "sortOrderConfiguration",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "ISortOrderConfiguration",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 23,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getContext",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "ExplorerItem[]",
-
 		Parameters: [{ Name: "respectMultiSelection", TypeText: "boolean", Optional: false }, { Name: "ignoreNestedChildren", TypeText: "boolean", Optional: true }],
-
 		DocComment: null,
-
 		SourceLine: 27,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "hasViewFocus",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 28,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "setEditable",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "stat", TypeText: "ExplorerItem", Optional: false }, { Name: "data", TypeText: "IEditableData | null", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 29,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getEditable",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "{ stat: ExplorerItem; data: IEditableData } | undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 30,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getEditableData",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IEditableData | undefined",
-
 		Parameters: [{ Name: "stat", TypeText: "ExplorerItem", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 31,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "findClosest",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "ExplorerItem | null",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 34,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "findClosestRoot",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "ExplorerItem | null",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 35,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "refresh",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 36,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "setToCopy",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "stats", TypeText: "ExplorerItem[]", Optional: false }, { Name: "cut", TypeText: "boolean", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 37,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "isCut",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [{ Name: "stat", TypeText: "ExplorerItem", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 38,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "applyBulkEdit",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "edit", TypeText: "ResourceFileEdit[]", Optional: false }, { Name: "options", TypeText: "{ undoLabel: string; progressLabel: string; confirmBeforeUndo?: boolean; progressLocation?: ProgressLocation.Explorer | ProgressLocation.Window }", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 39,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerView",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "contextAndRefreshProvider", TypeText: "IExplorerView", Optional: false }],
-
 		DocComment: "Selects and reveal the file element provided by the given resource if its found in the explorer.\nWill try to resolve the path in case the explorer is not yet expanded to the file yet.",
-
 		SourceLine: 47,
 	}
 ] as const;

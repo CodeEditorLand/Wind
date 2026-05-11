@@ -5,38 +5,24 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IRenameSymbolTrackerServiceTag = "renameSymbolTrackerService" as const;
-
 export const IRenameSymbolTrackerServiceSourcePath = "vs/editor/browser/services/renameSymbolTrackerService.ts" as const;
-
 export const IRenameSymbolTrackerServiceSourceLine = 12 as const;
-
 export interface IRenameSymbolTrackerServiceUpstream {
-
 	/**
 	 * Represents a tracked word that is being edited by the user.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IRenameSymbolTrackerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Represents a tracked word that is being edited by the user.",
-
 		SourceLine: 45,
 	}
 ] as const;

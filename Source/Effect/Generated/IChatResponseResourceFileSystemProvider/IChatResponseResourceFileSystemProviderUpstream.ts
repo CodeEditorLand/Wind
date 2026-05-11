@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatResponseResourceFileSystemProviderTag = "chatResponseResourceFileSystemProvider" as const;
-
 export const IChatResponseResourceFileSystemProviderSourcePath = "vs/workbench/contrib/chat/common/widget/chatResponseResourceFileSystemProvider.ts" as const;
-
 export const IChatResponseResourceFileSystemProviderSourceLine = 20 as const;
-
 export interface IChatResponseResourceFileSystemProviderUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IChatResponseResourceFileSystemProviderMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 23,
 	}
 ] as const;

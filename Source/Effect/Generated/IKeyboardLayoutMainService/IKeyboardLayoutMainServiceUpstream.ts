@@ -5,17 +5,11 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IKeyboardLayoutMainServiceTag = "keyboardLayoutMainService" as const;
-
 export const IKeyboardLayoutMainServiceSourcePath = "vs/platform/keyboardLayout/electron-main/keyboardLayoutMainService.ts" as const;
-
 export const IKeyboardLayoutMainServiceSourceLine = 14 as const;
-
 export interface IKeyboardLayoutMainServiceUpstream {
-
 	// (no members extracted in same file - resolve cross-file)
 }
-
 export const IKeyboardLayoutMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

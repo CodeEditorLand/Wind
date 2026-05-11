@@ -5,77 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IProfileAnalysisWorkerServiceTag = "IProfileAnalysisWorkerService" as const;
-
 export const IProfileAnalysisWorkerServiceSourcePath = "vs/platform/profiling/electron-browser/profileAnalysisWorkerService.ts" as const;
-
 export const IProfileAnalysisWorkerServiceSourceLine = 30 as const;
-
 export interface IProfileAnalysisWorkerServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	analyseBottomUp(profile: IV8Profile, callFrameClassifier: IScriptUrlClassifier, perfBaseline: number, sendAsErrorTelemtry: boolean): Promise<ProfilingOutput>;
-
 	analyseByLocation(profile: IV8Profile, locations: [location: URI, id: string][]): Promise<[category: string, aggregated: number][]>;
 }
-
 export const IProfileAnalysisWorkerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 33,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "analyseBottomUp",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<ProfilingOutput>",
-
 		Parameters: [{ Name: "profile", TypeText: "IV8Profile", Optional: false }, { Name: "callFrameClassifier", TypeText: "IScriptUrlClassifier", Optional: false }, { Name: "perfBaseline", TypeText: "number", Optional: false }, { Name: "sendAsErrorTelemtry", TypeText: "boolean", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 34,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "analyseByLocation",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<[category: string, aggregated: number][]>",
-
 		Parameters: [{ Name: "profile", TypeText: "IV8Profile", Optional: false }, { Name: "locations", TypeText: "[location: URI, id: string][]", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 35,
 	}
 ] as const;

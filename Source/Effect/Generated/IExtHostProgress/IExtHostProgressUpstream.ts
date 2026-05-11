@@ -5,17 +5,11 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtHostProgressTag = "IExtHostProgress" as const;
-
 export const IExtHostProgressSourcePath = "vs/workbench/api/common/extHostProgress.ts" as const;
-
 export const IExtHostProgressSourceLine = 19 as const;
-
 export interface IExtHostProgressUpstream {
-
 	// (no members extracted in same file - resolve cross-file)
 }
-
 export const IExtHostProgressMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

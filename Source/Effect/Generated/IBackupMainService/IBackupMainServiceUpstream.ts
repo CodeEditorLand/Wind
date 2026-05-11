@@ -5,161 +5,87 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IBackupMainServiceTag = "backupMainService" as const;
-
 export const IBackupMainServiceSourcePath = "vs/platform/backup/electron-main/backup.ts" as const;
-
 export const IBackupMainServiceSourceLine = 10 as const;
-
 export interface IBackupMainServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	isHotExitEnabled(): boolean;
-
 	getEmptyWindowBackups(): IEmptyWindowBackupInfo[];
-
 	registerWorkspaceBackup(workspaceInfo: IWorkspaceBackupInfo): string;
-
 	registerWorkspaceBackup(workspaceInfo: IWorkspaceBackupInfo, migrateFrom: string): Promise<string>;
-
 	registerFolderBackup(folderInfo: IFolderBackupInfo): string;
-
 	registerEmptyWindowBackup(emptyWindowInfo: IEmptyWindowBackupInfo): string;
 }
-
 export const IBackupMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 14,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "isHotExitEnabled",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 16,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getEmptyWindowBackups",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IEmptyWindowBackupInfo[]",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 18,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerWorkspaceBackup",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "string",
-
 		Parameters: [{ Name: "workspaceInfo", TypeText: "IWorkspaceBackupInfo", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 20,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerWorkspaceBackup",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<string>",
-
 		Parameters: [{ Name: "workspaceInfo", TypeText: "IWorkspaceBackupInfo", Optional: false }, { Name: "migrateFrom", TypeText: "string", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 20,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerFolderBackup",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "string",
-
 		Parameters: [{ Name: "folderInfo", TypeText: "IFolderBackupInfo", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 22,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerEmptyWindowBackup",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "string",
-
 		Parameters: [{ Name: "emptyWindowInfo", TypeText: "IEmptyWindowBackupInfo", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 23,
 	}
 ] as const;

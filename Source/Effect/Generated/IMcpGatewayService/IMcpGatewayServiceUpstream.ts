@@ -5,42 +5,28 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IMcpGatewayServiceTag = "IMcpGatewayService" as const;
-
 export const IMcpGatewayServiceSourcePath = "vs/platform/mcp/common/mcpGateway.ts" as const;
-
 export const IMcpGatewayServiceSourceLine = 11 as const;
-
 /**
  * Descriptor for an MCP server known to the gateway.
  */
 
 export interface IMcpGatewayServiceUpstream {
-
 	/**
 	 * Descriptor for an MCP server known to the gateway.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IMcpGatewayServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Descriptor for an MCP server known to the gateway.",
-
 		SourceLine: 97,
 	}
 ] as const;

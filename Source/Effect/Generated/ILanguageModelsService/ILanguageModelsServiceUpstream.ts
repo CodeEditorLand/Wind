@@ -5,379 +5,225 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ILanguageModelsServiceTag = "ILanguageModelsService" as const;
-
 export const ILanguageModelsServiceSourcePath = "vs/workbench/contrib/chat/common/languageModels.ts" as const;
-
 export const ILanguageModelsServiceSourceLine = 324 as const;
-
 // Decorator doc:
 // /**
 //  * The image's MIME type (e.g., "image/png", "image/jpeg").
 //  */
 // 
 export interface ILanguageModelsServiceUpstream {
-
 	/**
 	 * The image's MIME type (e.g., "image/png", "image/jpeg").
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * The image's MIME type (e.g., "image/png", "image/jpeg").
 	 */
 	readonly onDidChangeLanguageModelVendors: Event<readonly string[]>;
-
 	/**
 	 * The image's MIME type (e.g., "image/png", "image/jpeg").
 	 */
 	readonly onDidChangeLanguageModels: Event<string>;
-
 	/**
 	 * The image's MIME type (e.g., "image/png", "image/jpeg").
 	 */
 	getLanguageModelIds(): string[];
-
 	/**
 	 * The image's MIME type (e.g., "image/png", "image/jpeg").
 	 */
 	getVendors(): ILanguageModelProviderDescriptor[];
-
 	/**
 	 * The image's MIME type (e.g., "image/png", "image/jpeg").
 	 */
 	lookupLanguageModel(modelId: string): ILanguageModelChatMetadata | undefined;
-
 	/**
 	 * The image's MIME type (e.g., "image/png", "image/jpeg").
 	 */
 	getLanguageModelGroups(vendor: string): ILanguageModelsGroup[];
-
 	/**
 	 * The image's MIME type (e.g., "image/png", "image/jpeg").
 	 */
 	registerLanguageModelProvider(vendor: string, provider: ILanguageModelChatProvider): IDisposable;
-
 	/**
 	 * The image's MIME type (e.g., "image/png", "image/jpeg").
 	 */
 	deltaLanguageModelChatProviderDescriptors(added: IUserFriendlyLanguageModel[], removed: IUserFriendlyLanguageModel[]): void;
-
 	/**
 	 * The image's MIME type (e.g., "image/png", "image/jpeg").
 	 */
 	sendChatRequest(modelId: string, from: ExtensionIdentifier | undefined, messages: IChatMessage[], options: ILanguageModelChatRequestOptions, token: CancellationToken): Promise<ILanguageModelChatResponse>;
-
 	/**
 	 * The image's MIME type (e.g., "image/png", "image/jpeg").
 	 */
 	computeTokenLength(modelId: string, message: string | IChatMessage, token: CancellationToken): Promise<number>;
-
 	/**
 	 * The image's MIME type (e.g., "image/png", "image/jpeg").
 	 */
 	addLanguageModelsProviderGroup(name: string, vendorId: string, configuration: IStringDictionary<unknown> | undefined): Promise<void>;
-
 	/**
 	 * The image's MIME type (e.g., "image/png", "image/jpeg").
 	 */
 	removeLanguageModelsProviderGroup(vendorId: string, providerGroupName: string): Promise<void>;
-
 	/**
 	 * The image's MIME type (e.g., "image/png", "image/jpeg").
 	 */
 	configureLanguageModelsProviderGroup(vendorId: string, name?: string): Promise<void>;
-
 	/**
 	 * The image's MIME type (e.g., "image/png", "image/jpeg").
 	 */
 	migrateLanguageModelsProviderGroup(languageModelsProviderGroup: ILanguageModelsProviderGroup): Promise<void>;
 }
-
 export const ILanguageModelsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "The image's MIME type (e.g., \"image/png\", \"image/jpeg\").",
-
 		SourceLine: 355,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeLanguageModelVendors",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<readonly string[]>",
-
 		Parameters: [],
-
 		DocComment: "The image's MIME type (e.g., \"image/png\", \"image/jpeg\").",
-
 		SourceLine: 355,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeLanguageModels",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<string>",
-
 		Parameters: [],
-
 		DocComment: "The image's MIME type (e.g., \"image/png\", \"image/jpeg\").",
-
 		SourceLine: 355,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getLanguageModelIds",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "string[]",
-
 		Parameters: [],
-
 		DocComment: "The image's MIME type (e.g., \"image/png\", \"image/jpeg\").",
-
 		SourceLine: 360,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getVendors",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "ILanguageModelProviderDescriptor[]",
-
 		Parameters: [],
-
 		DocComment: "The image's MIME type (e.g., \"image/png\", \"image/jpeg\").",
-
 		SourceLine: 362,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "lookupLanguageModel",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "ILanguageModelChatMetadata | undefined",
-
 		Parameters: [{ Name: "modelId", TypeText: "string", Optional: false }],
-
 		DocComment: "The image's MIME type (e.g., \"image/png\", \"image/jpeg\").",
-
 		SourceLine: 364,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getLanguageModelGroups",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "ILanguageModelsGroup[]",
-
 		Parameters: [{ Name: "vendor", TypeText: "string", Optional: false }],
-
 		DocComment: "The image's MIME type (e.g., \"image/png\", \"image/jpeg\").",
-
 		SourceLine: 371,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerLanguageModelProvider",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "vendor", TypeText: "string", Optional: false }, { Name: "provider", TypeText: "ILanguageModelChatProvider", Optional: false }],
-
 		DocComment: "The image's MIME type (e.g., \"image/png\", \"image/jpeg\").",
-
 		SourceLine: 387,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "deltaLanguageModelChatProviderDescriptors",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "added", TypeText: "IUserFriendlyLanguageModel[]", Optional: false }, { Name: "removed", TypeText: "IUserFriendlyLanguageModel[]", Optional: false }],
-
 		DocComment: "The image's MIME type (e.g., \"image/png\", \"image/jpeg\").",
-
 		SourceLine: 389,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "sendChatRequest",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<ILanguageModelChatResponse>",
-
 		Parameters: [{ Name: "modelId", TypeText: "string", Optional: false }, { Name: "from", TypeText: "ExtensionIdentifier | undefined", Optional: false }, { Name: "messages", TypeText: "IChatMessage[]", Optional: false }, { Name: "options", TypeText: "ILanguageModelChatRequestOptions", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }],
-
 		DocComment: "The image's MIME type (e.g., \"image/png\", \"image/jpeg\").",
-
 		SourceLine: 391,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "computeTokenLength",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<number>",
-
 		Parameters: [{ Name: "modelId", TypeText: "string", Optional: false }, { Name: "message", TypeText: "string | IChatMessage", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }],
-
 		DocComment: "The image's MIME type (e.g., \"image/png\", \"image/jpeg\").",
-
 		SourceLine: 393,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "addLanguageModelsProviderGroup",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "name", TypeText: "string", Optional: false }, { Name: "vendorId", TypeText: "string", Optional: false }, { Name: "configuration", TypeText: "IStringDictionary<unknown> | undefined", Optional: false }],
-
 		DocComment: "The image's MIME type (e.g., \"image/png\", \"image/jpeg\").",
-
 		SourceLine: 415,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "removeLanguageModelsProviderGroup",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "vendorId", TypeText: "string", Optional: false }, { Name: "providerGroupName", TypeText: "string", Optional: false }],
-
 		DocComment: "The image's MIME type (e.g., \"image/png\", \"image/jpeg\").",
-
 		SourceLine: 417,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "configureLanguageModelsProviderGroup",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "vendorId", TypeText: "string", Optional: false }, { Name: "name", TypeText: "string", Optional: true }],
-
 		DocComment: "The image's MIME type (e.g., \"image/png\", \"image/jpeg\").",
-
 		SourceLine: 419,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "migrateLanguageModelsProviderGroup",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "languageModelsProviderGroup", TypeText: "ILanguageModelsProviderGroup", Optional: false }],
-
 		DocComment: "The image's MIME type (e.g., \"image/png\", \"image/jpeg\").",
-
 		SourceLine: 427,
 	}
 ] as const;

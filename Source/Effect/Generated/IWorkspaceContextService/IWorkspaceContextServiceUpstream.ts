@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IWorkspaceContextServiceTag = "contextService" as const;
-
 export const IWorkspaceContextServiceSourcePath = "vs/platform/workspace/common/workspace.ts" as const;
-
 export const IWorkspaceContextServiceSourceLine = 16 as const;
-
 export interface IWorkspaceContextServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IWorkspaceContextServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 20,
 	}
 ] as const;

@@ -5,182 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IDialogMainServiceTag = "dialogMainService" as const;
-
 export const IDialogMainServiceSourcePath = "vs/platform/dialogs/electron-main/dialogMainService.ts" as const;
-
 export const IDialogMainServiceSourceLine = 21 as const;
-
 export interface IDialogMainServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	pickFileFolder(options: INativeOpenDialogOptions, window?: electron.BrowserWindow): Promise<string[] | undefined>;
-
 	pickFolder(options: INativeOpenDialogOptions, window?: electron.BrowserWindow): Promise<string[] | undefined>;
-
 	pickFile(options: INativeOpenDialogOptions, window?: electron.BrowserWindow): Promise<string[] | undefined>;
-
 	pickWorkspace(options: INativeOpenDialogOptions, window?: electron.BrowserWindow): Promise<string[] | undefined>;
-
 	showMessageBox(options: electron.MessageBoxOptions, window?: electron.BrowserWindow): Promise<electron.MessageBoxReturnValue>;
-
 	showSaveDialog(options: electron.SaveDialogOptions, window?: electron.BrowserWindow): Promise<electron.SaveDialogReturnValue>;
-
 	showOpenDialog(options: electron.OpenDialogOptions, window?: electron.BrowserWindow): Promise<electron.OpenDialogReturnValue>;
 }
-
 export const IDialogMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 25,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "pickFileFolder",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<string[] | undefined>",
-
 		Parameters: [{ Name: "options", TypeText: "INativeOpenDialogOptions", Optional: false }, { Name: "window", TypeText: "electron.BrowserWindow", Optional: true }],
-
 		DocComment: null,
-
 		SourceLine: 27,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "pickFolder",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<string[] | undefined>",
-
 		Parameters: [{ Name: "options", TypeText: "INativeOpenDialogOptions", Optional: false }, { Name: "window", TypeText: "electron.BrowserWindow", Optional: true }],
-
 		DocComment: null,
-
 		SourceLine: 28,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "pickFile",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<string[] | undefined>",
-
 		Parameters: [{ Name: "options", TypeText: "INativeOpenDialogOptions", Optional: false }, { Name: "window", TypeText: "electron.BrowserWindow", Optional: true }],
-
 		DocComment: null,
-
 		SourceLine: 29,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "pickWorkspace",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<string[] | undefined>",
-
 		Parameters: [{ Name: "options", TypeText: "INativeOpenDialogOptions", Optional: false }, { Name: "window", TypeText: "electron.BrowserWindow", Optional: true }],
-
 		DocComment: null,
-
 		SourceLine: 30,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "showMessageBox",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<electron.MessageBoxReturnValue>",
-
 		Parameters: [{ Name: "options", TypeText: "electron.MessageBoxOptions", Optional: false }, { Name: "window", TypeText: "electron.BrowserWindow", Optional: true }],
-
 		DocComment: null,
-
 		SourceLine: 32,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "showSaveDialog",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<electron.SaveDialogReturnValue>",
-
 		Parameters: [{ Name: "options", TypeText: "electron.SaveDialogOptions", Optional: false }, { Name: "window", TypeText: "electron.BrowserWindow", Optional: true }],
-
 		DocComment: null,
-
 		SourceLine: 33,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "showOpenDialog",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<electron.OpenDialogReturnValue>",
-
 		Parameters: [{ Name: "options", TypeText: "electron.OpenDialogOptions", Optional: false }, { Name: "window", TypeText: "electron.BrowserWindow", Optional: true }],
-
 		DocComment: null,
-
 		SourceLine: 34,
 	}
 ] as const;

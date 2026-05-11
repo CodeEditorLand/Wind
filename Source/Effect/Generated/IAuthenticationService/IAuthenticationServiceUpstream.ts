@@ -5,43 +5,29 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAuthenticationServiceTag = "IAuthenticationService" as const;
-
 export const IAuthenticationServiceSourcePath = "vs/workbench/services/authentication/common/authentication.ts" as const;
-
 export const IAuthenticationServiceSourceLine = 148 as const;
-
 // Decorator doc:
 // /**
 //  * Use this if you don't want the onDidChangeSessions event to fire in the extension host
 //  */
 // 
 export interface IAuthenticationServiceUpstream {
-
 	/**
 	 * Use this if you don't want the onDidChangeSessions event to fire in the extension host
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IAuthenticationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Use this if you don't want the onDidChangeSessions event to fire in the extension host",
-
 		SourceLine: 151,
 	}
 ] as const;

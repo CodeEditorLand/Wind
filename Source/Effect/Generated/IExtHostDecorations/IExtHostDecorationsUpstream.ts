@@ -5,17 +5,11 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtHostDecorationsTag = "IExtHostDecorations" as const;
-
 export const IExtHostDecorationsSourcePath = "vs/workbench/api/common/extHostDecorations.ts" as const;
-
 export const IExtHostDecorationsSourceLine = 120 as const;
-
 export interface IExtHostDecorationsUpstream {
-
 	// (no members extracted in same file - resolve cross-file)
 }
-
 export const IExtHostDecorationsMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

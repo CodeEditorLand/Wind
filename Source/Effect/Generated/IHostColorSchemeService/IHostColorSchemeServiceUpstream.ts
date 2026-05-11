@@ -5,98 +5,54 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IHostColorSchemeServiceTag = "hostColorSchemeService" as const;
-
 export const IHostColorSchemeServiceSourcePath = "vs/workbench/services/themes/common/hostColorSchemeService.ts" as const;
-
 export const IHostColorSchemeServiceSourceLine = 9 as const;
-
 export interface IHostColorSchemeServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly dark: boolean;
-
 	readonly highContrast: boolean;
-
 	readonly onDidChangeColorScheme: Event<void>;
 }
-
 export const IHostColorSchemeServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 13,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "dark",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 13,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "highContrast",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 13,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeColorScheme",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<void>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 13,
 	}
 ] as const;

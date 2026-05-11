@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IURITransformerServiceTag = "IURITransformerService" as const;
-
 export const IURITransformerServiceSourcePath = "vs/workbench/api/common/extHostUriTransformerService.ts" as const;
-
 export const IURITransformerServiceSourceLine = 14 as const;
-
 export interface IURITransformerServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IURITransformerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 11,
 	}
 ] as const;

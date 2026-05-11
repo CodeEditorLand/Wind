@@ -5,56 +5,32 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const INativeMcpDiscoveryHelperServiceTag = "INativeMcpDiscoveryHelperService" as const;
-
 export const INativeMcpDiscoveryHelperServiceSourcePath = "vs/platform/mcp/common/nativeMcpDiscoveryHelper.ts" as const;
-
 export const INativeMcpDiscoveryHelperServiceSourceLine = 10 as const;
-
 export interface INativeMcpDiscoveryHelperServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	load(): Promise<INativeMcpDiscoveryData>;
 }
-
 export const INativeMcpDiscoveryHelperServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 23,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "load",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<INativeMcpDiscoveryData>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 25,
 	}
 ] as const;

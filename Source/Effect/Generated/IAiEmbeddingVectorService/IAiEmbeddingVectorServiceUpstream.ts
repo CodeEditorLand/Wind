@@ -5,119 +5,65 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAiEmbeddingVectorServiceTag = "IAiEmbeddingVectorService" as const;
-
 export const IAiEmbeddingVectorServiceSourcePath = "vs/workbench/services/aiEmbeddingVector/common/aiEmbeddingVectorService.ts" as const;
-
 export const IAiEmbeddingVectorServiceSourceLine = 14 as const;
-
 export interface IAiEmbeddingVectorServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	isEnabled(): boolean;
-
 	getEmbeddingVector(str: string, token: CancellationToken): Promise<number[]>;
-
 	getEmbeddingVector(strings: string[], token: CancellationToken): Promise<number[][]>;
-
 	registerAiEmbeddingVectorProvider(model: string, provider: IAiEmbeddingVectorProvider): IDisposable;
 }
-
 export const IAiEmbeddingVectorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 17,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "isEnabled",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 19,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getEmbeddingVector",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<number[]>",
-
 		Parameters: [{ Name: "str", TypeText: "string", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 20,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getEmbeddingVector",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<number[][]>",
-
 		Parameters: [{ Name: "strings", TypeText: "string[]", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 21,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerAiEmbeddingVectorProvider",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "model", TypeText: "string", Optional: false }, { Name: "provider", TypeText: "IAiEmbeddingVectorProvider", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 22,
 	}
 ] as const;

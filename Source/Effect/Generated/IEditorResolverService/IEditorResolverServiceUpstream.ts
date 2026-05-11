@@ -5,15 +5,10 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IEditorResolverServiceTag = "editorResolverService" as const;
-
 export const IEditorResolverServiceSourcePath = "vs/workbench/services/editor/common/editorResolverService.ts" as const;
-
 export const IEditorResolverServiceSourceLine = 24 as const;
-
 export interface IEditorResolverServiceUpstream {
-
 	/**
 	 * If we didn't resolve an editor dictates what to do with the opening state
 	 * ABORT = Do not continue with opening the editor
@@ -21,24 +16,15 @@ export interface IEditorResolverServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IEditorResolverServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "If we didn't resolve an editor dictates what to do with the opening state\nABORT = Do not continue with opening the editor\nNONE = Continue as if the resolution has been disabled as the service could not resolve one",
-
-		SourceLine: 134,
+		SourceLine: 136,
 	}
 ] as const;

@@ -5,119 +5,65 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IDefaultLogLevelsServiceTag = "IDefaultLogLevelsService" as const;
-
 export const IDefaultLogLevelsServiceSourcePath = "vs/workbench/services/log/common/defaultLogLevels.ts" as const;
-
 export const IDefaultLogLevelsServiceSourceLine = 26 as const;
-
 export interface IDefaultLogLevelsServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly defaultLogLevels: DefaultLogLevels;
-
 	readonly onDidChangeDefaultLogLevels: Event<DefaultLogLevels>;
-
 	getDefaultLogLevel(extensionId?: string): LogLevel;
-
 	setDefaultLogLevel(logLevel: LogLevel, extensionId?: string): Promise<void>;
 }
-
 export const IDefaultLogLevelsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 30,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "defaultLogLevels",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "DefaultLogLevels",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 30,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeDefaultLogLevels",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<DefaultLogLevels>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 30,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getDefaultLogLevel",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "LogLevel",
-
 		Parameters: [{ Name: "extensionId", TypeText: "string", Optional: true }],
-
 		DocComment: null,
-
 		SourceLine: 35,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "setDefaultLogLevel",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "logLevel", TypeText: "LogLevel", Optional: false }, { Name: "extensionId", TypeText: "string", Optional: true }],
-
 		DocComment: null,
-
 		SourceLine: 36,
 	}
 ] as const;

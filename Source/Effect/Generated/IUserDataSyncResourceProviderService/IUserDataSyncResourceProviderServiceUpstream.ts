@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IUserDataSyncResourceProviderServiceTag = "IUserDataSyncResourceProviderService" as const;
-
 export const IUserDataSyncResourceProviderServiceSourcePath = "vs/platform/userDataSync/common/userDataSync.ts" as const;
-
 export const IUserDataSyncResourceProviderServiceSourceLine = 620 as const;
-
 // Decorator doc:
 // /**
 //  * Checks if resource enabled was explicitly configured before,
@@ -19,256 +15,156 @@ export const IUserDataSyncResourceProviderServiceSourceLine = 620 as const;
 //  */
 // 
 export interface IUserDataSyncResourceProviderServiceUpstream {
-
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	_serviceBrand: undefined;
-
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	getRemoteSyncedProfiles(): Promise<ISyncUserDataProfile[]>;
-
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	getLocalSyncedProfiles(location?: URI): Promise<ISyncUserDataProfile[]>;
-
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	getRemoteSyncResourceHandles(syncResource: SyncResource, profile?: ISyncUserDataProfile): Promise<ISyncResourceHandle[]>;
-
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	getLocalSyncResourceHandles(syncResource: SyncResource, profile?: ISyncUserDataProfile, location?: URI): Promise<ISyncResourceHandle[]>;
-
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	getAssociatedResources(syncResourceHandle: ISyncResourceHandle): Promise<{ resource: URI; comparableResource: URI }[]>;
-
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	getMachineId(syncResourceHandle: ISyncResourceHandle): Promise<string | undefined>;
-
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	getLocalSyncedMachines(location?: URI): Promise<IUserDataSyncMachine[]>;
-
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	resolveContent(resource: URI): Promise<string | null>;
-
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	resolveUserDataSyncResource(syncResourceHandle: ISyncResourceHandle): IUserDataSyncResource | undefined;
 }
-
 export const IUserDataSyncResourceProviderServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
-
 		SourceLine: 622,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getRemoteSyncedProfiles",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<ISyncUserDataProfile[]>",
-
 		Parameters: [],
-
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
-
 		SourceLine: 623,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getLocalSyncedProfiles",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<ISyncUserDataProfile[]>",
-
 		Parameters: [{ Name: "location", TypeText: "URI", Optional: true }],
-
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
-
 		SourceLine: 624,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getRemoteSyncResourceHandles",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<ISyncResourceHandle[]>",
-
 		Parameters: [{ Name: "syncResource", TypeText: "SyncResource", Optional: false }, { Name: "profile", TypeText: "ISyncUserDataProfile", Optional: true }],
-
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
-
 		SourceLine: 625,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getLocalSyncResourceHandles",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<ISyncResourceHandle[]>",
-
 		Parameters: [{ Name: "syncResource", TypeText: "SyncResource", Optional: false }, { Name: "profile", TypeText: "ISyncUserDataProfile", Optional: true }, { Name: "location", TypeText: "URI", Optional: true }],
-
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
-
 		SourceLine: 626,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getAssociatedResources",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<{ resource: URI; comparableResource: URI }[]>",
-
 		Parameters: [{ Name: "syncResourceHandle", TypeText: "ISyncResourceHandle", Optional: false }],
-
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
-
 		SourceLine: 627,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getMachineId",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<string | undefined>",
-
 		Parameters: [{ Name: "syncResourceHandle", TypeText: "ISyncResourceHandle", Optional: false }],
-
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
-
 		SourceLine: 628,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getLocalSyncedMachines",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IUserDataSyncMachine[]>",
-
 		Parameters: [{ Name: "location", TypeText: "URI", Optional: true }],
-
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
-
 		SourceLine: 629,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "resolveContent",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<string | null>",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
-
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
-
 		SourceLine: 630,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "resolveUserDataSyncResource",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IUserDataSyncResource | undefined",
-
 		Parameters: [{ Name: "syncResourceHandle", TypeText: "ISyncResourceHandle", Optional: false }],
-
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
-
 		SourceLine: 631,
 	}
 ] as const;

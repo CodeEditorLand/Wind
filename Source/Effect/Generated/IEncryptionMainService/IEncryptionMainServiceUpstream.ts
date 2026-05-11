@@ -5,17 +5,11 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IEncryptionMainServiceTag = "encryptionMainService" as const;
-
 export const IEncryptionMainServiceSourcePath = "vs/platform/encryption/common/encryptionService.ts" as const;
-
 export const IEncryptionMainServiceSourceLine = 14 as const;
-
 export interface IEncryptionMainServiceUpstream {
-
 	// (no members extracted in same file - resolve cross-file)
 }
-
 export const IEncryptionMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

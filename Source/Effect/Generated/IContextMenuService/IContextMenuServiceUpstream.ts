@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IContextMenuServiceTag = "contextMenuService" as const;
-
 export const IContextMenuServiceSourcePath = "vs/platform/contextview/browser/contextView.ts" as const;
-
 export const IContextMenuServiceSourceLine = 57 as const;
-
 // Decorator doc:
 // /**
 //  * The anchor where to position the context view.
@@ -21,7 +17,6 @@ export const IContextMenuServiceSourceLine = 57 as const;
 //  */
 // 
 export interface IContextMenuServiceUpstream {
-
 	/**
 	 * The anchor where to position the context view.
 	 * Use a `HTMLElement` to position the view at the element,
@@ -29,7 +24,6 @@ export interface IContextMenuServiceUpstream {
 	 * or an `IAnchor` to position it at a specific location.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * The anchor where to position the context view.
 	 * Use a `HTMLElement` to position the view at the element,
@@ -37,7 +31,6 @@ export interface IContextMenuServiceUpstream {
 	 * or an `IAnchor` to position it at a specific location.
 	 */
 	readonly onDidShowContextMenu: Event<void>;
-
 	/**
 	 * The anchor where to position the context view.
 	 * Use a `HTMLElement` to position the view at the element,
@@ -45,7 +38,6 @@ export interface IContextMenuServiceUpstream {
 	 * or an `IAnchor` to position it at a specific location.
 	 */
 	readonly onDidHideContextMenu: Event<void>;
-
 	/**
 	 * The anchor where to position the context view.
 	 * Use a `HTMLElement` to position the view at the element,
@@ -54,81 +46,45 @@ export interface IContextMenuServiceUpstream {
 	 */
 	showContextMenu(delegate: IContextMenuDelegate | IContextMenuMenuDelegate): void;
 }
-
 export const IContextMenuServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "The anchor where to position the context view.\nUse a `HTMLElement` to position the view at the element,\na `StandardMouseEvent` to position it at the mouse position\nor an `IAnchor` to position it at a specific location.",
-
 		SourceLine: 61,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidShowContextMenu",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<void>",
-
 		Parameters: [],
-
 		DocComment: "The anchor where to position the context view.\nUse a `HTMLElement` to position the view at the element,\na `StandardMouseEvent` to position it at the mouse position\nor an `IAnchor` to position it at a specific location.",
-
 		SourceLine: 61,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidHideContextMenu",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<void>",
-
 		Parameters: [],
-
 		DocComment: "The anchor where to position the context view.\nUse a `HTMLElement` to position the view at the element,\na `StandardMouseEvent` to position it at the mouse position\nor an `IAnchor` to position it at a specific location.",
-
 		SourceLine: 61,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "showContextMenu",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "delegate", TypeText: "IContextMenuDelegate | IContextMenuMenuDelegate", Optional: false }],
-
 		DocComment: "The anchor where to position the context view.\nUse a `HTMLElement` to position the view at the element,\na `StandardMouseEvent` to position it at the mouse position\nor an `IAnchor` to position it at a specific location.",
-
 		SourceLine: 66,
 	}
 ] as const;

@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtHostMpcServiceTag = "IExtHostMpcService" as const;
-
 export const IExtHostMpcServiceSourcePath = "vs/workbench/api/common/extHostMcp.ts" as const;
-
 export const IExtHostMpcServiceSourceLine = 33 as const;
-
 export interface IExtHostMpcServiceUpstream {
-
 	registerMcpConfigurationProvider(extension: IExtensionDescription, id: string, provider: vscode.McpServerDefinitionProvider): IDisposable;
 }
-
 export const IExtHostMpcServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Method",
-
 		Name: "registerMcpConfigurationProvider",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "extension", TypeText: "IExtensionDescription", Optional: false }, { Name: "id", TypeText: "string", Optional: false }, { Name: "provider", TypeText: "vscode.McpServerDefinitionProvider", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 36,
 	}
 ] as const;

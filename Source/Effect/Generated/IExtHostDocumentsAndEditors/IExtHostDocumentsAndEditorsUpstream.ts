@@ -5,17 +5,11 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtHostDocumentsAndEditorsTag = "IExtHostDocumentsAndEditors" as const;
-
 export const IExtHostDocumentsAndEditorsSourcePath = "vs/workbench/api/common/extHostDocumentsAndEditors.ts" as const;
-
 export const IExtHostDocumentsAndEditorsSourceLine = 197 as const;
-
 export interface IExtHostDocumentsAndEditorsUpstream {
-
 	// (no members extracted in same file - resolve cross-file)
 }
-
 export const IExtHostDocumentsAndEditorsMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

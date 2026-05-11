@@ -5,42 +5,28 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IEnvironmentVariableServiceTag = "environmentVariableService" as const;
-
 export const IEnvironmentVariableServiceSourcePath = "vs/workbench/contrib/terminal/common/environmentVariable.ts" as const;
-
 export const IEnvironmentVariableServiceSourceLine = 11 as const;
-
 /**
  * Tracks and persists environment variable collections as defined by extensions.
  */
 
 export interface IEnvironmentVariableServiceUpstream {
-
 	/**
 	 * Tracks and persists environment variable collections as defined by extensions.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IEnvironmentVariableServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Tracks and persists environment variable collections as defined by extensions.",
-
 		SourceLine: 17,
 	}
 ] as const;

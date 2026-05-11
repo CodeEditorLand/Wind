@@ -5,98 +5,54 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAgentSessionsServiceTag = "agentSessions" as const;
-
 export const IAgentSessionsServiceSourcePath = "vs/workbench/contrib/chat/browser/agentSessions/agentSessionsService.ts" as const;
-
 export const IAgentSessionsServiceSourceLine = 58 as const;
-
 export interface IAgentSessionsServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly model: IAgentSessionsModel;
-
 	readonly onDidChangeSessionArchivedState: Event<IAgentSession>;
-
 	getSession(resource: URI): IAgentSession | undefined;
 }
-
 export const IAgentSessionsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 15,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "model",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "IAgentSessionsModel",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 15,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeSessionArchivedState",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<IAgentSession>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 15,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getSession",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IAgentSession | undefined",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 20,
 	}
 ] as const;

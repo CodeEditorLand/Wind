@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtHostGitExtensionServiceTag = "IExtHostGitExtensionService" as const;
-
 export const IExtHostGitExtensionServiceSourcePath = "vs/workbench/api/common/extHostGitExtensionService.ts" as const;
-
 export const IExtHostGitExtensionServiceSourceLine = 175 as const;
-
 export interface IExtHostGitExtensionServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IExtHostGitExtensionServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 172,
 	}
 ] as const;

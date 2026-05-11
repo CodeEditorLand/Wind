@@ -5,40 +5,26 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ITestResultServiceTag = "testResultService" as const;
-
 export const ITestResultServiceSourcePath = "vs/workbench/contrib/testing/common/testResultService.ts" as const;
-
 export const ITestResultServiceSourceLine = 73 as const;
-
 // Decorator doc:
 // /**
 //  * Fired after any results are added, removed, or completed.
 //  */
 // 
 export interface ITestResultServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const ITestResultServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 28,
 	}
 ] as const;

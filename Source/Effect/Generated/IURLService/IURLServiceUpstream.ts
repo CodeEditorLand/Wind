@@ -5,15 +5,10 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IURLServiceTag = "urlService" as const;
-
 export const IURLServiceSourcePath = "vs/platform/url/common/url.ts" as const;
-
 export const IURLServiceSourceLine = 10 as const;
-
 export interface IURLServiceUpstream {
-
 	/**
 	 * If not provided or `false`, signals that the
 	 * URL to open did not originate from the product
@@ -21,7 +16,6 @@ export interface IURLServiceUpstream {
 	 * might be shown to the user.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * If not provided or `false`, signals that the
 	 * URL to open did not originate from the product
@@ -29,7 +23,6 @@ export interface IURLServiceUpstream {
 	 * might be shown to the user.
 	 */
 	open(url: URI, options?: IOpenURLOptions): Promise<boolean>;
-
 	/**
 	 * If not provided or `false`, signals that the
 	 * URL to open did not originate from the product
@@ -38,62 +31,35 @@ export interface IURLServiceUpstream {
 	 */
 	registerHandler(handler: IURLHandler): IDisposable;
 }
-
 export const IURLServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "If not provided or `false`, signals that the\nURL to open did not originate from the product\nbut outside. As such, a confirmation dialog\nmight be shown to the user.",
-
 		SourceLine: 31,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "open",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<boolean>",
-
 		Parameters: [{ Name: "url", TypeText: "URI", Optional: false }, { Name: "options", TypeText: "IOpenURLOptions", Optional: true }],
-
 		DocComment: "If not provided or `false`, signals that the\nURL to open did not originate from the product\nbut outside. As such, a confirmation dialog\nmight be shown to the user.",
-
 		SourceLine: 40,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerHandler",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "handler", TypeText: "IURLHandler", Optional: false }],
-
 		DocComment: "If not provided or `false`, signals that the\nURL to open did not originate from the product\nbut outside. As such, a confirmation dialog\nmight be shown to the user.",
-
 		SourceLine: 42,
 	}
 ] as const;

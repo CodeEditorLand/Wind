@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAgentConfigurationServiceTag = "agentConfigurationService" as const;
-
 export const IAgentConfigurationServiceSourcePath = "vs/platform/agentHost/node/agentConfigurationService.ts" as const;
-
 export const IAgentConfigurationServiceSourceLine = 21 as const;
-
 /**
  * Cohesive read/write surface for agent-host configuration.
  * All platform-layer consumers (tool auto-approval, side effects, future
@@ -26,7 +22,6 @@ export const IAgentConfigurationServiceSourceLine = 21 as const;
  */
 
 export interface IAgentConfigurationServiceUpstream {
-
 	/**
 	 * Cohesive read/write surface for agent-host configuration.
 	 * All platform-layer consumers (tool auto-approval, side effects, future
@@ -41,24 +36,15 @@ export interface IAgentConfigurationServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IAgentConfigurationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Cohesive read/write surface for agent-host configuration.\nAll platform-layer consumers (tool auto-approval, side effects, future\nhost-config editors) should read and mutate config values through this\nservice rather than reaching into raw session state. The service owns\nthe `session → parent session → host` inheritance chain so that\nhost-level defaults, subagent inheritance, and per-session overrides\ncompose the same way everywhere.\nReads go through a caller-supplied {@link ISchema}: each raw value is\nvalidated against the property's schema before being returned, so a\nmalformed value in one layer transparently falls back to the next.",
-
 		SourceLine: 38,
 	}
 ] as const;

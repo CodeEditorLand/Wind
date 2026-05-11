@@ -5,42 +5,28 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const INotificationServiceTag = "notificationService" as const;
-
 export const INotificationServiceSourcePath = "vs/platform/notification/common/notification.ts" as const;
-
 export const INotificationServiceSourceLine = 14 as const;
-
 /**
  * Default priority: notification will be visible unless do not disturb mode is enabled.
  */
 
 export interface INotificationServiceUpstream {
-
 	/**
 	 * Default priority: notification will be visible unless do not disturb mode is enabled.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const INotificationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Default priority: notification will be visible unless do not disturb mode is enabled.",
-
 		SourceLine: 373,
 	}
 ] as const;

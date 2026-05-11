@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatContextPickServiceTag = "IContextPickService" as const;
-
 export const IChatContextPickServiceSourcePath = "vs/workbench/contrib/chat/browser/attachments/chatContextPickService.ts" as const;
-
 export const IChatContextPickServiceSourceLine = 108 as const;
-
 // Decorator doc:
 // /**
 //  * Picks that should either be:
@@ -20,14 +16,12 @@ export const IChatContextPickServiceSourceLine = 108 as const;
 //  */
 // 
 export interface IChatContextPickServiceUpstream {
-
 	/**
 	 * Picks that should either be:
 	 * - A promise that resolves to the picked items
 	 * - A function that maps input query into items to display.
 	 */
 	_serviceBrand: undefined;
-
 	/**
 	 * Picks that should either be:
 	 * - A promise that resolves to the picked items
@@ -35,43 +29,25 @@ export interface IChatContextPickServiceUpstream {
 	 */
 	items: Iterable<IChatContextValueItem | IChatContextPickerItem>;
 }
-
 export const IChatContextPickServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Picks that should either be:\n- A promise that resolves to the picked items\n- A function that maps input query into items to display.",
-
 		SourceLine: 96,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "items",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Iterable<IChatContextValueItem | IChatContextPickerItem>",
-
 		Parameters: [],
-
 		DocComment: "Picks that should either be:\n- A promise that resolves to the picked items\n- A function that maps input query into items to display.",
-
 		SourceLine: 98,
 	}
 ] as const;
