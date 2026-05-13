@@ -60,6 +60,10 @@ export interface IChatEntitlementServiceUpstream {
 	/**
 	 * Signed out
 	 */
+	readonly onDidChangeUsageBasedBilling: Event<void>;
+	/**
+	 * Signed out
+	 */
 	readonly quotas: IQuotas;
 	/**
 	 * Signed out
@@ -212,6 +216,16 @@ export const IChatEntitlementServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		SourceLine: 160,
 	},
 	{
+		Kind: "Event",
+		Name: "onDidChangeUsageBasedBilling",
+		Readonly: true,
+		Optional: false,
+		TypeText: "Event<void>",
+		Parameters: [],
+		DocComment: "Signed out",
+		SourceLine: 160,
+	},
+	{
 		Kind: "Property",
 		Name: "quotas",
 		Readonly: true,
@@ -279,7 +293,7 @@ export const IChatEntitlementServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "void",
 		Parameters: [],
 		DocComment: "Signed out",
-		SourceLine: 190,
+		SourceLine: 191,
 	},
 	{
 		Kind: "Method",
@@ -289,6 +303,6 @@ export const IChatEntitlementServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "Promise<void>",
 		Parameters: [{ Name: "token", TypeText: "CancellationToken", Optional: false }],
 		DocComment: "Signed out",
-		SourceLine: 204,
+		SourceLine: 205,
 	}
 ] as const;

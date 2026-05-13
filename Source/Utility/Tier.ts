@@ -19,7 +19,7 @@
  */
 
 // Transport tiers ------------------------------------------------------------
-export type TierRemoteProcedureCallValue = "GRPC" | "SharedMemory";
+export type TierRemoteProcedureCallValue = "gRPC" | "SharedMemory";
 
 export type TierHTTPProxyValue = "HandRolled" | "Hyper";
 
@@ -88,7 +88,7 @@ const Tier = {
 	RemoteProcedureCall: Pick<TierRemoteProcedureCallValue>(
 		"RemoteProcedureCall",
 
-		"GRPC",
+		"gRPC",
 	),
 
 	HTTPProxy: Pick<TierHTTPProxyValue>("HTTPProxy", "HandRolled"),

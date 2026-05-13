@@ -10,9 +10,8 @@ export const IEditorResolverServiceSourcePath = "vs/workbench/services/editor/co
 export const IEditorResolverServiceSourceLine = 24 as const;
 export interface IEditorResolverServiceUpstream {
 	/**
-	 * If we didn't resolve an editor dictates what to do with the opening state
-	 * ABORT = Do not continue with opening the editor
-	 * NONE = Continue as if the resolution has been disabled as the service could not resolve one
+	 * Default value for `workbench.editorAssociations` in the Agents window.
+	 * Shared so that dynamic re-registrations of the setting preserve the override.
 	 */
 	readonly _serviceBrand: undefined;
 }
@@ -24,7 +23,7 @@ export const IEditorResolverServiceMembers: ReadonlyArray<InterfaceMemberRecord>
 		Optional: false,
 		TypeText: "undefined",
 		Parameters: [],
-		DocComment: "If we didn't resolve an editor dictates what to do with the opening state\nABORT = Do not continue with opening the editor\nNONE = Continue as if the resolution has been disabled as the service could not resolve one",
-		SourceLine: 136,
+		DocComment: "Default value for `workbench.editorAssociations` in the Agents window.\nShared so that dynamic re-registrations of the setting preserve the override.",
+		SourceLine: 147,
 	}
 ] as const;
