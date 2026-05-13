@@ -23,12 +23,12 @@
 
 The Breath of `Land`: `VS Code` Environment & Services for `Tauri`.
 
-`VS Code`'s workbench runs inside the `Chromium` renderer process, meaning every
-panel interaction that touches files or state must cross the `Electron` `IPC`
-bridge through untyped `JSON` serialization. `Wind` replaces that pipeline with
-typed `Tauri` commands routed to `Rust` handlers in `Mountain`'s core,
+`VS Code`'s `workbench` runs inside the `Chromium` renderer process, meaning
+every panel interaction that touches files or state must cross the `Electron`
+`IPC` bridge through untyped `JSON` serialization. `Wind` replaces that pipeline
+with typed `Tauri` commands routed to `Rust` handlers in `Mountain`'s core,
 eliminating the untyped serialization layer entirely while preserving full
-`VS Code` workbench compatibility.
+`VS Code` `workbench` compatibility.
 
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://github.com/CodeEditorLand/Wind/tree/Current/LICENSE)
 [![NPM Version](https://img.shields.io/npm/v/@codeeditorland/wind.svg)](https://www.npmjs.com/package/@codeeditorland/wind)
@@ -59,7 +59,7 @@ subdirectories that compose into `TauriLiveLayer`, `ElectronLiveLayer`, and
 that surfaces typed, tagged errors for every failure path, providing an
 integrated dialog experience without the `Electron` `IPC` indirection. The
 `Preload.ts` script establishes the `window.vscode` global object and shims
-`ipcRenderer` and `process` so the `VS Code` workbench code interacts with a
+`ipcRenderer` and `process` so the `VS Code` `workbench` code interacts with a
 familiar environment while actually communicating through `Tauri`'s `invoke`
 system. Every asynchronous operation and service uses `Effect` for structured
 concurrency, meaning all potential failures are explicitly typed rather than
