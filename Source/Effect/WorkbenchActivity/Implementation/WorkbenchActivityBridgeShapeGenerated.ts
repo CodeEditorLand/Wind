@@ -14,7 +14,13 @@
 
 import type { IActivityServiceUpstream } from "../../Generated/IActivityService/IActivityServiceUpstream.js";
 
-export type WorkbenchActivityBridgeShape = Pick<IActivityServiceUpstream, "showViewContainerActivity" | "showViewActivity" | "showAccountsActivity" | "showGlobalActivity">;
+export type WorkbenchActivityBridgeShape = Pick<
+	IActivityServiceUpstream,
+	| "showViewContainerActivity"
+	| "showViewActivity"
+	| "showAccountsActivity"
+	| "showGlobalActivity"
+>;
 
 export interface WorkbenchActivityGlobals {
 	readonly __CEL_SERVICES__?: {
