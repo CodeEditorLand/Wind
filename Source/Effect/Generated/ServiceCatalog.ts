@@ -21,7 +21,7 @@ export interface ServiceCatalogEntry {
 
 export const ServiceCatalogVersion = "2026-05-13" as const;
 
-export const ServiceCatalogTotal = 489 as const;
+export const ServiceCatalogTotal = 490 as const;
 
 export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 	{
@@ -121,6 +121,14 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		MemberCount: 1,
 	},
 	{
+		DecoratorName: "IAgentHostDebugLogsExportService",
+		DecoratorTag: "agentHostDebugLogsExportService",
+		InterfaceName: "IAgentHostDebugLogsExportService",
+		SourcePath: "vs/workbench/contrib/chat/browser/actions/exportAgentHostDebugLogsAction.ts",
+		SourceLine: 57,
+		MemberCount: 2,
+	},
+	{
 		DecoratorName: "IAgentHostFileSystemService",
 		DecoratorTag: "agentHostFileSystemService",
 		InterfaceName: "IAgentHostFileSystemService",
@@ -182,7 +190,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		InterfaceName: "IAgentHostTerminalManager",
 		SourcePath: "vs/platform/agentHost/node/agentHostTerminalManager.ts",
 		SourceLine: 35,
-		MemberCount: 17,
+		MemberCount: 18,
 	},
 	{
 		DecoratorName: "IAgentHostTerminalService",
@@ -669,7 +677,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "chatModeService",
 		InterfaceName: "IChatModeService",
 		SourcePath: "vs/workbench/contrib/chat/common/chatModes.ts",
-		SourceLine: 32,
+		SourceLine: 33,
 		MemberCount: 1,
 	},
 	{
@@ -677,8 +685,8 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "chatOutputRendererService",
 		InterfaceName: "IChatOutputRendererService",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatOutputItemRenderer.ts",
-		SourceLine: 36,
-		MemberCount: 3,
+		SourceLine: 43,
+		MemberCount: 5,
 	},
 	{
 		DecoratorName: "IChatPhoneInputPresenter",
@@ -1533,7 +1541,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "IExtHostLanguageModels",
 		InterfaceName: "IExtHostLanguageModels",
 		SourcePath: "vs/workbench/api/common/extHostLanguageModels.ts",
-		SourceLine: 35,
+		SourceLine: 34,
 		MemberCount: 0,
 	},
 	{
@@ -1981,7 +1989,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "ILanguageModelsService",
 		InterfaceName: "ILanguageModelsService",
 		SourcePath: "vs/workbench/contrib/chat/common/languageModels.ts",
-		SourceLine: 324,
+		SourceLine: 323,
 		MemberCount: 15,
 	},
 	{

@@ -25,7 +25,7 @@ export interface CommandCatalogEntry {
 
 export const CommandCatalogVersion = "2026-05-13" as const;
 
-export const CommandCatalogTotal = 548 as const;
+export const CommandCatalogTotal = 547 as const;
 
 export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 	{
@@ -60,7 +60,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "_chat.notifyQuestionCarouselAnswer",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chat.contribution.ts",
-		SourceLine: 197,
+		SourceLine: 198,
 		HasKeybinding: false,
 	},
 	{
@@ -68,13 +68,6 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatImageUtils.ts",
 		SourceLine: 165,
-		HasKeybinding: false,
-	},
-	{
-		CommandIdentifier: "_developer.getConfigurationInformation",
-		Kind: "CommandsRegistry",
-		SourcePath: "vs/workbench/contrib/preferences/browser/preferencesActions.ts",
-		SourceLine: 159,
 		HasKeybinding: false,
 	},
 	{
@@ -305,14 +298,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "_getAllCommands",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/preferences/browser/preferencesActions.ts",
-		SourceLine: 209,
+		SourceLine: 235,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "_getAllSettings",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/preferences/browser/preferencesActions.ts",
-		SourceLine: 82,
+		SourceLine: 83,
 		HasKeybinding: false,
 	},
 	{

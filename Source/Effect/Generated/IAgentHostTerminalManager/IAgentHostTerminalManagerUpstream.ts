@@ -58,6 +58,11 @@ export interface IAgentHostTerminalManagerUpstream {
 	 * Match workbench terminal sendText: wrap in bracketed paste markers only
 	 * when requested by the caller and enabled by the terminal.
 	 */
+	createAltBufferPromise(uri: string, store: DisposableStore): Promise<void>;
+	/**
+	 * Match workbench terminal sendText: wrap in bracketed paste markers only
+	 * when requested by the caller and enabled by the terminal.
+	 */
 	getContent(uri: string): string | undefined;
 	/**
 	 * Match workbench terminal sendText: wrap in bracketed paste markers only
@@ -183,13 +188,23 @@ export const IAgentHostTerminalManagerMembers: ReadonlyArray<InterfaceMemberReco
 	},
 	{
 		Kind: "Method",
+		Name: "createAltBufferPromise",
+		Readonly: false,
+		Optional: false,
+		TypeText: "Promise<void>",
+		Parameters: [{ Name: "uri", TypeText: "string", Optional: false }, { Name: "store", TypeText: "DisposableStore", Optional: false }],
+		DocComment: "Match workbench terminal sendText: wrap in bracketed paste markers only\nwhen requested by the caller and enabled by the terminal.",
+		SourceLine: 116,
+	},
+	{
+		Kind: "Method",
 		Name: "getContent",
 		Readonly: false,
 		Optional: false,
 		TypeText: "string | undefined",
 		Parameters: [{ Name: "uri", TypeText: "string", Optional: false }],
 		DocComment: "Match workbench terminal sendText: wrap in bracketed paste markers only\nwhen requested by the caller and enabled by the terminal.",
-		SourceLine: 116,
+		SourceLine: 117,
 	},
 	{
 		Kind: "Method",
@@ -199,7 +214,7 @@ export const IAgentHostTerminalManagerMembers: ReadonlyArray<InterfaceMemberReco
 		TypeText: "TerminalClaim | undefined",
 		Parameters: [{ Name: "uri", TypeText: "string", Optional: false }],
 		DocComment: "Match workbench terminal sendText: wrap in bracketed paste markers only\nwhen requested by the caller and enabled by the terminal.",
-		SourceLine: 117,
+		SourceLine: 118,
 	},
 	{
 		Kind: "Method",
@@ -209,7 +224,7 @@ export const IAgentHostTerminalManagerMembers: ReadonlyArray<InterfaceMemberReco
 		TypeText: "boolean",
 		Parameters: [{ Name: "uri", TypeText: "string", Optional: false }],
 		DocComment: "Match workbench terminal sendText: wrap in bracketed paste markers only\nwhen requested by the caller and enabled by the terminal.",
-		SourceLine: 118,
+		SourceLine: 119,
 	},
 	{
 		Kind: "Method",
@@ -219,7 +234,7 @@ export const IAgentHostTerminalManagerMembers: ReadonlyArray<InterfaceMemberReco
 		TypeText: "number | undefined",
 		Parameters: [{ Name: "uri", TypeText: "string", Optional: false }],
 		DocComment: "Match workbench terminal sendText: wrap in bracketed paste markers only\nwhen requested by the caller and enabled by the terminal.",
-		SourceLine: 119,
+		SourceLine: 120,
 	},
 	{
 		Kind: "Method",
@@ -229,7 +244,7 @@ export const IAgentHostTerminalManagerMembers: ReadonlyArray<InterfaceMemberReco
 		TypeText: "boolean",
 		Parameters: [{ Name: "uri", TypeText: "string", Optional: false }],
 		DocComment: "Match workbench terminal sendText: wrap in bracketed paste markers only\nwhen requested by the caller and enabled by the terminal.",
-		SourceLine: 120,
+		SourceLine: 121,
 	},
 	{
 		Kind: "Method",
@@ -239,7 +254,7 @@ export const IAgentHostTerminalManagerMembers: ReadonlyArray<InterfaceMemberReco
 		TypeText: "void",
 		Parameters: [{ Name: "uri", TypeText: "string", Optional: false }],
 		DocComment: "Match workbench terminal sendText: wrap in bracketed paste markers only\nwhen requested by the caller and enabled by the terminal.",
-		SourceLine: 121,
+		SourceLine: 122,
 	},
 	{
 		Kind: "Method",
@@ -249,7 +264,7 @@ export const IAgentHostTerminalManagerMembers: ReadonlyArray<InterfaceMemberReco
 		TypeText: "TerminalInfo[]",
 		Parameters: [],
 		DocComment: "Match workbench terminal sendText: wrap in bracketed paste markers only\nwhen requested by the caller and enabled by the terminal.",
-		SourceLine: 122,
+		SourceLine: 123,
 	},
 	{
 		Kind: "Method",
@@ -259,7 +274,7 @@ export const IAgentHostTerminalManagerMembers: ReadonlyArray<InterfaceMemberReco
 		TypeText: "TerminalState | undefined",
 		Parameters: [{ Name: "uri", TypeText: "string", Optional: false }],
 		DocComment: "Match workbench terminal sendText: wrap in bracketed paste markers only\nwhen requested by the caller and enabled by the terminal.",
-		SourceLine: 123,
+		SourceLine: 124,
 	},
 	{
 		Kind: "Method",
@@ -269,6 +284,6 @@ export const IAgentHostTerminalManagerMembers: ReadonlyArray<InterfaceMemberReco
 		TypeText: "Promise<string>",
 		Parameters: [],
 		DocComment: "Match workbench terminal sendText: wrap in bracketed paste markers only\nwhen requested by the caller and enabled by the terminal.",
-		SourceLine: 124,
+		SourceLine: 125,
 	}
 ] as const;
