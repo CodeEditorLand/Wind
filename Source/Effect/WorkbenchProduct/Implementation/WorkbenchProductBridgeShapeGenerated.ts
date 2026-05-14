@@ -14,17 +14,7 @@
 
 import type { IProductServiceUpstream } from "../../Generated/IProductService/IProductServiceUpstream.js";
 
-export type WorkbenchProductBridgeShape = Pick<
-	IProductServiceUpstream,
-	| "nameLong"
-	| "nameShort"
-	| "version"
-	| "commit"
-	| "date"
-	| "quality"
-	| "applicationName"
-	| "extensionsGallery"
->;
+export type WorkbenchProductBridgeShape = Pick<IProductServiceUpstream, "nameLong" | "nameShort" | "version" | "commit" | "date" | "quality" | "applicationName" | "extensionsGallery">;
 
 export interface WorkbenchProductGlobals {
 	readonly __CEL_SERVICES__?: {
