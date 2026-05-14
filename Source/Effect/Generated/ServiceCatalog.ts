@@ -19,7 +19,7 @@ export interface ServiceCatalogEntry {
 	readonly MemberCount: number;
 }
 
-export const ServiceCatalogVersion = "2026-05-13" as const;
+export const ServiceCatalogVersion = "2026-05-14" as const;
 
 export const ServiceCatalogTotal = 490 as const;
 
