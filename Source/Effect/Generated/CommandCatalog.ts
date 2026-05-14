@@ -25,7 +25,7 @@ export interface CommandCatalogEntry {
 
 export const CommandCatalogVersion = "2026-05-14" as const;
 
-export const CommandCatalogTotal = 547 as const;
+export const CommandCatalogTotal = 546 as const;
 
 export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 	{
@@ -60,7 +60,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "_chat.notifyQuestionCarouselAnswer",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chat.contribution.ts",
-		SourceLine: 198,
+		SourceLine: 199,
 		HasKeybinding: false,
 	},
 	{
@@ -3310,13 +3310,6 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		SourcePath: "vs/workbench/browser/actions/quickAccessActions.ts",
 		SourceLine: 52,
 		HasKeybinding: true,
-	},
-	{
-		CommandIdentifier: "workbench.action.chat.openCopilotStatus",
-		Kind: "CommandsRegistry",
-		SourcePath: "vs/workbench/contrib/chat/browser/chatStatus/chatStatusEntry.ts",
-		SourceLine: 61,
-		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "workbench.action.chat.openInSidebar",

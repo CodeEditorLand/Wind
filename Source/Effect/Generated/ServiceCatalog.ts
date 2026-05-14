@@ -205,7 +205,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "agentHostUntitledProvisionalSessionService",
 		InterfaceName: "IAgentHostUntitledProvisionalSessionService",
 		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostUntitledProvisionalSessionService.ts",
-		SourceLine: 63,
+		SourceLine: 67,
 		MemberCount: 1,
 	},
 	{
@@ -469,7 +469,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "browserViewCDPService",
 		InterfaceName: "IBrowserViewCDPService",
 		SourcePath: "vs/workbench/contrib/browserView/common/browserView.ts",
-		SourceLine: 153,
+		SourceLine: 160,
 		MemberCount: 1,
 	},
 	{
@@ -485,7 +485,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "browserViewMainService",
 		InterfaceName: "IBrowserViewMainService",
 		SourcePath: "vs/platform/browserView/electron-main/browserViewMainService.ts",
-		SourceLine: 24,
+		SourceLine: 25,
 		MemberCount: 2,
 	},
 	{
@@ -493,7 +493,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "browserViewWorkbenchService",
 		InterfaceName: "IBrowserViewWorkbenchService",
 		SourcePath: "vs/workbench/contrib/browserView/common/browserView.ts",
-		SourceLine: 106,
+		SourceLine: 113,
 		MemberCount: 1,
 	},
 	{
