@@ -14,7 +14,10 @@
 
 import type { IProgressServiceUpstream } from "../../Generated/IProgressService/IProgressServiceUpstream.js";
 
-export type WorkbenchProgressBridgeShape = Pick<IProgressServiceUpstream, "withProgress">;
+export type WorkbenchProgressBridgeShape = Pick<
+	IProgressServiceUpstream,
+	"withProgress"
+>;
 
 export interface WorkbenchProgressGlobals {
 	readonly __CEL_SERVICES__?: {

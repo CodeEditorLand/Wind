@@ -121,25 +121,25 @@ graph LR
     classDef mountain fill:#f0d0ff,stroke:#9b59b6,stroke-width:2px,color:#2c0050;
     classDef effectts fill:#d4f5d4,stroke:#27ae60,stroke-width:1px,color:#0a3a0a;
 
-    subgraph "🌌 Sky - Frontend UI (Tauri WebView)"
-        SkyApp["🖼️ Sky Application - VS Code UI"]:::sky
+    subgraph "Sky - Frontend UI (Tauri WebView)&#x2001;🌌"
+        SkyApp["Sky Application - VS Code UI&#x2001;🖼️"]:::sky
     end
 
-    subgraph "🍃 Wind - VS Code Env & Services Layer (WebView)"
-        PreloadJS["🔌 Preload.js - Environment Shim"]:::wind
-        WindEffectTSRuntime["⚡ Wind Effect-TS Runtime & Service Layers"]:::effectts
-        TauriIntegrations["🍃 Wind Effect Services - Tauri API Wrappers"]:::wind
+    subgraph "Wind - VS Code Env & Services Layer (WebView)&#x2001;🍃"
+        PreloadJS["Preload.js - Environment Shim&#x2001;🔌"]:::wind
+        WindEffectTSRuntime["Wind Effect-TS Runtime & Service Layers&#x2001;⚡"]:::effectts
+        TauriIntegrations["Wind Effect Services - Tauri API Wrappers&#x2001;🍃"]:::wind
 
         SkyApp -- consumes --> WindEffectTSRuntime
         WindEffectTSRuntime -- executes via --> TauriIntegrations
     end
 
-    subgraph "⛰️ Tauri Core & Mountain - Rust Backend"
-        TauriAPIs["⚙️ Tauri JS API & Plugins"]:::tauri
-        MountainBackend["🦀 Mountain Rust Core - Command Handlers"]:::mountain
+    subgraph "Tauri Core & Mountain - Rust Backend&#x2001;⛰️"
+        TauriAPIs["Tauri JS API & Plugins&#x2001;⚙️"]:::tauri
+        MountainBackend["Mountain Rust Core - Command Handlers&#x2001;🦀"]:::mountain
     end
 
-    TauriWindow["🔯 Tauri Window"] -- loads --> PreloadJS
+    TauriWindow["Tauri Window&#x2001;🔯"] -- loads --> PreloadJS
     PreloadJS -- prepares env for --> SkyApp
     TauriIntegrations -- calls --> TauriAPIs
     TauriAPIs -- communicates with --> MountainBackend
@@ -347,7 +347,7 @@ history of changes specific to **Wind**&#x2001;🍃.
 
 ## Funding \& Acknowledgements&#x2001;🙏🏻
 
-**Wind**&#x2001;🍃 is a core element of the **Land**&#x2001;🏞️ ecosystem. This
+**Wind** is a core element of the **Land**&#x2001;🏞️ ecosystem.&#x2001;🍃
 project is funded through [NGI0 Commons Fund](https://NLnet.NL/commonsfund), a
 fund established by [NLnet](https://NLnet.NL) with financial support from the
 European Commission's [Next Generation Internet](https://ngi.eu) program. Learn
