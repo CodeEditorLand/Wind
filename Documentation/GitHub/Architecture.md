@@ -22,6 +22,35 @@ Rust backend through Tauri's invoke and event system.
 
 ---
 
+```mermaid
+graph TB
+    subgraph Wind["Wind Frontend Service Layer"]
+        PRELOAD["Preload.ts<br/>window.vscode shim"]
+
+        subgraph SERVICES["Effect Services (~40)"]
+            CORE["Core<br/>IPC / Config /<br/>Environment / Log"]
+            EDITOR["Editor<br/>Editor / Model /<br/>Decorations / History"]
+            FS["File System<br/>Files / WorkingCopy<br/>Workspaces"]
+            UI["Window / UI<br/>ActivityBar / Sidebar<br/>StatusBar / Panel<br/>Notification / Dialog"]
+            MISC["Misc<br/>Clipboard / Terminal<br/>Extensions / Themes<br/>Keybinding / Search"]
+        end
+
+        LAYERS["Layer Composition<br/>Function/Install.ts"]
+        TLT["TauriLiveLayer<br/>(production)"]
+        ELT["ElectronLiveLayer<br/>(compat)"]
+        TEST["TestLayer<br/>(mock)"]
+
+        PRELOAD --> SERVICES
+        CORE & EDITOR & FS & UI & MISC --> LAYERS
+        LAYERS --> TLT
+        LAYERS --> ELT
+        LAYERS --> TEST
+    end
+
+    MOUNTAIN["Mountain<br/>Rust backend"] <-->|"Tauri invoke + events"| CORE
+    SKY["Sky<br/>UI Components"] -->|"consumes Runtime"| TLT
+```
+
 ## Overview
 
 Wind provides the Effect-TS native service layer that Sky consumes. It replaces
