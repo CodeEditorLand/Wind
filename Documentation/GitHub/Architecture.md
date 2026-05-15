@@ -1,10 +1,14 @@
-# Wind: Frontend Service Layer
+# Wind: Frontend Service Layer 🍃
 
-This document describes Wind, the Effect-TS service layer that enables the VS
-Code workbench to function inside a Tauri WebView. Wind recreates the essential
-VS Code renderer environment, implements core services through Effect-TS typed
-error and dependency injection patterns, and connects the frontend to Mountain's
-Rust backend through Tauri's invoke and event system.
+This document describes `Wind`, the `Effect-TS` service layer for the VS Code
+workbench.
+
+- `Wind` enables the workbench to function inside a `Tauri` WebView.
+- It recreates the essential VS Code renderer environment.
+- It implements core services through `Effect-TS` typed error and dependency
+  injection patterns.
+- It connects the frontend to `Mountain`'s Rust backend through `Tauri`'s
+  `invoke()` and event system.
 
 ---
 
@@ -51,24 +55,26 @@ graph TB
     SKY["Sky<br/>UI Components"] -->|"consumes Runtime"| TLT
 ```
 
-## Overview
+## Overview 📋
 
-Wind provides the Effect-TS native service layer that Sky consumes. It replaces
-VS Code's Electron IPC pipeline with typed Tauri commands routed to Rust
-handlers in Mountain, eliminating the untyped serialization layer while
-preserving full VS Code workbench compatibility.
+`Wind` provides the `Effect-TS` native service layer that `Sky` consumes.
 
-| Attribute    | Value                                                             |
-| ------------ | ----------------------------------------------------------------- |
-| Language     | TypeScript (Effect-TS v3.21)                                      |
-| Framework    | Vite                                                              |
-| IPC          | Tauri invoke + events                                             |
-| Dependencies | @codeeditorland/output, @tauri-apps/api, effect, @effect/platform |
-| Consumed by  | Sky                                                               |
+- It replaces VS Code's `Electron` IPC pipeline with typed `Tauri` commands.
+- These commands are routed to Rust handlers in `Mountain`.
+- This eliminates the untyped serialization layer.
+- It preserves full VS Code workbench compatibility.
+
+| Attribute    | Value                                                                     |
+| ------------ | ------------------------------------------------------------------------- |
+| Language     | `TypeScript` (`Effect-TS` v3.21)                                          |
+| Framework    | `Vite`                                                                    |
+| IPC          | `Tauri` `invoke()` + events                                               |
+| Dependencies | `@codeeditorland/output`, `@tauri-apps/api`, `effect`, `@effect/platform` |
+| Consumed by  | `Sky`                                                                     |
 
 ---
 
-## Architecture
+## Architecture 🏗️
 
 ```
 +------------------------------------------------------------------+
@@ -94,26 +100,26 @@ preserving full VS Code workbench compatibility.
 +------------------------------------------------------------------+
 ```
 
-### Module Map
+### Module Map 🗺️
 
 | Path                                | Purpose                                                           |
 | ----------------------------------- | ----------------------------------------------------------------- |
-| `Source/Preload.ts`                 | Electron/Node.js API shim (see Polyfills)                         |
+| `Source/Preload.ts`                 | `Electron`/`Node.js` API shim (see Polyfills)                     |
 | `Source/Effect/`                    | Service implementations (each domain as Define/Implement/Problem) |
 | `Source/Function/Install.ts`        | Layer composition and installation entry point                    |
 | `Source/Function/Install/`          | Layer composition details                                         |
 | `Source/Workbench/`                 | VS Code workbench integration                                     |
 | `Source/Telemetry/PostHogBridge.ts` | In-webview PostHog client                                         |
-| `Source/IPC/Channel.ts`             | Tauri event channel definitions                                   |
+| `Source/IPC/Channel.ts`             | `Tauri` event channel definitions                                 |
 | `Source/Utility/Tier.ts`            | Tier configuration reader                                         |
-| `Source/Types/`                     | TypeScript type definitions                                       |
+| `Source/Types/`                     | `TypeScript` type definitions                                     |
 | `Source/Bootstrap/`                 | Bootstrap type definitions                                        |
 
 ---
 
-## Service Architecture
+## Service Architecture 🏗️
 
-Each Wind service follows a consistent module structure using the
+Each `Wind` service follows a consistent module structure using the
 Define/Implement/Problem pattern:
 
 ```
@@ -125,12 +131,12 @@ Effect/<Service>/
 
 This pattern provides:
 
-- **Define.ts**: Exports the Effect-TS `Tag` that identifies the service.
+- **Define.ts**: Exports the `Effect-TS` `Tag` that identifies the service.
   Functions that depend on the service use `Tag` for compile-time dependency
   tracking.
-- **Implement.ts**: Exports the concrete `Layer` with the Tauri-backed
-  implementation. Uses `@tauri-apps/api/invoke` for Mountain communication.
-- **Problem.ts**: Exports typed error types as Effect-TS `Cause` subtypes,
+- **Implement.ts**: Exports the concrete `Layer` with the `Tauri`-backed
+  implementation. Uses `@tauri-apps/api/invoke` for `Mountain` communication.
+- **Problem.ts**: Exports typed error types as `Effect-TS` `Cause` subtypes,
   enabling structured error handling.
 
 ### Example Service Structure
@@ -161,9 +167,9 @@ export class ClipboardProblem extends Data.TaggedError("ClipboardProblem")<{
 
 ---
 
-## Layer Composition
+## Layer Composition 🧩
 
-Wind services compose into three Layer stacks:
+`Wind` services compose into three `Layer` stacks:
 
 ```typescript
 // TauriLiveLayer: All production services for Tauri WebView
@@ -217,10 +223,10 @@ Wind services available to Sky via Effect.flatMap
 
 ---
 
-## Preload Shim Integration
+## Preload Shim Integration 🔌
 
-Wind's Preload.ts (see Polyfills.md for full details) runs before the workbench
-bundle loads:
+`Wind`'s `Preload.ts` (see `Polyfills.md` for full details) runs before the
+workbench bundle loads:
 
 ```
 1. Preload.ts executes (inline, synchronous)
@@ -246,18 +252,18 @@ bundle loads:
 
 ---
 
-## Service Catalog
+## Service Catalog 📋
 
 ### Core Infrastructure
 
-| Service       | Module                    | Purpose                                         |
-| ------------- | ------------------------- | ----------------------------------------------- |
-| IPC           | `Effect/IPC.ts`           | Tauri command invocation and event subscription |
-| Configuration | `Effect/Configuration.ts` | Read/write settings via Mountain                |
-| Environment   | `Effect/Environment.ts`   | OS environment variables and paths              |
-| Mountain      | `Effect/Mountain.ts`      | gRPC-level communication with Mountain          |
-| MountainSync  | `Effect/MountainSync.ts`  | Synchronous state snapshot from Mountain        |
-| Log           | `Effect/Logging`          | Structured logging                              |
+| Service       | Module                    | Purpose                                           |
+| ------------- | ------------------------- | ------------------------------------------------- |
+| IPC           | `Effect/IPC.ts`           | `Tauri` command invocation and event subscription |
+| Configuration | `Effect/Configuration.ts` | Read/write settings via `Mountain`                |
+| Environment   | `Effect/Environment.ts`   | OS environment variables and paths                |
+| Mountain      | `Effect/Mountain.ts`      | `gRPC`-level communication with `Mountain`        |
+| MountainSync  | `Effect/MountainSync.ts`  | Synchronous state snapshot from `Mountain`        |
+| Log           | `Effect/Logging`          | Structured logging                                |
 
 ### Editor Services
 
@@ -274,7 +280,7 @@ bundle loads:
 
 | Service     | Module                  | Purpose                             |
 | ----------- | ----------------------- | ----------------------------------- |
-| Files       | `Effect/Files.ts`       | File read/write via Mountain        |
+| Files       | `Effect/Files.ts`       | File read/write via `Mountain`      |
 | WorkingCopy | `Effect/WorkingCopy.ts` | Dirty state and conflict management |
 | Workspaces  | `Effect/Workspaces.ts`  | Workspace root resolution           |
 
@@ -293,25 +299,25 @@ bundle loads:
 
 ### Clipboard, Terminal, and Extensions
 
-| Service    | Module                 | Purpose                           |
-| ---------- | ---------------------- | --------------------------------- |
-| Clipboard  | `Effect/Clipboard.ts`  | System clipboard via Mountain     |
-| Terminal   | `Effect/Terminal.ts`   | Integrated terminal management    |
-| Extensions | `Effect/Extensions.ts` | Extension install/uninstall/list  |
-| Language   | `Effect/Language.ts`   | Language mode detection           |
-| Themes     | `Effect/Themes.ts`     | Color theme management            |
-| Keybinding | `Effect/Keybinding.ts` | Keyboard shortcut resolution      |
-| Search     | `Effect/Search.ts`     | File and text search via Mountain |
-| Telemetry  | `Effect/Telemetry.ts`  | Event telemetry                   |
-| Storage    | `Effect/Storage.ts`    | Key-value storage                 |
-| Lifecycle  | `Effect/Lifecycle.ts`  | Application lifecycle events      |
-| Health     | `Effect/Health.ts`     | Service health monitoring         |
+| Service    | Module                 | Purpose                             |
+| ---------- | ---------------------- | ----------------------------------- |
+| Clipboard  | `Effect/Clipboard.ts`  | System clipboard via `Mountain`     |
+| Terminal   | `Effect/Terminal.ts`   | Integrated terminal management      |
+| Extensions | `Effect/Extensions.ts` | Extension install/uninstall/list    |
+| Language   | `Effect/Language.ts`   | Language mode detection             |
+| Themes     | `Effect/Themes.ts`     | Color theme management              |
+| Keybinding | `Effect/Keybinding.ts` | Keyboard shortcut resolution        |
+| Search     | `Effect/Search.ts`     | File and text search via `Mountain` |
+| Telemetry  | `Effect/Telemetry.ts`  | Event telemetry                     |
+| Storage    | `Effect/Storage.ts`    | Key-value storage                   |
+| Lifecycle  | `Effect/Lifecycle.ts`  | Application lifecycle events        |
+| Health     | `Effect/Health.ts`     | Service health monitoring           |
 
 ---
 
-## Mountain IPC Service
+## Mountain IPC Service 🔌
 
-The Mountain service (`Effect/Mountain.ts`) maintains a runtime connection to
+The `Mountain` service (`Effect/Mountain.ts`) maintains a runtime connection to
 the Rust backend:
 
 ```typescript
@@ -342,10 +348,10 @@ await listen("configuration-changed", (event) => {
 
 ---
 
-## Workbench Integration
+## Workbench Integration 🔌
 
-Wind integrates with the VS Code workbench by providing service implementations
-that satisfy the workbench's dependency injection container:
+`Wind` integrates with the VS Code workbench by providing service
+implementations that satisfy the workbench's dependency injection container:
 
 ```typescript
 // VS Code workbench expects IFileService
@@ -363,20 +369,20 @@ await workbench.startup();
 
 ---
 
-## Related Documentation
+## Related Documentation 📚
 
-- [Sky](../Sky/Documentation/GitHub/Architecture.md) - UI component layer (Wind
-  consumer)
-- [Cocoon](../Cocoon/Documentation/GitHub/Architecture.md) - Extension host
-  (parallel API surface)
-- [Mountain](../Mountain/Documentation/GitHub/Architecture.md) - Backend (IPC
-  target)
-- [Output](../Output/Documentation/GitHub/Architecture.md) - Compiled workbench
-  consumer
-- [Polyfills](../../../Documentation/GitHub/Polyfills.md) - Preload.ts shim
-  details
-- [EditorCore](../../../Documentation/GitHub/EditorCore.md) - Editor workbench
-  adaptation
+- [Sky](https://github.com/CodeEditorLand/Sky/tree/Current/Documentation/GitHub/Architecture.md) -
+  UI component layer (`Wind` consumer)
+- [Cocoon](https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/Architecture.md) -
+  Extension host (parallel API surface)
+- [Mountain](https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/Architecture.md) -
+  Backend (IPC target)
+- [Output](https://github.com/CodeEditorLand/Output/tree/Current/Documentation/GitHub/Architecture.md) -
+  Compiled workbench consumer
+- [Polyfills](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Polyfills.md) -
+  `Preload.ts` shim details
+- [EditorCore](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md) -
+  Editor workbench adaptation
 
 ---
 
