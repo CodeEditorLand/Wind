@@ -52,53 +52,54 @@ import { LiveWorkspacesServiceLayer as WorkspacesLive } from "../Workspaces/Work
 // ============================================================================
 
 /**
- * Base Tauri layer stack.
+ * Base Tauri layer stack - services composed in a single Layer.mergeAll
+ * instead of 40+ chained .pipe(Layer.provideMerge) calls, reducing
+ * intermediate composition objects from O(n) to O(1).
+ *
  * Provides: Sandbox + IPC + Configuration + Telemetry + Mountain + UI Services
  *
  * Use this when you need manual control over configuration sync.
  */
-export const TauriBaseLayer = Layer.empty
-	.pipe(Layer.provideMerge(SandboxLive))
-	.pipe(Layer.provideMerge(EnvironmentLive))
-	.pipe(Layer.provideMerge(ClipboardLive))
-	.pipe(Layer.provideMerge(TelemetryLive))
-	.pipe(Layer.provideMerge(ConfigurationLive))
-	.pipe(Layer.provideMerge(MountainLive))
-	.pipe(Layer.provideMerge(MountainSyncLive))
-	.pipe(Layer.provideMerge(HealthLive))
-	.pipe(Layer.provideMerge(BootstrapLive))
-	.pipe(Layer.provideMerge(ActivityBarLive))
-	.pipe(Layer.provideMerge(PanelLive))
-	.pipe(Layer.provideMerge(SidebarLive))
-	.pipe(Layer.provideMerge(StatusBarLive))
-	// Editor service layers (depend on CommandsLive / IPC)
-	.pipe(Layer.provideMerge(CommandsLive))
-	.pipe(Layer.provideMerge(FilesLive))
-	.pipe(Layer.provideMerge(LanguageLive))
-	.pipe(Layer.provideMerge(ExtensionsLive))
-	.pipe(Layer.provideMerge(EditorLive))
-	// Tier 2 service layers
-	.pipe(Layer.provideMerge(TerminalLive))
-	.pipe(Layer.provideMerge(OutputLive))
-	.pipe(Layer.provideMerge(LiveTextFileServiceLayer))
-	// Tier 3 service layers
-	.pipe(Layer.provideMerge(StorageLive))
-	.pipe(Layer.provideMerge(NotificationLive))
-	.pipe(Layer.provideMerge(ProgressLive))
-	.pipe(Layer.provideMerge(QuickInputLive))
-	.pipe(Layer.provideMerge(WorkspacesLive))
-	.pipe(Layer.provideMerge(ThemesLive))
-	.pipe(Layer.provideMerge(SearchLive))
-	// P1 service layers
-	.pipe(Layer.provideMerge(DecorationsLive))
-	.pipe(Layer.provideMerge(WorkingCopyLive))
-	.pipe(Layer.provideMerge(KeybindingLive))
-	.pipe(Layer.provideMerge(LifecycleLive))
-	// P2 service layers
-	.pipe(Layer.provideMerge(HistoryLive))
-	.pipe(Layer.provideMerge(LabelLive))
-	.pipe(Layer.provideMerge(ModelLive))
-	.pipe(Layer.provideMerge(TextModelResolverLive));
+const BaseServices = Layer.mergeAll(
+	SandboxLive,
+	EnvironmentLive,
+	ClipboardLive,
+	TelemetryLive,
+	ConfigurationLive,
+	MountainLive,
+	MountainSyncLive,
+	HealthLive,
+	BootstrapLive,
+	ActivityBarLive,
+	PanelLive,
+	SidebarLive,
+	StatusBarLive,
+	CommandsLive,
+	FilesLive,
+	LanguageLive,
+	ExtensionsLive,
+	EditorLive,
+	TerminalLive,
+	OutputLive,
+	LiveTextFileServiceLayer,
+	StorageLive,
+	NotificationLive,
+	ProgressLive,
+	QuickInputLive,
+	WorkspacesLive,
+	ThemesLive,
+	SearchLive,
+	DecorationsLive,
+	WorkingCopyLive,
+	KeybindingLive,
+	LifecycleLive,
+	HistoryLive,
+	LabelLive,
+	ModelLive,
+	TextModelResolverLive,
+);
+
+export const TauriBaseLayer = BaseServices;
 
 // ============================================================================
 // Full Tauri Layer (with auto config sync)
@@ -106,52 +107,50 @@ export const TauriBaseLayer = Layer.empty
 
 /**
  * Full Tauri layer stack with automatic configuration sync.
- * Provides: All base services + reactive Mountain-driven config updates + UI Services
+ * Provides: All base services + reactive Mountain-driven config updates.
  *
- * This is the standard layer for Wind production builds.
+ * Uses ConfigurationWithSyncLive instead of ConfigurationLive for
+ * automatic config synchronization. Built on the consolidated BaseServices
+ * with minimal additional composition.
  */
-export const TauriLiveLayer = Layer.empty
-	.pipe(Layer.provideMerge(SandboxLive))
-	.pipe(Layer.provideMerge(EnvironmentLive))
-	.pipe(Layer.provideMerge(ClipboardLive))
-	.pipe(Layer.provideMerge(TelemetryLive))
-	.pipe(Layer.provideMerge(ConfigurationWithSyncLive))
-	.pipe(Layer.provideMerge(MountainLive))
-	.pipe(Layer.provideMerge(MountainSyncLive))
-	.pipe(Layer.provideMerge(HealthLive))
-	.pipe(Layer.provideMerge(BootstrapLive))
-	.pipe(Layer.provideMerge(ActivityBarLive))
-	.pipe(Layer.provideMerge(PanelLive))
-	.pipe(Layer.provideMerge(SidebarLive))
-	.pipe(Layer.provideMerge(StatusBarLive))
-	// Editor service layers (depend on CommandsLive / IPC)
-	.pipe(Layer.provideMerge(CommandsLive))
-	.pipe(Layer.provideMerge(FilesLive))
-	.pipe(Layer.provideMerge(LanguageLive))
-	.pipe(Layer.provideMerge(ExtensionsLive))
-	.pipe(Layer.provideMerge(EditorLive))
-	// Tier 2 service layers
-	.pipe(Layer.provideMerge(TerminalLive))
-	.pipe(Layer.provideMerge(OutputLive))
-	.pipe(Layer.provideMerge(LiveTextFileServiceLayer))
-	// Tier 3 service layers
-	.pipe(Layer.provideMerge(StorageLive))
-	.pipe(Layer.provideMerge(NotificationLive))
-	.pipe(Layer.provideMerge(ProgressLive))
-	.pipe(Layer.provideMerge(QuickInputLive))
-	.pipe(Layer.provideMerge(WorkspacesLive))
-	.pipe(Layer.provideMerge(ThemesLive))
-	.pipe(Layer.provideMerge(SearchLive))
-	// P1 service layers
-	.pipe(Layer.provideMerge(DecorationsLive))
-	.pipe(Layer.provideMerge(WorkingCopyLive))
-	.pipe(Layer.provideMerge(KeybindingLive))
-	.pipe(Layer.provideMerge(LifecycleLive))
-	// P2 service layers
-	.pipe(Layer.provideMerge(HistoryLive))
-	.pipe(Layer.provideMerge(LabelLive))
-	.pipe(Layer.provideMerge(ModelLive))
-	.pipe(Layer.provideMerge(TextModelResolverLive));
+export const TauriLiveLayer = Layer.mergeAll(
+	SandboxLive,
+	EnvironmentLive,
+	ClipboardLive,
+	TelemetryLive,
+	ConfigurationWithSyncLive,
+	MountainLive,
+	MountainSyncLive,
+	HealthLive,
+	BootstrapLive,
+	ActivityBarLive,
+	PanelLive,
+	SidebarLive,
+	StatusBarLive,
+	CommandsLive,
+	FilesLive,
+	LanguageLive,
+	ExtensionsLive,
+	EditorLive,
+	TerminalLive,
+	OutputLive,
+	LiveTextFileServiceLayer,
+	StorageLive,
+	NotificationLive,
+	ProgressLive,
+	QuickInputLive,
+	WorkspacesLive,
+	ThemesLive,
+	SearchLive,
+	DecorationsLive,
+	WorkingCopyLive,
+	KeybindingLive,
+	LifecycleLive,
+	HistoryLive,
+	LabelLive,
+	ModelLive,
+	TextModelResolverLive,
+);
 
 // ============================================================================
 // Tauri Development Layer (with verbose logging)
@@ -159,22 +158,24 @@ export const TauriLiveLayer = Layer.empty
 
 /**
  * Tauri layer with maximum telemetry and logging.
- * Useful for debugging and development.
+ * Useful for debugging and development - subset of services
+ * sufficient for interactive debugging without full editor stack.
  */
-export const TauriDevLayer = Layer.empty
-	.pipe(Layer.provideMerge(SandboxLive))
-	.pipe(Layer.provideMerge(EnvironmentLive))
-	.pipe(Layer.provideMerge(ClipboardLive))
-	.pipe(Layer.provideMerge(TelemetryLive))
-	.pipe(Layer.provideMerge(ConfigurationWithSyncLive))
-	.pipe(Layer.provideMerge(MountainLive))
-	.pipe(Layer.provideMerge(MountainSyncLive))
-	.pipe(Layer.provideMerge(HealthLive))
-	.pipe(Layer.provideMerge(BootstrapLive))
-	.pipe(Layer.provideMerge(ActivityBarLive))
-	.pipe(Layer.provideMerge(PanelLive))
-	.pipe(Layer.provideMerge(SidebarLive))
-	.pipe(Layer.provideMerge(StatusBarLive));
+export const TauriDevLayer = Layer.mergeAll(
+	SandboxLive,
+	EnvironmentLive,
+	ClipboardLive,
+	TelemetryLive,
+	ConfigurationWithSyncLive,
+	MountainLive,
+	MountainSyncLive,
+	HealthLive,
+	BootstrapLive,
+	ActivityBarLive,
+	PanelLive,
+	SidebarLive,
+	StatusBarLive,
+);
 
 // Export default for convenience
 export default TauriLiveLayer;

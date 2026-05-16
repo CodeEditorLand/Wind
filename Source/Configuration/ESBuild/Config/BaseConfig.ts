@@ -17,9 +17,9 @@ export default {
 
 	format: "esm",
 
-	logLevel: "debug",
+	logLevel: Environment.On ? "debug" : "info",
 
-	metafile: true,
+	metafile: Environment.On,
 
 	minify: !Environment.On,
 
@@ -41,7 +41,7 @@ export default {
 
 	sourcemap: Environment.On,
 
-	drop: Environment.On ? [] : ["debugger"],
+	drop: Environment.On ? [] : ["debugger", "console"],
 
 	ignoreAnnotations: !Environment.On,
 

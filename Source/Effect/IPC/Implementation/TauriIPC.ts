@@ -6,7 +6,7 @@
  * @category Implementation
  */
 
-import { invoke as tauriInvoke, type InvokeArgs } from "@tauri-apps/api/core";
+import { invoke as tauriInvoke } from "@tauri-apps/api/core";
 import { emit, listen } from "@tauri-apps/api/event";
 import { Effect, Stream } from "effect";
 
@@ -15,8 +15,6 @@ import {
 	CreateIPCInvokeError,
 	CreateIPCSendError,
 	CreateIPCSubscriptionError,
-	type IPCInvokeError,
-	type IPCSendError,
 	type IPCSubscriptionError,
 } from "../Error/IPCError.js";
 import type { IPCService } from "../Interface/IPCService.js";
@@ -49,26 +47,13 @@ export const TauriIPCLive = Effect.gen(function* () {
 			Effect.tryPromise({
 				try: () => {
 					// All Wind IPC calls route through the single
-					// `MountainIPCInvoke` Tauri command (registered in
-					// `Binary/Main/Entry.rs::invoke_handler!`; implementation
-					// in `Binary/IPC/InvokeCommand.rs`). Tauri's default
-					// snake-case auto-conversion means `"mountain_ipc_invoke"`
-					// also resolves - but every other call site in Wind /
-					// Sky / Output uses the PascalCase form, so stay
-					// consistent with those.
-					// Mountain receives: method = channel name, params = args
-					// array. Send as array so Mountain can always destructure
-					// positionally; single-element arrays preserved; empty
-					// stays [].
-					const params: unknown =
-						args.length === 0
-							? []
-							: args.length === 1
-								? args[0]
-								: Array.from(args);
+					// `MountainIPCInvoke` Tauri command. Mountain receives:
+					// method = channel name, params = args array.
+					// Pass args directly when length !== 1; Tauri's serde
+					// handles ReadonlyArray<unknown> identically to unknown[].
 					return tauriInvoke("MountainIPCInvoke", {
 						method: channel,
-						params,
+						params: args.length === 1 ? args[0] : args,
 					});
 				},
 				catch: (error) => CreateIPCInvokeError(channel, error),
@@ -120,10 +105,7 @@ export const TauriIPCLive = Effect.gen(function* () {
 				});
 			}),
 
-		removeAllListeners: (channel: string) =>
-			Effect.log(`[IPC] Remove all listeners for ${channel}`).pipe(
-				Effect.map(() => undefined),
-			),
+		removeAllListeners: (_channel: string) => Effect.void,
 	};
 
 	return service;

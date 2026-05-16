@@ -130,10 +130,10 @@ const ipcRenderer = {
 	},
 
 	invoke: async (channel: string, ...args: unknown[]): Promise<unknown> => {
-		const invokeArgs: any =
-			args.length === 0 ? undefined : args.length === 1 ? args[0] : args;
-
-		return tauriInvoke(channel, invokeArgs) as Promise<unknown>;
+		return tauriInvoke(
+			channel,
+			args.length === 0 ? undefined : args.length === 1 ? args[0] : args,
+		) as Promise<unknown>;
 	},
 
 	on: (

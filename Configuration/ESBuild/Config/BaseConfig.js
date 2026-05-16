@@ -3,8 +3,8 @@ import * as Environment from "../Constant/EnvironmentConstant.js";
 var BaseConfig_default = {
 	color: true,
 	format: "esm",
-	logLevel: "debug",
-	metafile: true,
+	logLevel: Environment.On ? "debug" : "info",
+	metafile: Environment.On,
 	minify: !Environment.On,
 	outdir: "Configuration",
 	platform: "node",
@@ -15,7 +15,7 @@ var BaseConfig_default = {
 	bundle: Environment.Bundle,
 	assetNames: "Asset/[name]-[hash]",
 	sourcemap: Environment.On,
-	drop: Environment.On ? [] : ["debugger"],
+	drop: Environment.On ? [] : ["debugger", "console"],
 	ignoreAnnotations: !Environment.On,
 	keepNames: Environment.On,
 	plugins: [
