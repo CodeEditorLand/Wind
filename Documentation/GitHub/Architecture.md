@@ -1,4 +1,4 @@
-# Wind: Frontend Service Layer 🍃
+# Wind: Frontend Service Layer 🍃
 
 This document describes `Wind`, the `Effect-TS` service layer for the VS Code
 workbench.
@@ -55,7 +55,7 @@ graph TB
     SKY["Sky<br/>UI Components"] -->|"consumes Runtime"| TLT
 ```
 
-## Overview 📋
+## Overview 📋
 
 `Wind` provides the `Effect-TS` native service layer that `Sky` consumes.
 
@@ -74,7 +74,7 @@ graph TB
 
 ---
 
-## Architecture 🏗️
+## Architecture 🏗️
 
 ```
 +------------------------------------------------------------------+
@@ -100,7 +100,7 @@ graph TB
 +------------------------------------------------------------------+
 ```
 
-### Module Map 🗺️
+### Module Map 🗺️
 
 | Path                                | Purpose                                                           |
 | ----------------------------------- | ----------------------------------------------------------------- |
@@ -117,7 +117,7 @@ graph TB
 
 ---
 
-## Service Architecture 🏗️
+## Service Architecture 🏗️
 
 Each `Wind` service follows a consistent module structure using the
 Define/Implement/Problem pattern:
@@ -167,7 +167,7 @@ export class ClipboardProblem extends Data.TaggedError("ClipboardProblem")<{
 
 ---
 
-## Layer Composition 🧩
+## Layer Composition 🧩
 
 `Wind` services compose into three `Layer` stacks:
 
@@ -223,7 +223,7 @@ Wind services available to Sky via Effect.flatMap
 
 ---
 
-## Preload Shim Integration 🔌
+## Preload Shim Integration 🔌
 
 `Wind`'s `Preload.ts` (see `Polyfills.md` for full details) runs before the
 workbench bundle loads:
@@ -252,7 +252,7 @@ workbench bundle loads:
 
 ---
 
-## Service Catalog 📋
+## Service Catalog 📋
 
 ### Core Infrastructure
 
@@ -315,7 +315,7 @@ workbench bundle loads:
 
 ---
 
-## Mountain IPC Service 🔌
+## Mountain IPC Service 🔌
 
 The `Mountain` service (`Effect/Mountain.ts`) maintains a runtime connection to
 the Rust backend:
@@ -348,7 +348,7 @@ await listen("configuration-changed", (event) => {
 
 ---
 
-## Workbench Integration 🔌
+## Workbench Integration 🔌
 
 `Wind` integrates with the VS Code workbench by providing service
 implementations that satisfy the workbench's dependency injection container:
@@ -369,7 +369,7 @@ await workbench.startup();
 
 ---
 
-## Related Documentation 📚
+## Related Documentation 📚
 
 - [Sky](https://github.com/CodeEditorLand/Sky/tree/Current/Documentation/GitHub/Architecture.md) -
   UI component layer (`Wind` consumer)
