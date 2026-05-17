@@ -12,21 +12,21 @@ export interface IToolResultCompressorUpstream {
 	/**
 	 * Result of running a {@link IToolResultFilter}.
 	 * `text` is the new text to substitute back into the corresponding text part.
-	 * `compressed` is `true` if any compression actually happened — used purely
+	 * `compressed` is `true` if any compression actually happened - used purely
 	 * for telemetry / accounting.
 	 */
 	readonly _serviceBrand: undefined;
 	/**
 	 * Result of running a {@link IToolResultFilter}.
 	 * `text` is the new text to substitute back into the corresponding text part.
-	 * `compressed` is `true` if any compression actually happened — used purely
+	 * `compressed` is `true` if any compression actually happened - used purely
 	 * for telemetry / accounting.
 	 */
 	registerFilter(filter: IToolResultFilter): void;
 	/**
 	 * Result of running a {@link IToolResultFilter}.
 	 * `text` is the new text to substitute back into the corresponding text part.
-	 * `compressed` is `true` if any compression actually happened — used purely
+	 * `compressed` is `true` if any compression actually happened - used purely
 	 * for telemetry / accounting.
 	 */
 	registerCache(cache: IToolResultCache): void;
@@ -39,7 +39,7 @@ export const IToolResultCompressorMembers: ReadonlyArray<InterfaceMemberRecord> 
 		Optional: false,
 		TypeText: "undefined",
 		Parameters: [],
-		DocComment: "Result of running a {@link IToolResultFilter}.\n`text` is the new text to substitute back into the corresponding text part.\n`compressed` is `true` if any compression actually happened — used purely\nfor telemetry / accounting.",
+		DocComment: "Result of running a {@link IToolResultFilter}.\n`text` is the new text to substitute back into the corresponding text part.\n`compressed` is `true` if any compression actually happened - used purely\nfor telemetry / accounting.",
 		SourceLine: 74,
 	},
 	{
@@ -49,7 +49,7 @@ export const IToolResultCompressorMembers: ReadonlyArray<InterfaceMemberRecord> 
 		Optional: false,
 		TypeText: "void",
 		Parameters: [{ Name: "filter", TypeText: "IToolResultFilter", Optional: false }],
-		DocComment: "Result of running a {@link IToolResultFilter}.\n`text` is the new text to substitute back into the corresponding text part.\n`compressed` is `true` if any compression actually happened — used purely\nfor telemetry / accounting.",
+		DocComment: "Result of running a {@link IToolResultFilter}.\n`text` is the new text to substitute back into the corresponding text part.\n`compressed` is `true` if any compression actually happened - used purely\nfor telemetry / accounting.",
 		SourceLine: 75,
 	},
 	{
@@ -59,7 +59,7 @@ export const IToolResultCompressorMembers: ReadonlyArray<InterfaceMemberRecord> 
 		Optional: false,
 		TypeText: "void",
 		Parameters: [{ Name: "cache", TypeText: "IToolResultCache", Optional: false }],
-		DocComment: "Result of running a {@link IToolResultFilter}.\n`text` is the new text to substitute back into the corresponding text part.\n`compressed` is `true` if any compression actually happened — used purely\nfor telemetry / accounting.",
+		DocComment: "Result of running a {@link IToolResultFilter}.\n`text` is the new text to substitute back into the corresponding text part.\n`compressed` is `true` if any compression actually happened - used purely\nfor telemetry / accounting.",
 		SourceLine: 76,
 	}
 ] as const;

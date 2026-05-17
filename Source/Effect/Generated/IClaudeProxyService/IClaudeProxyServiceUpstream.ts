@@ -16,7 +16,7 @@ export const IClaudeProxyServiceSourceLine = 70 as const;
 //  * call rebinds with a new port and a fresh nonce.
 //  * **Subprocess ownership invariant.** Callers that hand `baseUrl` /
 //  * `nonce` to a Claude SDK subprocess MUST kill that subprocess before
-//  * calling `dispose()`. The subprocess cannot outlive the handle —
+//  * calling `dispose()`. The subprocess cannot outlive the handle -
 //  * after `dispose()` the proxy may rebind on a different port and the
 //  * subprocess would silently lose its endpoint.
 //  */
@@ -29,7 +29,7 @@ export interface IClaudeProxyServiceUpstream {
 	 * call rebinds with a new port and a fresh nonce.
 	 * **Subprocess ownership invariant.** Callers that hand `baseUrl` /
 	 * `nonce` to a Claude SDK subprocess MUST kill that subprocess before
-	 * calling `dispose()`. The subprocess cannot outlive the handle —
+	 * calling `dispose()`. The subprocess cannot outlive the handle -
 	 * after `dispose()` the proxy may rebind on a different port and the
 	 * subprocess would silently lose its endpoint.
 	 */
@@ -43,7 +43,7 @@ export const IClaudeProxyServiceMembers: ReadonlyArray<InterfaceMemberRecord> = 
 		Optional: false,
 		TypeText: "undefined",
 		Parameters: [],
-		DocComment: "Handle returned by {@link IClaudeProxyService.start}. Refcounts the\nunderlying server: when every handle is disposed, the listener closes,\nthe token slot clears, and the nonce is destroyed. The next `start()`\ncall rebinds with a new port and a fresh nonce.\n**Subprocess ownership invariant.** Callers that hand `baseUrl` /\n`nonce` to a Claude SDK subprocess MUST kill that subprocess before\ncalling `dispose()`. The subprocess cannot outlive the handle —\nafter `dispose()` the proxy may rebind on a different port and the\nsubprocess would silently lose its endpoint.",
+		DocComment: "Handle returned by {@link IClaudeProxyService.start}. Refcounts the\nunderlying server: when every handle is disposed, the listener closes,\nthe token slot clears, and the nonce is destroyed. The next `start()`\ncall rebinds with a new port and a fresh nonce.\n**Subprocess ownership invariant.** Callers that hand `baseUrl` /\n`nonce` to a Claude SDK subprocess MUST kill that subprocess before\ncalling `dispose()`. The subprocess cannot outlive the handle -\nafter `dispose()` the proxy may rebind on a different port and the\nsubprocess would silently lose its endpoint.",
 		SourceLine: 52,
 	}
 ] as const;
