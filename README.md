@@ -2,7 +2,7 @@
 	<tr>
 		<td align="left" valign="middle">
 			<h3 align="left">
-				<a href="https://Editor.Land" target="_blank">
+				<a href="https://Land.PlayForm.Cloud" target="_blank">
 					<picture>
 						<source media="(prefers-color-scheme: dark)" srcset="https://PlayForm.Cloud/Dark/Image/GitHub/Land.svg">
 						<source media="(prefers-color-scheme: light)" srcset="https://PlayForm.Cloud/Image/GitHub/Land.svg">
@@ -319,10 +319,10 @@ Runtime.runPromise(AppRuntime, InvokeEffect);
 
 ## See Also&#x2001;🔗
 
-- [Wind Documentation](https://editor.land/Doc/wind)
-- [Architecture Overview](https://editor.land/Doc/architecture)
-- [Why Effect-TS](https://editor.land/Doc/why-effect-ts)
-- [Why Tauri](https://editor.land/Doc/why-tauri)
+- [Wind Documentation](https://land.playform.cloud/Doc/wind)
+- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
+- [Why Effect-TS](https://land.playform.cloud/Doc/why-effect-ts)
+- [Why Tauri](https://land.playform.cloud/Doc/why-tauri)
 - [`Mountain`](https://github.com/CodeEditorLand/Mountain)
 - [`Sky`](https://github.com/CodeEditorLand/Sky)
 - [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)
@@ -370,7 +370,7 @@ Commons Fund grant.
 	<tbody>
 		<tr>
 			<td align="left" valign="middle">
-				<a href="https://Editor.Land">
+				<a href="https://Land.PlayForm.Cloud">
 					<img width="60" src="https://raw.githubusercontent.com/CodeEditorLand/Asset/refs/heads/Current/Logo/Land.svg" alt="Land">
 				</a>
 			</td>
@@ -396,7 +396,7 @@ Commons Fund grant.
 ---
 
 **Project Maintainers**: Source Open
-([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
+([Source/Open@Land.PlayForm.Cloud](mailto:Source/Open@Land.PlayForm.Cloud)) |
 [GitHub Repository](https://github.com/CodeEditorLand/Wind) |
 [Report an Issue](https://github.com/CodeEditorLand/Wind/issues) |
 [Security Policy](https://github.com/CodeEditorLand/Wind/security/policy)
