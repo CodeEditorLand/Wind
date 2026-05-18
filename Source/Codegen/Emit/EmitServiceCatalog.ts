@@ -59,21 +59,21 @@ const FormatEntry = (
 	const Trailing = index === total - 1 ? "" : ",";
 
 	return [
-		`\t{`,
+		`	{`,
 
-		`\t\tDecoratorName: ${JSON.stringify(entry.DecoratorName)},`,
+		`		DecoratorName: ${JSON.stringify(entry.DecoratorName)},`,
 
-		`\t\tDecoratorTag: ${JSON.stringify(entry.DecoratorTag)},`,
+		`		DecoratorTag: ${JSON.stringify(entry.DecoratorTag)},`,
 
-		`\t\tInterfaceName: ${JSON.stringify(entry.InterfaceName)},`,
+		`		InterfaceName: ${JSON.stringify(entry.InterfaceName)},`,
 
-		`\t\tSourcePath: ${JSON.stringify(entry.SourcePath)},`,
+		`		SourcePath: ${JSON.stringify(entry.SourcePath)},`,
 
-		`\t\tSourceLine: ${entry.SourceLine},`,
+		`		SourceLine: ${entry.SourceLine},`,
 
-		`\t\tMemberCount: ${entry.MemberCount},`,
+		`		MemberCount: ${entry.MemberCount},`,
 
-		`\t}${Trailing}`,
+		`	}${Trailing}`,
 	].join("\n");
 };
 
@@ -115,17 +115,17 @@ const FormatOutput = (
 
 		"export interface ServiceCatalogEntry {",
 
-		"\treadonly DecoratorName: string;",
+		"	readonly DecoratorName: string;",
 
-		"\treadonly DecoratorTag: string;",
+		"	readonly DecoratorTag: string;",
 
-		"\treadonly InterfaceName: string;",
+		"	readonly InterfaceName: string;",
 
-		"\treadonly SourcePath: string;",
+		"	readonly SourcePath: string;",
 
-		"\treadonly SourceLine: number;",
+		"	readonly SourceLine: number;",
 
-		"\treadonly MemberCount: number;",
+		"	readonly MemberCount: number;",
 
 		"}",
 

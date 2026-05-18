@@ -123,11 +123,11 @@ const FormatOutput = (
 
 		`export interface ${globalsInterfaceName} {`,
 
-		"\treadonly __CEL_SERVICES__?: {",
+		"	readonly __CEL_SERVICES__?: {",
 
-		`\t\treadonly ${accessorName}?: ${shapeTypeName} | null;`,
+		`		readonly ${accessorName}?: ${shapeTypeName} | null;`,
 
-		"\t};",
+		"	};",
 
 		"}",
 

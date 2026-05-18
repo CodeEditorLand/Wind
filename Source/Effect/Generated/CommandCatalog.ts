@@ -23,9 +23,9 @@ export interface CommandCatalogEntry {
 	readonly HasKeybinding: boolean;
 }
 
-export const CommandCatalogVersion = "2026-05-16" as const;
+export const CommandCatalogVersion = "2026-05-18" as const;
 
-export const CommandCatalogTotal = 546 as const;
+export const CommandCatalogTotal = 545 as const;
 
 export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 	{
@@ -60,7 +60,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "_chat.notifyQuestionCarouselAnswer",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chat.contribution.ts",
-		SourceLine: 199,
+		SourceLine: 200,
 		HasKeybinding: false,
 	},
 	{
@@ -235,7 +235,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "_executeWorkspaceSymbolProvider",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/search/browser/search.contribution.ts",
-		SourceLine: 338,
+		SourceLine: 344,
 		HasKeybinding: false,
 	},
 	{
@@ -494,7 +494,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "1_chat",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/chatActions.ts",
-		SourceLine: 1748,
+		SourceLine: 1749,
 		HasKeybinding: false,
 	},
 	{
@@ -802,7 +802,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "4_auxbar",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures.ts",
-		SourceLine: 458,
+		SourceLine: 512,
 		HasKeybinding: false,
 	},
 	{
@@ -1089,7 +1089,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "browser.closeAllInGroupShort",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures.ts",
-		SourceLine: 468,
+		SourceLine: 522,
 		HasKeybinding: false,
 	},
 	{
@@ -1124,21 +1124,21 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "chat.internal.explain",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSetup/chatSetupContributions.ts",
-		SourceLine: 563,
+		SourceLine: 566,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "chat.internal.fix",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSetup/chatSetupContributions.ts",
-		SourceLine: 622,
+		SourceLine: 625,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "chat.internal.review",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSetup/chatSetupContributions.ts",
-		SourceLine: 635,
+		SourceLine: 638,
 		HasKeybinding: false,
 	},
 	{
@@ -1502,7 +1502,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "editor",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/chat/electron-browser/chat.contribution.ts",
-		SourceLine: 338,
+		SourceLine: 340,
 		HasKeybinding: false,
 	},
 	{
@@ -2412,14 +2412,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "openAiManagement",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatManagement/chatManagement.contribution.ts",
-		SourceLine: 150,
+		SourceLine: 202,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "openChatCustomizations",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/chatActions.ts",
-		SourceLine: 1481,
+		SourceLine: 1482,
 		HasKeybinding: false,
 	},
 	{
@@ -2881,7 +2881,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "swapDiffSides",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/diffEditorCommands.ts",
-		SourceLine: 291,
+		SourceLine: 299,
 		HasKeybinding: false,
 	},
 	{
@@ -2979,7 +2979,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "toggleInlineView",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/browser/parts/editor/diffEditorCommands.ts",
-		SourceLine: 282,
+		SourceLine: 290,
 		HasKeybinding: false,
 	},
 	{
@@ -3400,13 +3400,6 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/issue/common/issue.contribution.ts",
 		SourceLine: 70,
-		HasKeybinding: false,
-	},
-	{
-		CommandIdentifier: "workbench.action.openLanguageModelsJson",
-		Kind: "MenuRegistry",
-		SourcePath: "vs/workbench/contrib/chat/browser/chatManagement/chatManagement.contribution.ts",
-		SourceLine: 166,
 		HasKeybinding: false,
 	},
 	{

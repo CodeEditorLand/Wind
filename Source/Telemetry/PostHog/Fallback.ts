@@ -35,7 +35,7 @@ export default async (
 						properties: {
 							...Properties,
 							...BaseProperties,
-							$app: "land-editor",
+							$app: "fiddee",
 							$app_version: "0.0.1",
 							$build_mode: "debug",
 						},

@@ -24,6 +24,6 @@ export const IEditorResolverServiceMembers: ReadonlyArray<InterfaceMemberRecord>
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: "Default value for `workbench.editorAssociations` in the Agents window.\nShared so that dynamic re-registrations of the setting preserve the override.",
-		SourceLine: 147,
+		SourceLine: 166,
 	}
 ] as const;

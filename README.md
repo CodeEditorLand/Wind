@@ -345,7 +345,7 @@ history of changes specific to **Wind**&#x2001;🍃.
 
 ---
 
-## Funding \& Acknowledgements&#x2001;🙏🏻
+## Funding & Acknowledgements&#x2001;🙏🏻
 
 **Wind** is a core element of the **Land**&#x2001;🏞️ ecosystem.&#x2001;🍃
 project is funded through [NGI0 Commons Fund](https://NLnet.NL/commonsfund), a

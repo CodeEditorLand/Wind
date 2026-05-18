@@ -54,19 +54,19 @@ const FormatEntry = (
 	const Trailing = index === total - 1 ? "" : ",";
 
 	return [
-		`\t{`,
+		`	{`,
 
-		`\t\tCommandIdentifier: ${JSON.stringify(entry.CommandIdentifier)},`,
+		`		CommandIdentifier: ${JSON.stringify(entry.CommandIdentifier)},`,
 
-		`\t\tKind: ${JSON.stringify(entry.Kind)},`,
+		`		Kind: ${JSON.stringify(entry.Kind)},`,
 
-		`\t\tSourcePath: ${JSON.stringify(entry.SourcePath)},`,
+		`		SourcePath: ${JSON.stringify(entry.SourcePath)},`,
 
-		`\t\tSourceLine: ${entry.SourceLine},`,
+		`		SourceLine: ${entry.SourceLine},`,
 
-		`\t\tHasKeybinding: ${entry.HasKeybinding ? "true" : "false"},`,
+		`		HasKeybinding: ${entry.HasKeybinding ? "true" : "false"},`,
 
-		`\t}${Trailing}`,
+		`	}${Trailing}`,
 	].join("\n");
 };
 
@@ -112,27 +112,27 @@ const FormatOutput = (
 
 		"export type CommandRegistrationKind =",
 
-		'\t| "CommandsRegistry"',
+		'	| "CommandsRegistry"',
 
-		'\t| "KeybindingsRegistry"',
+		'	| "KeybindingsRegistry"',
 
-		'\t| "MenuRegistry"',
+		'	| "MenuRegistry"',
 
-		'\t| "ActionDescriptor";',
+		'	| "ActionDescriptor";',
 
 		"",
 
 		"export interface CommandCatalogEntry {",
 
-		"\treadonly CommandIdentifier: string;",
+		"	readonly CommandIdentifier: string;",
 
-		"\treadonly Kind: CommandRegistrationKind;",
+		"	readonly Kind: CommandRegistrationKind;",
 
-		"\treadonly SourcePath: string;",
+		"	readonly SourcePath: string;",
 
-		"\treadonly SourceLine: number;",
+		"	readonly SourceLine: number;",
 
-		"\treadonly HasKeybinding: boolean;",
+		"	readonly HasKeybinding: boolean;",
 
 		"}",
 

@@ -47,21 +47,21 @@ type LandProduct = {
 
 const LoadProductJson = async (): Promise<LandProduct> => {
 	const Base: LandProduct = {
-		nameShort: "Land",
+		nameShort: "FIDDEE",
 
-		nameLong: "Land Editor",
+		nameLong: "FIDDEE",
 
-		applicationName: "land",
+		applicationName: "fiddee",
 
-		dataFolderName: ".land",
+		dataFolderName: ".fiddee",
 
 		version: "1.118.0",
 
 		commit: "dev",
 
-		urlProtocol: "land",
+		urlProtocol: "fiddee",
 
-		serverApplicationName: "land-server",
+		serverApplicationName: "fiddee-server",
 	};
 
 	try {

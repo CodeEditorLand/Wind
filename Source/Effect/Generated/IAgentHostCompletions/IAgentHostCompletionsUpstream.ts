@@ -31,6 +31,6 @@ export const IAgentHostCompletionsMembers: ReadonlyArray<InterfaceMemberRecord> 
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: "Well-known completion trigger characters announced to clients in the\n`initialize` handshake. Clients SHOULD issue a `completions` request when\nthe user types one of these characters in a {@link UserMessage} input.",
-		SourceLine: 62,
+		SourceLine: 64,
 	}
 ] as const;
