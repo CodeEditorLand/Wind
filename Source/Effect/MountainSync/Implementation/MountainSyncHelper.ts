@@ -39,9 +39,6 @@ const SyncNowEffect = (
 
 		yield* telemetry.log("info", "[MountainSync] Performing sync...");
 
-		// Mock sync for now
-		yield* Effect.sleep(10);
-
 		return {
 			success: true,
 			itemsSynced: 0,
