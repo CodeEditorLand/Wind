@@ -30,6 +30,10 @@ export default {
 	// --- Configuration ---
 	ConfigurationGet: "configuration:get",
 
+	ConfigurationInspect: "configuration:inspect",
+
+	ConfigurationLookup: "configuration:lookup",
+
 	ConfigurationUpdate: "configuration:update",
 
 	// --- Decorations ---
@@ -79,6 +83,8 @@ export default {
 
 	ExtensionsGetUninstalled: "extensions:getUninstalled",
 
+	ExtensionsGetManifest: "extensions:getManifest",
+
 	ExtensionsInstall: "extensions:install",
 
 	ExtensionsIsActive: "extensions:isActive",
@@ -86,6 +92,9 @@ export default {
 	ExtensionsQuery: "extensions:query",
 
 	ExtensionsReinstall: "extensions:reinstall",
+
+	ExtensionsResetPinnedState:
+		"extensions:resetPinnedStateForAllUserExtensions",
 
 	ExtensionsActivate: "extensions:activate",
 
@@ -320,6 +329,8 @@ export default {
 
 	// --- Themes ---
 	ThemesGetActive: "themes:getActive",
+
+	ThemesGetColorTheme: "themes:getColorTheme",
 
 	ThemesList: "themes:list",
 

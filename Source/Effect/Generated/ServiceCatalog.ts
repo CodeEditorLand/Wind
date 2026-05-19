@@ -117,7 +117,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "agentHostChangesetService",
 		InterfaceName: "IAgentHostChangesetService",
 		SourcePath: "vs/platform/agentHost/node/agentHostChangesetService.ts",
-		SourceLine: 180,
+		SourceLine: 186,
 		MemberCount: 1,
 	},
 	{
@@ -189,7 +189,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "agentHostService",
 		InterfaceName: "IAgentHostService",
 		SourcePath: "vs/platform/agentHost/common/agentService.ts",
-		SourceLine: 894,
+		SourceLine: 908,
 		MemberCount: 4,
 	},
 	{
@@ -205,7 +205,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "agentHostTerminalManager",
 		InterfaceName: "IAgentHostTerminalManager",
 		SourcePath: "vs/platform/agentHost/node/agentHostTerminalManager.ts",
-		SourceLine: 36,
+		SourceLine: 37,
 		MemberCount: 18,
 	},
 	{
@@ -293,7 +293,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "aiCustomizationItemsModel",
 		InterfaceName: "IAICustomizationItemsModel",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationItemsModel.ts",
-		SourceLine: 44,
+		SourceLine: 46,
 		MemberCount: 1,
 	},
 	{
@@ -981,7 +981,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "customizationHarnessService",
 		InterfaceName: "ICustomizationHarnessService",
 		SourcePath: "vs/workbench/contrib/chat/common/customizationHarnessService.ts",
-		SourceLine: 25,
+		SourceLine: 26,
 		MemberCount: 1,
 	},
 	{

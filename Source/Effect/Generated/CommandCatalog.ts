@@ -59,8 +59,8 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 	{
 		CommandIdentifier: "_chat.notifyQuestionCarouselAnswer",
 		Kind: "CommandsRegistry",
-		SourcePath: "vs/workbench/contrib/chat/browser/chat.contribution.ts",
-		SourceLine: 200,
+		SourcePath: "vs/workbench/contrib/chat/browser/chat.shared.contribution.ts",
+		SourceLine: 199,
 		HasKeybinding: false,
 	},
 	{
@@ -753,7 +753,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "3_file",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 508,
+		SourceLine: 507,
 		HasKeybinding: false,
 	},
 	{
@@ -1383,7 +1383,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "copyPath",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 481,
+		SourceLine: 480,
 		HasKeybinding: false,
 	},
 	{
@@ -1481,14 +1481,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "delete",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 487,
+		SourceLine: 486,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "disable",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 666,
+		SourceLine: 665,
 		HasKeybinding: false,
 	},
 	{
@@ -1572,7 +1572,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "enable",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 678,
+		SourceLine: 677,
 		HasKeybinding: false,
 	},
 	{
@@ -2636,7 +2636,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "runPrompt",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 501,
+		SourceLine: 500,
 		HasKeybinding: false,
 	},
 	{
@@ -2797,7 +2797,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "showPlugin",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 610,
+		SourceLine: 609,
 		HasKeybinding: false,
 	},
 	{
@@ -3028,7 +3028,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "uninstallPlugin",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-		SourceLine: 557,
+		SourceLine: 556,
 		HasKeybinding: false,
 	},
 	{
