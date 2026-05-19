@@ -155,7 +155,7 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 
 	// Read ?folder= from URL (set by pickFolderAndOpen navigation
 	// + Mountain's `BuildInitialUrl` which sources from
-	// `~/.land/workspaces/RecentlyOpened.json`'s top entry).
+	// `~/.fiddee/workspaces/RecentlyOpened.json`'s top entry).
 	const FolderParamRaw = new URLSearchParams(window.location.search).get(
 		"folder",
 	);
