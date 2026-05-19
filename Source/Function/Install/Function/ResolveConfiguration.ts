@@ -132,6 +132,7 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 
 	try {
 		const Invoke =
+			(window as any).__TAURI_INTERNALS__?.invoke ??
 			(window as any).__TAURI__?.core?.invoke ??
 			(window as any).__TAURI__?.invoke;
 
@@ -481,24 +482,27 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 		os: { release: "24.0.0" },
 
 		// Real paths from Mountain (Tauri PathResolver).
-		// VS Code's AbstractNativeEnvironmentService wraps these with URI.file(),
-		// so they must be plain filesystem paths (not file:// URIs).
-		homeDir: Paths.homeDir || undefined,
+		// VS Code's AbstractNativeEnvironmentService wraps these with URI.file()
+		// and `path.join(userDataDir, "User")`. If any of these is undefined,
+		// `path.posix.join(undefined, "User")` throws
+		// "The path argument must be of type string. Received type undefined"
+		// during workbench `open()`. Always emit a string fallback even when
+		// the Mountain IPC fails so the workbench still boots in degraded mode
+		// instead of hard-crashing in initServices.
+		homeDir: Paths.homeDir || "/",
 
-		tmpDir: Paths.tmpDir || undefined,
+		tmpDir: Paths.tmpDir || "/tmp",
 
-		userDataDir: Paths.userDataDir || undefined,
+		userDataDir: Paths.userDataDir || "/tmp/.fiddee",
 
-		logsPath: LogsLocation || undefined,
+		logsPath: LogsLocation || "/tmp/.fiddee/logs",
 
 		// Extension paths - tells VS Code's NativeExtensionsScannerService where
 		// to find built-in and user-installed extensions on disk.
 		// appRoot + /extensions = builtinExtensionsPath (VS Code convention)
 		builtinExtensionsPath: `${AppRoot}/extensions`,
 
-		extensionsPath: Paths.userDataDir
-			? `${Paths.userDataDir}/extensions`
-			: undefined,
+		extensionsPath: `${Paths.userDataDir || "/tmp/.fiddee"}/extensions`,
 
 		// Workspace - set from ?folder= URL param
 		// folderUri is used by the browser workbench; workspace by the Electron workbench.
