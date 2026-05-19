@@ -127,17 +127,47 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 	// Strip origin from FileRoot for appRoot (workbench.js prepends vscode-file://)
 	const AppRoot = FileRoot.replace(/^https?:\/\/[^/]+/, "");
 
-	// Fetch real Tauri paths from Mountain
+	// Fetch real Tauri paths from Mountain. The Tauri runtime injects
+	// `__TAURI_INTERNALS__` / `__TAURI__` via a content-script that races
+	// with ES-module evaluation - under certain webview / page-load
+	// orderings (and with the patched fork used by Mountain) the globals
+	// can be undefined when this script first runs. Retry briefly with a
+	// short polling budget so a single race doesn't permanently collapse
+	// the workbench into degraded mode.
 	let Paths = { userDataDir: "", logsPath: "", homeDir: "/", tmpDir: "/tmp" };
 
-	try {
-		const Invoke =
-			(window as any).__TAURI_INTERNALS__?.invoke ??
-			(window as any).__TAURI__?.core?.invoke ??
-			(window as any).__TAURI__?.invoke;
+	const ResolveInvoke = (): unknown =>
+		(window as any).__TAURI_INTERNALS__?.invoke ??
+		(window as any).__TAURI__?.core?.invoke ??
+		(window as any).__TAURI__?.invoke;
 
+	let Invoke: unknown = ResolveInvoke();
+
+	if (typeof Invoke !== "function") {
+		const Deadline = performance.now() + 5000;
+
+		while (typeof Invoke !== "function" && performance.now() < Deadline) {
+			await new Promise<void>((Resolve) => setTimeout(Resolve, 25));
+
+			Invoke = ResolveInvoke();
+		}
+
+		if (typeof Invoke !== "function") {
+			DevLog(
+				"config",
+				"Tauri IPC bridge never appeared - falling back to defaults. Workbench will boot but every native action (Open Folder, terminal, dialogs) will be a no-op.",
+			);
+		}
+	}
+
+	try {
 		if (typeof Invoke === "function") {
-			Paths = await Invoke("MountainIPCInvoke", {
+			Paths = await (
+				Invoke as (
+					cmd: string,
+					args: Record<string, unknown>,
+				) => Promise<typeof Paths>
+			)("MountainIPCInvoke", {
 				method: "nativeHost:getEnvironmentPaths",
 				params: [],
 			});
