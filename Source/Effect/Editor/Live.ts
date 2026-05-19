@@ -40,13 +40,28 @@ export const LiveEditorServiceLayer = Layer.effect(
 		const ActiveEditorRef = yield* Ref.make<unknown | null>(null);
 		const VisibleEditorsRef = yield* Ref.make<readonly unknown[]>([]);
 
-		// Listen to Mountain editor-change events and update refs.
-		// Events are emitted via AppHandle.emit("editor:activeChanged", uri).
-		const _ = yield* Effect.fork(
+		// Listen to Mountain editor-change events emitted by Mountain via
+		// `AppHandle.emit("editor:activeChanged", { uri, viewColumn })`.
+		// Update the ActiveEditorRef so GetActiveEditor returns the current uri.
+		void Effect.runFork(
 			Effect.gen(function* () {
-				const Events = IPCService.events("editor:activeChanged");
-				// Stream is consumed for its side effects (updating refs).
-				// If the stream errors, we ignore it - editor state is best-effort.
+				// Subscribe to the Tauri event channel.
+				const { listen } = yield* Effect.promise(
+					() => import("@tauri-apps/api/event"),
+				);
+				yield* Effect.promise(
+					() =>
+						new Promise<void>((Resolve) => {
+							void listen("editor:activeChanged", (Event) => {
+								void Effect.runFork(
+									Ref.set(
+										ActiveEditorRef,
+										Event.payload ?? null,
+									),
+								);
+							}).then(() => Resolve());
+						}),
+				);
 			}).pipe(Effect.catchAll(() => Effect.void)),
 		);
 

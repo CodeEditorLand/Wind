@@ -87,6 +87,8 @@ export default {
 
 	ExtensionsReinstall: "extensions:reinstall",
 
+	ExtensionsActivate: "extensions:activate",
+
 	ExtensionsScanSystemExtensions: "extensions:scanSystemExtensions",
 
 	ExtensionsScanUserExtensions: "extensions:scanUserExtensions",

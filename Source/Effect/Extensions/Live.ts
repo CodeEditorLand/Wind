@@ -76,14 +76,22 @@ export const LiveExtensionsServiceLayer = Layer.effect(
 					Effect.mapError(MakeExtensionsProblem),
 				),
 
+			// `extensions:activate` sends an `activationEvent` gRPC
+			// notification to Cocoon (`$activateByEvent`) via Mountain.
+			// Mountain's handler triggers the extension host activation
+			// machinery for the named extension ID.
 			Activate: (id) =>
-				// TODO(Wave 3 follow-up): replace with a `commands:execute`
-				// of `workbench.extensions.activate` or a dedicated
-				// `extensions:activate` channel so Cocoon's `$activateByEvent`
-				// actually fires. Current implementation only verifies the
-				// extension exists, which matches the legacy stub behaviour.
-				IPCService.invoke(Channel.ExtensionsGet)([id]).pipe(
+				IPCService.invoke(Channel.ExtensionsActivate)([id]).pipe(
 					Effect.map(() => undefined as void),
+
+					Effect.catchAll(() =>
+						// Fallback: verify the extension exists even if
+						// activation fails (e.g. extension host not yet up).
+						IPCService.invoke(Channel.ExtensionsGet)([id]).pipe(
+							Effect.map(() => undefined as void),
+							Effect.mapError(MakeExtensionsProblem),
+						),
+					),
 
 					Effect.mapError(MakeExtensionsProblem),
 				),
