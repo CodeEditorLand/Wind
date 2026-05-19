@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IAiRelatedInformationServiceTag = "IAiRelatedInformationService" as const;
 export const IAiRelatedInformationServiceSourcePath = "vs/workbench/services/aiRelatedInformation/common/aiRelatedInformation.ts" as const;
 export const IAiRelatedInformationServiceSourceLine = 10 as const;

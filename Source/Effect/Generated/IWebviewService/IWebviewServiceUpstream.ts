@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IWebviewServiceTag = "webviewService" as const;
 export const IWebviewServiceSourcePath = "vs/workbench/contrib/webview/browser/webview.ts" as const;
 export const IWebviewServiceSourceLine = 37 as const;

@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IAuthenticationMcpAccessServiceTag = "IAuthenticationMcpAccessService" as const;
 export const IAuthenticationMcpAccessServiceSourcePath = "vs/workbench/services/authentication/browser/authenticationMcpAccessService.ts" as const;
 export const IAuthenticationMcpAccessServiceSourceLine = 27 as const;

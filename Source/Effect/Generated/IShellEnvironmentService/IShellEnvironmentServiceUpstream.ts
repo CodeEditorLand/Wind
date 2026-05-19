@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IShellEnvironmentServiceTag = "shellEnvironmentService" as const;
 export const IShellEnvironmentServiceSourcePath = "vs/workbench/services/environment/electron-browser/shellEnvironmentService.ts" as const;
 export const IShellEnvironmentServiceSourceLine = 11 as const;

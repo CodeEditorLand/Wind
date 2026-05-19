@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const INotebookOriginalCellModelFactoryTag = "INotebookOriginalCellModelFactory" as const;
 export const INotebookOriginalCellModelFactorySourcePath = "vs/workbench/contrib/notebook/browser/diff/inlineDiff/notebookOriginalCellModelFactory.ts" as const;
 export const INotebookOriginalCellModelFactorySourceLine = 15 as const;

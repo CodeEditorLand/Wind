@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ITerminalLinkProviderServiceTag = "terminalLinkProviderService" as const;
 export const ITerminalLinkProviderServiceSourcePath = "vs/workbench/contrib/terminalContrib/links/browser/links.ts" as const;
 export const ITerminalLinkProviderServiceSourceLine = 19 as const;

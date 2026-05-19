@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IEditorPaneServiceTag = "editorPaneService" as const;
 export const IEditorPaneServiceSourcePath = "vs/workbench/services/editor/common/editorPaneService.ts" as const;
 export const IEditorPaneServiceSourceLine = 10 as const;

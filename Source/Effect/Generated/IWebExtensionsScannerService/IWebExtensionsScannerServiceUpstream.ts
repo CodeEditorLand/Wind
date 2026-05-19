@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IWebExtensionsScannerServiceTag = "IWebExtensionsScannerService" as const;
 export const IWebExtensionsScannerServiceSourcePath = "vs/workbench/services/extensionManagement/common/extensionManagement.ts" as const;
 export const IWebExtensionsScannerServiceSourceLine = 196 as const;

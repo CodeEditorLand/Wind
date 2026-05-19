@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const INotebookEditorServiceTag = "INotebookEditorWidgetService" as const;
 export const INotebookEditorServiceSourcePath = "vs/workbench/contrib/notebook/browser/services/notebookEditorService.ts" as const;
 export const INotebookEditorServiceSourceLine = 15 as const;

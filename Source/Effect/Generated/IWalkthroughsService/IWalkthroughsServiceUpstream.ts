@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IWalkthroughsServiceTag = "walkthroughsService" as const;
 export const IWalkthroughsServiceSourcePath = "vs/workbench/contrib/welcomeGettingStarted/browser/gettingStartedService.ts" as const;
 export const IWalkthroughsServiceSourceLine = 44 as const;

@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IPreferencesServiceTag = "preferencesService" as const;
 export const IPreferencesServiceSourcePath = "vs/workbench/services/preferences/common/preferences.ts" as const;
 export const IPreferencesServiceSourceLine = 251 as const;

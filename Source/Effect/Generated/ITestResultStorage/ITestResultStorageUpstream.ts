@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ITestResultStorageTag = "ITestResultStorage" as const;
 export const ITestResultStorageSourcePath = "vs/workbench/contrib/testing/common/testResultStorage.ts" as const;
 export const ITestResultStorageSourceLine = 40 as const;

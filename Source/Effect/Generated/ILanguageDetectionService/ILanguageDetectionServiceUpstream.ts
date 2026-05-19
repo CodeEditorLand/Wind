@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ILanguageDetectionServiceTag = "ILanguageDetectionService" as const;
 export const ILanguageDetectionServiceSourcePath = "vs/workbench/services/languageDetection/common/languageDetectionWorkerService.ts" as const;
 export const ILanguageDetectionServiceSourceLine = 9 as const;

@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IDefaultLogLevelsServiceTag = "IDefaultLogLevelsService" as const;
 export const IDefaultLogLevelsServiceSourcePath = "vs/workbench/services/log/common/defaultLogLevels.ts" as const;
 export const IDefaultLogLevelsServiceSourceLine = 26 as const;

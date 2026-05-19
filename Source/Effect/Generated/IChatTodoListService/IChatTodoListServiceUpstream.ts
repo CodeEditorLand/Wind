@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IChatTodoListServiceTag = "chatTodoListService" as const;
 export const IChatTodoListServiceSourcePath = "vs/workbench/contrib/chat/common/tools/chatTodoListService.ts" as const;
 export const IChatTodoListServiceSourceLine = 26 as const;

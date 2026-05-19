@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ISnippetsServiceTag = "snippetService" as const;
 export const ISnippetsServiceSourcePath = "vs/workbench/contrib/snippets/browser/snippets.ts" as const;
 export const ISnippetsServiceSourceLine = 10 as const;

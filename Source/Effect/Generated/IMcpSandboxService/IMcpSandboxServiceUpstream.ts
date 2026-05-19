@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IMcpSandboxServiceTag = "mcpSandboxService" as const;
 export const IMcpSandboxServiceSourcePath = "vs/workbench/contrib/mcp/common/mcpSandboxService.ts" as const;
 export const IMcpSandboxServiceSourceLine = 26 as const;

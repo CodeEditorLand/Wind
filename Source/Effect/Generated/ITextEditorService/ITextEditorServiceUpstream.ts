@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ITextEditorServiceTag = "textEditorService" as const;
 export const ITextEditorServiceSourcePath = "vs/workbench/services/textfile/common/textEditorService.ts" as const;
 export const ITextEditorServiceSourceLine = 28 as const;

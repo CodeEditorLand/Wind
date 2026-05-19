@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IExternalUriOpenerServiceTag = "externalUriOpenerService" as const;
 export const IExternalUriOpenerServiceSourcePath = "vs/workbench/contrib/externalUriOpener/common/externalUriOpenerService.ts" as const;
 export const IExternalUriOpenerServiceSourceLine = 24 as const;

@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IInlineChatSessionServiceTag = "IInlineChatSessionService" as const;
 export const IInlineChatSessionServiceSourcePath = "vs/workbench/contrib/inlineChat/browser/inlineChatSessionService.ts" as const;
 export const IInlineChatSessionServiceSourceLine = 20 as const;

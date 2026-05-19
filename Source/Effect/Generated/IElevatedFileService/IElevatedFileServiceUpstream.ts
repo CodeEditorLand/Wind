@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IElevatedFileServiceTag = "elevatedFileService" as const;
 export const IElevatedFileServiceSourcePath = "vs/workbench/services/files/common/elevatedFileService.ts" as const;
 export const IElevatedFileServiceSourceLine = 11 as const;

@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const INotebookServiceTag = "notebookService" as const;
 export const INotebookServiceSourcePath = "vs/workbench/contrib/notebook/common/notebookService.ts" as const;
 export const INotebookServiceSourceLine = 24 as const;

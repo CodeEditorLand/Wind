@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IKeybindingEditingServiceTag = "keybindingEditingService" as const;
 export const IKeybindingEditingServiceSourcePath = "vs/workbench/services/keybinding/common/keybindingEditing.ts" as const;
 export const IKeybindingEditingServiceSourceLine = 27 as const;

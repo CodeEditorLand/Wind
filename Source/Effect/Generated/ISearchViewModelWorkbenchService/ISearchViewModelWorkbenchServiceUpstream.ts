@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ISearchViewModelWorkbenchServiceTag = "searchViewModelWorkbenchService" as const;
 export const ISearchViewModelWorkbenchServiceSourcePath = "vs/workbench/contrib/search/browser/searchTreeModel/searchViewModelWorkbenchService.ts" as const;
 export const ISearchViewModelWorkbenchServiceSourceLine = 9 as const;

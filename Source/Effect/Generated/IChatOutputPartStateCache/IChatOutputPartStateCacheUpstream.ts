@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IChatOutputPartStateCacheTag = "IChatOutputPartStateCache" as const;
 export const IChatOutputPartStateCacheSourcePath = "vs/workbench/contrib/chat/browser/widget/chatContentParts/chatOutputPartStateCache.ts" as const;
 export const IChatOutputPartStateCacheSourceLine = 17 as const;

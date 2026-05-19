@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IOutlineServiceTag = "IOutlineService" as const;
 export const IOutlineServiceSourcePath = "vs/workbench/services/outline/browser/outline.ts" as const;
 export const IOutlineServiceSourceLine = 18 as const;

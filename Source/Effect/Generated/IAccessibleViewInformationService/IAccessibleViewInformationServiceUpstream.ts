@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IAccessibleViewInformationServiceTag = "accessibleViewInformationService" as const;
 export const IAccessibleViewInformationServiceSourcePath = "vs/workbench/services/accessibility/common/accessibleViewInformationService.ts" as const;
 export const IAccessibleViewInformationServiceSourceLine = 16 as const;

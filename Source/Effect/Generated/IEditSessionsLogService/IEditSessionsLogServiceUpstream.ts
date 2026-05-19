@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IEditSessionsLogServiceTag = "IEditSessionsLogService" as const;
 export const IEditSessionsLogServiceSourcePath = "vs/workbench/contrib/editSessions/common/editSessions.ts" as const;
 export const IEditSessionsLogServiceSourceLine = 46 as const;

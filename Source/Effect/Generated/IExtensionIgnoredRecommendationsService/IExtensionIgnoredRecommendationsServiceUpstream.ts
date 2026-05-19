@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IExtensionIgnoredRecommendationsServiceTag = "IExtensionIgnoredRecommendationsService" as const;
 export const IExtensionIgnoredRecommendationsServiceSourcePath = "vs/workbench/services/extensionRecommendations/common/extensionRecommendations.ts" as const;
 export const IExtensionIgnoredRecommendationsServiceSourceLine = 50 as const;

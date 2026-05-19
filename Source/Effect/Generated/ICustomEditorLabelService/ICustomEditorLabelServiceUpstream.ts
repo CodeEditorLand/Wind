@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ICustomEditorLabelServiceTag = "ICustomEditorLabelService" as const;
 export const ICustomEditorLabelServiceSourcePath = "vs/workbench/services/editor/common/customEditorLabelService.ts" as const;
 export const ICustomEditorLabelServiceSourceLine = 241 as const;

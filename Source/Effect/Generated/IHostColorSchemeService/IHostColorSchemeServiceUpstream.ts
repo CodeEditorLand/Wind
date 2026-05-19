@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IHostColorSchemeServiceTag = "hostColorSchemeService" as const;
 export const IHostColorSchemeServiceSourcePath = "vs/workbench/services/themes/common/hostColorSchemeService.ts" as const;
 export const IHostColorSchemeServiceSourceLine = 9 as const;

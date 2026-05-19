@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IAiSettingsSearchServiceTag = "IAiSettingsSearchService" as const;
 export const IAiSettingsSearchServiceSourcePath = "vs/workbench/services/aiSettingsSearch/common/aiSettingsSearch.ts" as const;
 export const IAiSettingsSearchServiceSourceLine = 11 as const;

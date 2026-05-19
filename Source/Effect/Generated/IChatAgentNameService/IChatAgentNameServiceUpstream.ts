@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IChatAgentNameServiceTag = "chatAgentNameService" as const;
 export const IChatAgentNameServiceSourcePath = "vs/workbench/contrib/chat/common/participants/chatAgents.ts" as const;
 export const IChatAgentNameServiceSourceLine = 692 as const;

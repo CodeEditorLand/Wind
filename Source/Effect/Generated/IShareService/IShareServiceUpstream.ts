@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IShareServiceTag = "shareService" as const;
 export const IShareServiceSourcePath = "vs/workbench/contrib/share/common/share.ts" as const;
 export const IShareServiceSourceLine = 28 as const;

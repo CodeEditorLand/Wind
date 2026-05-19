@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ITaskServiceTag = "taskService" as const;
 export const ITaskServiceSourcePath = "vs/workbench/contrib/tasks/common/taskService.ts" as const;
 export const ITaskServiceSourceLine = 28 as const;

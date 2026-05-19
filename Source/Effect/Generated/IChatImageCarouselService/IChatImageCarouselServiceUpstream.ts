@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IChatImageCarouselServiceTag = "chatImageCarouselService" as const;
 export const IChatImageCarouselServiceSourcePath = "vs/workbench/contrib/chat/browser/chatImageCarouselService.ts" as const;
 export const IChatImageCarouselServiceSourceLine = 18 as const;

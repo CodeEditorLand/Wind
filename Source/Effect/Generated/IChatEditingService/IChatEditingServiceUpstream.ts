@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IChatEditingServiceTag = "chatEditingService" as const;
 export const IChatEditingServiceSourcePath = "vs/workbench/contrib/chat/common/editing/chatEditingService.ts" as const;
 export const IChatEditingServiceSourceLine = 27 as const;

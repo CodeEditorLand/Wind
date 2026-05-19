@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const INotebookCellStatusBarServiceTag = "notebookCellStatusBarService" as const;
 export const INotebookCellStatusBarServiceSourcePath = "vs/workbench/contrib/notebook/common/notebookCellStatusBarService.ts" as const;
 export const INotebookCellStatusBarServiceSourceLine = 13 as const;

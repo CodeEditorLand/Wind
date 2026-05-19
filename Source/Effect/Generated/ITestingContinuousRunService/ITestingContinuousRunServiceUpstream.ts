@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ITestingContinuousRunServiceTag = "testingContinuousRunService" as const;
 export const ITestingContinuousRunServiceSourcePath = "vs/workbench/contrib/testing/common/testingContinuousRunService.ts" as const;
 export const ITestingContinuousRunServiceSourceLine = 22 as const;

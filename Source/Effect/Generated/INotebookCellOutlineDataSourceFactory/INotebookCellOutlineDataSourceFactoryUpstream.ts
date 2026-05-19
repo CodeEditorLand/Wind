@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const INotebookCellOutlineDataSourceFactoryTag = "INotebookCellOutlineDataSourceFactory" as const;
 export const INotebookCellOutlineDataSourceFactorySourcePath = "vs/workbench/contrib/notebook/browser/viewModel/notebookOutlineDataSourceFactory.ts" as const;
 export const INotebookCellOutlineDataSourceFactorySourceLine = 23 as const;

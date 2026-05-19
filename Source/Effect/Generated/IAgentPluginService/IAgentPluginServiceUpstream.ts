@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IAgentPluginServiceTag = "agentPluginService" as const;
 export const IAgentPluginServiceSourcePath = "vs/workbench/contrib/chat/common/plugins/agentPluginService.ts" as const;
 export const IAgentPluginServiceSourceLine = 17 as const;

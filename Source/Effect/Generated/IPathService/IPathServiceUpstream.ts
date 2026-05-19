@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IPathServiceTag = "pathService" as const;
 export const IPathServiceSourcePath = "vs/workbench/services/path/common/pathService.ts" as const;
 export const IPathServiceSourceLine = 18 as const;

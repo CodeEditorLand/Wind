@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IWorkspaceEditingServiceTag = "workspaceEditingService" as const;
 export const IWorkspaceEditingServiceSourcePath = "vs/workbench/services/workspaces/common/workspaceEditing.ts" as const;
 export const IWorkspaceEditingServiceSourceLine = 12 as const;

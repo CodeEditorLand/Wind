@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IStatusbarServiceTag = "statusbarService" as const;
 export const IStatusbarServiceSourcePath = "vs/workbench/services/statusbar/browser/statusbar.ts" as const;
 export const IStatusbarServiceSourceLine = 15 as const;

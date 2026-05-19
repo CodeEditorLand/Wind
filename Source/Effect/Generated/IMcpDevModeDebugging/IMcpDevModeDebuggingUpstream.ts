@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IMcpDevModeDebuggingTag = "mcpDevModeDebugging" as const;
 export const IMcpDevModeDebuggingSourcePath = "vs/workbench/contrib/mcp/common/mcpDevMode.ts" as const;
 export const IMcpDevModeDebuggingSourceLine = 114 as const;

@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ITerminalProfileServiceTag = "terminalProfileService" as const;
 export const ITerminalProfileServiceSourcePath = "vs/workbench/contrib/terminal/common/terminal.ts" as const;
 export const ITerminalProfileServiceSourceLine = 67 as const;

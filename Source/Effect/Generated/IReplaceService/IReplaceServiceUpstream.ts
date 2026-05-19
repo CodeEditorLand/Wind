@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IReplaceServiceTag = "replaceService" as const;
 export const IReplaceServiceSourcePath = "vs/workbench/contrib/search/browser/replace.ts" as const;
 export const IReplaceServiceSourceLine = 10 as const;

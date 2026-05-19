@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IPluginInstallServiceTag = "pluginInstallService" as const;
 export const IPluginInstallServiceSourcePath = "vs/workbench/contrib/chat/common/plugins/pluginInstallService.ts" as const;
 export const IPluginInstallServiceSourceLine = 11 as const;

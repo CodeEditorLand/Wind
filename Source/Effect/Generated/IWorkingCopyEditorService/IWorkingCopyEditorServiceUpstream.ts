@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IWorkingCopyEditorServiceTag = "workingCopyEditorService" as const;
 export const IWorkingCopyEditorServiceSourcePath = "vs/workbench/services/workingCopy/common/workingCopyEditorService.ts" as const;
 export const IWorkingCopyEditorServiceSourceLine = 15 as const;

@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IWorkspaceExtensionsConfigServiceTag = "IWorkspaceExtensionsConfigService" as const;
 export const IWorkspaceExtensionsConfigServiceSourcePath = "vs/workbench/services/extensionRecommendations/common/workspaceExtensionsConfig.ts" as const;
 export const IWorkspaceExtensionsConfigServiceSourceLine = 30 as const;

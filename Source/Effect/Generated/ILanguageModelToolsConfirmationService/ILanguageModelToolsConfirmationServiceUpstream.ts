@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ILanguageModelToolsConfirmationServiceTag = "ILanguageModelToolsConfirmationService" as const;
 export const ILanguageModelToolsConfirmationServiceSourcePath = "vs/workbench/contrib/chat/common/tools/languageModelToolsConfirmationService.ts" as const;
 export const ILanguageModelToolsConfirmationServiceSourceLine = 137 as const;

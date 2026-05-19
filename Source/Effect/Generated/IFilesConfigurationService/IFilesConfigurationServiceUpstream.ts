@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IFilesConfigurationServiceTag = "filesConfigurationService" as const;
 export const IFilesConfigurationServiceSourcePath = "vs/workbench/services/filesConfiguration/common/filesConfigurationService.ts" as const;
 export const IFilesConfigurationServiceSourceLine = 75 as const;

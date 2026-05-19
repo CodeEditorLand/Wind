@@ -18,7 +18,6 @@
 import { Effect, Layer, Ref } from "effect";
 
 import { Commands } from "../Commands/Commands.js";
-import { IPC } from "../IPC.js";
 import type { EditorService } from "./Interface/EditorService.js";
 import { EditorServiceTag } from "./Tag/EditorServiceTag.js";
 import type { EditorProblem } from "./Type/EditorProblem.js";
@@ -32,7 +31,6 @@ export const LiveEditorServiceLayer = Layer.effect(
 	EditorServiceTag,
 
 	Effect.gen(function* () {
-		const IPCService = yield* IPC;
 		const CommandsService = yield* Commands;
 
 		// In-memory state for active and visible editors.

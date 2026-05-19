@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ITextMateTokenizationServiceTag = "textMateTokenizationFeature" as const;
 export const ITextMateTokenizationServiceSourcePath = "vs/workbench/services/textMate/browser/textMateTokenizationFeature.ts" as const;
 export const ITextMateTokenizationServiceSourceLine = 9 as const;

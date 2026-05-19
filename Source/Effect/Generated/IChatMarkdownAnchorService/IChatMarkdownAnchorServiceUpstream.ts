@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IChatMarkdownAnchorServiceTag = "chatMarkdownAnchorService" as const;
 export const IChatMarkdownAnchorServiceSourcePath = "vs/workbench/contrib/chat/browser/widget/chatContentParts/chatMarkdownAnchorService.ts" as const;
 export const IChatMarkdownAnchorServiceSourceLine = 12 as const;

@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ITerminalCompletionServiceTag = "terminalCompletionService" as const;
 export const ITerminalCompletionServiceSourcePath = "vs/workbench/contrib/terminalContrib/suggest/browser/terminalCompletionService.ts" as const;
 export const ITerminalCompletionServiceSourceLine = 27 as const;

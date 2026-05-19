@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IExtensionHostProfileServiceTag = "extensionHostProfileService" as const;
 export const IExtensionHostProfileServiceSourcePath = "vs/workbench/contrib/extensions/electron-browser/runtimeExtensionsEditor.ts" as const;
 export const IExtensionHostProfileServiceSourceLine = 41 as const;

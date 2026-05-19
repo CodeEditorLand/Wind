@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IUserDataInitializationServiceTag = "IUserDataInitializationService" as const;
 export const IUserDataInitializationServiceSourcePath = "vs/workbench/services/userData/browser/userDataInit.ts" as const;
 export const IUserDataInitializationServiceSourceLine = 22 as const;

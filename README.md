@@ -120,29 +120,48 @@ graph LR
     classDef tauri    fill:#ffe0f0,stroke:#c0396a,stroke-width:2px,color:#4a0020;
     classDef mountain fill:#f0d0ff,stroke:#9b59b6,stroke-width:2px,color:#2c0050;
     classDef effectts fill:#d4f5d4,stroke:#27ae60,stroke-width:1px,color:#0a3a0a;
+    classDef ipc      fill:#fff3c0,stroke:#f39c12,stroke-width:1px,stroke-dasharray:5 5,color:#5a3e00;
 
-    subgraph "Sky - Frontend UI (Tauri WebView)&#x2001;🌌"
-        SkyApp["Sky Application - VS Code UI&#x2001;🖼️"]:::sky
+    subgraph SKY["Sky 🌌 - Astro UI (Tauri WebView)"]
+        SkyApp["Sky Workbench Pages 🖼️"]:::sky
     end
 
-    subgraph "Wind - VS Code Env & Services Layer (WebView)&#x2001;🍃"
-        PreloadJS["Preload.js - Environment Shim&#x2001;🔌"]:::wind
-        WindEffectTSRuntime["Wind Effect-TS Runtime & Service Layers&#x2001;⚡"]:::effectts
-        TauriIntegrations["Wind Effect Services - Tauri API Wrappers&#x2001;🍃"]:::wind
+    subgraph WIND["Wind 🍃 - VS Code Env + Effect-TS Service Layer (WebView)"]
+        direction TB
+        subgraph COMPAT["Compatibility Layer"]
+            Preload["Preload.ts - window.vscode + ipcRenderer shim 🔌"]:::wind
+            Sandbox["Effect/Sandbox - globals service"]:::wind
+        end
+        subgraph EFFECTLAYERS["Effect/ - 40+ Service Modules"]
+            TauriLayer["Effect/Layers/Tauri.ts - TauriLiveLayer ⚡"]:::effectts
+            ElectronLayer["Effect/Layers/Electron.ts"]:::effectts
+            CoreServices["IPC · Mountain · MountainSync · Bootstrap\nConfiguration · Lifecycle · Storage · Telemetry"]:::effectts
+            UIServices["Clipboard · Commands · Editor · Terminal\nStatusBar · Sidebar · ActivityBar · Panel\nSearch · Notifications · QuickInput…"]:::effectts
+            WorkbenchServices["Workbench* generated bridge services"]:::wind
+        end
+        subgraph IPCBRIDGE["Service/TauriMainProcessService.ts"]
+            TauriSvc["IPC channel router + event bridge 📡"]:::ipc
+        end
 
-        SkyApp -- consumes --> WindEffectTSRuntime
-        WindEffectTSRuntime -- executes via --> TauriIntegrations
+        Preload --> Sandbox
+        Preload --> TauriLayer
+        TauriLayer --> CoreServices
+        TauriLayer --> UIServices
+        TauriLayer --> WorkbenchServices
+        CoreServices --> TauriSvc
     end
 
-    subgraph "Tauri Core & Mountain - Rust Backend&#x2001;⛰️"
-        TauriAPIs["Tauri JS API & Plugins&#x2001;⚙️"]:::tauri
-        MountainBackend["Mountain Rust Core - Command Handlers&#x2001;🦀"]:::mountain
+    subgraph BACKEND["Tauri Shell + Mountain ⛰️ - Rust Backend"]
+        TauriAPI["Tauri JS API / @tauri-apps/api ⚙️"]:::tauri
+        MountainCore["Mountain - WindServiceHandlers 🦀"]:::mountain
     end
 
-    TauriWindow["Tauri Window&#x2001;🔯"] -- loads --> PreloadJS
-    PreloadJS -- prepares env for --> SkyApp
-    TauriIntegrations -- calls --> TauriAPIs
-    TauriAPIs -- communicates with --> MountainBackend
+    SkyApp -- imports TauriLiveLayer --> TauriLayer
+    SkyApp -- consumes services via __CEL_SERVICES__ --> UIServices
+    TauriSvc -- tauri::invoke --> TauriAPI
+    TauriAPI -- Rust command handlers --> MountainCore
+    MountainCore -- sky:// Tauri events --> TauriSvc
+    TauriSvc -- event bridge --> SkyApp
 ```
 
 ---

@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ILanguageModelIgnoredFilesServiceTag = "languageModelIgnoredFilesService" as const;
 export const ILanguageModelIgnoredFilesServiceSourcePath = "vs/workbench/contrib/chat/common/ignoredFiles.ts" as const;
 export const ILanguageModelIgnoredFilesServiceSourceLine = 15 as const;

@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IDynamicAuthenticationProviderStorageServiceTag = "dynamicAuthenticationProviderStorageService" as const;
 export const IDynamicAuthenticationProviderStorageServiceSourcePath = "vs/workbench/services/authentication/common/dynamicAuthenticationProviderStorage.ts" as const;
 export const IDynamicAuthenticationProviderStorageServiceSourceLine = 10 as const;

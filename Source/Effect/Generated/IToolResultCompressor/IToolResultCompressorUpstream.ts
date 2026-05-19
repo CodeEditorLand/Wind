@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IToolResultCompressorTag = "IToolResultCompressor" as const;
 export const IToolResultCompressorSourcePath = "vs/workbench/contrib/chat/common/tools/toolResultCompressor.ts" as const;
 export const IToolResultCompressorSourceLine = 9 as const;

@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IAiEditTelemetryServiceTag = "aiEditTelemetryService" as const;
 export const IAiEditTelemetryServiceSourcePath = "vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts" as const;
 export const IAiEditTelemetryServiceSourceLine = 10 as const;

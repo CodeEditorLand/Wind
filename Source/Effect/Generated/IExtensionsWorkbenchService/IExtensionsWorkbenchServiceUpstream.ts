@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IExtensionsWorkbenchServiceTag = "extensionsWorkbenchService" as const;
 export const IExtensionsWorkbenchServiceSourcePath = "vs/workbench/contrib/extensions/common/extensions.ts" as const;
 export const IExtensionsWorkbenchServiceSourceLine = 114 as const;

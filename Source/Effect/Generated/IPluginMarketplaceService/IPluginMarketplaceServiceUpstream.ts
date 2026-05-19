@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IPluginMarketplaceServiceTag = "pluginMarketplaceService" as const;
 export const IPluginMarketplaceServiceSourcePath = "vs/workbench/contrib/chat/common/plugins/pluginMarketplaceService.ts" as const;
 export const IPluginMarketplaceServiceSourceLine = 141 as const;

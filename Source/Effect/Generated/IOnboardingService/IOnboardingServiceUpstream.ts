@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IOnboardingServiceTag = "onboardingService" as const;
 export const IOnboardingServiceSourcePath = "vs/workbench/contrib/welcomeOnboarding/common/onboardingService.ts" as const;
 export const IOnboardingServiceSourceLine = 9 as const;

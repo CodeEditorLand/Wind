@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IChatInputNotificationServiceTag = "chatInputNotificationService" as const;
 export const IChatInputNotificationServiceSourcePath = "vs/workbench/contrib/chat/browser/widget/input/chatInputNotificationService.ts" as const;
 export const IChatInputNotificationServiceSourceLine = 36 as const;

@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IChatResponseResourceFileSystemProviderTag = "chatResponseResourceFileSystemProvider" as const;
 export const IChatResponseResourceFileSystemProviderSourcePath = "vs/workbench/contrib/chat/common/widget/chatResponseResourceFileSystemProvider.ts" as const;
 export const IChatResponseResourceFileSystemProviderSourceLine = 20 as const;

@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IPromptsServiceTag = "IPromptsService" as const;
 export const IPromptsServiceSourcePath = "vs/workbench/contrib/chat/common/promptSyntax/service/promptsService.ts" as const;
 export const IPromptsServiceSourceLine = 109 as const;

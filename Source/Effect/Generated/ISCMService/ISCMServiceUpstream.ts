@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ISCMServiceTag = "scm" as const;
 export const ISCMServiceSourcePath = "vs/workbench/contrib/scm/common/scm.ts" as const;
 export const ISCMServiceSourceLine = 35 as const;

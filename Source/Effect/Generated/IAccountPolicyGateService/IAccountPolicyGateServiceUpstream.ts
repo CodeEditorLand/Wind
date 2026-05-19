@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IAccountPolicyGateServiceTag = "accountPolicyGateService" as const;
 export const IAccountPolicyGateServiceSourcePath = "vs/workbench/services/policies/common/accountPolicyService.ts" as const;
 export const IAccountPolicyGateServiceSourceLine = 53 as const;

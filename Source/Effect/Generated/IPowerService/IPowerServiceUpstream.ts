@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IPowerServiceTag = "powerService" as const;
 export const IPowerServiceSourcePath = "vs/workbench/services/power/common/powerService.ts" as const;
 export const IPowerServiceSourceLine = 24 as const;

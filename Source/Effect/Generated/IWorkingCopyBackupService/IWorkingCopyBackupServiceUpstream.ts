@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IWorkingCopyBackupServiceTag = "workingCopyBackupService" as const;
 export const IWorkingCopyBackupServiceSourcePath = "vs/workbench/services/workingCopy/common/workingCopyBackup.ts" as const;
 export const IWorkingCopyBackupServiceSourceLine = 11 as const;

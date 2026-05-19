@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IDebugVisualizerServiceTag = "debugVisualizerService" as const;
 export const IDebugVisualizerServiceSourcePath = "vs/workbench/contrib/debug/common/debugVisualizers.ts" as const;
 export const IDebugVisualizerServiceSourceLine = 19 as const;

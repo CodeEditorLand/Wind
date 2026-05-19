@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ILanguageModelStatsServiceTag = "ILanguageModelStatsService" as const;
 export const ILanguageModelStatsServiceSourcePath = "vs/workbench/contrib/chat/common/languageModelStats.ts" as const;
 export const ILanguageModelStatsServiceSourceLine = 15 as const;

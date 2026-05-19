@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IQuickDiffServiceTag = "quickDiff" as const;
 export const IQuickDiffServiceSourcePath = "vs/workbench/contrib/scm/common/quickDiff.ts" as const;
 export const IQuickDiffServiceSourceLine = 23 as const;

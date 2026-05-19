@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IInlineCompletionsUnificationServiceTag = "inlineCompletionsUnificationService" as const;
 export const IInlineCompletionsUnificationServiceSourcePath = "vs/workbench/services/inlineCompletions/common/inlineCompletionsUnification.ts" as const;
 export const IInlineCompletionsUnificationServiceSourceLine = 20 as const;

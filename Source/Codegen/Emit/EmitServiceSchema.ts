@@ -152,7 +152,7 @@ const FormatOutput = (record: ServiceDecoratorRecord): string => {
 
 		"",
 
-		`import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";`,
+		`import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";`,
 
 		"",
 

@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ITrustedDomainServiceTag = "ITrustedDomainService" as const;
 export const ITrustedDomainServiceSourcePath = "vs/workbench/contrib/url/common/trustedDomainService.ts" as const;
 export const ITrustedDomainServiceSourceLine = 10 as const;

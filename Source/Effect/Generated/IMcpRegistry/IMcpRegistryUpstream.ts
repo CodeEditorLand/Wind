@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IMcpRegistryTag = "mcpRegistry" as const;
 export const IMcpRegistrySourcePath = "vs/workbench/contrib/mcp/common/mcpRegistryTypes.ts" as const;
 export const IMcpRegistrySourceLine = 19 as const;

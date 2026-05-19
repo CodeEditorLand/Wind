@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ITerminalChatServiceTag = "terminalChatService" as const;
 export const ITerminalChatServiceSourcePath = "vs/workbench/contrib/terminal/browser/terminal.ts" as const;
 export const ITerminalChatServiceSourceLine = 45 as const;

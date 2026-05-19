@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IUserAttentionServiceTag = "userAttentionService" as const;
 export const IUserAttentionServiceSourcePath = "vs/workbench/services/userAttention/common/userAttentionService.ts" as const;
 export const IUserAttentionServiceSourceLine = 10 as const;

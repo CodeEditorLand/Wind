@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IRemoteCodingAgentsServiceTag = "remoteCodingAgentsService" as const;
 export const IRemoteCodingAgentsServiceSourcePath = "vs/workbench/contrib/remoteCodingAgents/common/remoteCodingAgentsService.ts" as const;
 export const IRemoteCodingAgentsServiceSourceLine = 29 as const;

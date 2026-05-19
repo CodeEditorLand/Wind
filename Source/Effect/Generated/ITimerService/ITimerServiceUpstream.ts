@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ITimerServiceTag = "timerService" as const;
 export const ITimerServiceSourcePath = "vs/workbench/services/timer/browser/timerService.ts" as const;
 export const ITimerServiceSourceLine = 476 as const;

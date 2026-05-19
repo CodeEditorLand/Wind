@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IEnvironmentVariableServiceTag = "environmentVariableService" as const;
 export const IEnvironmentVariableServiceSourcePath = "vs/workbench/contrib/terminal/common/environmentVariable.ts" as const;
 export const IEnvironmentVariableServiceSourceLine = 11 as const;

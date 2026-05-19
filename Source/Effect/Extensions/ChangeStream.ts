@@ -26,7 +26,7 @@ import { Effect, Stream } from "effect";
 
 import SkyEvent from "../../IPC/SkyEvent.js";
 import { IPC } from "../IPC.js";
-import type { IPCSubscriptionError } from "../IPC/Type/IPCError.js";
+import type { IPCSubscriptionError } from "../IPC/Error/IPCError.js";
 
 export type ExtensionChange =
 	| {

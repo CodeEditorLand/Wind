@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IPluginGitServiceTag = "pluginGitService" as const;
 export const IPluginGitServiceSourcePath = "vs/workbench/contrib/chat/common/plugins/pluginGitCommandService.ts" as const;
 export const IPluginGitServiceSourceLine = 10 as const;

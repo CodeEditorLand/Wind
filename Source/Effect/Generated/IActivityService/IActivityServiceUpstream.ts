@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IActivityServiceTag = "activityService" as const;
 export const IActivityServiceSourcePath = "vs/workbench/services/activity/common/activity.ts" as const;
 export const IActivityServiceSourceLine = 20 as const;

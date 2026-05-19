@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IDecorationsServiceTag = "IFileDecorationsService" as const;
 export const IDecorationsServiceSourcePath = "vs/workbench/services/decorations/common/decorations.ts" as const;
 export const IDecorationsServiceSourceLine = 14 as const;

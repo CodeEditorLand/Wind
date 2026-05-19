@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IPlanReviewFeedbackServiceTag = "planReviewFeedbackService" as const;
 export const IPlanReviewFeedbackServiceSourcePath = "vs/workbench/contrib/chat/browser/planReviewFeedback/planReviewFeedbackService.ts" as const;
 export const IPlanReviewFeedbackServiceSourceLine = 20 as const;

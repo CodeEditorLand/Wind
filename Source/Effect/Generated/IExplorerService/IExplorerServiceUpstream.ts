@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IExplorerServiceTag = "explorerService" as const;
 export const IExplorerServiceSourcePath = "vs/workbench/contrib/files/browser/files.ts" as const;
 export const IExplorerServiceSourceLine = 50 as const;

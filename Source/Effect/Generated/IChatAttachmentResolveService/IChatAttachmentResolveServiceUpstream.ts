@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IChatAttachmentResolveServiceTag = "IChatAttachmentResolveService" as const;
 export const IChatAttachmentResolveServiceSourcePath = "vs/workbench/contrib/chat/browser/attachments/chatAttachmentResolveService.ts" as const;
 export const IChatAttachmentResolveServiceSourceLine = 35 as const;

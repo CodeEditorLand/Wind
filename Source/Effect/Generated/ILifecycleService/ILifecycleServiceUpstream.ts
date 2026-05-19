@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ILifecycleServiceTag = "lifecycleService" as const;
 export const ILifecycleServiceSourcePath = "vs/workbench/services/lifecycle/common/lifecycle.ts" as const;
 export const ILifecycleServiceSourceLine = 10 as const;

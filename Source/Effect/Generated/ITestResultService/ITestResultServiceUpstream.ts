@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ITestResultServiceTag = "testResultService" as const;
 export const ITestResultServiceSourcePath = "vs/workbench/contrib/testing/common/testResultService.ts" as const;
 export const ITestResultServiceSourceLine = 73 as const;

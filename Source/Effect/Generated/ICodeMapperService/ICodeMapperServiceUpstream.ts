@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ICodeMapperServiceTag = "codeMapperService" as const;
 export const ICodeMapperServiceSourcePath = "vs/workbench/contrib/chat/common/editing/chatCodeMapperService.ts" as const;
 export const ICodeMapperServiceSourceLine = 41 as const;

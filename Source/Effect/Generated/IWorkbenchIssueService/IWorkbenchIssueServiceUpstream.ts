@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IWorkbenchIssueServiceTag = "workbenchIssueService" as const;
 export const IWorkbenchIssueServiceSourcePath = "vs/workbench/contrib/issue/common/issue.ts" as const;
 export const IWorkbenchIssueServiceSourceLine = 105 as const;

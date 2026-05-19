@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IChatToolRiskAssessmentServiceTag = "chatToolRiskAssessmentService" as const;
 export const IChatToolRiskAssessmentServiceSourcePath = "vs/workbench/contrib/chat/browser/tools/chatToolRiskAssessmentService.ts" as const;
 export const IChatToolRiskAssessmentServiceSourceLine = 29 as const;

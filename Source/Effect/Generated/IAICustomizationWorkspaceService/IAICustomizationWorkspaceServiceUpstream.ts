@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IAICustomizationWorkspaceServiceTag = "aiCustomizationWorkspaceService" as const;
 export const IAICustomizationWorkspaceServiceSourcePath = "vs/workbench/contrib/chat/common/aiCustomizationWorkspaceService.ts" as const;
 export const IAICustomizationWorkspaceServiceSourceLine = 14 as const;

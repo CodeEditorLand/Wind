@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IChatLayoutServiceTag = "chatLayoutService" as const;
 export const IChatLayoutServiceSourcePath = "vs/workbench/contrib/chat/common/widget/chatLayoutService.ts" as const;
 export const IChatLayoutServiceSourceLine = 9 as const;

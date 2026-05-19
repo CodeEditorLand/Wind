@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IExtensionUrlHandlerTag = "extensionUrlHandler" as const;
 export const IExtensionUrlHandlerSourcePath = "vs/workbench/services/extensions/browser/extensionUrlHandler.ts" as const;
 export const IExtensionUrlHandlerSourceLine = 68 as const;

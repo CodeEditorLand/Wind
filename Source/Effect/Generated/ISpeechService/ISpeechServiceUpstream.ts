@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ISpeechServiceTag = "speechService" as const;
 export const ISpeechServiceSourcePath = "vs/workbench/contrib/speech/common/speechService.ts" as const;
 export const ISpeechServiceSourceLine = 15 as const;

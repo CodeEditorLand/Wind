@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IUserDataProfileManagementServiceTag = "IUserDataProfileManagementService" as const;
 export const IUserDataProfileManagementServiceSourcePath = "vs/workbench/services/userDataProfile/common/userDataProfile.ts" as const;
 export const IUserDataProfileManagementServiceSourceLine = 39 as const;

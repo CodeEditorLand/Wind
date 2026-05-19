@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ITestCoverageServiceTag = "testCoverageService" as const;
 export const ITestCoverageServiceSourcePath = "vs/workbench/contrib/testing/common/testCoverageService.ts" as const;
 export const ITestCoverageServiceSourceLine = 23 as const;

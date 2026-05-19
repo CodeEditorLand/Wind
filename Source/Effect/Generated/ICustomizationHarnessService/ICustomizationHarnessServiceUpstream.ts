@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ICustomizationHarnessServiceTag = "customizationHarnessService" as const;
 export const ICustomizationHarnessServiceSourcePath = "vs/workbench/contrib/chat/common/customizationHarnessService.ts" as const;
 export const ICustomizationHarnessServiceSourceLine = 25 as const;

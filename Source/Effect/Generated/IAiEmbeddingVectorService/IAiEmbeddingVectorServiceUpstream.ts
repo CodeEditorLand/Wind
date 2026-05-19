@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const IAiEmbeddingVectorServiceTag = "IAiEmbeddingVectorService" as const;
 export const IAiEmbeddingVectorServiceSourcePath = "vs/workbench/services/aiEmbeddingVector/common/aiEmbeddingVectorService.ts" as const;
 export const IAiEmbeddingVectorServiceSourceLine = 14 as const;

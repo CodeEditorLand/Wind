@@ -4,7 +4,7 @@
  * DO NOT EDIT BY HAND. Re-run codegen to refresh.
  */
 
-import type { InterfaceMemberRecord } from "../../Codegen/Type/InterfaceMemberRecord.js";
+import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
 export const ITestingPeekOpenerTag = "testingPeekOpener" as const;
 export const ITestingPeekOpenerSourcePath = "vs/workbench/contrib/testing/common/testingPeekOpener.ts" as const;
 export const ITestingPeekOpenerSourceLine = 55 as const;
