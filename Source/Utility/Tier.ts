@@ -129,6 +129,9 @@ const Tier = {
 	ModuleCache: Pick<TierModuleCacheValue>("ModuleCache", "Simple"),
 
 	Telemetry: Pick<TierTelemetryValue>("Telemetry", "Synchronous"),
+
+	// IPC routing: Mountain (default) → NodeDeferred → Node
+	IPC: Pick<TierIPCValue>("IPC", "Mountain"),
 } as const;
 
 // One-shot boot banner - visible in browser DevTools.
