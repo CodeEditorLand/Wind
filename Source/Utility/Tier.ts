@@ -61,6 +61,9 @@ export type TierModuleCacheValue = "Off" | "Simple" | "Shared";
 // Telemetry tiers ------------------------------------------------------------
 export type TierTelemetryValue = "Synchronous" | "Batched" | "Off";
 
+// IPC routing tiers ----------------------------------------------------------
+export type TierIPCValue = "Mountain" | "NodeDeferred" | "Node";
+
 // Resolution -----------------------------------------------------------------
 const EnvMeta = ((import.meta as unknown as { env?: Record<string, string> })
 	.env ?? {}) as Record<string, string | undefined>;
