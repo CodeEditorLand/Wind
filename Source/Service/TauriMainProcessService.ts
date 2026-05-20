@@ -611,7 +611,8 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 //   "Node"         - all calls go to Cocoon via cocoon:request (pure Node.js)
 const _TierIPC: string =
 	(import.meta as any).env?.TierIPC ??
-	((globalThis as { __LandTiers?: Record<string, unknown> }).__LandTiers?.TierIPC as string | undefined) ??
+	((globalThis as { __LandTiers?: Record<string, unknown> }).__LandTiers
+		?.TierIPC as string | undefined) ??
 	"Mountain";
 
 // Forward a call to Cocoon's Node.js runtime via Mountain's `cocoon:request`
