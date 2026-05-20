@@ -45,12 +45,23 @@ export default {
 
 	DocumentsSaved: "sky://documents/saved",
 
+	// --- Decorations ---
+	DecorationSetRanges: "sky://decoration/set-ranges",
+
 	// --- Editor ---
 	EditorApplyEdits: "sky://editor/applyEdits",
+
+	EditorApplyTextEdits: "sky://editor/apply-text-edits",
+
+	EditorSelectionChanged: "sky://editor/selection-changed",
+
+	EditorActiveChanged: "sky://editor/active-changed",
 
 	EditorOpenDocument: "sky://editor/openDocument",
 
 	EditorSaveAll: "sky://editor/saveAll",
+
+	EditorRevealRange: "sky://editor/revealRange",
 
 	// --- Extensions ---
 	ExtensionsInstalled: "sky://extensions/installed",
