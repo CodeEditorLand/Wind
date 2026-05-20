@@ -602,6 +602,44 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 };
 
 // ============================================================================
+// Tier gate - dual-track IPC routing
+// ============================================================================
+
+// `TierIPC` values (from .env.Land via turbo globalEnv):
+//   "Mountain"     (default) - all calls go to Mountain/Tauri IPC
+//   "NodeDeferred" - Mountain first; fall through to Cocoon on undefined/miss
+//   "Node"         - all calls go to Cocoon via cocoon:request (pure Node.js)
+const _TierIPC: string =
+	(import.meta as any).env?.TierIPC ??
+	(typeof __LAND_TIERS__ !== "undefined" &&
+		(__LAND_TIERS__ as any).TierIPC) ??
+	"Mountain";
+
+// Forward a call to Cocoon's Node.js runtime via Mountain's `cocoon:request`
+// bridge. Mountain relays the call over gRPC to Cocoon, which owns the
+// Node.js implementation (extension host namespaces, workspace state, etc.).
+// Returns undefined when the Tauri invoke channel is unavailable (non-Tauri env).
+async function _InvokeViaNode(
+	Method: string,
+	Params: unknown[],
+): Promise<unknown> {
+	const Invoke =
+		(window as any).__TAURI__?.core?.invoke ??
+		(window as any).__TAURI__?.invoke;
+
+	if (typeof Invoke !== "function") return undefined;
+
+	try {
+		return await Invoke("MountainIPCInvoke", {
+			method: "cocoon:request",
+			params: [Method, Params.length === 1 ? Params[0] : Params],
+		});
+	} catch {
+		return undefined;
+	}
+}
+
+// ============================================================================
 // Tauri Invoke
 // ============================================================================
 
@@ -713,6 +751,15 @@ class TauriChannel implements IChannel {
 			const Params =
 				Arg !== undefined ? (Array.isArray(Arg) ? Arg : [Arg]) : [];
 
+			// Node track: bypass Mountain entirely, route straight to Cocoon.
+			if (_TierIPC === "Node") {
+				try {
+					return (await _InvokeViaNode(MountainMethod, Params)) as T;
+				} catch {
+					return undefined as T;
+				}
+			}
+
 			try {
 				const Result = await _TimedTrace("ipc", MountainMethod, () =>
 					InvokeMountain(MountainMethod, Params),
@@ -771,6 +818,20 @@ class TauriChannel implements IChannel {
 					throw WrappedError;
 				}
 				_Trace("ipc", `error:${this.ChannelName}.${Command}`);
+				return undefined as T;
+			}
+		}
+
+		// NodeDeferred: no Mountain route, no stub, but Cocoon may have a
+		// handler. Forward through the cocoon:request bridge so the Node.js
+		// extension host can service it. Returns undefined when unavailable.
+		if (_TierIPC === "NodeDeferred" || _TierIPC === "Node") {
+			const NodeMethod = `${this.ChannelName}:${Command}`;
+			const NodeParams =
+				Arg !== undefined ? (Array.isArray(Arg) ? Arg : [Arg]) : [];
+			try {
+				return (await _InvokeViaNode(NodeMethod, NodeParams)) as T;
+			} catch {
 				return undefined as T;
 			}
 		}

@@ -272,14 +272,8 @@ const ipcMessagePort = {
 							Bytes.slice(0, 500),
 						);
 
-						console.warn(
-							"[Extension Host] Init data received:",
-
-							Length,
-
-							"bytes, preview:",
-
-							Text.slice(0, 200),
+						_PreloadShimLog(
+							`[Extension Host] Init data received: ${Length} bytes, preview: ${Text.slice(0, 200)}`,
 						);
 					} catch {}
 
@@ -299,18 +293,12 @@ const ipcMessagePort = {
 						);
 					} catch {}
 
-					console.warn(
+					_PreloadShimLog(
 						"[Extension Host] Handshake complete - Initialized sent",
 					);
 				} else {
-					console.warn(
-						"[Extension Host] Handshake: ignoring control byte",
-
-						Length > 0
-							? new Uint8Array(
-									Data instanceof ArrayBuffer ? Data : Data,
-								)[0]
-							: "empty",
+					_PreloadShimLog(
+						`[Extension Host] Handshake: ignoring control byte ${Length > 0 ? new Uint8Array(Data instanceof ArrayBuffer ? Data : Data)[0] : "empty"}`,
 					);
 				}
 
@@ -338,14 +326,8 @@ const ipcMessagePort = {
 						Bytes.slice(0, 200),
 					);
 
-					console.warn(
-						`[Extension Host] RPC #${MessageCount}:`,
-
-						Length,
-
-						"bytes, preview:",
-
-						Preview.slice(0, 150),
+					_PreloadShimLog(
+						`[Extension Host] RPC #${MessageCount}: ${Length} bytes, preview: ${Preview.slice(0, 150)}`,
 					);
 				} catch {}
 			}
@@ -379,7 +361,7 @@ const ipcMessagePort = {
 			try {
 				performance.mark("land:exthost:handshake:ready-sent");
 			} catch {}
-			console.warn(
+			_PreloadShimLog(
 				"[Extension Host] Ready sent on MessagePort, waiting for init data...",
 			);
 		}, 50);

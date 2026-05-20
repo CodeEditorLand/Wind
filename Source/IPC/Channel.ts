@@ -380,6 +380,61 @@ export default {
 
 	WorkspacesRemoveRecentlyOpened: "workspaces:removeRecentlyOpened",
 
+	// Workspace event-channel stubs (ack-only; delivery via Tauri events).
+	WorkspacesOnDidChangeWorkspaceFolders:
+		"workspaces:onDidChangeWorkspaceFolders",
+
+	WorkspacesOnDidChangeWorkspaceName: "workspaces:onDidChangeWorkspaceName",
+
+	// Additional VS Code workspace service methods.
+	WorkspacesGetWorkspace: "workspaces:getWorkspace",
+
+	WorkspacesGetWorkspaceFolders: "workspaces:getWorkspaceFolders",
+
+	WorkspacesAddWorkspaceFolders: "workspaces:addWorkspaceFolders",
+
+	WorkspacesRemoveWorkspaceFolders: "workspaces:removeWorkspaceFolders",
+
+	// Storage event-channel stubs.
+	StorageOnDidChangeItems: "storage:onDidChangeItems",
+
+	StorageLogStorage: "storage:logStorage",
+
+	// --- Language features (dispatched to Cocoon via NodeDeferred track) ---
+	LanguagesGetAll: "languages:getAll",
+
+	LanguagesGetEncodedLanguageId: "languages:getEncodedLanguageId",
+
+	// --- SCM ---
+	ScmCreateSourceControl: "scm:createSourceControl",
+
+	ScmGetSourceControls: "scm:getSourceControls",
+
+	// --- Debug ---
+	DebugStartDebugging: "debug:startDebugging",
+
+	DebugStopDebugging: "debug:stopDebugging",
+
+	DebugGetSessions: "debug:getSessions",
+
+	DebugGetBreakpoints: "debug:getBreakpoints",
+
+	DebugAddBreakpoints: "debug:addBreakpoints",
+
+	DebugRemoveBreakpoints: "debug:removeBreakpoints",
+
+	// --- Tasks ---
+	TasksExecuteTask: "tasks:executeTask",
+
+	TasksGetTasks: "tasks:getTasks",
+
+	// --- Authentication ---
+	AuthGetSessions: "auth:getSessions",
+
+	AuthCreateSession: "auth:createSession",
+
+	AuthRemoveSession: "auth:removeSession",
+
 	// --- Legacy wire-shape channels (non prefix:method) ---
 	// Two historical channel groups don't follow the `prefix:method` shape
 	// the rest of the registry uses:

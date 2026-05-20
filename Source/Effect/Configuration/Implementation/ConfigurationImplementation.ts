@@ -10,6 +10,7 @@
 
 import { Effect, Layer, Schedule, Stream, SubscriptionRef } from "effect";
 
+import DevLog from "../../../Function/DevLog.js";
 import {
 	ConfigurationNotReadyError,
 	type ISandboxConfiguration,
@@ -212,7 +213,8 @@ export const ConfigurationWithSyncLive = Layer.effect(
 
 									Effect.catchAll((error) =>
 										Effect.sync(() => {
-											console.error(
+											DevLog(
+												"config",
 												"[Configuration] Sync error:",
 
 												error,
