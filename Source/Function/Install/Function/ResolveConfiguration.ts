@@ -432,6 +432,18 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 						path: "/User/mcp.json",
 					},
 
+					languageModelsResource: {
+						scheme: "vscode-userdata",
+
+						path: "/User/chatLanguageModels.json",
+					},
+
+					agentPluginsHome: {
+						scheme: "vscode-userdata",
+
+						path: "/User/agent-plugins",
+					},
+
 					cacheHome: {
 						scheme: "vscode-userdata",
 
@@ -499,6 +511,18 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 					scheme: "vscode-userdata",
 
 					path: "/User/mcp.json",
+				},
+
+				languageModelsResource: {
+					scheme: "vscode-userdata",
+
+					path: "/User/chatLanguageModels.json",
+				},
+
+				agentPluginsHome: {
+					scheme: "vscode-userdata",
+
+					path: "/User/agent-plugins",
 				},
 
 				cacheHome: {
