@@ -1,13 +1,15 @@
-export * from "./Constant/EnvironmentConstant.js";
-import { sep, posix } from "./Constant/PathConstant.js";
 import { default as default2 } from "./Config/BaseConfig.js";
-import { default as default3 } from "./Config/TargetConfig.js";
 import { default as default4 } from "./Config/CompileConfig.js";
+import { default as default3 } from "./Config/TargetConfig.js";
+import { posix, sep } from "./Constant/PathConstant.js";
+
+export * from "./Constant/EnvironmentConstant.js";
+
 export {
-  default2 as BaseConfig,
-  default4 as CompileConfig,
-  default3 as TargetConfig,
-  posix,
-  sep
+	default2 as BaseConfig,
+	default4 as CompileConfig,
+	default3 as TargetConfig,
+	posix,
+	sep,
 };
 //# sourceMappingURL=index.js.map
