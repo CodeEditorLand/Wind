@@ -13,7 +13,7 @@ export interface IProcessServiceUpstream {
 	resolveProcesses(): Promise<IResolvedProcessInformation>;
 	getSystemStatus(): Promise<string>;
 	getSystemInfo(): Promise<SystemInfo>;
-	getPerformanceInfo(): Promise<PerformanceInfo>;
+	getPerformanceInfo(options?: { skipCache?: boolean; unbounded?: boolean }): Promise<PerformanceInfo>;
 }
 export const IProcessServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
@@ -62,7 +62,7 @@ export const IProcessServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		Readonly: false,
 		Optional: false,
 		TypeText: "Promise<PerformanceInfo>",
-		Parameters: [],
+		Parameters: [{ Name: "options", TypeText: "{ skipCache?: boolean; unbounded?: boolean }", Optional: true }],
 		DocComment: null,
 		SourceLine: 50,
 	}

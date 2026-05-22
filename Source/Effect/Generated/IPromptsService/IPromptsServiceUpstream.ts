@@ -36,7 +36,7 @@ export const IPromptsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: "A single structured debug detail entry from the instructions context computer.",
-		SourceLine: 547,
+		SourceLine: 559,
 	},
 	{
 		Kind: "Method",
@@ -46,6 +46,6 @@ export const IPromptsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "string",
 		Parameters: [{ Name: "promptPath", TypeText: "IPromptPath", Optional: false }],
 		DocComment: "A single structured debug detail entry from the instructions context computer.",
-		SourceLine: 631,
+		SourceLine: 643,
 	}
 ] as const;

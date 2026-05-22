@@ -11,6 +11,8 @@ export const ISandboxHelperServiceSourceLine = 8 as const;
 export interface ISandboxHelperServiceUpstream {
 	readonly _serviceBrand: undefined;
 	checkSandboxDependencies(): Promise<ISandboxDependencyStatus | undefined>;
+	getWindowsMxcFilesystemPolicy(): Promise<IWindowsMxcFilesystemPolicy | undefined>;
+	getWindowsMxcEnvironment(): Promise<string[] | undefined>;
 }
 export const ISandboxHelperServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
@@ -21,7 +23,7 @@ export const ISandboxHelperServiceMembers: ReadonlyArray<InterfaceMemberRecord> 
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: null,
-		SourceLine: 16,
+		SourceLine: 21,
 	},
 	{
 		Kind: "Method",
@@ -31,6 +33,26 @@ export const ISandboxHelperServiceMembers: ReadonlyArray<InterfaceMemberRecord> 
 		TypeText: "Promise<ISandboxDependencyStatus | undefined>",
 		Parameters: [],
 		DocComment: null,
-		SourceLine: 17,
+		SourceLine: 22,
+	},
+	{
+		Kind: "Method",
+		Name: "getWindowsMxcFilesystemPolicy",
+		Readonly: false,
+		Optional: false,
+		TypeText: "Promise<IWindowsMxcFilesystemPolicy | undefined>",
+		Parameters: [],
+		DocComment: null,
+		SourceLine: 23,
+	},
+	{
+		Kind: "Method",
+		Name: "getWindowsMxcEnvironment",
+		Readonly: false,
+		Optional: false,
+		TypeText: "Promise<string[] | undefined>",
+		Parameters: [],
+		DocComment: null,
+		SourceLine: 24,
 	}
 ] as const;

@@ -23,9 +23,9 @@ export interface CommandCatalogEntry {
 	readonly HasKeybinding: boolean;
 }
 
-export const CommandCatalogVersion = "2026-05-21" as const;
+export const CommandCatalogVersion = "2026-05-22" as const;
 
-export const CommandCatalogTotal = 545 as const;
+export const CommandCatalogTotal = 550 as const;
 
 export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 	{
@@ -312,7 +312,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "_issues.getSystemStatus",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/issue/electron-browser/issue.contribution.ts",
-		SourceLine: 98,
+		SourceLine: 145,
 		HasKeybinding: false,
 	},
 	{
@@ -886,7 +886,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "5_flip",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/files/browser/views/openEditorsView.ts",
-		SourceLine: 870,
+		SourceLine: 871,
 		HasKeybinding: false,
 	},
 	{
@@ -1093,6 +1093,41 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		HasKeybinding: false,
 	},
 	{
+		CommandIdentifier: "browser.emulationToolbar.close",
+		Kind: "MenuRegistry",
+		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
+		SourceLine: 811,
+		HasKeybinding: false,
+	},
+	{
+		CommandIdentifier: "browser.emulationToolbar.mobile",
+		Kind: "MenuRegistry",
+		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
+		SourceLine: 841,
+		HasKeybinding: false,
+	},
+	{
+		CommandIdentifier: "browser.emulationToolbar.presets",
+		Kind: "MenuRegistry",
+		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
+		SourceLine: 916,
+		HasKeybinding: false,
+	},
+	{
+		CommandIdentifier: "browser.emulationToolbar.reset",
+		Kind: "MenuRegistry",
+		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
+		SourceLine: 989,
+		HasKeybinding: false,
+	},
+	{
+		CommandIdentifier: "browser.emulationToolbar.userAgent",
+		Kind: "MenuRegistry",
+		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
+		SourceLine: 959,
+		HasKeybinding: false,
+	},
+	{
 		CommandIdentifier: "Category",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
@@ -1124,21 +1159,21 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "chat.internal.explain",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSetup/chatSetupContributions.ts",
-		SourceLine: 566,
+		SourceLine: 571,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "chat.internal.fix",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSetup/chatSetupContributions.ts",
-		SourceLine: 625,
+		SourceLine: 630,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "chat.internal.review",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSetup/chatSetupContributions.ts",
-		SourceLine: 638,
+		SourceLine: 643,
 		HasKeybinding: false,
 	},
 	{

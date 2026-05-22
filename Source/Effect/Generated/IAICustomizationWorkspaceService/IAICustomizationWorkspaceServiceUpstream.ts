@@ -29,6 +29,6 @@ export const IAICustomizationWorkspaceServiceMembers: ReadonlyArray<InterfaceMem
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: "Extended storage type for AI Customization that includes built-in prompts\nshipped with the application, alongside the core `PromptsStorage` values.",
-		SourceLine: 91,
+		SourceLine: 118,
 	}
 ] as const;

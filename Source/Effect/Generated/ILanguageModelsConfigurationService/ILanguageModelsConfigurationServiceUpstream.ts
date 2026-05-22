@@ -27,7 +27,7 @@ export const ILanguageModelsConfigurationServiceMembers: ReadonlyArray<Interface
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: null,
-		SourceLine: 20,
+		SourceLine: 21,
 	},
 	{
 		Kind: "Property",
@@ -37,7 +37,7 @@ export const ILanguageModelsConfigurationServiceMembers: ReadonlyArray<Interface
 		TypeText: "URI",
 		Parameters: [],
 		DocComment: null,
-		SourceLine: 20,
+		SourceLine: 21,
 	},
 	{
 		Kind: "Event",
@@ -47,7 +47,7 @@ export const ILanguageModelsConfigurationServiceMembers: ReadonlyArray<Interface
 		TypeText: "Event<readonly ILanguageModelsProviderGroup[]>",
 		Parameters: [],
 		DocComment: null,
-		SourceLine: 20,
+		SourceLine: 21,
 	},
 	{
 		Kind: "Method",
@@ -57,7 +57,7 @@ export const ILanguageModelsConfigurationServiceMembers: ReadonlyArray<Interface
 		TypeText: "readonly ILanguageModelsProviderGroup[]",
 		Parameters: [],
 		DocComment: null,
-		SourceLine: 26,
+		SourceLine: 27,
 	},
 	{
 		Kind: "Method",
@@ -67,7 +67,7 @@ export const ILanguageModelsConfigurationServiceMembers: ReadonlyArray<Interface
 		TypeText: "Promise<ILanguageModelsProviderGroup>",
 		Parameters: [{ Name: "languageModelsProviderGroup", TypeText: "ILanguageModelsProviderGroup", Optional: false }],
 		DocComment: null,
-		SourceLine: 28,
+		SourceLine: 29,
 	},
 	{
 		Kind: "Method",
@@ -77,7 +77,7 @@ export const ILanguageModelsConfigurationServiceMembers: ReadonlyArray<Interface
 		TypeText: "Promise<ILanguageModelsProviderGroup>",
 		Parameters: [{ Name: "from", TypeText: "ILanguageModelsProviderGroup", Optional: false }, { Name: "to", TypeText: "ILanguageModelsProviderGroup", Optional: false }],
 		DocComment: null,
-		SourceLine: 30,
+		SourceLine: 31,
 	},
 	{
 		Kind: "Method",
@@ -87,7 +87,7 @@ export const ILanguageModelsConfigurationServiceMembers: ReadonlyArray<Interface
 		TypeText: "Promise<void>",
 		Parameters: [{ Name: "languageModelGroup", TypeText: "ILanguageModelsProviderGroup", Optional: false }],
 		DocComment: null,
-		SourceLine: 32,
+		SourceLine: 33,
 	},
 	{
 		Kind: "Method",
@@ -97,6 +97,6 @@ export const ILanguageModelsConfigurationServiceMembers: ReadonlyArray<Interface
 		TypeText: "Promise<void>",
 		Parameters: [{ Name: "options", TypeText: "ConfigureLanguageModelsOptions", Optional: true }],
 		DocComment: null,
-		SourceLine: 34,
+		SourceLine: 35,
 	}
 ] as const;

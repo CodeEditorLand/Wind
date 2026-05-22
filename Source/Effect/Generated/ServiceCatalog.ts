@@ -19,9 +19,9 @@ export interface ServiceCatalogEntry {
 	readonly MemberCount: number;
 }
 
-export const ServiceCatalogVersion = "2026-05-21" as const;
+export const ServiceCatalogVersion = "2026-05-22" as const;
 
-export const ServiceCatalogTotal = 495 as const;
+export const ServiceCatalogTotal = 500 as const;
 
 export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 	{
@@ -117,7 +117,15 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "agentHostChangesetService",
 		InterfaceName: "IAgentHostChangesetService",
 		SourcePath: "vs/platform/agentHost/node/agentHostChangesetService.ts",
-		SourceLine: 186,
+		SourceLine: 194,
+		MemberCount: 1,
+	},
+	{
+		DecoratorName: "IAgentHostCheckpointService",
+		DecoratorTag: "agentHostCheckpointService",
+		InterfaceName: "IAgentHostCheckpointService",
+		SourcePath: "vs/platform/agentHost/common/agentHostCheckpointService.ts",
+		SourceLine: 9,
 		MemberCount: 1,
 	},
 	{
@@ -189,7 +197,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "agentHostService",
 		InterfaceName: "IAgentHostService",
 		SourcePath: "vs/platform/agentHost/common/agentService.ts",
-		SourceLine: 908,
+		SourceLine: 927,
 		MemberCount: 4,
 	},
 	{
@@ -229,7 +237,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "agentNetworkFilterService",
 		InterfaceName: "IAgentNetworkFilterService",
 		SourcePath: "vs/platform/networkFilter/common/networkFilterService.ts",
-		SourceLine: 18,
+		SourceLine: 16,
 		MemberCount: 1,
 	},
 	{
@@ -261,7 +269,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "agentService",
 		InterfaceName: "IAgentService",
 		SourcePath: "vs/platform/agentHost/common/agentService.ts",
-		SourceLine: 694,
+		SourceLine: 713,
 		MemberCount: 1,
 	},
 	{
@@ -293,7 +301,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "aiCustomizationItemsModel",
 		InterfaceName: "IAICustomizationItemsModel",
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationItemsModel.ts",
-		SourceLine: 46,
+		SourceLine: 48,
 		MemberCount: 1,
 	},
 	{
@@ -485,7 +493,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "browserViewCDPService",
 		InterfaceName: "IBrowserViewCDPService",
 		SourcePath: "vs/workbench/contrib/browserView/common/browserView.ts",
-		SourceLine: 160,
+		SourceLine: 161,
 		MemberCount: 1,
 	},
 	{
@@ -509,7 +517,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "browserViewWorkbenchService",
 		InterfaceName: "IBrowserViewWorkbenchService",
 		SourcePath: "vs/workbench/contrib/browserView/common/browserView.ts",
-		SourceLine: 113,
+		SourceLine: 114,
 		MemberCount: 1,
 	},
 	{
@@ -717,7 +725,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "chatPhoneInputPresenter",
 		InterfaceName: "IChatPhoneInputPresenter",
 		SourcePath: "vs/workbench/contrib/chat/browser/widget/input/chatPhoneInputPresenter.ts",
-		SourceLine: 52,
+		SourceLine: 51,
 		MemberCount: 1,
 	},
 	{
@@ -829,8 +837,8 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "claudeAgentSdkService",
 		InterfaceName: "IClaudeAgentSdkService",
 		SourcePath: "vs/platform/agentHost/node/claude/claudeAgentSdkService.ts",
-		SourceLine: 14,
-		MemberCount: 1,
+		SourceLine: 15,
+		MemberCount: 8,
 	},
 	{
 		DecoratorName: "IClaudeProxyService",
@@ -1021,7 +1029,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "defaultAccountService",
 		InterfaceName: "IDefaultAccountService",
 		SourcePath: "vs/platform/defaultAccount/common/defaultAccount.ts",
-		SourceLine: 41,
+		SourceLine: 42,
 		MemberCount: 13,
 	},
 	{
@@ -1769,6 +1777,14 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		MemberCount: 4,
 	},
 	{
+		DecoratorName: "IGitHubUploadService",
+		DecoratorTag: "githubUploadService",
+		InterfaceName: "IGitHubUploadService",
+		SourcePath: "vs/workbench/contrib/issue/browser/githubUploadService.ts",
+		SourceLine: 14,
+		MemberCount: 3,
+	},
+	{
 		DecoratorName: "IGitService",
 		DecoratorTag: "gitService",
 		InterfaceName: "IGitService",
@@ -1901,8 +1917,8 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "issueFormService",
 		InterfaceName: "IIssueFormService",
 		SourcePath: "vs/workbench/contrib/issue/common/issue.ts",
-		SourceLine: 91,
-		MemberCount: 6,
+		SourceLine: 104,
+		MemberCount: 7,
 	},
 	{
 		DecoratorName: "IJSONEditingService",
@@ -2005,8 +2021,8 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "ILanguageModelsService",
 		InterfaceName: "ILanguageModelsService",
 		SourcePath: "vs/workbench/contrib/chat/common/languageModels.ts",
-		SourceLine: 329,
-		MemberCount: 15,
+		SourceLine: 332,
+		MemberCount: 19,
 	},
 	{
 		DecoratorName: "ILanguageModelStatsService",
@@ -2285,7 +2301,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "menuService",
 		InterfaceName: "IMenuService",
 		SourcePath: "vs/platform/actions/common/actions.ts",
-		SourceLine: 369,
+		SourceLine: 370,
 		MemberCount: 1,
 	},
 	{
@@ -2325,7 +2341,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "nativeHostService",
 		InterfaceName: "INativeHostService",
 		SourcePath: "vs/platform/native/common/native.ts",
-		SourceLine: 297,
+		SourceLine: 302,
 		MemberCount: 0,
 	},
 	{
@@ -2613,7 +2629,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "pluginMarketplaceService",
 		InterfaceName: "IPluginMarketplaceService",
 		SourcePath: "vs/workbench/contrib/chat/common/plugins/pluginMarketplaceService.ts",
-		SourceLine: 141,
+		SourceLine: 143,
 		MemberCount: 6,
 	},
 	{
@@ -2753,6 +2769,14 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		MemberCount: 3,
 	},
 	{
+		DecoratorName: "IRecordingService",
+		DecoratorTag: "recordingService",
+		InterfaceName: "IRecordingService",
+		SourcePath: "vs/workbench/contrib/issue/browser/recordingService.ts",
+		SourceLine: 28,
+		MemberCount: 1,
+	},
+	{
 		DecoratorName: "IRemoteAgentHostService",
 		DecoratorTag: "remoteAgentHostService",
 		InterfaceName: "IRemoteAgentHostService",
@@ -2822,7 +2846,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		InterfaceName: "ISandboxHelperService",
 		SourcePath: "vs/platform/sandbox/common/sandboxHelperService.ts",
 		SourceLine: 8,
-		MemberCount: 2,
+		MemberCount: 4,
 	},
 	{
 		DecoratorName: "ISCMService",
@@ -2839,6 +2863,14 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		SourcePath: "vs/workbench/contrib/scm/common/scm.ts",
 		SourceLine: 226,
 		MemberCount: 19,
+	},
+	{
+		DecoratorName: "IScreenshotService",
+		DecoratorTag: "screenshotService",
+		InterfaceName: "IScreenshotService",
+		SourcePath: "vs/workbench/contrib/issue/browser/screenshotService.ts",
+		SourceLine: 9,
+		MemberCount: 1,
 	},
 	{
 		DecoratorName: "ISearchHistoryService",
@@ -2901,7 +2933,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "sessionDataService",
 		InterfaceName: "ISessionDataService",
 		SourcePath: "vs/platform/agentHost/common/sessionDataService.ts",
-		SourceLine: 11,
+		SourceLine: 12,
 		MemberCount: 1,
 	},
 	{
@@ -2917,7 +2949,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "sessionsManagementService",
 		InterfaceName: "ISessionsManagementService",
 		SourcePath: "vs/sessions/services/sessions/common/sessionsManagement.ts",
-		SourceLine: 149,
+		SourceLine: 203,
 		MemberCount: 1,
 	},
 	{
@@ -3589,7 +3621,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "IUserDataProfilesService",
 		InterfaceName: "IUserDataProfilesService",
 		SourcePath: "vs/platform/userDataProfile/common/userDataProfile.ts",
-		SourceLine: 133,
+		SourceLine: 137,
 		MemberCount: 15,
 	},
 	{
@@ -3817,6 +3849,14 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		MemberCount: 23,
 	},
 	{
+		DecoratorName: "IWindowsMxcTerminalSandboxRuntime",
+		DecoratorTag: "windowsMxcTerminalSandboxRuntime",
+		InterfaceName: "IWindowsMxcTerminalSandboxRuntime",
+		SourcePath: "vs/platform/sandbox/common/terminalSandboxMxcRuntime.ts",
+		SourceLine: 60,
+		MemberCount: 7,
+	},
+	{
 		DecoratorName: "IWorkbenchAssignmentService",
 		DecoratorTag: "assignmentService",
 		InterfaceName: "IWorkbenchAssignmentService",
@@ -3837,7 +3877,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "workbenchIssueService",
 		InterfaceName: "IWorkbenchIssueService",
 		SourcePath: "vs/workbench/contrib/issue/common/issue.ts",
-		SourceLine: 105,
+		SourceLine: 132,
 		MemberCount: 2,
 	},
 	{
