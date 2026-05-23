@@ -405,10 +405,31 @@ export default {
 
 	LanguagesGetEncodedLanguageId: "languages:getEncodedLanguageId",
 
+	// --- Git (subprocess) ---
+	GitExec: "git:exec",
+
+	GitClone: "git:clone",
+
+	GitPull: "git:pull",
+
+	GitCheckout: "git:checkout",
+
+	GitRevParse: "git:revParse",
+
+	GitFetch: "git:fetch",
+
+	GitRevListCount: "git:revListCount",
+
+	GitCancel: "git:cancel",
+
+	GitIsAvailable: "git:isAvailable",
+
 	// --- SCM ---
 	ScmCreateSourceControl: "scm:createSourceControl",
 
 	ScmGetSourceControls: "scm:getSourceControls",
+
+	ScmSetActiveProvider: "scm:setActiveProvider",
 
 	// --- Debug ---
 	DebugStartDebugging: "debug:startDebugging",
@@ -427,6 +448,8 @@ export default {
 	TasksExecuteTask: "tasks:executeTask",
 
 	TasksGetTasks: "tasks:getTasks",
+
+	TasksGetTaskExecution: "tasks:getTaskExecution",
 
 	// --- Authentication ---
 	AuthGetSessions: "auth:getSessions",
