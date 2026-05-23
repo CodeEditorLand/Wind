@@ -14,10 +14,7 @@
 
 import type { IConfigurationServiceUpstream } from "../../Generated/IConfigurationService/IConfigurationServiceUpstream.js";
 
-export type UserSettingsBridgeShape = Pick<
-	IConfigurationServiceUpstream,
-	"getValue" | "updateValue" | "inspect" | "onDidChangeConfiguration"
->;
+export type UserSettingsBridgeShape = Pick<IConfigurationServiceUpstream, "getValue" | "updateValue" | "inspect" | "onDidChangeConfiguration">;
 
 export interface UserSettingsGlobals {
 	readonly __CEL_SERVICES__?: {
