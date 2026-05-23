@@ -254,7 +254,14 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 
 	mcpGateway: {},
 
-	browserViewGroup: {},
+	browserViewGroup: {
+		updateKeybindings: undefined,
+		updateTheme: undefined,
+		updateConfiguration: undefined,
+		getBrowserViews: [],
+		openDevTools: undefined,
+		closeDevTools: undefined,
+	},
 
 	// Fix: terminals.windows - IExternalTerminalService.getDefaultTerminalForPlatforms()
 	externalTerminal: {
