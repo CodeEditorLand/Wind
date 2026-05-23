@@ -424,6 +424,25 @@ export default {
 
 	GitIsAvailable: "git:isAvailable",
 
+	// --- Language features ---
+	LanguageProvideInlineCompletions: "language:provideInlineCompletions",
+
+	// --- Tree view ---
+	TreeGetChildren: "tree:getChildren",
+
+	TreeReveal: "tree:reveal",
+
+	TreeSelectionChanged: "tree:selectionChanged",
+
+	TreeCollapseElement: "tree:collapseElement",
+
+	TreeExpandElement: "tree:expandElement",
+
+	TreeVisibilityChanged: "tree:visibilityChanged",
+
+	// --- Model ---
+	ModelUpdateContent: "model:updateContent",
+
 	// --- SCM ---
 	ScmCreateSourceControl: "scm:createSourceControl",
 

@@ -233,7 +233,11 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	sharedProcess: {},
 
 	utilityProcessWorker: {
-		createWorker: { onDidTerminate: new Promise(() => {}) },
+		// createWorker must be a Promise (not an object wrapping one).
+		// The workbench calls .then() directly on the return value; wrapping
+		// in { onDidTerminate } made it a non-thenable causing a silent hang
+		// in DiskFileSystemProvider. Matches Output's lockstep copy.
+		createWorker: new Promise(() => {}),
 
 		disposeWorker: undefined,
 	},
