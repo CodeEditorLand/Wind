@@ -23,6 +23,6 @@ export const ITestServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: "Number of providers working to discover tests.",
-		SourceLine: 378,
+		SourceLine: 384,
 	}
 ] as const;

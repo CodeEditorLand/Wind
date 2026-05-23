@@ -25,7 +25,7 @@ export interface CommandCatalogEntry {
 
 export const CommandCatalogVersion = "2026-05-23" as const;
 
-export const CommandCatalogTotal = 550 as const;
+export const CommandCatalogTotal = 551 as const;
 
 export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 	{
@@ -998,7 +998,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "agentSessionsControl",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/sessions/contrib/sessions/browser/sessionsTitleBarWidget.ts",
-		SourceLine: 348,
+		SourceLine: 387,
 		HasKeybinding: false,
 	},
 	{
@@ -1086,6 +1086,13 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		HasKeybinding: true,
 	},
 	{
+		CommandIdentifier: "browser.chatActionsSubmenu",
+		Kind: "MenuRegistry",
+		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorChatFeatures.ts",
+		SourceLine: 553,
+		HasKeybinding: false,
+	},
+	{
 		CommandIdentifier: "browser.closeAllInGroupShort",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures.ts",
@@ -1096,35 +1103,35 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "browser.emulationToolbar.close",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
-		SourceLine: 811,
+		SourceLine: 767,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "browser.emulationToolbar.mobile",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
-		SourceLine: 841,
+		SourceLine: 797,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "browser.emulationToolbar.presets",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
-		SourceLine: 916,
+		SourceLine: 868,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "browser.emulationToolbar.reset",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
-		SourceLine: 989,
+		SourceLine: 941,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "browser.emulationToolbar.userAgent",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
-		SourceLine: 959,
+		SourceLine: 911,
 		HasKeybinding: false,
 	},
 	{
@@ -2223,14 +2230,14 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "mcp.command.browse.mcp",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/mcp/browser/mcpCommands.ts",
-		SourceLine: 918,
+		SourceLine: 1010,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "mcp.servers",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/mcp/browser/mcpCommands.ts",
-		SourceLine: 948,
+		SourceLine: 1040,
 		HasKeybinding: false,
 	},
 	{
@@ -2839,7 +2846,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "showSessions",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/sessions/contrib/sessions/browser/sessionsTitleBarWidget.ts",
-		SourceLine: 356,
+		SourceLine: 395,
 		HasKeybinding: false,
 	},
 	{

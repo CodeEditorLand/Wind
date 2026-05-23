@@ -108,7 +108,9 @@
 
 		"target": "ESNext",
 
-		"useDefineForClassFields": true
+		"useDefineForClassFields": true,
+
+		"composite": true
 	},
 
 	"exclude": ["Target", "node_modules"],

@@ -27,6 +27,6 @@ export const ICustomizationHarnessServiceMembers: ReadonlyArray<InterfaceMemberR
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: "Override for a management section's create-button behavior.",
-		SourceLine: 240,
+		SourceLine: 258,
 	}
 ] as const;
