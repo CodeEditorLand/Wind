@@ -626,6 +626,79 @@ const _TierIPC: string =
 		?.TierIPC as string | undefined) ??
 	"Mountain";
 
+// Per-subsystem tier resolution (added 2026-05-25 - TIER-SYSTEM Step 4b).
+// Each subsystem can independently route to Mountain or Node. When the
+// resolved per-subsystem tier is "Node", the call bypasses Mountain even
+// when `_TierIPC === "Mountain"`. Falls back to `_TierIPC` for prefixes
+// without a per-subsystem tier mapping. Keep in lockstep with the Output
+// copy at `Element/Output/Source/Service/Tauri/Main/Process/Service.ts`.
+function _ReadTier(Name: string): string | undefined {
+	const FromEnv = (import.meta as any).env?.[`Tier${Name}`] as
+		| string
+		| undefined;
+	if (FromEnv !== undefined) return FromEnv;
+	const FromGlobal = (globalThis as { __LandTiers?: Record<string, unknown> })
+		.__LandTiers?.[`Tier${Name}`];
+	return typeof FromGlobal === "string" ? FromGlobal : undefined;
+}
+
+const _TierTerminal = _ReadTier("Terminal") ?? "Mountain";
+const _TierSCM = _ReadTier("SCM") ?? "Mountain";
+const _TierDebug = _ReadTier("Debug") ?? "Mountain";
+const _TierLanguageFeatures = _ReadTier("LanguageFeatures") ?? "Mountain";
+const _TierSearch = _ReadTier("Search") ?? "Mountain";
+const _TierOutputChannel = _ReadTier("OutputChannel") ?? "Mountain";
+const _TierNativeHost = _ReadTier("NativeHost") ?? "Mountain";
+const _TierTreeView = _ReadTier("TreeView") ?? "Mountain";
+const _TierStorage = _ReadTier("Storage") ?? "Mountain";
+const _TierModel = _ReadTier("Model") ?? "Mountain";
+const _TierTasks = _ReadTier("Tasks") ?? "Node";
+const _TierAuth = _ReadTier("Auth") ?? "Node";
+const _TierEncryption = _ReadTier("Encryption") ?? "Mountain";
+
+// Map RoutePrefix → effective tier. Mirrors the Mountain-side dispatch in
+// `Element/Mountain/Source/IPC/WindServiceHandlers/mod.rs` so per-channel
+// routing stays bidirectional. RoutePrefix values come from
+// `ChannelRouteMap` above.
+function _ResolveTierForRoute(RoutePrefix: string | null): string {
+	if (!RoutePrefix) return _TierIPC;
+	switch (RoutePrefix) {
+		case "terminal":
+		case "localPty":
+			return _TierTerminal;
+		case "git":
+			return _TierSCM;
+		case "extensionhostdebugservice":
+		case "extensionHostStarter":
+			return _TierDebug;
+		case "language":
+		case "languages":
+			return _TierLanguageFeatures;
+		case "search":
+			return _TierSearch;
+		case "output":
+			return _TierOutputChannel;
+		case "nativeHost":
+			return _TierNativeHost;
+		case "tree":
+			return _TierTreeView;
+		case "storage":
+			return _TierStorage;
+		case "model":
+		case "textFile":
+		case "file":
+			return _TierModel;
+		case "tasks":
+			return _TierTasks;
+		case "auth":
+			return _TierAuth;
+		case "encryption":
+			return _TierEncryption;
+		default:
+			return _TierIPC;
+	}
+}
+
 // Forward a call to Cocoon's Node.js runtime via Mountain's `cocoon:request`
 // bridge. Mountain relays the call over gRPC to Cocoon, which owns the
 // Node.js implementation (extension host namespaces, workspace state, etc.).
@@ -762,8 +835,12 @@ class TauriChannel implements IChannel {
 			const Params =
 				Arg !== undefined ? (Array.isArray(Arg) ? Arg : [Arg]) : [];
 
-			// Node track: bypass Mountain entirely, route straight to Cocoon.
-			if (_TierIPC === "Node") {
+			// Per-subsystem Node track: bypass Mountain entirely and route
+			// straight to Cocoon. Triggered when either the global `_TierIPC`
+			// or the per-subsystem tier for this RoutePrefix resolves to
+			// "Node" (TIER-SYSTEM Step 4b).
+			const _EffectiveTier = _ResolveTierForRoute(this.RoutePrefix);
+			if (_EffectiveTier === "Node") {
 				try {
 					return (await _InvokeViaNode(MountainMethod, Params)) as T;
 				} catch {
@@ -836,7 +913,16 @@ class TauriChannel implements IChannel {
 		// NodeDeferred: no Mountain route, no stub, but Cocoon may have a
 		// handler. Forward through the cocoon:request bridge so the Node.js
 		// extension host can service it. Returns undefined when unavailable.
-		if (_TierIPC === "NodeDeferred" || _TierIPC === "Node") {
+		// Also honours per-subsystem tiers so e.g. `tasks` / `auth` channels
+		// (whose defaults are "Node") attempt the Cocoon path even when the
+		// global `_TierIPC` is "Mountain" (TIER-SYSTEM Step 4b).
+		const _NoRouteTier = _ResolveTierForRoute(this.ChannelName);
+		if (
+			_TierIPC === "NodeDeferred" ||
+			_TierIPC === "Node" ||
+			_NoRouteTier === "Node" ||
+			_NoRouteTier === "NodeDeferred"
+		) {
 			const NodeMethod = `${this.ChannelName}:${Command}`;
 			const NodeParams =
 				Arg !== undefined ? (Array.isArray(Arg) ? Arg : [Arg]) : [];
