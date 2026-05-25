@@ -64,6 +64,38 @@ export type TierTelemetryValue = "Synchronous" | "Batched" | "Off";
 // IPC routing tiers ----------------------------------------------------------
 export type TierIPCValue = "Mountain" | "NodeDeferred" | "Node";
 
+// Per-subsystem routing tiers (added 2026-05-25). Mirror of Cocoon's
+// equivalents - keep these synchronized when adding/removing tiers.
+export type TierTerminalValue = "Mountain" | "Node";
+
+export type TierSCMValue = "Mountain" | "Node";
+
+export type TierDebugValue = "Mountain" | "Node";
+
+export type TierLanguageFeaturesValue = "Mountain" | "Node";
+
+export type TierSearchValue = "Mountain" | "Node";
+
+export type TierOutputChannelValue = "Mountain" | "Node";
+
+export type TierNativeHostValue = "Mountain" | "Node";
+
+export type TierTreeViewValue = "Mountain" | "Node";
+
+export type TierStorageValue = "Mountain" | "Node";
+
+export type TierModelValue = "Mountain" | "Node";
+
+export type TierTasksValue = "Mountain" | "Node";
+
+export type TierAuthValue = "Mountain" | "Node";
+
+export type TierEncryptionValue = "Mountain" | "Node";
+
+export type TierExtensionHostValue = "Process" | "WebWorker" | "Disabled";
+
+export type TierWebSocketValue = "Disabled" | "Mountain" | "Mist";
+
 // Resolution -----------------------------------------------------------------
 const EnvMeta = ((import.meta as unknown as { env?: Record<string, string> })
 	.env ?? {}) as Record<string, string | undefined>;
@@ -132,6 +164,41 @@ const Tier = {
 
 	// IPC routing: Mountain (default) → NodeDeferred → Node
 	IPC: Pick<TierIPCValue>("IPC", "Mountain"),
+
+	// Per-subsystem routing (added 2026-05-25). Defaults match .env.Land
+	// and `Mountain/build.rs::EmitTierDefaults`.
+	Terminal: Pick<TierTerminalValue>("Terminal", "Mountain"),
+
+	SCM: Pick<TierSCMValue>("SCM", "Mountain"),
+
+	Debug: Pick<TierDebugValue>("Debug", "Mountain"),
+
+	LanguageFeatures: Pick<TierLanguageFeaturesValue>(
+		"LanguageFeatures",
+		"Mountain",
+	),
+
+	Search: Pick<TierSearchValue>("Search", "Mountain"),
+
+	OutputChannel: Pick<TierOutputChannelValue>("OutputChannel", "Mountain"),
+
+	NativeHost: Pick<TierNativeHostValue>("NativeHost", "Mountain"),
+
+	TreeView: Pick<TierTreeViewValue>("TreeView", "Mountain"),
+
+	Storage: Pick<TierStorageValue>("Storage", "Mountain"),
+
+	Model: Pick<TierModelValue>("Model", "Mountain"),
+
+	Tasks: Pick<TierTasksValue>("Tasks", "Node"),
+
+	Auth: Pick<TierAuthValue>("Auth", "Node"),
+
+	Encryption: Pick<TierEncryptionValue>("Encryption", "Mountain"),
+
+	ExtensionHost: Pick<TierExtensionHostValue>("ExtensionHost", "Process"),
+
+	WebSocket: Pick<TierWebSocketValue>("WebSocket", "Disabled"),
 } as const;
 
 // One-shot boot banner - visible in browser DevTools.
