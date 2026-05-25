@@ -10,58 +10,47 @@ export const ITerminalSandboxServiceSourcePath = "vs/platform/sandbox/common/ter
 export const ITerminalSandboxServiceSourceLine = 13 as const;
 export interface ITerminalSandboxServiceUpstream {
 	/**
-	 * Normalized command name without path or executable suffix.
-	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
+	 * Whether the current caller is using the default approval permission flow.
 	 */
 	readonly _serviceBrand: undefined;
 	/**
-	 * Normalized command name without path or executable suffix.
-	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
+	 * Whether the current caller is using the default approval permission flow.
 	 */
-	isEnabled(): Promise<boolean>;
+	isEnabled(precheckInputs?: ITerminalSandboxPrecheckInputs): Promise<boolean>;
 	/**
-	 * Normalized command name without path or executable suffix.
-	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
+	 * Whether the current caller is using the default approval permission flow.
 	 */
-	isSandboxAllowNetworkEnabled(): Promise<boolean>;
+	isSandboxAllowNetworkEnabled(precheckInputs?: ITerminalSandboxPrecheckInputs): Promise<boolean>;
 	/**
-	 * Normalized command name without path or executable suffix.
-	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
+	 * Whether the current caller is using the default approval permission flow.
 	 */
 	getOS(): Promise<OperatingSystem>;
 	/**
-	 * Normalized command name without path or executable suffix.
-	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
+	 * Whether the current caller is using the default approval permission flow.
 	 */
-	checkForSandboxingPrereqs(forceRefresh?: boolean): Promise<ITerminalSandboxPrerequisiteCheckResult>;
+	checkForSandboxingPrereqs(forceRefresh?: boolean, precheckInputs?: ITerminalSandboxPrecheckInputs): Promise<ITerminalSandboxPrerequisiteCheckResult>;
 	/**
-	 * Normalized command name without path or executable suffix.
-	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
+	 * Whether the current caller is using the default approval permission flow.
 	 */
-	getSandboxConfigPath(forceRefresh?: boolean): Promise<string | undefined>;
+	getSandboxConfigPath(forceRefresh?: boolean, precheckInputs?: ITerminalSandboxPrecheckInputs): Promise<string | undefined>;
 	/**
-	 * Normalized command name without path or executable suffix.
-	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
+	 * Whether the current caller is using the default approval permission flow.
 	 */
 	getTempDir(): URI | undefined;
 	/**
-	 * Normalized command name without path or executable suffix.
-	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
+	 * Whether the current caller is using the default approval permission flow.
 	 */
 	setNeedsForceUpdateConfigFile(): void;
 	/**
-	 * Normalized command name without path or executable suffix.
-	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
+	 * Whether the current caller is using the default approval permission flow.
 	 */
 	getResolvedNetworkDomains(): ITerminalSandboxResolvedNetworkDomains;
 	/**
-	 * Normalized command name without path or executable suffix.
-	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
+	 * Whether the current caller is using the default approval permission flow.
 	 */
 	getMissingSandboxDependencies(): Promise<string[]>;
 	/**
-	 * Normalized command name without path or executable suffix.
-	 * For example, `/usr/bin/git` and `git.exe` both normalize to `git`.
+	 * Whether the current caller is using the default approval permission flow.
 	 */
 	installMissingSandboxDependencies(missingDependencies: string[], sessionResource: URI | undefined, token: CancellationToken, options: ISandboxDependencyInstallOptions): Promise<ISandboxDependencyInstallResult>;
 }
@@ -73,8 +62,8 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "undefined",
 		Parameters: [],
-		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
-		SourceLine: 86,
+		DocComment: "Whether the current caller is using the default approval permission flow.",
+		SourceLine: 93,
 	},
 	{
 		Kind: "Method",
@@ -82,9 +71,9 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Readonly: false,
 		Optional: false,
 		TypeText: "Promise<boolean>",
-		Parameters: [],
-		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
-		SourceLine: 87,
+		Parameters: [{ Name: "precheckInputs", TypeText: "ITerminalSandboxPrecheckInputs", Optional: true }],
+		DocComment: "Whether the current caller is using the default approval permission flow.",
+		SourceLine: 94,
 	},
 	{
 		Kind: "Method",
@@ -92,9 +81,9 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Readonly: false,
 		Optional: false,
 		TypeText: "Promise<boolean>",
-		Parameters: [],
-		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
-		SourceLine: 88,
+		Parameters: [{ Name: "precheckInputs", TypeText: "ITerminalSandboxPrecheckInputs", Optional: true }],
+		DocComment: "Whether the current caller is using the default approval permission flow.",
+		SourceLine: 95,
 	},
 	{
 		Kind: "Method",
@@ -103,8 +92,8 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "Promise<OperatingSystem>",
 		Parameters: [],
-		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
-		SourceLine: 89,
+		DocComment: "Whether the current caller is using the default approval permission flow.",
+		SourceLine: 96,
 	},
 	{
 		Kind: "Method",
@@ -112,9 +101,9 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Readonly: false,
 		Optional: false,
 		TypeText: "Promise<ITerminalSandboxPrerequisiteCheckResult>",
-		Parameters: [{ Name: "forceRefresh", TypeText: "boolean", Optional: true }],
-		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
-		SourceLine: 90,
+		Parameters: [{ Name: "forceRefresh", TypeText: "boolean", Optional: true }, { Name: "precheckInputs", TypeText: "ITerminalSandboxPrecheckInputs", Optional: true }],
+		DocComment: "Whether the current caller is using the default approval permission flow.",
+		SourceLine: 97,
 	},
 	{
 		Kind: "Method",
@@ -122,9 +111,9 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Readonly: false,
 		Optional: false,
 		TypeText: "Promise<string | undefined>",
-		Parameters: [{ Name: "forceRefresh", TypeText: "boolean", Optional: true }],
-		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
-		SourceLine: 97,
+		Parameters: [{ Name: "forceRefresh", TypeText: "boolean", Optional: true }, { Name: "precheckInputs", TypeText: "ITerminalSandboxPrecheckInputs", Optional: true }],
+		DocComment: "Whether the current caller is using the default approval permission flow.",
+		SourceLine: 104,
 	},
 	{
 		Kind: "Method",
@@ -133,8 +122,8 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "URI | undefined",
 		Parameters: [],
-		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
-		SourceLine: 98,
+		DocComment: "Whether the current caller is using the default approval permission flow.",
+		SourceLine: 105,
 	},
 	{
 		Kind: "Method",
@@ -143,8 +132,8 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "void",
 		Parameters: [],
-		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
-		SourceLine: 99,
+		DocComment: "Whether the current caller is using the default approval permission flow.",
+		SourceLine: 106,
 	},
 	{
 		Kind: "Method",
@@ -153,8 +142,8 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "ITerminalSandboxResolvedNetworkDomains",
 		Parameters: [],
-		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
-		SourceLine: 100,
+		DocComment: "Whether the current caller is using the default approval permission flow.",
+		SourceLine: 107,
 	},
 	{
 		Kind: "Method",
@@ -163,8 +152,8 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "Promise<string[]>",
 		Parameters: [],
-		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
-		SourceLine: 101,
+		DocComment: "Whether the current caller is using the default approval permission flow.",
+		SourceLine: 108,
 	},
 	{
 		Kind: "Method",
@@ -173,7 +162,7 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		Optional: false,
 		TypeText: "Promise<ISandboxDependencyInstallResult>",
 		Parameters: [{ Name: "missingDependencies", TypeText: "string[]", Optional: false }, { Name: "sessionResource", TypeText: "URI | undefined", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }, { Name: "options", TypeText: "ISandboxDependencyInstallOptions", Optional: false }],
-		DocComment: "Normalized command name without path or executable suffix.\nFor example, `/usr/bin/git` and `git.exe` both normalize to `git`.",
-		SourceLine: 102,
+		DocComment: "Whether the current caller is using the default approval permission flow.",
+		SourceLine: 109,
 	}
 ] as const;
