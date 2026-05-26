@@ -440,9 +440,6 @@ export default {
 
 	TreeVisibilityChanged: "tree:visibilityChanged",
 
-	// --- Model ---
-	ModelUpdateContent: "model:updateContent",
-
 	// --- SCM ---
 	ScmCreateSourceControl: "scm:createSourceControl",
 
