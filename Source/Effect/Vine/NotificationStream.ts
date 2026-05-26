@@ -114,7 +114,7 @@ export const VineNotificationsLive = Layer.scoped(
 		yield* Effect.acquireRelease(
 			Effect.tryPromise({
 				try: () =>
-					tauri.invoke<number>("VineSubscribeNotifications", {
+					tauri.invoke<number>("vine_subscribe_notifications", {
 						channel,
 					}),
 				catch: (error) =>
@@ -179,7 +179,7 @@ export const SubscriberCount = Effect.gen(function* () {
 	});
 
 	return yield* Effect.tryPromise({
-		try: () => Module.invoke<number>("VineSubscriberCount"),
+		try: () => Module.invoke<number>("vine_subscriber_count"),
 		catch: (error) => new Error(`vine_subscriber_count: ${String(error)}`),
 	});
 });
