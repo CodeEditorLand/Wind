@@ -27,6 +27,6 @@ export const ISSHRemoteAgentHostServiceMembers: ReadonlyArray<InterfaceMemberRec
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: "IPC channel name for the main-process SSH service.",
-		SourceLine: 77,
+		SourceLine: 79,
 	}
 ] as const;

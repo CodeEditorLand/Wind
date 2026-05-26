@@ -25,7 +25,7 @@ export interface CommandCatalogEntry {
 
 export const CommandCatalogVersion = "2026-05-26" as const;
 
-export const CommandCatalogTotal = 551 as const;
+export const CommandCatalogTotal = 550 as const;
 
 export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 	{
@@ -1541,13 +1541,6 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		HasKeybinding: false,
 	},
 	{
-		CommandIdentifier: "editor",
-		Kind: "CommandsRegistry",
-		SourcePath: "vs/workbench/contrib/chat/electron-browser/chat.contribution.ts",
-		SourceLine: 340,
-		HasKeybinding: false,
-	},
-	{
 		CommandIdentifier: "editor.action.findReferences",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/editor/contrib/gotoSymbol/browser/goToCommands.ts",
@@ -2503,7 +2496,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "phone",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/sessions/browser/workbench.ts",
-		SourceLine: 545,
+		SourceLine: 547,
 		HasKeybinding: false,
 	},
 	{
