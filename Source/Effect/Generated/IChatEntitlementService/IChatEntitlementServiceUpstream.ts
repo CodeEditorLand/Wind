@@ -92,6 +92,10 @@ export interface IChatEntitlementServiceUpstream {
 	/**
 	 * Signed out
 	 */
+	acceptQuotas(quotas: IQuotas): void;
+	/**
+	 * Signed out
+	 */
 	markAnonymousRateLimited(): void;
 	/**
 	 * Signed out
@@ -301,13 +305,23 @@ export const IChatEntitlementServiceMembers: ReadonlyArray<InterfaceMemberRecord
 	},
 	{
 		Kind: "Method",
+		Name: "acceptQuotas",
+		Readonly: false,
+		Optional: false,
+		TypeText: "void",
+		Parameters: [{ Name: "quotas", TypeText: "IQuotas", Optional: false }],
+		DocComment: "Signed out",
+		SourceLine: 196,
+	},
+	{
+		Kind: "Method",
 		Name: "markAnonymousRateLimited",
 		Readonly: false,
 		Optional: false,
 		TypeText: "void",
 		Parameters: [],
 		DocComment: "Signed out",
-		SourceLine: 196,
+		SourceLine: 203,
 	},
 	{
 		Kind: "Method",
@@ -317,6 +331,6 @@ export const IChatEntitlementServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "Promise<void>",
 		Parameters: [{ Name: "token", TypeText: "CancellationToken", Optional: false }],
 		DocComment: "Signed out",
-		SourceLine: 210,
+		SourceLine: 217,
 	}
 ] as const;

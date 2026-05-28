@@ -23,7 +23,7 @@ export interface CommandCatalogEntry {
 	readonly HasKeybinding: boolean;
 }
 
-export const CommandCatalogVersion = "2026-05-26" as const;
+export const CommandCatalogVersion = "2026-05-28" as const;
 
 export const CommandCatalogTotal = 550 as const;
 
@@ -60,7 +60,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "_chat.notifyQuestionCarouselAnswer",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/chat.shared.contribution.ts",
-		SourceLine: 199,
+		SourceLine: 202,
 		HasKeybinding: false,
 	},
 	{
@@ -1103,35 +1103,35 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "browser.emulationToolbar.close",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
-		SourceLine: 767,
+		SourceLine: 771,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "browser.emulationToolbar.mobile",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
-		SourceLine: 797,
+		SourceLine: 801,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "browser.emulationToolbar.presets",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
-		SourceLine: 868,
+		SourceLine: 872,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "browser.emulationToolbar.reset",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
-		SourceLine: 941,
+		SourceLine: 945,
 		HasKeybinding: false,
 	},
 	{
 		CommandIdentifier: "browser.emulationToolbar.userAgent",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
-		SourceLine: 911,
+		SourceLine: 915,
 		HasKeybinding: false,
 	},
 	{
@@ -1684,7 +1684,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "filterAgentSessions",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/agentSessions.contribution.ts",
-		SourceLine: 57,
+		SourceLine: 58,
 		HasKeybinding: false,
 	},
 	{

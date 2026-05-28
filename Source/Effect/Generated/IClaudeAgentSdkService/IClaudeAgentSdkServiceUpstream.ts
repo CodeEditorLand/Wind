@@ -185,7 +185,7 @@ export const IClaudeAgentSdkServiceMembers: ReadonlyArray<InterfaceMemberRecord>
 		Readonly: false,
 		Optional: false,
 		TypeText: "Promise<McpSdkServerConfigWithInstance>",
-		Parameters: [{ Name: "options", TypeText: "{\r\n\t\tname: string;\r\n\t\tversion?: string;\r\n\t\t// SDK signature: `tools?: Array<SdkMcpToolDefinition<any>>`. The `any`\r\n\t\t// here is required to match the SDK's own erased generic and to allow\r\n\t\t// callers to pass an array of tools whose schemas differ from each other.\r\n\t\t// eslint-disable-next-line @typescript-eslint/no-explicit-any\r\n\t\ttools?: Array<SdkMcpToolDefinition<any>>;\r\n\t}", Optional: false }],
+		Parameters: [{ Name: "options", TypeText: "{\n\t\tname: string;\n\t\tversion?: string;\n\t\t// SDK signature: `tools?: Array<SdkMcpToolDefinition<any>>`. The `any`\n\t\t// here is required to match the SDK's own erased generic and to allow\n\t\t// callers to pass an array of tools whose schemas differ from each other.\n\t\t// eslint-disable-next-line @typescript-eslint/no-explicit-any\n\t\ttools?: Array<SdkMcpToolDefinition<any>>;\n\t}", Optional: false }],
 		DocComment: "Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.\nEvery method on this interface corresponds 1:1 to a single SDK export.\nThe shim owns lazy module loading and the first-failure log-once\nconvention; it does NOT compose, wrap, or add behavior on top of the\nSDK's surface. Higher-level orchestration (e.g. building the in-process\nclient-tool MCP server) lives in dedicated modules that depend on this\ninterface for the raw bindings.",
 		SourceLine: 37,
 	}

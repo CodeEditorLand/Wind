@@ -19,9 +19,9 @@ export interface ServiceCatalogEntry {
 	readonly MemberCount: number;
 }
 
-export const ServiceCatalogVersion = "2026-05-26" as const;
+export const ServiceCatalogVersion = "2026-05-28" as const;
 
-export const ServiceCatalogTotal = 502 as const;
+export const ServiceCatalogTotal = 505 as const;
 
 export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 	{
@@ -113,6 +113,14 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		MemberCount: 4,
 	},
 	{
+		DecoratorName: "IAgentHostActiveClientService",
+		DecoratorTag: "agentHostActiveClientService",
+		InterfaceName: "IAgentHostActiveClientService",
+		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostActiveClientService.ts",
+		SourceLine: 28,
+		MemberCount: 3,
+	},
+	{
 		DecoratorName: "IAgentHostChangesetService",
 		DecoratorTag: "agentHostChangesetService",
 		InterfaceName: "IAgentHostChangesetService",
@@ -137,11 +145,27 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		MemberCount: 1,
 	},
 	{
+		DecoratorName: "IAgentHostCustomAgentsService",
+		DecoratorTag: "agentHostCustomAgentsService",
+		InterfaceName: "IAgentHostCustomAgentsService",
+		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostCustomAgentsService.ts",
+		SourceLine: 23,
+		MemberCount: 3,
+	},
+	{
 		DecoratorName: "IAgentHostDebugLogsExportService",
 		DecoratorTag: "agentHostDebugLogsExportService",
 		InterfaceName: "IAgentHostDebugLogsExportService",
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/exportAgentHostDebugLogsAction.ts",
 		SourceLine: 58,
+		MemberCount: 2,
+	},
+	{
+		DecoratorName: "IAgentHostFileMonitorService",
+		DecoratorTag: "agentHostFileMonitorService",
+		InterfaceName: "IAgentHostFileMonitorService",
+		SourcePath: "vs/platform/agentHost/node/agentHostFileMonitorService.ts",
+		SourceLine: 15,
 		MemberCount: 2,
 	},
 	{
@@ -197,7 +221,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "agentHostService",
 		InterfaceName: "IAgentHostService",
 		SourcePath: "vs/platform/agentHost/common/agentService.ts",
-		SourceLine: 934,
+		SourceLine: 938,
 		MemberCount: 4,
 	},
 	{
@@ -269,7 +293,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "agentService",
 		InterfaceName: "IAgentService",
 		SourcePath: "vs/platform/agentHost/common/agentService.ts",
-		SourceLine: 720,
+		SourceLine: 724,
 		MemberCount: 1,
 	},
 	{
@@ -389,7 +413,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "IAuthenticationExtensionsService",
 		InterfaceName: "IAuthenticationExtensionsService",
 		SourcePath: "vs/workbench/services/authentication/common/authentication.ts",
-		SourceLine: 317,
+		SourceLine: 345,
 		MemberCount: 5,
 	},
 	{
@@ -429,7 +453,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "IAuthenticationService",
 		InterfaceName: "IAuthenticationService",
 		SourcePath: "vs/workbench/services/authentication/common/authentication.ts",
-		SourceLine: 158,
+		SourceLine: 177,
 		MemberCount: 1,
 	},
 	{
@@ -662,7 +686,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		InterfaceName: "IChatEntitlementService",
 		SourcePath: "vs/workbench/services/chat/common/chatEntitlementService.ts",
 		SourceLine: 76,
-		MemberCount: 22,
+		MemberCount: 23,
 	},
 	{
 		DecoratorName: "IChatImageCarouselService",
@@ -773,7 +797,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "chatTipService",
 		InterfaceName: "IChatTipService",
 		SourcePath: "vs/workbench/contrib/chat/browser/chatTipService.ts",
-		SourceLine: 59,
+		SourceLine: 60,
 		MemberCount: 1,
 	},
 	{
@@ -957,7 +981,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "copilotApiService",
 		InterfaceName: "ICopilotApiService",
 		SourcePath: "vs/platform/agentHost/node/shared/copilotApiService.ts",
-		SourceLine: 178,
+		SourceLine: 261,
 		MemberCount: 1,
 	},
 	{
@@ -997,7 +1021,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "customizationHarnessService",
 		InterfaceName: "ICustomizationHarnessService",
 		SourcePath: "vs/workbench/contrib/chat/common/customizationHarnessService.ts",
-		SourceLine: 26,
+		SourceLine: 27,
 		MemberCount: 1,
 	},
 	{
@@ -1469,7 +1493,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "IExtHostAuthentication",
 		InterfaceName: "IExtHostAuthentication",
 		SourcePath: "vs/workbench/api/common/extHostAuthentication.ts",
-		SourceLine: 32,
+		SourceLine: 33,
 		MemberCount: 0,
 	},
 	{
@@ -2205,7 +2229,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "IMcpElicitationService",
 		InterfaceName: "IMcpElicitationService",
 		SourcePath: "vs/workbench/contrib/mcp/common/mcpTypes.ts",
-		SourceLine: 1033,
+		SourceLine: 1040,
 		MemberCount: 1,
 	},
 	{
@@ -2261,7 +2285,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "IMcpServerSampling",
 		InterfaceName: "IMcpSamplingService",
 		SourcePath: "vs/workbench/contrib/mcp/common/mcpTypes.ts",
-		SourceLine: 963,
+		SourceLine: 970,
 		MemberCount: 4,
 	},
 	{
@@ -2285,7 +2309,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "IMcpWorkbenchService",
 		InterfaceName: "IMcpWorkbenchService",
 		SourcePath: "vs/workbench/contrib/mcp/common/mcpTypes.ts",
-		SourceLine: 833,
+		SourceLine: 840,
 		MemberCount: 14,
 	},
 	{
@@ -2957,7 +2981,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "sessionsManagementService",
 		InterfaceName: "ISessionsManagementService",
 		SourcePath: "vs/sessions/services/sessions/common/sessionsManagement.ts",
-		SourceLine: 245,
+		SourceLine: 248,
 		MemberCount: 2,
 	},
 	{
@@ -3869,7 +3893,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "windowsMxcTerminalSandboxRuntime",
 		InterfaceName: "IWindowsMxcTerminalSandboxRuntime",
 		SourcePath: "vs/platform/sandbox/common/terminalSandboxMxcRuntime.ts",
-		SourceLine: 60,
+		SourceLine: 62,
 		MemberCount: 7,
 	},
 	{
