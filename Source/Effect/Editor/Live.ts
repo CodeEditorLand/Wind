@@ -36,6 +36,7 @@ export const LiveEditorServiceLayer = Layer.effect(
 		// In-memory state for active and visible editors.
 		// Updated by listening to Tauri events from Mountain (P1 task).
 		const ActiveEditorRef = yield* Ref.make<unknown | null>(null);
+
 		const VisibleEditorsRef = yield* Ref.make<readonly unknown[]>([]);
 
 		// Listen to Mountain editor-change events emitted by Mountain via
@@ -47,6 +48,7 @@ export const LiveEditorServiceLayer = Layer.effect(
 				const { listen } = yield* Effect.promise(
 					() => import("@tauri-apps/api/event"),
 				);
+
 				yield* Effect.promise(
 					() =>
 						new Promise<void>((Resolve) => {
@@ -54,6 +56,7 @@ export const LiveEditorServiceLayer = Layer.effect(
 								void Effect.runFork(
 									Ref.set(
 										ActiveEditorRef,
+
 										Event.payload ?? null,
 									),
 								);

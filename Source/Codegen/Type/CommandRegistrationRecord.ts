@@ -31,16 +31,20 @@ export type CommandRegistrationKind =
 export interface CommandRegistrationRecord {
 	/** The command id (string literal passed to the registrar). */
 	readonly CommandIdentifier: string;
+
 	/** Which registrar surfaced the registration. Useful when
 	 * disambiguating coverage tiers (smoke-test harness asserts
 	 * every `CommandsRegistry` entry; only smoke-asserts
 	 * `KeybindingsRegistry` entries that survive bundle minification).
 	 */
 	readonly Kind: CommandRegistrationKind;
+
 	/** Workspace-relative path of the source file. */
 	readonly SourcePath: string;
+
 	/** 1-based line number of the registration call site. */
 	readonly SourceLine: number;
+
 	/** Whether the registration call carries a `weight:` /
 	 * `primary:` field, which indicates a keybinding was registered
 	 * alongside the command. The smoke-test harness uses this to

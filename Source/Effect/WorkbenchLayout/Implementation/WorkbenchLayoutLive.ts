@@ -17,6 +17,7 @@ import {
 
 const ResolveBridge = Effect.sync((): WorkbenchLayoutBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchLayoutGlobals;
+
 	return Globals.__CEL_SERVICES__?.Layout ?? null;
 });
 
@@ -43,10 +44,13 @@ export const WorkbenchLayoutLive = Layer.effect(
 			WorkbenchLayoutProblem
 		> = Effect.gen(function* () {
 			if (!Bridge) return yield* Effect.fail(Unavailable);
+
 			const Visible = new Map<WorkbenchLayoutPart, boolean>();
+
 			for (const Part of WorkbenchLayoutAllParts) {
 				Visible.set(Part, SnapshotPart(Part));
 			}
+
 			return {
 				visible: Visible,
 				maximized: new Map<WorkbenchLayoutPart, boolean>(),
@@ -60,6 +64,7 @@ export const WorkbenchLayoutLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchLayoutProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				yield* Effect.try({
 					try: () =>
 						Bridge.setPartHidden(
@@ -81,7 +86,9 @@ export const WorkbenchLayoutLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchLayoutProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				const Current = SnapshotPart(Part);
+
 				yield* SetVisible(Part, !Current);
 			});
 
@@ -91,8 +98,10 @@ export const WorkbenchLayoutLive = Layer.effect(
 		>((Emit) => {
 			if (!Bridge) {
 				Emit.fail(Unavailable);
+
 				return Effect.void;
 			}
+
 			const Subscription = Bridge.onDidChangePartVisibility(() => {
 				for (const Part of WorkbenchLayoutAllParts) {
 					Emit.single({
@@ -101,6 +110,7 @@ export const WorkbenchLayoutLive = Layer.effect(
 					});
 				}
 			});
+
 			return Effect.sync(() => Subscription.dispose());
 		});
 

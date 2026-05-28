@@ -14,9 +14,11 @@ import { URI } from "../Type/URI";
 /** Convert a VS Code URI to an absolute file-system path string. */
 export function uriToPath(uri: URI): string {
 	const path = uri.fsPath;
+
 	if (!path) {
 		throw new InvalidPathError(uri.toString());
 	}
+
 	return path;
 }
 
@@ -31,19 +33,29 @@ export function pathToUri(path: string): URI {
  */
 export function toIStat(stats: {
 	is_file?: boolean;
+
 	is_directory?: boolean;
+
 	size?: number;
+
 	created?: number;
+
 	modified?: number;
+
 	accessed?: number;
 }): {
 	type: number;
+
 	size: number;
+
 	ctime: number;
+
 	mtime: number;
+
 	permissions?: number;
 } {
 	let type: FileType;
+
 	if (stats.is_directory) {
 		type = FileType.Directory;
 	} else if (stats.is_file) {
@@ -51,10 +63,14 @@ export function toIStat(stats: {
 	} else {
 		type = FileType.Unknown;
 	}
+
 	return {
 		type,
+
 		size: stats.size ?? 0,
+
 		ctime: stats.created ?? stats.modified ?? Date.now(),
+
 		mtime: stats.modified ?? Date.now(),
 	};
 }
@@ -68,6 +84,7 @@ export function toDirectoryEntries(
 ): [string, FileType][] {
 	return entries.map((entry) => {
 		let type: FileType;
+
 		if (entry.is_directory) {
 			type = FileType.Directory;
 		} else if (entry.is_file) {
@@ -75,6 +92,7 @@ export function toDirectoryEntries(
 		} else {
 			type = FileType.Unknown;
 		}
+
 		return [entry.name, type];
 	});
 }

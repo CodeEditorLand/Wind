@@ -5,26 +5,40 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITestResultStorageTag = "ITestResultStorage" as const;
+
 export const ITestResultStorageSourcePath = "vs/workbench/contrib/testing/common/testResultStorage.ts" as const;
+
 export const ITestResultStorageSourceLine = 40 as const;
+
 // Decorator doc:
 // /**
 //  * Retrieves the list of stored test results.
 //  */
 // 
 export interface ITestResultStorageUpstream {
+
 	_serviceBrand: undefined;
 }
+
 export const ITestResultStorageMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 27,
 	}
 ] as const;

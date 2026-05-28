@@ -5,28 +5,42 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IPlaywrightServiceTag = "playwrightService" as const;
+
 export const IPlaywrightServiceSourcePath = "vs/platform/browserView/common/playwrightService.ts" as const;
+
 export const IPlaywrightServiceSourceLine = 9 as const;
+
 /**
  * When present the function did not complete within the timeout. Pass this ID to {@link IPlaywrightService.waitForDeferredResult} to keep waiting.
  */
 
 export interface IPlaywrightServiceUpstream {
+
 	/**
 	 * When present the function did not complete within the timeout. Pass this ID to {@link IPlaywrightService.waitForDeferredResult} to keep waiting.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IPlaywrightServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "When present the function did not complete within the timeout. Pass this ID to {@link IPlaywrightService.waitForDeferredResult} to keep waiting.",
+
 		SourceLine: 30,
 	}
 ] as const;

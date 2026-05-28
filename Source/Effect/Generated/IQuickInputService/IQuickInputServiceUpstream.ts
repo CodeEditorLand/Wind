@@ -5,29 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IQuickInputServiceTag = "quickInputService" as const;
+
 export const IQuickInputServiceSourcePath = "vs/platform/quickinput/common/quickInput.ts" as const;
+
 export const IQuickInputServiceSourceLine = 934 as const;
+
 // Decorator doc:
 // /**
 //  * Base properties for a quick pick and quick tree item.
 //  */
 // 
 export interface IQuickInputServiceUpstream {
+
 	/**
 	 * Base properties for a quick pick and quick tree item.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IQuickInputServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Base properties for a quick pick and quick tree item.",
+
 		SourceLine: 942,
 	}
 ] as const;

@@ -52,6 +52,7 @@ export const LiveDecorationsServiceLayer = Layer.effect(
 				IPCService.invoke(Channel.DecorationsGetMany)([uris]).pipe(
 					Effect.map((Result) => {
 						const Map_ = new Map<string, FileDecoration>();
+
 						if (Result != null && typeof Result === "object") {
 							for (const [Key, Value] of Object.entries(
 								Result as Record<string, FileDecoration>,
@@ -59,6 +60,7 @@ export const LiveDecorationsServiceLayer = Layer.effect(
 								Map_.set(Key, Value);
 							}
 						}
+
 						return Map_ as ReadonlyMap<string, FileDecoration>;
 					}),
 

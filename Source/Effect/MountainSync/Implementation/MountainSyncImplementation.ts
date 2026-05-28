@@ -83,6 +83,7 @@ const makeMountainSync = (
 
 						"[MountainSync] Sync disabled in config",
 					);
+
 					return;
 				}
 
@@ -112,11 +113,14 @@ const makeMountainSync = (
 
 							// Update stats
 							LastSyncTime = Date.now();
+
 							SyncCount++;
+
 							ItemsSynced += Result.itemsSynced;
 
 							if (Result.success) {
 								SuccessCount++;
+
 								yield* TelemetryService.log(
 									"info",
 
@@ -124,6 +128,7 @@ const makeMountainSync = (
 								);
 							} else if (FullConfig.autoRetry) {
 								ErrorCount++;
+
 								yield* TelemetryService.log(
 									"warn",
 
@@ -141,8 +146,11 @@ const makeMountainSync = (
 			Effect.gen(function* () {
 				if (SyncFiber) {
 					yield* Fiber.interrupt(SyncFiber);
+
 					SyncFiber = null;
+
 					SyncStatus = "idle";
+
 					yield* TelemetryService.log(
 						"info",
 
@@ -169,6 +177,7 @@ const makeMountainSync = (
 		pause: () =>
 			Effect.gen(function* () {
 				SyncStatus = "paused";
+
 				yield* TelemetryService.log(
 					"info",
 
@@ -179,6 +188,7 @@ const makeMountainSync = (
 		resume: () =>
 			Effect.gen(function* () {
 				SyncStatus = "syncing";
+
 				yield* TelemetryService.log(
 					"info",
 

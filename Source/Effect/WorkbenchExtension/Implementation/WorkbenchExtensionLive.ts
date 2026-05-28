@@ -14,6 +14,7 @@ import type {
 
 const ResolveBridge = Effect.sync((): WorkbenchExtensionBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchExtensionGlobals;
+
 	return Globals.__CEL_SERVICES__?.Extension ?? null;
 });
 
@@ -48,6 +49,7 @@ export const WorkbenchExtensionLive = Layer.effect(
 			WorkbenchExtensionProblem
 		> = Effect.gen(function* () {
 			if (!Bridge) return yield* Effect.fail(Unavailable);
+
 			return Bridge.extensions.map(ToDescriptor);
 		});
 
@@ -56,6 +58,7 @@ export const WorkbenchExtensionLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchExtensionProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				yield* Effect.tryPromise({
 					try: () =>
 						Bridge.activateById(
@@ -80,6 +83,7 @@ export const WorkbenchExtensionLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchExtensionProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				yield* Effect.tryPromise({
 					try: () => Bridge.activateByEvent(EventName),
 					catch: (Cause) =>
@@ -97,11 +101,14 @@ export const WorkbenchExtensionLive = Layer.effect(
 		>((Emit) => {
 			if (!Bridge) {
 				Emit.fail(Unavailable);
+
 				return Effect.void;
 			}
+
 			const Subscription = Bridge.onDidChangeExtensions(() => {
 				Emit.single(Bridge.extensions.map(ToDescriptor));
 			});
+
 			return Effect.sync(() => Subscription.dispose());
 		});
 

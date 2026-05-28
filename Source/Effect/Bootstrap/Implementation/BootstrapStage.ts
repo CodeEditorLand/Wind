@@ -33,6 +33,7 @@ export const stage0_Environment = withSpan(
 
 	Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
+
 		const environment = yield* EnvironmentTag;
 
 		telemetry.log("info", "[Bootstrap] Stage 0: Detecting environment...");
@@ -44,6 +45,7 @@ export const stage0_Environment = withSpan(
 
 			`[Bootstrap] Environment: ${envInfo.platform}/${envInfo.architecture}`,
 		);
+
 		telemetry.log(
 			"info",
 
@@ -68,6 +70,7 @@ export const stage1_Preload = withSpan(
 
 	Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
+
 		const sandbox = yield* Sandbox;
 
 		telemetry.log("info", "[Bootstrap] Stage 1: Waiting for preload...");
@@ -94,6 +97,7 @@ export const stage2_Configuration = withSpan(
 
 	Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
+
 		// Ensure configuration is loaded
 		yield* (yield* Configuration).get;
 
@@ -216,6 +220,7 @@ export const stage6_HealthCheck = withSpan(
 
 	Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
+
 		const health = yield* HealthTag;
 
 		telemetry.log("info", "[Bootstrap] Stage 6: Running health checks...");

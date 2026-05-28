@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IChatInputNotificationServiceTag = "chatInputNotificationService" as const;
+
 export const IChatInputNotificationServiceSourcePath = "vs/workbench/contrib/chat/browser/widget/input/chatInputNotificationService.ts" as const;
+
 export const IChatInputNotificationServiceSourceLine = 36 as const;
+
 export interface IChatInputNotificationServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidChange: Event<void>;
 }
+
 export const IChatInputNotificationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 39,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChange",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 39,
 	}
 ] as const;

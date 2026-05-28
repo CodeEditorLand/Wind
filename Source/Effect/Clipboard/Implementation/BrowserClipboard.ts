@@ -35,6 +35,7 @@ export const LiveBrowserClipboardService: ClipboardService = {
 						"Clipboard API not available in this environment",
 					);
 				}
+
 				return await navigator.clipboard.readText();
 			},
 			catch: (error) => CreateReadError(error as Error),
@@ -48,6 +49,7 @@ export const LiveBrowserClipboardService: ClipboardService = {
 						"Clipboard API not available in this environment",
 					);
 				}
+
 				await navigator.clipboard.writeText(text);
 			},
 			catch: (error) => CreateWriteError(error as Error),

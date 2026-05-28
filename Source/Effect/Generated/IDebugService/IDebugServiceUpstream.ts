@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IDebugServiceTag = "debugService" as const;
+
 export const IDebugServiceSourcePath = "vs/workbench/contrib/debug/common/debug.ts" as const;
+
 export const IDebugServiceSourceLine = 1133 as const;
+
 // Decorator doc:
 // /**
 //  * Set if the debug session is correlated with a test run. Stopping/restarting
@@ -15,51 +19,81 @@ export const IDebugServiceSourceLine = 1133 as const;
 //  */
 // 
 export interface IDebugServiceUpstream {
+
 	/**
 	 * Set if the debug session is correlated with a test run. Stopping/restarting
 	 * the session will instead stop/restart the test run.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Set if the debug session is correlated with a test run. Stopping/restarting
 	 * the session will instead stop/restart the test run.
 	 */
 	readonly initializingOptions?: IDebugSessionOptions | undefined;
+
 	/**
 	 * Set if the debug session is correlated with a test run. Stopping/restarting
 	 * the session will instead stop/restart the test run.
 	 */
 	setExceptionBreakpointCondition(breakpoint: IExceptionBreakpoint, condition: string | undefined): Promise<void>;
 }
+
 export const IDebugServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Set if the debug session is correlated with a test run. Stopping/restarting\nthe session will instead stop/restart the test run.",
+
 		SourceLine: 1136,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "initializingOptions",
+
 		Readonly: true,
+
 		Optional: true,
+
 		TypeText: "IDebugSessionOptions | undefined",
+
 		Parameters: [],
+
 		DocComment: "Set if the debug session is correlated with a test run. Stopping/restarting\nthe session will instead stop/restart the test run.",
+
 		SourceLine: 1136,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setExceptionBreakpointCondition",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "breakpoint", TypeText: "IExceptionBreakpoint", Optional: false }, { Name: "condition", TypeText: "string | undefined", Optional: false }],
+
 		DocComment: "Set if the debug session is correlated with a test run. Stopping/restarting\nthe session will instead stop/restart the test run.",
+
 		SourceLine: 1270,
 	}
 ] as const;

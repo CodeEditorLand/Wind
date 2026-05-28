@@ -42,13 +42,17 @@ export const LiveFilesServiceLayer = Layer.effect(
 		const Service: FilesService = {
 			ReadFile: (uri) => {
 				const Path = UriToPath(uri);
+
 				return IPCService.invoke(Channel.FileRead)([Path]).pipe(
 					Effect.map((Result) => {
 						if (Result instanceof Uint8Array) return Result;
+
 						if (typeof Result === "string")
 							return new TextEncoder().encode(Result);
+
 						if (Array.isArray(Result))
 							return new Uint8Array(Result as number[]);
+
 						return new Uint8Array();
 					}),
 
@@ -58,6 +62,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 
 			WriteFile: (uri, content) => {
 				const Path = UriToPath(uri);
+
 				return IPCService.invoke(Channel.FileWrite)([
 					Path,
 
@@ -71,15 +76,21 @@ export const LiveFilesServiceLayer = Layer.effect(
 
 			Stat: (uri) => {
 				const Path = UriToPath(uri);
+
 				return IPCService.invoke(Channel.FileStat)([Path]).pipe(
 					Effect.map((Result) => {
 						const Metadata = Result as {
 							type?: number;
+
 							isFile?: boolean;
+
 							isDirectory?: boolean;
+
 							size?: number;
+
 							mtime?: number;
 						};
+
 						return {
 							// VS Code FileType: 0=Unknown 1=File 2=Directory 64=SymbolicLink
 							type:
@@ -95,9 +106,11 @@ export const LiveFilesServiceLayer = Layer.effect(
 
 			ReadDir: (uri) => {
 				const Path = UriToPath(uri);
+
 				return IPCService.invoke(Channel.FileReaddir)([Path]).pipe(
 					Effect.map((Result) => {
 						if (!Array.isArray(Result)) return [];
+
 						// Result is an array of [name, type] tuples or plain names
 						return (Result as unknown[]).map(
 							(Entry): [string, number] => {
@@ -106,8 +119,10 @@ export const LiveFilesServiceLayer = Layer.effect(
 										string,
 										number,
 									];
+
 									return [Name, Type ?? 0];
 								}
+
 								return [String(Entry), 0];
 							},
 						);
@@ -119,6 +134,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 
 			CreateDirectory: (uri) => {
 				const Path = UriToPath(uri);
+
 				return IPCService.invoke(Channel.FileMkdir)([Path]).pipe(
 					Effect.map(() => undefined as void),
 
@@ -128,6 +144,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 
 			Delete: (uri, options) => {
 				const Path = UriToPath(uri);
+
 				return IPCService.invoke(Channel.FileDelete)([
 					Path,
 
@@ -141,7 +158,9 @@ export const LiveFilesServiceLayer = Layer.effect(
 
 			Rename: (source, target, options) => {
 				const SourcePath = UriToPath(source);
+
 				const TargetPath = UriToPath(target);
+
 				return IPCService.invoke(Channel.FileMove)([
 					SourcePath,
 
@@ -157,7 +176,9 @@ export const LiveFilesServiceLayer = Layer.effect(
 
 			Copy: (source, target, options) => {
 				const SourcePath = UriToPath(source);
+
 				const TargetPath = UriToPath(target);
+
 				return IPCService.invoke(Channel.FileCopy)([
 					SourcePath,
 
@@ -173,6 +194,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 
 			Exists: (uri) => {
 				const Path = UriToPath(uri);
+
 				return IPCService.invoke(Channel.FileExists)([Path]).pipe(
 					Effect.map((Result) => Boolean(Result)),
 
@@ -184,6 +206,7 @@ export const LiveFilesServiceLayer = Layer.effect(
 				// Watch registration is fire-and-forget for now.
 				// Mountain's CocoonService.watch_file stores the intent.
 				const Path = UriToPath(uri);
+
 				return IPCService.invoke(Channel.FileRead)([Path]) // Verify path exists
 					.pipe(
 						Effect.map(() => ({

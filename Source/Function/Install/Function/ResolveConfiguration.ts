@@ -155,6 +155,7 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 		if (typeof Invoke !== "function") {
 			DevLog(
 				"config",
+
 				"Tauri IPC bridge never appeared - falling back to defaults. Workbench will boot but every native action (Open Folder, terminal, dialogs) will be a no-op.",
 			);
 		}
@@ -165,6 +166,7 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 			Paths = await (
 				Invoke as (
 					cmd: string,
+
 					args: Record<string, unknown>,
 				) => Promise<typeof Paths>
 			)("MountainIPCInvoke", {

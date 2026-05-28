@@ -56,6 +56,7 @@ const PanelLive = Layer.effect(
 		): Effect.Effect<PanelView, never> =>
 			Effect.gen(function* () {
 				const Id = `panel-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+
 				const NewView: PanelView = { ...View, id: Id };
 
 				yield* SubscriptionRef.modify(ViewsRef, (Views) => [
@@ -69,6 +70,7 @@ const PanelLive = Layer.effect(
 
 					`Created panel view: ${Id}`,
 				);
+
 				return NewView;
 			});
 
@@ -123,6 +125,7 @@ const PanelLive = Layer.effect(
 
 				// Clear active state if this was the active view
 				const CurrentActive = yield* ActiveViewRef.get;
+
 				if (CurrentActive === Id) {
 					yield* SubscriptionRef.set(ActiveViewRef, undefined);
 				}
@@ -171,6 +174,7 @@ const PanelLive = Layer.effect(
 				]);
 
 				yield* SubscriptionRef.set(ActiveViewRef, Id);
+
 				yield* TelemetryService.log(
 					"info",
 
@@ -190,6 +194,7 @@ const PanelLive = Layer.effect(
 		): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
 			Effect.gen(function* () {
 				yield* UpdateView(Id, { visible: true });
+
 				yield* TelemetryService.log("info", `Showed panel view: ${Id}`);
 			});
 
@@ -199,6 +204,7 @@ const PanelLive = Layer.effect(
 		): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
 			Effect.gen(function* () {
 				yield* UpdateView(Id, { visible: false });
+
 				yield* TelemetryService.log("info", `Hid panel view: ${Id}`);
 			});
 
@@ -214,6 +220,7 @@ const PanelLive = Layer.effect(
 				}
 
 				yield* UpdateView(Id, { visible: !Existing.visible });
+
 				yield* TelemetryService.log(
 					"info",
 
@@ -250,6 +257,7 @@ const PanelLive = Layer.effect(
 		): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
 			Effect.gen(function* () {
 				yield* UpdateView(Id, { maximized: false });
+
 				yield* TelemetryService.log(
 					"info",
 

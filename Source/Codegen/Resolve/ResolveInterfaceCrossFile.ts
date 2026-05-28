@@ -28,8 +28,11 @@ const ParseImportSpecifiers = (importBlock: string): ReadonlyArray<string> => {
 		.split(",")
 		.map((entry) => {
 			const Trimmed = entry.trim();
+
 			if (Trimmed.length === 0) return "";
+
 			const AsMatch = /(\w+)\s+as\s+(\w+)/.exec(Trimmed);
+
 			return AsMatch ? AsMatch[1]! : Trimmed;
 		})
 		.filter((entry) => entry.length > 0);

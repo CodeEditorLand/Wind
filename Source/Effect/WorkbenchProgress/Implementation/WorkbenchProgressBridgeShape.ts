@@ -8,8 +8,11 @@ export interface WorkbenchProgressBridgeShape {
 	readonly withProgress: <T>(
 		options: {
 			readonly title: string;
+
 			readonly location: number;
+
 			readonly cancellable?: boolean;
+
 			readonly source?: string;
 		},
 

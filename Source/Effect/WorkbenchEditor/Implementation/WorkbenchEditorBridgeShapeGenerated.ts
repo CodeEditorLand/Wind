@@ -17,6 +17,7 @@ import type { IEditorServiceUpstream } from "../../Generated/IEditorService/IEdi
 export type WorkbenchEditorBridgeShape = Pick<IEditorServiceUpstream, "activeEditorPane" | "openEditor" | "closeEditor" | "onDidActiveEditorChange">;
 
 export interface WorkbenchEditorGlobals {
+
 	readonly __CEL_SERVICES__?: {
 		readonly Editor?: WorkbenchEditorBridgeShape | null;
 	};

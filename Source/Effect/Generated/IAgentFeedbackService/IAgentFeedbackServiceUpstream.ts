@@ -5,71 +5,115 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentFeedbackServiceTag = "agentFeedbackService" as const;
+
 export const IAgentFeedbackServiceSourcePath = "vs/sessions/contrib/agentFeedback/browser/agentFeedbackService.ts" as const;
+
 export const IAgentFeedbackServiceSourceLine = 64 as const;
+
 // Decorator doc:
 // /**
 //  * When this feedback was converted from a PR review comment, the original thread ID.
 //  */
 // 
 export interface IAgentFeedbackServiceUpstream {
+
 	/**
 	 * When this feedback was converted from a PR review comment, the original thread ID.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * When this feedback was converted from a PR review comment, the original thread ID.
 	 */
 	readonly onDidChangeFeedback: Event<IAgentFeedbackChangeEvent>;
+
 	/**
 	 * When this feedback was converted from a PR review comment, the original thread ID.
 	 */
 	readonly onDidChangeNavigation: Event<URI>;
+
 	/**
 	 * When this feedback was converted from a PR review comment, the original thread ID.
 	 */
 	setNavigationAnchor(sessionResource: URI, itemId: string | undefined): void;
 }
+
 export const IAgentFeedbackServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "When this feedback was converted from a PR review comment, the original thread ID.",
+
 		SourceLine: 67,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeFeedback",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<IAgentFeedbackChangeEvent>",
+
 		Parameters: [],
+
 		DocComment: "When this feedback was converted from a PR review comment, the original thread ID.",
+
 		SourceLine: 67,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeNavigation",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<URI>",
+
 		Parameters: [],
+
 		DocComment: "When this feedback was converted from a PR review comment, the original thread ID.",
+
 		SourceLine: 67,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setNavigationAnchor",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }, { Name: "itemId", TypeText: "string | undefined", Optional: false }],
+
 		DocComment: "When this feedback was converted from a PR review comment, the original thread ID.",
+
 		SourceLine: 119,
 	}
 ] as const;

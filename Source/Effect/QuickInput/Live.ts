@@ -43,10 +43,14 @@ export const LiveQuickInputServiceLayer = Layer.effect(
 					Effect.map((Result) => {
 						if (Result === null || Result === undefined)
 							return undefined;
+
 						return Result as {
 							label: string;
+
 							description?: string;
+
 							detail?: string;
+
 							picked?: boolean;
 						};
 					}),

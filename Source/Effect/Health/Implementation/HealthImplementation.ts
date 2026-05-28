@@ -27,6 +27,7 @@ export const makeHealthChecker = (): HealthService => ({
 			switch (ServiceName.toLowerCase()) {
 				case "environment":
 					const EnvTime = Date.now() - StartTime;
+
 					return Effect.succeed({
 						serviceName: "Environment",
 						status: "healthy" as const,
@@ -37,7 +38,9 @@ export const makeHealthChecker = (): HealthService => ({
 
 				case "telemetry":
 					const TelemetryService = yield* TelemetryTag;
+
 					const TelemetryTime = Date.now() - StartTime;
+
 					return yield* TelemetryService.log(
 						"info",
 
@@ -67,7 +70,9 @@ export const makeHealthChecker = (): HealthService => ({
 
 				case "mountain": {
 					const Mountain = yield* MountainTag;
+
 					const MountainTime = Date.now() - StartTime;
+
 					return yield* Mountain.version.pipe(
 						Effect.map(
 							(version) =>
@@ -95,6 +100,7 @@ export const makeHealthChecker = (): HealthService => ({
 
 				case "ipc":
 					const IpcTime = Date.now() - StartTime;
+
 					return Effect.succeed({
 						serviceName: "IPC",
 						status: "healthy" as const,
@@ -105,7 +111,9 @@ export const makeHealthChecker = (): HealthService => ({
 
 				case "configuration": {
 					const Config = yield* ConfigurationTag;
+
 					const ConfigTime = Date.now() - StartTime;
+
 					return yield* Config.get.pipe(
 						Effect.map(
 							() =>
@@ -144,7 +152,9 @@ export const makeHealthChecker = (): HealthService => ({
 	checkAllServices: () =>
 		Effect.gen(function* () {
 			const Env = yield* EnvironmentTag;
+
 			const EnvInfo = yield* Env.getInfo;
+
 			const Services = [
 				"environment",
 				"telemetry",
@@ -152,6 +162,7 @@ export const makeHealthChecker = (): HealthService => ({
 				"ipc",
 				"configuration",
 			] as const;
+
 			const HealthChecker = makeHealthChecker();
 
 			const ServiceHealthChecks = Services.map((Service) =>
@@ -163,11 +174,13 @@ export const makeHealthChecker = (): HealthService => ({
 			const UnhealthyCount = HealthResults.filter(
 				(h: ServiceHealth) => h.status === "unhealthy",
 			).length;
+
 			const DegradedCount = HealthResults.filter(
 				(h: ServiceHealth) => h.status === "degraded",
 			).length;
 
 			let OverallStatus: HealthStatus = "healthy";
+
 			if (UnhealthyCount > 0) {
 				OverallStatus = "unhealthy";
 			} else if (DegradedCount > 0) {
@@ -189,7 +202,9 @@ export const makeHealthChecker = (): HealthService => ({
 	getOverallStatus: () =>
 		Effect.gen(function* () {
 			const HealthChecker = makeHealthChecker();
+
 			const SystemHealth = yield* HealthChecker.checkAllServices();
+
 			return SystemHealth.overallStatus;
 		}),
 
@@ -213,7 +228,9 @@ export const makeMockHealth = (
 	checkService: (ServiceName: string) =>
 		Effect.gen(function* () {
 			const DefaultStatus: HealthStatus = "healthy";
+
 			const Status = Overrides?.[ServiceName] ?? DefaultStatus;
+
 			return {
 				serviceName: ServiceName,
 				status: Status,
@@ -235,6 +252,7 @@ export const makeMockHealth = (
 				"ipc",
 				"configuration",
 			];
+
 			const Results = Services.map(
 				(Name) =>
 					({

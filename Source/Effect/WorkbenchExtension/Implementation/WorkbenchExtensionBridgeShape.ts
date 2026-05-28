@@ -26,6 +26,7 @@ export interface WorkbenchExtensionBridgeShape {
 	readonly onDidChangeExtensions: (
 		listener: (event: {
 			readonly added: ReadonlyArray<UpstreamExtensionDescriptor>;
+
 			readonly removed: ReadonlyArray<UpstreamExtensionDescriptor>;
 		}) => void,
 	) => { readonly dispose: () => void };

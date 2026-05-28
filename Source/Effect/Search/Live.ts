@@ -50,7 +50,9 @@ export const LiveSearchServiceLayer = Layer.effect(
 						Array.isArray(Result)
 							? (Result as readonly {
 									uri: string;
+
 									lineNumber: number;
+
 									preview: string;
 								}[])
 							: [],

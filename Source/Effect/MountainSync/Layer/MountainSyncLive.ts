@@ -41,7 +41,9 @@ const MountainSyncLive = Layer.effect(
 
 	Effect.gen(function* () {
 		const mountain = yield* MountainTag;
+
 		const ipc = yield* IPCTag;
+
 		const telemetry = yield* TelemetryTag;
 
 		return makeMountainSync(mountain, ipc, telemetry);

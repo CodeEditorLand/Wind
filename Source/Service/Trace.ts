@@ -23,11 +23,14 @@ export const Trace = (Tag: string, Message: string): void => {
 export const DevLogForward = (Tag: string, Message: string): void => {
 	try {
 		const Internals = (window as any).__TAURI_INTERNALS__;
+
 		const Invoke =
 			(window as any).__TAURI__?.core?.invoke ??
 			(window as any).__TAURI__?.invoke ??
 			Internals?.invoke;
+
 		if (typeof Invoke !== "function") return;
+
 		Invoke("RenderDevLog", {
 			Tag,
 			Message,
@@ -44,19 +47,26 @@ export const DevLogForward = (Tag: string, Message: string): void => {
  */
 export const TimedTrace = async <T>(
 	Tag: string,
+
 	Label: string,
+
 	Fn: () => Promise<T>,
 ): Promise<T> => {
 	const MarkName = `land:${Tag}:${Label}`;
+
 	const StartMark = `${MarkName}:start`;
+
 	try {
 		performance.mark(StartMark);
 	} catch {}
+
 	try {
 		const Result = await Fn();
+
 		try {
 			performance.measure(MarkName, StartMark);
 		} catch {}
+
 		return Result;
 	} catch (Error) {
 		try {
@@ -64,9 +74,11 @@ export const TimedTrace = async <T>(
 				detail: { error: String(Error) },
 			});
 		} catch {}
+
 		try {
 			performance.measure(MarkName, StartMark);
 		} catch {}
+
 		throw Error;
 	}
 };

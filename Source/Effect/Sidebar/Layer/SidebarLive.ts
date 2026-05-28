@@ -52,6 +52,7 @@ const SidebarLive = Layer.effect(
 		): Effect.Effect<SidebarPanel, never> =>
 			Effect.gen(function* () {
 				const Id = `sidebar-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+
 				const NewPanel: SidebarPanel = { ...Panel, id: Id };
 
 				yield* SubscriptionRef.modify(PanelsRef, (Panels) => [
@@ -67,6 +68,7 @@ const SidebarLive = Layer.effect(
 
 					`Created sidebar panel: ${Id}`,
 				);
+
 				return NewPanel;
 			});
 
@@ -130,6 +132,7 @@ const SidebarLive = Layer.effect(
 
 				// Clear active state if this was the active panel
 				const CurrentActive = yield* ActivePanelRef.get;
+
 				if (CurrentActive === Id) {
 					yield* SubscriptionRef.set(ActivePanelRef, undefined);
 				}
@@ -180,6 +183,7 @@ const SidebarLive = Layer.effect(
 				]);
 
 				yield* SubscriptionRef.set(ActivePanelRef, Id);
+
 				yield* TelemetryService.log(
 					"info",
 
@@ -210,6 +214,7 @@ const SidebarLive = Layer.effect(
 				}
 
 				yield* UpdatePanel(Id, { collapsed: !Existing.collapsed });
+
 				yield* TelemetryService.log(
 					"info",
 
@@ -226,6 +231,7 @@ const SidebarLive = Layer.effect(
 		> =>
 			Effect.gen(function* () {
 				yield* UpdatePanel(Id, { collapsed: true });
+
 				yield* TelemetryService.log(
 					"info",
 
@@ -242,6 +248,7 @@ const SidebarLive = Layer.effect(
 		> =>
 			Effect.gen(function* () {
 				yield* UpdatePanel(Id, { collapsed: false });
+
 				yield* TelemetryService.log(
 					"info",
 

@@ -10,6 +10,7 @@ import type {
 
 const ResolveBridge = Effect.sync((): WorkbenchHostBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchHostGlobals;
+
 	return Globals.__CEL_SERVICES__?.Host ?? null;
 });
 
@@ -46,6 +47,7 @@ export const WorkbenchHostLive = Layer.effect(
 		const Reload: Effect.Effect<void, WorkbenchHostProblem> = Effect.gen(
 			function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				yield* Wrap("reload", () => Bridge.reload());
 			},
 		);
@@ -53,6 +55,7 @@ export const WorkbenchHostLive = Layer.effect(
 		const Restart: Effect.Effect<void, WorkbenchHostProblem> = Effect.gen(
 			function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				yield* Wrap("restart", () => Bridge.restart());
 			},
 		);
@@ -60,6 +63,7 @@ export const WorkbenchHostLive = Layer.effect(
 		const Close: Effect.Effect<void, WorkbenchHostProblem> = Effect.gen(
 			function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				yield* Wrap("close", () => Bridge.close());
 			},
 		);
@@ -67,6 +71,7 @@ export const WorkbenchHostLive = Layer.effect(
 		const Focus: Effect.Effect<void, WorkbenchHostProblem> = Effect.gen(
 			function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				yield* Wrap("focus", () => Bridge.focus());
 			},
 		);
@@ -76,6 +81,7 @@ export const WorkbenchHostLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchHostProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				yield* Wrap("openWindow", () =>
 					Bridge.openWindow(
 						Uris.map((Value) => ({
@@ -89,11 +95,14 @@ export const WorkbenchHostLive = Layer.effect(
 			(Emit) => {
 				if (!Bridge?.onDidChangeFocus) {
 					Emit.fail(Unavailable);
+
 					return Effect.void;
 				}
+
 				const Subscription = Bridge.onDidChangeFocus((Focused) =>
 					Emit.single(Focused),
 				);
+
 				return Effect.sync(() => Subscription.dispose());
 			},
 		);

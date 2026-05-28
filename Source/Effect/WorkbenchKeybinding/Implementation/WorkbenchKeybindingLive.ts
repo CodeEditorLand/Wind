@@ -15,6 +15,7 @@ import type {
 
 const ResolveBridge = Effect.sync((): WorkbenchKeybindingBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchKeybindingGlobals;
+
 	return Globals.__CEL_SERVICES__?.Keybinding ?? null;
 });
 
@@ -55,7 +56,9 @@ export const WorkbenchKeybindingLive = Layer.effect(
 		> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				const Bindings = Bridge.lookupKeybindings(CommandId);
+
 				return Bindings.map((Binding) =>
 					ToResolution(Binding, CommandId, []),
 				);
@@ -69,6 +72,7 @@ export const WorkbenchKeybindingLive = Layer.effect(
 		> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				const Binding = yield* Effect.try({
 					try: () => Bridge.resolveKeyboardEvent(Event),
 					catch: (Cause) =>
@@ -78,6 +82,7 @@ export const WorkbenchKeybindingLive = Layer.effect(
 							error: ToError(Cause),
 						}) satisfies WorkbenchKeybindingProblem,
 				});
+
 				return Binding ? ToResolution(Binding, null, []) : null;
 			});
 
@@ -89,13 +94,16 @@ export const WorkbenchKeybindingLive = Layer.effect(
 				const Detail = (
 					Event as CustomEvent<WorkbenchKeybindingDispatch>
 				).detail;
+
 				Emit.single(Detail);
 			};
+
 			try {
 				window.addEventListener(KEYBINDING_DISPATCH_EVENT, Listener);
 			} catch {
 				// no window in tests
 			}
+
 			return Effect.sync(() => {
 				try {
 					window.removeEventListener(

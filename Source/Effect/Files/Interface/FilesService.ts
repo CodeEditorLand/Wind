@@ -65,20 +65,27 @@ export interface FilesService {
 	/** Show a native file-open dialog. Returns selected URIs or empty array. */
 	readonly ShowOpenDialog: (options?: {
 		readonly title?: string;
+
 		readonly filters?: ReadonlyArray<{
 			readonly name: string;
+
 			readonly extensions: ReadonlyArray<string>;
 		}>;
+
 		readonly canSelectMany?: boolean;
+
 		readonly canSelectFolders?: boolean;
 	}) => Effect.Effect<readonly string[], FilesProblem>;
 
 	/** Show a native file-save dialog. Returns selected URI or undefined. */
 	readonly ShowSaveDialog: (options?: {
 		readonly title?: string;
+
 		readonly defaultUri?: string;
+
 		readonly filters?: ReadonlyArray<{
 			readonly name: string;
+
 			readonly extensions: ReadonlyArray<string>;
 		}>;
 	}) => Effect.Effect<string | undefined, FilesProblem>;

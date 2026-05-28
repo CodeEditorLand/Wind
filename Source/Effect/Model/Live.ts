@@ -61,6 +61,7 @@ export const LiveModelServiceLayer = Layer.effect(
 
 					Effect.flatMap((Result) => {
 						const Parsed = ParseTextModel(Result);
+
 						return Parsed
 							? Effect.succeed(Parsed)
 							: Effect.fail({
@@ -91,8 +92,10 @@ export const LiveModelServiceLayer = Layer.effect(
 					Effect.map((Result) => {
 						if (!Array.isArray(Result))
 							return [] as readonly TextModel[];
+
 						return Result.flatMap((Item) => {
 							const Parsed = ParseTextModel(Item);
+
 							return Parsed ? [Parsed] : [];
 						}) as readonly TextModel[];
 					}),
@@ -110,6 +113,7 @@ export const LiveModelServiceLayer = Layer.effect(
 
 					Effect.flatMap((Result) => {
 						const Parsed = ParseTextModel(Result);
+
 						return Parsed
 							? Effect.succeed(Parsed)
 							: Effect.fail({

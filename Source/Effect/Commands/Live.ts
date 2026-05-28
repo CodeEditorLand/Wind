@@ -48,6 +48,7 @@ export const LiveCommandsServiceLayer = Layer.effect(
 			): Effect.Effect<T, CommandsProblem> => {
 				// Check local handlers first (UI-side commands execute synchronously)
 				const LocalHandler = LocalHandlers.get(id);
+
 				if (LocalHandler !== undefined) {
 					return Effect.try({
 						try: () => LocalHandler(...args) as T,
@@ -58,6 +59,7 @@ export const LiveCommandsServiceLayer = Layer.effect(
 				// Delegate to Mountain's CommandRegistry via IPC
 				return IPCService.invoke(Channel.CommandsExecute)([
 					id,
+
 					args[0] ?? null,
 				]).pipe(
 					Effect.map((Result) => Result as T),

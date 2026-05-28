@@ -69,10 +69,12 @@ export default async function targetConfig(
 						setup({ onEnd }: any) {
 							onEnd(async ({ metafile }: any) => {
 								const _Output = metafile?.outputs;
+
 								for (const Output in _Output) {
 									if (
 										Object.prototype.hasOwnProperty.call(
 											_Output,
+
 											Output,
 										)
 									) {

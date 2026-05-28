@@ -5,85 +5,139 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IChatWidgetHistoryServiceTag = "IChatWidgetHistoryService" as const;
+
 export const IChatWidgetHistoryServiceSourcePath = "vs/workbench/contrib/chat/common/widget/chatWidgetHistoryService.ts" as const;
+
 export const IChatWidgetHistoryServiceSourceLine = 35 as const;
+
 // Decorator doc:
 // /**
 //  * The collected input state for chat history entries
 //  */
 // 
 export interface IChatWidgetHistoryServiceUpstream {
+
 	/**
 	 * The collected input state for chat history entries
 	 */
 	_serviceBrand: undefined;
+
 	/**
 	 * The collected input state for chat history entries
 	 */
 	readonly onDidChangeHistory: Event<ChatHistoryChange>;
+
 	/**
 	 * The collected input state for chat history entries
 	 */
 	clearHistory(): void;
+
 	/**
 	 * The collected input state for chat history entries
 	 */
 	getHistory(location: ChatAgentLocation): readonly IChatModelInputState[];
+
 	/**
 	 * The collected input state for chat history entries
 	 */
 	append(location: ChatAgentLocation, history: IChatModelInputState): void;
 }
+
 export const IChatWidgetHistoryServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "The collected input state for chat history entries",
+
 		SourceLine: 37,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeHistory",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ChatHistoryChange>",
+
 		Parameters: [],
+
 		DocComment: "The collected input state for chat history entries",
+
 		SourceLine: 39,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "clearHistory",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: "The collected input state for chat history entries",
+
 		SourceLine: 41,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getHistory",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "readonly IChatModelInputState[]",
+
 		Parameters: [{ Name: "location", TypeText: "ChatAgentLocation", Optional: false }],
+
 		DocComment: "The collected input state for chat history entries",
+
 		SourceLine: 42,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "append",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "location", TypeText: "ChatAgentLocation", Optional: false }, { Name: "history", TypeText: "IChatModelInputState", Optional: false }],
+
 		DocComment: "The collected input state for chat history entries",
+
 		SourceLine: 43,
 	}
 ] as const;

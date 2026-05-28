@@ -25,6 +25,7 @@ const MakeProgressProblem = (error: unknown): ProgressProblem =>
 
 export const LiveProgressServiceLayer = Layer.effect(
 	ProgressServiceTag,
+
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
 
@@ -32,7 +33,9 @@ export const LiveProgressServiceLayer = Layer.effect(
 			Begin: (options) =>
 				IPCService.invoke(Channel.ProgressBegin)([
 					options.location,
+
 					options.title ?? "",
+
 					options.cancellable ?? false,
 				]).pipe(
 					Effect.map((Result) =>
@@ -40,22 +43,27 @@ export const LiveProgressServiceLayer = Layer.effect(
 							? Result
 							: `progress-${Date.now()}`,
 					),
+
 					Effect.mapError(MakeProgressProblem),
 				),
 
 			Report: (id, report) =>
 				IPCService.invoke(Channel.ProgressReport)([
 					id,
+
 					report.increment ?? 0,
+
 					report.message ?? "",
 				]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeProgressProblem),
 				),
 
 			End: (id) =>
 				IPCService.invoke(Channel.ProgressEnd)([id]).pipe(
 					Effect.map(() => undefined as void),
+
 					Effect.mapError(MakeProgressProblem),
 				),
 		};

@@ -36,6 +36,7 @@ export const LiveTerminalServiceLayer = Layer.effect(
 				IPCService.invoke(Channel.TerminalCreate)([options ?? {}]).pipe(
 					Effect.map((Result) => {
 						const Info = Result as { id?: number; name?: string };
+
 						return {
 							id: Info.id ?? 0,
 							name: Info.name ?? "terminal",

@@ -16,6 +16,7 @@ import {
 
 const ResolveBridge = Effect.sync((): WorkbenchProgressBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchProgressGlobals;
+
 	return Globals.__CEL_SERVICES__?.Progress ?? null;
 });
 
@@ -55,6 +56,7 @@ export const WorkbenchProgressLive = Layer.effect(
 		): Effect.Effect<A, WorkbenchProgressProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				return yield* Effect.tryPromise({
 					try: () =>
 						Bridge.withProgress(
@@ -80,6 +82,7 @@ export const WorkbenchProgressLive = Layer.effect(
 			});
 
 		const Service: WorkbenchProgressService = { Run };
+
 		return Service;
 	}),
 );

@@ -3,8 +3,11 @@ import type { WorkbenchNotificationSeverity } from "../Type/WorkbenchNotificatio
 export interface WorkbenchNotificationBridgeShape {
 	readonly notify: (notification: {
 		readonly severity: number;
+
 		readonly message: string;
+
 		readonly source?: string;
+
 		readonly silent?: boolean;
 	}) => unknown;
 

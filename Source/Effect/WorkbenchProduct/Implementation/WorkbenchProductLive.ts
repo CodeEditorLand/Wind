@@ -13,6 +13,7 @@ import type {
 
 const ResolveBridge = Effect.sync((): WorkbenchProductBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchProductGlobals;
+
 	return Globals.__CEL_SERVICES__?.Product ?? null;
 });
 
@@ -33,6 +34,7 @@ export const WorkbenchProductLive = Layer.effect(
 			WorkbenchProductProblem
 		> = Effect.gen(function* () {
 			if (!Bridge) return yield* Effect.fail(Unavailable);
+
 			return {
 				nameLong: Bridge.nameLong,
 				nameShort: Bridge.nameShort,
@@ -50,10 +52,12 @@ export const WorkbenchProductLive = Layer.effect(
 		): Effect.Effect<T | undefined, WorkbenchProductProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				return Bridge[Key] as T | undefined;
 			});
 
 		const Service: WorkbenchProductService = { Snapshot, Get };
+
 		return Service;
 	}),
 );

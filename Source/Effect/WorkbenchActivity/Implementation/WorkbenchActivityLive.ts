@@ -14,6 +14,7 @@ import type {
 
 const ResolveBridge = Effect.sync((): WorkbenchActivityBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchActivityGlobals;
+
 	return Globals.__CEL_SERVICES__?.Activity ?? null;
 });
 
@@ -55,6 +56,7 @@ export const WorkbenchActivityLive = Layer.effect(
 		> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				const Disposable = Bridge.showViewContainerActivity(
 					Badge.viewContainerId,
 
@@ -63,7 +65,9 @@ export const WorkbenchActivityLive = Layer.effect(
 						priority: Badge.priority,
 					},
 				);
+
 				Disposables.set(Badge.viewContainerId, Disposable);
+
 				return Disposable;
 			});
 
@@ -72,13 +76,16 @@ export const WorkbenchActivityLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchActivityProblem> =>
 			Effect.sync(() => {
 				const Disposable = Disposables.get(ViewContainerId);
+
 				if (Disposable) {
 					Disposable.dispose();
+
 					Disposables.delete(ViewContainerId);
 				}
 			});
 
 		const Service: WorkbenchActivityService = { ShowBadge, Clear };
+
 		return Service;
 	}),
 );

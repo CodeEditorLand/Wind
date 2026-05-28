@@ -41,6 +41,7 @@ export default function withMetric<A, E, R>(
 ) {
 	return Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
+
 		const startTime = Date.now();
 
 		return effect.pipe(

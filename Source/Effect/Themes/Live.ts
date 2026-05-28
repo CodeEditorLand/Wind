@@ -36,9 +36,12 @@ export const LiveThemesServiceLayer = Layer.effect(
 					Effect.map((Result) => {
 						const Theme = Result as {
 							id?: string;
+
 							label?: string;
+
 							kind?: string;
 						};
+
 						return {
 							id: Theme.id ?? "Default Dark Modern",
 							label: Theme.label ?? "Default Dark Modern",
@@ -59,7 +62,9 @@ export const LiveThemesServiceLayer = Layer.effect(
 						Array.isArray(Result)
 							? (Result as readonly {
 									id: string;
+
 									label: string;
+
 									kind:
 										| "light"
 										| "dark"

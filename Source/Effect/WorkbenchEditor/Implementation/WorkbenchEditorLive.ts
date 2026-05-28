@@ -16,6 +16,7 @@ import type {
 
 const ResolveBridge = Effect.sync((): WorkbenchEditorBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchEditorGlobals;
+
 	return Globals.__CEL_SERVICES__?.Editor ?? null;
 });
 
@@ -65,6 +66,7 @@ export const WorkbenchEditorLive = Layer.effect(
 			WorkbenchEditorProblem
 		> = Effect.gen(function* () {
 			if (!Bridge) return yield* Effect.fail(Unavailable);
+
 			return ToSnapshot(Bridge.activeEditorPane);
 		});
 
@@ -76,6 +78,7 @@ export const WorkbenchEditorLive = Layer.effect(
 		> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				const Pane = yield* Effect.tryPromise({
 					try: () =>
 						Bridge.openEditor(
@@ -100,14 +103,18 @@ export const WorkbenchEditorLive = Layer.effect(
 							error: ToError(Cause),
 						}) satisfies WorkbenchEditorProblem,
 				});
+
 				return ToSnapshot(Pane ?? null);
 			});
 
 		const CloseActive: Effect.Effect<void, WorkbenchEditorProblem> =
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				const Pane = Bridge.activeEditorPane;
+
 				if (!Pane) return;
+
 				yield* Effect.tryPromise({
 					try: () => Bridge.closeEditor(Pane),
 					catch: (Cause) =>
@@ -128,8 +135,10 @@ export const WorkbenchEditorLive = Layer.effect(
 		>((Emit) => {
 			if (!Bridge) {
 				Emit.fail(Unavailable);
+
 				return Effect.void;
 			}
+
 			const Subscription = Bridge.onDidActiveEditorChange((Event) => {
 				Emit.single({
 					previous: Event.previous
@@ -138,6 +147,7 @@ export const WorkbenchEditorLive = Layer.effect(
 					current: ToSnapshot(Event.current),
 				});
 			});
+
 			return Effect.sync(() => Subscription.dispose());
 		});
 

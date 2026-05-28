@@ -58,7 +58,9 @@ export const LiveLanguageServiceLayer = Layer.effect(
 			Effect.try({
 				try: () => {
 					const Handle = NextHandle++;
+
 					ActiveProviders.set(Handle, { selector, type, provider });
+
 					return MakeDisposable(Handle);
 				},
 				catch: MakeLanguageProblem,
@@ -98,6 +100,7 @@ export const LiveLanguageServiceLayer = Layer.effect(
 								(P) => P.selector,
 							),
 						);
+
 						return [...Selectors] as readonly string[];
 					},
 					catch: MakeLanguageProblem,

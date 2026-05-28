@@ -17,6 +17,7 @@ import type { IStorageServiceUpstream } from "../../Generated/IStorageService/IS
 export type WorkbenchStorageBridgeShape = Pick<IStorageServiceUpstream, "get" | "getBoolean" | "getNumber" | "getObject" | "store" | "remove" | "keys" | "onDidChangeValue">;
 
 export interface WorkbenchStorageGlobals {
+
 	readonly __CEL_SERVICES__?: {
 		readonly Storage?: WorkbenchStorageBridgeShape | null;
 	};

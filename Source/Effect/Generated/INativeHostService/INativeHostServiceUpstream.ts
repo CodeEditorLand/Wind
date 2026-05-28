@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const INativeHostServiceTag = "nativeHostService" as const;
+
 export const INativeHostServiceSourcePath = "vs/platform/native/common/native.ts" as const;
+
 export const INativeHostServiceSourceLine = 302 as const;
+
 // Decorator doc:
 // /**
 //  * (Default) Transfer focus to the target window
@@ -15,7 +19,9 @@ export const INativeHostServiceSourceLine = 302 as const;
 //  */
 // 
 export interface INativeHostServiceUpstream {
+
 	// (no members extracted in same file - resolve cross-file)
 }
+
 export const INativeHostServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

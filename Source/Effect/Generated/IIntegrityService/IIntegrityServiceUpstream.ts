@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IIntegrityServiceTag = "integrityService" as const;
+
 export const IIntegrityServiceSourcePath = "vs/workbench/services/integrity/common/integrity.ts" as const;
+
 export const IIntegrityServiceSourceLine = 9 as const;
+
 export interface IIntegrityServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	isPure(): Promise<IntegrityTestResult>;
 }
+
 export const IIntegrityServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 24,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isPure",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IntegrityTestResult>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 26,
 	}
 ] as const;

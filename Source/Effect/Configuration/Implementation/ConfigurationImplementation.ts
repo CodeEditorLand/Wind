@@ -39,7 +39,9 @@ export const ConfigurationLive = Layer.effect(
 
 	Effect.gen(function* () {
 		const SandboxService = yield* Sandbox;
+
 		const IPCService = yield* IPC;
+
 		const Validate = MakeValidate();
 
 		// Create subscription ref for reactive configuration
@@ -76,11 +78,13 @@ export const ConfigurationLive = Layer.effect(
 		// Atom: Get current configuration
 		const Get = Effect.gen(function* () {
 			const Current = yield* ConfigRef.get;
+
 			if (!Current) {
 				return yield* Effect.fail<ConfigurationNotReadyError>(
 					new ConfigurationNotReadyError(),
 				);
 			}
+
 			return Current;
 		});
 
@@ -88,7 +92,9 @@ export const ConfigurationLive = Layer.effect(
 		const Refresh: Effect.Effect<ISandboxConfiguration, ConfigFetchError> =
 			Effect.gen(function* () {
 				const Config = yield* Fetch;
+
 				yield* SubscriptionRef.set(ConfigRef, Config);
+
 				return Config;
 			});
 
@@ -119,9 +125,13 @@ export const ConfigurationWithSyncLive = Layer.effect(
 
 	Effect.gen(function* () {
 		const SandboxService = yield* Sandbox;
+
 		const IPCService = yield* IPC;
+
 		const Mountain = yield* MountainTag;
+
 		const Validate = MakeValidate();
+
 		const Apply = MakeApply();
 
 		// Create subscription ref for reactive configuration
@@ -155,11 +165,13 @@ export const ConfigurationWithSyncLive = Layer.effect(
 		// Atom: Get current configuration
 		const Get = Effect.gen(function* () {
 			const Current = yield* ConfigRef.get;
+
 			if (!Current) {
 				return yield* Effect.fail<ConfigurationNotReadyError>(
 					new ConfigurationNotReadyError(),
 				);
 			}
+
 			return Current;
 		});
 
@@ -167,7 +179,9 @@ export const ConfigurationWithSyncLive = Layer.effect(
 		const Refresh: Effect.Effect<ISandboxConfiguration, ConfigFetchError> =
 			Effect.gen(function* () {
 				const Config = yield* Fetch;
+
 				yield* SubscriptionRef.set(ConfigRef, Config);
+
 				return Config;
 			});
 
@@ -181,6 +195,7 @@ export const ConfigurationWithSyncLive = Layer.effect(
 			Effect.gen(function* () {
 				// Subscribe to Mountain connection changes
 				const ConnectionState = yield* Mountain.connectionState;
+
 				if (ConnectionState._tag === "Connected") {
 					// Start periodic sync
 					yield* Effect.repeat(
@@ -188,12 +203,14 @@ export const ConfigurationWithSyncLive = Layer.effect(
 							const Config = yield* Mountain.rpc(
 								"mountain_get_configuration",
 							)();
+
 							if (Config) {
 								yield* Validate(Config).pipe(
 									Effect.flatMap((ValidatedConfig) => {
 										return Effect.gen(function* () {
 											const Current =
 												yield* ConfigRef.get;
+
 											if (
 												!Current ||
 												JSON.stringify(Current) !==
@@ -206,6 +223,7 @@ export const ConfigurationWithSyncLive = Layer.effect(
 
 													ValidatedConfig,
 												);
+
 												yield* Apply(ValidatedConfig);
 											}
 										});
@@ -215,6 +233,7 @@ export const ConfigurationWithSyncLive = Layer.effect(
 										Effect.sync(() => {
 											DevLog(
 												"config",
+
 												"[Configuration] Sync error:",
 
 												error,

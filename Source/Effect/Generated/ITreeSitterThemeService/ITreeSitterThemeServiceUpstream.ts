@@ -5,43 +5,77 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITreeSitterThemeServiceTag = "treeSitterThemeService" as const;
+
 export const ITreeSitterThemeServiceSourcePath = "vs/editor/common/services/treeSitter/treeSitterThemeService.ts" as const;
+
 export const ITreeSitterThemeServiceSourceLine = 9 as const;
+
 export interface ITreeSitterThemeServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onChange: IObservable<void>;
+
 	findMetadata(captureNames: string[], languageId: number, bracket: boolean, reader: IReader | undefined): number;
 }
+
 export const ITreeSitterThemeServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 12,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "onChange",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IObservable<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 12,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "findMetadata",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "number",
+
 		Parameters: [{ Name: "captureNames", TypeText: "string[]", Optional: false }, { Name: "languageId", TypeText: "number", Optional: false }, { Name: "bracket", TypeText: "boolean", Optional: false }, { Name: "reader", TypeText: "IReader | undefined", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 15,
 	}
 ] as const;

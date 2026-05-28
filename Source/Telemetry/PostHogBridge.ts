@@ -29,12 +29,14 @@ const Enrich = (Properties: Properties): Properties => ({
 
 export const CaptureEvent = (
 	Event: string,
+
 	Properties: Properties = {},
 ): void => {
 	// Build-time gate: Vite folds `import.meta.env.DEV` to a literal in
 	// every chunk; production builds dead-code this entire function
 	// body so no string literals / payloads ship.
 	if (!import.meta.env.DEV) return;
+
 	if (!Configuration.Enabled) return;
 
 	const Enriched = Enrich(Properties);
@@ -56,13 +58,16 @@ export const CaptureEvent = (
 
 export const CaptureError = (
 	Tag: string,
+
 	Message: string,
+
 	Extra: Properties = {},
 ): void => {
 	// Build-time gate: Vite folds `import.meta.env.DEV` to a literal in
 	// every chunk; production builds dead-code this entire function
 	// body so no string literals / payloads ship.
 	if (!import.meta.env.DEV) return;
+
 	if (!Configuration.Enabled) return;
 
 	const Enriched = Enrich({
@@ -91,8 +96,11 @@ export const CaptureError = (
 
 	void Fallback(
 		Configuration,
+
 		DistinctIdentifier,
+
 		"land:wind:error",
+
 		Enriched,
 	);
 };
@@ -102,6 +110,7 @@ export const Initialize = (): void => {
 	// every chunk; production builds dead-code this entire function
 	// body so no string literals / payloads ship.
 	if (!import.meta.env.DEV) return;
+
 	if (!Configuration.Enabled) return;
 
 	const Browser = GetBrowser();

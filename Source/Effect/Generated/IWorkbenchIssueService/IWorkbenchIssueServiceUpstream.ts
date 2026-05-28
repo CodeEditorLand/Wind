@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IWorkbenchIssueServiceTag = "workbenchIssueService" as const;
+
 export const IWorkbenchIssueServiceSourcePath = "vs/workbench/contrib/issue/common/issue.ts" as const;
+
 export const IWorkbenchIssueServiceSourceLine = 132 as const;
+
 // Decorator doc:
 // /**
 //  * Resolves once `enabledExtensions` has been populated (or failed to populate).
@@ -16,12 +20,14 @@ export const IWorkbenchIssueServiceSourceLine = 132 as const;
 //  */
 // 
 export interface IWorkbenchIssueServiceUpstream {
+
 	/**
 	 * Resolves once `enabledExtensions` has been populated (or failed to populate).
 	 * Lets the wizard pane wait for the async extension enumeration in
 	 * `NativeIssueService` to finish before rendering the extensions section.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Resolves once `enabledExtensions` has been populated (or failed to populate).
 	 * Lets the wizard pane wait for the async extension enumeration in
@@ -29,25 +35,43 @@ export interface IWorkbenchIssueServiceUpstream {
 	 */
 	openReporter(dataOverrides?: Partial<IssueReporterData>): Promise<void>;
 }
+
 export const IWorkbenchIssueServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Resolves once `enabledExtensions` has been populated (or failed to populate).\nLets the wizard pane wait for the async extension enumeration in\n`NativeIssueService` to finish before rendering the extensions section.",
+
 		SourceLine: 135,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "openReporter",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "dataOverrides", TypeText: "Partial<IssueReporterData>", Optional: true }],
+
 		DocComment: "Resolves once `enabledExtensions` has been populated (or failed to populate).\nLets the wizard pane wait for the async extension enumeration in\n`NativeIssueService` to finish before rendering the extensions section.",
+
 		SourceLine: 136,
 	}
 ] as const;

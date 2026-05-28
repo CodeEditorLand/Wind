@@ -89,6 +89,7 @@ export const LiveExtensionsServiceLayer = Layer.effect(
 						// activation fails (e.g. extension host not yet up).
 						IPCService.invoke(Channel.ExtensionsGet)([id]).pipe(
 							Effect.map(() => undefined as void),
+
 							Effect.mapError(MakeExtensionsProblem),
 						),
 					),

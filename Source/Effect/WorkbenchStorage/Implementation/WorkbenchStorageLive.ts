@@ -37,6 +37,7 @@ import {
 
 const ResolveBridge = Effect.sync((): WorkbenchStorageBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchStorageGlobals;
+
 	return Globals.__CEL_SERVICES__?.Storage ?? null;
 });
 
@@ -53,6 +54,7 @@ export const WorkbenchStorageLive = Layer.effect(
 
 	Effect.gen(function* () {
 		const Bridge = yield* ResolveBridge;
+
 		const Unavailable = BridgeUnavailable(
 			"globalThis.__CEL_SERVICES__.Storage is null - the workbench has not yet exposed its IStorageService handle. Boot the workbench first or use WorkbenchStorageStub for tests.",
 		);
@@ -64,6 +66,7 @@ export const WorkbenchStorageLive = Layer.effect(
 		): Effect.Effect<string | undefined, WorkbenchStorageProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				try {
 					return Bridge.get(Key, WorkbenchStorageScopeCode(Scope));
 				} catch (Cause) {
@@ -83,6 +86,7 @@ export const WorkbenchStorageLive = Layer.effect(
 		): Effect.Effect<boolean | undefined, WorkbenchStorageProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				try {
 					return Bridge.getBoolean(
 						Key,
@@ -106,6 +110,7 @@ export const WorkbenchStorageLive = Layer.effect(
 		): Effect.Effect<number | undefined, WorkbenchStorageProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				try {
 					return Bridge.getNumber(
 						Key,
@@ -129,6 +134,7 @@ export const WorkbenchStorageLive = Layer.effect(
 		): Effect.Effect<T | undefined, WorkbenchStorageProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				try {
 					return Bridge.getObject<T>(
 						Key,
@@ -156,6 +162,7 @@ export const WorkbenchStorageLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchStorageProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				try {
 					Bridge.store(
 						Key,
@@ -183,6 +190,7 @@ export const WorkbenchStorageLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchStorageProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				try {
 					Bridge.remove(Key, WorkbenchStorageScopeCode(Scope));
 				} catch (Cause) {
@@ -202,6 +210,7 @@ export const WorkbenchStorageLive = Layer.effect(
 		): Effect.Effect<readonly string[], WorkbenchStorageProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				return Bridge.keys(
 					WorkbenchStorageScopeCode(Scope),
 
@@ -215,8 +224,10 @@ export const WorkbenchStorageLive = Layer.effect(
 		>((Emit) => {
 			if (!Bridge) {
 				Emit.fail(Unavailable);
+
 				return Effect.void;
 			}
+
 			const Subscription = Bridge.onDidChangeValue(
 				-1,
 
@@ -231,6 +242,7 @@ export const WorkbenchStorageLive = Layer.effect(
 					});
 				},
 			);
+
 			return Effect.sync(() => Subscription.dispose());
 		});
 

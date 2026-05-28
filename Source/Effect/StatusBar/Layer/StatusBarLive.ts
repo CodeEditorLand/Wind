@@ -50,6 +50,7 @@ const StatusBarLive = Layer.effect(
 		): Effect.Effect<StatusBarItem, never> =>
 			Effect.gen(function* () {
 				const Id = `statusbar-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+
 				const NewItem: StatusBarItem = { ...Item, id: Id };
 
 				yield* SubscriptionRef.modify(ItemsRef, (Items) => [
@@ -63,6 +64,7 @@ const StatusBarLive = Layer.effect(
 
 					`Created status bar item: ${Id}`,
 				);
+
 				return NewItem;
 			});
 

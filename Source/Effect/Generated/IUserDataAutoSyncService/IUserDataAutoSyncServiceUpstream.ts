@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IUserDataAutoSyncServiceTag = "IUserDataAutoSyncService" as const;
+
 export const IUserDataAutoSyncServiceSourcePath = "vs/platform/userDataSync/common/userDataSync.ts" as const;
+
 export const IUserDataAutoSyncServiceSourceLine = 636 as const;
+
 // Decorator doc:
 // /**
 //  * Checks if resource enabled was explicitly configured before,
@@ -15,81 +19,131 @@ export const IUserDataAutoSyncServiceSourceLine = 636 as const;
 //  */
 // 
 export interface IUserDataAutoSyncServiceUpstream {
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	_serviceBrand: undefined;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	readonly onError: Event<UserDataSyncError>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	turnOn(): Promise<void>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	turnOff(everywhere: boolean): Promise<void>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	triggerSync(sources: string[], options?: SyncOptions): Promise<void>;
 }
+
 export const IUserDataAutoSyncServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 638,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onError",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<UserDataSyncError>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 639,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "turnOn",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 640,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "turnOff",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "everywhere", TypeText: "boolean", Optional: false }],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 641,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "triggerSync",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "sources", TypeText: "string[]", Optional: false }, { Name: "options", TypeText: "SyncOptions", Optional: true }],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 642,
 	}
 ] as const;

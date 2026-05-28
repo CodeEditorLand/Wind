@@ -12,6 +12,7 @@ export interface WorkbenchActivityBridgeShape {
 
 		activity: {
 			readonly badge: UpstreamWorkbenchBadge;
+
 			readonly priority?: number;
 		},
 	) => { readonly dispose: () => void };
@@ -21,17 +22,20 @@ export interface WorkbenchActivityBridgeShape {
 
 		activity: {
 			readonly badge: UpstreamWorkbenchBadge;
+
 			readonly priority?: number;
 		},
 	) => { readonly dispose: () => void };
 
 	readonly showAccountsActivity: (activity: {
 		readonly badge: UpstreamWorkbenchBadge;
+
 		readonly priority?: number;
 	}) => { readonly dispose: () => void };
 
 	readonly showGlobalActivity: (activity: {
 		readonly badge: UpstreamWorkbenchBadge;
+
 		readonly priority?: number;
 	}) => { readonly dispose: () => void };
 }

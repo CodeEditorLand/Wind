@@ -88,11 +88,17 @@ export const EnvironmentLive = Layer.effect(
 export const makeMockEnvironment = (
 	overrides?: Partial<{
 		readonly platform: Platform;
+
 		readonly architecture: Architecture;
+
 		readonly locale: string;
+
 		readonly timezone: string;
+
 		readonly userAgent: string;
+
 		readonly isSecureContext: boolean;
+
 		readonly language: string;
 	}>,
 ): EnvironmentService => {

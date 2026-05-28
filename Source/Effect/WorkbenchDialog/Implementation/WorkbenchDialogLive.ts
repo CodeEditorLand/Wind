@@ -15,6 +15,7 @@ import type {
 
 const ResolveBridge = Effect.sync((): WorkbenchDialogBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchDialogGlobals;
+
 	return Globals.__CEL_SERVICES__?.Dialog ?? null;
 });
 
@@ -41,6 +42,7 @@ export const WorkbenchDialogLive = Layer.effect(
 		> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				return yield* Effect.tryPromise({
 					try: () =>
 						Bridge.confirm({
@@ -63,9 +65,11 @@ export const WorkbenchDialogLive = Layer.effect(
 		): Effect.Effect<number, WorkbenchDialogProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				const Buttons = Options.choices.map((Label) => ({
 					label: Label,
 				}));
+
 				const Result = yield* Effect.tryPromise({
 					try: () =>
 						Bridge.prompt({
@@ -87,15 +91,18 @@ export const WorkbenchDialogLive = Layer.effect(
 							error: ToError(Cause),
 						}) satisfies WorkbenchDialogProblem,
 				});
+
 				const Index = Options.choices.findIndex(
 					(_, idx) => Result.result === Buttons[idx],
 				);
+
 				return Index < 0 ? 0 : Index;
 			});
 
 		const Info = (Message: string, Detail?: string) =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				yield* Effect.tryPromise({
 					try: () => Bridge.info(Message, Detail),
 					catch: (Cause) =>
@@ -109,6 +116,7 @@ export const WorkbenchDialogLive = Layer.effect(
 		const ErrorVariant = (Message: string, Detail?: string) =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				yield* Effect.tryPromise({
 					try: () => Bridge.error(Message, Detail),
 					catch: (Cause) =>

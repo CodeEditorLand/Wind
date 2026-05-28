@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IBrowserViewWorkbenchServiceTag = "browserViewWorkbenchService" as const;
+
 export const IBrowserViewWorkbenchServiceSourcePath = "vs/workbench/contrib/browserView/common/browserView.ts" as const;
+
 export const IBrowserViewWorkbenchServiceSourceLine = 115 as const;
+
 // Decorator doc:
 // /**
 //  * Tools are available and the page is shared with the agent.
@@ -18,20 +22,30 @@ export const IBrowserViewWorkbenchServiceSourceLine = 115 as const;
  */
 
 export interface IBrowserViewWorkbenchServiceUpstream {
+
 	/**
 	 * Tools are available and the page is shared with the agent.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IBrowserViewWorkbenchServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Tools are available and the page is shared with the agent.",
+
 		SourceLine: 122,
 	}
 ] as const;

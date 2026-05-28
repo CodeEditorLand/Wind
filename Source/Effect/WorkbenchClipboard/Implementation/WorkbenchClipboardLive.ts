@@ -10,6 +10,7 @@ import type {
 
 const ResolveBridge = Effect.sync((): WorkbenchClipboardBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchClipboardGlobals;
+
 	return Globals.__CEL_SERVICES__?.Clipboard ?? null;
 });
 
@@ -31,6 +32,7 @@ export const WorkbenchClipboardLive = Layer.effect(
 		const ReadText: Effect.Effect<string, WorkbenchClipboardProblem> =
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				return yield* Effect.tryPromise({
 					try: () => Bridge.readText(),
 					catch: (Cause) =>
@@ -46,6 +48,7 @@ export const WorkbenchClipboardLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchClipboardProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				yield* Effect.tryPromise({
 					try: () => Bridge.writeText(Value),
 					catch: (Cause) =>
@@ -61,6 +64,7 @@ export const WorkbenchClipboardLive = Layer.effect(
 			WorkbenchClipboardProblem
 		> = Effect.gen(function* () {
 			if (!Bridge) return yield* Effect.fail(Unavailable);
+
 			const Resources = yield* Effect.tryPromise({
 				try: () => Bridge.readResources(),
 				catch: (Cause) =>
@@ -69,6 +73,7 @@ export const WorkbenchClipboardLive = Layer.effect(
 						error: ToError(Cause),
 					}) satisfies WorkbenchClipboardProblem,
 			});
+
 			return Resources.map((Uri) => Uri.toString());
 		});
 
@@ -77,12 +82,14 @@ export const WorkbenchClipboardLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchClipboardProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				const ToShim = Uris.map(
 					(Value) =>
 						({ toString: () => Value }) as {
 							readonly toString: () => string;
 						},
 				);
+
 				yield* Effect.tryPromise({
 					try: () => Bridge.writeResources(ToShim),
 					catch: (Cause) =>

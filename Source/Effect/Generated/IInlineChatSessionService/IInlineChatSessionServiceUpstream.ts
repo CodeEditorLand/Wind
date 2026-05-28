@@ -5,76 +5,140 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IInlineChatSessionServiceTag = "IInlineChatSessionService" as const;
+
 export const IInlineChatSessionServiceSourcePath = "vs/workbench/contrib/inlineChat/browser/inlineChatSessionService.ts" as const;
+
 export const IInlineChatSessionServiceSourceLine = 20 as const;
+
 export interface IInlineChatSessionServiceUpstream {
+
 	_serviceBrand: undefined;
+
 	readonly onWillStartSession: Event<IActiveCodeEditor>;
+
 	readonly onDidChangeSessions: Event<this>;
+
 	createSession(editor: ICodeEditor): IInlineChatSession;
+
 	getSessionByTextModel(uri: URI): IInlineChatSession | undefined;
+
 	getSessionBySessionUri(uri: URI): IInlineChatSession | undefined;
 }
+
 export const IInlineChatSessionServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 36,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onWillStartSession",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<IActiveCodeEditor>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 38,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeSessions",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<this>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 38,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "createSession",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IInlineChatSession",
+
 		Parameters: [{ Name: "editor", TypeText: "ICodeEditor", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 41,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getSessionByTextModel",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IInlineChatSession | undefined",
+
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 42,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getSessionBySessionUri",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IInlineChatSession | undefined",
+
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 43,
 	}
 ] as const;

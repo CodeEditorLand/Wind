@@ -40,6 +40,7 @@ export const MakeCreateItem = (
 	): Effect.Effect<ActivityBarItem, never> =>
 		Effect.gen(function* () {
 			const Id = GenerateItemId();
+
 			const NewItem: ActivityBarItem = { ...Item, id: Id };
 
 			yield* SubscriptionRef.modify(ItemsRef, (Items) => [
@@ -49,6 +50,7 @@ export const MakeCreateItem = (
 			]);
 
 			yield* Telemetry.log("info", `Created activity bar item: ${Id}`);
+
 			return NewItem;
 		});
 };
@@ -81,11 +83,13 @@ export const MakeUpdateItem = (
 			try {
 				// Remove badge if explicitly set to undefined
 				const CleanUpdatesMap = new Map<string, unknown>();
+
 				Object.entries(Updates).forEach(([Key, Value]) => {
 					if (Key !== "badge" || Value !== undefined) {
 						CleanUpdatesMap.set(Key, Value);
 					}
 				});
+
 				const CleanUpdates: Partial<Omit<ActivityBarItem, "id">> =
 					Object.fromEntries(CleanUpdatesMap);
 
@@ -138,6 +142,7 @@ export const MakeRemoveItem = (
 
 			// Clear active state if this was the active item
 			const CurrentActive = yield* ActiveItemRef.get;
+
 			if (CurrentActive === Id) {
 				yield* SubscriptionRef.set(ActiveItemRef, undefined);
 			}
@@ -177,6 +182,7 @@ export const MakeSetActiveItem = (
 			}
 
 			yield* SubscriptionRef.set(ActiveItemRef, Id);
+
 			yield* Telemetry.log("info", `Set active activity bar item: ${Id}`);
 		});
 };

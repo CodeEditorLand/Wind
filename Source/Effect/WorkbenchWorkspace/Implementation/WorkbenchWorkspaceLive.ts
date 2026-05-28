@@ -17,6 +17,7 @@ import type {
 
 const ResolveBridge = Effect.sync((): WorkbenchWorkspaceBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchWorkspaceGlobals;
+
 	return Globals.__CEL_SERVICES__?.Workspace ?? null;
 });
 
@@ -59,6 +60,7 @@ export const WorkbenchWorkspaceLive = Layer.effect(
 			WorkbenchWorkspaceProblem
 		> = Effect.gen(function* () {
 			if (!Bridge) return yield* Effect.fail(Unavailable);
+
 			return yield* Effect.try({
 				try: () => ToSnapshot(Bridge.getWorkspace()),
 				catch: (Cause) =>
@@ -82,6 +84,7 @@ export const WorkbenchWorkspaceLive = Layer.effect(
 		> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				const Found = yield* Effect.try({
 					try: () =>
 						Bridge.getWorkspaceFolder({ toString: () => Uri }),
@@ -91,6 +94,7 @@ export const WorkbenchWorkspaceLive = Layer.effect(
 							error: ToError(Cause),
 						}) satisfies WorkbenchWorkspaceProblem,
 				});
+
 				return Found ? ToFolder(Found) : null;
 			});
 
@@ -100,8 +104,10 @@ export const WorkbenchWorkspaceLive = Layer.effect(
 		>((Emit) => {
 			if (!Bridge) {
 				Emit.fail(Unavailable);
+
 				return Effect.void;
 			}
+
 			const Subscription = Bridge.onDidChangeWorkspaceFolders((Event) => {
 				Emit.single({
 					added: Event.added.map(ToFolder),
@@ -109,6 +115,7 @@ export const WorkbenchWorkspaceLive = Layer.effect(
 					changed: Event.changed.map(ToFolder),
 				});
 			});
+
 			return Effect.sync(() => Subscription.dispose());
 		});
 

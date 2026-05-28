@@ -5,29 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITunnelAgentHostHostingServiceTag = "tunnelAgentHostHostingService" as const;
+
 export const ITunnelAgentHostHostingServiceSourcePath = "vs/platform/agentHost/common/tunnelAgentHost.ts" as const;
+
 export const ITunnelAgentHostHostingServiceSourceLine = 252 as const;
+
 // Decorator doc:
 // /**
 //  * IPC channel name for the shared-process tunnel service.
 //  */
 // 
 export interface ITunnelAgentHostHostingServiceUpstream {
+
 	/**
 	 * IPC channel name for the shared-process tunnel service.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ITunnelAgentHostHostingServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "IPC channel name for the shared-process tunnel service.",
+
 		SourceLine: 255,
 	}
 ] as const;

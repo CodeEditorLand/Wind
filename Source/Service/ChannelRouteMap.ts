@@ -12,37 +12,68 @@
 /** Channel → Mountain route-prefix map. */
 export const ChannelRouteMap: Record<string, string> = {
 	localFilesystem: "file",
+
 	storage: "storage",
+
 	logger: "logger",
+
 	configuration: "configuration",
+
 	textFile: "textFile",
+
 	extensions: "extensions",
+
 	// Both extension sidebar channels map to Mountain's extensions:* handlers.
 	extensionManagement: "extensions",
+
 	extensionGallery: "extensions",
+
 	commands: "commands",
+
 	terminal: "terminal",
+
 	output: "output",
+
 	notification: "notification",
+
 	progress: "progress",
+
 	quickInput: "quickInput",
+
 	workspaces: "workspaces",
+
 	themes: "themes",
+
 	search: "search",
+
 	environment: "environment",
+
 	decorations: "decorations",
+
 	workingCopy: "workingCopy",
+
 	keybinding: "keybinding",
+
 	lifecycle: "lifecycle",
+
 	label: "label",
+
 	model: "model",
+
 	nativeHost: "nativeHost",
+
 	localPty: "localPty",
+
 	url: "url",
+
 	menubar: "menubar",
+
 	encryption: "encryption",
+
 	extensionHostStarter: "extensionHostStarter",
+
 	extensionhostdebugservice: "extensionhostdebugservice",
+
 	// Built-in git extension routes `git.*` → Mountain subprocess handlers.
 	localGit: "git",
 };
@@ -56,17 +87,30 @@ export const FileSystemChannels = new Set(["localFilesystem"]);
 /** Commands inside FileSystemChannels that should throw on error. */
 export const FileSystemThrowCommands = new Set([
 	"stat",
+
 	"readFile",
+
 	"writeFile",
+
 	"readdir",
+
 	"mkdir",
+
 	"delete",
+
 	"rename",
+
 	"copy",
+
 	"open",
+
 	"close",
+
 	"read",
+
 	"write",
+
 	"realpath",
+
 	"cloneFile",
 ]);

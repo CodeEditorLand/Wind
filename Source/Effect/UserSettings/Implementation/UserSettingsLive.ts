@@ -74,7 +74,9 @@ interface CELGlobals {
 
 const ResolveBridge = Effect.sync(() => {
 	const Globals = globalThis as unknown as CELGlobals;
+
 	const Bridge = Globals.__CEL_SERVICES__?.Configuration ?? null;
+
 	return Bridge;
 });
 
@@ -138,8 +140,10 @@ export const UserSettingsLive = Layer.effect(
 					if (!Bridge) {
 						return yield* Effect.fail(ProblemBridgeUnavailable);
 					}
+
 					try {
 						const Value = Bridge.getValue<T>(Section);
+
 						if (Value === undefined) {
 							return yield* Effect.fail<UserSettingsProblem>({
 								_tag: "UserSettingsReadFailed",
@@ -149,6 +153,7 @@ export const UserSettingsLive = Layer.effect(
 								),
 							});
 						}
+
 						return Value;
 					} catch (Error) {
 						return yield* Effect.fail<UserSettingsProblem>({
@@ -166,17 +171,21 @@ export const UserSettingsLive = Layer.effect(
 					if (!Bridge) {
 						return yield* Effect.fail(ProblemBridgeUnavailable);
 					}
+
 					return Bridge.getValue<T>(Section);
 				}),
 			Write: (Section, Value, Target: UserSettingsTarget) =>
 				Effect.gen(function* () {
 					if (Target === "Memory") {
 						WriteOverride(Section, Value);
+
 						return;
 					}
+
 					if (!Bridge) {
 						return yield* Effect.fail(ProblemBridgeUnavailable);
 					}
+
 					yield* Effect.tryPromise({
 						try: () =>
 							Bridge.updateValue(
@@ -203,7 +212,9 @@ export const UserSettingsLive = Layer.effect(
 					if (!Bridge?.inspect) {
 						return yield* Effect.fail(ProblemBridgeUnavailable);
 					}
+
 					const Inspection = Bridge.inspect(Section);
+
 					return Inspection.userValue !== undefined;
 				}),
 			Changes: Stream.async<UserSettingsChangeEvent, UserSettingsProblem>(
@@ -213,29 +224,36 @@ export const UserSettingsLive = Layer.effect(
 							_tag: "Fail",
 							error: ProblemBridgeUnavailable,
 						} as never);
+
 						return Effect.void;
 					}
+
 					const Subscription = Bridge.onDidChangeConfiguration(
 						(VSEvent) => {
 							const Keys = new Set(VSEvent.affectedKeys ?? []);
+
 							Emit.single({
 								affectedKeys: Keys,
 								source: "Workspace",
 							});
 						},
 					);
+
 					const OverrideListener = (Event: Event) => {
 						const Detail = (
 							Event as CustomEvent<{
 								readonly section: string;
+
 								readonly source: UserSettingsTarget;
 							}>
 						).detail;
+
 						Emit.single({
 							affectedKeys: new Set([Detail.section]),
 							source: Detail.source,
 						});
 					};
+
 					try {
 						window.addEventListener(
 							"cel:user-settings-changed",
@@ -245,8 +263,10 @@ export const UserSettingsLive = Layer.effect(
 					} catch {
 						// no window - not registering, just clean up subscription
 					}
+
 					return Effect.sync(() => {
 						Subscription.dispose();
+
 						try {
 							window.removeEventListener(
 								"cel:user-settings-changed",

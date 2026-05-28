@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IStatusbarServiceTag = "statusbarService" as const;
+
 export const IStatusbarServiceSourcePath = "vs/workbench/services/statusbar/browser/statusbar.ts" as const;
+
 export const IStatusbarServiceSourceLine = 15 as const;
+
 export interface IStatusbarServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const IStatusbarServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 19,
 	}
 ] as const;

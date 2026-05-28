@@ -5,43 +5,77 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentHostCustomAgentsServiceTag = "agentHostCustomAgentsService" as const;
+
 export const IAgentHostCustomAgentsServiceSourcePath = "vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostCustomAgentsService.ts" as const;
+
 export const IAgentHostCustomAgentsServiceSourceLine = 23 as const;
+
 export interface IAgentHostCustomAgentsServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidChangeCustomAgents: Event<void>;
+
 	getCustomAgents(sessionResource: URI): readonly AgentCustomization[];
 }
+
 export const IAgentHostCustomAgentsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 26,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeCustomAgents",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 26,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getCustomAgents",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "readonly AgentCustomization[]",
+
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 29,
 	}
 ] as const;

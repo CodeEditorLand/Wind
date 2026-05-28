@@ -102,6 +102,7 @@ export const NetworkRestrictionsLive = Layer.effect(
 				// Default to block for safety
 				if (CurrentConfig.blockHTTP || CurrentConfig.blockHTTPS) {
 					const UrlObj = new URL(Url);
+
 					if (
 						UrlObj.protocol === "http:" &&
 						CurrentConfig.blockHTTP
@@ -114,6 +115,7 @@ export const NetworkRestrictionsLive = Layer.effect(
 							),
 						);
 					}
+
 					if (
 						UrlObj.protocol === "https:" &&
 						CurrentConfig.blockHTTPS
@@ -175,6 +177,7 @@ export const NetworkRestrictionsLive = Layer.effect(
 						),
 					);
 				}
+
 				return true;
 			});
 
@@ -187,10 +190,12 @@ export const NetworkRestrictionsLive = Layer.effect(
 		) =>
 			Effect.gen(function* () {
 				const Current = yield* ConfigRef.get;
+
 				yield* Ref.set(ConfigRef, {
 					...Current,
 					...Updates,
 				} as NetworkRestrictionConfig);
+
 				yield* TelemetryService.log(
 					"info",
 
@@ -211,6 +216,7 @@ export const NetworkRestrictionsLive = Layer.effect(
 			(Level: TelemetryLevel) =>
 				Effect.gen(function* () {
 					yield* Ref.set(TelemetryLevelRef, Level);
+
 					yield* TelemetryService.log(
 						"info",
 

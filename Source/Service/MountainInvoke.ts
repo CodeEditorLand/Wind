@@ -9,11 +9,14 @@
 const _DevLogForward = (Tag: string, Message: string): void => {
 	try {
 		const Internals = (window as any).__TAURI_INTERNALS__;
+
 		const Invoke =
 			(window as any).__TAURI__?.core?.invoke ??
 			(window as any).__TAURI__?.invoke ??
 			Internals?.invoke;
+
 		if (typeof Invoke !== "function") return;
+
 		Invoke("RenderDevLog", {
 			Tag,
 			Message,
@@ -30,14 +33,18 @@ const _DevLogForward = (Tag: string, Message: string): void => {
  */
 export async function InvokeMountain(
 	Method: string,
+
 	Params: unknown[],
 ): Promise<unknown> {
 	const Invoke =
 		(window as any).__TAURI__?.core?.invoke ??
 		(window as any).__TAURI__?.invoke;
+
 	if (typeof Invoke !== "function") return undefined;
+
 	const Start =
 		typeof performance !== "undefined" ? performance.now() : Date.now();
+
 	try {
 		return await Invoke("MountainIPCInvoke", {
 			method: Method,
@@ -48,10 +55,13 @@ export async function InvokeMountain(
 			(typeof performance !== "undefined"
 				? performance.now()
 				: Date.now()) - Start;
+
 		_DevLogForward(
 			"tauri-invoke",
+
 			`[TauriInvoke] method=${Method} ok=false elapsed_ms=${Elapsed.toFixed(2)} err=${String(Error)}`,
 		);
+
 		throw Error;
 	}
 }
@@ -62,12 +72,15 @@ export async function InvokeMountain(
  */
 export async function InvokeViaNode(
 	Method: string,
+
 	Params: unknown[],
 ): Promise<unknown> {
 	const Invoke =
 		(window as any).__TAURI__?.core?.invoke ??
 		(window as any).__TAURI__?.invoke;
+
 	if (typeof Invoke !== "function") return undefined;
+
 	try {
 		return await Invoke("MountainIPCInvoke", {
 			method: "cocoon:request",

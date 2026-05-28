@@ -67,7 +67,9 @@ export const LiveKeybindingServiceLayer = Layer.effect(
 						Array.isArray(Result)
 							? (Result as ReadonlyArray<{
 									commandId: string;
+
 									keybinding: string;
+
 									when?: string;
 								}>)
 							: [],

@@ -44,8 +44,10 @@ export const LiveTextModelResolverServiceLayer = Layer.effect(
 							model: Model,
 							dispose: () => {
 								const Count = (RefCounts.get(uri) ?? 1) - 1;
+
 								if (Count <= 0) {
 									RefCounts.delete(uri);
+
 									// Fire-and-forget close when ref count drops to zero
 									Effect.runFork(
 										ModelService.CloseModel(uri).pipe(

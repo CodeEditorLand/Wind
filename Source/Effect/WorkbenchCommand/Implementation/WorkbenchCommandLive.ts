@@ -15,9 +15,11 @@ import type {
 const ResolveBridges = Effect.sync(
 	(): {
 		readonly Commands: WorkbenchCommandBridgeShape | null;
+
 		readonly Registry: WorkbenchCommandRegistryShape | null;
 	} => {
 		const Globals = globalThis as unknown as WorkbenchCommandGlobals;
+
 		return {
 			Commands: Globals.__CEL_SERVICES__?.Commands ?? null,
 			Registry: Globals.__CEL_SERVICES__?.CommandRegistry ?? null,
@@ -47,6 +49,7 @@ export const WorkbenchCommandLive = Layer.effect(
 		): Effect.Effect<T, WorkbenchCommandProblem> =>
 			Effect.gen(function* () {
 				if (!Commands) return yield* Effect.fail(Unavailable);
+
 				const Result = yield* Effect.tryPromise({
 					try: () => Commands.executeCommand<T>(CommandId, ...Args),
 					catch: (Cause) =>
@@ -56,12 +59,14 @@ export const WorkbenchCommandLive = Layer.effect(
 							error: ToError(Cause),
 						}) satisfies WorkbenchCommandProblem,
 				});
+
 				if (Result === undefined) {
 					return yield* Effect.fail<WorkbenchCommandProblem>({
 						_tag: "WorkbenchCommandNotFound",
 						commandId: CommandId,
 					});
 				}
+
 				return Result;
 			});
 
@@ -72,6 +77,7 @@ export const WorkbenchCommandLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchCommandProblem> =>
 			Effect.gen(function* () {
 				if (!Commands) return yield* Effect.fail(Unavailable);
+
 				yield* Effect.tryPromise({
 					try: () => Commands.executeCommand(CommandId, ...Args),
 					catch: (Cause) =>
@@ -85,6 +91,7 @@ export const WorkbenchCommandLive = Layer.effect(
 
 		const ListIds = Effect.gen(function* () {
 			if (!Registry) return yield* Effect.fail(Unavailable);
+
 			return Array.from(Registry.getCommands().keys());
 		});
 
@@ -93,6 +100,7 @@ export const WorkbenchCommandLive = Layer.effect(
 		): Effect.Effect<boolean, WorkbenchCommandProblem> =>
 			Effect.gen(function* () {
 				if (!Registry) return yield* Effect.fail(Unavailable);
+
 				return Registry.getCommand(CommandId) !== undefined;
 			});
 
@@ -102,11 +110,14 @@ export const WorkbenchCommandLive = Layer.effect(
 		>((Emit) => {
 			if (!Commands) {
 				Emit.fail(Unavailable);
+
 				return Effect.void;
 			}
+
 			const Subscription = Commands.onDidExecuteCommand((Event) => {
 				Emit.single({ commandId: Event.commandId, args: Event.args });
 			});
+
 			return Effect.sync(() => Subscription.dispose());
 		});
 

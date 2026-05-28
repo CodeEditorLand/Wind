@@ -39,6 +39,7 @@ export const LiveOutputServiceLayer = Layer.effect(
 				IPCService.invoke(Channel.OutputCreate)([name]).pipe(
 					Effect.map(() => {
 						ActiveChannels.add(name);
+
 						return { name };
 					}),
 

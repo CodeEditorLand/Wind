@@ -90,7 +90,9 @@ export const LiveWorkspacesServiceLayer = Layer.effect(
 						Array.isArray(Result)
 							? (Result as readonly {
 									uri: string;
+
 									name: string;
+
 									index: number;
 								}[])
 							: [],
@@ -142,6 +144,7 @@ export const LiveWorkspacesServiceLayer = Layer.effect(
 							string,
 							unknown
 						>;
+
 						return {
 							added: CoerceFolderArray(Payload["added"]),
 							removed: CoerceFolderArray(Payload["removed"]),

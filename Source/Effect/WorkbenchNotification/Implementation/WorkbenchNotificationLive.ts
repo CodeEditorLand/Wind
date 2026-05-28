@@ -16,6 +16,7 @@ import {
 const ResolveBridge = Effect.sync(
 	(): WorkbenchNotificationBridgeShape | null => {
 		const Globals = globalThis as unknown as WorkbenchNotificationGlobals;
+
 		return Globals.__CEL_SERVICES__?.Notification ?? null;
 	},
 );
@@ -52,6 +53,7 @@ export const WorkbenchNotificationLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchNotificationProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				try {
 					Bridge.notify({
 						severity: WorkbenchNotificationSeverityCode(
@@ -61,6 +63,7 @@ export const WorkbenchNotificationLive = Layer.effect(
 						source: Options.source,
 						silent: Options.silent,
 					});
+
 					PublishLocal({
 						severity: Options.severity,
 						message: Options.message,
@@ -76,8 +79,10 @@ export const WorkbenchNotificationLive = Layer.effect(
 
 		const Info = (Message: string) =>
 			Notify({ severity: "Info", message: Message });
+
 		const Warn = (Message: string) =>
 			Notify({ severity: "Warning", message: Message });
+
 		const ErrorVariant = (Message: string) =>
 			Notify({ severity: "Error", message: Message });
 
@@ -89,13 +94,16 @@ export const WorkbenchNotificationLive = Layer.effect(
 				const Detail = (
 					Event as CustomEvent<WorkbenchNotificationDispatched>
 				).detail;
+
 				Emit.single(Detail);
 			};
+
 			try {
 				window.addEventListener(NOTIFICATION_EVENT, Listener);
 			} catch {
 				// no window
 			}
+
 			return Effect.sync(() => {
 				try {
 					window.removeEventListener(NOTIFICATION_EVENT, Listener);

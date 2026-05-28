@@ -17,6 +17,7 @@ import {
 
 const ResolveBridge = Effect.sync((): WorkbenchThemeBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchThemeGlobals;
+
 	return (
 		Globals.__CEL_SERVICES__?.WorkbenchTheme ??
 		Globals.__CEL_SERVICES__?.Theme ??
@@ -49,12 +50,15 @@ export const WorkbenchThemeLive = Layer.effect(
 
 		const Active = Effect.gen(function* () {
 			if (!Bridge) return yield* Effect.fail(Unavailable);
+
 			return ToDescriptor(Bridge.getColorTheme());
 		});
 
 		const List = Effect.gen(function* () {
 			if (!Bridge) return yield* Effect.fail(Unavailable);
+
 			const Themes = yield* Effect.promise(() => Bridge.getColorThemes());
+
 			return Themes.map(ToDescriptor);
 		});
 
@@ -63,6 +67,7 @@ export const WorkbenchThemeLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchThemeProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				yield* Effect.tryPromise({
 					try: () => Bridge.setColorTheme(ThemeId),
 					catch: (Cause) =>
@@ -78,27 +83,36 @@ export const WorkbenchThemeLive = Layer.effect(
 		): Effect.Effect<string | undefined, WorkbenchThemeProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				const Theme = Bridge.getColorTheme();
+
 				const Color = Theme.getColor?.(Key);
+
 				return Color ? Color.toString() : undefined;
 			});
 
 		let LastApplied: WorkbenchThemeDescriptor | undefined;
+
 		const Changes = Stream.async<
 			WorkbenchThemeChangeEvent,
 			WorkbenchThemeProblem
 		>((Emit) => {
 			if (!Bridge) {
 				Emit.fail(Unavailable);
+
 				return Effect.void;
 			}
+
 			const Subscription = Bridge.onDidColorThemeChange(
 				(Next: UpstreamWorkbenchColorTheme) => {
 					const Current = ToDescriptor(Next);
+
 					Emit.single({ previous: LastApplied, current: Current });
+
 					LastApplied = Current;
 				},
 			);
+
 			return Effect.sync(() => Subscription.dispose());
 		});
 

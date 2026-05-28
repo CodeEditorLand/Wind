@@ -5,54 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAiEditTelemetryServiceTag = "aiEditTelemetryService" as const;
+
 export const IAiEditTelemetryServiceSourcePath = "vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts" as const;
+
 export const IAiEditTelemetryServiceSourceLine = 10 as const;
+
 export interface IAiEditTelemetryServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	createSuggestionId(data: Omit<IEditTelemetryCodeSuggestedData, 'suggestionId'>): EditSuggestionId;
+
 	handleCodeAccepted(data: IEditTelemetryCodeAcceptedData): void;
+
 	handleCodeRejected(data: IEditTelemetryCodeRejectedData): void;
 }
+
 export const IAiEditTelemetryServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 13,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "createSuggestionId",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "EditSuggestionId",
+
 		Parameters: [{ Name: "data", TypeText: "Omit<IEditTelemetryCodeSuggestedData, 'suggestionId'>", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 15,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "handleCodeAccepted",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "data", TypeText: "IEditTelemetryCodeAcceptedData", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 17,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "handleCodeRejected",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "data", TypeText: "IEditTelemetryCodeRejectedData", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 19,
 	}
 ] as const;

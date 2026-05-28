@@ -5,43 +5,77 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IMultiDiffSourceResolverServiceTag = "multiDiffSourceResolverService" as const;
+
 export const IMultiDiffSourceResolverServiceSourcePath = "vs/workbench/contrib/multiDiffEditor/browser/multiDiffSourceResolverService.ts" as const;
+
 export const IMultiDiffSourceResolverServiceSourceLine = 13 as const;
+
 export interface IMultiDiffSourceResolverServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	registerResolver(resolver: IMultiDiffSourceResolver): IDisposable;
+
 	resolve(uri: URI): Promise<IResolvedMultiDiffSource | undefined>;
 }
+
 export const IMultiDiffSourceResolverServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 16,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerResolver",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "resolver", TypeText: "IMultiDiffSourceResolver", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resolve",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IResolvedMultiDiffSource | undefined>",
+
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 20,
 	}
 ] as const;

@@ -5,11 +5,17 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtHostLanguageModelsTag = "IExtHostLanguageModels" as const;
+
 export const IExtHostLanguageModelsSourcePath = "vs/workbench/api/common/extHostLanguageModels.ts" as const;
+
 export const IExtHostLanguageModelsSourceLine = 34 as const;
+
 export interface IExtHostLanguageModelsUpstream {
+
 	// (no members extracted in same file - resolve cross-file)
 }
+
 export const IExtHostLanguageModelsMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

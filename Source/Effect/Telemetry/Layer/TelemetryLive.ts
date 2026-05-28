@@ -66,9 +66,11 @@ const TelemetryLive = Layer.effect(
 				};
 
 				const currentMetrics = yield* metricsRef.get;
+
 				const existing =
 					HashMap.get(currentMetrics, name).pipe(Effect.runSync) ||
 					[];
+
 				yield* SubscriptionRef.set(
 					metricsRef,
 
@@ -82,6 +84,7 @@ const TelemetryLive = Layer.effect(
 				);
 
 				const currentEvents = yield* eventsRef.get;
+
 				yield* SubscriptionRef.set(
 					eventsRef,
 
@@ -113,6 +116,7 @@ const TelemetryLive = Layer.effect(
 				): Effect.Effect<void, never> =>
 					Effect.gen(function* () {
 						const endTime = Date.now();
+
 						const span: TelemetrySpan = {
 							name,
 							startTime,
@@ -124,10 +128,12 @@ const TelemetryLive = Layer.effect(
 						};
 
 						const currentSpans = yield* spansRef.get;
+
 						const existing =
 							HashMap.get(currentSpans, name).pipe(
 								Effect.runSync,
 							) || [];
+
 						yield* SubscriptionRef.set(
 							spansRef,
 
@@ -141,6 +147,7 @@ const TelemetryLive = Layer.effect(
 						);
 
 						const currentEvents = yield* eventsRef.get;
+
 						yield* SubscriptionRef.set(
 							eventsRef,
 
@@ -175,6 +182,7 @@ const TelemetryLive = Layer.effect(
 				};
 
 				const currentEvents = yield* eventsRef.get;
+
 				yield* SubscriptionRef.set(
 					eventsRef,
 
@@ -223,12 +231,15 @@ const TelemetryLive = Layer.effect(
 				Effect.map((map) => {
 					const spans =
 						HashMap.get(map, name).pipe(Effect.runSync) || [];
+
 					if (spans.length === 0) return 0;
+
 					const total = spans.reduce(
 						(sum, s) => sum + (s.duration || 0),
 
 						0,
 					);
+
 					return total / spans.length;
 				}),
 			);
@@ -239,8 +250,11 @@ const TelemetryLive = Layer.effect(
 				Effect.map((map) => {
 					const spans =
 						HashMap.get(map, name).pipe(Effect.runSync) || [];
+
 					if (spans.length === 0) return 0;
+
 					const successful = spans.filter((s) => s.success).length;
+
 					return successful / spans.length;
 				}),
 			);

@@ -34,7 +34,9 @@ import {
 // ============================================================================
 
 const DEFAULT_POLL_INTERVAL = 100; // ms
+
 const DEFAULT_INIT_TIMEOUT = 30000; // 30 seconds
+
 const DEFAULT_REGISTRATION_TIMEOUT = 10000; // 10 seconds
 
 // ============================================================================
@@ -221,8 +223,11 @@ const updateState = (
 			state,
 			lastUpdated: Date.now(),
 		};
+
 		yield* Ref.set(context.stateRef, newState);
+
 		yield* Queue.offer(context.stateQueue, newState);
+
 		return newState;
 	});
 
@@ -248,6 +253,7 @@ const addMessage = (
 const debugLog = (context: WorkbenchIntegrationContext, message: string) =>
 	Effect.gen(function* () {
 		const debugMode = yield* Ref.get(context.debugModeRef);
+
 		if (debugMode) {
 		}
 	});
@@ -325,6 +331,7 @@ const pollUntil = (
 			if (condition()) {
 				return void 0 as void;
 			}
+
 			yield* Effect.sleep(interval);
 		}
 
@@ -371,7 +378,9 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 	const messagesRef = yield* Ref.make<
 		ReadonlyArray<{
 			type: "info" | "warning" | "error";
+
 			message: string;
+
 			timestamp: number;
 		}>
 	>([]);
@@ -394,7 +403,9 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 
 	const isWorkbenchReady = Effect.sync(() => {
 		const vscode = getVSCodeAPI();
+
 		const monacoAvailable = isMonacoAvailable();
+
 		return (
 			vscode !== undefined &&
 			vscode.workspace !== undefined &&
@@ -407,6 +418,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 	) =>
 		Effect.gen(function* () {
 			yield* updateState(context, WorkbenchState.WaitingForReady);
+
 			yield* debugLog(
 				context,
 
@@ -428,6 +440,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 
 			if (vsCodeReady._tag === "Left") {
 				yield* debugLog(context, "VSCode API check failed");
+
 				return yield* Effect.fail(vsCodeReady.left);
 			}
 
@@ -446,10 +459,12 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 
 			if (monacoReady._tag === "Left") {
 				yield* debugLog(context, "Monaco editor check failed");
+
 				return yield* Effect.fail(monacoReady.left);
 			}
 
 			yield* debugLog(context, "Workbench is ready");
+
 			yield* updateState(
 				context,
 
@@ -477,6 +492,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 			);
 
 			yield* Ref.set(defaultProvidersUnregisteredRef, true);
+
 			yield* updateState(
 				context,
 
@@ -501,6 +517,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 			);
 
 			const fileSystemProviderService = yield* FileSystemProviderTag;
+
 			const provider = yield* Effect.mapError(
 				fileSystemProviderService.getProvider,
 
@@ -560,6 +577,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 			// This is Option A from the integration approach
 
 			const vscode = getVSCodeAPI();
+
 			if (!vscode) {
 				return yield* Effect.fail(
 					new WorkbenchIntegrationError(
@@ -573,7 +591,9 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 			// Store the provider globally for VSCode to use
 			// Workbench will call this provider for file operations
 			const globalWindow = window as unknown as Record<string, unknown>;
+
 			globalWindow["__MOUNTAIN_FS_PROVIDER__"] = vscodeProvider;
+
 			globalWindow["__MOUNTAIN_FS_SCHEME__"] = scheme;
 
 			const result: ProviderRegistrationResult = {
@@ -587,6 +607,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 			};
 
 			yield* Ref.set(context.registrationResultRef, result);
+
 			yield* updateState(
 				context,
 
@@ -600,6 +621,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 
 				`Mountain provider registered for scheme: ${scheme}`,
 			);
+
 			yield* debugLog(
 				context,
 
@@ -619,6 +641,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 				);
 
 				const vscode = getVSCodeAPI();
+
 				if (!vscode) {
 					return yield* Effect.fail(
 						new WorkbenchIntegrationError(
@@ -634,9 +657,11 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 					string,
 					unknown
 				>;
+
 				globalWindow["__WORKSPACE_CONTEXT__"] = workspaceContext;
 
 				yield* Ref.set(context.workspaceContextRef, workspaceContext);
+
 				yield* updateState(context, WorkbenchState.WorkspaceConfigured);
 
 				yield* addMessage(
@@ -646,25 +671,30 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 
 					`Workspace configured: ${workspaceContext.name}`,
 				);
+
 				yield* debugLog(context, `Workspace configured successfully`);
 			});
 
 	const initialize: WorkbenchIntegrationService["initialize"] = (config) =>
 		Effect.gen(function* () {
 			yield* updateState(context, WorkbenchState.NotInitialized);
+
 			yield* Ref.set(context.debugModeRef, config.debugMode ?? false);
 
 			yield* debugLog(context, "Initializing workbench integration...");
+
 			yield* debugLog(
 				context,
 
 				`  - Workspace root: ${config.workspaceRootUri}`,
 			);
+
 			yield* debugLog(
 				context,
 
 				`  - File scheme: ${config.fileScheme ?? "file"}`,
 			);
+
 			yield* debugLog(
 				context,
 
@@ -685,7 +715,9 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 
 			// Register Mountain provider
 			const scheme = config.fileScheme ?? "file";
+
 			const regResult = yield* registerProvider(scheme);
+
 			if (!regResult.success) {
 				return yield* Effect.fail(
 					toWorkbenchError(
@@ -720,6 +752,7 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 
 				"Workbench integration complete",
 			);
+
 			yield* debugLog(
 				context,
 
@@ -735,11 +768,15 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 
 	const getDiagnostics = Effect.gen(function* () {
 		const state = yield* getState;
+
 		const messages = yield* Ref.get(context.messagesRef);
+
 		const registrationResult = yield* Ref.get(
 			context.registrationResultRef,
 		);
+
 		const workspaceContext = yield* Ref.get(context.workspaceContextRef);
+
 		const defaultProvidersUnregistered = yield* Ref.get(
 			context.defaultProvidersUnregisteredRef,
 		);
@@ -769,14 +806,20 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 		});
 
 		yield* Ref.set(context.registrationResultRef, undefined);
+
 		yield* Ref.set(context.workspaceContextRef, undefined);
+
 		yield* Ref.set(context.messagesRef, []);
+
 		yield* Ref.set(defaultProvidersUnregisteredRef, false);
 
 		// Clear global overrides
 		const globalWindow = window as unknown as Record<string, unknown>;
+
 		delete globalWindow["__MOUNTAIN_FS_PROVIDER__"];
+
 		delete globalWindow["__MOUNTAIN_FS_SCHEME__"];
+
 		delete globalWindow["__WORKSPACE_CONTEXT__"];
 
 		yield* debugLog(context, "Workbench integration reset complete");

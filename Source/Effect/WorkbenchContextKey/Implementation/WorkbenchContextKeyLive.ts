@@ -13,6 +13,7 @@ import type {
 
 const ResolveBridge = Effect.sync((): WorkbenchContextKeyBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchContextKeyGlobals;
+
 	return Globals.__CEL_SERVICES__?.ContextKey ?? null;
 });
 
@@ -36,6 +37,7 @@ export const WorkbenchContextKeyLive = Layer.effect(
 		): Effect.Effect<T | undefined, WorkbenchContextKeyProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				return Bridge.getContextKeyValue<T>(Key);
 			});
 
@@ -46,6 +48,7 @@ export const WorkbenchContextKeyLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchContextKeyProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				Bridge.createKey<T>(Key, undefined).set(Value);
 			});
 
@@ -54,6 +57,7 @@ export const WorkbenchContextKeyLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchContextKeyProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				Bridge.createKey(Key, undefined).reset();
 			});
 
@@ -62,6 +66,7 @@ export const WorkbenchContextKeyLive = Layer.effect(
 		): Effect.Effect<boolean, WorkbenchContextKeyProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				return yield* Effect.try({
 					try: () => Bridge.contextMatchesRules(Expression),
 					catch: (Cause) =>
@@ -79,11 +84,14 @@ export const WorkbenchContextKeyLive = Layer.effect(
 		>((Emit) => {
 			if (!Bridge) {
 				Emit.fail(Unavailable);
+
 				return Effect.void;
 			}
+
 			const Subscription = Bridge.onDidChangeContext((Event) => {
 				Emit.single({ affectedKeys: Event.keys ?? new Set() });
 			});
+
 			return Effect.sync(() => Subscription.dispose());
 		});
 

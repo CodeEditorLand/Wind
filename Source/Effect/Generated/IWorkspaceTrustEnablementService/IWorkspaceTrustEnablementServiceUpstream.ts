@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IWorkspaceTrustEnablementServiceTag = "workspaceTrustEnablementService" as const;
+
 export const IWorkspaceTrustEnablementServiceSourcePath = "vs/platform/workspace/common/workspaceTrust.ts" as const;
+
 export const IWorkspaceTrustEnablementServiceSourceLine = 31 as const;
+
 export interface IWorkspaceTrustEnablementServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	isWorkspaceTrustEnabled(): boolean;
 }
+
 export const IWorkspaceTrustEnablementServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 34,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isWorkspaceTrustEnabled",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 36,
 	}
 ] as const;

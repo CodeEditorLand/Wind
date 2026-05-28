@@ -26,7 +26,9 @@ export interface WorkbenchEditorBridgeShape {
 
 		options?: {
 			readonly preserveFocus?: boolean;
+
 			readonly preview?: boolean;
+
 			readonly pinned?: boolean;
 		},
 

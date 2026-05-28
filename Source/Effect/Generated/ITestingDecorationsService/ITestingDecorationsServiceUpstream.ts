@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITestingDecorationsServiceTag = "testingDecorationService" as const;
+
 export const ITestingDecorationsServiceSourcePath = "vs/workbench/contrib/testing/common/testingDecorations.ts" as const;
+
 export const ITestingDecorationsServiceSourceLine = 104 as const;
+
 // Decorator doc:
 // /**
 //  * Fires when something happened to change decorations in an editor.
@@ -15,17 +19,27 @@ export const ITestingDecorationsServiceSourceLine = 104 as const;
 //  */
 // 
 export interface ITestingDecorationsServiceUpstream {
+
 	_serviceBrand: undefined;
 }
+
 export const ITestingDecorationsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 16,
 	}
 ] as const;

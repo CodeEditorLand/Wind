@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentHostCompletionsTag = "agentHostCompletions" as const;
+
 export const IAgentHostCompletionsSourcePath = "vs/platform/agentHost/node/agentHostCompletions.ts" as const;
+
 export const IAgentHostCompletionsSourceLine = 12 as const;
+
 /**
  * Well-known completion trigger characters announced to clients in the
  * `initialize` handshake. Clients SHOULD issue a `completions` request when
@@ -15,6 +19,7 @@ export const IAgentHostCompletionsSourceLine = 12 as const;
  */
 
 export interface IAgentHostCompletionsUpstream {
+
 	/**
 	 * Well-known completion trigger characters announced to clients in the
 	 * `initialize` handshake. Clients SHOULD issue a `completions` request when
@@ -22,15 +27,24 @@ export interface IAgentHostCompletionsUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IAgentHostCompletionsMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Well-known completion trigger characters announced to clients in the\n`initialize` handshake. Clients SHOULD issue a `completions` request when\nthe user types one of these characters in a {@link UserMessage} input.",
+
 		SourceLine: 64,
 	}
 ] as const;

@@ -9,8 +9,11 @@ import type { TerminalProblem } from "../Type/TerminalProblem.js";
 export interface TerminalService {
 	readonly CreateTerminal: (options?: {
 		readonly name?: string;
+
 		readonly shellPath?: string;
+
 		readonly shellArgs?: readonly string[];
+
 		readonly cwd?: string;
 	}) => Effect.Effect<
 		{ readonly id: number; readonly name: string },

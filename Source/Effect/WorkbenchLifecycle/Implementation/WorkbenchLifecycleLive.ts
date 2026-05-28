@@ -29,6 +29,7 @@ import {
 
 const ResolveBridge = Effect.sync((): WorkbenchLifecycleBridgeShape | null => {
 	const Globals = globalThis as unknown as WorkbenchLifecycleGlobals;
+
 	return Globals.__CEL_SERVICES__?.Lifecycle ?? null;
 });
 
@@ -75,6 +76,7 @@ export const WorkbenchLifecycleLive = Layer.effect(
 
 		const Current = Effect.gen(function* () {
 			if (!Bridge) return yield* Effect.fail(Unavailable);
+
 			return WorkbenchLifecyclePhaseFromCode(Bridge.phase);
 		});
 
@@ -83,7 +85,9 @@ export const WorkbenchLifecycleLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchLifecycleProblem> =>
 			Effect.gen(function* () {
 				const Invoke = ResolveTauriInvoke();
+
 				if (!Invoke) return yield* Effect.fail(Unavailable);
+
 				yield* Effect.tryPromise({
 					try: () =>
 						Invoke("MountainIPCInvoke", {
@@ -106,6 +110,7 @@ export const WorkbenchLifecycleLive = Layer.effect(
 		): Effect.Effect<void, WorkbenchLifecycleProblem> =>
 			Effect.gen(function* () {
 				if (!Bridge) return yield* Effect.fail(Unavailable);
+
 				yield* Effect.promise(() =>
 					Bridge.when(WorkbenchLifecyclePhaseCode(Phase)),
 				);
@@ -120,11 +125,14 @@ export const WorkbenchLifecycleLive = Layer.effect(
 			(Emit) => {
 				if (!Bridge) {
 					Emit.fail(Unavailable);
+
 					return Effect.void;
 				}
+
 				const Subscription = Bridge.onWillShutdown(() =>
 					Emit.single(undefined),
 				);
+
 				return Effect.sync(() => Subscription.dispose());
 			},
 		);
@@ -133,11 +141,14 @@ export const WorkbenchLifecycleLive = Layer.effect(
 			(Emit) => {
 				if (!Bridge) {
 					Emit.fail(Unavailable);
+
 					return Effect.void;
 				}
+
 				const Subscription = Bridge.onDidShutdown(() =>
 					Emit.single(undefined),
 				);
+
 				return Effect.sync(() => Subscription.dispose());
 			},
 		);

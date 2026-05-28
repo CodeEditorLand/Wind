@@ -7,6 +7,7 @@ export interface WorkbenchCommandBridgeShape {
 	readonly onWillExecuteCommand: (
 		listener: (event: {
 			readonly commandId: string;
+
 			readonly args: ReadonlyArray<unknown>;
 		}) => void,
 	) => { readonly dispose: () => void };
@@ -14,6 +15,7 @@ export interface WorkbenchCommandBridgeShape {
 	readonly onDidExecuteCommand: (
 		listener: (event: {
 			readonly commandId: string;
+
 			readonly args: ReadonlyArray<unknown>;
 		}) => void,
 	) => { readonly dispose: () => void };

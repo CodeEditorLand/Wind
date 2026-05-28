@@ -47,7 +47,9 @@ export const MountainLive = Layer.effect(
 
 	Effect.gen(function* () {
 		const IPCService = yield* IPC;
+
 		const ConfigurationService = yield* Configuration;
+
 		const TelemetryService = yield* Telemetry;
 
 		// Connection state as reactive ref
@@ -75,14 +77,18 @@ export const MountainLive = Layer.effect(
 		): Effect.Effect<A, E, never> =>
 			Effect.gen(function* () {
 				const Span = yield* TelemetryService.startSpan(Name);
+
 				return yield* EffectPayload.pipe(
 					Effect.tap(() => Span.end(true)),
 
 					Effect.catchAll((Error) =>
 						Effect.gen(function* () {
 							const ErrorValue = Error as Error;
+
 							const ErrorMsg = ErrorValue.message;
+
 							yield* Span.end(false, ErrorMsg);
+
 							return yield* Effect.fail(ErrorValue);
 						}),
 					),
@@ -97,6 +103,7 @@ export const MountainLive = Layer.effect(
 
 					State,
 				]);
+
 				yield* TelemetryService.log(
 					"info",
 
@@ -106,6 +113,7 @@ export const MountainLive = Layer.effect(
 
 		// Atom: Get current state
 		const ConnectionState = StateRef.get;
+
 		const ConnectionChanges = StateRef.changes;
 
 		// Atom: Connect to Mountain
@@ -125,8 +133,10 @@ export const MountainLive = Layer.effect(
 						(Result): { connected: boolean; version: string } => {
 							const APIStatus = Result as {
 								connected?: boolean;
+
 								version?: string;
 							};
+
 							return {
 								connected: APIStatus.connected ?? false,
 								version: APIStatus.version ?? "unknown",
@@ -149,6 +159,7 @@ export const MountainLive = Layer.effect(
 					_tag: "Connected",
 					version: Status.version,
 				});
+
 				yield* TelemetryService.log(
 					"info",
 
@@ -167,12 +178,15 @@ export const MountainLive = Layer.effect(
 							Error instanceof Error
 								? Error
 								: new Error(String(Error));
+
 						yield* SetState({ _tag: "Error", error: ErrorObj });
+
 						yield* TelemetryService.log(
 							"error",
 
 							`Failed to connect: ${ErrorObj.message}`,
 						);
+
 						yield* Effect.fail(Error as MountainConnectionError);
 					}),
 				),
@@ -182,6 +196,7 @@ export const MountainLive = Layer.effect(
 		// Atom: Disconnect
 		const Disconnect = Effect.gen(function* () {
 			yield* SetState({ _tag: "Disconnected", reason: "manual" });
+
 			yield* TelemetryService.log("info", "Disconnected from Mountain");
 		});
 
@@ -212,6 +227,7 @@ export const MountainLive = Layer.effect(
 								Error instanceof Error
 									? Error.message
 									: String(Error);
+
 							yield* Span.end(false, ErrorMessage);
 
 							// Check if connection lost
@@ -237,6 +253,7 @@ export const MountainLive = Layer.effect(
 				const Span = yield* TelemetryService.startSpan(
 					`sync_${ResourceType}`,
 				);
+
 				const StartTime = Date.now();
 
 				yield* TelemetryService.log(
@@ -251,10 +268,12 @@ export const MountainLive = Layer.effect(
 							const MountainConfig = (yield* RPC(
 								"mountain_get_configuration",
 							)()) as any;
+
 							const LocalConfig = yield* ConfigurationService.get;
 
 							// Detect changes
 							const MountainHash = JSON.stringify(MountainConfig);
+
 							const LocalHash = JSON.stringify(LocalConfig);
 
 							if (MountainHash !== LocalHash) {
@@ -361,13 +380,16 @@ export const MountainLive = Layer.effect(
 					Effect.tap((InnerResult) =>
 						Span.end(InnerResult.success, InnerResult.errors[0]),
 					),
+
 					Effect.catchAll((Error) =>
 						Effect.gen(function* () {
 							const ErrorMessage =
 								Error instanceof Error
 									? Error.message
 									: String(Error);
+
 							yield* Span.end(false, ErrorMessage);
+
 							yield* Effect.fail(
 								new MountainSyncError(ResourceType, Error),
 							);
@@ -396,13 +418,16 @@ export const MountainLive = Layer.effect(
 				Effect.map((Result): { version: string } => {
 					const APIStatus = Result as {
 						connected?: boolean;
+
 						version?: string;
 					};
+
 					return { version: APIStatus.version ?? "unknown" };
 				}),
 
 				Effect.mapError((Error) => new MountainConnectionError(Error)),
 			);
+
 			return Status.version;
 		});
 

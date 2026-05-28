@@ -64,7 +64,9 @@ export interface WorkbenchStorageBridgeShape {
 
 		listener: (event: {
 			readonly key: string;
+
 			readonly scope: number;
+
 			readonly target?: number;
 		}) => void,
 	) => { readonly dispose: () => void };

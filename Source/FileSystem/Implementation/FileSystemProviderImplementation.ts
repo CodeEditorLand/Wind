@@ -46,6 +46,7 @@ const MountainCommands = {
 	MKDIR: "file:mkdir",
 
 	RMDIR: "file:delete", // Mountain doesn't have rmdir, uses delete
+
 	READDIR: "file:readdir",
 
 	COPY: "file:copy",
@@ -99,10 +100,15 @@ function pathToUri(path: string): URI {
  */
 function toIStat(stats: {
 	is_file?: boolean;
+
 	is_directory?: boolean;
+
 	size?: number;
+
 	created?: number;
+
 	modified?: number;
+
 	accessed?: number;
 }): {
 	type: number;
@@ -145,12 +151,15 @@ function toIStat(stats: {
 function toDirectoryEntries(
 	entries: Array<{
 		name: string;
+
 		is_file?: boolean;
+
 		is_directory?: boolean;
 	}>,
 ): [string, FileType][] {
 	return entries.map((entry) => {
 		let type: FileType;
+
 		if (entry.is_directory) {
 			type = FileType.Directory;
 		} else if (entry.is_file) {
@@ -158,6 +167,7 @@ function toDirectoryEntries(
 		} else {
 			type = FileType.Unknown;
 		}
+
 		return [entry.name, type];
 	});
 }
@@ -278,7 +288,9 @@ const createProvider = (
 				return toDirectoryEntries(
 					result as unknown as Array<{
 						name: string;
+
 						is_file?: boolean;
+
 						is_directory?: boolean;
 					}>,
 				);
@@ -343,10 +355,15 @@ const createProvider = (
 				return toIStat(
 					result as {
 						is_file?: boolean;
+
 						is_directory?: boolean;
+
 						size?: number;
+
 						created?: number;
+
 						modified?: number;
+
 						accessed?: number;
 					},
 				);

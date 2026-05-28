@@ -41,6 +41,7 @@ const makeBootstrap = (): BootstrapService => ({
 			const TelemetryService = yield* Telemetry;
 
 			const StartTime = Date.now();
+
 			const { skipHealthCheck = false, debugMode = false } =
 				Options ?? {};
 
@@ -49,16 +50,19 @@ const makeBootstrap = (): BootstrapService => ({
 
 				"[Bootstrap] ===============================================",
 			);
+
 			TelemetryService.log(
 				"info",
 
 				"[Bootstrap] Wind VSCode Workbench Bootstrap",
 			);
+
 			TelemetryService.log(
 				"info",
 
 				"[Bootstrap] Debug mode: " + debugMode,
 			);
+
 			TelemetryService.log(
 				"info",
 
@@ -79,7 +83,9 @@ const makeBootstrap = (): BootstrapService => ({
 
 			for (const Stage of Stages) {
 				const StageStartTime = Date.now();
+
 				let Result: StageResult;
+
 				// Use Effect.either to catch fiber-level failures (missing services, etc.)
 				// JavaScript try/catch does NOT catch Effect failures from yield*.
 				const Outcome = yield* Effect.either(
@@ -88,6 +94,7 @@ const makeBootstrap = (): BootstrapService => ({
 						unknown
 					>,
 				);
+
 				if (Either.isRight(Outcome)) {
 					Result = {
 						...Outcome.right,
@@ -95,10 +102,12 @@ const makeBootstrap = (): BootstrapService => ({
 					};
 				} else {
 					const FailCause = Outcome.left;
+
 					const ErrorObj =
 						FailCause instanceof Error
 							? FailCause
 							: new Error(String(FailCause));
+
 					Result = {
 						stageName: "Unknown",
 						success: false as boolean,
@@ -106,11 +115,14 @@ const makeBootstrap = (): BootstrapService => ({
 						error: ErrorObj,
 					} satisfies StageResult;
 				}
+
 				Results.push(Result);
 			}
 
 			const EndTime = Date.now();
+
 			const TotalDuration = EndTime - StartTime;
+
 			const AllSuccess = Results.every((R) => R.success);
 
 			TelemetryService.log(
@@ -118,16 +130,19 @@ const makeBootstrap = (): BootstrapService => ({
 
 				"[Bootstrap] ===============================================",
 			);
+
 			TelemetryService.log(
 				"info",
 
 				`[Bootstrap] ${AllSuccess ? "✓ Bootstrap completed successfully" : "✗ Bootstrap failed"}`,
 			);
+
 			TelemetryService.log(
 				"info",
 
 				`[Bootstrap] Total duration: ${TotalDuration}ms`,
 			);
+
 			TelemetryService.log(
 				"info",
 
@@ -136,7 +151,9 @@ const makeBootstrap = (): BootstrapService => ({
 
 			if (!AllSuccess) {
 				const FailedStages = Results.filter((R) => !R.success);
+
 				TelemetryService.log("error", "[Bootstrap] Failed stages:");
+
 				for (const Failed of FailedStages) {
 					TelemetryService.log(
 						"error",

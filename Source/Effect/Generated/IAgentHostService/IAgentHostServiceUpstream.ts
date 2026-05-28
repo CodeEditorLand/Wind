@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentHostServiceTag = "agentHostService" as const;
+
 export const IAgentHostServiceSourcePath = "vs/platform/agentHost/common/agentService.ts" as const;
+
 export const IAgentHostServiceSourceLine = 938 as const;
+
 // Decorator doc:
 // /**
 //  * Channel for the agent host service on the main-process side
@@ -18,62 +22,102 @@ export const IAgentHostServiceSourceLine = 938 as const;
  */
 
 export interface IAgentHostServiceUpstream {
+
 	/**
 	 * Channel for the agent host service on the main-process side
 	 */
 	readonly onAgentHostExit: Event<number>;
+
 	/**
 	 * Channel for the agent host service on the main-process side
 	 */
 	readonly onAgentHostStart: Event<void>;
+
 	/**
 	 * Channel for the agent host service on the main-process side
 	 */
 	restartAgentHost(): Promise<void>;
+
 	/**
 	 * Channel for the agent host service on the main-process side
 	 */
 	startWebSocketServer(): Promise<IAgentHostSocketInfo>;
 }
+
 export const IAgentHostServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Event",
+
 		Name: "onAgentHostExit",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<number>",
+
 		Parameters: [],
+
 		DocComment: "Channel for the agent host service on the main-process side",
+
 		SourceLine: 946,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onAgentHostStart",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: "Channel for the agent host service on the main-process side",
+
 		SourceLine: 946,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "restartAgentHost",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [],
+
 		DocComment: "Channel for the agent host service on the main-process side",
+
 		SourceLine: 964,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "startWebSocketServer",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IAgentHostSocketInfo>",
+
 		Parameters: [],
+
 		DocComment: "Channel for the agent host service on the main-process side",
+
 		SourceLine: 966,
 	}
 ] as const;

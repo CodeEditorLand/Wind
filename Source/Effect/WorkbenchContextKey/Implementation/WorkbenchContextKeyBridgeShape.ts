@@ -18,6 +18,7 @@ export interface WorkbenchContextKeyBridgeShape {
 	readonly onDidChangeContext: (
 		listener: (event: {
 			readonly affectsSome: (keys: Set<string>) => boolean;
+
 			readonly keys?: ReadonlySet<string>;
 		}) => void,
 	) => { readonly dispose: () => void };

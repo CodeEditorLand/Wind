@@ -132,6 +132,7 @@ const ipcRenderer = {
 	invoke: async (channel: string, ...args: unknown[]): Promise<unknown> => {
 		return tauriInvoke(
 			channel,
+
 			args.length === 0 ? undefined : args.length === 1 ? args[0] : args,
 		) as Promise<unknown>;
 	},
@@ -145,6 +146,7 @@ const ipcRenderer = {
 			listener(event, event.payload);
 		}).then((unlisten) => {
 			const Cleanup = () => unlisten();
+
 			CleanupMap.set(channel, Cleanup);
 		});
 	},
@@ -358,9 +360,11 @@ const ipcMessagePort = {
 		// MessageType.Ready → byte 2
 		setTimeout(() => {
 			port1.postMessage(new Uint8Array([2]));
+
 			try {
 				performance.mark("land:exthost:handshake:ready-sent");
 			} catch {}
+
 			_PreloadShimLog(
 				"[Extension Host] Ready sent on MessagePort, waiting for init data...",
 			);
@@ -395,10 +399,12 @@ const process = {
 			: "linux",
 
 	arch: "x64", // FUTURE: Detect from Tauri - arch detection requires Tauri platform info
+
 	env: {},
 
 	versions: {
 		node: "20.0.0", // Placeholder
+
 		chrome: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || "unknown",
 
 		electron: "30.0.0", // Placeholder for compatibility

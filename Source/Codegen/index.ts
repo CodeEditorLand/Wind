@@ -17,15 +17,18 @@
  */
 
 export { RunCodegen } from "./RunCodegen.js";
+
 export type { RunCodegenOptions, RunCodegenSummary } from "./RunCodegen.js";
 
 export { WalkSourceTree } from "./Walk/SourceTreeWalker.js";
+
 export type {
 	SourceFile,
 	SourceTreeWalkerOptions,
 } from "./Walk/SourceTreeWalker.js";
 
 export { ExtractDecoratorMatches } from "./Extract/ExtractDecoratorMatch.js";
+
 export type { DecoratorMatch } from "./Extract/ExtractDecoratorMatch.js";
 
 export { ExtractInterfaceMembers } from "./Extract/ExtractInterfaceMembers.js";
@@ -33,12 +36,14 @@ export { ExtractInterfaceMembers } from "./Extract/ExtractInterfaceMembers.js";
 export { IterateServiceDecorators } from "./Extract/IterateServiceDecorators.js";
 
 export { EmitServiceSchema } from "./Emit/EmitServiceSchema.js";
+
 export type {
 	EmitServiceSchemaOptions,
 	EmitServiceSchemaOutcome,
 } from "./Emit/EmitServiceSchema.js";
 
 export { EmitServiceCatalog } from "./Emit/EmitServiceCatalog.js";
+
 export type {
 	EmitServiceCatalogOptions,
 	EmitServiceCatalogOutcome,
@@ -46,12 +51,14 @@ export type {
 } from "./Emit/EmitServiceCatalog.js";
 
 export { EmitBridgeShape } from "./Emit/EmitBridgeShape.js";
+
 export type {
 	EmitBridgeShapeOptions,
 	EmitBridgeShapeOutcome,
 } from "./Emit/EmitBridgeShape.js";
 
 export { EmitBridgeShapeBatch } from "./Emit/EmitBridgeShapeBatch.js";
+
 export type {
 	BridgeShapeManifestEntry,
 	EmitBridgeShapeBatchOptions,
@@ -59,6 +66,7 @@ export type {
 } from "./Emit/EmitBridgeShapeBatch.js";
 
 export { ResolveInterfaceCrossFile } from "./Resolve/ResolveInterfaceCrossFile.js";
+
 export type {
 	ResolveOptions,
 	ResolveOutcome,
@@ -67,7 +75,9 @@ export type {
 export { WorkbenchBridgeShapeManifest } from "./Manifest/WorkbenchBridgeShapeManifest.js";
 
 export type { CodegenProblem } from "./Type/CodegenProblem.js";
+
 export type { ServiceDecoratorRecord } from "./Type/ServiceDecoratorRecord.js";
+
 export type {
 	InterfaceMemberKind,
 	InterfaceMemberParameter,

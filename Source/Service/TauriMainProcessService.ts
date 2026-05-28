@@ -256,10 +256,15 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 
 	browserViewGroup: {
 		updateKeybindings: undefined,
+
 		updateTheme: undefined,
+
 		updateConfiguration: undefined,
+
 		getBrowserViews: [],
+
 		openDevTools: undefined,
+
 		closeDevTools: undefined,
 	},
 
@@ -525,88 +530,144 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	// interface under VS Code's `vs/platform/**/common/*.ts`.
 	test: {
 		getResults: [],
+
 		addResult: undefined,
+
 		clearResults: undefined,
 	},
+
 	profileStorageListener: {
 		onDidChange: undefined,
 	},
+
 	checksum: {
 		checksum: "",
 	},
+
 	languagePacks: {
 		getAvailableLanguages: [],
+
 		getInstalledLanguages: [],
+
 		getBuiltInExtensionTranslationsUri: undefined,
 	},
+
 	userDataSyncUtil: {
 		resolveDefaultIgnoredSettings: [],
+
 		resolveUserKeybindings: {},
+
 		resolveFormattingOptions: {
 			eol: "\n",
+
 			insertSpaces: true,
+
 			tabSize: 4,
 		},
 	},
+
 	userDataSyncMachines: {
 		getMachines: [],
+
 		addCurrentMachine: undefined,
+
 		removeCurrentMachine: undefined,
+
 		renameMachine: undefined,
+
 		setEnablements: undefined,
 	},
+
 	IUserDataSyncResourceProviderService: {
 		getRemoteSyncedProfiles: [],
+
 		getLocalSyncedProfiles: [],
+
 		getRemoteSyncResourceHandles: [],
+
 		getLocalSyncResourceHandles: [],
+
 		getAssociatedResources: [],
+
 		getMachineId: undefined,
+
 		getLocalSyncedMachines: [],
+
 		resolveContent: null,
 	},
+
 	customEndpointTelemetry: {
 		publicLog: undefined,
+
 		publicLogError: undefined,
 	},
+
 	process: {
 		createTunnel: { id: "" },
+
 		startTunnel: {},
+
 		setAddress: undefined,
+
 		setTunnelInUse: undefined,
+
 		destroyTunnel: undefined,
 	},
+
 	remoteTunnel: {
 		getTunnelStatus: { type: "disconnected" },
+
 		getMode: { active: false },
+
 		initialize: { type: "disconnected" },
+
 		startTunnel: { type: "disconnected" },
+
 		stopTunnel: undefined,
+
 		getTunnelName: null,
+
 		getAccount: null,
+
 		getSessionToken: null,
 	},
+
 	sharedWebContentExtractor: {
 		readImage: undefined,
 	},
+
 	playwright: {
 		__initialize: undefined,
+
 		click: undefined,
+
 		hover: undefined,
+
 		drag: undefined,
+
 		fill: undefined,
+
 		select: undefined,
+
 		screenshot: null,
+
 		snapshot: null,
+
 		evaluate: null,
 	},
+
 	v8InspectProfiling: {
 		startProfiling: "",
+
 		stopProfiling: {
 			nodes: [],
+
 			samples: [],
+
 			timeDeltas: [],
+
 			startTime: 0,
+
 			endTime: 0,
 		},
 	},
@@ -636,24 +697,39 @@ function _ReadTier(Name: string): string | undefined {
 	const FromEnv = (import.meta as any).env?.[`Tier${Name}`] as
 		| string
 		| undefined;
+
 	if (FromEnv !== undefined) return FromEnv;
+
 	const FromGlobal = (globalThis as { __LandTiers?: Record<string, unknown> })
 		.__LandTiers?.[`Tier${Name}`];
+
 	return typeof FromGlobal === "string" ? FromGlobal : undefined;
 }
 
 const _TierTerminal = _ReadTier("Terminal") ?? "Mountain";
+
 const _TierSCM = _ReadTier("SCM") ?? "Mountain";
+
 const _TierDebug = _ReadTier("Debug") ?? "Mountain";
+
 const _TierLanguageFeatures = _ReadTier("LanguageFeatures") ?? "Mountain";
+
 const _TierSearch = _ReadTier("Search") ?? "Mountain";
+
 const _TierOutputChannel = _ReadTier("OutputChannel") ?? "Mountain";
+
 const _TierNativeHost = _ReadTier("NativeHost") ?? "Mountain";
+
 const _TierTreeView = _ReadTier("TreeView") ?? "Mountain";
+
 const _TierStorage = _ReadTier("Storage") ?? "Mountain";
+
 const _TierModel = _ReadTier("Model") ?? "Mountain";
+
 const _TierTasks = _ReadTier("Tasks") ?? "Node";
+
 const _TierAuth = _ReadTier("Auth") ?? "Node";
+
 const _TierEncryption = _ReadTier("Encryption") ?? "Mountain";
 
 // Map RoutePrefix → effective tier. Mirrors the Mountain-side dispatch in
@@ -662,38 +738,52 @@ const _TierEncryption = _ReadTier("Encryption") ?? "Mountain";
 // `ChannelRouteMap` above.
 function _ResolveTierForRoute(RoutePrefix: string | null): string {
 	if (!RoutePrefix) return _TierIPC;
+
 	switch (RoutePrefix) {
 		case "terminal":
 		case "localPty":
 			return _TierTerminal;
+
 		case "git":
 			return _TierSCM;
+
 		case "extensionhostdebugservice":
 		case "extensionHostStarter":
 			return _TierDebug;
+
 		case "language":
 		case "languages":
 			return _TierLanguageFeatures;
+
 		case "search":
 			return _TierSearch;
+
 		case "output":
 			return _TierOutputChannel;
+
 		case "nativeHost":
 			return _TierNativeHost;
+
 		case "tree":
 			return _TierTreeView;
+
 		case "storage":
 			return _TierStorage;
+
 		case "model":
 		case "textFile":
 		case "file":
 			return _TierModel;
+
 		case "tasks":
 			return _TierTasks;
+
 		case "auth":
 			return _TierAuth;
+
 		case "encryption":
 			return _TierEncryption;
+
 		default:
 			return _TierIPC;
 	}
@@ -705,6 +795,7 @@ function _ResolveTierForRoute(RoutePrefix: string | null): string {
 // Returns undefined when the Tauri invoke channel is unavailable (non-Tauri env).
 async function _InvokeViaNode(
 	Method: string,
+
 	Params: unknown[],
 ): Promise<unknown> {
 	const Invoke =
@@ -729,6 +820,7 @@ async function _InvokeViaNode(
 
 async function InvokeMountain(
 	Method: string,
+
 	Params: unknown[],
 ): Promise<unknown> {
 	const Invoke =
@@ -755,6 +847,7 @@ async function InvokeMountain(
 	// stack-trace context worth the cost).
 	const Start =
 		typeof performance !== "undefined" ? performance.now() : Date.now();
+
 	try {
 		return await Invoke("MountainIPCInvoke", {
 			method: Method,
@@ -765,10 +858,13 @@ async function InvokeMountain(
 			(typeof performance !== "undefined"
 				? performance.now()
 				: Date.now()) - Start;
+
 		_DevLogForward(
 			"tauri-invoke",
+
 			`[TauriInvoke] method=${Method} ok=false elapsed_ms=${Elapsed.toFixed(2)} err=${String(Error)}`,
 		);
+
 		throw Error;
 	}
 }
@@ -780,12 +876,15 @@ async function InvokeMountain(
 class TauriChannel implements IChannel {
 	constructor(
 		private readonly ChannelName: string,
+
 		private readonly RoutePrefix: string | null,
 	) {}
 
 	async call<T>(
 		Command: string,
+
 		Arg?: unknown,
+
 		_CancellationToken?: unknown,
 	): Promise<T> {
 		_Trace("ipc", `${this.ChannelName}.${Command}`);
@@ -794,9 +893,11 @@ class TauriChannel implements IChannel {
 			if (this.RoutePrefix) {
 				InvokeMountain(
 					`${this.RoutePrefix}:${Command}`,
+
 					Arg !== undefined ? (Array.isArray(Arg) ? Arg : [Arg]) : [],
 				).catch(() => {});
 			}
+
 			// `_DevLogForward("channel-stub", "fire-and-forget …")`
 			// dropped here for the same IPC-saturation reason as the
 			// success-case `tauri-invoke` forward above. Mirror of the
@@ -805,33 +906,41 @@ class TauriChannel implements IChannel {
 		}
 
 		const Stubs = StubChannels[this.ChannelName];
+
 		if (Stubs !== undefined) {
 			_Trace("ipc", `stub:${this.ChannelName}.${Command}`);
+
 			const StubValue = Stubs[Command];
+
 			// Disposition: `value` = real payload, `noop` = undefined on
 			// purpose, `drift` = key missing from stub object (worth
 			// investigating). Mirror of the Output copy.
 			const Disposition = Object.prototype.hasOwnProperty.call(
 				Stubs,
+
 				Command,
 			)
 				? StubValue === undefined
 					? "noop"
 					: "value"
 				: "drift";
+
 			// Only forward for `drift` - the noteworthy case. `value` /
 			// `noop` are routine and would saturate the IPC channel.
 			if (Disposition === "drift") {
 				_DevLogForward(
 					"channel-stub",
+
 					`stub-hit channel=${this.ChannelName} cmd=${Command} disposition=${Disposition}`,
 				);
 			}
+
 			return (StubValue !== undefined ? StubValue : undefined) as T;
 		}
 
 		if (this.RoutePrefix) {
 			const MountainMethod = `${this.RoutePrefix}:${Command}`;
+
 			const Params =
 				Arg !== undefined ? (Array.isArray(Arg) ? Arg : [Arg]) : [];
 
@@ -840,6 +949,7 @@ class TauriChannel implements IChannel {
 			// or the per-subsystem tier for this RoutePrefix resolves to
 			// "Node" (TIER-SYSTEM Step 4b).
 			const _EffectiveTier = _ResolveTierForRoute(this.RoutePrefix);
+
 			if (_EffectiveTier === "Node") {
 				try {
 					return (await _InvokeViaNode(MountainMethod, Params)) as T;
@@ -862,19 +972,24 @@ class TauriChannel implements IChannel {
 						| number[]
 						| null
 						| undefined;
+
 					if (Raw !== null && Raw !== undefined) {
 						const Arr = Array.isArray(Raw)
 							? Raw
 							: (Raw as { buffer: number[] }).buffer;
+
 						if (Array.isArray(Arr)) {
 							const Bytes = new Uint8Array(Arr);
+
 							return {
 								buffer: Bytes,
+
 								byteLength: Bytes.byteLength,
 							} as unknown as T;
 						}
 					}
 				}
+
 				return Result as T;
 			} catch (RawError) {
 				if (
@@ -882,30 +997,38 @@ class TauriChannel implements IChannel {
 					FileSystemThrowCommands.has(Command)
 				) {
 					const ErrorMsg = String(RawError);
+
 					const WrappedError = new Error(ErrorMsg) as any;
+
 					if (
 						ErrorMsg.includes("No such file or directory") ||
 						ErrorMsg.includes("ENOENT") ||
 						ErrorMsg.includes("not found")
 					) {
 						WrappedError.code = "FileNotFound";
+
 						WrappedError.fileOperationResult = 1;
 					} else if (
 						ErrorMsg.includes("Permission denied") ||
 						ErrorMsg.includes("EACCES")
 					) {
 						WrappedError.code = "NoPermissions";
+
 						WrappedError.fileOperationResult = 6;
 					} else if (
 						ErrorMsg.includes("File exists") ||
 						ErrorMsg.includes("EEXIST")
 					) {
 						WrappedError.code = "FileExists";
+
 						WrappedError.fileOperationResult = 4;
 					}
+
 					throw WrappedError;
 				}
+
 				_Trace("ipc", `error:${this.ChannelName}.${Command}`);
+
 				return undefined as T;
 			}
 		}
@@ -917,6 +1040,7 @@ class TauriChannel implements IChannel {
 		// (whose defaults are "Node") attempt the Cocoon path even when the
 		// global `_TierIPC` is "Mountain" (TIER-SYSTEM Step 4b).
 		const _NoRouteTier = _ResolveTierForRoute(this.ChannelName);
+
 		if (
 			_TierIPC === "NodeDeferred" ||
 			_TierIPC === "Node" ||
@@ -924,8 +1048,10 @@ class TauriChannel implements IChannel {
 			_NoRouteTier === "NodeDeferred"
 		) {
 			const NodeMethod = `${this.ChannelName}:${Command}`;
+
 			const NodeParams =
 				Arg !== undefined ? (Array.isArray(Arg) ? Arg : [Arg]) : [];
+
 			try {
 				return (await _InvokeViaNode(NodeMethod, NodeParams)) as T;
 			} catch {
@@ -934,10 +1060,13 @@ class TauriChannel implements IChannel {
 		}
 
 		_Trace("ipc", `unknown:${this.ChannelName}.${Command}`);
+
 		_DevLogForward(
 			"channel-stub",
+
 			`miss channel=${this.ChannelName} cmd=${Command} (no route, no stub)`,
 		);
+
 		return undefined as T;
 	}
 
@@ -956,6 +1085,7 @@ class TauriChannel implements IChannel {
 					import("../../../base/common/buffer.js") as Promise<{
 						VSBuffer: { wrap(buffer: Uint8Array): unknown };
 					}>,
+
 					InvokeMountain(`${this.RoutePrefix}:readFile`, Params),
 				])
 					.then(([{ VSBuffer }, Result]) => {
@@ -964,14 +1094,17 @@ class TauriChannel implements IChannel {
 							| number[]
 							| null
 							| undefined;
+
 						if (Raw !== null && Raw !== undefined) {
 							const Arr = Array.isArray(Raw)
 								? Raw
 								: (Raw as { buffer: number[] }).buffer;
+
 							if (Array.isArray(Arr)) {
 								Listener(VSBuffer.wrap(new Uint8Array(Arr)));
 							}
 						}
+
 						Listener("end" as unknown);
 					})
 					.catch((Err) => {
@@ -992,8 +1125,10 @@ class TauriChannel implements IChannel {
 			return ((Listener: (Data: unknown) => void) => {
 				const Unlisten = (window as any).__TAURI__?.event?.listen(
 					"sky://vfs/fileChange",
+
 					(TauriEvent: any) => Listener(TauriEvent.payload),
 				);
+
 				return {
 					dispose: () => {
 						Unlisten?.then((F: () => void) => F());
@@ -1012,8 +1147,10 @@ class TauriChannel implements IChannel {
 			return ((Listener: (Data: unknown) => void) => {
 				const Unlisten = (window as any).__TAURI__?.event?.listen(
 					"sky://configuration/changed",
+
 					(TauriEvent: any) => Listener(TauriEvent.payload),
 				);
+
 				return {
 					dispose: () => {
 						Unlisten?.then((F: () => void) => F());
@@ -1029,8 +1166,10 @@ class TauriChannel implements IChannel {
 			return ((Listener: (Data: unknown) => void) => {
 				const Unlisten = (window as any).__TAURI__?.event?.listen(
 					"sky://terminal/data",
+
 					(TauriEvent: any) => Listener(TauriEvent.payload),
 				);
+
 				return {
 					dispose: () => {
 						Unlisten?.then((F: () => void) => F());
@@ -1056,11 +1195,14 @@ class TauriChannel implements IChannel {
 				Event === "onTerminalCreate"
 					? "sky://terminal/create"
 					: "sky://terminal/exit";
+
 			return ((Listener: (Data: unknown) => void) => {
 				const Unlisten = (window as any).__TAURI__?.event?.listen(
 					Channel,
+
 					(TauriEvent: any) => Listener(TauriEvent.payload),
 				);
+
 				return {
 					dispose: () => {
 						Unlisten?.then((F: () => void) => F());
@@ -1085,8 +1227,10 @@ class TauriChannel implements IChannel {
 			return ((Listener: (Data: unknown) => void) => {
 				const Unlisten = (window as any).__TAURI__?.event?.listen(
 					"sky://workspaces/changed",
+
 					(TauriEvent: any) => Listener(TauriEvent.payload),
 				);
+
 				return {
 					dispose: () => {
 						Unlisten?.then((F: () => void) => F());
@@ -1102,8 +1246,10 @@ class TauriChannel implements IChannel {
 			return ((Listener: (Data: unknown) => void) => {
 				const Unlisten = (window as any).__TAURI__?.event?.listen(
 					"sky://lifecycle/willShutdown",
+
 					(TauriEvent: any) => Listener(TauriEvent.payload),
 				);
+
 				return {
 					dispose: () => {
 						Unlisten?.then((F: () => void) => F());
@@ -1119,8 +1265,10 @@ class TauriChannel implements IChannel {
 			return ((Listener: (Data: unknown) => void) => {
 				const Unlisten = (window as any).__TAURI__?.event?.listen(
 					"sky://lifecycle/phaseChanged",
+
 					(TauriEvent: any) => Listener(TauriEvent.payload),
 				);
+
 				return {
 					dispose: () => {
 						Unlisten?.then((F: () => void) => F());
@@ -1148,16 +1296,21 @@ export class TauriMainProcessService {
 
 	getChannel(ChannelName: string): IChannel {
 		let Channel = this.Channels.get(ChannelName);
+
 		if (!Channel) {
 			const RoutePrefix = ChannelRouteMap[ChannelName] ?? null;
+
 			Channel = new TauriChannel(ChannelName, RoutePrefix);
+
 			this.Channels.set(ChannelName, Channel);
 		}
+
 		return Channel;
 	}
 
 	registerChannel(
 		_ChannelName: string,
+
 		_Channel: IServerChannel<string>,
 	): void {}
 

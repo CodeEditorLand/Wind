@@ -41,6 +41,7 @@ export default function withSpan<A, E, R>(
 ) {
 	return Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
+
 		const span = yield* telemetry.startSpan(name, labels);
 
 		return effect.pipe(
@@ -49,6 +50,7 @@ export default function withSpan<A, E, R>(
 			Effect.catchAll((error) =>
 				Effect.gen(function* () {
 					yield* span.end(false, String(error));
+
 					return yield* Effect.fail(error);
 				}),
 			),

@@ -8,13 +8,21 @@
 
 export const MountainCommands = {
 	READ: "file:read",
+
 	WRITE: "file:write",
+
 	STAT: "file:stat",
+
 	DELETE: "file:delete",
+
 	/** Mountain has no separate `rmdir`; delete handles both files and dirs. */
 	RMDIR: "file:delete",
+
 	MKDIR: "file:mkdir",
+
 	READDIR: "file:readdir",
+
 	COPY: "file:copy",
+
 	MOVE: "file:move",
 } as const;

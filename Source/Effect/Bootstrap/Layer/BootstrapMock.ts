@@ -29,6 +29,7 @@ export const makeMockBootstrap = (): BootstrapService => ({
 	run: (options) =>
 		Effect.gen(function* () {
 			yield* Effect.sleep("1 millis");
+
 			return {
 				success: true,
 				totalDuration: 1,

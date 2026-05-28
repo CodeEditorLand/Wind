@@ -25,6 +25,7 @@ const InitialState: ReadonlyMap<string, unknown> = new Map();
 export const MakeUserSettingsStub = Effect.gen(function* () {
 	const State =
 		yield* SubscriptionRef.make<ReadonlyMap<string, unknown>>(InitialState);
+
 	const ChangesQueue = yield* Effect.acquireRelease(
 		Effect.sync(() => new Set<UserSettingsChangeEvent>()),
 
@@ -35,7 +36,9 @@ export const MakeUserSettingsStub = Effect.gen(function* () {
 		Read: (Section) =>
 			Effect.gen(function* () {
 				const Map = yield* SubscriptionRef.get(State);
+
 				const Value = Map.get(Section);
+
 				if (Value === undefined) {
 					return yield* Effect.fail({
 						_tag: "UserSettingsReadFailed" as const,
@@ -45,20 +48,25 @@ export const MakeUserSettingsStub = Effect.gen(function* () {
 						),
 					});
 				}
+
 				return Value as never;
 			}),
 		ReadOptional: (Section) =>
 			Effect.gen(function* () {
 				const Map = yield* SubscriptionRef.get(State);
+
 				return Map.get(Section) as never;
 			}),
 		Write: (Section, Value, Target: UserSettingsTarget) =>
 			Effect.gen(function* () {
 				yield* SubscriptionRef.update(State, (Prev) => {
 					const Next = new Map(Prev);
+
 					Next.set(Section, Value);
+
 					return Next;
 				});
+
 				ChangesQueue.add({
 					affectedKeys: new Set([Section]),
 					source: Target,
@@ -67,11 +75,14 @@ export const MakeUserSettingsStub = Effect.gen(function* () {
 		HasUserValue: (Section) =>
 			Effect.gen(function* () {
 				const Map = yield* SubscriptionRef.get(State);
+
 				return Map.has(Section);
 			}),
 		Changes: Stream.async<UserSettingsChangeEvent, never>((Emit) => {
 			for (const Event of ChangesQueue) Emit.single(Event);
+
 			ChangesQueue.clear();
+
 			return Effect.void;
 		}),
 	};

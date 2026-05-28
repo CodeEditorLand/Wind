@@ -5,99 +5,163 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IPluginMarketplaceServiceTag = "pluginMarketplaceService" as const;
+
 export const IPluginMarketplaceServiceSourcePath = "vs/workbench/contrib/chat/common/plugins/pluginMarketplaceService.ts" as const;
+
 export const IPluginMarketplaceServiceSourceLine = 143 as const;
+
 // Decorator doc:
 // /**
 //  * Resolved relative path within the marketplace repository.
 //  */
 // 
 export interface IPluginMarketplaceServiceUpstream {
+
 	/**
 	 * Resolved relative path within the marketplace repository.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Resolved relative path within the marketplace repository.
 	 */
 	readonly onDidChangeMarketplaces: Event<void>;
+
 	/**
 	 * Resolved relative path within the marketplace repository.
 	 */
 	fetchMarketplacePlugins(token: CancellationToken): Promise<IMarketplacePlugin[]>;
+
 	/**
 	 * Resolved relative path within the marketplace repository.
 	 */
 	getMarketplacePluginMetadata(pluginUri: URI): IMarketplacePlugin | undefined;
+
 	/**
 	 * Resolved relative path within the marketplace repository.
 	 */
 	addInstalledPlugin(pluginUri: URI, plugin: IMarketplacePlugin): void;
+
 	/**
 	 * Resolved relative path within the marketplace repository.
 	 */
 	removeInstalledPlugin(pluginUri: URI): void;
 }
+
 export const IPluginMarketplaceServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Resolved relative path within the marketplace repository.",
+
 		SourceLine: 146,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeMarketplaces",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: "Resolved relative path within the marketplace repository.",
+
 		SourceLine: 146,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "fetchMarketplacePlugins",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IMarketplacePlugin[]>",
+
 		Parameters: [{ Name: "token", TypeText: "CancellationToken", Optional: false }],
+
 		DocComment: "Resolved relative path within the marketplace repository.",
+
 		SourceLine: 170,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getMarketplacePluginMetadata",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IMarketplacePlugin | undefined",
+
 		Parameters: [{ Name: "pluginUri", TypeText: "URI", Optional: false }],
+
 		DocComment: "Resolved relative path within the marketplace repository.",
+
 		SourceLine: 171,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "addInstalledPlugin",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "pluginUri", TypeText: "URI", Optional: false }, { Name: "plugin", TypeText: "IMarketplacePlugin", Optional: false }],
+
 		DocComment: "Resolved relative path within the marketplace repository.",
+
 		SourceLine: 172,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeInstalledPlugin",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "pluginUri", TypeText: "URI", Optional: false }],
+
 		DocComment: "Resolved relative path within the marketplace repository.",
+
 		SourceLine: 173,
 	}
 ] as const;
