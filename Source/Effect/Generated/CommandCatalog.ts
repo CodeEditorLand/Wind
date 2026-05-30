@@ -28,9 +28,9 @@ export interface CommandCatalogEntry {
 	readonly HasKeybinding: boolean;
 }
 
-export const CommandCatalogVersion = "2026-05-28" as const;
+export const CommandCatalogVersion = "2026-05-30" as const;
 
-export const CommandCatalogTotal = 550 as const;
+export const CommandCatalogTotal = 551 as const;
 
 export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 	{
@@ -431,7 +431,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
 
-		SourceLine: 348,
+		SourceLine: 366,
 
 		HasKeybinding: false,
 	},
@@ -1471,7 +1471,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures.ts",
 
-		SourceLine: 512,
+		SourceLine: 511,
 
 		HasKeybinding: false,
 	},
@@ -1575,7 +1575,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
 
-		SourceLine: 1225,
+		SourceLine: 1260,
 
 		HasKeybinding: false,
 	},
@@ -1822,7 +1822,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/experiments/agentSessionsExperiments.contribution.ts",
 
-		SourceLine: 253,
+		SourceLine: 254,
 
 		HasKeybinding: false,
 	},
@@ -1835,7 +1835,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/sessions/contrib/sessions/browser/sessionsTitleBarWidget.ts",
 
-		SourceLine: 387,
+		SourceLine: 404,
 
 		HasKeybinding: false,
 	},
@@ -2004,7 +2004,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorChatFeatures.ts",
 
-		SourceLine: 553,
+		SourceLine: 728,
 
 		HasKeybinding: false,
 	},
@@ -2017,7 +2017,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures.ts",
 
-		SourceLine: 522,
+		SourceLine: 521,
 
 		HasKeybinding: false,
 	},
@@ -2030,7 +2030,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
 
-		SourceLine: 771,
+		SourceLine: 770,
 
 		HasKeybinding: false,
 	},
@@ -2043,7 +2043,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
 
-		SourceLine: 801,
+		SourceLine: 800,
 
 		HasKeybinding: false,
 	},
@@ -2056,7 +2056,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
 
-		SourceLine: 872,
+		SourceLine: 871,
 
 		HasKeybinding: false,
 	},
@@ -2069,7 +2069,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
 
-		SourceLine: 945,
+		SourceLine: 944,
 
 		HasKeybinding: false,
 	},
@@ -2082,7 +2082,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
 
-		SourceLine: 915,
+		SourceLine: 914,
 
 		HasKeybinding: false,
 	},
@@ -2095,7 +2095,20 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
 
-		SourceLine: 1096,
+		SourceLine: 1131,
+
+		HasKeybinding: false,
+	},
+
+	{
+
+		CommandIdentifier: "chat.agentsHandoffTip.action",
+
+		Kind: "CommandsRegistry",
+
+		SourcePath: "vs/workbench/contrib/chat/electron-browser/agentSessions/agentSessionsActions.ts",
+
+		SourceLine: 320,
 
 		HasKeybinding: false,
 	},
@@ -3031,7 +3044,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
 
-		SourceLine: 358,
+		SourceLine: 376,
 
 		HasKeybinding: false,
 	},
@@ -3122,7 +3135,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
 
-		SourceLine: 1009,
+		SourceLine: 1044,
 
 		HasKeybinding: false,
 	},
@@ -3135,7 +3148,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/sessions/contrib/sessions/browser/views/sessionsViewActions.ts",
 
-		SourceLine: 135,
+		SourceLine: 133,
 
 		HasKeybinding: false,
 	},
@@ -4162,7 +4175,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
 
-		SourceLine: 639,
+		SourceLine: 673,
 
 		HasKeybinding: false,
 	},
@@ -5137,7 +5150,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/sessions/contrib/sessions/browser/views/sessionsViewActions.ts",
 
-		SourceLine: 143,
+		SourceLine: 141,
 
 		HasKeybinding: false,
 	},
@@ -5189,7 +5202,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
 
-		SourceLine: 648,
+		SourceLine: 682,
 
 		HasKeybinding: false,
 	},
@@ -5254,7 +5267,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/sessions/contrib/sessions/browser/sessionsTitleBarWidget.ts",
 
-		SourceLine: 395,
+		SourceLine: 412,
 
 		HasKeybinding: false,
 	},
@@ -5514,7 +5527,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/experiments/agentSessionsExperiments.contribution.ts",
 
-		SourceLine: 266,
+		SourceLine: 268,
 
 		HasKeybinding: false,
 	},
@@ -5540,7 +5553,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/experiments/agentSessionsExperiments.contribution.ts",
 
-		SourceLine: 293,
+		SourceLine: 295,
 
 		HasKeybinding: false,
 	},
@@ -6216,7 +6229,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/experiments/agentSessionsExperiments.contribution.ts",
 
-		SourceLine: 282,
+		SourceLine: 284,
 
 		HasKeybinding: false,
 	},
@@ -6346,7 +6359,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/sessions/contrib/sessions/browser/views/sessionsViewActions.ts",
 
-		SourceLine: 121,
+		SourceLine: 119,
 
 		HasKeybinding: true,
 	},
@@ -6762,7 +6775,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/sessions/browser/layoutActions.ts",
 
-		SourceLine: 150,
+		SourceLine: 157,
 
 		HasKeybinding: false,
 	},
@@ -6866,7 +6879,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensionsActions.ts",
 
-		SourceLine: 3379,
+		SourceLine: 3401,
 
 		HasKeybinding: false,
 	},
@@ -6879,7 +6892,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
 
-		SourceLine: 370,
+		SourceLine: 388,
 
 		HasKeybinding: false,
 	},
@@ -6905,7 +6918,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
 
-		SourceLine: 507,
+		SourceLine: 525,
 
 		HasKeybinding: false,
 	},
@@ -6918,7 +6931,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
 
-		SourceLine: 471,
+		SourceLine: 489,
 
 		HasKeybinding: false,
 	},

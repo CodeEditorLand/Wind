@@ -25,7 +25,7 @@ export interface ServiceCatalogEntry {
 	readonly MemberCount: number;
 }
 
-export const ServiceCatalogVersion = "2026-05-28" as const;
+export const ServiceCatalogVersion = "2026-05-30" as const;
 
 export const ServiceCatalogTotal = 505 as const;
 
@@ -190,7 +190,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/sessions/contrib/agentFeedback/browser/agentFeedbackService.ts",
 
-		SourceLine: 64,
+		SourceLine: 103,
 
 		MemberCount: 4,
 	},
@@ -220,7 +220,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/platform/agentHost/node/agentHostChangesetService.ts",
 
-		SourceLine: 194,
+		SourceLine: 191,
 
 		MemberCount: 1,
 	},
@@ -257,17 +257,17 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 	{
 
-		DecoratorName: "IAgentHostCustomAgentsService",
+		DecoratorName: "IAgentHostCustomizationService",
 
-		DecoratorTag: "agentHostCustomAgentsService",
+		DecoratorTag: "agentHostCustomizationService",
 
-		InterfaceName: "IAgentHostCustomAgentsService",
+		InterfaceName: "IAgentHostCustomizationService",
 
-		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostCustomAgentsService.ts",
+		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostCustomizationService.ts",
 
 		SourceLine: 23,
 
-		MemberCount: 3,
+		MemberCount: 6,
 	},
 
 	{
@@ -400,9 +400,9 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/platform/agentHost/common/agentService.ts",
 
-		SourceLine: 938,
+		SourceLine: 992,
 
-		MemberCount: 4,
+		MemberCount: 5,
 	},
 
 	{
@@ -535,7 +535,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/platform/agentHost/common/agentService.ts",
 
-		SourceLine: 724,
+		SourceLine: 728,
 
 		MemberCount: 1,
 	},
@@ -730,7 +730,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/sessions/contrib/aquarium/browser/aquariumOverlay.ts",
 
-		SourceLine: 67,
+		SourceLine: 68,
 
 		MemberCount: 1,
 	},
@@ -955,7 +955,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/browserView/common/browserView.ts",
 
-		SourceLine: 162,
+		SourceLine: 163,
 
 		MemberCount: 1,
 	},
@@ -1000,7 +1000,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/browserView/common/browserView.ts",
 
-		SourceLine: 115,
+		SourceLine: 116,
 
 		MemberCount: 1,
 	},
@@ -1300,7 +1300,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/chat/browser/widget/input/chatInputNotificationService.ts",
 
-		SourceLine: 36,
+		SourceLine: 43,
 
 		MemberCount: 2,
 	},
@@ -1435,7 +1435,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/workbench/contrib/chat/common/chatSessionsService.ts",
 
-		SourceLine: 521,
+		SourceLine: 555,
 
 		MemberCount: 23,
 	},
@@ -1975,9 +1975,9 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/platform/defaultAccount/common/defaultAccount.ts",
 
-		SourceLine: 42,
+		SourceLine: 56,
 
-		MemberCount: 13,
+		MemberCount: 14,
 	},
 
 	{
@@ -2667,7 +2667,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourceLine: 114,
 
-		MemberCount: 39,
+		MemberCount: 41,
 	},
 
 	{
@@ -3310,7 +3310,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/workbench/api/common/extHostWorkspace.ts",
 
-		SourceLine: 1152,
+		SourceLine: 1168,
 
 		MemberCount: 0,
 	},
@@ -4360,7 +4360,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/platform/actions/common/actions.ts",
 
-		SourceLine: 371,
+		SourceLine: 372,
 
 		MemberCount: 1,
 	},
@@ -5215,7 +5215,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/platform/quickinput/common/quickInput.ts",
 
-		SourceLine: 934,
+		SourceLine: 948,
 
 		MemberCount: 1,
 	},
@@ -5382,7 +5382,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourceLine: 8,
 
-		MemberCount: 4,
+		MemberCount: 5,
 	},
 
 	{
@@ -5575,7 +5575,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/sessions/services/sessions/common/sessionsManagement.ts",
 
-		SourceLine: 248,
+		SourceLine: 299,
 
 		MemberCount: 2,
 	},
@@ -5590,7 +5590,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/sessions/browser/parts/sessionsPartService.ts",
 
-		SourceLine: 18,
+		SourceLine: 19,
 
 		MemberCount: 1,
 	},
@@ -7285,7 +7285,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 
 		SourcePath: "vs/platform/sandbox/common/terminalSandboxMxcRuntime.ts",
 
-		SourceLine: 62,
+		SourceLine: 28,
 
 		MemberCount: 7,
 	},

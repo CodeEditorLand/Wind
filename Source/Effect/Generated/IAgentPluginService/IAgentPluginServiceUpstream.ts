@@ -47,7 +47,7 @@ export const IAgentPluginServiceMembers: ReadonlyArray<InterfaceMemberRecord> = 
 
 		DocComment: "URI where this hook is defined -- not unique, multiple hooks may be in a manifest",
 
-		SourceLine: 51,
+		SourceLine: 58,
 	},
 
 	{
@@ -66,7 +66,7 @@ export const IAgentPluginServiceMembers: ReadonlyArray<InterfaceMemberRecord> = 
 
 		DocComment: "URI where this hook is defined -- not unique, multiple hooks may be in a manifest",
 
-		SourceLine: 51,
+		SourceLine: 58,
 	},
 
 	{
@@ -85,6 +85,6 @@ export const IAgentPluginServiceMembers: ReadonlyArray<InterfaceMemberRecord> = 
 
 		DocComment: "URI where this hook is defined -- not unique, multiple hooks may be in a manifest",
 
-		SourceLine: 51,
+		SourceLine: 58,
 	}
 ] as const;

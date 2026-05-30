@@ -14,13 +14,30 @@ export const ISandboxHelperServiceSourceLine = 8 as const;
 
 export interface ISandboxHelperServiceUpstream {
 
+	/**
+	 * Sandbox policy passed to the Windows MXC helper process.
+	 */
 	readonly _serviceBrand: undefined;
 
+	/**
+	 * Sandbox policy passed to the Windows MXC helper process.
+	 */
 	checkSandboxDependencies(): Promise<ISandboxDependencyStatus | undefined>;
 
+	/**
+	 * Sandbox policy passed to the Windows MXC helper process.
+	 */
 	getWindowsMxcFilesystemPolicy(): Promise<IWindowsMxcFilesystemPolicy | undefined>;
 
+	/**
+	 * Sandbox policy passed to the Windows MXC helper process.
+	 */
 	getWindowsMxcEnvironment(): Promise<string[] | undefined>;
+
+	/**
+	 * Sandbox policy passed to the Windows MXC helper process.
+	 */
+	buildWindowsMxcSandboxPayload(commandLine: string, policy: IWindowsMxcSandboxPolicy, workingDirectory?: string, containerName?: string, containment?: IWindowsMxcPolicyContainment): Promise<IWindowsMxcConfig | undefined>;
 }
 
 export const ISandboxHelperServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
@@ -38,9 +55,9 @@ export const ISandboxHelperServiceMembers: ReadonlyArray<InterfaceMemberRecord> 
 
 		Parameters: [],
 
-		DocComment: null,
+		DocComment: "Sandbox policy passed to the Windows MXC helper process.",
 
-		SourceLine: 21,
+		SourceLine: 95,
 	},
 
 	{
@@ -57,9 +74,9 @@ export const ISandboxHelperServiceMembers: ReadonlyArray<InterfaceMemberRecord> 
 
 		Parameters: [],
 
-		DocComment: null,
+		DocComment: "Sandbox policy passed to the Windows MXC helper process.",
 
-		SourceLine: 22,
+		SourceLine: 96,
 	},
 
 	{
@@ -76,9 +93,9 @@ export const ISandboxHelperServiceMembers: ReadonlyArray<InterfaceMemberRecord> 
 
 		Parameters: [],
 
-		DocComment: null,
+		DocComment: "Sandbox policy passed to the Windows MXC helper process.",
 
-		SourceLine: 23,
+		SourceLine: 97,
 	},
 
 	{
@@ -95,8 +112,27 @@ export const ISandboxHelperServiceMembers: ReadonlyArray<InterfaceMemberRecord> 
 
 		Parameters: [],
 
-		DocComment: null,
+		DocComment: "Sandbox policy passed to the Windows MXC helper process.",
 
-		SourceLine: 24,
+		SourceLine: 98,
+	},
+
+	{
+
+		Kind: "Method",
+
+		Name: "buildWindowsMxcSandboxPayload",
+
+		Readonly: false,
+
+		Optional: false,
+
+		TypeText: "Promise<IWindowsMxcConfig | undefined>",
+
+		Parameters: [{ Name: "commandLine", TypeText: "string", Optional: false }, { Name: "policy", TypeText: "IWindowsMxcSandboxPolicy", Optional: false }, { Name: "workingDirectory", TypeText: "string", Optional: true }, { Name: "containerName", TypeText: "string", Optional: true }, { Name: "containment", TypeText: "IWindowsMxcPolicyContainment", Optional: true }],
+
+		DocComment: "Sandbox policy passed to the Windows MXC helper process.",
+
+		SourceLine: 99,
 	}
 ] as const;

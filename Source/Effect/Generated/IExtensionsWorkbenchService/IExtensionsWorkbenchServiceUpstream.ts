@@ -78,6 +78,10 @@ export interface IExtensionsWorkbenchServiceUpstream {
 
 	getAutoUpdateValue(): AutoUpdateConfigurationValue;
 
+	isAutoUpdateDelayed(extension: IExtension): boolean;
+
+	getAutoUpdateDelayRemaining(extension: IExtension): number;
+
 	checkForUpdates(): Promise<void>;
 
 	getExtensionRuntimeStatus(extension: IExtension): IExtensionRuntimeStatus | undefined;
@@ -706,6 +710,44 @@ export const IExtensionsWorkbenchServiceMembers: ReadonlyArray<InterfaceMemberRe
 
 		Kind: "Method",
 
+		Name: "isAutoUpdateDelayed",
+
+		Readonly: false,
+
+		Optional: false,
+
+		TypeText: "boolean",
+
+		Parameters: [{ Name: "extension", TypeText: "IExtension", Optional: false }],
+
+		DocComment: null,
+
+		SourceLine: 164,
+	},
+
+	{
+
+		Kind: "Method",
+
+		Name: "getAutoUpdateDelayRemaining",
+
+		Readonly: false,
+
+		Optional: false,
+
+		TypeText: "number",
+
+		Parameters: [{ Name: "extension", TypeText: "IExtension", Optional: false }],
+
+		DocComment: null,
+
+		SourceLine: 165,
+	},
+
+	{
+
+		Kind: "Method",
+
 		Name: "checkForUpdates",
 
 		Readonly: false,
@@ -718,7 +760,7 @@ export const IExtensionsWorkbenchServiceMembers: ReadonlyArray<InterfaceMemberRe
 
 		DocComment: null,
 
-		SourceLine: 164,
+		SourceLine: 166,
 	},
 
 	{
@@ -737,7 +779,7 @@ export const IExtensionsWorkbenchServiceMembers: ReadonlyArray<InterfaceMemberRe
 
 		DocComment: null,
 
-		SourceLine: 165,
+		SourceLine: 167,
 	},
 
 	{
@@ -756,7 +798,7 @@ export const IExtensionsWorkbenchServiceMembers: ReadonlyArray<InterfaceMemberRe
 
 		DocComment: null,
 
-		SourceLine: 166,
+		SourceLine: 168,
 	},
 
 	{
@@ -775,7 +817,7 @@ export const IExtensionsWorkbenchServiceMembers: ReadonlyArray<InterfaceMemberRe
 
 		DocComment: null,
 
-		SourceLine: 167,
+		SourceLine: 169,
 	},
 
 	{
@@ -794,7 +836,7 @@ export const IExtensionsWorkbenchServiceMembers: ReadonlyArray<InterfaceMemberRe
 
 		DocComment: null,
 
-		SourceLine: 170,
+		SourceLine: 172,
 	},
 
 	{
@@ -813,7 +855,7 @@ export const IExtensionsWorkbenchServiceMembers: ReadonlyArray<InterfaceMemberRe
 
 		DocComment: null,
 
-		SourceLine: 174,
+		SourceLine: 176,
 	},
 
 	{
@@ -832,6 +874,6 @@ export const IExtensionsWorkbenchServiceMembers: ReadonlyArray<InterfaceMemberRe
 
 		DocComment: null,
 
-		SourceLine: 175,
+		SourceLine: 177,
 	}
 ] as const;

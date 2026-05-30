@@ -70,6 +70,6 @@ export const IPromptsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 
 		DocComment: "A single structured debug detail entry from the instructions context computer.",
 
-		SourceLine: 643,
+		SourceLine: 652,
 	}
 ] as const;

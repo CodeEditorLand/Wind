@@ -40,7 +40,7 @@ export interface IWindowsMainServiceUpstream {
 
 	openExistingWindow(window: ICodeWindow, openConfig: IOpenConfiguration): void;
 
-	openAgentsWindow(openConfig: IOpenConfiguration, folderUri?: URI): Promise<ICodeWindow[]>;
+	openAgentsWindow(openConfig: IOpenConfiguration, folderUri?: URI, initialQuery?: string, sessionResource?: URI, preferredSessionType?: { providerId?: string; sessionTypeId: string }): Promise<ICodeWindow[]>;
 
 	sendToFocused(channel: string): void;
 
@@ -321,7 +321,7 @@ export const IWindowsMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = 
 
 		TypeText: "Promise<ICodeWindow[]>",
 
-		Parameters: [{ Name: "openConfig", TypeText: "IOpenConfiguration", Optional: false }, { Name: "folderUri", TypeText: "URI", Optional: true }],
+		Parameters: [{ Name: "openConfig", TypeText: "IOpenConfiguration", Optional: false }, { Name: "folderUri", TypeText: "URI", Optional: true }, { Name: "initialQuery", TypeText: "string", Optional: true }, { Name: "sessionResource", TypeText: "URI", Optional: true }, { Name: "preferredSessionType", TypeText: "{ providerId?: string; sessionTypeId: string }", Optional: true }],
 
 		DocComment: null,
 
