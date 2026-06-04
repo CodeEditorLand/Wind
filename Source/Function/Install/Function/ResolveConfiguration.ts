@@ -161,6 +161,15 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 		}
 	}
 
+	// True when running inside a Tauri webview (Mountain desktop shell).
+	// DesktopMain reads `workspace` (ISingleFolderWorkspaceIdentifier).
+	// The browser workbench reads `folderUri`.
+	// Setting both causes the workbench to register the same git repository
+	// twice via two independent workspace resolution paths, which makes the
+	// Git extension call registerSCMProvider twice and produces duplicate
+	// SCM group rows in the Source Control view.
+	const IsTauri = typeof ResolveInvoke() === "function";
+
 	try {
 		if (typeof Invoke === "function") {
 			Paths = await (
@@ -240,6 +249,8 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 	DevLog("config", "folderUri:", JSON.stringify(FolderUri));
 
 	DevLog("config", "workspace:", JSON.stringify(Workspace));
+
+	DevLog("config", "isTauri:", String(IsTauri));
 
 	// Mountain returns logsPath as a session-timestamped directory
 	// (e.g., .../logs/20260410T105248) with window1/ already created.
@@ -560,11 +571,18 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 
 		extensionsPath: `${Paths.userDataDir || "/tmp/.fiddee"}/extensions`,
 
-		// Workspace - set from ?folder= URL param
-		// folderUri is used by the browser workbench; workspace by the Electron workbench.
-		folderUri: FolderUri,
+		// Workspace resolution: folderUri and workspace must be mutually exclusive.
+		// Both being set causes the workbench to open the same git repository
+		// twice via two independent workspace paths, producing duplicate SCM
+		// provider registrations and duplicate group rows in the Source Control view.
+		//
+		// In Tauri/Mountain (desktop): DesktopMain.reviveIdentifier() reads
+		//   `workspace` (ISingleFolderWorkspaceIdentifier). Pass workspace only.
+		// In browser (no Tauri): the browser workbench reads `folderUri`.
+		//   Pass folderUri only.
+		folderUri: IsTauri ? undefined : FolderUri,
 
-		workspace: Workspace,
+		workspace: IsTauri ? Workspace : undefined,
 
 		backupPath: undefined,
 
