@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IDebugVisualizerServiceTag = "debugVisualizerService" as const;
-
 export const IDebugVisualizerServiceSourcePath = "vs/workbench/contrib/debug/common/debugVisualizers.ts" as const;
-
 export const IDebugVisualizerServiceSourceLine = 19 as const;
-
 export interface IDebugVisualizerServiceUpstream {
-
 	_serviceBrand: undefined;
 }
-
 export const IDebugVisualizerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 62,
 	}
 ] as const;

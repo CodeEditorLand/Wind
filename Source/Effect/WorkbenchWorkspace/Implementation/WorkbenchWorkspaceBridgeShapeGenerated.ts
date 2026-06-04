@@ -17,7 +17,6 @@ import type { IWorkspaceContextServiceUpstream } from "../../Generated/IWorkspac
 export type WorkbenchWorkspaceBridgeShape = Pick<IWorkspaceContextServiceUpstream, "getWorkspace" | "getWorkspaceFolder" | "onDidChangeWorkspaceFolders">;
 
 export interface WorkbenchWorkspaceGlobals {
-
 	readonly __CEL_SERVICES__?: {
 		readonly Workspace?: WorkbenchWorkspaceBridgeShape | null;
 	};

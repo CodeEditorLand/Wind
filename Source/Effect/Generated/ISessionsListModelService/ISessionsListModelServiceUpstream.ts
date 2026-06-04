@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ISessionsListModelServiceTag = "sessionsListModelService" as const;
-
 export const ISessionsListModelServiceSourcePath = "vs/sessions/contrib/sessions/browser/views/sessionsListModelService.ts" as const;
-
 export const ISessionsListModelServiceSourceLine = 50 as const;
-
 // Decorator doc:
 // /**
 //  * Service that manages UI-only state for sessions: pinned and read.
@@ -28,7 +24,6 @@ export const ISessionsListModelServiceSourceLine = 50 as const;
  */
 
 export interface ISessionsListModelServiceUpstream {
-
 	/**
 	 * Service that manages UI-only state for sessions: pinned and read.
 	 * This state is purely local (persisted in storage) and not synced to providers.
@@ -36,7 +31,6 @@ export interface ISessionsListModelServiceUpstream {
 	 * views, actions) without going through the view.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * Service that manages UI-only state for sessions: pinned and read.
 	 * This state is purely local (persisted in storage) and not synced to providers.
@@ -44,7 +38,6 @@ export interface ISessionsListModelServiceUpstream {
 	 * views, actions) without going through the view.
 	 */
 	unpinSession(session: ISession): void;
-
 	/**
 	 * Service that manages UI-only state for sessions: pinned and read.
 	 * This state is purely local (persisted in storage) and not synced to providers.
@@ -52,7 +45,6 @@ export interface ISessionsListModelServiceUpstream {
 	 * views, actions) without going through the view.
 	 */
 	isSessionPinned(session: ISession): boolean;
-
 	/**
 	 * Service that manages UI-only state for sessions: pinned and read.
 	 * This state is purely local (persisted in storage) and not synced to providers.
@@ -60,7 +52,6 @@ export interface ISessionsListModelServiceUpstream {
 	 * views, actions) without going through the view.
 	 */
 	markUnread(session: ISession): void;
-
 	/**
 	 * Service that manages UI-only state for sessions: pinned and read.
 	 * This state is purely local (persisted in storage) and not synced to providers.
@@ -68,7 +59,6 @@ export interface ISessionsListModelServiceUpstream {
 	 * views, actions) without going through the view.
 	 */
 	isSessionRead(session: ISession): boolean;
-
 	/**
 	 * Service that manages UI-only state for sessions: pinned and read.
 	 * This state is purely local (persisted in storage) and not synced to providers.
@@ -77,119 +67,65 @@ export interface ISessionsListModelServiceUpstream {
 	 */
 	markAllRead(sessions: ISession[]): void;
 }
-
 export const ISessionsListModelServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Service that manages UI-only state for sessions: pinned and read.\nThis state is purely local (persisted in storage) and not synced to providers.\nExtracted from SessionsList so it can be consumed by any component (title bar,\nviews, actions) without going through the view.",
-
 		SourceLine: 31,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "unpinSession",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "session", TypeText: "ISession", Optional: false }],
-
 		DocComment: "Service that manages UI-only state for sessions: pinned and read.\nThis state is purely local (persisted in storage) and not synced to providers.\nExtracted from SessionsList so it can be consumed by any component (title bar,\nviews, actions) without going through the view.",
-
 		SourceLine: 39,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "isSessionPinned",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [{ Name: "session", TypeText: "ISession", Optional: false }],
-
 		DocComment: "Service that manages UI-only state for sessions: pinned and read.\nThis state is purely local (persisted in storage) and not synced to providers.\nExtracted from SessionsList so it can be consumed by any component (title bar,\nviews, actions) without going through the view.",
-
 		SourceLine: 40,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "markUnread",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "session", TypeText: "ISession", Optional: false }],
-
 		DocComment: "Service that manages UI-only state for sessions: pinned and read.\nThis state is purely local (persisted in storage) and not synced to providers.\nExtracted from SessionsList so it can be consumed by any component (title bar,\nviews, actions) without going through the view.",
-
 		SourceLine: 45,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "isSessionRead",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [{ Name: "session", TypeText: "ISession", Optional: false }],
-
 		DocComment: "Service that manages UI-only state for sessions: pinned and read.\nThis state is purely local (persisted in storage) and not synced to providers.\nExtracted from SessionsList so it can be consumed by any component (title bar,\nviews, actions) without going through the view.",
-
 		SourceLine: 46,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "markAllRead",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "sessions", TypeText: "ISession[]", Optional: false }],
-
 		DocComment: "Service that manages UI-only state for sessions: pinned and read.\nThis state is purely local (persisted in storage) and not synced to providers.\nExtracted from SessionsList so it can be consumed by any component (title bar,\nviews, actions) without going through the view.",
-
 		SourceLine: 47,
 	}
 ] as const;

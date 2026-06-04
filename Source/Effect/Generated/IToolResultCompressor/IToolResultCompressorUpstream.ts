@@ -5,15 +5,10 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IToolResultCompressorTag = "IToolResultCompressor" as const;
-
 export const IToolResultCompressorSourcePath = "vs/workbench/contrib/chat/common/tools/toolResultCompressor.ts" as const;
-
 export const IToolResultCompressorSourceLine = 9 as const;
-
 export interface IToolResultCompressorUpstream {
-
 	/**
 	 * Result of running a {@link IToolResultFilter}.
 	 * `text` is the new text to substitute back into the corresponding text part.
@@ -21,7 +16,6 @@ export interface IToolResultCompressorUpstream {
 	 * for telemetry / accounting.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * Result of running a {@link IToolResultFilter}.
 	 * `text` is the new text to substitute back into the corresponding text part.
@@ -29,7 +23,6 @@ export interface IToolResultCompressorUpstream {
 	 * for telemetry / accounting.
 	 */
 	registerFilter(filter: IToolResultFilter): void;
-
 	/**
 	 * Result of running a {@link IToolResultFilter}.
 	 * `text` is the new text to substitute back into the corresponding text part.
@@ -38,62 +31,35 @@ export interface IToolResultCompressorUpstream {
 	 */
 	registerCache(cache: IToolResultCache): void;
 }
-
 export const IToolResultCompressorMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Result of running a {@link IToolResultFilter}.\n`text` is the new text to substitute back into the corresponding text part.\n`compressed` is `true` if any compression actually happened — used purely\nfor telemetry / accounting.",
-
 		SourceLine: 74,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerFilter",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "filter", TypeText: "IToolResultFilter", Optional: false }],
-
 		DocComment: "Result of running a {@link IToolResultFilter}.\n`text` is the new text to substitute back into the corresponding text part.\n`compressed` is `true` if any compression actually happened — used purely\nfor telemetry / accounting.",
-
 		SourceLine: 75,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerCache",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "cache", TypeText: "IToolResultCache", Optional: false }],
-
 		DocComment: "Result of running a {@link IToolResultFilter}.\n`text` is the new text to substitute back into the corresponding text part.\n`compressed` is `true` if any compression actually happened — used purely\nfor telemetry / accounting.",
-
 		SourceLine: 76,
 	}
 ] as const;

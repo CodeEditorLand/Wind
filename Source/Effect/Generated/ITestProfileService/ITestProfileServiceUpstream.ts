@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ITestProfileServiceTag = "testProfileService" as const;
-
 export const ITestProfileServiceSourcePath = "vs/workbench/contrib/testing/common/testProfileService.ts" as const;
-
 export const ITestProfileServiceSourceLine = 19 as const;
-
 export interface ITestProfileServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const ITestProfileServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 22,
 	}
 ] as const;

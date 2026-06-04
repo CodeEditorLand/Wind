@@ -5,15 +5,10 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ISharedProcessServiceTag = "sharedProcessService" as const;
-
 export const ISharedProcessServiceSourcePath = "vs/platform/ipc/electron-browser/services.ts" as const;
-
 export const ISharedProcessServiceSourceLine = 64 as const;
-
 export interface ISharedProcessServiceUpstream {
-
 	/**
 	 * Allows to create a `MessagePort` connection between the
 	 * shared process and the renderer process.
@@ -25,24 +20,15 @@ export interface ISharedProcessServiceUpstream {
 	 */
 	notifyRestored(): void;
 }
-
 export const ISharedProcessServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Method",
-
 		Name: "notifyRestored",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [],
-
 		DocComment: "Allows to create a `MessagePort` connection between the\nshared process and the renderer process.\nUse this only when you need raw IPC to the shared process\nvia `postMessage` and `on('message')` of special data structures\nlike typed arrays.\nCallers have to call `port.start()` after having installed\nlisteners to enable the data flow.",
-
 		SourceLine: 81,
 	}
 ] as const;

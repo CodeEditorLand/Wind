@@ -5,56 +5,32 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IShellEnvironmentServiceTag = "shellEnvironmentService" as const;
-
 export const IShellEnvironmentServiceSourcePath = "vs/workbench/services/environment/electron-browser/shellEnvironmentService.ts" as const;
-
 export const IShellEnvironmentServiceSourceLine = 11 as const;
-
 export interface IShellEnvironmentServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	getShellEnv(): Promise<IProcessEnvironment>;
 }
-
 export const IShellEnvironmentServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 15,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getShellEnv",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IProcessEnvironment>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 17,
 	}
 ] as const;

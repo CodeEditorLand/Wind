@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatModeServiceTag = "chatModeService" as const;
-
 export const IChatModeServiceSourcePath = "vs/workbench/contrib/chat/common/chatModes.ts" as const;
-
 export const IChatModeServiceSourceLine = 33 as const;
-
 export interface IChatModeServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IChatModeServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 35,
 	}
 ] as const;

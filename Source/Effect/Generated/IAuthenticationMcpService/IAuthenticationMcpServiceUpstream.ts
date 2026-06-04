@@ -5,17 +5,11 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAuthenticationMcpServiceTag = "IAuthenticationMcpService" as const;
-
 export const IAuthenticationMcpServiceSourcePath = "vs/workbench/services/authentication/browser/authenticationMcpService.ts" as const;
-
 export const IAuthenticationMcpServiceSourceLine = 37 as const;
-
 export interface IAuthenticationMcpServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * Fires when an account preference for a specific provider has changed for the specified MCP servers. Does not fire when:
 	 * * An account preference is removed
@@ -23,7 +17,6 @@ export interface IAuthenticationMcpServiceUpstream {
 	 * * A session preference is removed (because it's deprecated)
 	 */
 	selectSession(providerId: string, mcpServerId: string, mcpServerName: string, scopes: string[], possibleSessions: readonly AuthenticationSession[]): Promise<AuthenticationSession>;
-
 	/**
 	 * Fires when an account preference for a specific provider has changed for the specified MCP servers. Does not fire when:
 	 * * An account preference is removed
@@ -31,7 +24,6 @@ export interface IAuthenticationMcpServiceUpstream {
 	 * * A session preference is removed (because it's deprecated)
 	 */
 	requestSessionAccess(providerId: string, mcpServerId: string, mcpServerName: string, scopes: string[], possibleSessions: readonly AuthenticationSession[]): void;
-
 	/**
 	 * Fires when an account preference for a specific provider has changed for the specified MCP servers. Does not fire when:
 	 * * An account preference is removed
@@ -40,81 +32,45 @@ export interface IAuthenticationMcpServiceUpstream {
 	 */
 	requestNewSession(providerId: string, scopes: string[], mcpServerId: string, mcpServerName: string): Promise<void>;
 }
-
 export const IAuthenticationMcpServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 39,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "selectSession",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<AuthenticationSession>",
-
 		Parameters: [{ Name: "providerId", TypeText: "string", Optional: false }, { Name: "mcpServerId", TypeText: "string", Optional: false }, { Name: "mcpServerName", TypeText: "string", Optional: false }, { Name: "scopes", TypeText: "string[]", Optional: false }, { Name: "possibleSessions", TypeText: "readonly AuthenticationSession[]", Optional: false }],
-
 		DocComment: "Fires when an account preference for a specific provider has changed for the specified MCP servers. Does not fire when:\n* An account preference is removed\n* A session preference is changed (because it's deprecated)\n* A session preference is removed (because it's deprecated)",
-
 		SourceLine: 89,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "requestSessionAccess",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "providerId", TypeText: "string", Optional: false }, { Name: "mcpServerId", TypeText: "string", Optional: false }, { Name: "mcpServerName", TypeText: "string", Optional: false }, { Name: "scopes", TypeText: "string[]", Optional: false }, { Name: "possibleSessions", TypeText: "readonly AuthenticationSession[]", Optional: false }],
-
 		DocComment: "Fires when an account preference for a specific provider has changed for the specified MCP servers. Does not fire when:\n* An account preference is removed\n* A session preference is changed (because it's deprecated)\n* A session preference is removed (because it's deprecated)",
-
 		SourceLine: 90,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "requestNewSession",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "providerId", TypeText: "string", Optional: false }, { Name: "scopes", TypeText: "string[]", Optional: false }, { Name: "mcpServerId", TypeText: "string", Optional: false }, { Name: "mcpServerName", TypeText: "string", Optional: false }],
-
 		DocComment: "Fires when an account preference for a specific provider has changed for the specified MCP servers. Does not fire when:\n* An account preference is removed\n* A session preference is changed (because it's deprecated)\n* A session preference is removed (because it's deprecated)",
-
 		SourceLine: 91,
 	}
 ] as const;

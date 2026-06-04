@@ -5,182 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ICustomEditorServiceTag = "customEditorService" as const;
-
 export const ICustomEditorServiceSourcePath = "vs/workbench/contrib/customEditor/common/customEditor.ts" as const;
-
 export const ICustomEditorServiceSourceLine = 17 as const;
-
 export interface ICustomEditorServiceUpstream {
-
 	_serviceBrand: any;
-
 	readonly models: ICustomEditorModelManager;
-
 	getCustomEditor(viewType: string): CustomEditorInfo | undefined;
-
 	getAllCustomEditors(resource: URI): CustomEditorInfoCollection;
-
 	getContributedCustomEditors(resource: URI): CustomEditorInfoCollection;
-
 	getUserConfiguredCustomEditors(resource: URI): CustomEditorInfoCollection;
-
 	registerCustomEditorCapabilities(viewType: string, options: CustomEditorCapabilities): IDisposable;
-
 	getCustomEditorCapabilities(viewType: string): CustomEditorCapabilities | undefined;
 }
-
 export const ICustomEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "any",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 34,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "models",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "ICustomEditorModelManager",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 36,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getCustomEditor",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "CustomEditorInfo | undefined",
-
 		Parameters: [{ Name: "viewType", TypeText: "string", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 38,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getAllCustomEditors",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "CustomEditorInfoCollection",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 39,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getContributedCustomEditors",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "CustomEditorInfoCollection",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 40,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getUserConfiguredCustomEditors",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "CustomEditorInfoCollection",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 41,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerCustomEditorCapabilities",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "viewType", TypeText: "string", Optional: false }, { Name: "options", TypeText: "CustomEditorCapabilities", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 43,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getCustomEditorCapabilities",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "CustomEditorCapabilities | undefined",
-
 		Parameters: [{ Name: "viewType", TypeText: "string", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 44,
 	}
 ] as const;

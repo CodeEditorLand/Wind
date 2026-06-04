@@ -5,56 +5,32 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IWorkbenchAssignmentServiceTag = "assignmentService" as const;
-
 export const IWorkbenchAssignmentServiceSourcePath = "vs/workbench/services/assignment/common/assignmentService.ts" as const;
-
 export const IWorkbenchAssignmentServiceSourceLine = 33 as const;
-
 export interface IWorkbenchAssignmentServiceUpstream {
-
 	getCurrentExperiments(): Promise<string[] | undefined>;
-
 	addTelemetryAssignmentFilter(filter: IAssignmentFilter): void;
 }
-
 export const IWorkbenchAssignmentServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Method",
-
 		Name: "getCurrentExperiments",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<string[] | undefined>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 36,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "addTelemetryAssignmentFilter",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "filter", TypeText: "IAssignmentFilter", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 37,
 	}
 ] as const;

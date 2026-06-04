@@ -5,42 +5,28 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IWorkingCopyFileServiceTag = "workingCopyFileService" as const;
-
 export const IWorkingCopyFileServiceSourcePath = "vs/workbench/services/workingCopy/common/workingCopyFileService.ts" as const;
-
 export const IWorkingCopyFileServiceSourceLine = 25 as const;
-
 /**
  * The source resource that is defined for move operations.
  */
 
 export interface IWorkingCopyFileServiceUpstream {
-
 	/**
 	 * The source resource that is defined for move operations.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IWorkingCopyFileServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "The source resource that is defined for move operations.",
-
 		SourceLine: 159,
 	}
 ] as const;

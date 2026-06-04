@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatInputNotificationServiceTag = "chatInputNotificationService" as const;
-
 export const IChatInputNotificationServiceSourcePath = "vs/workbench/contrib/chat/browser/widget/input/chatInputNotificationService.ts" as const;
-
 export const IChatInputNotificationServiceSourceLine = 43 as const;
-
 // Decorator doc:
 // /**
 //  * Optional allow-list of chat session types that should display this
@@ -21,7 +17,6 @@ export const IChatInputNotificationServiceSourceLine = 43 as const;
 //  */
 // 
 export interface IChatInputNotificationServiceUpstream {
-
 	/**
 	 * Optional allow-list of chat session types that should display this
 	 * notification. When undefined, the notification renders in every chat
@@ -29,7 +24,6 @@ export interface IChatInputNotificationServiceUpstream {
 	 * list will render it.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * Optional allow-list of chat session types that should display this
 	 * notification. When undefined, the notification renders in every chat
@@ -38,43 +32,25 @@ export interface IChatInputNotificationServiceUpstream {
 	 */
 	readonly onDidChange: Event<void>;
 }
-
 export const IChatInputNotificationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Optional allow-list of chat session types that should display this\nnotification. When undefined, the notification renders in every chat\ninput. When set, only chat inputs whose current session type is in the\nlist will render it.",
-
 		SourceLine: 46,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChange",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<void>",
-
 		Parameters: [],
-
 		DocComment: "Optional allow-list of chat session types that should display this\nnotification. When undefined, the notification renders in every chat\ninput. When set, only chat inputs whose current session type is in the\nlist will render it.",
-
 		SourceLine: 46,
 	}
 ] as const;

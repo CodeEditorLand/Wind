@@ -5,77 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatLayoutServiceTag = "chatLayoutService" as const;
-
 export const IChatLayoutServiceSourcePath = "vs/workbench/contrib/chat/common/widget/chatLayoutService.ts" as const;
-
 export const IChatLayoutServiceSourceLine = 9 as const;
-
 export interface IChatLayoutServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly fontFamily: IObservable<string | null>;
-
 	readonly fontSize: IObservable<number>;
 }
-
 export const IChatLayoutServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 12,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "fontFamily",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "IObservable<string | null>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 12,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "fontSize",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "IObservable<number>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 12,
 	}
 ] as const;

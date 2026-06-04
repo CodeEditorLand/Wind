@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IDialogServiceTag = "dialogService" as const;
-
 export const IDialogServiceSourcePath = "vs/platform/dialogs/common/dialogs.ts" as const;
-
 export const IDialogServiceSourceLine = 285 as const;
-
 // Decorator doc:
 // /**
 //  * Allows to enforce use of custom dialog even in native environments.
@@ -22,30 +18,20 @@ export const IDialogServiceSourceLine = 285 as const;
  */
 
 export interface IDialogServiceUpstream {
-
 	/**
 	 * Allows to enforce use of custom dialog even in native environments.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IDialogServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Allows to enforce use of custom dialog even in native environments.",
-
 		SourceLine: 466,
 	}
 ] as const;

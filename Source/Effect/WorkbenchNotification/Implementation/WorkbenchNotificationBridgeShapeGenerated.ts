@@ -17,7 +17,6 @@ import type { INotificationServiceUpstream } from "../../Generated/INotification
 export type WorkbenchNotificationBridgeShape = Pick<INotificationServiceUpstream, "notify" | "info" | "warn" | "error">;
 
 export interface WorkbenchNotificationGlobals {
-
 	readonly __CEL_SERVICES__?: {
 		readonly Notification?: WorkbenchNotificationBridgeShape | null;
 	};

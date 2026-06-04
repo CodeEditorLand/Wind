@@ -17,7 +17,6 @@ import type { IExtensionServiceUpstream } from "../../Generated/IExtensionServic
 export type WorkbenchExtensionBridgeShape = Pick<IExtensionServiceUpstream, "extensions" | "activateById" | "activateByEvent" | "onDidChangeExtensions">;
 
 export interface WorkbenchExtensionGlobals {
-
 	readonly __CEL_SERVICES__?: {
 		readonly Extension?: WorkbenchExtensionBridgeShape | null;
 	};

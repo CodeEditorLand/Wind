@@ -5,60 +5,36 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ITextEditorServiceTag = "textEditorService" as const;
-
 export const ITextEditorServiceSourcePath = "vs/workbench/services/textfile/common/textEditorService.ts" as const;
-
 export const ITextEditorServiceSourceLine = 28 as const;
-
 export interface ITextEditorServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * @deprecated this method should not be used, rather consider using
 	 * `IEditorResolverService` instead with `DEFAULT_EDITOR_ASSOCIATION.id`.
 	 */
 	resolveTextEditor(input: IUntypedFileEditorInput): Promise<IFileEditorInput>;
 }
-
 export const ITextEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 32,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "resolveTextEditor",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IFileEditorInput>",
-
 		Parameters: [{ Name: "input", TypeText: "IUntypedFileEditorInput", Optional: false }],
-
 		DocComment: "@deprecated this method should not be used, rather consider using\n`IEditorResolverService` instead with `DEFAULT_EDITOR_ASSOCIATION.id`.",
-
 		SourceLine: 55,
 	}
 ] as const;

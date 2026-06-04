@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IStateReadServiceTag = "stateReadService" as const;
-
 export const IStateReadServiceSourcePath = "vs/platform/state/node/state.ts" as const;
-
 export const IStateReadServiceSourceLine = 8 as const;
-
 export interface IStateReadServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IStateReadServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 11,
 	}
 ] as const;

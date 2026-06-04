@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAccountPolicyGateServiceTag = "accountPolicyGateService" as const;
-
 export const IAccountPolicyGateServiceSourcePath = "vs/workbench/services/policies/common/accountPolicyService.ts" as const;
-
 export const IAccountPolicyGateServiceSourceLine = 53 as const;
-
 // Decorator doc:
 // /**
 //  * Policy name (declared by `chat.approvedAccountOrganizations`) holding the list of
@@ -19,81 +15,51 @@ export const IAccountPolicyGateServiceSourceLine = 53 as const;
 //  */
 // 
 export interface IAccountPolicyGateServiceUpstream {
-
 	/**
 	 * Policy name (declared by `chat.approvedAccountOrganizations`) holding the list of
 	 * GitHub organization logins that satisfy the gate. The token `*` is a wildcard.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * Policy name (declared by `chat.approvedAccountOrganizations`) holding the list of
 	 * GitHub organization logins that satisfy the gate. The token `*` is a wildcard.
 	 */
 	readonly gateInfo: IAccountPolicyGateInfo;
-
 	/**
 	 * Policy name (declared by `chat.approvedAccountOrganizations`) holding the list of
 	 * GitHub organization logins that satisfy the gate. The token `*` is a wildcard.
 	 */
 	readonly onDidChangeGateInfo: Event<IAccountPolicyGateInfo>;
 }
-
 export const IAccountPolicyGateServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Policy name (declared by `chat.approvedAccountOrganizations`) holding the list of\nGitHub organization logins that satisfy the gate. The token `*` is a wildcard.",
-
 		SourceLine: 55,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "gateInfo",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "IAccountPolicyGateInfo",
-
 		Parameters: [],
-
 		DocComment: "Policy name (declared by `chat.approvedAccountOrganizations`) holding the list of\nGitHub organization logins that satisfy the gate. The token `*` is a wildcard.",
-
 		SourceLine: 55,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeGateInfo",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<IAccountPolicyGateInfo>",
-
 		Parameters: [],
-
 		DocComment: "Policy name (declared by `chat.approvedAccountOrganizations`) holding the list of\nGitHub organization logins that satisfy the gate. The token `*` is a wildcard.",
-
 		SourceLine: 55,
 	}
 ] as const;

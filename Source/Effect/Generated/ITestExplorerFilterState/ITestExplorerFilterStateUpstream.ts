@@ -5,40 +5,26 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ITestExplorerFilterStateTag = "testingFilterState" as const;
-
 export const ITestExplorerFilterStateSourcePath = "vs/workbench/contrib/testing/common/testExplorerFilterState.ts" as const;
-
 export const ITestExplorerFilterStateSourceLine = 76 as const;
-
 // Decorator doc:
 // /**
 //  * Current filter text
 //  */
 // 
 export interface ITestExplorerFilterStateUpstream {
-
 	_serviceBrand: undefined;
 }
-
 export const ITestExplorerFilterStateMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 16,
 	}
 ] as const;

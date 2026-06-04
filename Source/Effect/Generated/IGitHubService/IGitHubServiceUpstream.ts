@@ -5,103 +5,59 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IGitHubServiceTag = "sessionsGitHubService" as const;
-
 export const IGitHubServiceSourcePath = "vs/sessions/contrib/github/browser/githubService.ts" as const;
-
 export const IGitHubServiceSourceLine = 64 as const;
-
 // Decorator doc:
 // /**
 //  * Get a reference to a reactive model for a GitHub repository.
 //  */
 // 
 export interface IGitHubServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	activeSessionPullRequestObs: IObservable<GitHubPullRequestModel | undefined>;
-
 	activeSessionPullRequestCIObs: IObservable<GitHubPullRequestCIModel | undefined>;
-
 	activeSessionPullRequestReviewThreadsObs: IObservable<GitHubPullRequestReviewThreadsModel | undefined>;
 }
-
 export const IGitHubServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 21,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "activeSessionPullRequestObs",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IObservable<GitHubPullRequestModel | undefined>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 23,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "activeSessionPullRequestCIObs",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IObservable<GitHubPullRequestCIModel | undefined>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 24,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "activeSessionPullRequestReviewThreadsObs",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IObservable<GitHubPullRequestReviewThreadsModel | undefined>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 25,
 	}
 ] as const;

@@ -5,42 +5,28 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ICustomizationHarnessServiceTag = "customizationHarnessService" as const;
-
 export const ICustomizationHarnessServiceSourcePath = "vs/workbench/contrib/chat/common/customizationHarnessService.ts" as const;
-
 export const ICustomizationHarnessServiceSourceLine = 27 as const;
-
 /**
  * Override for a management section's create-button behavior.
  */
 
 export interface ICustomizationHarnessServiceUpstream {
-
 	/**
 	 * Override for a management section's create-button behavior.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const ICustomizationHarnessServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Override for a management section's create-button behavior.",
-
 		SourceLine: 259,
 	}
 ] as const;

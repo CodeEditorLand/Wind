@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ITerminalConfigurationServiceTag = "terminalConfigurationService" as const;
-
 export const ITerminalConfigurationServiceSourcePath = "vs/workbench/contrib/terminal/browser/terminal.ts" as const;
-
 export const ITerminalConfigurationServiceSourceLine = 40 as const;
-
 /**
  * A terminal contribution that gets created whenever a terminal is created. A contribution has
  * access to the process manager through the constructor and provides a method for when xterm.js has
@@ -19,28 +15,24 @@ export const ITerminalConfigurationServiceSourceLine = 40 as const;
  */
 
 export interface ITerminalConfigurationServiceUpstream {
-
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	setPanelContainer(panelContainer: HTMLElement): void;
-
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	configFontIsMonospace(): boolean;
-
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
@@ -48,81 +40,45 @@ export interface ITerminalConfigurationServiceUpstream {
 	 */
 	getFont(w: Window, xtermCore?: IXtermCore, excludeDimensions?: boolean): ITerminalFont;
 }
-
 export const ITerminalConfigurationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-
 		SourceLine: 615,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "setPanelContainer",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "panelContainer", TypeText: "HTMLElement", Optional: false }],
-
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-
 		SourceLine: 632,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "configFontIsMonospace",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [],
-
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-
 		SourceLine: 633,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getFont",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "ITerminalFont",
-
 		Parameters: [{ Name: "w", TypeText: "Window", Optional: false }, { Name: "xtermCore", TypeText: "IXtermCore", Optional: true }, { Name: "excludeDimensions", TypeText: "boolean", Optional: true }],
-
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-
 		SourceLine: 634,
 	}
 ] as const;

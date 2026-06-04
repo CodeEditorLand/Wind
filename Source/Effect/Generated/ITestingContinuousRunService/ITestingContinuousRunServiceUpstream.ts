@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ITestingContinuousRunServiceTag = "testingContinuousRunService" as const;
-
 export const ITestingContinuousRunServiceSourcePath = "vs/workbench/contrib/testing/common/testingContinuousRunService.ts" as const;
-
 export const ITestingContinuousRunServiceSourceLine = 22 as const;
-
 export interface ITestingContinuousRunServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const ITestingContinuousRunServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 25,
 	}
 ] as const;

@@ -5,140 +5,76 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAiSettingsSearchServiceTag = "IAiSettingsSearchService" as const;
-
 export const IAiSettingsSearchServiceSourcePath = "vs/workbench/services/aiSettingsSearch/common/aiSettingsSearch.ts" as const;
-
 export const IAiSettingsSearchServiceSourceLine = 11 as const;
-
 export interface IAiSettingsSearchServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly onProviderRegistered: Event<void>;
-
 	startSearch(query: string, token: CancellationToken): void;
-
 	getEmbeddingsResults(query: string, token: CancellationToken): Promise<string[] | null>;
-
 	getLLMRankedResults(query: string, token: CancellationToken): Promise<string[] | null>;
-
 	handleSearchResult(results: AiSettingsSearchResult): void;
 }
-
 export const IAiSettingsSearchServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 31,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onProviderRegistered",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<void>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 31,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "startSearch",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "query", TypeText: "string", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 36,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getEmbeddingsResults",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<string[] | null>",
-
 		Parameters: [{ Name: "query", TypeText: "string", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 37,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getLLMRankedResults",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<string[] | null>",
-
 		Parameters: [{ Name: "query", TypeText: "string", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 38,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "handleSearchResult",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "results", TypeText: "AiSettingsSearchResult", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 42,
 	}
 ] as const;

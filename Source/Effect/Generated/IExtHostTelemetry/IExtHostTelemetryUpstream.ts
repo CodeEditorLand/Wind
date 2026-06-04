@@ -5,17 +5,11 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtHostTelemetryTag = "IExtHostTelemetry" as const;
-
 export const IExtHostTelemetrySourcePath = "vs/workbench/api/common/extHostTelemetry.ts" as const;
-
 export const IExtHostTelemetrySourceLine = 342 as const;
-
 export interface IExtHostTelemetryUpstream {
-
 	// (no members extracted in same file - resolve cross-file)
 }
-
 export const IExtHostTelemetryMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;
