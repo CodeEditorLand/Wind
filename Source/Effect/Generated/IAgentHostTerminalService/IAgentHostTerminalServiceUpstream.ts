@@ -5,29 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentHostTerminalServiceTag = "agentHostTerminalService" as const;
+
 export const IAgentHostTerminalServiceSourcePath = "vs/workbench/contrib/terminal/browser/agentHostTerminalService.ts" as const;
+
 export const IAgentHostTerminalServiceSourceLine = 47 as const;
+
 // Decorator doc:
 // /**
 //  * Human-readable terminal name.
 //  */
 // 
 export interface IAgentHostTerminalServiceUpstream {
+
 	/**
 	 * Human-readable terminal name.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IAgentHostTerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Human-readable terminal name.",
+
 		SourceLine: 50,
 	}
 ] as const;

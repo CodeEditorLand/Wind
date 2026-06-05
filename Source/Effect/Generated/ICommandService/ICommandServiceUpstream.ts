@@ -5,43 +5,77 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ICommandServiceTag = "commandService" as const;
+
 export const ICommandServiceSourcePath = "vs/platform/commands/common/commands.ts" as const;
+
 export const ICommandServiceSourceLine = 15 as const;
+
 export interface ICommandServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onWillExecuteCommand: Event<ICommandEvent>;
+
 	readonly onDidExecuteCommand: Event<ICommandEvent>;
 }
+
 export const ICommandServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onWillExecuteCommand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ICommandEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidExecuteCommand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ICommandEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	}
 ] as const;

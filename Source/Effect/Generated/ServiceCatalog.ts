@@ -25,7 +25,7 @@ export interface ServiceCatalogEntry {
 	readonly MemberCount: number;
 }
 
-export const ServiceCatalogVersion = "2026-06-04" as const;
+export const ServiceCatalogVersion = "2026-06-05" as const;
 
 export const ServiceCatalogTotal = 505 as const;
 

@@ -5,43 +5,77 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtHostMeteredConnectionTag = "IExtHostMeteredConnection" as const;
+
 export const IExtHostMeteredConnectionSourcePath = "vs/workbench/api/common/extHostMeteredConnection.ts" as const;
+
 export const IExtHostMeteredConnectionSourceLine = 17 as const;
+
 export interface IExtHostMeteredConnectionUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly isConnectionMetered: boolean;
+
 	readonly onDidChangeIsConnectionMetered: Event<boolean>;
 }
+
 export const IExtHostMeteredConnectionMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 12,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "isConnectionMetered",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 12,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeIsConnectionMetered",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<boolean>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 12,
 	}
 ] as const;

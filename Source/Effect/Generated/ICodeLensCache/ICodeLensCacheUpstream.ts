@@ -5,54 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ICodeLensCacheTag = "ICodeLensCache" as const;
+
 export const ICodeLensCacheSourcePath = "vs/editor/contrib/codelens/browser/codeLensCache.ts" as const;
+
 export const ICodeLensCacheSourceLine = 18 as const;
+
 export interface ICodeLensCacheUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	put(model: ITextModel, data: CodeLensModel): void;
+
 	get(model: ITextModel): CodeLensModel | undefined;
+
 	delete(model: ITextModel): void;
 }
+
 export const ICodeLensCacheMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 21,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "put",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "model", TypeText: "ITextModel", Optional: false }, { Name: "data", TypeText: "CodeLensModel", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 22,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "get",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "CodeLensModel | undefined",
+
 		Parameters: [{ Name: "model", TypeText: "ITextModel", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "delete",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "model", TypeText: "ITextModel", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 24,
 	}
 ] as const;

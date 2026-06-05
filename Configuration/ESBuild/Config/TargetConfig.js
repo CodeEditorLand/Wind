@@ -1,19 +1,32 @@
 var __defProp = Object.defineProperty;
+
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+
 import { deepmerge } from "deepmerge-ts";
+
 import * as Environment from "../Constant/EnvironmentConstant.js";
+
 import BaseConfig from "./BaseConfig.js";
+
 const PostHogDefines = {
+
   "import.meta.env.Authorize": JSON.stringify(process.env["Authorize"] ?? ""),
+
   "import.meta.env.Beam": JSON.stringify(
     process.env["Beam"] ?? "https://eu.i.posthog.com"
   ),
+
   "import.meta.env.Report": JSON.stringify(process.env["Report"] ?? "true"),
+
   "import.meta.env.Replay": JSON.stringify(process.env["Replay"] ?? "false"),
+
   "import.meta.env.Ask": JSON.stringify(process.env["Ask"] ?? "false"),
+
   "import.meta.env.Brand": JSON.stringify(process.env["Brand"] ?? "")
 };
+
 async function targetConfig(Current) {
+
   const merged = deepmerge(BaseConfig, {
     outdir: "Target",
     drop: Environment.On ? [] : ["debugger", "console"],
@@ -32,9 +45,11 @@ async function targetConfig(Current) {
         setup({ onEnd }) {
           onEnd(async ({ metafile }) => {
             const _Output = metafile?.outputs;
+
             for (const Output in _Output) {
               if (Object.prototype.hasOwnProperty.call(
                 _Output,
+
                 Output
               )) {
                 if (Output.endsWith(".js")) {
@@ -49,10 +64,14 @@ async function targetConfig(Current) {
       }
     ]) : []
   });
+
   return merged;
 }
+
 __name(targetConfig, "targetConfig");
+
 export {
   targetConfig as default
 };
+
 //# sourceMappingURL=TargetConfig.js.map

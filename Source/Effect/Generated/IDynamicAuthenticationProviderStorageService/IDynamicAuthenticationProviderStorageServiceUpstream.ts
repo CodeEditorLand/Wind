@@ -5,28 +5,42 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IDynamicAuthenticationProviderStorageServiceTag = "dynamicAuthenticationProviderStorageService" as const;
+
 export const IDynamicAuthenticationProviderStorageServiceSourcePath = "vs/workbench/services/authentication/common/dynamicAuthenticationProviderStorage.ts" as const;
+
 export const IDynamicAuthenticationProviderStorageServiceSourceLine = 10 as const;
+
 /**
  * @deprecated in favor of authorizationServer
  */
 
 export interface IDynamicAuthenticationProviderStorageServiceUpstream {
+
 	/**
 	 * @deprecated in favor of authorizationServer
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IDynamicAuthenticationProviderStorageServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "@deprecated in favor of authorizationServer",
+
 		SourceLine: 33,
 	}
 ] as const;

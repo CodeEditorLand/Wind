@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISandboxHelperMainServiceTag = "sandboxHelper" as const;
+
 export const ISandboxHelperMainServiceSourcePath = "vs/platform/sandbox/electron-main/sandboxHelperService.ts" as const;
+
 export const ISandboxHelperMainServiceSourceLine = 9 as const;
+
 export interface ISandboxHelperMainServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const ISandboxHelperMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 12,
 	}
 ] as const;

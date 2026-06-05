@@ -5,43 +5,77 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtensionUrlHandlerTag = "extensionUrlHandler" as const;
+
 export const IExtensionUrlHandlerSourcePath = "vs/workbench/services/extensions/browser/extensionUrlHandler.ts" as const;
+
 export const IExtensionUrlHandlerSourceLine = 68 as const;
+
 export interface IExtensionUrlHandlerUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	registerExtensionHandler(extensionId: ExtensionIdentifier, handler: IExtensionContributedURLHandler): void;
+
 	unregisterExtensionHandler(extensionId: ExtensionIdentifier): void;
 }
+
 export const IExtensionUrlHandlerMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 75,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerExtensionHandler",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "extensionId", TypeText: "ExtensionIdentifier", Optional: false }, { Name: "handler", TypeText: "IExtensionContributedURLHandler", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 76,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "unregisterExtensionHandler",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "extensionId", TypeText: "ExtensionIdentifier", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 77,
 	}
 ] as const;

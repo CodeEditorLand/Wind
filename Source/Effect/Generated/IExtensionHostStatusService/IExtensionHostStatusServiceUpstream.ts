@@ -5,43 +5,77 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtensionHostStatusServiceTag = "extensionHostStatusService" as const;
+
 export const IExtensionHostStatusServiceSourcePath = "vs/server/node/extensionHostStatusService.ts" as const;
+
 export const IExtensionHostStatusServiceSourceLine = 9 as const;
+
 export interface IExtensionHostStatusServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	setExitInfo(reconnectionToken: string, info: IExtensionHostExitInfo): void;
+
 	getExitInfo(reconnectionToken: string): IExtensionHostExitInfo | null;
 }
+
 export const IExtensionHostStatusServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 12,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setExitInfo",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "reconnectionToken", TypeText: "string", Optional: false }, { Name: "info", TypeText: "IExtensionHostExitInfo", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 14,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getExitInfo",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IExtensionHostExitInfo | null",
+
 		Parameters: [{ Name: "reconnectionToken", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 15,
 	}
 ] as const;

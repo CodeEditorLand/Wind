@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtHostApiDeprecationServiceTag = "IExtHostApiDeprecationService" as const;
+
 export const IExtHostApiDeprecationServiceSourcePath = "vs/workbench/api/common/extHostApiDeprecationService.ts" as const;
+
 export const IExtHostApiDeprecationServiceSourceLine = 18 as const;
+
 export interface IExtHostApiDeprecationServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	report(apiId: string, extension: IExtensionDescription, migrationSuggestion: string, options?: { usageId?: string }): void;
 }
+
 export const IExtHostApiDeprecationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 13,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "report",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "apiId", TypeText: "string", Optional: false }, { Name: "extension", TypeText: "IExtensionDescription", Optional: false }, { Name: "migrationSuggestion", TypeText: "string", Optional: false }, { Name: "options", TypeText: "{ usageId?: string }", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 15,
 	}
 ] as const;

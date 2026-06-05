@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const INotebookOriginalModelReferenceFactoryTag = "INotebookOriginalModelReferenceFactory" as const;
+
 export const INotebookOriginalModelReferenceFactorySourcePath = "vs/workbench/contrib/notebook/browser/diff/inlineDiff/notebookOriginalModelRefFactory.ts" as const;
+
 export const INotebookOriginalModelReferenceFactorySourceLine = 15 as const;
+
 export interface INotebookOriginalModelReferenceFactoryUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	getOrCreate(fileEntry: IModifiedFileEntry, viewType: string): Promise<IReference<NotebookTextModel>>;
 }
+
 export const INotebookOriginalModelReferenceFactoryMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getOrCreate",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IReference<NotebookTextModel>>",
+
 		Parameters: [{ Name: "fileEntry", TypeText: "IModifiedFileEntry", Optional: false }, { Name: "viewType", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 19,
 	}
 ] as const;
