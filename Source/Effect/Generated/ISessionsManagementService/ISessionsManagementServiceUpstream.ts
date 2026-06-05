@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISessionsManagementServiceTag = "sessionsManagementService" as const;
+
 export const ISessionsManagementServiceSourcePath = "vs/sessions/services/sessions/common/sessionsManagement.ts" as const;
+
 export const ISessionsManagementServiceSourceLine = 299 as const;
+
 // Decorator doc:
 // /**
 //  * A (provider, session-type) pair returned by
@@ -24,6 +28,7 @@ export const ISessionsManagementServiceSourceLine = 299 as const;
  */
 
 export interface ISessionsManagementServiceUpstream {
+
 	/**
 	 * A (provider, session-type) pair returned by
 	 * {@link ISessionsManagementService.getSessionTypesForFolder} so the UI can
@@ -31,6 +36,7 @@ export interface ISessionsManagementServiceUpstream {
 	 * same folder.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * A (provider, session-type) pair returned by
 	 * {@link ISessionsManagementService.getSessionTypesForFolder} so the UI can
@@ -39,25 +45,43 @@ export interface ISessionsManagementServiceUpstream {
 	 */
 	setActive(session: IActiveSession | undefined): void;
 }
+
 export const ISessionsManagementServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "A (provider, session-type) pair returned by\n{@link ISessionsManagementService.getSessionTypesForFolder} so the UI can\ngroup session types by provider when more than one provider can serve the\nsame folder.",
+
 		SourceLine: 93,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setActive",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "session", TypeText: "IActiveSession | undefined", Optional: false }],
+
 		DocComment: "A (provider, session-type) pair returned by\n{@link ISessionsManagementService.getSessionTypesForFolder} so the UI can\ngroup session types by provider when more than one provider can serve the\nsame folder.",
+
 		SourceLine: 214,
 	}
 ] as const;

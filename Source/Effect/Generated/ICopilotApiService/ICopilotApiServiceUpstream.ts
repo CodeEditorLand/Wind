@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ICopilotApiServiceTag = "copilotApiService" as const;
+
 export const ICopilotApiServiceSourcePath = "vs/platform/agentHost/node/shared/copilotApiService.ts" as const;
+
 export const ICopilotApiServiceSourceLine = 261 as const;
+
 // Decorator doc:
 // /**
 //  * Per-call transport options for all {@link ICopilotApiService} methods.
@@ -30,6 +34,7 @@ export const ICopilotApiServiceSourceLine = 261 as const;
  */
 
 export interface ICopilotApiServiceUpstream {
+
 	/**
 	 * Per-call transport options for all {@link ICopilotApiService} methods.
 	 * `headers` are merged into the outgoing CAPI request before security-
@@ -41,15 +46,24 @@ export interface ICopilotApiServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ICopilotApiServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Per-call transport options for all {@link ICopilotApiService} methods.\n`headers` are merged into the outgoing CAPI request before security-\nsensitive headers (`Authorization`, `Content-Type`, `X-Request-Id`,\n`OpenAI-Intent`), so callers cannot override those.\n`signal` propagates to the outgoing API request but **not** to the\nshared token mint. The mint is deduped across concurrent callers, so\na single caller's abort must not cancel it for everyone.",
+
 		SourceLine: 341,
 	}
 ] as const;

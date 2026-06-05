@@ -5,24 +5,38 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITestServiceTag = "testService" as const;
+
 export const ITestServiceSourcePath = "vs/workbench/contrib/testing/common/testService.ts" as const;
+
 export const ITestServiceSourceLine = 27 as const;
+
 export interface ITestServiceUpstream {
+
 	/**
 	 * Number of providers working to discover tests.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ITestServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Number of providers working to discover tests.",
+
 		SourceLine: 384,
 	}
 ] as const;

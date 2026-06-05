@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IMenubarServiceTag = "menubarService" as const;
+
 export const IMenubarServiceSourcePath = "vs/platform/menubar/electron-browser/menubar.ts" as const;
+
 export const IMenubarServiceSourceLine = 9 as const;
+
 export interface IMenubarServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const IMenubarServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 12,
 	}
 ] as const;

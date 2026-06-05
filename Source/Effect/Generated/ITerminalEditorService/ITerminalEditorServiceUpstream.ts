@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITerminalEditorServiceTag = "terminalEditorService" as const;
+
 export const ITerminalEditorServiceSourcePath = "vs/workbench/contrib/terminal/browser/terminal.ts" as const;
+
 export const ITerminalEditorServiceSourceLine = 41 as const;
+
 /**
  * A terminal contribution that gets created whenever a terminal is created. A contribution has
  * access to the process manager through the constructor and provides a method for when xterm.js has
@@ -15,48 +19,56 @@ export const ITerminalEditorServiceSourceLine = 41 as const;
  */
 
 export interface ITerminalEditorServiceUpstream {
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	openEditor(instance: ITerminalInstance, editorOptions?: TerminalEditorLocation): Promise<void>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	detachInstance(instance: ITerminalInstance): void;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	splitInstance(instanceToSplit: ITerminalInstance, shellLaunchConfig?: IShellLaunchConfig): Promise<ITerminalInstance>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	revealActiveEditor(preserveFocus?: boolean): Promise<void>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	resolveResource(instance: ITerminalInstance): URI;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	reviveInput(deserializedInput: IDeserializedTerminalEditorInput): EditorInput;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
@@ -64,85 +76,157 @@ export interface ITerminalEditorServiceUpstream {
 	 */
 	getInputFromResource(resource: URI): TerminalEditorInput;
 }
+
 export const ITerminalEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 656,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "openEditor",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "instance", TypeText: "ITerminalInstance", Optional: false }, { Name: "editorOptions", TypeText: "TerminalEditorLocation", Optional: true }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 661,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "detachInstance",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "instance", TypeText: "ITerminalInstance", Optional: false }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 662,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "splitInstance",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ITerminalInstance>",
+
 		Parameters: [{ Name: "instanceToSplit", TypeText: "ITerminalInstance", Optional: false }, { Name: "shellLaunchConfig", TypeText: "IShellLaunchConfig", Optional: true }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 663,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "revealActiveEditor",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "preserveFocus", TypeText: "boolean", Optional: true }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 664,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resolveResource",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "URI",
+
 		Parameters: [{ Name: "instance", TypeText: "ITerminalInstance", Optional: false }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 665,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "reviveInput",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "EditorInput",
+
 		Parameters: [{ Name: "deserializedInput", TypeText: "IDeserializedTerminalEditorInput", Optional: false }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 666,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getInputFromResource",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "TerminalEditorInput",
+
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 667,
 	}
 ] as const;

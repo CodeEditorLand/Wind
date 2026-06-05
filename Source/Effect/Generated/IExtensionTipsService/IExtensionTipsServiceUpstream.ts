@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtensionTipsServiceTag = "IExtensionTipsService" as const;
+
 export const IExtensionTipsServiceSourcePath = "vs/platform/extensionManagement/common/extensionManagement.ts" as const;
+
 export const IExtensionTipsServiceSourceLine = 676 as const;
+
 // Decorator doc:
 // /**
 //  * Service to interact with the Visual Studio Code Marketplace to get extensions.
@@ -15,66 +19,106 @@ export const IExtensionTipsServiceSourceLine = 676 as const;
 //  */
 // 
 export interface IExtensionTipsServiceUpstream {
+
 	/**
 	 * Service to interact with the Visual Studio Code Marketplace to get extensions.
 	 * @throws Error if the Marketplace is not enabled or not reachable.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Service to interact with the Visual Studio Code Marketplace to get extensions.
 	 * @throws Error if the Marketplace is not enabled or not reachable.
 	 */
 	getConfigBasedTips(folder: URI): Promise<IConfigBasedExtensionTip[]>;
+
 	/**
 	 * Service to interact with the Visual Studio Code Marketplace to get extensions.
 	 * @throws Error if the Marketplace is not enabled or not reachable.
 	 */
 	getImportantExecutableBasedTips(): Promise<IExecutableBasedExtensionTip[]>;
+
 	/**
 	 * Service to interact with the Visual Studio Code Marketplace to get extensions.
 	 * @throws Error if the Marketplace is not enabled or not reachable.
 	 */
 	getOtherExecutableBasedTips(): Promise<IExecutableBasedExtensionTip[]>;
 }
+
 export const IExtensionTipsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Service to interact with the Visual Studio Code Marketplace to get extensions.\n@throws Error if the Marketplace is not enabled or not reachable.",
+
 		SourceLine: 678,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getConfigBasedTips",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IConfigBasedExtensionTip[]>",
+
 		Parameters: [{ Name: "folder", TypeText: "URI", Optional: false }],
+
 		DocComment: "Service to interact with the Visual Studio Code Marketplace to get extensions.\n@throws Error if the Marketplace is not enabled or not reachable.",
+
 		SourceLine: 680,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getImportantExecutableBasedTips",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IExecutableBasedExtensionTip[]>",
+
 		Parameters: [],
+
 		DocComment: "Service to interact with the Visual Studio Code Marketplace to get extensions.\n@throws Error if the Marketplace is not enabled or not reachable.",
+
 		SourceLine: 681,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getOtherExecutableBasedTips",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IExecutableBasedExtensionTip[]>",
+
 		Parameters: [],
+
 		DocComment: "Service to interact with the Visual Studio Code Marketplace to get extensions.\n@throws Error if the Marketplace is not enabled or not reachable.",
+
 		SourceLine: 682,
 	}
 ] as const;

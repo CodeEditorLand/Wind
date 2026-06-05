@@ -5,175 +5,329 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IPlanReviewFeedbackServiceTag = "planReviewFeedbackService" as const;
+
 export const IPlanReviewFeedbackServiceSourcePath = "vs/workbench/contrib/chat/browser/planReviewFeedback/planReviewFeedbackService.ts" as const;
+
 export const IPlanReviewFeedbackServiceSourceLine = 20 as const;
+
 export interface IPlanReviewFeedbackServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidChangeFeedback: Event<URI>;
+
 	readonly onDidChangeNavigation: Event<URI>;
+
 	readonly onDidChangeRegistrations: Event<void>;
+
 	registerPlanReview(planUri: URI, onSubmit: (result: IChatPlanReviewResult) => void): IDisposable;
+
 	isActivePlanReview(uri: URI): boolean;
+
 	addFeedback(planUri: URI, line: number, column: number, text: string): string;
+
 	removeFeedback(planUri: URI, feedbackId: string): void;
+
 	updateFeedback(planUri: URI, feedbackId: string, newText: string): void;
+
 	getFeedback(planUri: URI): readonly IPlanReviewFeedbackItem[];
+
 	clearFeedback(planUri: URI): void;
+
 	getNextFeedback(planUri: URI, next: boolean): IPlanReviewFeedbackItem | undefined;
+
 	getNavigationBearing(planUri: URI): { activeIdx: number; totalCount: number };
+
 	setNavigationAnchor(planUri: URI, itemId: string | undefined): void;
+
 	submitAllFeedback(planUri: URI): void;
 }
+
 export const IPlanReviewFeedbackServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeFeedback",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<URI>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeNavigation",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<URI>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeRegistrations",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerPlanReview",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "planUri", TypeText: "URI", Optional: false }, { Name: "onSubmit", TypeText: "(result: IChatPlanReviewResult) => void", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 29,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isActivePlanReview",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 30,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "addFeedback",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "string",
+
 		Parameters: [{ Name: "planUri", TypeText: "URI", Optional: false }, { Name: "line", TypeText: "number", Optional: false }, { Name: "column", TypeText: "number", Optional: false }, { Name: "text", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 31,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeFeedback",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "planUri", TypeText: "URI", Optional: false }, { Name: "feedbackId", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 32,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "updateFeedback",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "planUri", TypeText: "URI", Optional: false }, { Name: "feedbackId", TypeText: "string", Optional: false }, { Name: "newText", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 33,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getFeedback",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "readonly IPlanReviewFeedbackItem[]",
+
 		Parameters: [{ Name: "planUri", TypeText: "URI", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 34,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "clearFeedback",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "planUri", TypeText: "URI", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 35,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getNextFeedback",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IPlanReviewFeedbackItem | undefined",
+
 		Parameters: [{ Name: "planUri", TypeText: "URI", Optional: false }, { Name: "next", TypeText: "boolean", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 36,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getNavigationBearing",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "{ activeIdx: number; totalCount: number }",
+
 		Parameters: [{ Name: "planUri", TypeText: "URI", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 37,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setNavigationAnchor",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "planUri", TypeText: "URI", Optional: false }, { Name: "itemId", TypeText: "string | undefined", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 38,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "submitAllFeedback",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "planUri", TypeText: "URI", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 39,
 	}
 ] as const;

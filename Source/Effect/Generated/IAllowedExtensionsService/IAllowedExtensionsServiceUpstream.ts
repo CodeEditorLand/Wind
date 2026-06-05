@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAllowedExtensionsServiceTag = "IAllowedExtensionsService" as const;
+
 export const IAllowedExtensionsServiceSourcePath = "vs/platform/extensionManagement/common/extensionManagement.ts" as const;
+
 export const IAllowedExtensionsServiceSourceLine = 687 as const;
+
 // Decorator doc:
 // /**
 //  * Service to interact with the Visual Studio Code Marketplace to get extensions.
@@ -15,81 +19,131 @@ export const IAllowedExtensionsServiceSourceLine = 687 as const;
 //  */
 // 
 export interface IAllowedExtensionsServiceUpstream {
+
 	/**
 	 * Service to interact with the Visual Studio Code Marketplace to get extensions.
 	 * @throws Error if the Marketplace is not enabled or not reachable.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Service to interact with the Visual Studio Code Marketplace to get extensions.
 	 * @throws Error if the Marketplace is not enabled or not reachable.
 	 */
 	readonly allowedExtensionsConfigValue: AllowedExtensionsConfigValueType | undefined;
+
 	/**
 	 * Service to interact with the Visual Studio Code Marketplace to get extensions.
 	 * @throws Error if the Marketplace is not enabled or not reachable.
 	 */
 	readonly onDidChangeAllowedExtensionsConfigValue: Event<void>;
+
 	/**
 	 * Service to interact with the Visual Studio Code Marketplace to get extensions.
 	 * @throws Error if the Marketplace is not enabled or not reachable.
 	 */
 	isAllowed(extension: IGalleryExtension | IExtension): true | IMarkdownString;
+
 	/**
 	 * Service to interact with the Visual Studio Code Marketplace to get extensions.
 	 * @throws Error if the Marketplace is not enabled or not reachable.
 	 */
 	isAllowed(extension: { id: string; publisherDisplayName: string | undefined; version?: string; prerelease?: boolean; targetPlatform?: TargetPlatform }): true | IMarkdownString;
 }
+
 export const IAllowedExtensionsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Service to interact with the Visual Studio Code Marketplace to get extensions.\n@throws Error if the Marketplace is not enabled or not reachable.",
+
 		SourceLine: 689,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "allowedExtensionsConfigValue",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "AllowedExtensionsConfigValueType | undefined",
+
 		Parameters: [],
+
 		DocComment: "Service to interact with the Visual Studio Code Marketplace to get extensions.\n@throws Error if the Marketplace is not enabled or not reachable.",
+
 		SourceLine: 689,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeAllowedExtensionsConfigValue",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: "Service to interact with the Visual Studio Code Marketplace to get extensions.\n@throws Error if the Marketplace is not enabled or not reachable.",
+
 		SourceLine: 689,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isAllowed",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "true | IMarkdownString",
+
 		Parameters: [{ Name: "extension", TypeText: "IGalleryExtension | IExtension", Optional: false }],
+
 		DocComment: "Service to interact with the Visual Studio Code Marketplace to get extensions.\n@throws Error if the Marketplace is not enabled or not reachable.",
+
 		SourceLine: 694,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isAllowed",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "true | IMarkdownString",
+
 		Parameters: [{ Name: "extension", TypeText: "{ id: string; publisherDisplayName: string | undefined; version?: string; prerelease?: boolean; targetPlatform?: TargetPlatform }", Optional: false }],
+
 		DocComment: "Service to interact with the Visual Studio Code Marketplace to get extensions.\n@throws Error if the Marketplace is not enabled or not reachable.",
+
 		SourceLine: 694,
 	}
 ] as const;

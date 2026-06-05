@@ -5,24 +5,38 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISessionsPartServiceTag = "sessionsPartService" as const;
+
 export const ISessionsPartServiceSourcePath = "vs/sessions/browser/parts/sessionsPartService.ts" as const;
+
 export const ISessionsPartServiceSourceLine = 19 as const;
+
 export interface ISessionsPartServiceUpstream {
+
 	/**
 	 * Payload for {@link ISessionsPartService.onDidToggleMaximizeSession}.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ISessionsPartServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Payload for {@link ISessionsPartService.onDidToggleMaximizeSession}.",
+
 		SourceLine: 31,
 	}
 ] as const;

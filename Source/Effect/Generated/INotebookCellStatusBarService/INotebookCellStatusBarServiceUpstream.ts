@@ -5,65 +5,119 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const INotebookCellStatusBarServiceTag = "notebookCellStatusBarService" as const;
+
 export const INotebookCellStatusBarServiceSourcePath = "vs/workbench/contrib/notebook/common/notebookCellStatusBarService.ts" as const;
+
 export const INotebookCellStatusBarServiceSourceLine = 13 as const;
+
 export interface INotebookCellStatusBarServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidChangeProviders: Event<void>;
+
 	readonly onDidChangeItems: Event<void>;
+
 	registerCellStatusBarItemProvider(provider: INotebookCellStatusBarItemProvider): IDisposable;
+
 	getStatusBarItemsForCell(docUri: URI, cellIndex: number, viewType: string, token: CancellationToken): Promise<INotebookCellStatusBarItemList[]>;
 }
+
 export const INotebookCellStatusBarServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 16,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeProviders",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 16,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeItems",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 16,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerCellStatusBarItemProvider",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "provider", TypeText: "INotebookCellStatusBarItemProvider", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 21,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getStatusBarItemsForCell",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<INotebookCellStatusBarItemList[]>",
+
 		Parameters: [{ Name: "docUri", TypeText: "URI", Optional: false }, { Name: "cellIndex", TypeText: "number", Optional: false }, { Name: "viewType", TypeText: "string", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	}
 ] as const;

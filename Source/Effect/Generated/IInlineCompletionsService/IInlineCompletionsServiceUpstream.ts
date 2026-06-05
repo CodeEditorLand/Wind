@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IInlineCompletionsServiceTag = "IInlineCompletionsService" as const;
+
 export const IInlineCompletionsServiceSourcePath = "vs/editor/browser/services/inlineCompletionsService.ts" as const;
+
 export const IInlineCompletionsServiceSourceLine = 19 as const;
+
 export interface IInlineCompletionsServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidChangeIsSnoozing: Event<boolean>;
 }
+
 export const IInlineCompletionsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 22,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeIsSnoozing",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<boolean>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 22,
 	}
 ] as const;

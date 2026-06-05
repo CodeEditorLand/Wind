@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IChatPhoneInputPresenterTag = "chatPhoneInputPresenter" as const;
+
 export const IChatPhoneInputPresenterSourcePath = "vs/workbench/contrib/chat/browser/widget/input/chatPhoneInputPresenter.ts" as const;
+
 export const IChatPhoneInputPresenterSourceLine = 51 as const;
+
 // Decorator doc:
 // /**
 //  * Implementation of the phone-only chat-input picker presenter, registered
@@ -24,6 +28,7 @@ export const IChatPhoneInputPresenterSourceLine = 51 as const;
  */
 
 export interface IChatPhoneInputPresenterUpstream {
+
 	/**
 	 * Implementation of the phone-only chat-input picker presenter, registered
 	 * by the agents-window (sessions) layer. Stays in `vs/workbench` as an
@@ -32,15 +37,24 @@ export interface IChatPhoneInputPresenterUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IChatPhoneInputPresenterMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Implementation of the phone-only chat-input picker presenter, registered\nby the agents-window (sessions) layer. Stays in `vs/workbench` as an\ninterface so the workbench chat input can compile and run with no\nsessions dependency; the default singleton is a no-op.",
+
 		SourceLine: 68,
 	}
 ] as const;

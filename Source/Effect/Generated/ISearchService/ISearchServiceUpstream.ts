@@ -5,140 +5,234 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISearchServiceTag = "searchService" as const;
+
 export const ISearchServiceSourcePath = "vs/workbench/services/search/common/search.ts" as const;
+
 export const ISearchServiceSourceLine = 40 as const;
+
 /**
  * A service that enables to search for files or with in files.
  */
 
 export interface ISearchServiceUpstream {
+
 	/**
 	 * A service that enables to search for files or with in files.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * A service that enables to search for files or with in files.
 	 */
 	textSearch(query: ITextQuery, token?: CancellationToken, onProgress?: (result: ISearchProgressItem) => void): Promise<ISearchComplete>;
+
 	/**
 	 * A service that enables to search for files or with in files.
 	 */
 	aiTextSearch(query: IAITextQuery, token?: CancellationToken, onProgress?: (result: ISearchProgressItem) => void): Promise<ISearchComplete>;
+
 	/**
 	 * A service that enables to search for files or with in files.
 	 */
 	getAIName(): Promise<string | undefined>;
+
 	/**
 	 * A service that enables to search for files or with in files.
 	 */
 	textSearchSplitSyncAsync(query: ITextQuery, token?: CancellationToken | undefined, onProgress?: ((result: ISearchProgressItem) => void) | undefined, notebookFilesToIgnore?: ResourceSet, asyncNotebookFilesToIgnore?: Promise<ResourceSet>): { syncResults: ISearchComplete; asyncResults: Promise<ISearchComplete> };
+
 	/**
 	 * A service that enables to search for files or with in files.
 	 */
 	fileSearch(query: IFileQuery, token?: CancellationToken): Promise<ISearchComplete>;
+
 	/**
 	 * A service that enables to search for files or with in files.
 	 */
 	schemeHasFileSearchProvider(scheme: string): boolean;
+
 	/**
 	 * A service that enables to search for files or with in files.
 	 */
 	clearCache(cacheKey: string): Promise<void>;
+
 	/**
 	 * A service that enables to search for files or with in files.
 	 */
 	registerSearchResultProvider(scheme: string, type: SearchProviderType, provider: ISearchResultProvider): IDisposable;
 }
+
 export const ISearchServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "A service that enables to search for files or with in files.",
+
 		SourceLine: 46,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "textSearch",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ISearchComplete>",
+
 		Parameters: [{ Name: "query", TypeText: "ITextQuery", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: true }, { Name: "onProgress", TypeText: "(result: ISearchProgressItem) => void", Optional: true }],
+
 		DocComment: "A service that enables to search for files or with in files.",
+
 		SourceLine: 47,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "aiTextSearch",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ISearchComplete>",
+
 		Parameters: [{ Name: "query", TypeText: "IAITextQuery", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: true }, { Name: "onProgress", TypeText: "(result: ISearchProgressItem) => void", Optional: true }],
+
 		DocComment: "A service that enables to search for files or with in files.",
+
 		SourceLine: 48,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getAIName",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<string | undefined>",
+
 		Parameters: [],
+
 		DocComment: "A service that enables to search for files or with in files.",
+
 		SourceLine: 49,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "textSearchSplitSyncAsync",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "{ syncResults: ISearchComplete; asyncResults: Promise<ISearchComplete> }",
+
 		Parameters: [{ Name: "query", TypeText: "ITextQuery", Optional: false }, { Name: "token", TypeText: "CancellationToken | undefined", Optional: true }, { Name: "onProgress", TypeText: "((result: ISearchProgressItem) => void) | undefined", Optional: true }, { Name: "notebookFilesToIgnore", TypeText: "ResourceSet", Optional: true }, { Name: "asyncNotebookFilesToIgnore", TypeText: "Promise<ResourceSet>", Optional: true }],
+
 		DocComment: "A service that enables to search for files or with in files.",
+
 		SourceLine: 50,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "fileSearch",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ISearchComplete>",
+
 		Parameters: [{ Name: "query", TypeText: "IFileQuery", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: true }],
+
 		DocComment: "A service that enables to search for files or with in files.",
+
 		SourceLine: 51,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "schemeHasFileSearchProvider",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "scheme", TypeText: "string", Optional: false }],
+
 		DocComment: "A service that enables to search for files or with in files.",
+
 		SourceLine: 52,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "clearCache",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "cacheKey", TypeText: "string", Optional: false }],
+
 		DocComment: "A service that enables to search for files or with in files.",
+
 		SourceLine: 53,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerSearchResultProvider",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "scheme", TypeText: "string", Optional: false }, { Name: "type", TypeText: "SearchProviderType", Optional: false }, { Name: "provider", TypeText: "ISearchResultProvider", Optional: false }],
+
 		DocComment: "A service that enables to search for files or with in files.",
+
 		SourceLine: 54,
 	}
 ] as const;

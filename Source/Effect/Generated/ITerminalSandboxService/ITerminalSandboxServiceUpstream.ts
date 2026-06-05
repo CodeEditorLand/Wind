@@ -5,164 +5,278 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITerminalSandboxServiceTag = "terminalSandboxService" as const;
+
 export const ITerminalSandboxServiceSourcePath = "vs/platform/sandbox/common/terminalSandboxService.ts" as const;
+
 export const ITerminalSandboxServiceSourceLine = 13 as const;
+
 export interface ITerminalSandboxServiceUpstream {
+
 	/**
 	 * Whether the current caller is using the default approval permission flow.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Whether the current caller is using the default approval permission flow.
 	 */
 	isEnabled(precheckInputs?: ITerminalSandboxPrecheckInputs): Promise<boolean>;
+
 	/**
 	 * Whether the current caller is using the default approval permission flow.
 	 */
 	isSandboxAllowNetworkEnabled(precheckInputs?: ITerminalSandboxPrecheckInputs): Promise<boolean>;
+
 	/**
 	 * Whether the current caller is using the default approval permission flow.
 	 */
 	getOS(): Promise<OperatingSystem>;
+
 	/**
 	 * Whether the current caller is using the default approval permission flow.
 	 */
 	checkForSandboxingPrereqs(forceRefresh?: boolean, precheckInputs?: ITerminalSandboxPrecheckInputs): Promise<ITerminalSandboxPrerequisiteCheckResult>;
+
 	/**
 	 * Whether the current caller is using the default approval permission flow.
 	 */
 	getSandboxConfigPath(forceRefresh?: boolean, precheckInputs?: ITerminalSandboxPrecheckInputs): Promise<string | undefined>;
+
 	/**
 	 * Whether the current caller is using the default approval permission flow.
 	 */
 	getTempDir(): URI | undefined;
+
 	/**
 	 * Whether the current caller is using the default approval permission flow.
 	 */
 	setNeedsForceUpdateConfigFile(): void;
+
 	/**
 	 * Whether the current caller is using the default approval permission flow.
 	 */
 	getResolvedNetworkDomains(): ITerminalSandboxResolvedNetworkDomains;
+
 	/**
 	 * Whether the current caller is using the default approval permission flow.
 	 */
 	getMissingSandboxDependencies(): Promise<string[]>;
+
 	/**
 	 * Whether the current caller is using the default approval permission flow.
 	 */
 	installMissingSandboxDependencies(missingDependencies: string[], sessionResource: URI | undefined, token: CancellationToken, options: ISandboxDependencyInstallOptions): Promise<ISandboxDependencyInstallResult>;
 }
+
 export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Whether the current caller is using the default approval permission flow.",
+
 		SourceLine: 93,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isEnabled",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<boolean>",
+
 		Parameters: [{ Name: "precheckInputs", TypeText: "ITerminalSandboxPrecheckInputs", Optional: true }],
+
 		DocComment: "Whether the current caller is using the default approval permission flow.",
+
 		SourceLine: 94,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isSandboxAllowNetworkEnabled",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<boolean>",
+
 		Parameters: [{ Name: "precheckInputs", TypeText: "ITerminalSandboxPrecheckInputs", Optional: true }],
+
 		DocComment: "Whether the current caller is using the default approval permission flow.",
+
 		SourceLine: 95,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getOS",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<OperatingSystem>",
+
 		Parameters: [],
+
 		DocComment: "Whether the current caller is using the default approval permission flow.",
+
 		SourceLine: 96,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "checkForSandboxingPrereqs",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ITerminalSandboxPrerequisiteCheckResult>",
+
 		Parameters: [{ Name: "forceRefresh", TypeText: "boolean", Optional: true }, { Name: "precheckInputs", TypeText: "ITerminalSandboxPrecheckInputs", Optional: true }],
+
 		DocComment: "Whether the current caller is using the default approval permission flow.",
+
 		SourceLine: 97,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getSandboxConfigPath",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<string | undefined>",
+
 		Parameters: [{ Name: "forceRefresh", TypeText: "boolean", Optional: true }, { Name: "precheckInputs", TypeText: "ITerminalSandboxPrecheckInputs", Optional: true }],
+
 		DocComment: "Whether the current caller is using the default approval permission flow.",
+
 		SourceLine: 104,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getTempDir",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "URI | undefined",
+
 		Parameters: [],
+
 		DocComment: "Whether the current caller is using the default approval permission flow.",
+
 		SourceLine: 105,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setNeedsForceUpdateConfigFile",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: "Whether the current caller is using the default approval permission flow.",
+
 		SourceLine: 106,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getResolvedNetworkDomains",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ITerminalSandboxResolvedNetworkDomains",
+
 		Parameters: [],
+
 		DocComment: "Whether the current caller is using the default approval permission flow.",
+
 		SourceLine: 107,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getMissingSandboxDependencies",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<string[]>",
+
 		Parameters: [],
+
 		DocComment: "Whether the current caller is using the default approval permission flow.",
+
 		SourceLine: 108,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "installMissingSandboxDependencies",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ISandboxDependencyInstallResult>",
+
 		Parameters: [{ Name: "missingDependencies", TypeText: "string[]", Optional: false }, { Name: "sessionResource", TypeText: "URI | undefined", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }, { Name: "options", TypeText: "ISandboxDependencyInstallOptions", Optional: false }],
+
 		DocComment: "Whether the current caller is using the default approval permission flow.",
+
 		SourceLine: 109,
 	}
 ] as const;

@@ -5,24 +5,38 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ILanguageServiceTag = "languageService" as const;
+
 export const ILanguageServiceSourcePath = "vs/editor/common/languages/language.ts" as const;
+
 export const ILanguageServiceSourceLine = 12 as const;
+
 export interface ILanguageServiceUpstream {
+
 	/**
 	 * @internal
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ILanguageServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "@internal",
+
 		SourceLine: 45,
 	}
 ] as const;

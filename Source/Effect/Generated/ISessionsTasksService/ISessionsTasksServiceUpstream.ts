@@ -5,29 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISessionsTasksServiceTag = "sessionsTasksService" as const;
+
 export const ISessionsTasksServiceSourcePath = "vs/sessions/contrib/chat/browser/sessionsTasksService.ts" as const;
+
 export const ISessionsTasksServiceSourceLine = 167 as const;
+
 // Decorator doc:
 // /**
 //  * Shape of a single task entry inside tasks.json.
 //  */
 // 
 export interface ISessionsTasksServiceUpstream {
+
 	/**
 	 * Shape of a single task entry inside tasks.json.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ISessionsTasksServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Shape of a single task entry inside tasks.json.",
+
 		SourceLine: 66,
 	}
 ] as const;

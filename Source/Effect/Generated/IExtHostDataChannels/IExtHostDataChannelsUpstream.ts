@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtHostDataChannelsTag = "IExtHostDataChannels" as const;
+
 export const IExtHostDataChannelsSourcePath = "vs/workbench/api/common/extHostDataChannels.ts" as const;
+
 export const IExtHostDataChannelsSourceLine = 19 as const;
+
 export interface IExtHostDataChannelsUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const IExtHostDataChannelsMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 15,
 	}
 ] as const;

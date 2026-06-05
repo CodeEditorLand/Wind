@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IEncryptionServiceTag = "encryptionService" as const;
+
 export const IEncryptionServiceSourcePath = "vs/platform/encryption/common/encryptionService.ts" as const;
+
 export const IEncryptionServiceSourceLine = 8 as const;
+
 export interface IEncryptionServiceUpstream {
+
 	setUsePlainTextEncryption(): Promise<void>;
+
 	getKeyStorageProvider(): Promise<KnownStorageProvider>;
 }
+
 export const IEncryptionServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Method",
+
 		Name: "setUsePlainTextEncryption",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 10,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getKeyStorageProvider",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<KnownStorageProvider>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 11,
 	}
 ] as const;

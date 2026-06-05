@@ -5,43 +5,77 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const INotebookOutlineEntryFactoryTag = "INotebookOutlineEntryFactory" as const;
+
 export const INotebookOutlineEntryFactorySourcePath = "vs/workbench/contrib/notebook/browser/viewModel/notebookOutlineEntryFactory.ts" as const;
+
 export const INotebookOutlineEntryFactorySourceLine = 46 as const;
+
 export interface INotebookOutlineEntryFactoryUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	getOutlineEntries(cell: ICellViewModel, index: number): OutlineEntry[];
+
 	cacheSymbols(cell: ICellViewModel, cancelToken: CancellationToken): Promise<void>;
 }
+
 export const INotebookOutlineEntryFactoryMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 49,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getOutlineEntries",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "OutlineEntry[]",
+
 		Parameters: [{ Name: "cell", TypeText: "ICellViewModel", Optional: false }, { Name: "index", TypeText: "number", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 51,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "cacheSymbols",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "cell", TypeText: "ICellViewModel", Optional: false }, { Name: "cancelToken", TypeText: "CancellationToken", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 52,
 	}
 ] as const;

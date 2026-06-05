@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const INotebookOriginalCellModelFactoryTag = "INotebookOriginalCellModelFactory" as const;
+
 export const INotebookOriginalCellModelFactorySourcePath = "vs/workbench/contrib/notebook/browser/diff/inlineDiff/notebookOriginalCellModelFactory.ts" as const;
+
 export const INotebookOriginalCellModelFactorySourceLine = 15 as const;
+
 export interface INotebookOriginalCellModelFactoryUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	getOrCreate(uri: URI, cellValue: string, language: string, cellKind: CellKind): IReference<ITextModel>;
 }
+
 export const INotebookOriginalCellModelFactoryMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getOrCreate",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IReference<ITextModel>",
+
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }, { Name: "cellValue", TypeText: "string", Optional: false }, { Name: "language", TypeText: "string", Optional: false }, { Name: "cellKind", TypeText: "CellKind", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 19,
 	}
 ] as const;

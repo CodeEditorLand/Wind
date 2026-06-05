@@ -5,54 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const INativeKeyboardLayoutServiceTag = "nativeKeyboardLayoutService" as const;
+
 export const INativeKeyboardLayoutServiceSourcePath = "vs/workbench/services/keybinding/electron-browser/nativeKeyboardLayoutService.ts" as const;
+
 export const INativeKeyboardLayoutServiceSourceLine = 15 as const;
+
 export interface INativeKeyboardLayoutServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidChangeKeyboardLayout: Event<void>;
+
 	getRawKeyboardMapping(): IKeyboardMapping | null;
+
 	getCurrentKeyboardLayout(): IKeyboardLayoutInfo | null;
 }
+
 export const INativeKeyboardLayoutServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeKeyboardLayout",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getRawKeyboardMapping",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IKeyboardMapping | null",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 20,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getCurrentKeyboardLayout",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IKeyboardLayoutInfo | null",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 21,
 	}
 ] as const;

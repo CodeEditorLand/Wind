@@ -5,29 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IWebviewServiceTag = "webviewService" as const;
+
 export const IWebviewServiceSourcePath = "vs/workbench/contrib/webview/browser/webview.ts" as const;
+
 export const IWebviewServiceSourceLine = 37 as const;
+
 // Decorator doc:
 // /**
 //  * Set when the find widget in a webview in a webview is visible.
 //  */
 // 
 export interface IWebviewServiceUpstream {
+
 	/**
 	 * Set when the find widget in a webview in a webview is visible.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IWebviewServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Set when the find widget in a webview in a webview is visible.",
+
 		SourceLine: 40,
 	}
 ] as const;

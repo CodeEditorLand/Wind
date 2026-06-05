@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentHostOTelServiceTag = "agentHostOTelService" as const;
+
 export const IAgentHostOTelServiceSourcePath = "vs/platform/agentHost/common/otel/agentHostOTelService.ts" as const;
+
 export const IAgentHostOTelServiceSourceLine = 62 as const;
+
 // Decorator doc:
 // /**
 //  * Structural mirror of `@github/copilot-sdk`'s `TelemetryConfig` (kept in
@@ -22,6 +26,7 @@ export const IAgentHostOTelServiceSourceLine = 62 as const;
  */
 
 export interface IAgentHostOTelServiceUpstream {
+
 	/**
 	 * Structural mirror of `@github/copilot-sdk`'s `TelemetryConfig` (kept in
 	 * sync manually). Mirroring rather than importing keeps this file free of
@@ -29,15 +34,24 @@ export interface IAgentHostOTelServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IAgentHostOTelServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Structural mirror of `@github/copilot-sdk`'s `TelemetryConfig` (kept in\nsync manually). Mirroring rather than importing keeps this file free of\nNode-only dependencies and lets it live in the `common/` layer.",
+
 		SourceLine: 41,
 	}
 ] as const;
