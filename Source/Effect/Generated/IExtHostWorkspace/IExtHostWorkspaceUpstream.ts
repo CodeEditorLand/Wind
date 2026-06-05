@@ -5,22 +5,16 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtHostWorkspaceTag = "IExtHostWorkspace" as const;
-
 export const IExtHostWorkspaceSourcePath = "vs/workbench/api/common/extHostWorkspace.ts" as const;
-
 export const IExtHostWorkspaceSourceLine = 1168 as const;
-
 // Decorator doc:
 // /**
 //  * Value the extension explicitly passed for `useIgnoreFiles.local` (findFiles2); `undefined` if not specified or N/A for legacy `findFiles`.
 //  */
 // 
 export interface IExtHostWorkspaceUpstream {
-
 	// (no members extracted in same file - resolve cross-file)
 }
-
 export const IExtHostWorkspaceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

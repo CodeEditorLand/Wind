@@ -5,77 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IInlineCompletionsUnificationServiceTag = "inlineCompletionsUnificationService" as const;
-
 export const IInlineCompletionsUnificationServiceSourcePath = "vs/workbench/services/inlineCompletions/common/inlineCompletionsUnification.ts" as const;
-
 export const IInlineCompletionsUnificationServiceSourceLine = 20 as const;
-
 export interface IInlineCompletionsUnificationServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly state: IInlineCompletionsUnificationState;
-
 	readonly onDidStateChange: Event<void>;
 }
-
 export const IInlineCompletionsUnificationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 30,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "state",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "IInlineCompletionsUnificationState",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 30,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidStateChange",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<void>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 30,
 	}
 ] as const;

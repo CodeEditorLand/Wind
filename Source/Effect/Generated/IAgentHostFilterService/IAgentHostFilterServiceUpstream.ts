@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAgentHostFilterServiceTag = "agentHostFilterService" as const;
-
 export const IAgentHostFilterServiceSourcePath = "vs/sessions/services/agentHostFilter/common/agentHostFilter.ts" as const;
-
 export const IAgentHostFilterServiceSourceLine = 33 as const;
-
 // Decorator doc:
 // /**
 //  * Connection status of a host surfaced in the host filter.
@@ -22,30 +18,20 @@ export const IAgentHostFilterServiceSourceLine = 33 as const;
  */
 
 export interface IAgentHostFilterServiceUpstream {
-
 	/**
 	 * Connection status of a host surfaced in the host filter.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IAgentHostFilterServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Connection status of a host surfaced in the host filter.",
-
 		SourceLine: 42,
 	}
 ] as const;

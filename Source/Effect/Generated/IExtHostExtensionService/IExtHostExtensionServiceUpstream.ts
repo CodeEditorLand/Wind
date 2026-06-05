@@ -5,331 +5,197 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtHostExtensionServiceTag = "IExtHostExtensionService" as const;
-
 export const IExtHostExtensionServiceSourcePath = "vs/workbench/api/common/extHostExtensionService.ts" as const;
-
 export const IExtHostExtensionServiceSourceLine = 1148 as const;
-
 // Decorator doc:
 // /**
 //  * Old test runner API, as exported from `vscode/lib/testrunner`
 //  */
 // 
 export interface IExtHostExtensionServiceUpstream {
-
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	readonly onDidChangeRemoteConnectionData: Event<void>;
-
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	initialize(): Promise<void>;
-
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	terminate(reason: string): void;
-
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	getExtension(extensionId: string): Promise<IExtensionDescription | undefined>;
-
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	isActivated(extensionId: ExtensionIdentifier): boolean;
-
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	activateByIdWithErrors(extensionId: ExtensionIdentifier, reason: ExtensionActivationReason): Promise<void>;
-
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	getExtensionExports(extensionId: ExtensionIdentifier): IExtensionAPI | null | undefined;
-
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	getExtensionRegistry(): Promise<ExtensionDescriptionRegistry>;
-
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	getExtensionPathIndex(): Promise<ExtensionPaths>;
-
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	registerRemoteAuthorityResolver(authorityPrefix: string, resolver: vscode.RemoteAuthorityResolver): vscode.Disposable;
-
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	getRemoteExecServer(authority: string): Promise<vscode.ExecServer | undefined>;
-
 	/**
 	 * Old test runner API, as exported from `vscode/lib/testrunner`
 	 */
 	getRemoteConnectionData(): IRemoteConnectionData | null;
 }
-
 export const IExtHostExtensionServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
-
 		SourceLine: 1151,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeRemoteConnectionData",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<void>",
-
 		Parameters: [],
-
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
-
 		SourceLine: 1151,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "initialize",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [],
-
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
-
 		SourceLine: 1152,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "terminate",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "reason", TypeText: "string", Optional: false }],
-
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
-
 		SourceLine: 1153,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getExtension",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IExtensionDescription | undefined>",
-
 		Parameters: [{ Name: "extensionId", TypeText: "string", Optional: false }],
-
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
-
 		SourceLine: 1154,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "isActivated",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [{ Name: "extensionId", TypeText: "ExtensionIdentifier", Optional: false }],
-
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
-
 		SourceLine: 1155,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "activateByIdWithErrors",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "extensionId", TypeText: "ExtensionIdentifier", Optional: false }, { Name: "reason", TypeText: "ExtensionActivationReason", Optional: false }],
-
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
-
 		SourceLine: 1156,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getExtensionExports",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IExtensionAPI | null | undefined",
-
 		Parameters: [{ Name: "extensionId", TypeText: "ExtensionIdentifier", Optional: false }],
-
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
-
 		SourceLine: 1157,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getExtensionRegistry",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<ExtensionDescriptionRegistry>",
-
 		Parameters: [],
-
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
-
 		SourceLine: 1158,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getExtensionPathIndex",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<ExtensionPaths>",
-
 		Parameters: [],
-
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
-
 		SourceLine: 1159,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerRemoteAuthorityResolver",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "vscode.Disposable",
-
 		Parameters: [{ Name: "authorityPrefix", TypeText: "string", Optional: false }, { Name: "resolver", TypeText: "vscode.RemoteAuthorityResolver", Optional: false }],
-
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
-
 		SourceLine: 1160,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getRemoteExecServer",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<vscode.ExecServer | undefined>",
-
 		Parameters: [{ Name: "authority", TypeText: "string", Optional: false }],
-
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
-
 		SourceLine: 1161,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getRemoteConnectionData",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IRemoteConnectionData | null",
-
 		Parameters: [],
-
 		DocComment: "Old test runner API, as exported from `vscode/lib/testrunner`",
-
 		SourceLine: 1164,
 	}
 ] as const;

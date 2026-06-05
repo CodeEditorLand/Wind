@@ -5,98 +5,54 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ICodeMapperServiceTag = "codeMapperService" as const;
-
 export const ICodeMapperServiceSourcePath = "vs/workbench/contrib/chat/common/editing/chatCodeMapperService.ts" as const;
-
 export const ICodeMapperServiceSourceLine = 41 as const;
-
 export interface ICodeMapperServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly providers: ICodeMapperProvider[];
-
 	registerCodeMapperProvider(handle: number, provider: ICodeMapperProvider): IDisposable;
-
 	mapCode(request: ICodeMapperRequest, response: ICodeMapperResponse, token: CancellationToken): Promise<ICodeMapperResult | undefined>;
 }
-
 export const ICodeMapperServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 44,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "providers",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "ICodeMapperProvider[]",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 44,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerCodeMapperProvider",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "handle", TypeText: "number", Optional: false }, { Name: "provider", TypeText: "ICodeMapperProvider", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 46,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "mapCode",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<ICodeMapperResult | undefined>",
-
 		Parameters: [{ Name: "request", TypeText: "ICodeMapperRequest", Optional: false }, { Name: "response", TypeText: "ICodeMapperResponse", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 47,
 	}
 ] as const;

@@ -5,17 +5,11 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtHostSecretStateTag = "IExtHostSecretState" as const;
-
 export const IExtHostSecretStateSourcePath = "vs/workbench/api/common/extHostSecretState.ts" as const;
-
 export const IExtHostSecretStateSourceLine = 42 as const;
-
 export interface IExtHostSecretStateUpstream {
-
 	// (no members extracted in same file - resolve cross-file)
 }
-
 export const IExtHostSecretStateMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

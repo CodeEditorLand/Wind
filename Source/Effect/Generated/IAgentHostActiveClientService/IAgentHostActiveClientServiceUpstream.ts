@@ -5,86 +5,52 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAgentHostActiveClientServiceTag = "agentHostActiveClientService" as const;
-
 export const IAgentHostActiveClientServiceSourcePath = "vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostActiveClientService.ts" as const;
-
 export const IAgentHostActiveClientServiceSourceLine = 28 as const;
-
 export interface IAgentHostActiveClientServiceUpstream {
-
 	/**
 	 * The exposed `syncProvider` is the same instance the service uses to resolve customizations; the contribution wires it into its harness so opt-out toggles propagate.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * The exposed `syncProvider` is the same instance the service uses to resolve customizations; the contribution wires it into its harness so opt-out toggles propagate.
 	 */
 	readonly clientTools: IObservable<readonly ToolDefinition[]>;
-
 	/**
 	 * The exposed `syncProvider` is the same instance the service uses to resolve customizations; the contribution wires it into its harness so opt-out toggles propagate.
 	 */
 	getCustomizations(sessionType: string): IObservable<readonly ClientPluginCustomization[]>;
 }
-
 export const IAgentHostActiveClientServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "The exposed `syncProvider` is the same instance the service uses to resolve customizations; the contribution wires it into its harness so opt-out toggles propagate.",
-
 		SourceLine: 36,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "clientTools",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "IObservable<readonly ToolDefinition[]>",
-
 		Parameters: [],
-
 		DocComment: "The exposed `syncProvider` is the same instance the service uses to resolve customizations; the contribution wires it into its harness so opt-out toggles propagate.",
-
 		SourceLine: 36,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getCustomizations",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IObservable<readonly ClientPluginCustomization[]>",
-
 		Parameters: [{ Name: "sessionType", TypeText: "string", Optional: false }],
-
 		DocComment: "The exposed `syncProvider` is the same instance the service uses to resolve customizations; the contribution wires it into its harness so opt-out toggles propagate.",
-
 		SourceLine: 52,
 	}
 ] as const;

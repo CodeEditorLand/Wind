@@ -5,15 +5,10 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const INotebookEditorModelResolverServiceTag = "INotebookModelResolverService" as const;
-
 export const INotebookEditorModelResolverServiceSourcePath = "vs/workbench/contrib/notebook/common/notebookEditorModelResolverService.ts" as const;
-
 export const INotebookEditorModelResolverServiceSourceLine = 13 as const;
-
 export interface INotebookEditorModelResolverServiceUpstream {
-
 	/**
 	 * A notebook file can only be opened ONCE per notebook type.
 	 * This event fires when a file is already open as type A
@@ -21,7 +16,6 @@ export interface INotebookEditorModelResolverServiceUpstream {
 	 * do cleanup (close editor, release references) or the request fails
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * A notebook file can only be opened ONCE per notebook type.
 	 * This event fires when a file is already open as type A
@@ -29,7 +23,6 @@ export interface INotebookEditorModelResolverServiceUpstream {
 	 * do cleanup (close editor, release references) or the request fails
 	 */
 	readonly onDidSaveNotebook: Event<URI>;
-
 	/**
 	 * A notebook file can only be opened ONCE per notebook type.
 	 * This event fires when a file is already open as type A
@@ -37,7 +30,6 @@ export interface INotebookEditorModelResolverServiceUpstream {
 	 * do cleanup (close editor, release references) or the request fails
 	 */
 	readonly onDidChangeDirty: Event<IResolvedNotebookEditorModel>;
-
 	/**
 	 * A notebook file can only be opened ONCE per notebook type.
 	 * This event fires when a file is already open as type A
@@ -45,7 +37,6 @@ export interface INotebookEditorModelResolverServiceUpstream {
 	 * do cleanup (close editor, release references) or the request fails
 	 */
 	readonly onWillFailWithConflict: Event<INotebookConflictEvent>;
-
 	/**
 	 * A notebook file can only be opened ONCE per notebook type.
 	 * This event fires when a file is already open as type A
@@ -53,7 +44,6 @@ export interface INotebookEditorModelResolverServiceUpstream {
 	 * do cleanup (close editor, release references) or the request fails
 	 */
 	isDirty(resource: URI): boolean;
-
 	/**
 	 * A notebook file can only be opened ONCE per notebook type.
 	 * This event fires when a file is already open as type A
@@ -61,7 +51,6 @@ export interface INotebookEditorModelResolverServiceUpstream {
 	 * do cleanup (close editor, release references) or the request fails
 	 */
 	createUntitledNotebookTextModel(viewType: string): Promise<NotebookTextModel>;
-
 	/**
 	 * A notebook file can only be opened ONCE per notebook type.
 	 * This event fires when a file is already open as type A
@@ -69,7 +58,6 @@ export interface INotebookEditorModelResolverServiceUpstream {
 	 * do cleanup (close editor, release references) or the request fails
 	 */
 	resolve(resource: URI, viewType?: string, creationOptions?: NotebookEditorModelCreationOptions): Promise<IReference<IResolvedNotebookEditorModel>>;
-
 	/**
 	 * A notebook file can only be opened ONCE per notebook type.
 	 * This event fires when a file is already open as type A
@@ -78,157 +66,85 @@ export interface INotebookEditorModelResolverServiceUpstream {
 	 */
 	resolve(resource: IUntitledNotebookResource, viewType: string, creationOtions?: NotebookEditorModelCreationOptions): Promise<IReference<IResolvedNotebookEditorModel>>;
 }
-
 export const INotebookEditorModelResolverServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "A notebook file can only be opened ONCE per notebook type.\nThis event fires when a file is already open as type A\nand there is request to open it as type B. Listeners must\ndo cleanup (close editor, release references) or the request fails",
-
 		SourceLine: 44,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidSaveNotebook",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<URI>",
-
 		Parameters: [],
-
 		DocComment: "A notebook file can only be opened ONCE per notebook type.\nThis event fires when a file is already open as type A\nand there is request to open it as type B. Listeners must\ndo cleanup (close editor, release references) or the request fails",
-
 		SourceLine: 44,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeDirty",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<IResolvedNotebookEditorModel>",
-
 		Parameters: [],
-
 		DocComment: "A notebook file can only be opened ONCE per notebook type.\nThis event fires when a file is already open as type A\nand there is request to open it as type B. Listeners must\ndo cleanup (close editor, release references) or the request fails",
-
 		SourceLine: 44,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onWillFailWithConflict",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<INotebookConflictEvent>",
-
 		Parameters: [],
-
 		DocComment: "A notebook file can only be opened ONCE per notebook type.\nThis event fires when a file is already open as type A\nand there is request to open it as type B. Listeners must\ndo cleanup (close editor, release references) or the request fails",
-
 		SourceLine: 44,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "isDirty",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
-
 		DocComment: "A notebook file can only be opened ONCE per notebook type.\nThis event fires when a file is already open as type A\nand there is request to open it as type B. Listeners must\ndo cleanup (close editor, release references) or the request fails",
-
 		SourceLine: 51,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "createUntitledNotebookTextModel",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<NotebookTextModel>",
-
 		Parameters: [{ Name: "viewType", TypeText: "string", Optional: false }],
-
 		DocComment: "A notebook file can only be opened ONCE per notebook type.\nThis event fires when a file is already open as type A\nand there is request to open it as type B. Listeners must\ndo cleanup (close editor, release references) or the request fails",
-
 		SourceLine: 53,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "resolve",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IReference<IResolvedNotebookEditorModel>>",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }, { Name: "viewType", TypeText: "string", Optional: true }, { Name: "creationOptions", TypeText: "NotebookEditorModelCreationOptions", Optional: true }],
-
 		DocComment: "A notebook file can only be opened ONCE per notebook type.\nThis event fires when a file is already open as type A\nand there is request to open it as type B. Listeners must\ndo cleanup (close editor, release references) or the request fails",
-
 		SourceLine: 55,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "resolve",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IReference<IResolvedNotebookEditorModel>>",
-
 		Parameters: [{ Name: "resource", TypeText: "IUntitledNotebookResource", Optional: false }, { Name: "viewType", TypeText: "string", Optional: false }, { Name: "creationOtions", TypeText: "NotebookEditorModelCreationOptions", Optional: true }],
-
 		DocComment: "A notebook file can only be opened ONCE per notebook type.\nThis event fires when a file is already open as type A\nand there is request to open it as type B. Listeners must\ndo cleanup (close editor, release references) or the request fails",
-
 		SourceLine: 55,
 	}
 ] as const;

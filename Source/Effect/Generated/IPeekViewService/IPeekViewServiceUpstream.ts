@@ -5,56 +5,32 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IPeekViewServiceTag = "IPeekViewService" as const;
-
 export const IPeekViewServiceSourcePath = "vs/editor/contrib/peekView/browser/peekView.ts" as const;
-
 export const IPeekViewServiceSourceLine = 31 as const;
-
 export interface IPeekViewServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	addExclusiveWidget(editor: ICodeEditor, widget: PeekViewWidget): void;
 }
-
 export const IPeekViewServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 33,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "addExclusiveWidget",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "editor", TypeText: "ICodeEditor", Optional: false }, { Name: "widget", TypeText: "PeekViewWidget", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 34,
 	}
 ] as const;

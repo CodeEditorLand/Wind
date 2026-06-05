@@ -5,42 +5,28 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IBrowserZoomServiceTag = "browserZoomService" as const;
-
 export const IBrowserZoomServiceSourcePath = "vs/workbench/contrib/browserView/common/browserZoomService.ts" as const;
-
 export const IBrowserZoomServiceSourceLine = 14 as const;
-
 /**
  * Storage key for the per-host persistent zoom map.
  */
 
 export interface IBrowserZoomServiceUpstream {
-
 	/**
 	 * Storage key for the per-host persistent zoom map.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IBrowserZoomServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Storage key for the per-host persistent zoom map.",
-
 		SourceLine: 55,
 	}
 ] as const;

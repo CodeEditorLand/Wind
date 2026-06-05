@@ -5,17 +5,11 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtHostAuthenticationTag = "IExtHostAuthentication" as const;
-
 export const IExtHostAuthenticationSourcePath = "vs/workbench/api/common/extHostAuthentication.ts" as const;
-
 export const IExtHostAuthenticationSourceLine = 33 as const;
-
 export interface IExtHostAuthenticationUpstream {
-
 	// (no members extracted in same file - resolve cross-file)
 }
-
 export const IExtHostAuthenticationMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

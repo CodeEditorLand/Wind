@@ -5,44 +5,30 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAICustomizationWorkspaceServiceTag = "aiCustomizationWorkspaceService" as const;
-
 export const IAICustomizationWorkspaceServiceSourcePath = "vs/workbench/contrib/chat/common/aiCustomizationWorkspaceService.ts" as const;
-
 export const IAICustomizationWorkspaceServiceSourceLine = 14 as const;
-
 /**
  * Extended storage type for AI Customization that includes built-in prompts
  * shipped with the application, alongside the core `PromptsStorage` values.
  */
 
 export interface IAICustomizationWorkspaceServiceUpstream {
-
 	/**
 	 * Extended storage type for AI Customization that includes built-in prompts
 	 * shipped with the application, alongside the core `PromptsStorage` values.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IAICustomizationWorkspaceServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Extended storage type for AI Customization that includes built-in prompts\nshipped with the application, alongside the core `PromptsStorage` values.",
-
 		SourceLine: 118,
 	}
 ] as const;

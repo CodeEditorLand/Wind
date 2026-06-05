@@ -5,341 +5,197 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IEditorWorkerServiceTag = "editorWorkerService" as const;
-
 export const IEditorWorkerServiceSourcePath = "vs/editor/common/services/editorWorker.ts" as const;
-
 export const IEditorWorkerServiceSourceLine = 17 as const;
-
 export interface IEditorWorkerServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	canComputeUnicodeHighlights(uri: URI): boolean;
-
 	computedUnicodeHighlights(uri: URI, options: UnicodeHighlighterOptions, range?: IRange): Promise<IUnicodeHighlightsResult>;
-
 	/**
 	 * Implementation in {@link EditorWorker.computeDiff}
 	 */
 	canComputeDirtyDiff(original: URI, modified: URI): boolean;
-
 	/**
 	 * Implementation in {@link EditorWorker.computeDiff}
 	 */
 	computeDirtyDiff(original: URI, modified: URI, ignoreTrimWhitespace: boolean): Promise<IChange[] | null>;
-
 	/**
 	 * Implementation in {@link EditorWorker.computeDiff}
 	 */
 	computeMoreMinimalEdits(resource: URI, edits: TextEdit[] | null | undefined, pretty?: boolean): Promise<TextEdit[] | undefined>;
-
 	/**
 	 * Implementation in {@link EditorWorker.computeDiff}
 	 */
 	computeHumanReadableDiff(resource: URI, edits: TextEdit[] | null | undefined): Promise<TextEdit[] | undefined>;
-
 	/**
 	 * Implementation in {@link EditorWorker.computeDiff}
 	 */
 	computeStringEditFromDiff(original: string, modified: string, options: { maxComputationTimeMs: number }, algorithm: DiffAlgorithmName): Promise<StringEdit>;
-
 	/**
 	 * Implementation in {@link EditorWorker.computeDiff}
 	 */
 	canComputeWordRanges(resource: URI): boolean;
-
 	/**
 	 * Implementation in {@link EditorWorker.computeDiff}
 	 */
 	computeWordRanges(resource: URI, range: IRange): Promise<{ [word: string]: IRange[] } | null>;
-
 	/**
 	 * Implementation in {@link EditorWorker.computeDiff}
 	 */
 	canNavigateValueSet(resource: URI): boolean;
-
 	/**
 	 * Implementation in {@link EditorWorker.computeDiff}
 	 */
 	navigateValueSet(resource: URI, range: IRange, up: boolean): Promise<IInplaceReplaceSupportResult | null>;
-
 	/**
 	 * Implementation in {@link EditorWorker.computeDiff}
 	 */
 	findSectionHeaders(uri: URI, options: FindSectionHeaderOptions): Promise<SectionHeader[]>;
-
 	/**
 	 * Implementation in {@link EditorWorker.computeDiff}
 	 */
 	computeDefaultDocumentColors(uri: URI): Promise<IColorInformation[] | null>;
 }
-
 export const IEditorWorkerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 22,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "canComputeUnicodeHighlights",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 24,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "computedUnicodeHighlights",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IUnicodeHighlightsResult>",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }, { Name: "options", TypeText: "UnicodeHighlighterOptions", Optional: false }, { Name: "range", TypeText: "IRange", Optional: true }],
-
 		DocComment: null,
-
 		SourceLine: 25,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "canComputeDirtyDiff",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [{ Name: "original", TypeText: "URI", Optional: false }, { Name: "modified", TypeText: "URI", Optional: false }],
-
 		DocComment: "Implementation in {@link EditorWorker.computeDiff}",
-
 		SourceLine: 30,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "computeDirtyDiff",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IChange[] | null>",
-
 		Parameters: [{ Name: "original", TypeText: "URI", Optional: false }, { Name: "modified", TypeText: "URI", Optional: false }, { Name: "ignoreTrimWhitespace", TypeText: "boolean", Optional: false }],
-
 		DocComment: "Implementation in {@link EditorWorker.computeDiff}",
-
 		SourceLine: 31,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "computeMoreMinimalEdits",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<TextEdit[] | undefined>",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }, { Name: "edits", TypeText: "TextEdit[] | null | undefined", Optional: false }, { Name: "pretty", TypeText: "boolean", Optional: true }],
-
 		DocComment: "Implementation in {@link EditorWorker.computeDiff}",
-
 		SourceLine: 33,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "computeHumanReadableDiff",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<TextEdit[] | undefined>",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }, { Name: "edits", TypeText: "TextEdit[] | null | undefined", Optional: false }],
-
 		DocComment: "Implementation in {@link EditorWorker.computeDiff}",
-
 		SourceLine: 34,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "computeStringEditFromDiff",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<StringEdit>",
-
 		Parameters: [{ Name: "original", TypeText: "string", Optional: false }, { Name: "modified", TypeText: "string", Optional: false }, { Name: "options", TypeText: "{ maxComputationTimeMs: number }", Optional: false }, { Name: "algorithm", TypeText: "DiffAlgorithmName", Optional: false }],
-
 		DocComment: "Implementation in {@link EditorWorker.computeDiff}",
-
 		SourceLine: 36,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "canComputeWordRanges",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
-
 		DocComment: "Implementation in {@link EditorWorker.computeDiff}",
-
 		SourceLine: 38,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "computeWordRanges",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<{ [word: string]: IRange[] } | null>",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }, { Name: "range", TypeText: "IRange", Optional: false }],
-
 		DocComment: "Implementation in {@link EditorWorker.computeDiff}",
-
 		SourceLine: 39,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "canNavigateValueSet",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
-
 		DocComment: "Implementation in {@link EditorWorker.computeDiff}",
-
 		SourceLine: 41,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "navigateValueSet",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IInplaceReplaceSupportResult | null>",
-
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }, { Name: "range", TypeText: "IRange", Optional: false }, { Name: "up", TypeText: "boolean", Optional: false }],
-
 		DocComment: "Implementation in {@link EditorWorker.computeDiff}",
-
 		SourceLine: 42,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "findSectionHeaders",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<SectionHeader[]>",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }, { Name: "options", TypeText: "FindSectionHeaderOptions", Optional: false }],
-
 		DocComment: "Implementation in {@link EditorWorker.computeDiff}",
-
 		SourceLine: 44,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "computeDefaultDocumentColors",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IColorInformation[] | null>",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
-
 		DocComment: "Implementation in {@link EditorWorker.computeDiff}",
-
 		SourceLine: 46,
 	}
 ] as const;

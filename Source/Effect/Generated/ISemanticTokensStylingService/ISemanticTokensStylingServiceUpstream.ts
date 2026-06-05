@@ -5,56 +5,32 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ISemanticTokensStylingServiceTag = "semanticTokensStylingService" as const;
-
 export const ISemanticTokensStylingServiceSourcePath = "vs/editor/common/services/semanticTokensStyling.ts" as const;
-
 export const ISemanticTokensStylingServiceSourceLine = 10 as const;
-
 export interface ISemanticTokensStylingServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	getStyling(provider: DocumentTokensProvider): SemanticTokensProviderStyling;
 }
-
 export const ISemanticTokensStylingServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 15,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getStyling",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "SemanticTokensProviderStyling",
-
 		Parameters: [{ Name: "provider", TypeText: "DocumentTokensProvider", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 17,
 	}
 ] as const;

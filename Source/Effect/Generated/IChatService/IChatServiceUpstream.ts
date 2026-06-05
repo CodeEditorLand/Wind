@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatServiceTag = "IChatService" as const;
-
 export const IChatServiceSourcePath = "vs/workbench/contrib/chat/common/chatService/chatService.ts" as const;
-
 export const IChatServiceSourceLine = 1586 as const;
-
 // Decorator doc:
 // /**
 //  * If true, the error is an expected operational condition (e.g. user-actionable
@@ -20,231 +16,198 @@ export const IChatServiceSourceLine = 1586 as const;
 //  */
 // 
 export interface IChatServiceUpstream {
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	_serviceBrand: undefined;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	transferredSessionResource: URI | undefined;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	readonly onDidSubmitRequest: Event<{ readonly chatSessionResource: URI; readonly message?: IParsedChatRequest }>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	readonly onDidCreateModel: Event<IChatModel>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	readonly editingSessions: readonly IChatEditingSession[];
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	readonly onDidPerformUserAction: Event<IChatUserActionEvent>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	readonly onDidReceiveQuestionCarouselAnswer: Event<{ requestId: string; resolveId: string; answers: IChatQuestionAnswers | undefined }>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	readonly onDidDisposeSession: Event<{ readonly sessionResources: readonly URI[]; readonly reason: 'cleared' }>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	readonly requestInProgressObs: IObservable<boolean>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	isEnabled(location: ChatAgentLocation): boolean;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	hasSessions(): boolean;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	getChatModelReferenceDebugInfo(): IChatModelReferenceDebugSnapshot;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	getSessionTitle(sessionResource: URI): string | undefined;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	setSessionTitle(sessionResource: URI, title: string): void;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	appendProgress(request: IChatRequestModel, progress: IChatProgress): void;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	resendRequest(request: IChatRequestModel, options?: IChatSendRequestOptions): Promise<void>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	adoptRequest(sessionResource: URI, request: IChatRequestModel): Promise<void>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	removeRequest(sessionResource: URI, requestId: string): Promise<void>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	cancelCurrentRequestForSession(sessionResource: URI, source?: string): Promise<void>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	addCompleteRequest(sessionResource: URI, message: IParsedChatRequest | string, variableData: IChatRequestVariableData | undefined, attempt: number | undefined, response: IChatCompleteResponse): void;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	setChatSessionTitle(sessionResource: URI, title: string): void;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	getLocalSessionHistory(): Promise<IChatDetail[]>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	clearAllHistoryEntries(): Promise<void>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	removeHistoryEntry(sessionResource: URI): Promise<void>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	getChatStorageFolder(): URI;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	logChatIndex(): void;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	getLiveSessionItems(): Promise<IChatDetail[]>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	getHistorySessionItems(): Promise<IChatDetail[]>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	getMetadataForSession(sessionResource: URI): Promise<IChatDetail | undefined>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	notifyUserAction(event: IChatUserActionEvent): void;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	notifyQuestionCarouselAnswer(requestId: string, resolveId: string, answers: IChatQuestionAnswers | undefined): void;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
 	 * logged as a `chatAgentError` telemetry event.
 	 */
 	transferChatSession(transferredSessionResource: URI, toWorkspace: URI): Promise<void>;
-
 	/**
 	 * If true, the error is an expected operational condition (e.g. user-actionable
 	 * configuration, network connectivity, missing dependency) and should not be
@@ -252,632 +215,335 @@ export interface IChatServiceUpstream {
 	 */
 	activateDefaultAgent(location: ChatAgentLocation): Promise<void>;
 }
-
 export const IChatServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1589,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "transferredSessionResource",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "URI | undefined",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1590,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidSubmitRequest",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<{ readonly chatSessionResource: URI; readonly message?: IParsedChatRequest }>",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1592,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidCreateModel",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<IChatModel>",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1592,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "editingSessions",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "readonly IChatEditingSession[]",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1592,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidPerformUserAction",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<IChatUserActionEvent>",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1592,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidReceiveQuestionCarouselAnswer",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<{ requestId: string; resolveId: string; answers: IChatQuestionAnswers | undefined }>",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1592,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidDisposeSession",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<{ readonly sessionResources: readonly URI[]; readonly reason: 'cleared' }>",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1592,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "requestInProgressObs",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "IObservable<boolean>",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1592,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "isEnabled",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [{ Name: "location", TypeText: "ChatAgentLocation", Optional: false }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1603,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "hasSessions",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1605,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getChatModelReferenceDebugInfo",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IChatModelReferenceDebugSnapshot",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1641,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getSessionTitle",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "string | undefined",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1649,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "setSessionTitle",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }, { Name: "title", TypeText: "string", Optional: false }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1650,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "appendProgress",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "request", TypeText: "IChatRequestModel", Optional: false }, { Name: "progress", TypeText: "IChatProgress", Optional: false }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1652,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "resendRequest",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "request", TypeText: "IChatRequestModel", Optional: false }, { Name: "options", TypeText: "IChatSendRequestOptions", Optional: true }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1653,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "adoptRequest",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }, { Name: "request", TypeText: "IChatRequestModel", Optional: false }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1654,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "removeRequest",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }, { Name: "requestId", TypeText: "string", Optional: false }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1655,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "cancelCurrentRequestForSession",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }, { Name: "source", TypeText: "string", Optional: true }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1656,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "addCompleteRequest",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }, { Name: "message", TypeText: "IParsedChatRequest | string", Optional: false }, { Name: "variableData", TypeText: "IChatRequestVariableData | undefined", Optional: false }, { Name: "attempt", TypeText: "number | undefined", Optional: false }, { Name: "response", TypeText: "IChatCompleteResponse", Optional: false }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1683,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "setChatSessionTitle",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }, { Name: "title", TypeText: "string", Optional: false }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1684,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getLocalSessionHistory",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IChatDetail[]>",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1685,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "clearAllHistoryEntries",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1686,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "removeHistoryEntry",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1687,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getChatStorageFolder",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "URI",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1688,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "logChatIndex",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1689,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getLiveSessionItems",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IChatDetail[]>",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1690,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getHistorySessionItems",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IChatDetail[]>",
-
 		Parameters: [],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1691,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getMetadataForSession",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IChatDetail | undefined>",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1692,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "notifyUserAction",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "event", TypeText: "IChatUserActionEvent", Optional: false }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1695,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "notifyQuestionCarouselAnswer",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "requestId", TypeText: "string", Optional: false }, { Name: "resolveId", TypeText: "string", Optional: false }, { Name: "answers", TypeText: "IChatQuestionAnswers | undefined", Optional: false }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1698,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "transferChatSession",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "transferredSessionResource", TypeText: "URI", Optional: false }, { Name: "toWorkspace", TypeText: "URI", Optional: false }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1702,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "activateDefaultAgent",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "location", TypeText: "ChatAgentLocation", Optional: false }],
-
 		DocComment: "If true, the error is an expected operational condition (e.g. user-actionable\nconfiguration, network connectivity, missing dependency) and should not be\nlogged as a `chatAgentError` telemetry event.",
-
 		SourceLine: 1704,
 	}
 ] as const;

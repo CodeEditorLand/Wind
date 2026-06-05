@@ -16,7183 +16,3873 @@ export type CommandRegistrationKind =
 	| "ActionDescriptor";
 
 export interface CommandCatalogEntry {
-
 	readonly CommandIdentifier: string;
-
 	readonly Kind: CommandRegistrationKind;
-
 	readonly SourcePath: string;
-
 	readonly SourceLine: number;
-
 	readonly HasKeybinding: boolean;
 }
 
-export const CommandCatalogVersion = "2026-06-04" as const;
+export const CommandCatalogVersion = "2026-06-05" as const;
 
 export const CommandCatalogTotal = 551 as const;
 
 export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 	{
-
 		CommandIdentifier: "_aiEdits.clearAiContributions",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/editTelemetry/browser/editTelemetryContribution.ts",
-
 		SourceLine: 58,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_aiEdits.clearAllAiContributions",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/editTelemetry/browser/editTelemetryContribution.ts",
-
 		SourceLine: 59,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_aiEdits.hasAiContributions",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/editTelemetry/browser/editTelemetryContribution.ts",
-
 		SourceLine: 57,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_chat.editSessions.accept",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/chatEditing/chatEditingActions.ts",
-
 		SourceLine: 864,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_chat.notifyQuestionCarouselAnswer",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/chat.shared.contribution.ts",
-
 		SourceLine: 202,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_chat.resizeImage",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/chatImageUtils.ts",
-
 		SourceLine: 165,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeCodeActionProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/codeAction/browser/codeAction.ts",
-
 		SourceLine: 346,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeCodeLensProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/codelens/browser/codelens.ts",
-
 		SourceLine: 98,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeColorPresentationProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/colorPicker/browser/colorPickerContribution.ts",
-
 		SourceLine: 44,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeCompletionItemProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/suggest/browser/suggest.ts",
-
 		SourceLine: 390,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeDataToNotebook",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/api/browser/mainThreadNotebook.ts",
-
 		SourceLine: 197,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeDocumentColorProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/colorPicker/browser/colorPickerContribution.ts",
-
 		SourceLine: 35,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeDocumentSymbolProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/documentSymbols/browser/documentSymbols.ts",
-
 		SourceLine: 13,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeFoldingRangeProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/folding/browser/folding.ts",
-
 		SourceLine: 1282,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeFormatDocumentProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/format/browser/format.ts",
-
 		SourceLine: 485,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeFormatOnTypeProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/format/browser/format.ts",
-
 		SourceLine: 500,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeFormatRangeProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/format/browser/format.ts",
-
 		SourceLine: 469,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeInlayHintProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/inlayHints/browser/inlayHintsController.ts",
-
 		SourceLine: 799,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeInlineValueProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugEditorContribution.ts",
-
 		SourceLine: 992,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeLinkProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/links/browser/getLinks.ts",
-
 		SourceLine: 171,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeNotebookToData",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/api/browser/mainThreadNotebook.ts",
-
 		SourceLine: 213,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executePrepareCallHierarchy",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/callHierarchy/common/callHierarchy.ts",
-
 		SourceLine: 132,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executePrepareTypeHierarchy",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/typeHierarchy/common/typeHierarchy.ts",
-
 		SourceLine: 120,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeProvideIncomingCalls",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/callHierarchy/common/callHierarchy.ts",
-
 		SourceLine: 171,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeProvideOutgoingCalls",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/callHierarchy/common/callHierarchy.ts",
-
 		SourceLine: 184,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeProvideSubtypes",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/typeHierarchy/common/typeHierarchy.ts",
-
 		SourceLine: 182,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeProvideSupertypes",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/typeHierarchy/common/typeHierarchy.ts",
-
 		SourceLine: 169,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeSelectionRangeProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/smartSelect/browser/smartSelect.ts",
-
 		SourceLine: 306,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeSignatureHelpProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/parameterHints/browser/provideSignatureHelp.ts",
-
 		SourceLine: 47,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_executeWorkspaceSymbolProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/search/browser/search.contribution.ts",
-
 		SourceLine: 344,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_extensions.manage",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-
 		SourceLine: 366,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_extensionTests.getLogLevel",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/api/browser/mainThreadLogService.ts",
-
 		SourceLine: 90,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_extensionTests.setLogLevel",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/api/browser/mainThreadLogService.ts",
-
 		SourceLine: 78,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_files.newWindow",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 47,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_files.pickFolderAndOpen",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/workspaceCommands.ts",
-
 		SourceLine: 42,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_files.windowOpen",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 46,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_generateCommandsDocumentation",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/api/browser/mainThreadCommands.ts",
-
 		SourceLine: 30,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_generateContextKeyInfo",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/platform/contextkey/browser/contextKeyService.ts",
-
 		SourceLine: 674,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_getAllCommands",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/preferences/browser/preferencesActions.ts",
-
 		SourceLine: 235,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_getAllSettings",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/preferences/browser/preferencesActions.ts",
-
 		SourceLine: 83,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_issues.getSystemStatus",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/issue/electron-browser/issue.contribution.ts",
-
 		SourceLine: 145,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_listExtensionPromptFiles",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/common/promptSyntax/chatPromptFilesContribution.ts",
-
 		SourceLine: 172,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_provideDocumentRangeSemanticTokensLegend",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/semanticTokens/common/getSemanticTokens.ts",
-
 		SourceLine: 196,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_provideDocumentSemanticTokens",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/semanticTokens/common/getSemanticTokens.ts",
-
 		SourceLine: 160,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_provideDocumentSemanticTokensLegend",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/semanticTokens/common/getSemanticTokens.ts",
-
 		SourceLine: 141,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_remoteCLI.getSystemStatus",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/api/browser/mainThreadCLICommands.ts",
-
 		SourceLine: 43,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_remoteCLI.manageExtensions",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/api/browser/mainThreadCLICommands.ts",
-
 		SourceLine: 55,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_remoteCLI.openExternal",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/api/browser/mainThreadCLICommands.ts",
-
 		SourceLine: 30,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_remoteCLI.windowOpen",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/api/browser/mainThreadCLICommands.ts",
-
 		SourceLine: 35,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_resolveNotebookContentProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/notebook/browser/controller/apiActions.ts",
-
 		SourceLine: 13,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_resolveNotebookKernels",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/notebook/browser/controller/apiActions.ts",
-
 		SourceLine: 54,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_revealTestInExplorer",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/testing/browser/testing.contribution.ts",
-
 		SourceLine: 151,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_setContext",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/platform/contextkey/browser/contextKeyService.ts",
-
 		SourceLine: 661,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_update.showUpdateInfo",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/update/browser/postUpdateWidget.ts",
-
 		SourceLine: 67,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_update.state",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/update/browser/update.ts",
-
 		SourceLine: 293,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_workbench.addToRecentlyOpened",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/workspaceCommands.ts",
-
 		SourceLine: 298,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_workbench.captureSyntaxTokens",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/themes/browser/themes.test.contribution.ts",
-
 		SourceLine: 435,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_workbench.changes",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-
 		SourceLine: 571,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_workbench.colorizeTextMateTokens",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/services/textMate/browser/textMateTokenizationFeature.contribution.ts",
-
 		SourceLine: 33,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_workbench.fetchJSON",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/services/request/browser/requestService.ts",
-
 		SourceLine: 80,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_workbench.getRecentlyOpened",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/workspaceCommands.ts",
-
 		SourceLine: 317,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_workbench.openMultiDiffEditor",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-
 		SourceLine: 586,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_workbench.removeFromRecentlyOpened",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/workspaceCommands.ts",
-
 		SourceLine: 265,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "_workbench.revertAllDirty",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/api/browser/mainThreadEditors.ts",
-
 		SourceLine: 412,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "0_chat",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/inlineChat/browser/inlineChatActions.ts",
-
 		SourceLine: 122,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_breakpoints",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debug.contribution.ts",
-
 		SourceLine: 372,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_chat",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/chatActions.ts",
-
 		SourceLine: 1749,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_command",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/quickaccess/browser/quickAccess.contribution.ts",
-
 		SourceLine: 91,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_compare",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 429,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_cutcopypaste",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 316,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_debug",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debug.contribution.ts",
-
 		SourceLine: 271,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_edit",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debug.contribution.ts",
-
 		SourceLine: 392,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_editor",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 682,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_file",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/electron-browser/window.ts",
-
 		SourceLine: 679,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_focus_index",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 1026,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_history_nav",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 914,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_new",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/userDataProfile/browser/userDataProfile.ts",
-
 		SourceLine: 201,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_open",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/quickaccess/browser/quickAccess.contribution.ts",
-
 		SourceLine: 55,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_settings",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/userDataSync/browser/userDataSync.ts",
-
 		SourceLine: 867,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_sideBySide",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 926,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_split",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 718,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_welcome",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/welcomeWalkthrough/browser/walkThrough.contribution.ts",
-
 		SourceLine: 42,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "1_zzz_file",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/terminal/browser/terminalMenus.ts",
-
 		SourceLine: 188,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "2_any",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 946,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "2_appearance",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 710,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "2_ccp",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/editor/contrib/clipboard/browser/clipboard.ts",
-
 		SourceLine: 113,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "2_configuration",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/userDataProfile/browser/userDataProfile.ts",
-
 		SourceLine: 180,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "2_editor_nav",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 1018,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "2_editSessions",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/editSessions/browser/editSessionsStorageService.ts",
-
 		SourceLine: 487,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "2_files",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/terminal/browser/terminalMenus.ts",
-
 		SourceLine: 666,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "2_next_prev",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 1074,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "2_open",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/workspaceActions.ts",
-
 		SourceLine: 339,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "2_save",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 330,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "2_signInRequests",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/services/authentication/browser/authenticationMcpService.ts",
-
 		SourceLine: 513,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "2_sort",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/comments/browser/commentsViewActions.ts",
-
 		SourceLine: 197,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "2_split_in_group",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 766,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "2_workspace",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 615,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "3_accessRequests",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/services/authentication/browser/authenticationMcpService.ts",
-
 		SourceLine: 453,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "3_any_used",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 964,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "3_breakpoints",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debug.contribution.ts",
-
 		SourceLine: 402,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "3_compare",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 385,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "3_directional",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 1094,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "3_feedback",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/issue/common/issue.contribution.ts",
-
 		SourceLine: 123,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "3_file",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-
 		SourceLine: 507,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "3_global_nav",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 754,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "3_new_window",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 792,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "3_sidebar",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/services/views/browser/viewsService.ts",
-
 		SourceLine: 457,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "3_step",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debug.contribution.ts",
-
 		SourceLine: 326,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "3_workbench_layout_move",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/layoutActions.ts",
-
 		SourceLine: 232,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "3_workspace",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/workspaceActions.ts",
-
 		SourceLine: 389,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "4_auxbar",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures.ts",
-
 		SourceLine: 511,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "4_close",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 436,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "4_config",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/codeEditor/browser/toggleMultiCursorModifier.ts",
-
 		SourceLine: 73,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "4_externally_contributed",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSessions/chatSessions.contribution.ts",
-
 		SourceLine: 530,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "4_group",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 982,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "4_layouts",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 816,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "4_new_breakpoint",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debug.contribution.ts",
-
 		SourceLine: 382,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "4_save",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 687,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "4_sort",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-
 		SourceLine: 1260,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "4_timeline",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/timeline/browser/timeline.contribution.ts",
-
 		SourceLine: 85,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "5_autosave",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 717,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "5_cutcopypaste",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 536,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "5_flip",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/views/openEditorsView.ts",
-
 		SourceLine: 871,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "5_group_used",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 1000,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "5_infile_nav",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/quickaccess/browser/quickAccess.contribution.ts",
-
 		SourceLine: 82,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "5_tools",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/processExplorer/browser/processExplorer.contribution.ts",
-
 		SourceLine: 163,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "5b_importexport",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 567,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "6_close",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 727,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "6_copypath",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 601,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "7_change_nav",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/quickDiffWidget.ts",
-
 		SourceLine: 915,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "7_modification",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 635,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "7_update",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/update/browser/update.ts",
-
 		SourceLine: 311,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "9_debug",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debug.contribution.ts",
-
 		SourceLine: 232,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "99_terminal",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scm.contribution.ts",
-
 		SourceLine: 594,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "acceptNotificationPrimaryAction",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/notifications/notificationsCommands.ts",
-
 		SourceLine: 324,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "addInlineBreakpoint",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 1045,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "agentFeedback.submitFeedbackCount",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/sessions/contrib/agentFeedback/browser/agentFeedback.contribution.ts",
-
 		SourceLine: 65,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "agentsControl",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/experiments/agentSessionsExperiments.contribution.ts",
-
 		SourceLine: 254,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "agentSessionsControl",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/sessions/contrib/sessions/browser/sessionsTitleBarWidget.ts",
-
 		SourceLine: 404,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "alignPanel",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/panel/panelActions.ts",
-
 		SourceLine: 218,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "applyActions",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/sessions/contrib/applyCommitsToParentRepo/browser/applyChangesToParentRepo.ts",
-
 		SourceLine: 168,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "askVScode",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/helpActions.ts",
-
 		SourceLine: 358,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "breadcrumbs.focusNext",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/breadcrumbsControl.ts",
-
 		SourceLine: 797,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "breadcrumbs.focusNextWithPicker",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/breadcrumbsControl.ts",
-
 		SourceLine: 837,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "breadcrumbs.focusPrevious",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/breadcrumbsControl.ts",
-
 		SourceLine: 817,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "breadcrumbs.focusPreviousWithPicker",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/breadcrumbsControl.ts",
-
 		SourceLine: 855,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "breadcrumbs.revealFocused",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/breadcrumbsControl.ts",
-
 		SourceLine: 889,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "breadcrumbs.revealFocusedFromTreeAside",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/breadcrumbsControl.ts",
-
 		SourceLine: 922,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "breadcrumbs.selectEditor",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/breadcrumbsControl.ts",
-
 		SourceLine: 905,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "breadcrumbs.selectFocused",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/breadcrumbsControl.ts",
-
 		SourceLine: 873,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "breadcrumbs.toggleToOn",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/breadcrumbsControl.ts",
-
 		SourceLine: 777,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "browser.chatActionsSubmenu",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorChatFeatures.ts",
-
 		SourceLine: 728,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "browser.closeAllInGroupShort",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures.ts",
-
 		SourceLine: 521,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "browser.emulationToolbar.close",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
-
 		SourceLine: 770,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "browser.emulationToolbar.mobile",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
-
 		SourceLine: 800,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "browser.emulationToolbar.presets",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
-
 		SourceLine: 871,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "browser.emulationToolbar.reset",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
-
 		SourceLine: 944,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "browser.emulationToolbar.userAgent",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures.ts",
-
 		SourceLine: 914,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "Category",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-
 		SourceLine: 1131,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "chat.agentsHandoffTip.action",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/electron-browser/agentSessions/agentSessionsActions.ts",
-
 		SourceLine: 320,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "chat.focusMostRecentTerminal",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/terminalContrib/chat/browser/terminalChatActions.ts",
-
 		SourceLine: 506,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "chat.focusMostRecentTerminalOutput",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/terminalContrib/chat/browser/terminalChatActions.ts",
-
 		SourceLine: 514,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "chat.goBack",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/chatNewActions.ts",
-
 		SourceLine: 197,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "chat.internal.explain",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSetup/chatSetupContributions.ts",
-
 		SourceLine: 571,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "chat.internal.fix",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSetup/chatSetupContributions.ts",
-
 		SourceLine: 630,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "chat.internal.review",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/chatSetup/chatSetupContributions.ts",
-
 		SourceLine: 643,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "chat.newEdits.label",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/chatNewActions.ts",
-
 		SourceLine: 68,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "chat.queueMessage",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/chatQueueActions.ts",
-
 		SourceLine: 347,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "chat.queueSubmenu",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/chatQueueActions.ts",
-
 		SourceLine: 358,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "chat.sessionsOrientation",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/agentSessionsActions.ts",
-
 		SourceLine: 68,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "chat.steerWithMessage",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/chatQueueActions.ts",
-
 		SourceLine: 352,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "chooseLocation",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 367,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "clearAllNotifications",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/notifications/notificationsCommands.ts",
-
 		SourceLine: 323,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "close",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 365,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "closeAll",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 398,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "closeAllSaved",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 397,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "closeEditor",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 672,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "closeEditorGroup",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 678,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "closeEditorsInGroup",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 674,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "closeGroupAction",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 356,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "closeOtherEditors",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 676,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "closeOthers",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 395,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "closePanel",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/panel/panelActions.ts",
-
 		SourceLine: 74,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "closePinnedEditor",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 673,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "closeQuickDiff",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/quickDiffWidget.ts",
-
 		SourceLine: 933,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "closeReferenceSearch",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/gotoSymbol/browser/peek/referencesController.ts",
-
 		SourceLine: 362,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "closeRight",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 396,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "closeRightEditors",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 677,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "closeSavedEditors",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 675,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "closeSecondarySideBar",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/auxiliarybar/auxiliaryBarActions.ts",
-
 		SourceLine: 86,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "comments.focusCommand.error",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/comments/browser/commentsEditorContribution.ts",
-
 		SourceLine: 429,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "compare.nextChange",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/diffEditorCommands.ts",
-
 		SourceLine: 76,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "compare.openSide",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/diffEditorCommands.ts",
-
 		SourceLine: 61,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "compare.previousChange",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/diffEditorCommands.ts",
-
 		SourceLine: 91,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "config.window.nativeTabs",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/electron-browser/desktop.contribution.ts",
-
 		SourceLine: 105,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "configureEditors",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 431,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "configureLayout",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/layoutActions.ts",
-
 		SourceLine: 174,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "configureTabs",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 391,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "copy",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/webview/browser/webview.contribution.ts",
-
 		SourceLine: 66,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "copyEditorGroupToNewWindow",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 374,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "copyPath",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-
 		SourceLine: 480,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "copyToNewWindow",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 407,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "customizeNotebook",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/notebook/browser/controller/layoutActions.ts",
-
 		SourceLine: 106,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "cut",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/webview/browser/webview.contribution.ts",
-
 		SourceLine: 54,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "debug",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 471,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "Debug",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugToolBar.ts",
-
 		SourceLine: 438,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "debug.enableOrDisableBreakpoint",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 809,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "debug.installAdditionalDebuggers",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 972,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "debug.openBreakpointToSide",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 1060,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "debug.openView",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 1165,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "debug.removeBreakpoint",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 947,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "debug.setVariable",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 868,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "debug.startFromConfig",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 701,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "debug.toggleBreakpoint",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 791,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "delete",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-
 		SourceLine: 486,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "disable",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-
 		SourceLine: 665,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "Edit",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/titlebar/menubar.contribution.ts",
-
 		SourceLine: 20,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "editor.action.findReferences",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/gotoSymbol/browser/goToCommands.ts",
-
 		SourceLine: 833,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "editor.action.format",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/format/browser/formatActions.ts",
-
 		SourceLine: 292,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "editor.action.goToLocations",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/gotoSymbol/browser/goToCommands.ts",
-
 		SourceLine: 769,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "editor.action.peekLocations",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/gotoSymbol/browser/goToCommands.ts",
-
 		SourceLine: 812,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "editor.gotoNextSymbolFromResult.cancel",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/editor/contrib/gotoSymbol/browser/symbolNavigation.ts",
-
 		SourceLine: 172,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "editor.hover.showLongLineWarning",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/hover/browser/hoverContribution.ts",
-
 		SourceLine: 39,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "editorActionsPosition",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 386,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "editorCommand.activeEditorCopy.description",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-
 		SourceLine: 196,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "editorCommand.activeEditorMove.description",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-
 		SourceLine: 177,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "enable",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-
 		SourceLine: 677,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "execCopy",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/codeEditor/electron-browser/inputClipboardActions.ts",
-
 		SourceLine: 24,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "execCut",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/codeEditor/electron-browser/inputClipboardActions.ts",
-
 		SourceLine: 17,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "execPaste",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/codeEditor/electron-browser/inputClipboardActions.ts",
-
 		SourceLine: 31,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "explorer.openAndPassFocus",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileCommands.ts",
-
 		SourceLine: 121,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "extension.open",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-
 		SourceLine: 376,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "file",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/welcomeViews/common/newFile.contribution.ts",
-
 		SourceLine: 213,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "File",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/titlebar/menubar.contribution.ts",
-
 		SourceLine: 10,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "filesExplorer.cancelCut",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 128,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "filesExplorer.openFilePreserveFocus",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 139,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "filter",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/notebook/browser/contrib/outline/notebookOutline.ts",
-
 		SourceLine: 893,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "filterAgentSessions",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/agentSessions.contribution.ts",
-
 		SourceLine: 58,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "filterExtensions",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-
 		SourceLine: 1044,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "filterSessions",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/sessions/contrib/sessions/browser/views/sessionsViewActions.ts",
-
 		SourceLine: 133,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "filterTimeline",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/timeline/browser/timeline.contribution.ts",
-
 		SourceLine: 98,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "focusNotificationToasts",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/notifications/notificationsCommands.ts",
-
 		SourceLine: 327,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "genericRevertError",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileCommands.ts",
-
 		SourceLine: 535,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "getContextKeyInfo",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/platform/contextkey/browser/contextKeyService.ts",
-
 		SourceLine: 663,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "global",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/terminalContrib/chat/browser/terminalChatActions.ts",
-
 		SourceLine: 523,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "globalConsoleAction",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/externalTerminal/electron-browser/externalTerminal.contribution.ts",
-
 		SourceLine: 104,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "Go",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/titlebar/menubar.contribution.ts",
-
 		SourceLine: 50,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "goToNextReference",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/editor/contrib/gotoSymbol/browser/peek/referencesController.ts",
-
 		SourceLine: 330,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "goToPreviousReference",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/editor/contrib/gotoSymbol/browser/peek/referencesController.ts",
-
 		SourceLine: 343,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "group",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-
 		SourceLine: 221,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "Help",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/titlebar/menubar.contribution.ts",
-
 		SourceLine: 70,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "hidden",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 389,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "hideNotifications",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/notifications/notificationsCommands.ts",
-
 		SourceLine: 322,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "hideTabs",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 379,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "history.showNext",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/platform/history/browser/contextScopedHistoryWidget.ts",
-
 		SourceLine: 127,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "history.showPrevious",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/platform/history/browser/contextScopedHistoryWidget.ts",
-
 		SourceLine: 111,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "iconSelectBox.focusDown",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/services/userDataProfile/browser/iconSelectBox.ts",
-
 		SourceLine: 64,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "iconSelectBox.focusNext",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/services/userDataProfile/browser/iconSelectBox.ts",
-
 		SourceLine: 77,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "iconSelectBox.focusPrevious",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/services/userDataProfile/browser/iconSelectBox.ts",
-
 		SourceLine: 90,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "iconSelectBox.focusUp",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/services/userDataProfile/browser/iconSelectBox.ts",
-
 		SourceLine: 51,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "iconSelectBox.selectFocused",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/services/userDataProfile/browser/iconSelectBox.ts",
-
 		SourceLine: 103,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "ignoreTrimWhitespace.label",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 655,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "inactive",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 519,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "inline",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/callStackView.ts",
-
 		SourceLine: 1130,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "inlineView",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 423,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "instruction",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 348,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "integrated",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/externalTerminal/browser/externalTerminal.contribution.ts",
-
 		SourceLine: 35,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "isInDiffEditor",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/editor/browser/widget/diffEditor/diffEditor.contribution.ts",
-
 		SourceLine: 82,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "joinInGroup",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 420,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "jumpToCursor",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 438,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "keepEditor",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 669,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "keepOpen",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 400,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "keyboardShortcuts",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/preferences/browser/preferences.contribution.ts",
-
 		SourceLine: 858,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "label",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/chatEditing/chatEditingEditorActions.ts",
-
 		SourceLine: 638,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "list.clear",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 792,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.closeFind",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 882,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.collapse",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 335,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.collapseAll",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 393,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.collapseAllToFocus",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 411,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.expand",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 460,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.expandSelectionDown",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 275,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.expandSelectionUp",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 305,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.find",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 860,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.find.replInputFocus",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/replNotebook/browser/repl.contribution.ts",
-
 		SourceLine: 488,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.focusAnyDown",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 109,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.focusAnyFirst",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 195,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.focusAnyLast",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 208,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.focusAnyUp",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 126,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.focusDown",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 75,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.focusFirst",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 169,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.focusLast",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 182,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.focusPageDown",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 143,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.focusPageUp",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 156,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.focusParent",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 433,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.focusUp",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 92,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.scrollDown",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 918,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.scrollLeft",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 937,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.scrollRight",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 952,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.scrollUp",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 897,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.select",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 558,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.selectAndPreserveFocus",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 592,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.showHover",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 698,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.stickyScroll.collapse",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 373,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.stickyScrollselect",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 572,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.stickyScrolltoggleExpand",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 776,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.toggleExpand",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 753,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.toggleFindMatchType",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 844,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "list.toggleFindMode",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 832,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "list.toggleSelection",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 669,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "list.triggerTypeNavigation",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/listCommands.ts",
-
 		SourceLine: 824,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "lockGroup",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 430,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "lockGroupAction",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 354,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "logLevel.label",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/output/browser/output.contribution.ts",
-
 		SourceLine: 459,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "maximizeGroup",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 428,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "mcp.command.browse.mcp",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/mcp/browser/mcpCommands.ts",
-
 		SourceLine: 1010,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "mcp.servers",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/mcp/browser/mcpCommands.ts",
-
 		SourceLine: 1040,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "miOpenRecent",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/windowActions.ts",
-
 		SourceLine: 515,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "miPreferences",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/preferences/browser/preferences.contribution.ts",
-
 		SourceLine: 1468,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "miPreferencesExtensions",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-
 		SourceLine: 673,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "miSearch",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/sessions/contrib/search/browser/search.contribution.ts",
-
 		SourceLine: 41,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "miSelectTheme",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/themes/browser/themes.contribution.ts",
-
 		SourceLine: 909,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "miShare",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/menus.ts",
-
 		SourceLine: 415,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "miToggleWordWrap",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/codeEditor/browser/toggleWordWrap.ts",
-
 		SourceLine: 337,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "modifiedLabel",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileCommands.ts",
-
 		SourceLine: 141,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "moveAbove",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 415,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "moveBelow",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 416,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "moveEditorGroupToNewWindow",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 373,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "moveLeft",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 417,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "moveRight",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 418,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "moveToNewWindow",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 406,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "multipleTabs",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 377,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "navigation",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/terminal/browser/terminalMenus.ts",
-
 		SourceLine: 711,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "newFile",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 672,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "newFileCommand.saveLabel",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileCommands.ts",
-
 		SourceLine: 703,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "newWindow",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 363,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "noop",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/platform/commands/common/commands.ts",
-
 		SourceLine: 149,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "notebook.cell.chat.start",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/notebook/browser/controller/chat/cellChatActions.ts",
-
 		SourceLine: 202,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "notebookActions.menu.insertCode",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/notebook/browser/controller/insertCellActions.ts",
-
 		SourceLine: 236,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "notebookActions.menu.insertCode.minimaltoolbar",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/notebook/browser/controller/insertCellActions.ts",
-
 		SourceLine: 295,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "notebookActions.menu.insertCode.minimalToolbar",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/notebook/browser/controller/insertCellActions.ts",
-
 		SourceLine: 250,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "notebookActions.menu.insertCode.ontoolbar",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/notebook/browser/controller/insertCellActions.ts",
-
 		SourceLine: 265,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "notebookActions.menu.insertMarkdown",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/notebook/browser/controller/insertCellActions.ts",
-
 		SourceLine: 311,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "notebookActions.menu.insertMarkdown.ontoolbar",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/notebook/browser/controller/insertCellActions.ts",
-
 		SourceLine: 325,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "notebookMenu.cellTitle",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/notebook/browser/controller/coreActions.ts",
-
 		SourceLine: 450,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "notebookMenu.insertCell",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/notebook/browser/controller/coreActions.ts",
-
 		SourceLine: 443,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "open",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/userDataProfile/browser/userDataProfile.ts",
-
 		SourceLine: 311,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "openAiManagement",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/chatManagement/chatManagement.contribution.ts",
-
 		SourceLine: 202,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "openChatCustomizations",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/chatActions.ts",
-
 		SourceLine: 1482,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "openReference",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/editor/contrib/gotoSymbol/browser/peek/referencesController.ts",
-
 		SourceLine: 424,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "openReferenceToSide",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/editor/contrib/gotoSymbol/browser/peek/referencesController.ts",
-
 		SourceLine: 407,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "openSearch",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/sessions/contrib/search/browser/search.contribution.ts",
-
 		SourceLine: 30,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "paste",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/webview/browser/webview.contribution.ts",
-
 		SourceLine: 78,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "peek.submenu",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/editor/contrib/gotoSymbol/browser/goToCommands.ts",
-
 		SourceLine: 44,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "phone",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/sessions/browser/workbench.ts",
-
 		SourceLine: 547,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "pin",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 401,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "pinEditor",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 670,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "planReviewFeedback.navStatus.label",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/planReviewFeedback/planReviewFeedbackEditorActions.ts",
-
 		SourceLine: 127,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "positionActivituBar",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/activitybar/activitybarPart.ts",
-
 		SourceLine: 555,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "positionPanel",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/panel/panelActions.ts",
-
 		SourceLine: 183,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "Preferences",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/titlebar/menubar.contribution.ts",
-
 		SourceLine: 80,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "quickDiffDecoration",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/quickDiff.contribution.ts",
-
 		SourceLine: 21,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "quickInput",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/platform/quickinput/browser/quickInputActions.ts",
-
 		SourceLine: 18,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "quickInput.accept",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/platform/quickinput/browser/quickInputActions.ts",
-
 		SourceLine: 212,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "quickPick",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/platform/quickinput/browser/quickInputActions.ts",
-
 		SourceLine: 28,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "read",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 937,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "readWrite",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 927,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "registerWindowTitleVariable",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/titlebar/titlebarPart.ts",
-
 		SourceLine: 138,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "renderWhitespace",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/codeEditor/browser/toggleRenderWhitespace.ts",
-
 		SourceLine: 141,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "reopenWith",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 399,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "repositories",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scmViewPane.ts",
-
 		SourceLine: 961,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "RerunAllRunningTasksAction.label",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/tasks/browser/task.contribution.ts",
-
 		SourceLine: 289,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "revealReference",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/editor/contrib/gotoSymbol/browser/peek/referencesController.ts",
-
 		SourceLine: 389,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "revealRunningCellShort",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/notebook/browser/controller/executeActions.ts",
-
 		SourceLine: 689,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "revertHunk",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/editor/browser/widget/diffEditor/diffEditor.contribution.ts",
-
 		SourceLine: 53,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "revertSelection",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/editor/browser/widget/diffEditor/diffEditor.contribution.ts",
-
 		SourceLine: 64,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "run",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debug.contribution.ts",
-
 		SourceLine: 257,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "runMenu",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debug.contribution.ts",
-
 		SourceLine: 261,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "running",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 550,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "runPrompt",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-
 		SourceLine: 500,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "scm.acceptInput",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scm.contribution.ts",
-
 		SourceLine: 420,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "scm.clearInput",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scm.contribution.ts",
-
 		SourceLine: 463,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "scm.clearValidation",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scm.contribution.ts",
-
 		SourceLine: 450,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "scm.forceViewNextCommit",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scm.contribution.ts",
-
 		SourceLine: 524,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "scm.forceViewPreviousCommit",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scm.contribution.ts",
-
 		SourceLine: 531,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "scm.openInIntegratedTerminal",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scm.contribution.ts",
-
 		SourceLine: 538,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "scm.openInTerminal",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scm.contribution.ts",
-
 		SourceLine: 570,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "scm.setActiveProvider",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scm.contribution.ts",
-
 		SourceLine: 579,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "scm.viewNextCommit",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scm.contribution.ts",
-
 		SourceLine: 510,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "scm.viewPreviousCommit",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scm.contribution.ts",
-
 		SourceLine: 517,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "Selection",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/titlebar/menubar.contribution.ts",
-
 		SourceLine: 30,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "selectSources",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/notifications/notificationsCommands.ts",
-
 		SourceLine: 282,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "selectTheme.label",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/themes/browser/themes.contribution.ts",
-
 		SourceLine: 916,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "sessionId",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/variablesView.ts",
-
 		SourceLine: 739,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "sessionsViewPane.find",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/sessions/contrib/sessions/browser/views/sessionsViewActions.ts",
-
 		SourceLine: 141,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "share",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 408,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "showChanges",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/sessions/contrib/changes/browser/changesTitleBarWidget.ts",
-
 		SourceLine: 45,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "showEditorScreenReaderNotification",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/accessibility/browser/accessibilityStatus.ts",
-
 		SourceLine: 35,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "showExtensions",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-
 		SourceLine: 682,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "showMoves",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/editor/browser/widget/diffEditor/diffEditor.contribution.ts",
-
 		SourceLine: 34,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "showNotifications",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/notifications/notificationsCommands.ts",
-
 		SourceLine: 321,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "showOpenedEditors",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 424,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "showPlugin",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-
 		SourceLine: 609,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "showSessions",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/sessions/contrib/sessions/browser/sessionsTitleBarWidget.ts",
-
 		SourceLine: 412,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "singleTab",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 378,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "sortAction",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scmViewPane.ts",
-
 		SourceLine: 953,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "splitAndMoveEditor",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 405,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "splitDown",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 360,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "splitInGroup",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 419,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "splitLeft",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 361,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "splitRight",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 362,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "splitUp",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 359,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "stopped",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 501,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "string",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/issue/common/issue.contribution.ts",
-
 		SourceLine: 85,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "swapDiffSides",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/diffEditorCommands.ts",
-
 		SourceLine: 299,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "switchToOutput.label",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/output/browser/output.contribution.ts",
-
 		SourceLine: 148,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "tabBar",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/workbench.zenMode.contribution.ts",
-
 		SourceLine: 88,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "Terminal",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/titlebar/menubar.contribution.ts",
-
 		SourceLine: 60,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "themes",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/themes/browser/themes.contribution.ts",
-
 		SourceLine: 903,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "themes.selectIconTheme.label",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/themes/browser/themes.contribution.ts",
-
 		SourceLine: 924,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "themes.selectProductIconTheme.label",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/themes/browser/themes.contribution.ts",
-
 		SourceLine: 932,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "timeline.toggleFollowActiveEditor",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/timeline/browser/timelinePane.ts",
-
 		SourceLine: 1299,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "title3",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/titlebar/commandCenterControl.ts",
-
 		SourceLine: 266,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "title4",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/experiments/agentSessionsExperiments.contribution.ts",
-
 		SourceLine: 268,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "titleBar",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 388,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "toggleAgentQuickInput",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/experiments/agentSessionsExperiments.contribution.ts",
-
 		SourceLine: 295,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "toggleDoNotDisturbMode",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/notifications/notificationsCommands.ts",
-
 		SourceLine: 325,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "toggleDoNotDisturbModeBySource",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/notifications/notificationsCommands.ts",
-
 		SourceLine: 326,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "toggleInlineView",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/diffEditorCommands.ts",
-
 		SourceLine: 290,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "toggleLockGroup",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 364,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "toggleNotifications",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/notifications/notificationsCommands.ts",
-
 		SourceLine: 330,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "togglePeekWidgetFocus",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/editor/contrib/gotoSymbol/browser/peek/referencesController.ts",
-
 		SourceLine: 318,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "togglePreviewMode",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 427,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "toggleQuickDiffWidgetFocus",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/quickDiffWidget.ts",
-
 		SourceLine: 956,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "type",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileCommands.ts",
-
 		SourceLine: 662,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "uninstallPlugin",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/aiCustomization/aiCustomizationManagement.contribution.ts",
-
 		SourceLine: 556,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "unlockGroupAction",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 355,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "unmaximizeGroup",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 429,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "unpin",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 402,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "unpinEditor",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 671,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "unwrapMinified",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/codeEditor/browser/toggleWordWrap.ts",
-
 		SourceLine: 307,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "update.check",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/update/browser/update.ts",
-
 		SourceLine: 81,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "update.checking",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/update/browser/update.ts",
-
 		SourceLine: 90,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "update.downloading",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/update/browser/update.ts",
-
 		SourceLine: 109,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "update.downloadNow",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/update/browser/update.ts",
-
 		SourceLine: 100,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "update.install",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/update/browser/update.ts",
-
 		SourceLine: 119,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "update.restart",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/update/browser/update.ts",
-
 		SourceLine: 138,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "update.showUpdateReleaseNotes",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/update/browser/update.ts",
-
 		SourceLine: 300,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "update.updating",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/update/browser/update.ts",
-
 		SourceLine: 128,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "updateIndicatorTitleBarAction",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/update/browser/updateTitleBarEntry.ts",
-
 		SourceLine: 124,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "useInlineViewWhenSpaceIsLimited",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/editor/browser/widget/diffEditor/diffEditor.contribution.ts",
-
 		SourceLine: 19,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "View",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/titlebar/menubar.contribution.ts",
-
 		SourceLine: 40,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "viewContainer",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugViewlet.ts",
-
 		SourceLine: 171,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "views",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/views/viewPaneContainer.ts",
-
 		SourceLine: 47,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "vscode.changes",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-
 		SourceLine: 557,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "vscode.diff",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-
 		SourceLine: 503,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "vscode.getEditorLayout",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-
 		SourceLine: 413,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "vscode.newWindow",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/workspaceCommands.ts",
-
 		SourceLine: 238,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "vscode.open",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-
 		SourceLine: 444,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "vscode.openFolder",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/workspaceCommands.ts",
-
 		SourceLine: 166,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "vscode.peekTestError",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/testing/browser/testing.contribution.ts",
-
 		SourceLine: 187,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "vscode.pickMultipleTestProfiles",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/testing/browser/testingConfigurationUi.ts",
-
 		SourceLine: 101,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "vscode.pickTestProfile",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/testing/browser/testingConfigurationUi.ts",
-
 		SourceLine: 137,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "vscode.removeFromRecentlyOpened",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/workspaceCommands.ts",
-
 		SourceLine: 270,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "vscode.revealTest",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/testing/browser/testing.contribution.ts",
-
 		SourceLine: 211,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "vscode.runTestsById",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/testing/browser/testing.contribution.ts",
-
 		SourceLine: 261,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "vscode.setEditorLayout",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-
 		SourceLine: 376,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "vscode.testing.getControllersWithTests",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/testing/browser/testing.contribution.ts",
-
 		SourceLine: 274,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "vscode.testing.getTestsInFile",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/testing/browser/testing.contribution.ts",
-
 		SourceLine: 284,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "walkthroughs.selectStep",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.contribution.ts",
-
 		SourceLine: 155,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "watch",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/variablesView.ts",
-
 		SourceLine: 679,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "welcome.newWorkspaceChat",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.contribution.ts",
-
 		SourceLine: 262,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "widgetNavigation.focusNext",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/widgetNavigationCommands.ts",
-
 		SourceLine: 160,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "widgetNavigation.focusPrevious",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/widgetNavigationCommands.ts",
-
 		SourceLine: 143,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.acceptSelectedQuickOpenItem",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/quickAccessActions.ts",
-
 		SourceLine: 41,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.alternativeAcceptSelectedQuickOpenItem",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/quickAccessActions.ts",
-
 		SourceLine: 52,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.chat.openInSidebar",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/actions/chatMoveActions.ts",
-
 		SourceLine: 96,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.chat.toggle",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/browser/agentSessions/experiments/agentSessionsExperiments.contribution.ts",
-
 		SourceLine: 284,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.closeQuickOpen",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/quickAccessActions.ts",
-
 		SourceLine: 30,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.exitZenMode",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/workbench.zenMode.contribution.ts",
-
 		SourceLine: 130,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.extensionHostProfiler.stop",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/extensions/electron-browser/extensionProfileService.ts",
-
 		SourceLine: 64,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.files.copyPathOfActiveFile",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileCommands.ts",
-
 		SourceLine: 302,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.files.openFileFolderInNewWindow",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/workspaceCommands.ts",
-
 		SourceLine: 37,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.files.openFileInNewWindow",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/workspaceCommands.ts",
-
 		SourceLine: 52,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.files.openFolderInNewWindow",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/workspaceCommands.ts",
-
 		SourceLine: 47,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.focusQuickOpen",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/quickAccessActions.ts",
-
 		SourceLine: 63,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.localHistory.restoreViaPicker",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/localHistory/browser/localHistoryCommands.ts",
-
 		SourceLine: 431,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.openEditorAtIndexN",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/sessions/contrib/sessions/browser/views/sessionsViewActions.ts",
-
 		SourceLine: 119,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.openIssueReporter",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/issue/common/issue.contribution.ts",
-
 		SourceLine: 70,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.openSettings",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/chat/electron-browser/actions/voiceChatActions.ts",
-
 		SourceLine: 1190,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.openWorkspaceInNewWindow",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/workspaceCommands.ts",
-
 		SourceLine: 57,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.previewColorTheme",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/themes/browser/themes.contribution.ts",
-
 		SourceLine: 649,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.quickInputBack",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/quickAccessActions.ts",
-
 		SourceLine: 110,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.quickOpen",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/files/browser/fileActions.contribution.ts",
-
 		SourceLine: 673,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.quickOpenPreviousEditor",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/quickAccessActions.ts",
-
 		SourceLine: 197,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.quickPickManyToggle",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/quickAccessActions.ts",
-
 		SourceLine: 99,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.quit",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/electron-browser/desktop.contribution.ts",
-
 		SourceLine: 71,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.showHover",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/platform/hover/browser/hoverService.ts",
-
 		SourceLine: 116,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.tasks.build",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/tasks/browser/task.contribution.ts",
-
 		SourceLine: 175,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.tasks.configureDefaultBuildTask",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/tasks/browser/task.contribution.ts",
-
 		SourceLine: 230,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.tasks.configureDefaultTestTask",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/tasks/browser/task.contribution.ts",
-
 		SourceLine: 337,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.tasks.configureTaskRunner",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/tasks/browser/task.contribution.ts",
-
 		SourceLine: 220,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.tasks.openUserTasks",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/tasks/browser/task.contribution.ts",
-
 		SourceLine: 345,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.tasks.openWorkspaceFileTasks",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/tasks/browser/task.contribution.ts",
-
 		SourceLine: 241,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.tasks.reRunTask",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/tasks/browser/task.contribution.ts",
-
 		SourceLine: 273,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.tasks.restartTask",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/tasks/browser/task.contribution.ts",
-
 		SourceLine: 197,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.tasks.runTask",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/tasks/browser/task.contribution.ts",
-
 		SourceLine: 165,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.tasks.showLog",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/tasks/browser/task.contribution.ts",
-
 		SourceLine: 258,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.tasks.showTasks",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/tasks/browser/task.contribution.ts",
-
 		SourceLine: 186,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.tasks.terminate",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/tasks/browser/task.contribution.ts",
-
 		SourceLine: 208,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.tasks.test",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/tasks/browser/task.contribution.ts",
-
 		SourceLine: 321,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.tasks.toggleProblems",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/tasks/browser/abstractTaskService.ts",
-
 		SourceLine: 685,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.terminal.clearLong",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/terminal/browser/terminalMenus.ts",
-
 		SourceLine: 726,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.terminal.runActiveFile",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/terminal/browser/terminalMenus.ts",
-
 		SourceLine: 737,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.terminal.runSelectedText",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/terminal/browser/terminalMenus.ts",
-
 		SourceLine: 748,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.terminal.startVoiceEditor",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/terminal/browser/terminalMenus.ts",
-
 		SourceLine: 759,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.terminal.stopVoiceEditor",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/terminal/browser/terminalMenus.ts",
-
 		SourceLine: 770,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.toggleConfirmBeforeClose",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/windowActions.ts",
-
 		SourceLine: 495,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.toggleMenuBar",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/layoutActions.ts",
-
 		SourceLine: 760,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.action.toggleWindowAlwaysOnTop",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/sessions/browser/layoutActions.ts",
-
 		SourceLine: 157,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.banner.focusBanner",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/banner/bannerPart.ts",
-
 		SourceLine: 247,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.banner.focusNextAction",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/banner/bannerPart.ts",
-
 		SourceLine: 258,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.banner.focusPreviousAction",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/banner/bannerPart.ts",
-
 		SourceLine: 270,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.editor.enablePreview",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editorCommands.ts",
-
 		SourceLine: 1339,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.experimental.requestHidDevice",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/window.ts",
-
 		SourceLine: 479,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.experimental.requestSerialPort",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/window.ts",
-
 		SourceLine: 474,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.experimental.requestUsbDevice",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/window.ts",
-
 		SourceLine: 469,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.extensions.action.showExtensionsForLanguage",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensionsActions.ts",
-
 		SourceLine: 3401,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.extensions.installExtension",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-
 		SourceLine: 388,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.extensions.installMissingDependencies",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensionsDependencyChecker.ts",
-
 		SourceLine: 29,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.extensions.search",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-
 		SourceLine: 525,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.extensions.uninstallExtension",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
-
 		SourceLine: 489,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.getCodeExchangeProxyEndpoints",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/authentication/browser/authentication.contribution.ts",
-
 		SourceLine: 25,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.profiles.actions.manageProfiles",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/userDataProfile/browser/userDataProfile.ts",
-
 		SourceLine: 396,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.scm.action.focusNextInput",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scm.contribution.ts",
-
 		SourceLine: 634,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.scm.action.focusNextResourceGroup",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scm.contribution.ts",
-
 		SourceLine: 659,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.scm.action.focusPreviousInput",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scm.contribution.ts",
-
 		SourceLine: 621,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.scm.action.focusPreviousResourceGroup",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/contrib/scm/browser/scm.contribution.ts",
-
 		SourceLine: 647,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.statusBar.clearFocus",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/statusbar/statusbarActions.ts",
-
 		SourceLine: 111,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.statusBar.focusFirst",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/statusbar/statusbarActions.ts",
-
 		SourceLine: 87,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.statusBar.focusLast",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/statusbar/statusbarActions.ts",
-
 		SourceLine: 99,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.statusBar.focusNext",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/statusbar/statusbarActions.ts",
-
 		SourceLine: 75,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.statusBar.focusPrevious",
-
 		Kind: "KeybindingsRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/statusbar/statusbarActions.ts",
-
 		SourceLine: 63,
-
 		HasKeybinding: true,
 	},
-
 	{
-
 		CommandIdentifier: "workbench.userDataSync.actions.help",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/userDataSync/browser/userDataSync.ts",
-
 		SourceLine: 1133,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "workspaceFolderPickerPlaceholder",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/workspaceCommands.ts",
-
 		SourceLine: 107,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "wrapMinified",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/codeEditor/browser/toggleWordWrap.ts",
-
 		SourceLine: 320,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "write",
-
 		Kind: "CommandsRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debugCommands.ts",
-
 		SourceLine: 917,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "z_clear",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/parts/editor/editor.contribution.ts",
-
 		SourceLine: 692,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "z_commands",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/quickaccess/browser/quickAccess.contribution.ts",
-
 		SourceLine: 100,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "z_ConfirmClose",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/browser/actions/windowActions.ts",
-
 		SourceLine: 504,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "z_Exit",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/electron-browser/desktop.contribution.ts",
-
 		SourceLine: 127,
-
 		HasKeybinding: false,
 	},
-
 	{
-
 		CommandIdentifier: "z_install",
-
 		Kind: "MenuRegistry",
-
 		SourcePath: "vs/workbench/contrib/debug/browser/debug.contribution.ts",
-
 		SourceLine: 415,
-
 		HasKeybinding: false,
 	}
 ] as const;

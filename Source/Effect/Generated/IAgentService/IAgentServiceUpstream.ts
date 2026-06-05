@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAgentServiceTag = "agentService" as const;
-
 export const IAgentServiceSourcePath = "vs/platform/agentHost/common/agentService.ts" as const;
-
 export const IAgentServiceSourceLine = 728 as const;
-
 // Decorator doc:
 // /**
 //  * Channel for the agent host service on the main-process side
@@ -22,30 +18,20 @@ export const IAgentServiceSourceLine = 728 as const;
  */
 
 export interface IAgentServiceUpstream {
-
 	/**
 	 * Channel for the agent host service on the main-process side
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IAgentServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Channel for the agent host service on the main-process side",
-
 		SourceLine: 739,
 	}
 ] as const;

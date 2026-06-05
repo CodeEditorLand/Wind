@@ -5,17 +5,11 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtHostWindowTag = "IExtHostWindow" as const;
-
 export const IExtHostWindowSourcePath = "vs/workbench/api/common/extHostWindow.ts" as const;
-
 export const IExtHostWindowSourceLine = 115 as const;
-
 export interface IExtHostWindowUpstream {
-
 	// (no members extracted in same file - resolve cross-file)
 }
-
 export const IExtHostWindowMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

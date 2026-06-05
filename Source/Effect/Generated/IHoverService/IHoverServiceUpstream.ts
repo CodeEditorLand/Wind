@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IHoverServiceTag = "hoverService" as const;
-
 export const IHoverServiceSourcePath = "vs/platform/hover/browser/hover.ts" as const;
-
 export const IHoverServiceSourceLine = 14 as const;
-
 export interface IHoverServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IHoverServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 17,
 	}
 ] as const;
