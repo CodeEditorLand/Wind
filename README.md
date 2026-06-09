@@ -2,11 +2,11 @@
 	<tr>
 		<td align="left" valign="middle">
 			<h3 align="left">
-				<a href="https://Land.PlayForm.Cloud" target="_blank">
+				<a href="https://editor.land" target="_blank">
 					<picture>
-						<source media="(prefers-color-scheme: dark)" srcset="https://PlayForm.Cloud/Dark/Image/GitHub/Land.svg" />
-						<source media="(prefers-color-scheme: light)" srcset="https://PlayForm.Cloud/Image/GitHub/Land.svg" />
-						<img width="28" alt="Land Logo" src="https://PlayForm.Cloud/Image/GitHub/Land.svg" />
+						<source media="(prefers-color-scheme: dark)" srcset="https://editor.land/Dark/Image/GitHub/Land.svg" />
+						<source media="(prefers-color-scheme: light)" srcset="https://editor.land/Image/GitHub/Land.svg" />
+						<img width="28" alt="Land Logo" src="https://editor.land/Image/GitHub/Land.svg" />
 					</picture>
 				</a>
 			</h3>
@@ -341,10 +341,10 @@ Runtime.runPromise(AppRuntime, InvokeEffect);
 
 ## See Also&#x2001;🔗
 
-- [Wind Documentation](https://land.playform.cloud/Doc/wind)
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
-- [Why Effect-TS](https://land.playform.cloud/Doc/why-effect-ts)
-- [Why Tauri](https://land.playform.cloud/Doc/why-tauri)
+- [Wind Documentation](https://editor.land/Doc/wind)
+- [Architecture Overview](https://editor.land/Doc/architecture)
+- [Why Effect-TS](https://editor.land/Doc/why-effect-ts)
+- [Why Tauri](https://editor.land/Doc/why-tauri)
 - [`Mountain`](https://github.com/CodeEditorLand/Mountain)
 - [`Sky`](https://github.com/CodeEditorLand/Sky)
 - [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)
@@ -408,12 +408,12 @@ Commons Fund grant.
 	<tbody>
 		<tr>
 			<td align="left" valign="middle">
-				<a href="https://Land.PlayForm.Cloud">
+				<a href="https://editor.land">
 					<img width="60" src="https://raw.githubusercontent.com/CodeEditorLand/Asset/refs/heads/Current/Logo/Land.svg" alt="Land" />
 				</a>
 			</td>
 			<td align="left" valign="middle">
-				<a href="https://PlayForm.Cloud">
+				<a href="https://editor.land">
 					<img width="76" src="https://raw.githubusercontent.com/PlayForm/Asset/refs/heads/Current/Logo/PlayForm.svg" alt="PlayForm" />
 				</a>
 			</td>
@@ -434,7 +434,7 @@ Commons Fund grant.
 ---
 
 **Project Maintainers**: Source Open
-([Source/Open@Land.PlayForm.Cloud](mailto:Source/Open@Land.PlayForm.Cloud)) |
+([Source/Open@editor.land](mailto:Source/Open@editor.land)) |
 [GitHub Repository](https://github.com/CodeEditorLand/Wind) |
 [Report an Issue](https://github.com/CodeEditorLand/Wind/issues) |
 [Security Policy](https://github.com/CodeEditorLand/Wind/security/policy)
