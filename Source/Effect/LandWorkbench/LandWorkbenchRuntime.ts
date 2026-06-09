@@ -1,16 +1,12 @@
 /**
  * @module Effect/LandWorkbench/LandWorkbenchRuntime
  * @description
- * Lazy `ManagedRuntime` factory that wraps `LandWorkbenchLayer`.
- * Sky's bundle creates exactly one `LandWorkbenchRuntime` per
- * webview after `__CEL_SERVICES__` is populated; every consumer
- * (SkyBridge, in-process Wind components) reuses the same runtime
- * to keep `Layer` instantiation costs to one-time.
+ * Eager `ManagedRuntime` that wraps `LandWorkbenchLayer`.
+ * Created immediately at module load time via IIFE so Layer initialization
+ * cost is paid once during Sky bundle evaluation, not on first Get() call.
  *
  * The runtime is module-singleton via `globalThis.__CEL_WIND_RUNTIME__`
- * so two sibling Sky chunks importing this module land on the same
- * runtime instance - the alternative (per-chunk runtime) would
- * double-allocate every Wind service.
+ * so two sibling Sky chunks importing this module land on the same instance.
  * @category Composition
  */
 
@@ -24,9 +20,8 @@ interface LandWorkbenchRuntimeGlobal {
 	>;
 }
 
-const ResolveRuntime = (): ReturnType<
-	typeof ManagedRuntime.make<typeof LandWorkbenchLayer, never>
-> => {
+// Eagerly initialize at module load time — eliminates first-call latency.
+const _rt = (() => {
 	const Globals = globalThis as unknown as LandWorkbenchRuntimeGlobal;
 
 	if (!Globals.__CEL_WIND_RUNTIME__) {
@@ -34,21 +29,16 @@ const ResolveRuntime = (): ReturnType<
 	}
 
 	return Globals.__CEL_WIND_RUNTIME__;
-};
+})();
 
 export const LandWorkbenchRuntime = {
-	Get: ResolveRuntime,
+	Get: () => _rt,
 
 	Dispose: async (): Promise<void> => {
-		const Globals = globalThis as unknown as LandWorkbenchRuntimeGlobal;
+		await _rt.dispose();
 
-		const Existing = Globals.__CEL_WIND_RUNTIME__;
-
-		if (Existing) {
-			await Existing.dispose();
-
-			Globals.__CEL_WIND_RUNTIME__ = undefined;
-		}
+		delete (globalThis as unknown as LandWorkbenchRuntimeGlobal)
+			.__CEL_WIND_RUNTIME__;
 	},
 };
 

@@ -14,6 +14,8 @@ import type {
 	IServerChannel,
 } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/ipc/common/ipc.js";
 
+import * as MistWS from "./MistWebSocketTransport.js";
+
 // Inline trace - performance.mark() collected by build-baked OTELBridge.
 const _Trace = (Tag: string, Message: string): void => {
 	try {
@@ -730,6 +732,8 @@ const _TierTasks = _ReadTier("Tasks") ?? "Node";
 
 const _TierAuth = _ReadTier("Auth") ?? "Node";
 
+const _TierWebSocket: string = _ReadTier("WebSocket") ?? "Disabled";
+
 const _TierEncryption = _ReadTier("Encryption") ?? "Mountain";
 
 // Map RoutePrefix → effective tier. Mirrors the Mountain-side dispatch in
@@ -949,6 +953,12 @@ class TauriChannel implements IChannel {
 			// or the per-subsystem tier for this RoutePrefix resolves to
 			// "Node" (TIER-SYSTEM Step 4b).
 			const _EffectiveTier = _ResolveTierForRoute(this.RoutePrefix);
+
+			if (_EffectiveTier === "WebSocket" && MistWS.IsAvailable()) {
+				try {
+					return (await MistWS.invoke(MountainMethod, Params)) as T;
+				} catch {}
+			}
 
 			if (_EffectiveTier === "Node") {
 				try {
@@ -1317,6 +1327,10 @@ export class TauriMainProcessService {
 	dispose(): void {
 		this.Channels.clear();
 	}
+}
+
+export function InitializeWebSocket(port: number, secret: string): void {
+	MistWS.Initialize(port, secret);
 }
 
 export default TauriMainProcessService;

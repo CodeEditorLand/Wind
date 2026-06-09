@@ -1,3 +1,4 @@
+import { invoke as TauriInvoke } from "@tauri-apps/api/core";
 /**
  * @module FileSystem/Implementation/FileSystemProviderImplementation
  * @description
@@ -402,7 +403,7 @@ export const FileSystemProviderLive = Layer.effect(
 
 		// Create the provider with IPC access
 		const provider = createProvider((command, ...args) =>
-			Effect.runPromise(IPCService.invoke(command)(args)),
+			TauriInvoke("MountainIPCInvoke", { method: command, params: args.length === 1 ? args[0] : args }),
 		);
 
 		return {
