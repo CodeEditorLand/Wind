@@ -5,161 +5,87 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IWorkspaceExtensionsConfigServiceTag = "IWorkspaceExtensionsConfigService" as const;
-
 export const IWorkspaceExtensionsConfigServiceSourcePath = "vs/workbench/services/extensionRecommendations/common/workspaceExtensionsConfig.ts" as const;
-
 export const IWorkspaceExtensionsConfigServiceSourceLine = 30 as const;
-
 export interface IWorkspaceExtensionsConfigServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly onDidChangeExtensionsConfigs: Event<void>;
-
 	getExtensionsConfigs(): Promise<IExtensionsConfigContent[]>;
-
 	getRecommendations(): Promise<string[]>;
-
 	getUnwantedRecommendations(): Promise<string[]>;
-
 	toggleRecommendation(extensionId: string): Promise<void>;
-
 	toggleUnwantedRecommendation(extensionId: string): Promise<void>;
 }
-
 export const IWorkspaceExtensionsConfigServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 33,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeExtensionsConfigs",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<void>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 33,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getExtensionsConfigs",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IExtensionsConfigContent[]>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 36,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getRecommendations",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<string[]>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 37,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getUnwantedRecommendations",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<string[]>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 38,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "toggleRecommendation",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "extensionId", TypeText: "string", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 40,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "toggleUnwantedRecommendation",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "extensionId", TypeText: "string", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 41,
 	}
 ] as const;

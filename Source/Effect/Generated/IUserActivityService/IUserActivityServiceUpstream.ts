@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IUserActivityServiceTag = "IUserActivityService" as const;
-
 export const IUserActivityServiceSourcePath = "vs/workbench/services/userActivity/common/userActivityService.ts" as const;
-
 export const IUserActivityServiceSourceLine = 48 as const;
-
 // Decorator doc:
 // /**
 //  * Only consider this progress if the state is already active. Used to avoid
@@ -24,31 +20,21 @@ export const IUserActivityServiceSourceLine = 48 as const;
  */
 
 export interface IUserActivityServiceUpstream {
-
 	/**
 	 * Only consider this progress if the state is already active. Used to avoid
 	 * background work from incorrectly marking the user as active (#237386)
 	 */
 	_serviceBrand: undefined;
 }
-
 export const IUserActivityServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Only consider this progress if the state is already active. Used to avoid\nbackground work from incorrectly marking the user as active (#237386)",
-
 		SourceLine: 26,
 	}
 ] as const;

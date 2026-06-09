@@ -17,7 +17,6 @@ import type { IProductServiceUpstream } from "../../Generated/IProductService/IP
 export type WorkbenchProductBridgeShape = Pick<IProductServiceUpstream, "nameLong" | "nameShort" | "version" | "commit" | "date" | "quality" | "applicationName" | "extensionsGallery">;
 
 export interface WorkbenchProductGlobals {
-
 	readonly __CEL_SERVICES__?: {
 		readonly Product?: WorkbenchProductBridgeShape | null;
 	};

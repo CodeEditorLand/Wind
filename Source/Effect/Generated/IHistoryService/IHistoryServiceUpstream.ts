@@ -5,38 +5,24 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IHistoryServiceTag = "historyService" as const;
-
 export const IHistoryServiceSourcePath = "vs/workbench/services/history/common/history.ts" as const;
-
 export const IHistoryServiceSourceLine = 12 as const;
-
 export interface IHistoryServiceUpstream {
-
 	/**
 	 * Limit editor navigation to certain kinds.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IHistoryServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Limit editor navigation to certain kinds.",
-
 		SourceLine: 62,
 	}
 ] as const;

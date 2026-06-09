@@ -5,182 +5,113 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ILanguageModelsConfigurationServiceTag = "ILanguageModelsConfigurationService" as const;
-
 export const ILanguageModelsConfigurationServiceSourcePath = "vs/workbench/contrib/chat/common/languageModelsConfiguration.ts" as const;
-
 export const ILanguageModelsConfigurationServiceSourceLine = 12 as const;
-
 export interface ILanguageModelsConfigurationServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly configurationFile: URI;
-
 	readonly onDidChangeLanguageModelGroups: Event<readonly ILanguageModelsProviderGroup[]>;
-
+	/**
+	 * Resolves after the first config-file load attempt (success or failure), so callers can distinguish empty from not-yet-loaded. Never rejects.
+	 */
 	getLanguageModelsProviderGroups(): readonly ILanguageModelsProviderGroup[];
-
+	/**
+	 * Resolves after the first config-file load attempt (success or failure), so callers can distinguish empty from not-yet-loaded. Never rejects.
+	 */
 	addLanguageModelsProviderGroup(languageModelsProviderGroup: ILanguageModelsProviderGroup): Promise<ILanguageModelsProviderGroup>;
-
+	/**
+	 * Resolves after the first config-file load attempt (success or failure), so callers can distinguish empty from not-yet-loaded. Never rejects.
+	 */
 	updateLanguageModelsProviderGroup(from: ILanguageModelsProviderGroup, to: ILanguageModelsProviderGroup): Promise<ILanguageModelsProviderGroup>;
-
+	/**
+	 * Resolves after the first config-file load attempt (success or failure), so callers can distinguish empty from not-yet-loaded. Never rejects.
+	 */
 	removeLanguageModelsProviderGroup(languageModelGroup: ILanguageModelsProviderGroup): Promise<void>;
-
+	/**
+	 * Resolves after the first config-file load attempt (success or failure), so callers can distinguish empty from not-yet-loaded. Never rejects.
+	 */
 	configureLanguageModels(options?: ConfigureLanguageModelsOptions): Promise<void>;
 }
-
 export const ILanguageModelsConfigurationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 21,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "configurationFile",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "URI",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 21,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeLanguageModelGroups",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<readonly ILanguageModelsProviderGroup[]>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 21,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getLanguageModelsProviderGroups",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "readonly ILanguageModelsProviderGroup[]",
-
 		Parameters: [],
-
-		DocComment: null,
-
-		SourceLine: 27,
+		DocComment: "Resolves after the first config-file load attempt (success or failure), so callers can distinguish empty from not-yet-loaded. Never rejects.",
+		SourceLine: 30,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "addLanguageModelsProviderGroup",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<ILanguageModelsProviderGroup>",
-
 		Parameters: [{ Name: "languageModelsProviderGroup", TypeText: "ILanguageModelsProviderGroup", Optional: false }],
-
-		DocComment: null,
-
-		SourceLine: 29,
+		DocComment: "Resolves after the first config-file load attempt (success or failure), so callers can distinguish empty from not-yet-loaded. Never rejects.",
+		SourceLine: 32,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "updateLanguageModelsProviderGroup",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<ILanguageModelsProviderGroup>",
-
 		Parameters: [{ Name: "from", TypeText: "ILanguageModelsProviderGroup", Optional: false }, { Name: "to", TypeText: "ILanguageModelsProviderGroup", Optional: false }],
-
-		DocComment: null,
-
-		SourceLine: 31,
+		DocComment: "Resolves after the first config-file load attempt (success or failure), so callers can distinguish empty from not-yet-loaded. Never rejects.",
+		SourceLine: 34,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "removeLanguageModelsProviderGroup",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "languageModelGroup", TypeText: "ILanguageModelsProviderGroup", Optional: false }],
-
-		DocComment: null,
-
-		SourceLine: 33,
+		DocComment: "Resolves after the first config-file load attempt (success or failure), so callers can distinguish empty from not-yet-loaded. Never rejects.",
+		SourceLine: 36,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "configureLanguageModels",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "options", TypeText: "ConfigureLanguageModelsOptions", Optional: true }],
-
-		DocComment: null,
-
-		SourceLine: 35,
+		DocComment: "Resolves after the first config-file load attempt (success or failure), so callers can distinguish empty from not-yet-loaded. Never rejects.",
+		SourceLine: 38,
 	}
 ] as const;

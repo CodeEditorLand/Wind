@@ -5,182 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IWorkspacesServiceTag = "workspacesService" as const;
-
 export const IWorkspacesServiceSourcePath = "vs/platform/workspaces/common/workspaces.ts" as const;
-
 export const IWorkspacesServiceSourceLine = 23 as const;
-
 export interface IWorkspacesServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	createUntitledWorkspace(folders?: IWorkspaceFolderCreationData[], remoteAuthority?: string): Promise<IWorkspaceIdentifier>;
-
 	deleteUntitledWorkspace(workspace: IWorkspaceIdentifier): Promise<void>;
-
 	getWorkspaceIdentifier(workspaceUri: URI): Promise<IWorkspaceIdentifier>;
-
 	addRecentlyOpened(recents: IRecent[]): Promise<void>;
-
 	removeRecentlyOpened(workspaces: URI[]): Promise<void>;
-
 	clearRecentlyOpened(): Promise<void>;
-
 	getRecentlyOpened(): Promise<IRecentlyOpened>;
 }
-
 export const IWorkspacesServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 27,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "createUntitledWorkspace",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IWorkspaceIdentifier>",
-
 		Parameters: [{ Name: "folders", TypeText: "IWorkspaceFolderCreationData[]", Optional: true }, { Name: "remoteAuthority", TypeText: "string", Optional: true }],
-
 		DocComment: null,
-
 		SourceLine: 31,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "deleteUntitledWorkspace",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "workspace", TypeText: "IWorkspaceIdentifier", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 32,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getWorkspaceIdentifier",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IWorkspaceIdentifier>",
-
 		Parameters: [{ Name: "workspaceUri", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 33,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "addRecentlyOpened",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "recents", TypeText: "IRecent[]", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 37,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "removeRecentlyOpened",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "workspaces", TypeText: "URI[]", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 38,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "clearRecentlyOpened",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 39,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getRecentlyOpened",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IRecentlyOpened>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 40,
 	}
 ] as const;

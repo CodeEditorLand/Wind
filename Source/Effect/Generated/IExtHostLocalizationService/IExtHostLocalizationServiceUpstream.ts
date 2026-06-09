@@ -5,17 +5,11 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtHostLocalizationServiceTag = "IExtHostLocalizationService" as const;
-
 export const IExtHostLocalizationServiceSourcePath = "vs/workbench/api/common/extHostLocalizationService.ts" as const;
-
 export const IExtHostLocalizationServiceSourceLine = 108 as const;
-
 export interface IExtHostLocalizationServiceUpstream {
-
 	// (no members extracted in same file - resolve cross-file)
 }
-
 export const IExtHostLocalizationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

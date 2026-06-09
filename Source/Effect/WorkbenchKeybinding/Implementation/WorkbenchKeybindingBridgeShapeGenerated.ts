@@ -17,7 +17,6 @@ import type { IKeybindingServiceUpstream } from "../../Generated/IKeybindingServ
 export type WorkbenchKeybindingBridgeShape = Pick<IKeybindingServiceUpstream, "lookupKeybindings" | "resolveKeyboardEvent" | "dispatchByUserSettingsLabel">;
 
 export interface WorkbenchKeybindingGlobals {
-
 	readonly __CEL_SERVICES__?: {
 		readonly Keybinding?: WorkbenchKeybindingBridgeShape | null;
 	};

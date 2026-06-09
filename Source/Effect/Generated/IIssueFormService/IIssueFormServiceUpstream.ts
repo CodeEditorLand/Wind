@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IIssueFormServiceTag = "issueFormService" as const;
-
 export const IIssueFormServiceSourcePath = "vs/workbench/contrib/issue/common/issue.ts" as const;
-
 export const IIssueFormServiceSourceLine = 104 as const;
-
 // Decorator doc:
 // /**
 //  * Resolves once `enabledExtensions` has been populated (or failed to populate).
@@ -20,49 +16,42 @@ export const IIssueFormServiceSourceLine = 104 as const;
 //  */
 // 
 export interface IIssueFormServiceUpstream {
-
 	/**
 	 * Resolves once `enabledExtensions` has been populated (or failed to populate).
 	 * Lets the wizard pane wait for the async extension enumeration in
 	 * `NativeIssueService` to finish before rendering the extensions section.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * Resolves once `enabledExtensions` has been populated (or failed to populate).
 	 * Lets the wizard pane wait for the async extension enumeration in
 	 * `NativeIssueService` to finish before rendering the extensions section.
 	 */
 	reloadWithExtensionsDisabled(): Promise<void>;
-
 	/**
 	 * Resolves once `enabledExtensions` has been populated (or failed to populate).
 	 * Lets the wizard pane wait for the async extension enumeration in
 	 * `NativeIssueService` to finish before rendering the extensions section.
 	 */
 	showConfirmCloseDialog(): Promise<void>;
-
 	/**
 	 * Resolves once `enabledExtensions` has been populated (or failed to populate).
 	 * Lets the wizard pane wait for the async extension enumeration in
 	 * `NativeIssueService` to finish before rendering the extensions section.
 	 */
 	showClipboardDialog(): Promise<boolean>;
-
 	/**
 	 * Resolves once `enabledExtensions` has been populated (or failed to populate).
 	 * Lets the wizard pane wait for the async extension enumeration in
 	 * `NativeIssueService` to finish before rendering the extensions section.
 	 */
 	sendReporterMenu(extensionId: string): Promise<IssueReporterData | undefined>;
-
 	/**
 	 * Resolves once `enabledExtensions` has been populated (or failed to populate).
 	 * Lets the wizard pane wait for the async extension enumeration in
 	 * `NativeIssueService` to finish before rendering the extensions section.
 	 */
 	closeReporter(): Promise<void>;
-
 	/**
 	 * Resolves once `enabledExtensions` has been populated (or failed to populate).
 	 * Lets the wizard pane wait for the async extension enumeration in
@@ -70,138 +59,75 @@ export interface IIssueFormServiceUpstream {
 	 */
 	submitIssue(host: IIssueSubmissionHost, data: IssueReporterData, title: string, body: string): Promise<boolean>;
 }
-
 export const IIssueFormServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Resolves once `enabledExtensions` has been populated (or failed to populate).\nLets the wizard pane wait for the async extension enumeration in\n`NativeIssueService` to finish before rendering the extensions section.",
-
 		SourceLine: 120,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "reloadWithExtensionsDisabled",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [],
-
 		DocComment: "Resolves once `enabledExtensions` has been populated (or failed to populate).\nLets the wizard pane wait for the async extension enumeration in\n`NativeIssueService` to finish before rendering the extensions section.",
-
 		SourceLine: 124,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "showConfirmCloseDialog",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [],
-
 		DocComment: "Resolves once `enabledExtensions` has been populated (or failed to populate).\nLets the wizard pane wait for the async extension enumeration in\n`NativeIssueService` to finish before rendering the extensions section.",
-
 		SourceLine: 125,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "showClipboardDialog",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<boolean>",
-
 		Parameters: [],
-
 		DocComment: "Resolves once `enabledExtensions` has been populated (or failed to populate).\nLets the wizard pane wait for the async extension enumeration in\n`NativeIssueService` to finish before rendering the extensions section.",
-
 		SourceLine: 126,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "sendReporterMenu",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IssueReporterData | undefined>",
-
 		Parameters: [{ Name: "extensionId", TypeText: "string", Optional: false }],
-
 		DocComment: "Resolves once `enabledExtensions` has been populated (or failed to populate).\nLets the wizard pane wait for the async extension enumeration in\n`NativeIssueService` to finish before rendering the extensions section.",
-
 		SourceLine: 127,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "closeReporter",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [],
-
 		DocComment: "Resolves once `enabledExtensions` has been populated (or failed to populate).\nLets the wizard pane wait for the async extension enumeration in\n`NativeIssueService` to finish before rendering the extensions section.",
-
 		SourceLine: 128,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "submitIssue",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<boolean>",
-
 		Parameters: [{ Name: "host", TypeText: "IIssueSubmissionHost", Optional: false }, { Name: "data", TypeText: "IssueReporterData", Optional: false }, { Name: "title", TypeText: "string", Optional: false }, { Name: "body", TypeText: "string", Optional: false }],
-
 		DocComment: "Resolves once `enabledExtensions` has been populated (or failed to populate).\nLets the wizard pane wait for the async extension enumeration in\n`NativeIssueService` to finish before rendering the extensions section.",
-
 		SourceLine: 129,
 	}
 ] as const;

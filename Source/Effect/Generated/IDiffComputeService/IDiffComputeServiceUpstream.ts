@@ -5,42 +5,28 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IDiffComputeServiceTag = "diffComputeService" as const;
-
 export const IDiffComputeServiceSourcePath = "vs/platform/agentHost/common/diffComputeService.ts" as const;
-
 export const IDiffComputeServiceSourceLine = 13 as const;
-
 /**
  * Default timeout for diff computation in milliseconds.
  */
 
 export interface IDiffComputeServiceUpstream {
-
 	/**
 	 * Default timeout for diff computation in milliseconds.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IDiffComputeServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Default timeout for diff computation in milliseconds.",
-
 		SourceLine: 24,
 	}
 ] as const;

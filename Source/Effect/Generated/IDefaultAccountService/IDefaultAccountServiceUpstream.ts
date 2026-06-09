@@ -5,355 +5,211 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IDefaultAccountServiceTag = "defaultAccountService" as const;
-
 export const IDefaultAccountServiceSourcePath = "vs/platform/defaultAccount/common/defaultAccount.ts" as const;
-
 export const IDefaultAccountServiceSourceLine = 56 as const;
-
 // Decorator doc:
 // /**
 //  * Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.
 //  */
 // 
 export interface IDefaultAccountServiceUpstream {
-
 	/**
 	 * Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.
 	 */
 	readonly onDidChangeDefaultAccount: Event<IDefaultAccount | null>;
-
 	/**
 	 * Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.
 	 */
 	readonly onDidChangePolicyData: Event<IPolicyData | null>;
-
 	/**
 	 * Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.
 	 */
 	readonly policyData: IPolicyData | null;
-
 	/**
 	 * Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.
 	 */
 	readonly currentDefaultAccount: IDefaultAccount | null;
-
 	/**
 	 * Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.
 	 */
 	readonly copilotTokenInfo: ICopilotTokenInfo | null;
-
 	/**
 	 * Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.
 	 */
 	readonly onDidChangeCopilotTokenInfo: Event<ICopilotTokenInfo | null>;
-
 	/**
 	 * Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.
 	 */
 	readonly managedSettingsFetchStatus: ManagedSettingsFetchStatus;
-
 	/**
 	 * Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.
 	 */
 	getDefaultAccount(): Promise<IDefaultAccount | null>;
-
 	/**
 	 * Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.
 	 */
 	getDefaultAccountAuthenticationProvider(): IDefaultAccountAuthenticationProvider;
-
 	/**
 	 * Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.
 	 */
 	setDefaultAccountProvider(provider: IDefaultAccountProvider): void;
-
 	/**
 	 * Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.
 	 */
 	refresh(options?: { forceRefresh?: boolean }): Promise<IDefaultAccount | null>;
-
 	/**
 	 * Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.
 	 */
 	signIn(options?: { additionalScopes?: readonly string[];[key: string]: unknown }): Promise<IDefaultAccount | null>;
-
 	/**
 	 * Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.
 	 */
 	signOut(): Promise<void>;
 }
-
 export const IDefaultAccountServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.",
-
 		SourceLine: 59,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeDefaultAccount",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<IDefaultAccount | null>",
-
 		Parameters: [],
-
 		DocComment: "Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.",
-
 		SourceLine: 59,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangePolicyData",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<IPolicyData | null>",
-
 		Parameters: [],
-
 		DocComment: "Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.",
-
 		SourceLine: 59,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "policyData",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "IPolicyData | null",
-
 		Parameters: [],
-
 		DocComment: "Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.",
-
 		SourceLine: 59,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "currentDefaultAccount",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "IDefaultAccount | null",
-
 		Parameters: [],
-
 		DocComment: "Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.",
-
 		SourceLine: 59,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "copilotTokenInfo",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "ICopilotTokenInfo | null",
-
 		Parameters: [],
-
 		DocComment: "Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.",
-
 		SourceLine: 59,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeCopilotTokenInfo",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<ICopilotTokenInfo | null>",
-
 		Parameters: [],
-
 		DocComment: "Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.",
-
 		SourceLine: 59,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "managedSettingsFetchStatus",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "ManagedSettingsFetchStatus",
-
 		Parameters: [],
-
 		DocComment: "Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.",
-
 		SourceLine: 59,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getDefaultAccount",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IDefaultAccount | null>",
-
 		Parameters: [],
-
 		DocComment: "Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.",
-
 		SourceLine: 69,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getDefaultAccountAuthenticationProvider",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDefaultAccountAuthenticationProvider",
-
 		Parameters: [],
-
 		DocComment: "Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.",
-
 		SourceLine: 70,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "setDefaultAccountProvider",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "provider", TypeText: "IDefaultAccountProvider", Optional: false }],
-
 		DocComment: "Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.",
-
 		SourceLine: 71,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "refresh",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IDefaultAccount | null>",
-
 		Parameters: [{ Name: "options", TypeText: "{ forceRefresh?: boolean }", Optional: true }],
-
 		DocComment: "Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.",
-
 		SourceLine: 72,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "signIn",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IDefaultAccount | null>",
-
 		Parameters: [{ Name: "options", TypeText: "{ additionalScopes?: readonly string[];[key: string]: unknown }", Optional: true }],
-
 		DocComment: "Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.",
-
 		SourceLine: 73,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "signOut",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [],
-
 		DocComment: "Well-known GitHub URL paths used with {@link IDefaultAccountService.resolveGitHubUrl}.",
-
 		SourceLine: 74,
 	}
 ] as const;

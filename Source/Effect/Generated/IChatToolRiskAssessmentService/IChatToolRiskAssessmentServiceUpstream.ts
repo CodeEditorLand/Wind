@@ -5,43 +5,29 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatToolRiskAssessmentServiceTag = "chatToolRiskAssessmentService" as const;
-
 export const IChatToolRiskAssessmentServiceSourcePath = "vs/workbench/contrib/chat/browser/tools/chatToolRiskAssessmentService.ts" as const;
-
 export const IChatToolRiskAssessmentServiceSourceLine = 29 as const;
-
 // Decorator doc:
 // /**
 //  * One-sentence natural-language explanation, <= 140 chars.
 //  */
 // 
 export interface IChatToolRiskAssessmentServiceUpstream {
-
 	/**
 	 * One-sentence natural-language explanation, <= 140 chars.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IChatToolRiskAssessmentServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "One-sentence natural-language explanation, <= 140 chars.",
-
 		SourceLine: 32,
 	}
 ] as const;

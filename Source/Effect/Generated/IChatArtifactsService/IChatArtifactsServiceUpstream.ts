@@ -5,56 +5,32 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatArtifactsServiceTag = "chatArtifactsService" as const;
-
 export const IChatArtifactsServiceSourcePath = "vs/workbench/contrib/chat/common/tools/chatArtifactsService.ts" as const;
-
 export const IChatArtifactsServiceSourceLine = 49 as const;
-
 export interface IChatArtifactsServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	getArtifacts(sessionResource: URI): IChatArtifacts;
 }
-
 export const IChatArtifactsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 52,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getArtifacts",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IChatArtifacts",
-
 		Parameters: [{ Name: "sessionResource", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 53,
 	}
 ] as const;

@@ -5,77 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAllowedMcpServersServiceTag = "IAllowedMcpServersService" as const;
-
 export const IAllowedMcpServersServiceSourcePath = "vs/platform/mcp/common/mcpManagement.ts" as const;
-
 export const IAllowedMcpServersServiceSourceLine = 241 as const;
-
 export interface IAllowedMcpServersServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly onDidChangeAllowedMcpServers: Event<void>;
-
 	isAllowed(mcpServer: IGalleryMcpServer | ILocalMcpServer | IInstallableMcpServer): true | IMarkdownString;
 }
-
 export const IAllowedMcpServersServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 243,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeAllowedMcpServers",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<void>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 243,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "isAllowed",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "true | IMarkdownString",
-
 		Parameters: [{ Name: "mcpServer", TypeText: "IGalleryMcpServer | ILocalMcpServer | IInstallableMcpServer", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 246,
 	}
 ] as const;

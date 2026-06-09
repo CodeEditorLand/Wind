@@ -5,134 +5,80 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IMcpRegistryTag = "mcpRegistry" as const;
-
 export const IMcpRegistrySourcePath = "vs/workbench/contrib/mcp/common/mcpRegistryTypes.ts" as const;
-
 export const IMcpRegistrySourceLine = 19 as const;
-
 export interface IMcpRegistryUpstream {
-
 	/**
 	 * Message transport to a single MCP server.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * Message transport to a single MCP server.
 	 */
 	readonly collections: IObservable<readonly McpCollectionDefinition[]>;
-
 	/**
 	 * Message transport to a single MCP server.
 	 */
 	readonly delegates: IObservable<readonly IMcpHostDelegate[]>;
-
 	/**
 	 * Message transport to a single MCP server.
 	 */
 	registerDelegate(delegate: IMcpHostDelegate): IDisposable;
-
 	/**
 	 * Message transport to a single MCP server.
 	 */
 	registerCollection(collection: McpCollectionDefinition): IDisposable;
 }
-
 export const IMcpRegistryMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Message transport to a single MCP server.",
-
 		SourceLine: 71,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "collections",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "IObservable<readonly McpCollectionDefinition[]>",
-
 		Parameters: [],
-
 		DocComment: "Message transport to a single MCP server.",
-
 		SourceLine: 71,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "delegates",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "IObservable<readonly IMcpHostDelegate[]>",
-
 		Parameters: [],
-
 		DocComment: "Message transport to a single MCP server.",
-
 		SourceLine: 71,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerDelegate",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "delegate", TypeText: "IMcpHostDelegate", Optional: false }],
-
 		DocComment: "Message transport to a single MCP server.",
-
 		SourceLine: 87,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerCollection",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "collection", TypeText: "McpCollectionDefinition", Optional: false }],
-
 		DocComment: "Message transport to a single MCP server.",
-
 		SourceLine: 88,
 	}
 ] as const;

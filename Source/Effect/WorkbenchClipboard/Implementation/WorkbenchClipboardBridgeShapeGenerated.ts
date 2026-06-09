@@ -17,7 +17,6 @@ import type { IClipboardServiceUpstream } from "../../Generated/IClipboardServic
 export type WorkbenchClipboardBridgeShape = Pick<IClipboardServiceUpstream, "readText" | "writeText" | "readResources" | "writeResources">;
 
 export interface WorkbenchClipboardGlobals {
-
 	readonly __CEL_SERVICES__?: {
 		readonly Clipboard?: WorkbenchClipboardBridgeShape | null;
 	};

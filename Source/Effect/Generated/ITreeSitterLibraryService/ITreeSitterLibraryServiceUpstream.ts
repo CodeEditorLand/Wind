@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ITreeSitterLibraryServiceTag = "treeSitterLibraryService" as const;
-
 export const ITreeSitterLibraryServiceSourcePath = "vs/editor/common/services/treeSitter/treeSitterLibraryService.ts" as const;
-
 export const ITreeSitterLibraryServiceSourceLine = 10 as const;
-
 export interface ITreeSitterLibraryServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const ITreeSitterLibraryServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 13,
 	}
 ] as const;

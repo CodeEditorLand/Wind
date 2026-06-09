@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IWorkbenchExtensionEnablementServiceTag = "extensionEnablementService" as const;
-
 export const IWorkbenchExtensionEnablementServiceSourcePath = "vs/workbench/services/extensionManagement/common/extensionManagement.ts" as const;
-
 export const IWorkbenchExtensionEnablementServiceSourceLine = 118 as const;
-
 export interface IWorkbenchExtensionEnablementServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IWorkbenchExtensionEnablementServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 121,
 	}
 ] as const;

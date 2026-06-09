@@ -5,38 +5,24 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ILayoutServiceTag = "layoutService" as const;
-
 export const ILayoutServiceSourcePath = "vs/platform/layout/browser/layoutService.ts" as const;
-
 export const ILayoutServiceSourceLine = 11 as const;
-
 export interface ILayoutServiceUpstream {
-
 	/**
 	 * Generic top offset
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const ILayoutServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Generic top offset",
-
 		SourceLine: 28,
 	}
 ] as const;

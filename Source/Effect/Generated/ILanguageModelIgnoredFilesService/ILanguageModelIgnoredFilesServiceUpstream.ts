@@ -5,77 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ILanguageModelIgnoredFilesServiceTag = "languageModelIgnoredFilesService" as const;
-
 export const ILanguageModelIgnoredFilesServiceSourcePath = "vs/workbench/contrib/chat/common/ignoredFiles.ts" as const;
-
 export const ILanguageModelIgnoredFilesServiceSourceLine = 15 as const;
-
 export interface ILanguageModelIgnoredFilesServiceUpstream {
-
 	_serviceBrand: undefined;
-
 	fileIsIgnored(uri: URI, token: CancellationToken): Promise<boolean>;
-
 	registerIgnoredFileProvider(provider: ILanguageModelIgnoredFileProvider): IDisposable;
 }
-
 export const ILanguageModelIgnoredFilesServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 17,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "fileIsIgnored",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<boolean>",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 19,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerIgnoredFileProvider",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "provider", TypeText: "ILanguageModelIgnoredFileProvider", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 20,
 	}
 ] as const;

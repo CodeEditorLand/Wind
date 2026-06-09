@@ -5,77 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ICSSDevelopmentServiceTag = "ICSSDevelopmentService" as const;
-
 export const ICSSDevelopmentServiceSourcePath = "vs/platform/cssDev/node/cssDevService.ts" as const;
-
 export const ICSSDevelopmentServiceSourceLine = 15 as const;
-
 export interface ICSSDevelopmentServiceUpstream {
-
 	_serviceBrand: undefined;
-
 	isEnabled: boolean;
-
 	getCssModules(): Promise<string[]>;
 }
-
 export const ICSSDevelopmentServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 18,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "isEnabled",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 19,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getCssModules",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<string[]>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 20,
 	}
 ] as const;

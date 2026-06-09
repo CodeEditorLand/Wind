@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IClaudeProxyServiceTag = "claudeProxyService" as const;
-
 export const IClaudeProxyServiceSourcePath = "vs/platform/agentHost/node/claude/claudeProxyService.ts" as const;
-
 export const IClaudeProxyServiceSourceLine = 70 as const;
-
 // Decorator doc:
 // /**
 //  * Handle returned by {@link IClaudeProxyService.start}. Refcounts the
@@ -26,7 +22,6 @@ export const IClaudeProxyServiceSourceLine = 70 as const;
 //  */
 // 
 export interface IClaudeProxyServiceUpstream {
-
 	/**
 	 * Handle returned by {@link IClaudeProxyService.start}. Refcounts the
 	 * underlying server: when every handle is disposed, the listener closes,
@@ -40,24 +35,15 @@ export interface IClaudeProxyServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IClaudeProxyServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Handle returned by {@link IClaudeProxyService.start}. Refcounts the\nunderlying server: when every handle is disposed, the listener closes,\nthe token slot clears, and the nonce is destroyed. The next `start()`\ncall rebinds with a new port and a fresh nonce.\n**Subprocess ownership invariant.** Callers that hand `baseUrl` /\n`nonce` to a Claude SDK subprocess MUST kill that subprocess before\ncalling `dispose()`. The subprocess cannot outlive the handle —\nafter `dispose()` the proxy may rebind on a different port and the\nsubprocess would silently lose its endpoint.",
-
 		SourceLine: 52,
 	}
 ] as const;

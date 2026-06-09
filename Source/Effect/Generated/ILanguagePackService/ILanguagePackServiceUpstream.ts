@@ -5,98 +5,54 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ILanguagePackServiceTag = "languagePackService" as const;
-
 export const ILanguagePackServiceSourcePath = "vs/platform/languagePacks/common/languagePacks.ts" as const;
-
 export const ILanguagePackServiceSourceLine = 19 as const;
-
 export interface ILanguagePackServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	getAvailableLanguages(): Promise<Array<ILanguagePackItem>>;
-
 	getInstalledLanguages(): Promise<Array<ILanguagePackItem>>;
-
 	getBuiltInExtensionTranslationsUri(id: string, language: string): Promise<URI | undefined>;
 }
-
 export const ILanguagePackServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 27,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getAvailableLanguages",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<Array<ILanguagePackItem>>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 28,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getInstalledLanguages",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<Array<ILanguagePackItem>>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 29,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getBuiltInExtensionTranslationsUri",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<URI | undefined>",
-
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }, { Name: "language", TypeText: "string", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 30,
 	}
 ] as const;

@@ -5,206 +5,112 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ITelemetryServiceTag = "telemetryService" as const;
-
 export const ITelemetryServiceSourcePath = "vs/platform/telemetry/common/telemetry.ts" as const;
-
 export const ITelemetryServiceSourceLine = 9 as const;
-
 export interface ITelemetryServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly telemetryLevel: TelemetryLevel;
-
 	readonly sessionId: string;
-
 	readonly machineId: string;
-
 	readonly sqmId: string;
-
 	readonly devDeviceId: string;
-
 	readonly firstSessionDate: string;
-
 	readonly msftInternal?: boolean;
-
 	/**
 	 * Whether error telemetry will get sent. If false, `publicLogError` will no-op.
 	 */
 	setExperimentProperty(name: string, value: string): void;
 }
-
 export const ITelemetryServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 19,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "telemetryLevel",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "TelemetryLevel",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 19,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "sessionId",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "string",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 19,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "machineId",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "string",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 19,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "sqmId",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "string",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 19,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "devDeviceId",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "string",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 19,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "firstSessionDate",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "string",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 19,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "msftInternal",
-
 		Readonly: true,
-
 		Optional: true,
-
 		TypeText: "boolean",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 19,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "setExperimentProperty",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "name", TypeText: "string", Optional: false }, { Name: "value", TypeText: "string", Optional: false }],
-
 		DocComment: "Whether error telemetry will get sent. If false, `publicLogError` will no-op.",
-
 		SourceLine: 53,
 	}
 ] as const;
