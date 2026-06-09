@@ -5,28 +5,42 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISSHRemoteAgentHostServiceTag = "sshRemoteAgentHostService" as const;
+
 export const ISSHRemoteAgentHostServiceSourcePath = "vs/platform/agentHost/common/sshRemoteAgentHost.ts" as const;
+
 export const ISSHRemoteAgentHostServiceSourceLine = 14 as const;
+
 /**
  * IPC channel name for the main-process SSH service.
  */
 
 export interface ISSHRemoteAgentHostServiceUpstream {
+
 	/**
 	 * IPC channel name for the main-process SSH service.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ISSHRemoteAgentHostServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "IPC channel name for the main-process SSH service.",
+
 		SourceLine: 82,
 	}
 ] as const;

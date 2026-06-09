@@ -5,28 +5,51 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISCMViewServiceTag = "scmView" as const;
+
 export const ISCMViewServiceSourcePath = "vs/workbench/contrib/scm/common/scm.ts" as const;
+
 export const ISCMViewServiceSourceLine = 226 as const;
+
 export interface ISCMViewServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly menus: ISCMMenus;
+
 	readonly selectionModeConfig: IObservable<ISCMRepositorySelectionMode>;
+
 	readonly explorerEnabledConfig: IObservable<boolean>;
+
 	readonly graphShowIncomingChangesConfig: IObservable<boolean>;
+
 	readonly graphShowOutgoingChangesConfig: IObservable<boolean>;
+
 	readonly onDidChangeRepositories: Event<ISCMViewVisibleRepositoryChangeEvent>;
+
 	readonly didFinishLoadingRepositories: IObservable<boolean>;
+
 	readonly onDidChangeVisibleRepositories: Event<ISCMViewVisibleRepositoryChangeEvent>;
+
 	readonly focusedRepository: ISCMRepository | undefined;
+
 	readonly onDidFocusRepository: Event<ISCMRepository | undefined>;
+
 	repositories: ISCMRepository[];
+
 	visibleRepositories: readonly ISCMRepository[];
+
 	isVisible(repository: ISCMRepository): boolean;
+
 	toggleVisibility(repository: ISCMRepository, visible?: boolean): void;
+
 	toggleSortKey(sortKey: ISCMRepositorySortKey): void;
+
 	toggleSelectionMode(selectionMode: ISCMRepositorySelectionMode): void;
+
 	focus(repository: ISCMRepository): void;
+
 	/**
 	 * The active repository is the repository selected in the Source Control Repositories view
 	 * or the repository associated with the active editor. The active repository is shown in the
@@ -34,195 +57,366 @@ export interface ISCMViewServiceUpstream {
 	 */
 	pinActiveRepository(repository: ISCMRepository | undefined): void;
 }
+
 export const ISCMViewServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 234,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "menus",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "ISCMMenus",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 234,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "selectionModeConfig",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IObservable<ISCMRepositorySelectionMode>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 234,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "explorerEnabledConfig",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IObservable<boolean>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 234,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "graphShowIncomingChangesConfig",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IObservable<boolean>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 234,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "graphShowOutgoingChangesConfig",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IObservable<boolean>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 234,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeRepositories",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ISCMViewVisibleRepositoryChangeEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 234,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "didFinishLoadingRepositories",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IObservable<boolean>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 234,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeVisibleRepositories",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ISCMViewVisibleRepositoryChangeEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 234,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "focusedRepository",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "ISCMRepository | undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 234,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidFocusRepository",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ISCMRepository | undefined>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 234,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "repositories",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ISCMRepository[]",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 242,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "visibleRepositories",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "readonly ISCMRepository[]",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 246,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isVisible",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "repository", TypeText: "ISCMRepository", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 249,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "toggleVisibility",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "repository", TypeText: "ISCMRepository", Optional: false }, { Name: "visible", TypeText: "boolean", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 250,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "toggleSortKey",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "sortKey", TypeText: "ISCMRepositorySortKey", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 252,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "toggleSelectionMode",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "selectionMode", TypeText: "ISCMRepositorySelectionMode", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 253,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "focus",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "repository", TypeText: "ISCMRepository", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 257,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "pinActiveRepository",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "repository", TypeText: "ISCMRepository | undefined", Optional: false }],
+
 		DocComment: "The active repository is the repository selected in the Source Control Repositories view\nor the repository associated with the active editor. The active repository is shown in the\nSource Control Repository status bar item.",
+
 		SourceLine: 265,
 	}
 ] as const;

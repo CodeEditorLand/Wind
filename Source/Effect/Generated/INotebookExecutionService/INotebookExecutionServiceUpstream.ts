@@ -5,65 +5,119 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const INotebookExecutionServiceTag = "INotebookExecutionService" as const;
+
 export const INotebookExecutionServiceSourcePath = "vs/workbench/contrib/notebook/common/notebookExecutionService.ts" as const;
+
 export const INotebookExecutionServiceSourceLine = 33 as const;
+
 export interface INotebookExecutionServiceUpstream {
+
 	_serviceBrand: undefined;
+
 	executeNotebookCells(notebook: INotebookTextModel, cells: Iterable<NotebookCellTextModel>, contextKeyService: IContextKeyService): Promise<void>;
+
 	cancelNotebookCells(notebook: INotebookTextModel, cells: Iterable<NotebookCellTextModel>): Promise<void>;
+
 	cancelNotebookCellHandles(notebook: INotebookTextModel, cells: Iterable<number>): Promise<void>;
+
 	registerExecutionParticipant(participant: ICellExecutionParticipant): IDisposable;
 }
+
 export const INotebookExecutionServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 36,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "executeNotebookCells",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "notebook", TypeText: "INotebookTextModel", Optional: false }, { Name: "cells", TypeText: "Iterable<NotebookCellTextModel>", Optional: false }, { Name: "contextKeyService", TypeText: "IContextKeyService", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 38,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "cancelNotebookCells",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "notebook", TypeText: "INotebookTextModel", Optional: false }, { Name: "cells", TypeText: "Iterable<NotebookCellTextModel>", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 39,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "cancelNotebookCellHandles",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "notebook", TypeText: "INotebookTextModel", Optional: false }, { Name: "cells", TypeText: "Iterable<number>", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 40,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerExecutionParticipant",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "participant", TypeText: "ICellExecutionParticipant", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 41,
 	}
 ] as const;

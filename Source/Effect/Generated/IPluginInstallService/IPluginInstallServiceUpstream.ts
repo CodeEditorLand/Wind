@@ -5,10 +5,15 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IPluginInstallServiceTag = "pluginInstallService" as const;
+
 export const IPluginInstallServiceSourcePath = "vs/workbench/contrib/chat/common/plugins/pluginInstallService.ts" as const;
+
 export const IPluginInstallServiceSourceLine = 11 as const;
+
 export interface IPluginInstallServiceUpstream {
+
 	/**
 	 * When `true`, also re-installs npm/pip packages that have no pinned
 	 * version. Defaults to `false` to avoid interactive terminal prompts
@@ -16,15 +21,24 @@ export interface IPluginInstallServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IPluginInstallServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "When `true`, also re-installs npm/pip packages that have no pinned\nversion. Defaults to `false` to avoid interactive terminal prompts\nduring background updates.",
+
 		SourceLine: 56,
 	}
 ] as const;

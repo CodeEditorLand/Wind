@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IUriIdentityServiceTag = "IUriIdentityService" as const;
+
 export const IUriIdentityServiceSourcePath = "vs/platform/uriIdentity/common/uriIdentity.ts" as const;
+
 export const IUriIdentityServiceSourceLine = 11 as const;
+
 export interface IUriIdentityServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const IUriIdentityServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 15,
 	}
 ] as const;

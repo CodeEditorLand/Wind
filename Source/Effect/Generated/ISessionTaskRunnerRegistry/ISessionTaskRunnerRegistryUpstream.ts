@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISessionTaskRunnerRegistryTag = "sessionTaskRunnerRegistry" as const;
+
 export const ISessionTaskRunnerRegistrySourcePath = "vs/sessions/contrib/chat/browser/sessionTaskRunner.ts" as const;
+
 export const ISessionTaskRunnerRegistrySourceLine = 60 as const;
+
 // Decorator doc:
 // /**
 //  * Pluggable runner that knows how to execute a session task in the runtime
@@ -26,6 +30,7 @@ export const ISessionTaskRunnerRegistrySourceLine = 60 as const;
  */
 
 export interface ISessionTaskRunnerRegistryUpstream {
+
 	/**
 	 * Pluggable runner that knows how to execute a session task in the runtime
 	 * associated with a given session.
@@ -35,15 +40,24 @@ export interface ISessionTaskRunnerRegistryUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ISessionTaskRunnerRegistryMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Pluggable runner that knows how to execute a session task in the runtime\nassociated with a given session.\nImplementations are registered via {@link ISessionTaskRunnerRegistry.register}\nand consulted by {@link ISessionsTasksService.runTask}, which dispatches to\nthe highest-priority runner whose {@link canRun} returns `true`.",
+
 		SourceLine: 43,
 	}
 ] as const;

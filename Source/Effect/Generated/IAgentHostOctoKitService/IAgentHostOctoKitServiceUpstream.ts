@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentHostOctoKitServiceTag = "agentHostOctoKitService" as const;
+
 export const IAgentHostOctoKitServiceSourcePath = "vs/platform/agentHost/node/shared/agentHostOctoKitService.ts" as const;
+
 export const IAgentHostOctoKitServiceSourceLine = 69 as const;
+
 // Decorator doc:
 // /**
 //  * Successful result of {@link IAgentHostOctoKitService.createPullRequest}.
@@ -24,6 +28,7 @@ export const IAgentHostOctoKitServiceSourceLine = 69 as const;
  */
 
 export interface IAgentHostOctoKitServiceUpstream {
+
 	/**
 	 * Successful result of {@link IAgentHostOctoKitService.createPullRequest}.
 	 * Mirrors the `CreatedPullRequest` type returned by `OctoKitService` in
@@ -32,15 +37,24 @@ export interface IAgentHostOctoKitServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IAgentHostOctoKitServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Successful result of {@link IAgentHostOctoKitService.createPullRequest}.\nMirrors the `CreatedPullRequest` type returned by `OctoKitService` in\n`extensions/copilot/src/platform/github/common/githubService.ts` so the\nshapes line up if/when the two are ported together.",
+
 		SourceLine: 45,
 	}
 ] as const;

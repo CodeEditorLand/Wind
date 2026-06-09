@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITestCoverageServiceTag = "testCoverageService" as const;
+
 export const ITestCoverageServiceSourcePath = "vs/workbench/contrib/testing/common/testCoverageService.ts" as const;
+
 export const ITestCoverageServiceSourceLine = 23 as const;
+
 export interface ITestCoverageServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const ITestCoverageServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 26,
 	}
 ] as const;

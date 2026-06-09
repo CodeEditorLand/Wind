@@ -5,29 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IRecordingServiceTag = "recordingService" as const;
+
 export const IRecordingServiceSourcePath = "vs/workbench/contrib/issue/browser/recordingService.ts" as const;
+
 export const IRecordingServiceSourceLine = 28 as const;
+
 // Decorator doc:
 // /**
 //  * The raw video data as a Blob.
 //  */
 // 
 export interface IRecordingServiceUpstream {
+
 	/**
 	 * The raw video data as a Blob.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IRecordingServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "The raw video data as a Blob.",
+
 		SourceLine: 31,
 	}
 ] as const;

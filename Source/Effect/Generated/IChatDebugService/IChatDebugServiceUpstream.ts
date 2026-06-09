@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IChatDebugServiceTag = "chatDebugService" as const;
+
 export const IChatDebugServiceSourcePath = "vs/workbench/contrib/chat/common/chatDebugService.ts" as const;
+
 export const IChatDebugServiceSourceLine = 127 as const;
+
 // Decorator doc:
 // /**
 //  * The severity level of a chat debug log event.
@@ -18,20 +22,30 @@ export const IChatDebugServiceSourceLine = 127 as const;
  */
 
 export interface IChatDebugServiceUpstream {
+
 	/**
 	 * The severity level of a chat debug log event.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IChatDebugServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "The severity level of a chat debug log event.",
+
 		SourceLine: 135,
 	}
 ] as const;

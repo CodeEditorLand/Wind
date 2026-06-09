@@ -5,120 +5,224 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtensionHostStarterTag = "extensionHostStarter" as const;
+
 export const IExtensionHostStarterSourcePath = "vs/platform/extensions/common/extensionHostStarter.ts" as const;
+
 export const IExtensionHostStarterSourceLine = 9 as const;
+
 export interface IExtensionHostStarterUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	onDynamicStdout(id: string): Event<string>;
+
 	onDynamicStderr(id: string): Event<string>;
+
 	onDynamicMessage(id: string): Event<unknown>;
+
 	onDynamicExit(id: string): Event<{ code: number; signal: string }>;
+
 	createExtensionHost(): Promise<{ id: string }>;
+
 	start(id: string, opts: IExtensionHostProcessOptions): Promise<{ pid: number | undefined }>;
+
 	enableInspectPort(id: string): Promise<boolean>;
+
 	waitForExit(id: string, maxWaitTimeMs: number): Promise<void>;
+
 	kill(id: string): Promise<void>;
 }
+
 export const IExtensionHostStarterMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 25,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "onDynamicStdout",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Event<string>",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 27,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "onDynamicStderr",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Event<string>",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 28,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "onDynamicMessage",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Event<unknown>",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 29,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "onDynamicExit",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Event<{ code: number; signal: string }>",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 30,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "createExtensionHost",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<{ id: string }>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 32,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "start",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<{ pid: number | undefined }>",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }, { Name: "opts", TypeText: "IExtensionHostProcessOptions", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 33,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "enableInspectPort",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<boolean>",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 34,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "waitForExit",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }, { Name: "maxWaitTimeMs", TypeText: "number", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 35,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "kill",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 36,
 	}
 ] as const;

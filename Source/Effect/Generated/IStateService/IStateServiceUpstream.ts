@@ -5,65 +5,119 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IStateServiceTag = "stateService" as const;
+
 export const IStateServiceSourcePath = "vs/platform/state/node/state.ts" as const;
+
 export const IStateServiceSourceLine = 18 as const;
+
 export interface IStateServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	setItem(key: string, data?: object | string | number | boolean | undefined | null): void;
+
 	setItems(items: readonly { key: string; data?: object | string | number | boolean | undefined | null }[]): void;
+
 	removeItem(key: string): void;
+
 	close(): Promise<void>;
 }
+
 export const IStateServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 21,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setItem",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "key", TypeText: "string", Optional: false }, { Name: "data", TypeText: "object | string | number | boolean | undefined | null", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 23,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setItems",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "items", TypeText: "readonly { key: string; data?: object | string | number | boolean | undefined | null }[]", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 24,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeItem",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "key", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 26,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "close",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 28,
 	}
 ] as const;

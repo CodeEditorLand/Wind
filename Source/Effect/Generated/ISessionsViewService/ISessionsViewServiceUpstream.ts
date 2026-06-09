@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISessionsViewServiceTag = "sessionsViewService" as const;
+
 export const ISessionsViewServiceSourcePath = "vs/sessions/browser/sessionsViewService.ts" as const;
+
 export const ISessionsViewServiceSourceLine = 197 as const;
+
 // Decorator doc:
 // /**
 //  * Upper bound on how long restore waits for a persisted session to resurface
@@ -24,6 +28,7 @@ export const ISessionsViewServiceSourceLine = 197 as const;
  */
 
 export interface ISessionsViewServiceUpstream {
+
 	/**
 	 * Upper bound on how long restore waits for a persisted session to resurface
 	 * via its provider. Generous (providers may load after auth settles) but finite
@@ -32,15 +37,24 @@ export interface ISessionsViewServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ISessionsViewServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Upper bound on how long restore waits for a persisted session to resurface\nvia its provider. Generous (providers may load after auth settles) but finite\nso a session that is gone for good cannot keep restore — and its provider\nlisteners — alive indefinitely.",
+
 		SourceLine: 87,
 	}
 ] as const;

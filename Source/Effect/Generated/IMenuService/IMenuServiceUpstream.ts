@@ -5,29 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IMenuServiceTag = "menuService" as const;
+
 export const IMenuServiceSourcePath = "vs/platform/actions/common/actions.ts" as const;
+
 export const IMenuServiceSourceLine = 373 as const;
+
 // Decorator doc:
 // /**
 //  * Menu item is hidden if this expression returns false.
 //  */
 // 
 export interface IMenuServiceUpstream {
+
 	/**
 	 * Menu item is hidden if this expression returns false.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IMenuServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Menu item is hidden if this expression returns false.",
+
 		SourceLine: 382,
 	}
 ] as const;

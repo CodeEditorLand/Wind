@@ -5,65 +5,119 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IExtensionStatusBarItemServiceTag = "IExtensionStatusBarItemService" as const;
+
 export const IExtensionStatusBarItemServiceSourcePath = "vs/workbench/api/browser/statusBarExtensionPoint.ts" as const;
+
 export const IExtensionStatusBarItemServiceSourceLine = 30 as const;
+
 export interface IExtensionStatusBarItemServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	readonly onDidChange: Event<IExtensionStatusBarItemChangeEvent>;
+
 	setOrUpdateEntry(id: string, statusId: string, extensionId: string | undefined, name: string, text: string, tooltip: IMarkdownString | string | undefined | IManagedHoverTooltipMarkdownString, command: Command | undefined, color: string | ThemeColor | undefined, backgroundColor: ThemeColor | undefined, alignLeft: boolean, priority: number | undefined, accessibilityInformation: IAccessibilityInformation | undefined): StatusBarUpdateKind;
+
 	unsetEntry(id: string): void;
+
 	getEntries(): Iterable<ExtensionStatusBarEntry>;
 }
+
 export const IExtensionStatusBarItemServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 49,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChange",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<IExtensionStatusBarItemChangeEvent>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 49,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setOrUpdateEntry",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "StatusBarUpdateKind",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }, { Name: "statusId", TypeText: "string", Optional: false }, { Name: "extensionId", TypeText: "string | undefined", Optional: false }, { Name: "name", TypeText: "string", Optional: false }, { Name: "text", TypeText: "string", Optional: false }, { Name: "tooltip", TypeText: "IMarkdownString | string | undefined | IManagedHoverTooltipMarkdownString", Optional: false }, { Name: "command", TypeText: "Command | undefined", Optional: false }, { Name: "color", TypeText: "string | ThemeColor | undefined", Optional: false }, { Name: "backgroundColor", TypeText: "ThemeColor | undefined", Optional: false }, { Name: "alignLeft", TypeText: "boolean", Optional: false }, { Name: "priority", TypeText: "number | undefined", Optional: false }, { Name: "accessibilityInformation", TypeText: "IAccessibilityInformation | undefined", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 53,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "unsetEntry",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 55,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getEntries",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Iterable<ExtensionStatusBarEntry>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 57,
 	}
 ] as const;

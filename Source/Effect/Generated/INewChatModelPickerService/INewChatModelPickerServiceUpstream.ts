@@ -5,43 +5,77 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const INewChatModelPickerServiceTag = "newChatModelPickerService" as const;
+
 export const INewChatModelPickerServiceSourcePath = "vs/sessions/contrib/chat/browser/newChatModelPicker.ts" as const;
+
 export const INewChatModelPickerServiceSourceLine = 9 as const;
+
 export interface INewChatModelPickerServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	registerModelPicker(opener: () => void): IDisposable;
+
 	openModelPicker(): void;
 }
+
 export const INewChatModelPickerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 12,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerModelPicker",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable",
+
 		Parameters: [{ Name: "opener", TypeText: "() => void", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 13,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "openModelPicker",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 14,
 	}
 ] as const;

@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IUserDataSyncServiceTag = "IUserDataSyncService" as const;
+
 export const IUserDataSyncServiceSourcePath = "vs/platform/userDataSync/common/userDataSync.ts" as const;
+
 export const IUserDataSyncServiceSourceLine = 583 as const;
+
 // Decorator doc:
 // /**
 //  * Checks if resource enabled was explicitly configured before,
@@ -15,366 +19,606 @@ export const IUserDataSyncServiceSourceLine = 583 as const;
 //  */
 // 
 export interface IUserDataSyncServiceUpstream {
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	_serviceBrand: undefined;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	readonly status: SyncStatus;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	readonly onDidChangeStatus: Event<SyncStatus>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	readonly conflicts: IUserDataSyncResourceConflicts[];
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	readonly onDidChangeConflicts: Event<IUserDataSyncResourceConflicts[]>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	readonly onDidChangeLocal: Event<SyncResource>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	readonly onSyncErrors: Event<IUserDataSyncResourceError[]>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	readonly lastSyncTime: number | undefined;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	readonly onDidChangeLastSyncTime: Event<number>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	readonly onDidResetRemote: Event<void>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	readonly onDidResetLocal: Event<void>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	createSyncTask(manifest: IUserDataManifest | null, disableCache?: boolean): Promise<IUserDataSyncTask>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	createManualSyncTask(): Promise<IUserDataManualSyncTask>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	resolveContent(resource: URI): Promise<string | null>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	accept(syncResource: IUserDataSyncResource, resource: URI, content: string | null | undefined, apply: boolean | { force: boolean }): Promise<void>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	reset(): Promise<void>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	resetRemote(): Promise<void>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	cleanUpRemoteData(): Promise<void>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	resetLocal(): Promise<void>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	hasLocalData(): Promise<boolean>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	hasPreviouslySynced(): Promise<boolean>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	replace(syncResourceHandle: ISyncResourceHandle): Promise<void>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	saveRemoteActivityData(location: URI): Promise<void>;
+
 	/**
 	 * Checks if resource enabled was explicitly configured before,
 	 * ignoring its default enablement value used in {@link isResourceEnabled}.
 	 */
 	extractActivityData(activityDataResource: URI, location: URI): Promise<void>;
 }
+
 export const IUserDataSyncServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 585,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "status",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "SyncStatus",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 587,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeStatus",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<SyncStatus>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 587,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "conflicts",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "IUserDataSyncResourceConflicts[]",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 587,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeConflicts",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<IUserDataSyncResourceConflicts[]>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 587,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeLocal",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<SyncResource>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 587,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onSyncErrors",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<IUserDataSyncResourceError[]>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 587,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "lastSyncTime",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "number | undefined",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 587,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeLastSyncTime",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<number>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 587,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidResetRemote",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 587,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidResetLocal",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 587,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "createSyncTask",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IUserDataSyncTask>",
+
 		Parameters: [{ Name: "manifest", TypeText: "IUserDataManifest | null", Optional: false }, { Name: "disableCache", TypeText: "boolean", Optional: true }],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 602,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "createManualSyncTask",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IUserDataManualSyncTask>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 603,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resolveContent",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<string | null>",
+
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 604,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "accept",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "syncResource", TypeText: "IUserDataSyncResource", Optional: false }, { Name: "resource", TypeText: "URI", Optional: false }, { Name: "content", TypeText: "string | null | undefined", Optional: false }, { Name: "apply", TypeText: "boolean | { force: boolean }", Optional: false }],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 605,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "reset",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 607,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resetRemote",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 608,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "cleanUpRemoteData",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 609,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resetLocal",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 610,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "hasLocalData",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<boolean>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 611,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "hasPreviouslySynced",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<boolean>",
+
 		Parameters: [],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 612,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "replace",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "syncResourceHandle", TypeText: "ISyncResourceHandle", Optional: false }],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 614,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "saveRemoteActivityData",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "location", TypeText: "URI", Optional: false }],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 616,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "extractActivityData",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "activityDataResource", TypeText: "URI", Optional: false }, { Name: "location", TypeText: "URI", Optional: false }],
+
 		DocComment: "Checks if resource enabled was explicitly configured before,\nignoring its default enablement value used in {@link isResourceEnabled}.",
+
 		SourceLine: 617,
 	}
 ] as const;

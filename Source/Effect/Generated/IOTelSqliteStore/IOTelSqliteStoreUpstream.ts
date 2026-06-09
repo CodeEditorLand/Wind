@@ -5,16 +5,22 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IOTelSqliteStoreTag = "otelSqliteStore" as const;
+
 export const IOTelSqliteStoreSourcePath = "vs/platform/otel/node/sqlite/otelSqliteStore.ts" as const;
+
 export const IOTelSqliteStoreSourceLine = 63 as const;
+
 // Decorator doc:
 // /**
 //  * Schema version — bump when altering tables so existing DBs get migrated.
 //  */
 // 
 export interface IOTelSqliteStoreUpstream {
+
 	// (no members extracted in same file - resolve cross-file)
 }
+
 export const IOTelSqliteStoreMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

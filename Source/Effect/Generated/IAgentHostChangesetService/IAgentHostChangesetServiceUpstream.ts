@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentHostChangesetServiceTag = "agentHostChangesetService" as const;
+
 export const IAgentHostChangesetServiceSourcePath = "vs/platform/agentHost/node/agentHostChangesetService.ts" as const;
+
 export const IAgentHostChangesetServiceSourceLine = 192 as const;
+
 // Decorator doc:
 // /**
 //  * Metadata key under which the {@link ISessionFileDiff}[] for the
@@ -26,6 +30,7 @@ export const IAgentHostChangesetServiceSourceLine = 192 as const;
  */
 
 export interface IAgentHostChangesetServiceUpstream {
+
 	/**
 	 * Metadata key under which the {@link ISessionFileDiff}[] for the
 	 * `<session>/changeset/uncommitted` changeset is persisted. Per-changeset
@@ -35,15 +40,24 @@ export interface IAgentHostChangesetServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IAgentHostChangesetServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Metadata key under which the {@link ISessionFileDiff}[] for the\n`<session>/changeset/uncommitted` changeset is persisted. Per-changeset\nkeys let `listSessions` / `restoreSession` reseed the catalogue without\nrecomputing, and keep static changesets independent of the legacy\n`'diffs'` blob (which only ever covered the session-wide changeset).",
+
 		SourceLine: 210,
 	}
 ] as const;

@@ -5,54 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const INotebookDocumentServiceTag = "notebookDocumentService" as const;
+
 export const INotebookDocumentServiceSourcePath = "vs/workbench/services/notebook/common/notebookDocumentService.ts" as const;
+
 export const INotebookDocumentServiceSourceLine = 13 as const;
+
 export interface INotebookDocumentServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	getNotebook(uri: URI): INotebookDocument | undefined;
+
 	addNotebookDocument(document: INotebookDocument): void;
+
 	removeNotebookDocument(document: INotebookDocument): void;
 }
+
 export const INotebookDocumentServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 102,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getNotebook",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "INotebookDocument | undefined",
+
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 104,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "addNotebookDocument",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "document", TypeText: "INotebookDocument", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 105,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeNotebookDocument",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "document", TypeText: "INotebookDocument", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 106,
 	}
 ] as const;

@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentNetworkFilterServiceTag = "agentNetworkFilterService" as const;
+
 export const IAgentNetworkFilterServiceSourcePath = "vs/platform/networkFilter/common/networkFilterService.ts" as const;
+
 export const IAgentNetworkFilterServiceSourceLine = 16 as const;
+
 /**
  * Service that filters network requests made by agent tools (fetch tool,
  * integrated browser) based on the configured allowed/denied domain lists.
@@ -19,6 +23,7 @@ export const IAgentNetworkFilterServiceSourceLine = 16 as const;
  */
 
 export interface IAgentNetworkFilterServiceUpstream {
+
 	/**
 	 * Service that filters network requests made by agent tools (fetch tool,
 	 * integrated browser) based on the configured allowed/denied domain lists.
@@ -30,15 +35,24 @@ export interface IAgentNetworkFilterServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IAgentNetworkFilterServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Service that filters network requests made by agent tools (fetch tool,\nintegrated browser) based on the configured allowed/denied domain lists.\nFiltering is active for all callers when the `chat.agent.networkFilter` setting\nis enabled.\nWhen both domain lists are empty, all domains are denied.\nWhen a domain appears on the denied list it is always blocked, even if it\nalso matches an entry on the allowed list.",
+
 		SourceLine: 29,
 	}
 ] as const;

@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IUserDataProfileStorageServiceTag = "IUserDataProfileStorageService" as const;
+
 export const IUserDataProfileStorageServiceSourcePath = "vs/platform/userDataProfile/common/userDataProfileStorageService.ts" as const;
+
 export const IUserDataProfileStorageServiceSourceLine = 32 as const;
+
 export interface IUserDataProfileStorageServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const IUserDataProfileStorageServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 34,
 	}
 ] as const;
