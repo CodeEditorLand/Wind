@@ -8,9 +8,9 @@
  * @category Layer
  */
 
-import { Effect, Layer, Stream, SubscriptionRef } from "effect";
+import { Effect, Layer, SubscriptionRef } from "effect";
 
-import { Telemetry } from "../../Telemetry.js";
+import { Telemetry, TelemetryLive } from "../../Telemetry.js";
 
 import PanelUpdateError from "../Error/PanelUpdateError.js";
 
@@ -39,20 +39,21 @@ import type {
  * const appLayer = Layer.mergeAll(TelemetryLive, PanelLive);
  * ```
  */
-const PanelLive = Layer.succeed(
+const PanelLive = Layer.effect(
 	PanelTag,
-, makeService()
-)
 
-		const TelemetryService = Effect.runSync(Effect.provide(Telemetry, TelemetryLive));
+	Effect.gen(function* () {
+		const TelemetryService = Effect.runSync(
+			Effect.provide(Telemetry, TelemetryLive),
+		);
 
 		// In-memory storage of panel views as reactive ref
-		const ViewsRef = Effect.runSync(SubscriptionRef.make<ReadonlyArray<PanelView>>(
+		const ViewsRef = yield* SubscriptionRef.make<ReadonlyArray<PanelView>>(
 			[],
 		);
 
 		// Active view state as reactive ref
-		const ActiveViewRef = Effect.runSync(SubscriptionRef.make<string | undefined>(
+		const ActiveViewRef = yield* SubscriptionRef.make<string | undefined>(
 			undefined,
 		);
 

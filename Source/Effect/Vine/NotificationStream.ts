@@ -108,7 +108,7 @@ export const VineNotificationsLive = Layer.scoped(
 			new tauri.Channel<NotificationFrame>();
 
 		channel.onmessage = (frame: NotificationFrame) => {
-			Effect.runFork(Queue.offer(queue, frame));
+			Queue.unsafeOffer(queue, frame); // lean: no fiber per frame
 		};
 
 		yield* Effect.acquireRelease(

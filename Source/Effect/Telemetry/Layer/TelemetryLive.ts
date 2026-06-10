@@ -8,7 +8,7 @@
  * @category Layer
  */
 
-import { Effect, HashMap, Layer, Stream, SubscriptionRef } from "effect";
+import { Effect, HashMap, Layer, Option, Stream, SubscriptionRef } from "effect";
 
 import type { TelemetryService } from "../Interface/TelemetryService.js";
 import TelemetryTag from "../Tag/TelemetryTag.js";
@@ -60,7 +60,7 @@ function makeTelemetryService(): TelemetryService {
 			const currentMetrics = yield* metricsRef.get;
 
 			const existing =
-				HashMap.get(currentMetrics, name).pipe(Effect.runSync) || [];
+				Option.getOrElse(HashMap.get(currentMetrics, name), () => [] as ReadonlyArray<any>);
 
 			yield* SubscriptionRef.set(
 				metricsRef,
@@ -121,8 +121,7 @@ function makeTelemetryService(): TelemetryService {
 					const currentSpans = yield* spansRef.get;
 
 					const existing =
-						HashMap.get(currentSpans, name).pipe(Effect.runSync) ||
-						[];
+						Option.getOrElse(HashMap.get(currentSpans, name), () => [] as ReadonlyArray<any>);
 
 					yield* SubscriptionRef.set(
 						spansRef,
@@ -209,7 +208,7 @@ function makeTelemetryService(): TelemetryService {
 	): Effect.Effect<ReadonlyArray<TelemetryMetric>, never> =>
 		metricsRef.get.pipe(
 			Effect.map(
-				(map) => HashMap.get(map, name).pipe(Effect.runSync) || [],
+				(map) => Option.getOrElse(HashMap.get(map, name), () => [] as ReadonlyArray<any>),
 			),
 		);
 
@@ -217,7 +216,7 @@ function makeTelemetryService(): TelemetryService {
 	const getAverageDuration = (name: string): Effect.Effect<number, never> =>
 		spansRef.get.pipe(
 			Effect.map((map) => {
-				const spans = HashMap.get(map, name).pipe(Effect.runSync) || [];
+				const spans = Option.getOrElse(HashMap.get(map, name), () => [] as ReadonlyArray<any>);
 
 				if (spans.length === 0) return 0;
 
@@ -235,7 +234,7 @@ function makeTelemetryService(): TelemetryService {
 	const getSuccessRate = (name: string): Effect.Effect<number, never> =>
 		spansRef.get.pipe(
 			Effect.map((map) => {
-				const spans = HashMap.get(map, name).pipe(Effect.runSync) || [];
+				const spans = Option.getOrElse(HashMap.get(map, name), () => [] as ReadonlyArray<any>);
 
 				if (spans.length === 0) return 0;
 
