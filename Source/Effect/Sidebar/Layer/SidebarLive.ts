@@ -11,17 +11,11 @@
 import { Effect, Layer, SubscriptionRef } from "effect";
 
 import { Telemetry } from "../../Telemetry.js";
-
 import TelemetryLive from "../../Telemetry/Layer/TelemetryLive.js";
-
 import SidebarPanelNotFoundError from "../Error/SidebarPanelNotFoundError.js";
-
 import SidebarUpdateError from "../Error/SidebarUpdateError.js";
-
 import type { SidebarService } from "../Interface/SidebarService.js";
-
 import SidebarTag from "../Tag/SidebarTag.js";
-
 import type { CreateSidebarPanel, SidebarPanel } from "../Type/SidebarType.js";
 
 /**
@@ -144,10 +138,7 @@ function makeService(): SidebarService {
 				yield* SubscriptionRef.set(ActivePanelRef, undefined);
 			}
 
-			yield* TelemetryService.log(
-				"info",
-				`Removed sidebar panel: ${Id}`,
-			);
+			yield* TelemetryService.log("info", `Removed sidebar panel: ${Id}`);
 		});
 
 	// Atom: Set active panel
@@ -197,10 +188,7 @@ function makeService(): SidebarService {
 
 			yield* UpdatePanel(Id, { collapsed: !Existing.collapsed });
 
-			yield* TelemetryService.log(
-				"info",
-				`Toggled sidebar panel: ${Id}`,
-			);
+			yield* TelemetryService.log("info", `Toggled sidebar panel: ${Id}`);
 		});
 
 	// Atom: Collapse panel
@@ -237,9 +225,7 @@ function makeService(): SidebarService {
 			AllPanels.filter((Panel) => Panel.position === Position),
 		);
 
-	Effect.runSync(
-		TelemetryService.log("info", "Sidebar service initialized"),
-	);
+	Effect.runSync(TelemetryService.log("info", "Sidebar service initialized"));
 
 	return {
 		createPanel: CreatePanel,

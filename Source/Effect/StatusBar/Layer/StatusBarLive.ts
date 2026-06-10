@@ -11,15 +11,10 @@
 import { Effect, Layer, SubscriptionRef } from "effect";
 
 import { makeMockTelemetry } from "../../Telemetry/Layer/TelemetryMock.js";
-
 import StatusBarItemNotFoundError from "../Error/StatusBarItemNotFoundError.js";
-
 import StatusBarUpdateError from "../Error/StatusBarUpdateError.js";
-
 import type { StatusBarService } from "../Interface/StatusBarService.js";
-
 import StatusBarTag from "../Tag/StatusBarTag.js";
-
 import type {
 	CreateStatusBarItem,
 	StatusBarItem,
@@ -68,11 +63,7 @@ function makeStatusBarService(): StatusBarService {
 		Id: string,
 
 		updates: Partial<Omit<StatusBarItem, "id">>,
-	): Effect.Effect<
-		void,
-
-		StatusBarItemNotFoundError | StatusBarUpdateError
-	> =>
+	): Effect.Effect<void, StatusBarItemNotFoundError | StatusBarUpdateError> =>
 		Effect.gen(function* () {
 			const Existing = yield* GetItem(Id);
 
@@ -170,13 +161,12 @@ function makeStatusBarService(): StatusBarService {
 		Id: string,
 
 		text: string,
-	): Effect.Effect<
-		void,
+	): Effect.Effect<void, StatusBarItemNotFoundError | StatusBarUpdateError> =>
+		UpdateItem(Id, { text });
 
-		StatusBarItemNotFoundError | StatusBarUpdateError
-	> => UpdateItem(Id, { text });
-
-	Effect.runSync(TelemetryService.log("info", "StatusBar service initialized"));
+	Effect.runSync(
+		TelemetryService.log("info", "StatusBar service initialized"),
+	);
 
 	const service: StatusBarService = {
 		createItem: CreateItem,

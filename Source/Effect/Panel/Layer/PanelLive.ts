@@ -11,15 +11,10 @@
 import { Effect, Layer, SubscriptionRef } from "effect";
 
 import { Telemetry, TelemetryLive } from "../../Telemetry.js";
-
 import PanelUpdateError from "../Error/PanelUpdateError.js";
-
 import PanelViewNotFoundError from "../Error/PanelViewNotFoundError.js";
-
 import type { PanelService } from "../Interface/PanelService.js";
-
 import PanelTag from "../Tag/PanelTag.js";
-
 import type {
 	CreatePanelView,
 	PanelView,
@@ -283,7 +278,6 @@ const PanelLive = Layer.effect(
 		// Atom: Get visible views
 		const GetVisibleViews: Effect.Effect<
 			ReadonlyArray<PanelView>,
-
 			never
 		> = Effect.map(Views, (Views) => Views.filter((View) => View.visible));
 
