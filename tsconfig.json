@@ -1,121 +1,78 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-
 	"compilerOptions": {
 		"allowImportingTsExtensions": false,
-
 		"allowSyntheticDefaultImports": true,
-
 		"baseUrl": "./",
-
 		"declaration": true,
-
 		"declarationMap": true,
-
 		"emitDeclarationOnly": true,
-
 		"emitDecoratorMetadata": true,
-
 		"esModuleInterop": true,
-
 		"exactOptionalPropertyTypes": true,
-
 		"experimentalDecorators": true,
-
 		"forceConsistentCasingInFileNames": true,
-
-		"lib": ["ESNext", "DOM", "DOM.Iterable"],
-
+		"lib": [
+			"ESNext",
+			"DOM",
+			"DOM.Iterable"
+		],
 		"module": "ESNext",
-
 		"moduleResolution": "Bundler",
-
 		"noEmit": false,
-
 		"noFallthroughCasesInSwitch": true,
-
 		"noImplicitAny": true,
-
 		"noImplicitOverride": true,
-
 		"noImplicitReturns": true,
-
 		"noImplicitThis": true,
-
 		"noPropertyAccessFromIndexSignature": true,
-
 		"noUncheckedIndexedAccess": true,
-
 		"noUnusedLocals": true,
-
 		"noUnusedParameters": true,
-
 		"outDir": "Target",
-
 		"paths": {
-			"@codeeditorland/output/*": ["../Output/*"]
+			"@codeeditorland/output/*": [
+				"../Output/*"
+			]
 		},
-
 		"plugins": [
 			{
 				"allowedDuplicatedPackages": [],
-
 				"completions": true,
-
 				"diagnosticSeverity": {
 					"duplicatePackage": "error",
-
 					"floatingEffect": "error",
-
 					"leakingRequirements": "error",
-
 					"missingEffectContext": "error",
-
 					"missingEffectError": "error",
-
 					"missingReturnYieldStar": "error",
-
 					"missingStarInYieldEffectGen": "error",
-
 					"unnecessaryEffectGen": "error",
-
 					"unnecessaryPipe": "error"
 				},
-
 				"diagnostics": true,
-
 				"name": "@effect/language-service",
-
 				"quickinfo": true,
-
 				"transform": "@effect/language-service/transform"
 			}
 		],
-
 		"rootDir": "./Source",
-
 		"skipLibCheck": true,
-
 		"strict": true,
-
 		"strictBindCallApply": true,
-
 		"strictFunctionTypes": true,
-
 		"strictNullChecks": true,
-
 		"strictPropertyInitialization": true,
-
 		"target": "ESNext",
-
 		"useDefineForClassFields": true,
-
 		"composite": true
 	},
-
-	"exclude": ["Target", "node_modules"],
-
+	"exclude": [
+		"Target",
+		"node_modules"
+	],
 	"extends": "@playform/build/tsconfig",
-
-	"include": ["Source"]
+	"include": [
+		"Source"
+	]
 }
