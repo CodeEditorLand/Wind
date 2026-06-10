@@ -13,7 +13,6 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-import { IPC } from "../IPC.js";
 import type { CommandsService } from "./Interface/CommandsService.js";
 import { CommandsServiceTag } from "./Tag/CommandsServiceTag.js";
 import type { CommandsProblem } from "./Type/CommandsProblem.js";
@@ -23,70 +22,72 @@ const MakeCommandsOperationFailed = (error: unknown): CommandsProblem => ({
 	error: error instanceof Error ? error : new Error(String(error)),
 });
 
-export const LiveCommandsServiceLayer = Layer.effect(
+function makeCommandsService(): CommandsService {
+	const Globals = globalThis as any;
+
+	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+
+	// Local handler registry for UI-side commands (registered from Wind/Sky).
+	// Handlers registered here execute directly without an IPC round-trip.
+	const LocalHandlers = new Map<
+		string,
+		(...args: readonly unknown[]) => unknown
+	>();
+
+	const Service: CommandsService = {
+		RegisterCommand: (id, handler) =>
+			Effect.sync(() => {
+				LocalHandlers.set(id, handler);
+			}),
+
+		ExecuteCommand: <T = unknown>(
+			id: string,
+			...args: readonly unknown[]
+		): Effect.Effect<T, CommandsProblem> => {
+			// Check local handlers first (UI-side commands execute synchronously)
+			const LocalHandler = LocalHandlers.get(id);
+
+			if (LocalHandler !== undefined) {
+				return Effect.try({
+					try: () => LocalHandler(...args) as T,
+					catch: MakeCommandsOperationFailed,
+				});
+			}
+
+			// Delegate to Mountain's CommandRegistry via IPC
+			return IPCService.invoke(Channel.CommandsExecute)([
+				id,
+
+				args[0] ?? null,
+			]).pipe(
+				Effect.map((Result) => Result as T),
+
+				Effect.mapError(MakeCommandsOperationFailed),
+			);
+		},
+
+		UnregisterCommand: (id) =>
+			Effect.sync(() => {
+				LocalHandlers.delete(id);
+			}),
+
+		GetCommands: () =>
+			IPCService.invoke(Channel.CommandsGetAll)([]).pipe(
+				Effect.map((Result) =>
+					Array.isArray(Result) ? (Result as readonly string[]) : [],
+				),
+
+				Effect.mapError(MakeCommandsOperationFailed),
+			),
+	};
+
+	return Service;
+}
+
+export const LiveCommandsServiceLayer = Layer.succeed(
 	CommandsServiceTag,
 
-	Effect.gen(function* () {
-		const IPCService = yield* IPC;
-
-		// Local handler registry for UI-side commands (registered from Wind/Sky).
-		// Handlers registered here execute directly without an IPC round-trip.
-		const LocalHandlers = new Map<
-			string,
-			(...args: readonly unknown[]) => unknown
-		>();
-
-		const Service: CommandsService = {
-			RegisterCommand: (id, handler) =>
-				Effect.sync(() => {
-					LocalHandlers.set(id, handler);
-				}),
-
-			ExecuteCommand: <T = unknown>(
-				id: string,
-				...args: readonly unknown[]
-			): Effect.Effect<T, CommandsProblem> => {
-				// Check local handlers first (UI-side commands execute synchronously)
-				const LocalHandler = LocalHandlers.get(id);
-
-				if (LocalHandler !== undefined) {
-					return Effect.try({
-						try: () => LocalHandler(...args) as T,
-						catch: MakeCommandsOperationFailed,
-					});
-				}
-
-				// Delegate to Mountain's CommandRegistry via IPC
-				return IPCService.invoke(Channel.CommandsExecute)([
-					id,
-
-					args[0] ?? null,
-				]).pipe(
-					Effect.map((Result) => Result as T),
-
-					Effect.mapError(MakeCommandsOperationFailed),
-				);
-			},
-
-			UnregisterCommand: (id) =>
-				Effect.sync(() => {
-					LocalHandlers.delete(id);
-				}),
-
-			GetCommands: () =>
-				IPCService.invoke(Channel.CommandsGetAll)([]).pipe(
-					Effect.map((Result) =>
-						Array.isArray(Result)
-							? (Result as readonly string[])
-							: [],
-					),
-
-					Effect.mapError(MakeCommandsOperationFailed),
-				),
-		};
-
-		return Service;
-	}),
+	makeCommandsService(),
 );
 
 export default LiveCommandsServiceLayer;

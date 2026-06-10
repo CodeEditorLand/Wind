@@ -15,7 +15,6 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-import { IPC } from "../IPC.js";
 import type { TerminalService } from "./Interface/TerminalService.js";
 import { TerminalServiceTag } from "./Tag/TerminalServiceTag.js";
 import type { TerminalProblem } from "./Type/TerminalProblem.js";
@@ -25,62 +24,66 @@ const MakeTerminalProblem = (error: unknown): TerminalProblem =>
 		? { _tag: "TerminalOperationFailed", error }
 		: { _tag: "TerminalOperationFailed", error: new Error(String(error)) };
 
-export const LiveTerminalServiceLayer = Layer.effect(
+function makeLiveTerminalService(): TerminalService {
+	const Globals = globalThis as any;
+
+	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+
+	const Service: TerminalService = {
+		CreateTerminal: (options) =>
+			IPCService.invoke(Channel.TerminalCreate)([options ?? {}]).pipe(
+				Effect.map((Result) => {
+					const Info = Result as { id?: number; name?: string };
+
+					return {
+						id: Info.id ?? 0,
+						name: Info.name ?? "terminal",
+					};
+				}),
+
+				Effect.mapError(MakeTerminalProblem),
+			),
+
+		SendText: (id, text) =>
+			IPCService.invoke(Channel.TerminalSendText)([id, text]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeTerminalProblem),
+			),
+
+		Dispose: (id) =>
+			IPCService.invoke(Channel.TerminalDispose)([id]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeTerminalProblem),
+			),
+
+		Show: (id, preserveFocus) =>
+			IPCService.invoke(Channel.TerminalShow)([
+				id,
+
+				preserveFocus ?? false,
+			]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeTerminalProblem),
+			),
+
+		Hide: (id) =>
+			IPCService.invoke(Channel.TerminalHide)([id]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeTerminalProblem),
+			),
+	};
+
+	return Service;
+}
+
+export const LiveTerminalServiceLayer = Layer.succeed(
 	TerminalServiceTag,
 
-	Effect.gen(function* () {
-		const IPCService = yield* IPC;
-
-		const Service: TerminalService = {
-			CreateTerminal: (options) =>
-				IPCService.invoke(Channel.TerminalCreate)([options ?? {}]).pipe(
-					Effect.map((Result) => {
-						const Info = Result as { id?: number; name?: string };
-
-						return {
-							id: Info.id ?? 0,
-							name: Info.name ?? "terminal",
-						};
-					}),
-
-					Effect.mapError(MakeTerminalProblem),
-				),
-
-			SendText: (id, text) =>
-				IPCService.invoke(Channel.TerminalSendText)([id, text]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeTerminalProblem),
-				),
-
-			Dispose: (id) =>
-				IPCService.invoke(Channel.TerminalDispose)([id]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeTerminalProblem),
-				),
-
-			Show: (id, preserveFocus) =>
-				IPCService.invoke(Channel.TerminalShow)([
-					id,
-
-					preserveFocus ?? false,
-				]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeTerminalProblem),
-				),
-
-			Hide: (id) =>
-				IPCService.invoke(Channel.TerminalHide)([id]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeTerminalProblem),
-				),
-		};
-
-		return Service;
-	}),
+	makeLiveTerminalService(),
 );
 
 export default LiveTerminalServiceLayer;

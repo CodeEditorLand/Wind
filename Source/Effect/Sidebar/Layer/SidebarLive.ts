@@ -11,10 +11,15 @@
 import { Effect, Layer, Stream, SubscriptionRef } from "effect";
 
 import { Telemetry } from "../../Telemetry.js";
+
 import SidebarPanelNotFoundError from "../Error/SidebarPanelNotFoundError.js";
+
 import SidebarUpdateError from "../Error/SidebarUpdateError.js";
+
 import type { SidebarService } from "../Interface/SidebarService.js";
+
 import SidebarTag from "../Tag/SidebarTag.js";
+
 import type { CreateSidebarPanel, SidebarPanel } from "../Type/SidebarType.js";
 
 /**
@@ -30,19 +35,20 @@ import type { CreateSidebarPanel, SidebarPanel } from "../Type/SidebarType.js";
  * const appLayer = Layer.mergeAll(TelemetryLive, SidebarLive);
  * ```
  */
-const SidebarLive = Layer.effect(
+const SidebarLive = Layer.succeed(
 	SidebarTag,
+, makeService()
+)
 
-	Effect.gen(function* () {
-		const TelemetryService = yield* Telemetry;
+		const TelemetryService = Effect.runSync(Effect.provide(Telemetry, TelemetryLive));
 
 		// In-memory storage of sidebar panels as reactive ref
-		const PanelsRef = yield* SubscriptionRef.make<
+		const PanelsRef = Effect.runSync(SubscriptionRef.make<
 			ReadonlyArray<SidebarPanel>
 		>([]);
 
 		// Active panel state as reactive ref
-		const ActivePanelRef = yield* SubscriptionRef.make<string | undefined>(
+		const ActivePanelRef = Effect.runSync(SubscriptionRef.make<string | undefined>(
 			undefined,
 		);
 
@@ -79,6 +85,7 @@ const SidebarLive = Layer.effect(
 			updates: Partial<Omit<SidebarPanel, "id">>,
 		): Effect.Effect<
 			void,
+
 			SidebarPanelNotFoundError | SidebarUpdateError
 		> =>
 			Effect.gen(function* () {
@@ -202,6 +209,7 @@ const SidebarLive = Layer.effect(
 			Id: string,
 		): Effect.Effect<
 			void,
+
 			SidebarPanelNotFoundError | SidebarUpdateError
 		> =>
 			Effect.gen(function* () {
@@ -227,6 +235,7 @@ const SidebarLive = Layer.effect(
 			Id: string,
 		): Effect.Effect<
 			void,
+
 			SidebarPanelNotFoundError | SidebarUpdateError
 		> =>
 			Effect.gen(function* () {
@@ -244,6 +253,7 @@ const SidebarLive = Layer.effect(
 			Id: string,
 		): Effect.Effect<
 			void,
+
 			SidebarPanelNotFoundError | SidebarUpdateError
 		> =>
 			Effect.gen(function* () {

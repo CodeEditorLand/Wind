@@ -14,12 +14,6 @@ import {
 	type WorkbenchProgressGlobals,
 } from "./WorkbenchProgressBridgeShape.js";
 
-const ResolveBridge = Effect.sync((): WorkbenchProgressBridgeShape | null => {
-	const Globals = globalThis as unknown as WorkbenchProgressGlobals;
-
-	return Globals.__CEL_SERVICES__?.Progress ?? null;
-});
-
 const Unavailable: WorkbenchProgressProblem = {
 	_tag: "WorkbenchProgressBridgeUnavailable",
 
@@ -41,50 +35,55 @@ const ToReporter = (
 		),
 });
 
-export const WorkbenchProgressLive = Layer.effect(
+function makeWorkbenchProgressService(): WorkbenchProgressService {
+	const Globals = globalThis as unknown as WorkbenchProgressGlobals;
+
+	const Bridge: WorkbenchProgressBridgeShape | null =
+		Globals.__CEL_SERVICES__?.Progress ?? null;
+
+	const Run = <A>(
+		Options: WorkbenchProgressTaskOptions,
+
+		Body: (
+			reporter: WorkbenchProgressReporter,
+		) => Effect.Effect<A, WorkbenchProgressProblem>,
+	): Effect.Effect<A, WorkbenchProgressProblem> =>
+		Effect.gen(function* () {
+			if (!Bridge) return yield* Effect.fail(Unavailable);
+
+			return yield* Effect.tryPromise({
+				try: () =>
+					Bridge.withProgress(
+						{
+							title: Options.title,
+							location: WorkbenchProgressLocationCode(
+								Options.location,
+							),
+							cancellable: Options.cancellable,
+							source: Options.source,
+						},
+
+						async (Reporter) =>
+							Effect.runPromise(Body(ToReporter(Reporter))),
+					),
+				catch: (Cause) =>
+					({
+						_tag: "WorkbenchProgressTaskFailed",
+						title: Options.title,
+						error: ToError(Cause),
+					}) satisfies WorkbenchProgressProblem,
+			});
+		});
+
+	const Service: WorkbenchProgressService = { Run };
+
+	return Service;
+}
+
+export const WorkbenchProgressLive = Layer.succeed(
 	WorkbenchProgressServiceTag,
 
-	Effect.gen(function* () {
-		const Bridge = yield* ResolveBridge;
-
-		const Run = <A>(
-			Options: WorkbenchProgressTaskOptions,
-
-			Body: (
-				reporter: WorkbenchProgressReporter,
-			) => Effect.Effect<A, WorkbenchProgressProblem>,
-		): Effect.Effect<A, WorkbenchProgressProblem> =>
-			Effect.gen(function* () {
-				if (!Bridge) return yield* Effect.fail(Unavailable);
-
-				return yield* Effect.tryPromise({
-					try: () =>
-						Bridge.withProgress(
-							{
-								title: Options.title,
-								location: WorkbenchProgressLocationCode(
-									Options.location,
-								),
-								cancellable: Options.cancellable,
-								source: Options.source,
-							},
-
-							async (Reporter) =>
-								Effect.runPromise(Body(ToReporter(Reporter))),
-						),
-					catch: (Cause) =>
-						({
-							_tag: "WorkbenchProgressTaskFailed",
-							title: Options.title,
-							error: ToError(Cause),
-						}) satisfies WorkbenchProgressProblem,
-				});
-			});
-
-		const Service: WorkbenchProgressService = { Run };
-
-		return Service;
-	}),
+	makeWorkbenchProgressService(),
 );
 
 export default WorkbenchProgressLive;

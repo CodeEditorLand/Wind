@@ -16,7 +16,6 @@ import { Effect, Layer, Stream } from "effect";
 
 import Channel from "../../IPC/Channel.js";
 import SkyEvent from "../../IPC/SkyEvent.js";
-import { IPC } from "../IPC.js";
 import type {
 	WorkspaceFolder,
 	WorkspacesChangeEvent,
@@ -77,87 +76,91 @@ const CoerceFolderArray = (Value: unknown): readonly WorkspaceFolder[] => {
 	return Out;
 };
 
-export const LiveWorkspacesServiceLayer = Layer.effect(
+function makeWorkspacesService(): WorkspacesService {
+	const Globals = globalThis as any;
+
+	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+
+	const Service: WorkspacesService = {
+		GetFolders: () =>
+			IPCService.invoke(Channel.WorkspacesGetFolders)([]).pipe(
+				Effect.map((Result) =>
+					Array.isArray(Result)
+						? (Result as readonly {
+								uri: string;
+
+								name: string;
+
+								index: number;
+							}[])
+						: [],
+				),
+
+				Effect.mapError(MakeWorkspacesProblem),
+			),
+
+		AddFolder: (uri, name) =>
+			IPCService.invoke(Channel.WorkspacesAddFolder)([
+				uri,
+
+				name ?? "",
+			]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeWorkspacesProblem),
+			),
+
+		RemoveFolder: (uri) =>
+			IPCService.invoke(Channel.WorkspacesRemoveFolder)([uri]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeWorkspacesProblem),
+			),
+
+		GetName: () =>
+			IPCService.invoke(Channel.WorkspacesGetName)([]).pipe(
+				Effect.map((Result) =>
+					typeof Result === "string" ? Result : undefined,
+				),
+
+				Effect.mapError(MakeWorkspacesProblem),
+			),
+
+		/**
+		 * Mountain broadcasts every workspace mutation on
+		 * `sky://workspaces/changed` from
+		 * `UpdateWorkspaceFoldersAndBroadcast`. Map each event's raw
+		 * payload into a typed `WorkspacesChangeEvent` and drop entries
+		 * we can't parse - Mountain is the source of truth for folder
+		 * shape, but defensive parsing keeps the stream alive if a
+		 * future field is introduced.
+		 */
+		OnChange: () =>
+			IPCService.events(SkyEvent.WorkspacesChanged).pipe(
+				Stream.map((Event): WorkspacesChangeEvent => {
+					const Payload = (Event.args[0] ?? {}) as Record<
+						string,
+						unknown
+					>;
+
+					return {
+						added: CoerceFolderArray(Payload["added"]),
+						removed: CoerceFolderArray(Payload["removed"]),
+						folders: CoerceFolderArray(Payload["folders"]),
+					};
+				}),
+
+				Stream.mapError(MakeWorkspacesProblem),
+			),
+	};
+
+	return Service;
+}
+
+export const LiveWorkspacesServiceLayer = Layer.succeed(
 	WorkspacesServiceTag,
 
-	Effect.gen(function* () {
-		const IPCService = yield* IPC;
-
-		const Service: WorkspacesService = {
-			GetFolders: () =>
-				IPCService.invoke(Channel.WorkspacesGetFolders)([]).pipe(
-					Effect.map((Result) =>
-						Array.isArray(Result)
-							? (Result as readonly {
-									uri: string;
-
-									name: string;
-
-									index: number;
-								}[])
-							: [],
-					),
-
-					Effect.mapError(MakeWorkspacesProblem),
-				),
-
-			AddFolder: (uri, name) =>
-				IPCService.invoke(Channel.WorkspacesAddFolder)([
-					uri,
-
-					name ?? "",
-				]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeWorkspacesProblem),
-				),
-
-			RemoveFolder: (uri) =>
-				IPCService.invoke(Channel.WorkspacesRemoveFolder)([uri]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeWorkspacesProblem),
-				),
-
-			GetName: () =>
-				IPCService.invoke(Channel.WorkspacesGetName)([]).pipe(
-					Effect.map((Result) =>
-						typeof Result === "string" ? Result : undefined,
-					),
-
-					Effect.mapError(MakeWorkspacesProblem),
-				),
-
-			/**
-			 * Mountain broadcasts every workspace mutation on
-			 * `sky://workspaces/changed` from
-			 * `UpdateWorkspaceFoldersAndBroadcast`. Map each event's raw
-			 * payload into a typed `WorkspacesChangeEvent` and drop entries
-			 * we can't parse - Mountain is the source of truth for folder
-			 * shape, but defensive parsing keeps the stream alive if a
-			 * future field is introduced.
-			 */
-			OnChange: () =>
-				IPCService.events(SkyEvent.WorkspacesChanged).pipe(
-					Stream.map((Event): WorkspacesChangeEvent => {
-						const Payload = (Event.args[0] ?? {}) as Record<
-							string,
-							unknown
-						>;
-
-						return {
-							added: CoerceFolderArray(Payload["added"]),
-							removed: CoerceFolderArray(Payload["removed"]),
-							folders: CoerceFolderArray(Payload["folders"]),
-						};
-					}),
-
-					Stream.mapError(MakeWorkspacesProblem),
-				),
-		};
-
-		return Service;
-	}),
+	makeWorkspacesService(),
 );
 
 export default LiveWorkspacesServiceLayer;

@@ -12,12 +12,6 @@ import type {
 	WorkbenchExtensionGlobals,
 } from "./WorkbenchExtensionBridgeShape.js";
 
-const ResolveBridge = Effect.sync((): WorkbenchExtensionBridgeShape | null => {
-	const Globals = globalThis as unknown as WorkbenchExtensionGlobals;
-
-	return Globals.__CEL_SERVICES__?.Extension ?? null;
-});
-
 const Unavailable: WorkbenchExtensionProblem = {
 	_tag: "WorkbenchExtensionBridgeUnavailable",
 
@@ -38,89 +32,97 @@ const ToDescriptor = (
 	extensionLocation: upstream.extensionLocation.toString(),
 });
 
-export const WorkbenchExtensionLive = Layer.effect(
-	WorkbenchExtensionServiceTag,
+function makeWorkbenchExtensionService(): WorkbenchExtensionService {
+	const Globals = globalThis as unknown as WorkbenchExtensionGlobals;
 
-	Effect.gen(function* () {
-		const Bridge = yield* ResolveBridge;
+	const Bridge: WorkbenchExtensionBridgeShape | null =
+		Globals.__CEL_SERVICES__?.Extension ?? null;
 
-		const Snapshot: Effect.Effect<
-			ReadonlyArray<WorkbenchExtensionDescriptor>,
-			WorkbenchExtensionProblem
-		> = Effect.gen(function* () {
+	const Snapshot: Effect.Effect<
+		ReadonlyArray<WorkbenchExtensionDescriptor>,
+		WorkbenchExtensionProblem
+	> = Effect.gen(function* () {
+		if (!Bridge) return yield* Effect.fail(Unavailable);
+
+		return Bridge.extensions.map(ToDescriptor);
+	});
+
+	const Activate = (
+		ExtensionId: string,
+	): Effect.Effect<void, WorkbenchExtensionProblem> =>
+		Effect.gen(function* () {
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
-			return Bridge.extensions.map(ToDescriptor);
+			yield* Effect.tryPromise({
+				try: () =>
+					Bridge.activateById(
+						{ value: ExtensionId },
+
+						{
+							startup: false,
+							extensionId: { value: ExtensionId },
+						},
+					),
+				catch: (Cause) =>
+					({
+						_tag: "WorkbenchExtensionActivationFailed",
+						extensionId: ExtensionId,
+						error: ToError(Cause),
+					}) satisfies WorkbenchExtensionProblem,
+			});
 		});
 
-		const Activate = (
-			ExtensionId: string,
-		): Effect.Effect<void, WorkbenchExtensionProblem> =>
-			Effect.gen(function* () {
-				if (!Bridge) return yield* Effect.fail(Unavailable);
+	const ActivateByEvent = (
+		EventName: string,
+	): Effect.Effect<void, WorkbenchExtensionProblem> =>
+		Effect.gen(function* () {
+			if (!Bridge) return yield* Effect.fail(Unavailable);
 
-				yield* Effect.tryPromise({
-					try: () =>
-						Bridge.activateById(
-							{ value: ExtensionId },
-
-							{
-								startup: false,
-								extensionId: { value: ExtensionId },
-							},
-						),
-					catch: (Cause) =>
-						({
-							_tag: "WorkbenchExtensionActivationFailed",
-							extensionId: ExtensionId,
-							error: ToError(Cause),
-						}) satisfies WorkbenchExtensionProblem,
-				});
+			yield* Effect.tryPromise({
+				try: () => Bridge.activateByEvent(EventName),
+				catch: (Cause) =>
+					({
+						_tag: "WorkbenchExtensionActivationFailed",
+						extensionId: `<event:${EventName}>`,
+						error: ToError(Cause),
+					}) satisfies WorkbenchExtensionProblem,
 			});
-
-		const ActivateByEvent = (
-			EventName: string,
-		): Effect.Effect<void, WorkbenchExtensionProblem> =>
-			Effect.gen(function* () {
-				if (!Bridge) return yield* Effect.fail(Unavailable);
-
-				yield* Effect.tryPromise({
-					try: () => Bridge.activateByEvent(EventName),
-					catch: (Cause) =>
-						({
-							_tag: "WorkbenchExtensionActivationFailed",
-							extensionId: `<event:${EventName}>`,
-							error: ToError(Cause),
-						}) satisfies WorkbenchExtensionProblem,
-				});
-			});
-
-		const OnExtensionsChange = Stream.async<
-			ReadonlyArray<WorkbenchExtensionDescriptor>,
-			WorkbenchExtensionProblem
-		>((Emit) => {
-			if (!Bridge) {
-				Emit.fail(Unavailable);
-
-				return Effect.void;
-			}
-
-			const Subscription = Bridge.onDidChangeExtensions(() => {
-				Emit.single(Bridge.extensions.map(ToDescriptor));
-			});
-
-			return Effect.sync(() => Subscription.dispose());
 		});
 
-		const Service: WorkbenchExtensionService = {
-			Snapshot,
-			Activate,
-			ActivateByEvent,
-			OnExtensionsChange,
-		};
+	const OnExtensionsChange = Stream.async<
+		ReadonlyArray<WorkbenchExtensionDescriptor>,
+		WorkbenchExtensionProblem
+	>((Emit) => {
+		if (!Bridge) {
+			Emit.fail(Unavailable);
 
-		return Service;
-	}),
+			return Effect.void;
+		}
+
+		const Subscription = Bridge.onDidChangeExtensions(() => {
+			Emit.single(Bridge.extensions.map(ToDescriptor));
+		});
+
+		return Effect.sync(() => Subscription.dispose());
+	});
+
+	const Service: WorkbenchExtensionService = {
+		Snapshot,
+
+		Activate,
+
+		ActivateByEvent,
+
+		OnExtensionsChange,
+	};
+
+	return Service;
+}
+
+export const WorkbenchExtensionLive = Layer.succeed(
+	WorkbenchExtensionServiceTag,
+
+	makeWorkbenchExtensionService(),
 );
 
 export default WorkbenchExtensionLive;

@@ -12,21 +12,6 @@ import type {
 	WorkbenchCommandRegistryShape,
 } from "./WorkbenchCommandBridgeShape.js";
 
-const ResolveBridges = Effect.sync(
-	(): {
-		readonly Commands: WorkbenchCommandBridgeShape | null;
-
-		readonly Registry: WorkbenchCommandRegistryShape | null;
-	} => {
-		const Globals = globalThis as unknown as WorkbenchCommandGlobals;
-
-		return {
-			Commands: Globals.__CEL_SERVICES__?.Commands ?? null,
-			Registry: Globals.__CEL_SERVICES__?.CommandRegistry ?? null,
-		};
-	},
-);
-
 const Unavailable: WorkbenchCommandProblem = {
 	_tag: "WorkbenchCommandBridgeUnavailable",
 
@@ -36,101 +21,111 @@ const Unavailable: WorkbenchCommandProblem = {
 const ToError = (cause: unknown): Error =>
 	cause instanceof Error ? cause : new Error(String(cause));
 
-export const WorkbenchCommandLive = Layer.effect(
-	WorkbenchCommandServiceTag,
+function makeWorkbenchCommandService(): WorkbenchCommandService {
+	const Globals = globalThis as unknown as WorkbenchCommandGlobals;
 
-	Effect.gen(function* () {
-		const { Commands, Registry } = yield* ResolveBridges;
+	const Commands: WorkbenchCommandBridgeShape | null =
+		Globals.__CEL_SERVICES__?.Commands ?? null;
 
-		const Execute = <T = unknown>(
-			CommandId: string,
+	const Registry: WorkbenchCommandRegistryShape | null =
+		Globals.__CEL_SERVICES__?.CommandRegistry ?? null;
 
-			Args: ReadonlyArray<unknown>,
-		): Effect.Effect<T, WorkbenchCommandProblem> =>
-			Effect.gen(function* () {
-				if (!Commands) return yield* Effect.fail(Unavailable);
+	const Execute = <T = unknown>(
+		CommandId: string,
 
-				const Result = yield* Effect.tryPromise({
-					try: () => Commands.executeCommand<T>(CommandId, ...Args),
-					catch: (Cause) =>
-						({
-							_tag: "WorkbenchCommandExecutionFailed",
-							commandId: CommandId,
-							error: ToError(Cause),
-						}) satisfies WorkbenchCommandProblem,
-				});
+		Args: ReadonlyArray<unknown>,
+	): Effect.Effect<T, WorkbenchCommandProblem> =>
+		Effect.gen(function* () {
+			if (!Commands) return yield* Effect.fail(Unavailable);
 
-				if (Result === undefined) {
-					return yield* Effect.fail<WorkbenchCommandProblem>({
-						_tag: "WorkbenchCommandNotFound",
+			const Result = yield* Effect.tryPromise({
+				try: () => Commands.executeCommand<T>(CommandId, ...Args),
+				catch: (Cause) =>
+					({
+						_tag: "WorkbenchCommandExecutionFailed",
 						commandId: CommandId,
-					});
-				}
-
-				return Result;
+						error: ToError(Cause),
+					}) satisfies WorkbenchCommandProblem,
 			});
 
-		const ExecuteVoid = (
-			CommandId: string,
-
-			Args: ReadonlyArray<unknown>,
-		): Effect.Effect<void, WorkbenchCommandProblem> =>
-			Effect.gen(function* () {
-				if (!Commands) return yield* Effect.fail(Unavailable);
-
-				yield* Effect.tryPromise({
-					try: () => Commands.executeCommand(CommandId, ...Args),
-					catch: (Cause) =>
-						({
-							_tag: "WorkbenchCommandExecutionFailed",
-							commandId: CommandId,
-							error: ToError(Cause),
-						}) satisfies WorkbenchCommandProblem,
+			if (Result === undefined) {
+				return yield* Effect.fail<WorkbenchCommandProblem>({
+					_tag: "WorkbenchCommandNotFound",
+					commandId: CommandId,
 				});
-			});
-
-		const ListIds = Effect.gen(function* () {
-			if (!Registry) return yield* Effect.fail(Unavailable);
-
-			return Array.from(Registry.getCommands().keys());
-		});
-
-		const Has = (
-			CommandId: string,
-		): Effect.Effect<boolean, WorkbenchCommandProblem> =>
-			Effect.gen(function* () {
-				if (!Registry) return yield* Effect.fail(Unavailable);
-
-				return Registry.getCommand(CommandId) !== undefined;
-			});
-
-		const OnExecute = Stream.async<
-			WorkbenchCommandExecutedEvent,
-			WorkbenchCommandProblem
-		>((Emit) => {
-			if (!Commands) {
-				Emit.fail(Unavailable);
-
-				return Effect.void;
 			}
 
-			const Subscription = Commands.onDidExecuteCommand((Event) => {
-				Emit.single({ commandId: Event.commandId, args: Event.args });
-			});
-
-			return Effect.sync(() => Subscription.dispose());
+			return Result;
 		});
 
-		const Service: WorkbenchCommandService = {
-			Execute,
-			ExecuteVoid,
-			ListIds,
-			Has,
-			OnExecute,
-		};
+	const ExecuteVoid = (
+		CommandId: string,
 
-		return Service;
-	}),
+		Args: ReadonlyArray<unknown>,
+	): Effect.Effect<void, WorkbenchCommandProblem> =>
+		Effect.gen(function* () {
+			if (!Commands) return yield* Effect.fail(Unavailable);
+
+			yield* Effect.tryPromise({
+				try: () => Commands.executeCommand(CommandId, ...Args),
+				catch: (Cause) =>
+					({
+						_tag: "WorkbenchCommandExecutionFailed",
+						commandId: CommandId,
+						error: ToError(Cause),
+					}) satisfies WorkbenchCommandProblem,
+			});
+		});
+
+	const ListIds = Effect.gen(function* () {
+		if (!Registry) return yield* Effect.fail(Unavailable);
+
+		return Array.from(Registry.getCommands().keys());
+	});
+
+	const Has = (
+		CommandId: string,
+	): Effect.Effect<boolean, WorkbenchCommandProblem> =>
+		Effect.gen(function* () {
+			if (!Registry) return yield* Effect.fail(Unavailable);
+
+			return Registry.getCommand(CommandId) !== undefined;
+		});
+
+	const OnExecute = Stream.async<
+		WorkbenchCommandExecutedEvent,
+		WorkbenchCommandProblem
+	>((Emit) => {
+		if (!Commands) {
+			Emit.fail(Unavailable);
+
+			return Effect.void;
+		}
+
+		const Subscription = Commands.onDidExecuteCommand((Event) => {
+			Emit.single({ commandId: Event.commandId, args: Event.args });
+		});
+
+		return Effect.sync(() => Subscription.dispose());
+	});
+
+	return {
+		Execute,
+
+		ExecuteVoid,
+
+		ListIds,
+
+		Has,
+
+		OnExecute,
+	};
+}
+
+export const WorkbenchCommandLive = Layer.succeed(
+	WorkbenchCommandServiceTag,
+
+	makeWorkbenchCommandService(),
 );
 
 export default WorkbenchCommandLive;

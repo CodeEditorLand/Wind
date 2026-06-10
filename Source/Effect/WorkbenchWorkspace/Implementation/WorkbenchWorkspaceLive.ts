@@ -15,12 +15,6 @@ import type {
 	WorkbenchWorkspaceGlobals,
 } from "./WorkbenchWorkspaceBridgeShape.js";
 
-const ResolveBridge = Effect.sync((): WorkbenchWorkspaceBridgeShape | null => {
-	const Globals = globalThis as unknown as WorkbenchWorkspaceGlobals;
-
-	return Globals.__CEL_SERVICES__?.Workspace ?? null;
-});
-
 const Unavailable: WorkbenchWorkspaceProblem = {
 	_tag: "WorkbenchWorkspaceBridgeUnavailable",
 
@@ -49,85 +43,92 @@ const ToSnapshot = (
 		: null,
 });
 
-export const WorkbenchWorkspaceLive = Layer.effect(
-	WorkbenchWorkspaceServiceTag,
+function makeWorkbenchWorkspaceService(): WorkbenchWorkspaceService {
+	const Globals = globalThis as unknown as WorkbenchWorkspaceGlobals;
 
-	Effect.gen(function* () {
-		const Bridge = yield* ResolveBridge;
+	const Bridge: WorkbenchWorkspaceBridgeShape | null =
+		Globals.__CEL_SERVICES__?.Workspace ?? null;
 
-		const Snapshot: Effect.Effect<
-			WorkbenchWorkspaceSnapshot,
-			WorkbenchWorkspaceProblem
-		> = Effect.gen(function* () {
+	const Snapshot: Effect.Effect<
+		WorkbenchWorkspaceSnapshot,
+		WorkbenchWorkspaceProblem
+	> = Effect.gen(function* () {
+		if (!Bridge) return yield* Effect.fail(Unavailable);
+
+		return yield* Effect.try({
+			try: () => ToSnapshot(Bridge.getWorkspace()),
+			catch: (Cause) =>
+				({
+					_tag: "WorkbenchWorkspaceQueryFailed",
+					error: ToError(Cause),
+				}) satisfies WorkbenchWorkspaceProblem,
+		});
+	});
+
+	const Folders: Effect.Effect<
+		ReadonlyArray<WorkbenchWorkspaceFolder>,
+		WorkbenchWorkspaceProblem
+	> = Snapshot.pipe(Effect.map((Snap) => Snap.folders));
+
+	const FolderForResource = (
+		Uri: string,
+	): Effect.Effect<
+		WorkbenchWorkspaceFolder | null,
+		WorkbenchWorkspaceProblem
+	> =>
+		Effect.gen(function* () {
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
-			return yield* Effect.try({
-				try: () => ToSnapshot(Bridge.getWorkspace()),
+			const Found = yield* Effect.try({
+				try: () => Bridge.getWorkspaceFolder({ toString: () => Uri }),
 				catch: (Cause) =>
 					({
 						_tag: "WorkbenchWorkspaceQueryFailed",
 						error: ToError(Cause),
 					}) satisfies WorkbenchWorkspaceProblem,
 			});
+
+			return Found ? ToFolder(Found) : null;
 		});
 
-		const Folders: Effect.Effect<
-			ReadonlyArray<WorkbenchWorkspaceFolder>,
-			WorkbenchWorkspaceProblem
-		> = Snapshot.pipe(Effect.map((Snap) => Snap.folders));
+	const OnFolderChange = Stream.async<
+		WorkbenchWorkspaceFolderEvent,
+		WorkbenchWorkspaceProblem
+	>((Emit) => {
+		if (!Bridge) {
+			Emit.fail(Unavailable);
 
-		const FolderForResource = (
-			Uri: string,
-		): Effect.Effect<
-			WorkbenchWorkspaceFolder | null,
-			WorkbenchWorkspaceProblem
-		> =>
-			Effect.gen(function* () {
-				if (!Bridge) return yield* Effect.fail(Unavailable);
+			return Effect.void;
+		}
 
-				const Found = yield* Effect.try({
-					try: () =>
-						Bridge.getWorkspaceFolder({ toString: () => Uri }),
-					catch: (Cause) =>
-						({
-							_tag: "WorkbenchWorkspaceQueryFailed",
-							error: ToError(Cause),
-						}) satisfies WorkbenchWorkspaceProblem,
-				});
-
-				return Found ? ToFolder(Found) : null;
+		const Subscription = Bridge.onDidChangeWorkspaceFolders((Event) => {
+			Emit.single({
+				added: Event.added.map(ToFolder),
+				removed: Event.removed.map(ToFolder),
+				changed: Event.changed.map(ToFolder),
 			});
-
-		const OnFolderChange = Stream.async<
-			WorkbenchWorkspaceFolderEvent,
-			WorkbenchWorkspaceProblem
-		>((Emit) => {
-			if (!Bridge) {
-				Emit.fail(Unavailable);
-
-				return Effect.void;
-			}
-
-			const Subscription = Bridge.onDidChangeWorkspaceFolders((Event) => {
-				Emit.single({
-					added: Event.added.map(ToFolder),
-					removed: Event.removed.map(ToFolder),
-					changed: Event.changed.map(ToFolder),
-				});
-			});
-
-			return Effect.sync(() => Subscription.dispose());
 		});
 
-		const Service: WorkbenchWorkspaceService = {
-			Snapshot,
-			Folders,
-			FolderForResource,
-			OnFolderChange,
-		};
+		return Effect.sync(() => Subscription.dispose());
+	});
 
-		return Service;
-	}),
+	const Service: WorkbenchWorkspaceService = {
+		Snapshot,
+
+		Folders,
+
+		FolderForResource,
+
+		OnFolderChange,
+	};
+
+	return Service;
+}
+
+export const WorkbenchWorkspaceLive = Layer.succeed(
+	WorkbenchWorkspaceServiceTag,
+
+	makeWorkbenchWorkspaceService(),
 );
 
 export default WorkbenchWorkspaceLive;

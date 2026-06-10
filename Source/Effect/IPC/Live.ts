@@ -13,6 +13,6 @@ import { IPCTag } from "./Tag/IPCTag.js";
 /**
  * Tauri IPC service layer
  */
-export const IPCTauriLive = Layer.effect(IPCTag, TauriIPCLive);
+export const IPCTauriLive = Layer.succeed(IPCTag, TauriIPCLive);
 
 export default IPCTauriLive;

@@ -11,10 +11,15 @@
 import { Effect, Layer, Stream, SubscriptionRef } from "effect";
 
 import { Telemetry } from "../../Telemetry.js";
+
 import StatusBarItemNotFoundError from "../Error/StatusBarItemNotFoundError.js";
+
 import StatusBarUpdateError from "../Error/StatusBarUpdateError.js";
+
 import type { StatusBarService } from "../Interface/StatusBarService.js";
+
 import StatusBarTag from "../Tag/StatusBarTag.js";
+
 import type {
 	CreateStatusBarItem,
 	StatusBarItem,
@@ -33,14 +38,15 @@ import type {
  * const appLayer = Layer.mergeAll(TelemetryLive, StatusBarLive);
  * ```
  */
-const StatusBarLive = Layer.effect(
+const StatusBarLive = Layer.succeed(
 	StatusBarTag,
+, makeService()
+)
 
-	Effect.gen(function* () {
-		const TelemetryService = yield* Telemetry;
+		const TelemetryService = Effect.runSync(Effect.provide(Telemetry, TelemetryLive));
 
 		// In-memory storage of status bar items as reactive ref
-		const ItemsRef = yield* SubscriptionRef.make<
+		const ItemsRef = Effect.runSync(SubscriptionRef.make<
 			ReadonlyArray<StatusBarItem>
 		>([]);
 
@@ -75,6 +81,7 @@ const StatusBarLive = Layer.effect(
 			updates: Partial<Omit<StatusBarItem, "id">>,
 		): Effect.Effect<
 			void,
+
 			StatusBarItemNotFoundError | StatusBarUpdateError
 		> =>
 			Effect.gen(function* () {
@@ -184,6 +191,7 @@ const StatusBarLive = Layer.effect(
 			text: string,
 		): Effect.Effect<
 			void,
+
 			StatusBarItemNotFoundError | StatusBarUpdateError
 		> => UpdateItem(Id, { text });
 

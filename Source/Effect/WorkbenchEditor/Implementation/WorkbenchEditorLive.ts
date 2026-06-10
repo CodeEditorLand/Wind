@@ -14,12 +14,6 @@ import type {
 	WorkbenchEditorGlobals,
 } from "./WorkbenchEditorBridgeShape.js";
 
-const ResolveBridge = Effect.sync((): WorkbenchEditorBridgeShape | null => {
-	const Globals = globalThis as unknown as WorkbenchEditorGlobals;
-
-	return Globals.__CEL_SERVICES__?.Editor ?? null;
-});
-
 const Unavailable: WorkbenchEditorProblem = {
 	_tag: "WorkbenchEditorBridgeUnavailable",
 
@@ -55,111 +49,115 @@ const ToSnapshot = (
 	};
 };
 
-export const WorkbenchEditorLive = Layer.effect(
-	WorkbenchEditorServiceTag,
+function makeWorkbenchEditorService(): WorkbenchEditorService {
+	const Globals = globalThis as unknown as WorkbenchEditorGlobals;
 
-	Effect.gen(function* () {
-		const Bridge = yield* ResolveBridge;
+	const Bridge: WorkbenchEditorBridgeShape | null =
+		Globals.__CEL_SERVICES__?.Editor ?? null;
 
-		const Active: Effect.Effect<
-			WorkbenchEditorActiveSnapshot,
-			WorkbenchEditorProblem
-		> = Effect.gen(function* () {
+	const Active: Effect.Effect<
+		WorkbenchEditorActiveSnapshot,
+		WorkbenchEditorProblem
+	> = Effect.gen(function* () {
+		if (!Bridge) return yield* Effect.fail(Unavailable);
+
+		return ToSnapshot(Bridge.activeEditorPane);
+	});
+
+	const Open = (
+		Input: WorkbenchEditorOpenInput,
+	): Effect.Effect<WorkbenchEditorActiveSnapshot, WorkbenchEditorProblem> =>
+		Effect.gen(function* () {
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
-			return ToSnapshot(Bridge.activeEditorPane);
+			const Pane = yield* Effect.tryPromise({
+				try: () =>
+					Bridge.openEditor(
+						{
+							resource: { toString: () => Input.resource },
+						},
+
+						{
+							preserveFocus: Input.preserveFocus,
+							preview: Input.preview,
+							pinned: Input.pinned,
+						},
+
+						typeof Input.columnIndex === "number"
+							? { id: Input.columnIndex }
+							: undefined,
+					),
+				catch: (Cause) =>
+					({
+						_tag: "WorkbenchEditorOpenFailed",
+						uri: Input.resource,
+						error: ToError(Cause),
+					}) satisfies WorkbenchEditorProblem,
+			});
+
+			return ToSnapshot(Pane ?? null);
 		});
 
-		const Open = (
-			Input: WorkbenchEditorOpenInput,
-		): Effect.Effect<
-			WorkbenchEditorActiveSnapshot,
-			WorkbenchEditorProblem
-		> =>
-			Effect.gen(function* () {
-				if (!Bridge) return yield* Effect.fail(Unavailable);
+	const CloseActive: Effect.Effect<void, WorkbenchEditorProblem> = Effect.gen(
+		function* () {
+			if (!Bridge) return yield* Effect.fail(Unavailable);
 
-				const Pane = yield* Effect.tryPromise({
-					try: () =>
-						Bridge.openEditor(
-							{
-								resource: { toString: () => Input.resource },
-							},
+			const Pane = Bridge.activeEditorPane;
 
-							{
-								preserveFocus: Input.preserveFocus,
-								preview: Input.preview,
-								pinned: Input.pinned,
-							},
+			if (!Pane) return;
 
-							typeof Input.columnIndex === "number"
-								? { id: Input.columnIndex }
-								: undefined,
-						),
-					catch: (Cause) =>
-						({
-							_tag: "WorkbenchEditorOpenFailed",
-							uri: Input.resource,
-							error: ToError(Cause),
-						}) satisfies WorkbenchEditorProblem,
-				});
-
-				return ToSnapshot(Pane ?? null);
+			yield* Effect.tryPromise({
+				try: () => Bridge.closeEditor(Pane),
+				catch: (Cause) =>
+					({
+						_tag: "WorkbenchEditorCloseFailed",
+						editorId:
+							Pane.input?.editorId ??
+							Pane.getId?.() ??
+							"<active>",
+						error: ToError(Cause),
+					}) satisfies WorkbenchEditorProblem,
 			});
+		},
+	);
 
-		const CloseActive: Effect.Effect<void, WorkbenchEditorProblem> =
-			Effect.gen(function* () {
-				if (!Bridge) return yield* Effect.fail(Unavailable);
+	const OnActiveChange = Stream.async<
+		WorkbenchEditorChangeEvent,
+		WorkbenchEditorProblem
+	>((Emit) => {
+		if (!Bridge) {
+			Emit.fail(Unavailable);
 
-				const Pane = Bridge.activeEditorPane;
+			return Effect.void;
+		}
 
-				if (!Pane) return;
-
-				yield* Effect.tryPromise({
-					try: () => Bridge.closeEditor(Pane),
-					catch: (Cause) =>
-						({
-							_tag: "WorkbenchEditorCloseFailed",
-							editorId:
-								Pane.input?.editorId ??
-								Pane.getId?.() ??
-								"<active>",
-							error: ToError(Cause),
-						}) satisfies WorkbenchEditorProblem,
-				});
+		const Subscription = Bridge.onDidActiveEditorChange((Event) => {
+			Emit.single({
+				previous: Event.previous ? ToSnapshot(Event.previous) : null,
+				current: ToSnapshot(Event.current),
 			});
-
-		const OnActiveChange = Stream.async<
-			WorkbenchEditorChangeEvent,
-			WorkbenchEditorProblem
-		>((Emit) => {
-			if (!Bridge) {
-				Emit.fail(Unavailable);
-
-				return Effect.void;
-			}
-
-			const Subscription = Bridge.onDidActiveEditorChange((Event) => {
-				Emit.single({
-					previous: Event.previous
-						? ToSnapshot(Event.previous)
-						: null,
-					current: ToSnapshot(Event.current),
-				});
-			});
-
-			return Effect.sync(() => Subscription.dispose());
 		});
 
-		const Service: WorkbenchEditorService = {
-			Active,
-			Open,
-			CloseActive,
-			OnActiveChange,
-		};
+		return Effect.sync(() => Subscription.dispose());
+	});
 
-		return Service;
-	}),
+	const Service: WorkbenchEditorService = {
+		Active,
+
+		Open,
+
+		CloseActive,
+
+		OnActiveChange,
+	};
+
+	return Service;
+}
+
+export const WorkbenchEditorLive = Layer.succeed(
+	WorkbenchEditorServiceTag,
+
+	makeWorkbenchEditorService(),
 );
 
 export default WorkbenchEditorLive;

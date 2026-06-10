@@ -13,7 +13,7 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-import { IPC } from "../IPC.js";
+import type { IPCService } from "../IPC/Interface/IPCService.js";
 import type { SearchService } from "./Interface/SearchService.js";
 import { SearchServiceTag } from "./Tag/SearchServiceTag.js";
 import type { SearchProblem } from "./Type/SearchProblem.js";
@@ -23,62 +23,64 @@ const MakeSearchProblem = (error: unknown): SearchProblem =>
 		? { _tag: "SearchOperationFailed", error }
 		: { _tag: "SearchOperationFailed", error: new Error(String(error)) };
 
-export const LiveSearchServiceLayer = Layer.effect(
+function makeSearchService(): SearchService {
+	const Globals = globalThis as any;
+
+	const IPCService: IPCService = Globals.__CEL_SERVICES__?.IPC;
+
+	const Service: SearchService = {
+		FindInFiles: (options) =>
+			IPCService.invoke(Channel.SearchFindInFiles)([
+				options.pattern,
+
+				options.isRegex ?? false,
+
+				options.isCaseSensitive ?? false,
+
+				options.isWordMatch ?? false,
+
+				options.include ?? "**",
+
+				options.exclude ?? "",
+
+				options.maxResults ?? 1000,
+			]).pipe(
+				Effect.map((Result) =>
+					Array.isArray(Result)
+						? (Result as readonly {
+								uri: string;
+
+								lineNumber: number;
+
+								preview: string;
+							}[])
+						: [],
+				),
+
+				Effect.mapError(MakeSearchProblem),
+			),
+
+		FindFiles: (options) =>
+			IPCService.invoke(Channel.SearchFindFiles)([
+				options.pattern,
+
+				options.maxResults ?? 500,
+			]).pipe(
+				Effect.map((Result) =>
+					Array.isArray(Result) ? (Result as readonly string[]) : [],
+				),
+
+				Effect.mapError(MakeSearchProblem),
+			),
+	};
+
+	return Service;
+}
+
+export const LiveSearchServiceLayer = Layer.succeed(
 	SearchServiceTag,
 
-	Effect.gen(function* () {
-		const IPCService = yield* IPC;
-
-		const Service: SearchService = {
-			FindInFiles: (options) =>
-				IPCService.invoke(Channel.SearchFindInFiles)([
-					options.pattern,
-
-					options.isRegex ?? false,
-
-					options.isCaseSensitive ?? false,
-
-					options.isWordMatch ?? false,
-
-					options.include ?? "**",
-
-					options.exclude ?? "",
-
-					options.maxResults ?? 1000,
-				]).pipe(
-					Effect.map((Result) =>
-						Array.isArray(Result)
-							? (Result as readonly {
-									uri: string;
-
-									lineNumber: number;
-
-									preview: string;
-								}[])
-							: [],
-					),
-
-					Effect.mapError(MakeSearchProblem),
-				),
-
-			FindFiles: (options) =>
-				IPCService.invoke(Channel.SearchFindFiles)([
-					options.pattern,
-
-					options.maxResults ?? 500,
-				]).pipe(
-					Effect.map((Result) =>
-						Array.isArray(Result)
-							? (Result as readonly string[])
-							: [],
-					),
-
-					Effect.mapError(MakeSearchProblem),
-				),
-		};
-
-		return Service;
-	}),
+	makeSearchService(),
 );
 
 export default LiveSearchServiceLayer;

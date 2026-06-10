@@ -29,66 +29,70 @@ const MakeNotificationProblem = (error: unknown): NotificationProblem =>
 				error: new Error(String(error)),
 			};
 
-export const LiveNotificationServiceLayer = Layer.effect(
+function makeNotificationService(): NotificationService {
+	const Globals = globalThis as any;
+
+	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+
+	const Service: NotificationService = {
+		Show: (message, severity, actions) =>
+			IPCService.invoke(Channel.NotificationShow)([
+				message,
+
+				severity,
+
+				actions ?? [],
+			]).pipe(
+				Effect.map((Result) =>
+					typeof Result === "string" ? Result : undefined,
+				),
+
+				Effect.mapError(MakeNotificationProblem),
+			),
+
+		ShowProgress: (title, cancellable) =>
+			IPCService.invoke(Channel.NotificationShowProgress)([
+				title,
+
+				cancellable,
+			]).pipe(
+				Effect.map((Result) =>
+					typeof Result === "string"
+						? Result
+						: `progress-${Date.now()}`,
+				),
+
+				Effect.mapError(MakeNotificationProblem),
+			),
+
+		UpdateProgress: (id, increment, message) =>
+			IPCService.invoke(Channel.NotificationUpdateProgress)([
+				id,
+
+				increment,
+
+				message ?? "",
+			]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeNotificationProblem),
+			),
+
+		EndProgress: (id) =>
+			IPCService.invoke(Channel.NotificationEndProgress)([id]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeNotificationProblem),
+			),
+	};
+
+	return Service;
+}
+
+export const LiveNotificationServiceLayer = Layer.succeed(
 	NotificationServiceTag,
 
-	Effect.gen(function* () {
-		const IPCService = yield* IPC;
-
-		const Service: NotificationService = {
-			Show: (message, severity, actions) =>
-				IPCService.invoke(Channel.NotificationShow)([
-					message,
-
-					severity,
-
-					actions ?? [],
-				]).pipe(
-					Effect.map((Result) =>
-						typeof Result === "string" ? Result : undefined,
-					),
-
-					Effect.mapError(MakeNotificationProblem),
-				),
-
-			ShowProgress: (title, cancellable) =>
-				IPCService.invoke(Channel.NotificationShowProgress)([
-					title,
-
-					cancellable,
-				]).pipe(
-					Effect.map((Result) =>
-						typeof Result === "string"
-							? Result
-							: `progress-${Date.now()}`,
-					),
-
-					Effect.mapError(MakeNotificationProblem),
-				),
-
-			UpdateProgress: (id, increment, message) =>
-				IPCService.invoke(Channel.NotificationUpdateProgress)([
-					id,
-
-					increment,
-
-					message ?? "",
-				]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeNotificationProblem),
-				),
-
-			EndProgress: (id) =>
-				IPCService.invoke(Channel.NotificationEndProgress)([id]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeNotificationProblem),
-				),
-		};
-
-		return Service;
-	}),
+	makeNotificationService(),
 );
 
 export default LiveNotificationServiceLayer;

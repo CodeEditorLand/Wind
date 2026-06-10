@@ -14,7 +14,6 @@
 
 import { Effect, Layer } from "effect";
 
-import { ModelServiceTag } from "../Model/Tag/ModelServiceTag.js";
 import type { TextModelResolverService } from "./Interface/TextModelResolverService.js";
 import { TextModelResolverServiceTag } from "./Tag/TextModelResolverServiceTag.js";
 import type { TextModelResolverProblem } from "./Type/TextModelResolverProblem.js";
@@ -24,62 +23,66 @@ const MakeResolverProblem = (error: unknown): TextModelResolverProblem => ({
 	error: error instanceof Error ? error : new Error(String(error)),
 });
 
-export const LiveTextModelResolverServiceLayer = Layer.effect(
+function makeTextModelResolverService(): TextModelResolverService {
+	const Globals = globalThis as any;
+
+	const ModelService = Globals.__CEL_SERVICES__?.ModelService ?? null;
+
+	// Simple reference counter: uri → open count
+	const RefCounts = new Map<string, number>();
+
+	const Service: TextModelResolverService = {
+		Resolve: (uri) =>
+			ModelService.OpenModel(uri).pipe(
+				Effect.map((Model) => {
+					// Increment reference count
+					RefCounts.set(uri, (RefCounts.get(uri) ?? 0) + 1);
+
+					return {
+						model: Model,
+						dispose: () => {
+							const Count = (RefCounts.get(uri) ?? 1) - 1;
+
+							if (Count <= 0) {
+								RefCounts.delete(uri);
+
+								// Fire-and-forget close when ref count drops to zero
+								Effect.runFork(
+									ModelService.CloseModel(uri).pipe(
+										Effect.ignoreLogged,
+									),
+								);
+							} else {
+								RefCounts.set(uri, Count);
+							}
+						},
+					};
+				}),
+
+				Effect.mapError(MakeResolverProblem),
+			),
+
+		HasModel: (uri) =>
+			ModelService.GetModel(uri).pipe(
+				Effect.map((Result) => Result !== null),
+
+				Effect.mapError(MakeResolverProblem),
+			),
+
+		Reload: (uri) =>
+			// Re-open (Mountain always reads from disk on open)
+			ModelService.OpenModel(uri).pipe(
+				Effect.mapError(MakeResolverProblem),
+			),
+	};
+
+	return Service;
+}
+
+export const LiveTextModelResolverServiceLayer = Layer.succeed(
 	TextModelResolverServiceTag,
 
-	Effect.gen(function* () {
-		const ModelService = yield* ModelServiceTag;
-
-		// Simple reference counter: uri → open count
-		const RefCounts = new Map<string, number>();
-
-		const Service: TextModelResolverService = {
-			Resolve: (uri) =>
-				ModelService.OpenModel(uri).pipe(
-					Effect.map((Model) => {
-						// Increment reference count
-						RefCounts.set(uri, (RefCounts.get(uri) ?? 0) + 1);
-
-						return {
-							model: Model,
-							dispose: () => {
-								const Count = (RefCounts.get(uri) ?? 1) - 1;
-
-								if (Count <= 0) {
-									RefCounts.delete(uri);
-
-									// Fire-and-forget close when ref count drops to zero
-									Effect.runFork(
-										ModelService.CloseModel(uri).pipe(
-											Effect.ignoreLogged,
-										),
-									);
-								} else {
-									RefCounts.set(uri, Count);
-								}
-							},
-						};
-					}),
-
-					Effect.mapError(MakeResolverProblem),
-				),
-
-			HasModel: (uri) =>
-				ModelService.GetModel(uri).pipe(
-					Effect.map((Result) => Result !== null),
-
-					Effect.mapError(MakeResolverProblem),
-				),
-
-			Reload: (uri) =>
-				// Re-open (Mountain always reads from disk on open)
-				ModelService.OpenModel(uri).pipe(
-					Effect.mapError(MakeResolverProblem),
-				),
-		};
-
-		return Service;
-	}),
+	makeTextModelResolverService(),
 );
 
 export default LiveTextModelResolverServiceLayer;

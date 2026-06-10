@@ -10,7 +10,6 @@ import { invoke as tauriInvoke } from "@tauri-apps/api/core";
 import { emit, listen } from "@tauri-apps/api/event";
 import { Effect, Stream } from "effect";
 
-import { SandboxNotReadyError } from "../../../Types/Sandbox.js";
 import {
 	CreateIPCInvokeError,
 	CreateIPCSendError,
@@ -23,20 +22,8 @@ import type { IPCService } from "../Interface/IPCService.js";
 // Tauri Implementation
 // ============================================================================
 
-/**
- * Tauri IPC service implementation
- */
-export const TauriIPCLive = Effect.gen(function* () {
-	// Verify Tauri is available
-	const isTauriAvailable =
-		typeof window !== "undefined" &&
-		(window as any).__TAURI__ !== undefined;
-
-	if (!isTauriAvailable) {
-		return yield* Effect.die(new SandboxNotReadyError());
-	}
-
-	const service: IPCService = {
+function buildTauriIPCService(): IPCService {
+	return {
 		send: (channel: string) => (args: ReadonlyArray<unknown>) =>
 			Effect.try({
 				try: () => emit(channel, args.length === 1 ? args[0] : args),
@@ -107,8 +94,11 @@ export const TauriIPCLive = Effect.gen(function* () {
 
 		removeAllListeners: (_channel: string) => Effect.void,
 	};
+}
 
-	return service;
-});
+/**
+ * Tauri IPC service implementation
+ */
+export const TauriIPCLive = buildTauriIPCService();
 
 export default TauriIPCLive;

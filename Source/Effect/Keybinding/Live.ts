@@ -15,7 +15,6 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-import { IPC } from "../IPC.js";
 import type { KeybindingService } from "./Interface/KeybindingService.js";
 import { KeybindingServiceTag } from "./Tag/KeybindingServiceTag.js";
 import type { KeybindingProblem } from "./Type/KeybindingProblem.js";
@@ -25,62 +24,66 @@ const MakeKeybindingProblem = (error: unknown): KeybindingProblem => ({
 	error: error instanceof Error ? error : new Error(String(error)),
 });
 
-export const LiveKeybindingServiceLayer = Layer.effect(
+function makeKeybindingService(): KeybindingService {
+	const Globals = globalThis as any;
+
+	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+
+	const Service: KeybindingService = {
+		AddKeybinding: (commandId, keybinding, when) =>
+			IPCService.invoke(Channel.KeybindingAdd)([
+				commandId,
+
+				keybinding,
+
+				when ?? null,
+			]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeKeybindingProblem),
+			),
+
+		RemoveKeybinding: (commandId) =>
+			IPCService.invoke(Channel.KeybindingRemove)([commandId]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeKeybindingProblem),
+			),
+
+		LookupKeybinding: (commandId) =>
+			IPCService.invoke(Channel.KeybindingLookup)([commandId]).pipe(
+				Effect.map((Result) =>
+					typeof Result === "string" ? Result : null,
+				),
+
+				Effect.mapError(MakeKeybindingProblem),
+			),
+
+		GetKeybindings: () =>
+			IPCService.invoke(Channel.KeybindingGetAll)([]).pipe(
+				Effect.map((Result) =>
+					Array.isArray(Result)
+						? (Result as ReadonlyArray<{
+								commandId: string;
+
+								keybinding: string;
+
+								when?: string;
+							}>)
+						: [],
+				),
+
+				Effect.mapError(MakeKeybindingProblem),
+			),
+	};
+
+	return Service;
+}
+
+export const LiveKeybindingServiceLayer = Layer.succeed(
 	KeybindingServiceTag,
 
-	Effect.gen(function* () {
-		const IPCService = yield* IPC;
-
-		const Service: KeybindingService = {
-			AddKeybinding: (commandId, keybinding, when) =>
-				IPCService.invoke(Channel.KeybindingAdd)([
-					commandId,
-
-					keybinding,
-
-					when ?? null,
-				]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeKeybindingProblem),
-				),
-
-			RemoveKeybinding: (commandId) =>
-				IPCService.invoke(Channel.KeybindingRemove)([commandId]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeKeybindingProblem),
-				),
-
-			LookupKeybinding: (commandId) =>
-				IPCService.invoke(Channel.KeybindingLookup)([commandId]).pipe(
-					Effect.map((Result) =>
-						typeof Result === "string" ? Result : null,
-					),
-
-					Effect.mapError(MakeKeybindingProblem),
-				),
-
-			GetKeybindings: () =>
-				IPCService.invoke(Channel.KeybindingGetAll)([]).pipe(
-					Effect.map((Result) =>
-						Array.isArray(Result)
-							? (Result as ReadonlyArray<{
-									commandId: string;
-
-									keybinding: string;
-
-									when?: string;
-								}>)
-							: [],
-					),
-
-					Effect.mapError(MakeKeybindingProblem),
-				),
-		};
-
-		return Service;
-	}),
+	makeKeybindingService(),
 );
 
 export default LiveKeybindingServiceLayer;

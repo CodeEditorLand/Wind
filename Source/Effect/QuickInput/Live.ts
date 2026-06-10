@@ -13,7 +13,6 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-import { IPC } from "../IPC.js";
 import type { QuickInputService } from "./Interface/QuickInputService.js";
 import { QuickInputServiceTag } from "./Tag/QuickInputServiceTag.js";
 import type { QuickInputProblem } from "./Type/QuickInputProblem.js";
@@ -27,51 +26,55 @@ const MakeQuickInputProblem = (error: unknown): QuickInputProblem =>
 				error: new Error(String(error)),
 			};
 
-export const LiveQuickInputServiceLayer = Layer.effect(
+function makeQuickInputService(): QuickInputService {
+	const Globals = globalThis as any;
+
+	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+
+	const Service: QuickInputService = {
+		ShowQuickPick: (items, options) =>
+			IPCService.invoke(Channel.QuickInputShowQuickPick)([
+				items,
+
+				options ?? {},
+			]).pipe(
+				Effect.map((Result) => {
+					if (Result === null || Result === undefined)
+						return undefined;
+
+					return Result as {
+						label: string;
+
+						description?: string;
+
+						detail?: string;
+
+						picked?: boolean;
+					};
+				}),
+
+				Effect.mapError(MakeQuickInputProblem),
+			),
+
+		ShowInputBox: (options) =>
+			IPCService.invoke(Channel.QuickInputShowInputBox)([
+				options ?? {},
+			]).pipe(
+				Effect.map((Result) =>
+					typeof Result === "string" ? Result : undefined,
+				),
+
+				Effect.mapError(MakeQuickInputProblem),
+			),
+	};
+
+	return Service;
+}
+
+export const LiveQuickInputServiceLayer = Layer.succeed(
 	QuickInputServiceTag,
 
-	Effect.gen(function* () {
-		const IPCService = yield* IPC;
-
-		const Service: QuickInputService = {
-			ShowQuickPick: (items, options) =>
-				IPCService.invoke(Channel.QuickInputShowQuickPick)([
-					items,
-
-					options ?? {},
-				]).pipe(
-					Effect.map((Result) => {
-						if (Result === null || Result === undefined)
-							return undefined;
-
-						return Result as {
-							label: string;
-
-							description?: string;
-
-							detail?: string;
-
-							picked?: boolean;
-						};
-					}),
-
-					Effect.mapError(MakeQuickInputProblem),
-				),
-
-			ShowInputBox: (options) =>
-				IPCService.invoke(Channel.QuickInputShowInputBox)([
-					options ?? {},
-				]).pipe(
-					Effect.map((Result) =>
-						typeof Result === "string" ? Result : undefined,
-					),
-
-					Effect.mapError(MakeQuickInputProblem),
-				),
-		};
-
-		return Service;
-	}),
+	makeQuickInputService(),
 );
 
 export default LiveQuickInputServiceLayer;

@@ -30,85 +30,85 @@ const MakeLanguageProblem = (error: unknown): LanguageProblem =>
 /** Monotonically increasing handle counter for provider disposals. */
 let NextHandle = 1;
 
-export const LiveLanguageServiceLayer = Layer.effect(
-	LanguageServiceTag,
+function makeLanguageService(): LanguageService {
+	/** Active provider registrations keyed by handle. */
+	const ActiveProviders = new Map<
+		number,
+		{ selector: string; type: string; provider: unknown }
+	>();
 
-	Effect.gen(function* () {
-		/** Active provider registrations keyed by handle. */
-		const ActiveProviders = new Map<
-			number,
-			{ selector: string; type: string; provider: unknown }
-		>();
+	const MakeDisposable = (
+		handle: number,
+	): { readonly dispose: () => void } => ({
+		dispose: () => {
+			ActiveProviders.delete(handle);
+		},
+	});
 
-		const MakeDisposable = (
-			handle: number,
-		): { readonly dispose: () => void } => ({
-			dispose: () => {
-				ActiveProviders.delete(handle);
+	const RegisterProvider = (
+		type: string,
+
+		selector: string,
+
+		provider: unknown,
+	): Effect.Effect<{ readonly dispose: () => void }, LanguageProblem> =>
+		Effect.try({
+			try: () => {
+				const Handle = NextHandle++;
+
+				ActiveProviders.set(Handle, { selector, type, provider });
+
+				return MakeDisposable(Handle);
 			},
+			catch: MakeLanguageProblem,
 		});
 
-		const RegisterProvider = (
-			type: string,
+	const Service: LanguageService = {
+		RegisterHoverProvider: (selector, provider) =>
+			RegisterProvider("hover", selector, provider),
 
-			selector: string,
+		RegisterCompletionProvider: (selector, provider) =>
+			RegisterProvider("completion", selector, provider),
 
-			provider: unknown,
-		): Effect.Effect<{ readonly dispose: () => void }, LanguageProblem> =>
+		RegisterDefinitionProvider: (selector, provider) =>
+			RegisterProvider("definition", selector, provider),
+
+		RegisterReferenceProvider: (selector, provider) =>
+			RegisterProvider("references", selector, provider),
+
+		RegisterCodeActionProvider: (selector, provider) =>
+			RegisterProvider("codeAction", selector, provider),
+
+		RegisterDocumentFormattingProvider: (selector, provider) =>
+			RegisterProvider("documentFormatting", selector, provider),
+
+		RegisterDocumentSymbolProvider: (selector, provider) =>
+			RegisterProvider("documentSymbol", selector, provider),
+
+		RegisterRenameProvider: (selector, provider) =>
+			RegisterProvider("rename", selector, provider),
+
+		GetLanguages: () =>
 			Effect.try({
 				try: () => {
-					const Handle = NextHandle++;
+					// Return the set of selectors for which providers are registered
+					const Selectors = new Set(
+						[...ActiveProviders.values()].map((P) => P.selector),
+					);
 
-					ActiveProviders.set(Handle, { selector, type, provider });
-
-					return MakeDisposable(Handle);
+					return [...Selectors] as readonly string[];
 				},
 				catch: MakeLanguageProblem,
-			});
+			}),
+	};
 
-		const Service: LanguageService = {
-			RegisterHoverProvider: (selector, provider) =>
-				RegisterProvider("hover", selector, provider),
+	return Service;
+}
 
-			RegisterCompletionProvider: (selector, provider) =>
-				RegisterProvider("completion", selector, provider),
+export const LiveLanguageServiceLayer = Layer.succeed(
+	LanguageServiceTag,
 
-			RegisterDefinitionProvider: (selector, provider) =>
-				RegisterProvider("definition", selector, provider),
-
-			RegisterReferenceProvider: (selector, provider) =>
-				RegisterProvider("references", selector, provider),
-
-			RegisterCodeActionProvider: (selector, provider) =>
-				RegisterProvider("codeAction", selector, provider),
-
-			RegisterDocumentFormattingProvider: (selector, provider) =>
-				RegisterProvider("documentFormatting", selector, provider),
-
-			RegisterDocumentSymbolProvider: (selector, provider) =>
-				RegisterProvider("documentSymbol", selector, provider),
-
-			RegisterRenameProvider: (selector, provider) =>
-				RegisterProvider("rename", selector, provider),
-
-			GetLanguages: () =>
-				Effect.try({
-					try: () => {
-						// Return the set of selectors for which providers are registered
-						const Selectors = new Set(
-							[...ActiveProviders.values()].map(
-								(P) => P.selector,
-							),
-						);
-
-						return [...Selectors] as readonly string[];
-					},
-					catch: MakeLanguageProblem,
-				}),
-		};
-
-		return Service;
-	}),
+	makeLanguageService(),
 );
 
 export default LiveLanguageServiceLayer;

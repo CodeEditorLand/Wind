@@ -26,7 +26,6 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-import { IPC } from "../IPC.js";
 import type { ExtensionsService } from "./Interface/ExtensionsService.js";
 import { ExtensionsServiceTag } from "./Tag/ExtensionsServiceTag.js";
 import type { ExtensionsProblem } from "./Type/ExtensionsProblem.js";
@@ -40,80 +39,80 @@ const MakeExtensionsProblem = (error: unknown): ExtensionsProblem =>
 				error: new Error(String(error)),
 			};
 
-export const LiveExtensionsServiceLayer = Layer.effect(
+function makeLiveExtensionsService(): ExtensionsService {
+	const Globals = globalThis as any;
+
+	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+
+	const Service: ExtensionsService = {
+		GetExtension: (id) =>
+			IPCService.invoke(Channel.ExtensionsGet)([id]).pipe(
+				Effect.map((Result) =>
+					Result === null || Result === undefined
+						? undefined
+						: Result,
+				),
+
+				Effect.mapError(MakeExtensionsProblem),
+			),
+
+		GetAllExtensions: () =>
+			IPCService.invoke(Channel.ExtensionsGetAll)([]).pipe(
+				Effect.map((Result) =>
+					Array.isArray(Result) ? (Result as readonly unknown[]) : [],
+				),
+
+				Effect.mapError(MakeExtensionsProblem),
+			),
+
+		IsActive: (id) =>
+			IPCService.invoke(Channel.ExtensionsIsActive)([id]).pipe(
+				Effect.map((Result) => Boolean(Result)),
+
+				Effect.mapError(MakeExtensionsProblem),
+			),
+
+		// `extensions:activate` sends an `activationEvent` gRPC
+		// notification to Cocoon (`$activateByEvent`) via Mountain.
+		// Mountain's handler triggers the extension host activation
+		// machinery for the named extension ID.
+		Activate: (id) =>
+			IPCService.invoke(Channel.ExtensionsActivate)([id]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.catchAll(() =>
+					// Fallback: verify the extension exists even if
+					// activation fails (e.g. extension host not yet up).
+					IPCService.invoke(Channel.ExtensionsGet)([id]).pipe(
+						Effect.map(() => undefined as void),
+
+						Effect.mapError(MakeExtensionsProblem),
+					),
+				),
+
+				Effect.mapError(MakeExtensionsProblem),
+			),
+
+		InstallVsix: (VsixPath) =>
+			IPCService.invoke(Channel.ExtensionsInstall)([VsixPath]).pipe(
+				Effect.mapError(MakeExtensionsProblem),
+			),
+
+		Uninstall: (Identifier) =>
+			IPCService.invoke(Channel.ExtensionsUninstall)([Identifier]).pipe(
+				Effect.map((Result) => Result === true),
+
+				Effect.mapError(MakeExtensionsProblem),
+			),
+	};
+
+	return Service;
+}
+
+export const LiveExtensionsServiceLayer = Layer.succeed(
 	ExtensionsServiceTag,
 
-	Effect.gen(function* () {
-		const IPCService = yield* IPC;
-
-		const Service: ExtensionsService = {
-			GetExtension: (id) =>
-				IPCService.invoke(Channel.ExtensionsGet)([id]).pipe(
-					Effect.map((Result) =>
-						Result === null || Result === undefined
-							? undefined
-							: Result,
-					),
-
-					Effect.mapError(MakeExtensionsProblem),
-				),
-
-			GetAllExtensions: () =>
-				IPCService.invoke(Channel.ExtensionsGetAll)([]).pipe(
-					Effect.map((Result) =>
-						Array.isArray(Result)
-							? (Result as readonly unknown[])
-							: [],
-					),
-
-					Effect.mapError(MakeExtensionsProblem),
-				),
-
-			IsActive: (id) =>
-				IPCService.invoke(Channel.ExtensionsIsActive)([id]).pipe(
-					Effect.map((Result) => Boolean(Result)),
-
-					Effect.mapError(MakeExtensionsProblem),
-				),
-
-			// `extensions:activate` sends an `activationEvent` gRPC
-			// notification to Cocoon (`$activateByEvent`) via Mountain.
-			// Mountain's handler triggers the extension host activation
-			// machinery for the named extension ID.
-			Activate: (id) =>
-				IPCService.invoke(Channel.ExtensionsActivate)([id]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.catchAll(() =>
-						// Fallback: verify the extension exists even if
-						// activation fails (e.g. extension host not yet up).
-						IPCService.invoke(Channel.ExtensionsGet)([id]).pipe(
-							Effect.map(() => undefined as void),
-
-							Effect.mapError(MakeExtensionsProblem),
-						),
-					),
-
-					Effect.mapError(MakeExtensionsProblem),
-				),
-
-			InstallVsix: (VsixPath) =>
-				IPCService.invoke(Channel.ExtensionsInstall)([VsixPath]).pipe(
-					Effect.mapError(MakeExtensionsProblem),
-				),
-
-			Uninstall: (Identifier) =>
-				IPCService.invoke(Channel.ExtensionsUninstall)([
-					Identifier,
-				]).pipe(
-					Effect.map((Result) => Result === true),
-
-					Effect.mapError(MakeExtensionsProblem),
-				),
-		};
-
-		return Service;
-	}),
+	makeLiveExtensionsService(),
 );
 
 export default LiveExtensionsServiceLayer;

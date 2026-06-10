@@ -12,12 +12,6 @@ import type {
 	WorkbenchActivityGlobals,
 } from "./WorkbenchActivityBridgeShape.js";
 
-const ResolveBridge = Effect.sync((): WorkbenchActivityBridgeShape | null => {
-	const Globals = globalThis as unknown as WorkbenchActivityGlobals;
-
-	return Globals.__CEL_SERVICES__?.Activity ?? null;
-});
-
 const Unavailable: WorkbenchActivityProblem = {
 	_tag: "WorkbenchActivityBridgeUnavailable",
 
@@ -42,52 +36,57 @@ const ToBadge = (badge: WorkbenchActivityBadge): UpstreamWorkbenchBadge => {
 	};
 };
 
-export const WorkbenchActivityLive = Layer.effect(
+function makeWorkbenchActivityService(): WorkbenchActivityService {
+	const Globals = globalThis as unknown as WorkbenchActivityGlobals;
+
+	const Bridge: WorkbenchActivityBridgeShape | null =
+		Globals.__CEL_SERVICES__?.Activity ?? null;
+
+	const ShowBadge = (
+		Badge: WorkbenchActivityBadge,
+	): Effect.Effect<
+		{ readonly dispose: () => void },
+		WorkbenchActivityProblem
+	> =>
+		Effect.gen(function* () {
+			if (!Bridge) return yield* Effect.fail(Unavailable);
+
+			const Disposable = Bridge.showViewContainerActivity(
+				Badge.viewContainerId,
+
+				{
+					badge: ToBadge(Badge),
+					priority: Badge.priority,
+				},
+			);
+
+			Disposables.set(Badge.viewContainerId, Disposable);
+
+			return Disposable;
+		});
+
+	const Clear = (
+		ViewContainerId: string,
+	): Effect.Effect<void, WorkbenchActivityProblem> =>
+		Effect.sync(() => {
+			const Disposable = Disposables.get(ViewContainerId);
+
+			if (Disposable) {
+				Disposable.dispose();
+
+				Disposables.delete(ViewContainerId);
+			}
+		});
+
+	const Service: WorkbenchActivityService = { ShowBadge, Clear };
+
+	return Service;
+}
+
+export const WorkbenchActivityLive = Layer.succeed(
 	WorkbenchActivityServiceTag,
 
-	Effect.gen(function* () {
-		const Bridge = yield* ResolveBridge;
-
-		const ShowBadge = (
-			Badge: WorkbenchActivityBadge,
-		): Effect.Effect<
-			{ readonly dispose: () => void },
-			WorkbenchActivityProblem
-		> =>
-			Effect.gen(function* () {
-				if (!Bridge) return yield* Effect.fail(Unavailable);
-
-				const Disposable = Bridge.showViewContainerActivity(
-					Badge.viewContainerId,
-
-					{
-						badge: ToBadge(Badge),
-						priority: Badge.priority,
-					},
-				);
-
-				Disposables.set(Badge.viewContainerId, Disposable);
-
-				return Disposable;
-			});
-
-		const Clear = (
-			ViewContainerId: string,
-		): Effect.Effect<void, WorkbenchActivityProblem> =>
-			Effect.sync(() => {
-				const Disposable = Disposables.get(ViewContainerId);
-
-				if (Disposable) {
-					Disposable.dispose();
-
-					Disposables.delete(ViewContainerId);
-				}
-			});
-
-		const Service: WorkbenchActivityService = { ShowBadge, Clear };
-
-		return Service;
-	}),
+	makeWorkbenchActivityService(),
 );
 
 export default WorkbenchActivityLive;

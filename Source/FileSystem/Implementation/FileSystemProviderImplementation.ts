@@ -395,113 +395,119 @@ const createProvider = (
  * Live implementation layer for FileSystemProvider service.
  * Accesses Mountain's file system operations through Wind's IPC service.
  */
-export const FileSystemProviderLive = Layer.effect(
-	FileSystemProviderTag,
+function buildFileSystemService(): FileSystemProviderService {
+	// Create the provider with IPC access
+	const provider = createProvider((command, ...args) =>
+		TauriInvoke("MountainIPCInvoke", {
+			method: command,
+			params: args.length === 1 ? args[0] : args,
+		}),
+	);
 
-	Effect.gen(function* () {
-		const IPCService = yield* IPC;
+	return {
+		getProvider: Effect.succeed(provider as unknown as IFileSystemProvider),
 
-		// Create the provider with IPC access
-		const provider = createProvider((command, ...args) =>
-			TauriInvoke("MountainIPCInvoke", { method: command, params: args.length === 1 ? args[0] : args }),
-		);
+		readFile: (uri: string) =>
+			Effect.tryPromise({
+				try: () => provider.readFile(URI.parse(uri)),
+				catch: (error) =>
+					toFileSystemProviderError(error, "readFile", uri),
+			}),
 
-		return {
-			getProvider: Effect.succeed(
-				provider as unknown as IFileSystemProvider,
-			),
-			readFile: (uri: string) =>
-				Effect.tryPromise({
-					try: () => provider.readFile(URI.parse(uri)),
-					catch: (error) =>
-						toFileSystemProviderError(error, "readFile", uri),
-				}),
-			writeFile: (uri: string, content: Uint8Array, options = {}) =>
-				Effect.tryPromise({
-					try: () =>
-						provider.writeFile(URI.parse(uri), content, {
-							create: options.create ?? true,
-							overwrite: options.overwrite ?? true,
-						} as IFileWriteOptions),
-					catch: (error) =>
-						toFileSystemProviderError(error, "writeFile", uri),
-				}),
-			delete: (uri: string) =>
-				Effect.tryPromise({
-					try: () => provider.delete(URI.parse(uri)),
-					catch: (error) =>
-						toFileSystemProviderError(error, "delete", uri),
-				}),
-			copy: (source: string, destination: string) =>
-				Effect.tryPromise({
-					try: () =>
-						provider.copy(
-							URI.parse(source),
+		writeFile: (uri: string, content: Uint8Array, options = {}) =>
+			Effect.tryPromise({
+				try: () =>
+					provider.writeFile(URI.parse(uri), content, {
+						create: options.create ?? true,
+						overwrite: options.overwrite ?? true,
+					} as IFileWriteOptions),
+				catch: (error) =>
+					toFileSystemProviderError(error, "writeFile", uri),
+			}),
 
-							URI.parse(destination),
-						),
-					catch: (error) =>
-						toFileSystemProviderError(
-							error,
+		delete: (uri: string) =>
+			Effect.tryPromise({
+				try: () => provider.delete(URI.parse(uri)),
+				catch: (error) =>
+					toFileSystemProviderError(error, "delete", uri),
+			}),
 
-							"copy",
+		copy: (source: string, destination: string) =>
+			Effect.tryPromise({
+				try: () =>
+					provider.copy(
+						URI.parse(source),
 
-							`${source} -> ${destination}`,
-						),
-				}),
-			move: (source: string, destination: string) =>
-				Effect.tryPromise({
-					try: () =>
-						provider.move(
-							URI.parse(source),
+						URI.parse(destination),
+					),
+				catch: (error) =>
+					toFileSystemProviderError(
+						error,
 
-							URI.parse(destination),
-						),
-					catch: (error) =>
-						toFileSystemProviderError(
-							error,
+						"copy",
 
-							"move",
+						`${source} -> ${destination}`,
+					),
+			}),
 
-							`${source} -> ${destination}`,
-						),
-				}),
-			readdir: (uri: string) =>
-				Effect.tryPromise({
-					try: () => provider.readdir(URI.parse(uri)),
-					catch: (error) =>
-						toFileSystemProviderError(error, "readdir", uri),
-				}).pipe(
-					Effect.map((entries) =>
-						entries.map(
-							([name, type]) =>
-								[name, type as number] as [string, number],
-						),
+		move: (source: string, destination: string) =>
+			Effect.tryPromise({
+				try: () =>
+					provider.move(
+						URI.parse(source),
+
+						URI.parse(destination),
+					),
+				catch: (error) =>
+					toFileSystemProviderError(
+						error,
+
+						"move",
+
+						`${source} -> ${destination}`,
+					),
+			}),
+
+		readdir: (uri: string) =>
+			Effect.tryPromise({
+				try: () => provider.readdir(URI.parse(uri)),
+				catch: (error) =>
+					toFileSystemProviderError(error, "readdir", uri),
+			}).pipe(
+				Effect.map((entries) =>
+					entries.map(
+						([name, type]) =>
+							[name, type as number] as [string, number],
 					),
 				),
+			),
 
-			mkdir: (uri: string, options = {}) =>
-				Effect.tryPromise({
-					try: () => provider.mkdir(URI.parse(uri), options),
-					catch: (error) =>
-						toFileSystemProviderError(error, "mkdir", uri),
-				}),
+		mkdir: (uri: string, options = {}) =>
+			Effect.tryPromise({
+				try: () => provider.mkdir(URI.parse(uri), options),
+				catch: (error) =>
+					toFileSystemProviderError(error, "mkdir", uri),
+			}),
 
-			rmdir: (uri: string) =>
-				Effect.tryPromise({
-					try: () => provider.rmdir(URI.parse(uri)),
-					catch: (error) =>
-						toFileSystemProviderError(error, "rmdir", uri),
-				}),
+		rmdir: (uri: string) =>
+			Effect.tryPromise({
+				try: () => provider.rmdir(URI.parse(uri)),
+				catch: (error) =>
+					toFileSystemProviderError(error, "rmdir", uri),
+			}),
 
-			stat: (uri: string) =>
-				Effect.tryPromise({
-					try: () => provider.stat(URI.parse(uri)),
-					catch: (error) =>
-						toFileSystemProviderError(error, "stat", uri),
-				}),
-		} satisfies FileSystemProviderService;
-	}),
+		stat: (uri: string) =>
+			Effect.tryPromise({
+				try: () => provider.stat(URI.parse(uri)),
+				catch: (error) => toFileSystemProviderError(error, "stat", uri),
+			}),
+	} satisfies FileSystemProviderService;
+}
+
+export const FileSystemProviderLive = Layer.succeed(
+	FileSystemProviderTag,
+
+	buildFileSystemService(),
 );
 
 // ============================================================================

@@ -14,7 +14,6 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-import { IPC } from "../IPC.js";
 import type {
 	LifecyclePhaseValue,
 	LifecycleService,
@@ -27,49 +26,53 @@ const MakeLifecycleProblem = (error: unknown): LifecycleProblem => ({
 	error: error instanceof Error ? error : new Error(String(error)),
 });
 
-export const LiveLifecycleServiceLayer = Layer.effect(
+function makeLifecycleService(): LifecycleService {
+	const Globals = globalThis as any;
+
+	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+
+	const Service: LifecycleService = {
+		GetPhase: () =>
+			IPCService.invoke(Channel.LifecycleGetPhase)([]).pipe(
+				Effect.map(
+					(Result) =>
+						(typeof Result === "number"
+							? Result
+							: 1) as LifecyclePhaseValue,
+				),
+
+				Effect.mapError(MakeLifecycleProblem),
+			),
+
+		WhenPhase: (phase) =>
+			IPCService.invoke(Channel.LifecycleWhenPhase)([phase]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeLifecycleProblem),
+			),
+
+		RequestShutdown: () =>
+			IPCService.invoke(Channel.LifecycleRequestShutdown)([]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeLifecycleProblem),
+			),
+
+		AdvancePhase: (phase) =>
+			IPCService.invoke(Channel.LifecycleAdvancePhase)([phase]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeLifecycleProblem),
+			),
+	};
+
+	return Service;
+}
+
+export const LiveLifecycleServiceLayer = Layer.succeed(
 	LifecycleServiceTag,
 
-	Effect.gen(function* () {
-		const IPCService = yield* IPC;
-
-		const Service: LifecycleService = {
-			GetPhase: () =>
-				IPCService.invoke(Channel.LifecycleGetPhase)([]).pipe(
-					Effect.map(
-						(Result) =>
-							(typeof Result === "number"
-								? Result
-								: 1) as LifecyclePhaseValue,
-					),
-
-					Effect.mapError(MakeLifecycleProblem),
-				),
-
-			WhenPhase: (phase) =>
-				IPCService.invoke(Channel.LifecycleWhenPhase)([phase]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeLifecycleProblem),
-				),
-
-			RequestShutdown: () =>
-				IPCService.invoke(Channel.LifecycleRequestShutdown)([]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeLifecycleProblem),
-				),
-
-			AdvancePhase: (phase) =>
-				IPCService.invoke(Channel.LifecycleAdvancePhase)([phase]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeLifecycleProblem),
-				),
-		};
-
-		return Service;
-	}),
+	makeLifecycleService(),
 );
 
 export default LiveLifecycleServiceLayer;

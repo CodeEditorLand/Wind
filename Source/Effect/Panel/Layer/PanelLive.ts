@@ -11,10 +11,15 @@
 import { Effect, Layer, Stream, SubscriptionRef } from "effect";
 
 import { Telemetry } from "../../Telemetry.js";
+
 import PanelUpdateError from "../Error/PanelUpdateError.js";
+
 import PanelViewNotFoundError from "../Error/PanelViewNotFoundError.js";
+
 import type { PanelService } from "../Interface/PanelService.js";
+
 import PanelTag from "../Tag/PanelTag.js";
+
 import type {
 	CreatePanelView,
 	PanelView,
@@ -34,19 +39,20 @@ import type {
  * const appLayer = Layer.mergeAll(TelemetryLive, PanelLive);
  * ```
  */
-const PanelLive = Layer.effect(
+const PanelLive = Layer.succeed(
 	PanelTag,
+, makeService()
+)
 
-	Effect.gen(function* () {
-		const TelemetryService = yield* Telemetry;
+		const TelemetryService = Effect.runSync(Effect.provide(Telemetry, TelemetryLive));
 
 		// In-memory storage of panel views as reactive ref
-		const ViewsRef = yield* SubscriptionRef.make<ReadonlyArray<PanelView>>(
+		const ViewsRef = Effect.runSync(SubscriptionRef.make<ReadonlyArray<PanelView>>(
 			[],
 		);
 
 		// Active view state as reactive ref
-		const ActiveViewRef = yield* SubscriptionRef.make<string | undefined>(
+		const ActiveViewRef = Effect.runSync(SubscriptionRef.make<string | undefined>(
 			undefined,
 		);
 
@@ -276,6 +282,7 @@ const PanelLive = Layer.effect(
 		// Atom: Get visible views
 		const GetVisibleViews: Effect.Effect<
 			ReadonlyArray<PanelView>,
+
 			never
 		> = Effect.map(Views, (Views) => Views.filter((View) => View.visible));
 

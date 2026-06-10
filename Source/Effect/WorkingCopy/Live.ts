@@ -25,54 +25,52 @@ const MakeWorkingCopyProblem = (error: unknown): WorkingCopyProblem => ({
 	error: error instanceof Error ? error : new Error(String(error)),
 });
 
-export const LiveWorkingCopyServiceLayer = Layer.effect(
+function makeWorkingCopyService(): WorkingCopyService {
+	const Globals = globalThis as any;
+
+	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+
+	const Service: WorkingCopyService = {
+		IsDirty: (uri) =>
+			IPCService.invoke(Channel.WorkingCopyIsDirty)([uri]).pipe(
+				Effect.map((Result) => Result === true),
+
+				Effect.mapError(MakeWorkingCopyProblem),
+			),
+
+		SetDirty: (uri, dirty) =>
+			IPCService.invoke(Channel.WorkingCopySetDirty)([uri, dirty]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeWorkingCopyProblem),
+			),
+
+		GetAllDirty: () =>
+			IPCService.invoke(Channel.WorkingCopyGetAllDirty)([]).pipe(
+				Effect.map((Result) =>
+					Array.isArray(Result) ? (Result as readonly string[]) : [],
+				),
+
+				Effect.mapError(MakeWorkingCopyProblem),
+			),
+
+		GetDirtyCount: () =>
+			IPCService.invoke(Channel.WorkingCopyGetDirtyCount)([]).pipe(
+				Effect.map((Result) =>
+					typeof Result === "number" ? Result : 0,
+				),
+
+				Effect.mapError(MakeWorkingCopyProblem),
+			),
+	};
+
+	return Service;
+}
+
+export const LiveWorkingCopyServiceLayer = Layer.succeed(
 	WorkingCopyServiceTag,
 
-	Effect.gen(function* () {
-		const IPCService = yield* IPC;
-
-		const Service: WorkingCopyService = {
-			IsDirty: (uri) =>
-				IPCService.invoke(Channel.WorkingCopyIsDirty)([uri]).pipe(
-					Effect.map((Result) => Result === true),
-
-					Effect.mapError(MakeWorkingCopyProblem),
-				),
-
-			SetDirty: (uri, dirty) =>
-				IPCService.invoke(Channel.WorkingCopySetDirty)([
-					uri,
-
-					dirty,
-				]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeWorkingCopyProblem),
-				),
-
-			GetAllDirty: () =>
-				IPCService.invoke(Channel.WorkingCopyGetAllDirty)([]).pipe(
-					Effect.map((Result) =>
-						Array.isArray(Result)
-							? (Result as readonly string[])
-							: [],
-					),
-
-					Effect.mapError(MakeWorkingCopyProblem),
-				),
-
-			GetDirtyCount: () =>
-				IPCService.invoke(Channel.WorkingCopyGetDirtyCount)([]).pipe(
-					Effect.map((Result) =>
-						typeof Result === "number" ? Result : 0,
-					),
-
-					Effect.mapError(MakeWorkingCopyProblem),
-				),
-		};
-
-		return Service;
-	}),
+	makeWorkingCopyService(),
 );
 
 export default LiveWorkingCopyServiceLayer;

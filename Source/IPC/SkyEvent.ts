@@ -180,6 +180,8 @@ export default {
 
 	TerminalProcessId: "sky://terminal/processId",
 
+	TerminalPropertyChanged: "sky://terminal/property-changed",
+
 	TerminalResize: "sky://terminal/resize",
 
 	TerminalShow: "sky://terminal/show",

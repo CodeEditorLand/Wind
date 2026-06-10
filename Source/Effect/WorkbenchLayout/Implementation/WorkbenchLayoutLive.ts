@@ -15,12 +15,6 @@ import {
 	type WorkbenchLayoutGlobals,
 } from "./WorkbenchLayoutBridgeShape.js";
 
-const ResolveBridge = Effect.sync((): WorkbenchLayoutBridgeShape | null => {
-	const Globals = globalThis as unknown as WorkbenchLayoutGlobals;
-
-	return Globals.__CEL_SERVICES__?.Layout ?? null;
-});
-
 const Unavailable: WorkbenchLayoutProblem = {
 	_tag: "WorkbenchLayoutBridgeUnavailable",
 
@@ -30,72 +24,70 @@ const Unavailable: WorkbenchLayoutProblem = {
 const ToError = (cause: unknown): Error =>
 	cause instanceof Error ? cause : new Error(String(cause));
 
-export const WorkbenchLayoutLive = Layer.effect(
-	WorkbenchLayoutServiceTag,
+function makeWorkbenchLayoutService(): WorkbenchLayoutService {
+	const Globals = globalThis as unknown as WorkbenchLayoutGlobals;
 
-	Effect.gen(function* () {
-		const Bridge = yield* ResolveBridge;
+	const Bridge: WorkbenchLayoutBridgeShape | null =
+		Globals.__CEL_SERVICES__?.Layout ?? null;
 
-		const SnapshotPart = (Part: WorkbenchLayoutPart): boolean =>
-			Bridge?.isVisible(WorkbenchLayoutPartId(Part)) ?? false;
+	const SnapshotPart = (Part: WorkbenchLayoutPart): boolean =>
+		Bridge?.isVisible(WorkbenchLayoutPartId(Part)) ?? false;
 
-		const Snapshot: Effect.Effect<
-			WorkbenchLayoutSnapshot,
-			WorkbenchLayoutProblem
-		> = Effect.gen(function* () {
+	const Snapshot: Effect.Effect<
+		WorkbenchLayoutSnapshot,
+		WorkbenchLayoutProblem
+	> = Effect.gen(function* () {
+		if (!Bridge) return yield* Effect.fail(Unavailable);
+
+		const Visible = new Map<WorkbenchLayoutPart, boolean>();
+
+		for (const Part of WorkbenchLayoutAllParts) {
+			Visible.set(Part, SnapshotPart(Part));
+		}
+
+		return {
+			visible: Visible,
+			maximized: new Map<WorkbenchLayoutPart, boolean>(),
+		};
+	});
+
+	const SetVisible = (
+		Part: WorkbenchLayoutPart,
+
+		Visible: boolean,
+	): Effect.Effect<void, WorkbenchLayoutProblem> =>
+		Effect.gen(function* () {
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
-			const Visible = new Map<WorkbenchLayoutPart, boolean>();
+			yield* Effect.try({
+				try: () =>
+					Bridge.setPartHidden(
+						!Visible,
 
-			for (const Part of WorkbenchLayoutAllParts) {
-				Visible.set(Part, SnapshotPart(Part));
-			}
-
-			return {
-				visible: Visible,
-				maximized: new Map<WorkbenchLayoutPart, boolean>(),
-			};
+						WorkbenchLayoutPartId(Part),
+					),
+				catch: (Cause) =>
+					({
+						_tag: "WorkbenchLayoutToggleFailed",
+						part: Part,
+						error: ToError(Cause),
+					}) satisfies WorkbenchLayoutProblem,
+			});
 		});
 
-		const SetVisible = (
-			Part: WorkbenchLayoutPart,
+	const Toggle = (
+		Part: WorkbenchLayoutPart,
+	): Effect.Effect<void, WorkbenchLayoutProblem> =>
+		Effect.gen(function* () {
+			if (!Bridge) return yield* Effect.fail(Unavailable);
 
-			Visible: boolean,
-		): Effect.Effect<void, WorkbenchLayoutProblem> =>
-			Effect.gen(function* () {
-				if (!Bridge) return yield* Effect.fail(Unavailable);
+			const Current = SnapshotPart(Part);
 
-				yield* Effect.try({
-					try: () =>
-						Bridge.setPartHidden(
-							!Visible,
+			yield* SetVisible(Part, !Current);
+		});
 
-							WorkbenchLayoutPartId(Part),
-						),
-					catch: (Cause) =>
-						({
-							_tag: "WorkbenchLayoutToggleFailed",
-							part: Part,
-							error: ToError(Cause),
-						}) satisfies WorkbenchLayoutProblem,
-				});
-			});
-
-		const Toggle = (
-			Part: WorkbenchLayoutPart,
-		): Effect.Effect<void, WorkbenchLayoutProblem> =>
-			Effect.gen(function* () {
-				if (!Bridge) return yield* Effect.fail(Unavailable);
-
-				const Current = SnapshotPart(Part);
-
-				yield* SetVisible(Part, !Current);
-			});
-
-		const Changes = Stream.async<
-			WorkbenchLayoutChange,
-			WorkbenchLayoutProblem
-		>((Emit) => {
+	const Changes = Stream.async<WorkbenchLayoutChange, WorkbenchLayoutProblem>(
+		(Emit) => {
 			if (!Bridge) {
 				Emit.fail(Unavailable);
 
@@ -112,17 +104,26 @@ export const WorkbenchLayoutLive = Layer.effect(
 			});
 
 			return Effect.sync(() => Subscription.dispose());
-		});
+		},
+	);
 
-		const Service: WorkbenchLayoutService = {
-			Snapshot,
-			SetVisible,
-			Toggle,
-			Changes,
-		};
+	const Service: WorkbenchLayoutService = {
+		Snapshot,
 
-		return Service;
-	}),
+		SetVisible,
+
+		Toggle,
+
+		Changes,
+	};
+
+	return Service;
+}
+
+export const WorkbenchLayoutLive = Layer.succeed(
+	WorkbenchLayoutServiceTag,
+
+	makeWorkbenchLayoutService(),
 );
 
 export default WorkbenchLayoutLive;

@@ -72,14 +72,6 @@ interface CELGlobals {
 	__CEL_OVERRIDE_CONFIG__?: Record<string, unknown>;
 }
 
-const ResolveBridge = Effect.sync(() => {
-	const Globals = globalThis as unknown as CELGlobals;
-
-	const Bridge = Globals.__CEL_SERVICES__?.Configuration ?? null;
-
-	return Bridge;
-});
-
 const TargetCode = (Target: UserSettingsTarget): number => {
 	// Mirrors VS Code's ConfigurationTarget enum (vs/platform/
 	// configuration/common/configuration.ts):
@@ -123,166 +115,175 @@ const WriteOverride = (Section: string, Value: unknown): void => {
 	}
 };
 
-export const UserSettingsLive = Layer.effect(
-	UserSettingsServiceTag,
+function makeUserSettingsService(): UserSettingsService {
+	const Globals = globalThis as unknown as CELGlobals;
 
-	Effect.gen(function* () {
-		const Bridge = yield* ResolveBridge;
+	const Bridge = Globals.__CEL_SERVICES__?.Configuration ?? null;
 
-		const ProblemBridgeUnavailable: UserSettingsProblem = {
-			_tag: "UserSettingsBridgeUnavailable",
-			reason: "globalThis.__CEL_SERVICES__.Configuration is null - the workbench hasn't injected its handles yet. Boot the workbench first or use UserSettingsStub for tests.",
-		};
+	const ProblemBridgeUnavailable: UserSettingsProblem = {
+		_tag: "UserSettingsBridgeUnavailable",
 
-		const Service: UserSettingsService = {
-			Read: <T = unknown>(Section: string) =>
-				Effect.gen(function* () {
-					if (!Bridge) {
-						return yield* Effect.fail(ProblemBridgeUnavailable);
-					}
+		reason: "globalThis.__CEL_SERVICES__.Configuration is null - the workbench hasn't injected its handles yet. Boot the workbench first or use UserSettingsStub for tests.",
+	};
 
-					try {
-						const Value = Bridge.getValue<T>(Section);
+	const Service: UserSettingsService = {
+		Read: <T = unknown>(Section: string) =>
+			Effect.gen(function* () {
+				if (!Bridge) {
+					return yield* Effect.fail(ProblemBridgeUnavailable);
+				}
 
-						if (Value === undefined) {
-							return yield* Effect.fail<UserSettingsProblem>({
-								_tag: "UserSettingsReadFailed",
-								section: Section,
-								error: new Error(
-									`Section "${Section}" missing from configuration cascade`,
-								),
-							});
-						}
+				try {
+					const Value = Bridge.getValue<T>(Section);
 
-						return Value;
-					} catch (Error) {
+					if (Value === undefined) {
 						return yield* Effect.fail<UserSettingsProblem>({
 							_tag: "UserSettingsReadFailed",
 							section: Section,
-							error:
-								Error instanceof globalThis.Error
-									? Error
-									: new globalThis.Error(String(Error)),
+							error: new Error(
+								`Section "${Section}" missing from configuration cascade`,
+							),
 						});
 					}
-				}),
-			ReadOptional: <T = unknown>(Section: string) =>
-				Effect.gen(function* () {
-					if (!Bridge) {
-						return yield* Effect.fail(ProblemBridgeUnavailable);
-					}
 
-					return Bridge.getValue<T>(Section);
-				}),
-			Write: (Section, Value, Target: UserSettingsTarget) =>
-				Effect.gen(function* () {
-					if (Target === "Memory") {
-						WriteOverride(Section, Value);
-
-						return;
-					}
-
-					if (!Bridge) {
-						return yield* Effect.fail(ProblemBridgeUnavailable);
-					}
-
-					yield* Effect.tryPromise({
-						try: () =>
-							Bridge.updateValue(
-								Section,
-
-								Value,
-
-								TargetCode(Target),
-							),
-						catch: (Error) =>
-							({
-								_tag: "UserSettingsWriteRejected",
-								section: Section,
-								target: Target,
-								reason:
-									Error instanceof globalThis.Error
-										? Error.message
-										: String(Error),
-							}) as UserSettingsProblem,
+					return Value;
+				} catch (Error) {
+					return yield* Effect.fail<UserSettingsProblem>({
+						_tag: "UserSettingsReadFailed",
+						section: Section,
+						error:
+							Error instanceof globalThis.Error
+								? Error
+								: new globalThis.Error(String(Error)),
 					});
-				}),
-			HasUserValue: (Section) =>
-				Effect.gen(function* () {
-					if (!Bridge?.inspect) {
-						return yield* Effect.fail(ProblemBridgeUnavailable);
-					}
+				}
+			}),
 
-					const Inspection = Bridge.inspect(Section);
+		ReadOptional: <T = unknown>(Section: string) =>
+			Effect.gen(function* () {
+				if (!Bridge) {
+					return yield* Effect.fail(ProblemBridgeUnavailable);
+				}
 
-					return Inspection.userValue !== undefined;
-				}),
-			Changes: Stream.async<UserSettingsChangeEvent, UserSettingsProblem>(
-				(Emit) => {
-					if (!Bridge) {
-						Emit.failCause({
-							_tag: "Fail",
-							error: ProblemBridgeUnavailable,
-						} as never);
+				return Bridge.getValue<T>(Section);
+			}),
 
-						return Effect.void;
-					}
+		Write: (Section, Value, Target: UserSettingsTarget) =>
+			Effect.gen(function* () {
+				if (Target === "Memory") {
+					WriteOverride(Section, Value);
 
-					const Subscription = Bridge.onDidChangeConfiguration(
-						(VSEvent) => {
-							const Keys = new Set(VSEvent.affectedKeys ?? []);
+					return;
+				}
 
-							Emit.single({
-								affectedKeys: Keys,
-								source: "Workspace",
-							});
-						},
-					);
+				if (!Bridge) {
+					return yield* Effect.fail(ProblemBridgeUnavailable);
+				}
 
-					const OverrideListener = (Event: Event) => {
-						const Detail = (
-							Event as CustomEvent<{
-								readonly section: string;
+				yield* Effect.tryPromise({
+					try: () =>
+						Bridge.updateValue(
+							Section,
 
-								readonly source: UserSettingsTarget;
-							}>
-						).detail;
+							Value,
+
+							TargetCode(Target),
+						),
+					catch: (Error) =>
+						({
+							_tag: "UserSettingsWriteRejected",
+							section: Section,
+							target: Target,
+							reason:
+								Error instanceof globalThis.Error
+									? Error.message
+									: String(Error),
+						}) as UserSettingsProblem,
+				});
+			}),
+
+		HasUserValue: (Section) =>
+			Effect.gen(function* () {
+				if (!Bridge?.inspect) {
+					return yield* Effect.fail(ProblemBridgeUnavailable);
+				}
+
+				const Inspection = Bridge.inspect(Section);
+
+				return Inspection.userValue !== undefined;
+			}),
+
+		Changes: Stream.async<UserSettingsChangeEvent, UserSettingsProblem>(
+			(Emit) => {
+				if (!Bridge) {
+					Emit.failCause({
+						_tag: "Fail",
+						error: ProblemBridgeUnavailable,
+					} as never);
+
+					return Effect.void;
+				}
+
+				const Subscription = Bridge.onDidChangeConfiguration(
+					(VSEvent) => {
+						const Keys = new Set(VSEvent.affectedKeys ?? []);
 
 						Emit.single({
-							affectedKeys: new Set([Detail.section]),
-							source: Detail.source,
+							affectedKeys: Keys,
+							source: "Workspace",
 						});
-					};
+					},
+				);
+
+				const OverrideListener = (Event: Event) => {
+					const Detail = (
+						Event as CustomEvent<{
+							readonly section: string;
+
+							readonly source: UserSettingsTarget;
+						}>
+					).detail;
+
+					Emit.single({
+						affectedKeys: new Set([Detail.section]),
+						source: Detail.source,
+					});
+				};
+
+				try {
+					window.addEventListener(
+						"cel:user-settings-changed",
+
+						OverrideListener,
+					);
+				} catch {
+					// no window - not registering, just clean up subscription
+				}
+
+				return Effect.sync(() => {
+					Subscription.dispose();
 
 					try {
-						window.addEventListener(
+						window.removeEventListener(
 							"cel:user-settings-changed",
 
 							OverrideListener,
 						);
 					} catch {
-						// no window - not registering, just clean up subscription
+						// see above
 					}
+				});
+			},
+		),
+	};
 
-					return Effect.sync(() => {
-						Subscription.dispose();
+	return Service;
+}
 
-						try {
-							window.removeEventListener(
-								"cel:user-settings-changed",
+export const UserSettingsLive = Layer.succeed(
+	UserSettingsServiceTag,
 
-								OverrideListener,
-							);
-						} catch {
-							// see above
-						}
-					});
-				},
-			),
-		};
-
-		return Service;
-	}),
+	makeUserSettingsService(),
 );
 
 export default UserSettingsLive;

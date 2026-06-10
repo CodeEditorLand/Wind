@@ -15,7 +15,6 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-import { IPC } from "../IPC.js";
 import type {
 	DecorationsService,
 	FileDecoration,
@@ -28,66 +27,66 @@ const MakeDecorationsProblem = (error: unknown): DecorationsProblem => ({
 	error: error instanceof Error ? error : new Error(String(error)),
 });
 
-export const LiveDecorationsServiceLayer = Layer.effect(
+function makeDecorationsService(): DecorationsService {
+	const Globals = globalThis as any;
+
+	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+
+	const Service: DecorationsService = {
+		GetDecoration: (uri, includeChildren) =>
+			IPCService.invoke(Channel.DecorationsGet)([
+				uri,
+
+				includeChildren,
+			]).pipe(
+				Effect.map((Result) =>
+					Result != null ? (Result as FileDecoration) : null,
+				),
+
+				Effect.mapError(MakeDecorationsProblem),
+			),
+
+		GetDecorations: (uris) =>
+			IPCService.invoke(Channel.DecorationsGetMany)([uris]).pipe(
+				Effect.map((Result) => {
+					const Map_ = new Map<string, FileDecoration>();
+
+					if (Result != null && typeof Result === "object") {
+						for (const [Key, Value] of Object.entries(
+							Result as Record<string, FileDecoration>,
+						)) {
+							Map_.set(Key, Value);
+						}
+					}
+
+					return Map_ as ReadonlyMap<string, FileDecoration>;
+				}),
+
+				Effect.mapError(MakeDecorationsProblem),
+			),
+
+		SetDecoration: (uri, decoration) =>
+			IPCService.invoke(Channel.DecorationsSet)([uri, decoration]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeDecorationsProblem),
+			),
+
+		ClearDecoration: (uri) =>
+			IPCService.invoke(Channel.DecorationsClear)([uri]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeDecorationsProblem),
+			),
+	};
+
+	return Service;
+}
+
+export const LiveDecorationsServiceLayer = Layer.succeed(
 	DecorationsServiceTag,
 
-	Effect.gen(function* () {
-		const IPCService = yield* IPC;
-
-		const Service: DecorationsService = {
-			GetDecoration: (uri, includeChildren) =>
-				IPCService.invoke(Channel.DecorationsGet)([
-					uri,
-
-					includeChildren,
-				]).pipe(
-					Effect.map((Result) =>
-						Result != null ? (Result as FileDecoration) : null,
-					),
-
-					Effect.mapError(MakeDecorationsProblem),
-				),
-
-			GetDecorations: (uris) =>
-				IPCService.invoke(Channel.DecorationsGetMany)([uris]).pipe(
-					Effect.map((Result) => {
-						const Map_ = new Map<string, FileDecoration>();
-
-						if (Result != null && typeof Result === "object") {
-							for (const [Key, Value] of Object.entries(
-								Result as Record<string, FileDecoration>,
-							)) {
-								Map_.set(Key, Value);
-							}
-						}
-
-						return Map_ as ReadonlyMap<string, FileDecoration>;
-					}),
-
-					Effect.mapError(MakeDecorationsProblem),
-				),
-
-			SetDecoration: (uri, decoration) =>
-				IPCService.invoke(Channel.DecorationsSet)([
-					uri,
-
-					decoration,
-				]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeDecorationsProblem),
-				),
-
-			ClearDecoration: (uri) =>
-				IPCService.invoke(Channel.DecorationsClear)([uri]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeDecorationsProblem),
-				),
-		};
-
-		return Service;
-	}),
+	makeDecorationsService(),
 );
 
 export default LiveDecorationsServiceLayer;

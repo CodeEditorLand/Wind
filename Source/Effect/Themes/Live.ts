@@ -14,7 +14,6 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-import { IPC } from "../IPC.js";
 import type { ThemesService } from "./Interface/ThemesService.js";
 import { ThemesServiceTag } from "./Tag/ThemesServiceTag.js";
 import type { ThemesProblem } from "./Type/ThemesProblem.js";
@@ -24,69 +23,73 @@ const MakeThemesProblem = (error: unknown): ThemesProblem =>
 		? { _tag: "ThemesOperationFailed", error }
 		: { _tag: "ThemesOperationFailed", error: new Error(String(error)) };
 
-export const LiveThemesServiceLayer = Layer.effect(
+function makeThemesService(): ThemesService {
+	const Globals = globalThis as any;
+
+	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+
+	const Service: ThemesService = {
+		GetActiveTheme: () =>
+			IPCService.invoke(Channel.ThemesGetActive)([]).pipe(
+				Effect.map((Result) => {
+					const Theme = Result as {
+						id?: string;
+
+						label?: string;
+
+						kind?: string;
+					};
+
+					return {
+						id: Theme.id ?? "Default Dark Modern",
+						label: Theme.label ?? "Default Dark Modern",
+						kind: (Theme.kind ?? "dark") as
+							| "light"
+							| "dark"
+							| "highContrast"
+							| "highContrastLight",
+					};
+				}),
+
+				Effect.mapError(MakeThemesProblem),
+			),
+
+		ListThemes: () =>
+			IPCService.invoke(Channel.ThemesList)([]).pipe(
+				Effect.map((Result) =>
+					Array.isArray(Result)
+						? (Result as readonly {
+								id: string;
+
+								label: string;
+
+								kind:
+									| "light"
+									| "dark"
+									| "highContrast"
+									| "highContrastLight";
+							}[])
+						: [],
+				),
+
+				Effect.mapError(MakeThemesProblem),
+			),
+
+		SetTheme: (themeId) =>
+			IPCService.invoke(Channel.ThemesSet)([themeId]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeThemesProblem),
+			),
+	};
+
+	return Service;
+}
+
+export const LiveThemesServiceLayer = Layer.succeed(
 	ThemesServiceTag,
 
-	Effect.gen(function* () {
-		const IPCService = yield* IPC;
-
-		const Service: ThemesService = {
-			GetActiveTheme: () =>
-				IPCService.invoke(Channel.ThemesGetActive)([]).pipe(
-					Effect.map((Result) => {
-						const Theme = Result as {
-							id?: string;
-
-							label?: string;
-
-							kind?: string;
-						};
-
-						return {
-							id: Theme.id ?? "Default Dark Modern",
-							label: Theme.label ?? "Default Dark Modern",
-							kind: (Theme.kind ?? "dark") as
-								| "light"
-								| "dark"
-								| "highContrast"
-								| "highContrastLight",
-						};
-					}),
-
-					Effect.mapError(MakeThemesProblem),
-				),
-
-			ListThemes: () =>
-				IPCService.invoke(Channel.ThemesList)([]).pipe(
-					Effect.map((Result) =>
-						Array.isArray(Result)
-							? (Result as readonly {
-									id: string;
-
-									label: string;
-
-									kind:
-										| "light"
-										| "dark"
-										| "highContrast"
-										| "highContrastLight";
-								}[])
-							: [],
-					),
-
-					Effect.mapError(MakeThemesProblem),
-				),
-
-			SetTheme: (themeId) =>
-				IPCService.invoke(Channel.ThemesSet)([themeId]).pipe(
-					Effect.map(() => undefined as void),
-
-					Effect.mapError(MakeThemesProblem),
-				),
-		};
-
-		return Service;
-	}),
+	makeThemesService(),
 );
 
 export default LiveThemesServiceLayer;

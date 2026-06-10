@@ -3,22 +3,19 @@
  * @description
  * Live layer for MountainSync service.
  * Provides the production implementation that depends on Mountain, IPC, and Telemetry.
- * @see {@link Effect/MountainSync/Implementation/MountainSyncImplementation} Implementation
- * @see {@link Effect/MountainSync/Layer/MountainSyncMock} Mock layer
+ * @see {\@link Effect/MountainSync/Implementation/MountainSyncImplementation} Implementation
+ * @see {\@link Effect/MountainSync/Layer/MountainSyncMock} Mock layer
  * @category Layer
  */
 
-import { Effect, Layer } from "effect";
+import { Layer } from "effect";
 
-import { IPCTag } from "../../IPC.js";
-import { MountainTag } from "../../Mountain.js";
-import { TelemetryTag } from "../../Telemetry.js";
 import makeMountainSync from "../Implementation/MountainSyncImplementation.js";
 import MountainSyncTag from "../Tag/MountainSyncTag.js";
 
 /**
  * Live layer for MountainSync service.
- * Provides the production implementation and requires Mountain, IPC, and Telemetry services.
+ * Provides the production implementation using globally-available CEL services.
  *
  * @example
  * ```ts
@@ -36,18 +33,22 @@ import MountainSyncTag from "../Tag/MountainSyncTag.js";
  * );
  * ```
  */
-const MountainSyncLive = Layer.effect(
+function makeMountainSyncService() {
+	const Globals = globalThis as any;
+
+	const mountain = Globals.__CEL_SERVICES__?.Mountain ?? null;
+
+	const ipc = Globals.__CEL_SERVICES__?.IPC ?? null;
+
+	const telemetry = Globals.__CEL_SERVICES__?.Telemetry ?? null;
+
+	return makeMountainSync(mountain, ipc, telemetry);
+}
+
+const MountainSyncLive = Layer.succeed(
 	MountainSyncTag,
 
-	Effect.gen(function* () {
-		const mountain = yield* MountainTag;
-
-		const ipc = yield* IPCTag;
-
-		const telemetry = yield* TelemetryTag;
-
-		return makeMountainSync(mountain, ipc, telemetry);
-	}),
+	makeMountainSyncService(),
 );
 
 export default MountainSyncLive;

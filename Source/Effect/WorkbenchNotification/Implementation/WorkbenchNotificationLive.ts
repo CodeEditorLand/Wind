@@ -13,14 +13,6 @@ import {
 	type WorkbenchNotificationGlobals,
 } from "./WorkbenchNotificationBridgeShape.js";
 
-const ResolveBridge = Effect.sync(
-	(): WorkbenchNotificationBridgeShape | null => {
-		const Globals = globalThis as unknown as WorkbenchNotificationGlobals;
-
-		return Globals.__CEL_SERVICES__?.Notification ?? null;
-	},
-);
-
 const Unavailable: WorkbenchNotificationProblem = {
 	_tag: "WorkbenchNotificationBridgeUnavailable",
 
@@ -42,87 +34,96 @@ const PublishLocal = (event: WorkbenchNotificationDispatched): void => {
 	}
 };
 
-export const WorkbenchNotificationLive = Layer.effect(
-	WorkbenchNotificationServiceTag,
+function makeWorkbenchNotificationService(): WorkbenchNotificationService {
+	const Globals = globalThis as unknown as WorkbenchNotificationGlobals;
 
-	Effect.gen(function* () {
-		const Bridge = yield* ResolveBridge;
+	const Bridge: WorkbenchNotificationBridgeShape | null =
+		Globals.__CEL_SERVICES__?.Notification ?? null;
 
-		const Notify = (
-			Options: WorkbenchNotificationOptions,
-		): Effect.Effect<void, WorkbenchNotificationProblem> =>
-			Effect.gen(function* () {
-				if (!Bridge) return yield* Effect.fail(Unavailable);
-
-				try {
-					Bridge.notify({
-						severity: WorkbenchNotificationSeverityCode(
-							Options.severity,
-						),
-						message: Options.message,
-						source: Options.source,
-						silent: Options.silent,
-					});
-
-					PublishLocal({
-						severity: Options.severity,
-						message: Options.message,
-						source: Options.source,
-					});
-				} catch (Cause) {
-					return yield* Effect.fail<WorkbenchNotificationProblem>({
-						_tag: "WorkbenchNotificationDispatchFailed",
-						error: ToError(Cause),
-					});
-				}
-			});
-
-		const Info = (Message: string) =>
-			Notify({ severity: "Info", message: Message });
-
-		const Warn = (Message: string) =>
-			Notify({ severity: "Warning", message: Message });
-
-		const ErrorVariant = (Message: string) =>
-			Notify({ severity: "Error", message: Message });
-
-		const OnDispatched = Stream.async<
-			WorkbenchNotificationDispatched,
-			WorkbenchNotificationProblem
-		>((Emit) => {
-			const Listener = (Event: Event) => {
-				const Detail = (
-					Event as CustomEvent<WorkbenchNotificationDispatched>
-				).detail;
-
-				Emit.single(Detail);
-			};
+	const Notify = (
+		Options: WorkbenchNotificationOptions,
+	): Effect.Effect<void, WorkbenchNotificationProblem> =>
+		Effect.gen(function* () {
+			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			try {
-				window.addEventListener(NOTIFICATION_EVENT, Listener);
+				Bridge.notify({
+					severity: WorkbenchNotificationSeverityCode(
+						Options.severity,
+					),
+					message: Options.message,
+					source: Options.source,
+					silent: Options.silent,
+				});
+
+				PublishLocal({
+					severity: Options.severity,
+					message: Options.message,
+					source: Options.source,
+				});
+			} catch (Cause) {
+				return yield* Effect.fail<WorkbenchNotificationProblem>({
+					_tag: "WorkbenchNotificationDispatchFailed",
+					error: ToError(Cause),
+				});
+			}
+		});
+
+	const Info = (Message: string) =>
+		Notify({ severity: "Info", message: Message });
+
+	const Warn = (Message: string) =>
+		Notify({ severity: "Warning", message: Message });
+
+	const ErrorVariant = (Message: string) =>
+		Notify({ severity: "Error", message: Message });
+
+	const OnDispatched = Stream.async<
+		WorkbenchNotificationDispatched,
+		WorkbenchNotificationProblem
+	>((Emit) => {
+		const Listener = (Event: Event) => {
+			const Detail = (
+				Event as CustomEvent<WorkbenchNotificationDispatched>
+			).detail;
+
+			Emit.single(Detail);
+		};
+
+		try {
+			window.addEventListener(NOTIFICATION_EVENT, Listener);
+		} catch {
+			// no window
+		}
+
+		return Effect.sync(() => {
+			try {
+				window.removeEventListener(NOTIFICATION_EVENT, Listener);
 			} catch {
 				// no window
 			}
-
-			return Effect.sync(() => {
-				try {
-					window.removeEventListener(NOTIFICATION_EVENT, Listener);
-				} catch {
-					// no window
-				}
-			});
 		});
+	});
 
-		const Service: WorkbenchNotificationService = {
-			Notify,
-			Info,
-			Warn,
-			Error: ErrorVariant,
-			OnDispatched,
-		};
+	const Service: WorkbenchNotificationService = {
+		Notify,
 
-		return Service;
-	}),
+		Info,
+
+		Warn,
+
+		Error: ErrorVariant,
+
+		OnDispatched,
+	};
+
+	return Service;
+}
+
+export const WorkbenchNotificationLive = Layer.succeed(
+	WorkbenchNotificationServiceTag,
+
+	makeWorkbenchNotificationService(),
 );
 
 export default WorkbenchNotificationLive;

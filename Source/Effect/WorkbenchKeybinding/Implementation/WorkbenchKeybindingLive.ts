@@ -13,12 +13,6 @@ import type {
 	WorkbenchKeybindingGlobals,
 } from "./WorkbenchKeybindingBridgeShape.js";
 
-const ResolveBridge = Effect.sync((): WorkbenchKeybindingBridgeShape | null => {
-	const Globals = globalThis as unknown as WorkbenchKeybindingGlobals;
-
-	return Globals.__CEL_SERVICES__?.Keybinding ?? null;
-});
-
 const Unavailable: WorkbenchKeybindingProblem = {
 	_tag: "WorkbenchKeybindingBridgeUnavailable",
 
@@ -42,89 +36,95 @@ const ToResolution = (
 
 const KEYBINDING_DISPATCH_EVENT = "cel:keybinding-dispatched";
 
-export const WorkbenchKeybindingLive = Layer.effect(
-	WorkbenchKeybindingServiceTag,
+function makeWorkbenchKeybindingService(): WorkbenchKeybindingService {
+	const Globals = globalThis as unknown as WorkbenchKeybindingGlobals;
 
-	Effect.gen(function* () {
-		const Bridge = yield* ResolveBridge;
+	const Bridge: WorkbenchKeybindingBridgeShape | null =
+		Globals.__CEL_SERVICES__?.Keybinding ?? null;
 
-		const Lookup = (
-			CommandId: string,
-		): Effect.Effect<
-			ReadonlyArray<WorkbenchKeybindingResolution>,
-			WorkbenchKeybindingProblem
-		> =>
-			Effect.gen(function* () {
-				if (!Bridge) return yield* Effect.fail(Unavailable);
+	const Lookup = (
+		CommandId: string,
+	): Effect.Effect<
+		ReadonlyArray<WorkbenchKeybindingResolution>,
+		WorkbenchKeybindingProblem
+	> =>
+		Effect.gen(function* () {
+			if (!Bridge) return yield* Effect.fail(Unavailable);
 
-				const Bindings = Bridge.lookupKeybindings(CommandId);
+			const Bindings = Bridge.lookupKeybindings(CommandId);
 
-				return Bindings.map((Binding) =>
-					ToResolution(Binding, CommandId, []),
-				);
-			});
-
-		const Resolve = (
-			Event: KeyboardEvent,
-		): Effect.Effect<
-			WorkbenchKeybindingResolution | null,
-			WorkbenchKeybindingProblem
-		> =>
-			Effect.gen(function* () {
-				if (!Bridge) return yield* Effect.fail(Unavailable);
-
-				const Binding = yield* Effect.try({
-					try: () => Bridge.resolveKeyboardEvent(Event),
-					catch: (Cause) =>
-						({
-							_tag: "WorkbenchKeybindingResolveFailed",
-							chord: `${Event.code}`,
-							error: ToError(Cause),
-						}) satisfies WorkbenchKeybindingProblem,
-				});
-
-				return Binding ? ToResolution(Binding, null, []) : null;
-			});
-
-		const Chords = Stream.async<
-			WorkbenchKeybindingDispatch,
-			WorkbenchKeybindingProblem
-		>((Emit) => {
-			const Listener = (Event: Event) => {
-				const Detail = (
-					Event as CustomEvent<WorkbenchKeybindingDispatch>
-				).detail;
-
-				Emit.single(Detail);
-			};
-
-			try {
-				window.addEventListener(KEYBINDING_DISPATCH_EVENT, Listener);
-			} catch {
-				// no window in tests
-			}
-
-			return Effect.sync(() => {
-				try {
-					window.removeEventListener(
-						KEYBINDING_DISPATCH_EVENT,
-
-						Listener,
-					);
-				} catch {
-					// see above
-				}
-			});
+			return Bindings.map((Binding) =>
+				ToResolution(Binding, CommandId, []),
+			);
 		});
 
-		const Service: WorkbenchKeybindingService = {
-			Lookup,
-			Resolve,
-			Chords,
+	const Resolve = (
+		Event: KeyboardEvent,
+	): Effect.Effect<
+		WorkbenchKeybindingResolution | null,
+		WorkbenchKeybindingProblem
+	> =>
+		Effect.gen(function* () {
+			if (!Bridge) return yield* Effect.fail(Unavailable);
+
+			const Binding = yield* Effect.try({
+				try: () => Bridge.resolveKeyboardEvent(Event),
+				catch: (Cause) =>
+					({
+						_tag: "WorkbenchKeybindingResolveFailed",
+						chord: `${Event.code}`,
+						error: ToError(Cause),
+					}) satisfies WorkbenchKeybindingProblem,
+			});
+
+			return Binding ? ToResolution(Binding, null, []) : null;
+		});
+
+	const Chords = Stream.async<
+		WorkbenchKeybindingDispatch,
+		WorkbenchKeybindingProblem
+	>((Emit) => {
+		const Listener = (Event: Event) => {
+			const Detail = (Event as CustomEvent<WorkbenchKeybindingDispatch>)
+				.detail;
+
+			Emit.single(Detail);
 		};
 
-		return Service;
-	}),
+		try {
+			window.addEventListener(KEYBINDING_DISPATCH_EVENT, Listener);
+		} catch {
+			// no window in tests
+		}
+
+		return Effect.sync(() => {
+			try {
+				window.removeEventListener(
+					KEYBINDING_DISPATCH_EVENT,
+
+					Listener,
+				);
+			} catch {
+				// see above
+			}
+		});
+	});
+
+	const Service: WorkbenchKeybindingService = {
+		Lookup,
+
+		Resolve,
+
+		Chords,
+	};
+
+	return Service;
+}
+
+export const WorkbenchKeybindingLive = Layer.succeed(
+	WorkbenchKeybindingServiceTag,
+
+	makeWorkbenchKeybindingService(),
 );
 
 export default WorkbenchKeybindingLive;

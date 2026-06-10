@@ -69,7 +69,9 @@ function _Connect(): void {
 			try {
 				const Envelope = JSON.parse(Ev.data) as {
 					id?: number;
+
 					result?: unknown;
+
 					error?: string;
 				};
 
@@ -141,6 +143,7 @@ export function invoke(method: string, params: unknown[]): Promise<unknown> {
 	return new Promise((Resolve, Reject) => {
 		if (!IsAvailable() || !_ws) {
 			Reject(new Error("MistWS: not connected"));
+
 			return;
 		}
 
