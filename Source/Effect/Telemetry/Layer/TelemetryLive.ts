@@ -68,6 +68,7 @@ function makeTelemetryService(): TelemetryService {
 
 			const existing = Option.getOrElse(
 				HashMap.get(currentMetrics, name),
+
 				() => [] as ReadonlyArray<any>,
 			);
 
@@ -131,6 +132,7 @@ function makeTelemetryService(): TelemetryService {
 
 					const existing = Option.getOrElse(
 						HashMap.get(currentSpans, name),
+
 						() => [] as ReadonlyArray<any>,
 					);
 
@@ -221,6 +223,7 @@ function makeTelemetryService(): TelemetryService {
 			Effect.map((map) =>
 				Option.getOrElse(
 					HashMap.get(map, name),
+
 					() => [] as ReadonlyArray<any>,
 				),
 			),
@@ -232,6 +235,7 @@ function makeTelemetryService(): TelemetryService {
 			Effect.map((map) => {
 				const spans = Option.getOrElse(
 					HashMap.get(map, name),
+
 					() => [] as ReadonlyArray<any>,
 				);
 
@@ -253,6 +257,7 @@ function makeTelemetryService(): TelemetryService {
 			Effect.map((map) => {
 				const spans = Option.getOrElse(
 					HashMap.get(map, name),
+
 					() => [] as ReadonlyArray<any>,
 				);
 

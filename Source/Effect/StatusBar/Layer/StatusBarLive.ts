@@ -170,13 +170,21 @@ function makeStatusBarService(): StatusBarService {
 
 	const service: StatusBarService = {
 		createItem: CreateItem,
+
 		updateItem: UpdateItem,
+
 		removeItem: RemoveItem,
+
 		getItem: GetItem,
+
 		items: Items,
+
 		itemsChanges: ItemsChanges,
+
 		setItemVisibility: SetItemVisibility,
+
 		getItemText: GetItemText,
+
 		setItemText: SetItemText,
 	};
 

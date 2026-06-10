@@ -12,11 +12,7 @@
 		"exactOptionalPropertyTypes": true,
 		"experimentalDecorators": true,
 		"forceConsistentCasingInFileNames": true,
-		"lib": [
-			"ESNext",
-			"DOM",
-			"DOM.Iterable"
-		],
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
 		"module": "ESNext",
 		"moduleResolution": "Bundler",
 		"noEmit": false,
@@ -31,9 +27,7 @@
 		"noUnusedParameters": true,
 		"outDir": "Target",
 		"paths": {
-			"@codeeditorland/output/*": [
-				"../Output/*"
-			]
+			"@codeeditorland/output/*": ["../Output/*"]
 		},
 		"plugins": [
 			{
@@ -67,12 +61,7 @@
 		"useDefineForClassFields": true,
 		"composite": true
 	},
-	"exclude": [
-		"Target",
-		"node_modules"
-	],
+	"exclude": ["Target", "node_modules"],
 	"extends": "@playform/build/tsconfig",
-	"include": [
-		"Source"
-	]
+	"include": ["Source"]
 }

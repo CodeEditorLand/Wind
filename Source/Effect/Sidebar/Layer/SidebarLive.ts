@@ -107,6 +107,7 @@ function makeService(): SidebarService {
 
 				yield* TelemetryService.log(
 					"info",
+
 					`Updated sidebar panel: ${Id}`,
 				);
 			} catch (error) {
@@ -165,6 +166,7 @@ function makeService(): SidebarService {
 
 			yield* TelemetryService.log(
 				"info",
+
 				`Set active sidebar panel: ${Id}`,
 			);
 		});
@@ -200,6 +202,7 @@ function makeService(): SidebarService {
 
 			yield* TelemetryService.log(
 				"info",
+
 				`Collapsed sidebar panel: ${Id}`,
 			);
 		});
@@ -213,6 +216,7 @@ function makeService(): SidebarService {
 
 			yield* TelemetryService.log(
 				"info",
+
 				`Expanded sidebar panel: ${Id}`,
 			);
 		});
@@ -229,17 +233,29 @@ function makeService(): SidebarService {
 
 	return {
 		createPanel: CreatePanel,
+
 		updatePanel: UpdatePanel,
+
 		removePanel: RemovePanel,
+
 		getPanel: GetPanel,
+
 		panels: Panels,
+
 		panelsChanges: PanelsChanges,
+
 		setActivePanel: SetActivePanel,
+
 		getActivePanel: GetActivePanel,
+
 		activePanelChanges: ActivePanelChanges,
+
 		togglePanel: TogglePanel,
+
 		collapsePanel: CollapsePanel,
+
 		expandPanel: ExpandPanel,
+
 		getPanelsByPosition: GetPanelsByPosition,
 	} satisfies SidebarService;
 }
