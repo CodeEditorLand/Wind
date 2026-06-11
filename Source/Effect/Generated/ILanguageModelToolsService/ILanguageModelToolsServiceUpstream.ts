@@ -109,7 +109,7 @@ export interface ILanguageModelToolsServiceUpstream {
 	 * Selector for matching language models by vendor, family, version, or id.
 	 * Used to filter tools to specific models or model families.
 	 */
-	getFullReferenceName(tool: IToolData, toolSet?: IToolSet): string;
+	getFullReferenceName(tool: IToolData | IToolSet, toolSet?: IToolSet): string;
 	/**
 	 * Selector for matching language models by vendor, family, version, or id.
 	 * Used to filter tools to specific models or model families.
@@ -318,7 +318,7 @@ export const ILanguageModelToolsServiceMembers: ReadonlyArray<InterfaceMemberRec
 		Readonly: false,
 		Optional: false,
 		TypeText: "string",
-		Parameters: [{ Name: "tool", TypeText: "IToolData", Optional: false }, { Name: "toolSet", TypeText: "IToolSet", Optional: true }],
+		Parameters: [{ Name: "tool", TypeText: "IToolData | IToolSet", Optional: false }, { Name: "toolSet", TypeText: "IToolSet", Optional: true }],
 		DocComment: "Selector for matching language models by vendor, family, version, or id.\nUsed to filter tools to specific models or model families.",
 		SourceLine: 615,
 	},

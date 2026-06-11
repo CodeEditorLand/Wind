@@ -31,6 +31,6 @@ export const ITerminalEditingServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 286,
+		SourceLine: 299,
 	}
 ] as const;

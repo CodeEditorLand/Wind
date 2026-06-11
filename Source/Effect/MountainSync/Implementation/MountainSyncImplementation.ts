@@ -15,11 +15,7 @@ import type { IPCService } from "../../IPC.js";
 import type { MountainService } from "../../Mountain.js";
 import type { TelemetryService } from "../../Telemetry.js";
 import type { MountainSyncService } from "../Interface/MountainSyncService.js";
-import type {
-	SyncConfig,
-	SyncStats,
-	SyncStatus,
-} from "../Type/MountainSyncType.js";
+import type { SyncConfig, SyncStatus } from "../Type/MountainSyncType.js";
 import SyncNowEffect from "./MountainSyncHelper.js";
 
 /**

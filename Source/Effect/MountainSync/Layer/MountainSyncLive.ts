@@ -3,52 +3,83 @@
  * @description
  * Live layer for MountainSync service.
  * Provides the production implementation that depends on Mountain, IPC, and Telemetry.
+ * The underlying service is constructed lazily on first method call - the
+ * `__CEL_SERVICES__` global is populated by the workbench AFTER module load,
+ * so resolving it at module evaluation time would permanently capture `null`
+ * handles. Until the global is populated every method is a safe no-op.
  * @see {\@link Effect/MountainSync/Implementation/MountainSyncImplementation} Implementation
  * @see {\@link Effect/MountainSync/Layer/MountainSyncMock} Mock layer
  * @category Layer
  */
 
-import { Layer } from "effect";
+import { Effect, Layer } from "effect";
 
 import makeMountainSync from "../Implementation/MountainSyncImplementation.js";
+import type { MountainSyncService } from "../Interface/MountainSyncService.js";
 import MountainSyncTag from "../Tag/MountainSyncTag.js";
 
-/**
- * Live layer for MountainSync service.
- * Provides the production implementation using globally-available CEL services.
- *
- * @example
- * ```ts
- * import { Layer } from "effect";
- * import { MountainSyncLive } from "./Effect/MountainSync/Layer/MountainSyncLive.js";
- * import { MountainLive } from "./Effect/Mountain/index.js";
- * import { IPCMockLive } from "./Effect/IPC/Mock.js";
- * import { TelemetryLive } from "./Effect/Telemetry/index.js";
- *
- * const appLayer = Layer.mergeAll(
- *   MountainLive,
- *   IPCMockLive,
- *   TelemetryLive,
- *   MountainSyncLive
- * );
- * ```
- */
-function makeMountainSyncService() {
-	const Globals = globalThis as any;
+let Resolved: MountainSyncService | null = null;
 
-	const mountain = Globals.__CEL_SERVICES__?.Mountain ?? null;
+const Resolve = (): MountainSyncService | null => {
+	if (Resolved) {
+		return Resolved;
+	}
 
-	const ipc = Globals.__CEL_SERVICES__?.IPC ?? null;
+	const Services = (globalThis as any).__CEL_SERVICES__;
 
-	const telemetry = Globals.__CEL_SERVICES__?.Telemetry ?? null;
+	const Mountain = Services?.Mountain ?? null;
 
-	return makeMountainSync(mountain, ipc, telemetry);
-}
+	const IPC = Services?.IPC ?? null;
 
-const MountainSyncLive = Layer.succeed(
-	MountainSyncTag,
+	const Telemetry = Services?.Telemetry ?? null;
 
-	makeMountainSyncService(),
-);
+	if (!Mountain || !IPC || !Telemetry) {
+		return null;
+	}
+
+	Resolved = makeMountainSync(Mountain, IPC, Telemetry);
+
+	return Resolved;
+};
+
+const MountainSyncLive = Layer.succeed(MountainSyncTag, {
+	start: (Config) =>
+		Effect.suspend(() => Resolve()?.start(Config) ?? Effect.void),
+
+	stop: () => Effect.suspend(() => Resolve()?.stop() ?? Effect.void),
+
+	syncNow: () =>
+		Effect.suspend(
+			() =>
+				Resolve()?.syncNow() ??
+				Effect.succeed({
+					success: false,
+					itemsSynced: 0,
+					duration: 0,
+				}),
+		),
+
+	getStatus: () =>
+		Effect.suspend(
+			() => Resolve()?.getStatus() ?? Effect.succeed("idle" as const),
+		),
+
+	getStats: () =>
+		Effect.suspend(
+			() =>
+				Resolve()?.getStats() ??
+				Effect.succeed({
+					lastSyncTime: 0,
+					syncCount: 0,
+					successCount: 0,
+					errorCount: 0,
+					itemsSynced: 0,
+				}),
+		),
+
+	pause: () => Effect.suspend(() => Resolve()?.pause() ?? Effect.void),
+
+	resume: () => Effect.suspend(() => Resolve()?.resume() ?? Effect.void),
+} satisfies MountainSyncService);
 
 export default MountainSyncLive;

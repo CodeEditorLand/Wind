@@ -28,6 +28,6 @@ export const IChatToolRiskAssessmentServiceMembers: ReadonlyArray<InterfaceMembe
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: "One-sentence natural-language explanation, <= 140 chars.",
-		SourceLine: 32,
+		SourceLine: 38,
 	}
 ] as const;
