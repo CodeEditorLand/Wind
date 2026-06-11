@@ -306,6 +306,50 @@ graph TB
 
 ## Advanced Usage Patterns
 
+### TierIPC Routing
+
+`TauriMainProcessService.ts` supports three IPC routing modes controlled by the
+`TierIPC` environment variable:
+
+| Value          | Behavior                                                                                        |
+| :------------- | :---------------------------------------------------------------------------------------------- |
+| `Mountain`     | All `channel.call()` invocations go directly to Mountain via `@tauri-apps/api` invoke (default) |
+| `NodeDeferred` | Mountain first; if the result is `undefined` or `null`, falls back to `cocoon:request` bridge   |
+| `Node`         | All calls route to Cocoon via the `cocoon:request` bridge (pure Node.js path)                   |
+
+Per-subsystem defaults that override `TierIPC`:
+
+| Variable    | Default  | Routed to             |
+| :---------- | :------- | :-------------------- |
+| `TierIPC`   | Mountain | Main IPC default      |
+| `TierTasks` | Node     | Tasks route to Cocoon |
+| `TierAuth`  | Node     | Auth routes to Cocoon |
+
+All tier variables are mirrored into `import.meta.env.Tier*` at build time by
+`astro.config.ts` so Sky's `Utility/Tier.ts` resolves the same values without a
+runtime lookup.
+
+---
+
+### ManagedRuntime
+
+`Source/Effect/LandWorkbench/LandWorkbenchRuntime.ts` provides the
+module-singleton `ManagedRuntime` for the Wind service layer:
+
+- **Eagerly initialized** via IIFE at module load time - Layer initialization
+  cost is paid once during Sky bundle evaluation, not on the first service
+  `Get()` call.
+- **Singleton via `globalThis.__CEL_WIND_RUNTIME__`** - two sibling Sky chunks
+  that import the module land on the same instance.
+- **Sub-5 ms service lookup** - the runtime is already warm by the time VS Code
+  workbench calls any service method.
+
+Services are composed with `Layer.succeed` (not `Layer.effect`) for services
+that do not need async initialization. This keeps the Layer graph synchronous
+and avoids unnecessary Effect scheduling overhead during startup.
+
+---
+
 ### Custom Service Implementation
 
 Wind enables sophisticated custom service implementations:
@@ -331,10 +375,10 @@ class CustomDialogService {
 	}
 }
 
-// Service layer composition
-const CustomDialogLayer = Layer.effect(
+// Service layer composition - use Layer.succeed for sync init
+const CustomDialogLayer = Layer.succeed(
 	DialogServiceTag,
-	Effect.succeed(new CustomDialogService()),
+	new CustomDialogService(),
 );
 ```
 
