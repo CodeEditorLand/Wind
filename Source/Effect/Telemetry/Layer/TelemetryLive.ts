@@ -124,7 +124,7 @@ function makeTelemetryService(): TelemetryService {
 			}
 		});
 
-	const events: Stream.Stream<ReadonlyArray<TelemetryEvent>> = Stream.empty();
+	const events: Stream.Stream<ReadonlyArray<TelemetryEvent>> = Stream.empty;
 
 	const getMetrics = (
 		name: string,

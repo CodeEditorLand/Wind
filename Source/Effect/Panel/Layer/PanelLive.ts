@@ -27,9 +27,9 @@ function makePanelService(): PanelService {
 
 	const Views = Effect.suspend(() => Effect.succeed(_views));
 
-	const ViewsChanges: Stream.Stream<ReadonlyArray<PanelView>> = Stream.empty();
+	const ViewsChanges: Stream.Stream<ReadonlyArray<PanelView>> = Stream.empty;
 
-	const ActiveViewChanges: Stream.Stream<string | undefined> = Stream.empty();
+	const ActiveViewChanges: Stream.Stream<string | undefined> = Stream.empty;
 
 	const GetActiveView: Effect.Effect<string | undefined> = Effect.suspend(
 		() => Effect.succeed(_activeView),
@@ -52,51 +52,40 @@ function makePanelService(): PanelService {
 		Id: string,
 
 		updates: Partial<Omit<PanelView, "id">>,
-	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
-		Effect.suspend(() => {
-			if (!_views.find((v) => v.id === Id))
-				return Effect.fail(new PanelViewNotFoundError(Id));
-
-			try {
-				_views = _views
-					.map((v) => (v.id === Id ? { ...v, ...updates } : v))
-					.sort((a, b) => a.priority - b.priority);
-
-				return Effect.void;
-			} catch (error) {
-				return Effect.fail(new PanelUpdateError(Id, error));
-			}
-		});
+	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> => {
+		if (!_views.find((v) => v.id === Id))
+			return Effect.fail(new PanelViewNotFoundError(Id));
+		try {
+			_views = _views
+				.map((v) => (v.id === Id ? { ...v, ...updates } : v))
+				.sort((a, b) => a.priority - b.priority);
+			return Effect.void;
+		} catch (error) {
+			return Effect.fail(new PanelUpdateError(Id, error));
+		}
+	};
 
 	const RemoveView = (
 		Id: string,
-	): Effect.Effect<void, PanelViewNotFoundError> =>
-		Effect.suspend(() => {
-			if (!_views.find((v) => v.id === Id))
-				return Effect.fail(new PanelViewNotFoundError(Id));
-
-			_views = _views.filter((v) => v.id !== Id);
-
-			if (_activeView === Id) _activeView = undefined;
-
-			return Effect.void;
-		});
+	): Effect.Effect<void, PanelViewNotFoundError> => {
+		if (!_views.find((v) => v.id === Id))
+			return Effect.fail(new PanelViewNotFoundError(Id));
+		_views = _views.filter((v) => v.id !== Id);
+		if (_activeView === Id) _activeView = undefined;
+		return Effect.void;
+	};
 
 	const SetActiveView = (
 		Id: string,
-	): Effect.Effect<void, PanelViewNotFoundError> =>
-		Effect.suspend(() => {
-			if (!_views.find((v) => v.id === Id))
-				return Effect.fail(new PanelViewNotFoundError(Id));
-
-			_views = _views.map((v) =>
-				v.id === Id ? { ...v, visible: true, maximized: false } : v,
-			);
-
-			_activeView = Id;
-
-			return Effect.void;
-		});
+	): Effect.Effect<void, PanelViewNotFoundError> => {
+		if (!_views.find((v) => v.id === Id))
+			return Effect.fail(new PanelViewNotFoundError(Id));
+		_views = _views.map((v) =>
+			v.id === Id ? { ...v, visible: true, maximized: false } : v,
+		);
+		_activeView = Id;
+		return Effect.void;
+	};
 
 	const ShowView = (
 		Id: string,
@@ -110,26 +99,20 @@ function makePanelService(): PanelService {
 
 	const ToggleView = (
 		Id: string,
-	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
-		Effect.suspend(() => {
-			const existing = _views.find((v) => v.id === Id);
-
-			if (!existing) return Effect.fail(new PanelViewNotFoundError(Id));
-
-			return UpdateView(Id, { visible: !existing.visible });
-		});
+	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> => {
+		const existing = _views.find((v) => v.id === Id);
+		if (!existing) return Effect.fail(new PanelViewNotFoundError(Id));
+		return UpdateView(Id, { visible: !existing.visible });
+	};
 
 	const MaximizeView = (
 		Id: string,
-	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
-		Effect.suspend(() => {
-			if (!_views.find((v) => v.id === Id))
-				return Effect.fail(new PanelViewNotFoundError(Id));
-
-			_views = _views.map((v) => ({ ...v, maximized: v.id === Id }));
-
-			return Effect.void;
-		});
+	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> => {
+		if (!_views.find((v) => v.id === Id))
+			return Effect.fail(new PanelViewNotFoundError(Id));
+		_views = _views.map((v) => ({ ...v, maximized: v.id === Id }));
+		return Effect.void;
+	};
 
 	const RestoreView = (
 		Id: string,

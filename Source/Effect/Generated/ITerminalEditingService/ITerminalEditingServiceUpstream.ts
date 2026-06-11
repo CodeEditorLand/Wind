@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ITerminalEditingServiceTag = "terminalEditingService" as const;
-
 export const ITerminalEditingServiceSourcePath = "vs/workbench/contrib/terminal/browser/terminal.ts" as const;
-
 export const ITerminalEditingServiceSourceLine = 42 as const;
-
 /**
  * A terminal contribution that gets created whenever a terminal is created. A contribution has
  * access to the process manager through the constructor and provides a method for when xterm.js has
@@ -19,7 +15,6 @@ export const ITerminalEditingServiceSourceLine = 42 as const;
  */
 
 export interface ITerminalEditingServiceUpstream {
-
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
@@ -27,24 +22,15 @@ export interface ITerminalEditingServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const ITerminalEditingServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-
 		SourceLine: 299,
 	}
 ] as const;

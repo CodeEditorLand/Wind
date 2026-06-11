@@ -5,56 +5,32 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtHostManagedSocketsTag = "IExtHostManagedSockets" as const;
-
 export const IExtHostManagedSocketsSourcePath = "vs/workbench/api/common/extHostManagedSockets.ts" as const;
-
 export const IExtHostManagedSocketsSourceLine = 18 as const;
-
 export interface IExtHostManagedSocketsUpstream {
-
 	setFactory(socketFactoryId: number, makeConnection: () => Thenable<vscode.ManagedMessagePassing>): void;
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IExtHostManagedSocketsMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Method",
-
 		Name: "setFactory",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "socketFactoryId", TypeText: "number", Optional: false }, { Name: "makeConnection", TypeText: "() => Thenable<vscode.ManagedMessagePassing>", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 14,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 15,
 	}
 ] as const;

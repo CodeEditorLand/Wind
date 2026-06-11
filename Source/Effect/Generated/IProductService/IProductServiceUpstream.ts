@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IProductServiceTag = "productService" as const;
-
 export const IProductServiceSourcePath = "vs/platform/product/common/productService.ts" as const;
-
 export const IProductServiceSourceLine = 9 as const;
-
 export interface IProductServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IProductServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 13,
 	}
 ] as const;

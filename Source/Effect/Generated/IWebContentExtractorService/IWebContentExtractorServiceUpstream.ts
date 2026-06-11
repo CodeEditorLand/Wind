@@ -5,64 +5,40 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IWebContentExtractorServiceTag = "IWebContentExtractorService" as const;
-
 export const IWebContentExtractorServiceSourcePath = "vs/platform/webContentExtractor/common/webContentExtractor.ts" as const;
-
 export const IWebContentExtractorServiceSourceLine = 11 as const;
-
 export interface IWebContentExtractorServiceUpstream {
-
 	/**
 	 * Whether to allow cross-authority redirects on the web content.
 	 * 'false' by default.
 	 */
 	_serviceBrand: undefined;
-
 	/**
 	 * Whether to allow cross-authority redirects on the web content.
 	 * 'false' by default.
 	 */
 	extract(uri: URI[], options?: IWebContentExtractorOptions): Promise<WebContentExtractResult[]>;
 }
-
 export const IWebContentExtractorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Whether to allow cross-authority redirects on the web content.\n'false' by default.",
-
 		SourceLine: 33,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "extract",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<WebContentExtractResult[]>",
-
 		Parameters: [{ Name: "uri", TypeText: "URI[]", Optional: false }, { Name: "options", TypeText: "IWebContentExtractorOptions", Optional: true }],
-
 		DocComment: "Whether to allow cross-authority redirects on the web content.\n'false' by default.",
-
 		SourceLine: 34,
 	}
 ] as const;

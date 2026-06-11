@@ -17,7 +17,6 @@ import type { IActivityServiceUpstream } from "../../Generated/IActivityService/
 export type WorkbenchActivityBridgeShape = Pick<IActivityServiceUpstream, "showViewContainerActivity" | "showViewActivity" | "showAccountsActivity" | "showGlobalActivity">;
 
 export interface WorkbenchActivityGlobals {
-
 	readonly __CEL_SERVICES__?: {
 		readonly Activity?: WorkbenchActivityBridgeShape | null;
 	};

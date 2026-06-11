@@ -5,43 +5,29 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatAttachmentWidgetRegistryTag = "chatAttachmentWidgetRegistry" as const;
-
 export const IChatAttachmentWidgetRegistrySourcePath = "vs/workbench/contrib/chat/browser/attachments/chatAttachmentWidgetRegistry.ts" as const;
-
 export const IChatAttachmentWidgetRegistrySourceLine = 31 as const;
-
 // Decorator doc:
 // /**
 //  * Interface for a contributed attachment widget instance.
 //  */
 // 
 export interface IChatAttachmentWidgetRegistryUpstream {
-
 	/**
 	 * Interface for a contributed attachment widget instance.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IChatAttachmentWidgetRegistryMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Interface for a contributed attachment widget instance.",
-
 		SourceLine: 34,
 	}
 ] as const;

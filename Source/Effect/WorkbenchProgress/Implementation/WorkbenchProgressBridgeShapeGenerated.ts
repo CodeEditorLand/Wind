@@ -17,7 +17,6 @@ import type { IProgressServiceUpstream } from "../../Generated/IProgressService/
 export type WorkbenchProgressBridgeShape = Pick<IProgressServiceUpstream, "withProgress">;
 
 export interface WorkbenchProgressGlobals {
-
 	readonly __CEL_SERVICES__?: {
 		readonly Progress?: WorkbenchProgressBridgeShape | null;
 	};

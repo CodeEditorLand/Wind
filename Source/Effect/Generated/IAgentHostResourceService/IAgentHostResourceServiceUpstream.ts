@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAgentHostResourceServiceTag = "agentHostResourceService" as const;
-
 export const IAgentHostResourceServiceSourcePath = "vs/platform/agentHost/common/agentHostResourceService.ts" as const;
-
 export const IAgentHostResourceServiceSourceLine = 90 as const;
-
 // Decorator doc:
 // /**
 //  * Stable sentinel address used for the in-process local agent host. Keyed
@@ -26,56 +22,48 @@ export const IAgentHostResourceServiceSourceLine = 90 as const;
  */
 
 export interface IAgentHostResourceServiceUpstream {
-
 	/**
 	 * Stable sentinel address used for the in-process local agent host. Keyed
 	 * persisted grants in user settings live under this name so that "Always
 	 * allow" survives window reloads.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * Stable sentinel address used for the in-process local agent host. Keyed
 	 * persisted grants in user settings live under this name so that "Always
 	 * allow" survives window reloads.
 	 */
 	read(address: string, uri: URI): Promise<IResourceReadResult>;
-
 	/**
 	 * Stable sentinel address used for the in-process local agent host. Keyed
 	 * persisted grants in user settings live under this name so that "Always
 	 * allow" survives window reloads.
 	 */
 	write(address: string, params: ResourceWriteParams): Promise<void>;
-
 	/**
 	 * Stable sentinel address used for the in-process local agent host. Keyed
 	 * persisted grants in user settings live under this name so that "Always
 	 * allow" survives window reloads.
 	 */
 	del(address: string, params: ResourceDeleteParams): Promise<void>;
-
 	/**
 	 * Stable sentinel address used for the in-process local agent host. Keyed
 	 * persisted grants in user settings live under this name so that "Always
 	 * allow" survives window reloads.
 	 */
 	move(address: string, params: ResourceMoveParams): Promise<void>;
-
 	/**
 	 * Stable sentinel address used for the in-process local agent host. Keyed
 	 * persisted grants in user settings live under this name so that "Always
 	 * allow" survives window reloads.
 	 */
 	copy(address: string, params: ResourceCopyParams): Promise<void>;
-
 	/**
 	 * Stable sentinel address used for the in-process local agent host. Keyed
 	 * persisted grants in user settings live under this name so that "Always
 	 * allow" survives window reloads.
 	 */
 	resolve(address: string, params: ResourceResolveParams): Promise<ResourceResolveResult>;
-
 	/**
 	 * Stable sentinel address used for the in-process local agent host. Keyed
 	 * persisted grants in user settings live under this name so that "Always
@@ -83,157 +71,85 @@ export interface IAgentHostResourceServiceUpstream {
 	 */
 	mkdir(address: string, params: ResourceMkdirParams): Promise<void>;
 }
-
 export const IAgentHostResourceServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Stable sentinel address used for the in-process local agent host. Keyed\npersisted grants in user settings live under this name so that \"Always\nallow\" survives window reloads.",
-
 		SourceLine: 111,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "read",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IResourceReadResult>",
-
 		Parameters: [{ Name: "address", TypeText: "string", Optional: false }, { Name: "uri", TypeText: "URI", Optional: false }],
-
 		DocComment: "Stable sentinel address used for the in-process local agent host. Keyed\npersisted grants in user settings live under this name so that \"Always\nallow\" survives window reloads.",
-
 		SourceLine: 116,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "write",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "address", TypeText: "string", Optional: false }, { Name: "params", TypeText: "ResourceWriteParams", Optional: false }],
-
 		DocComment: "Stable sentinel address used for the in-process local agent host. Keyed\npersisted grants in user settings live under this name so that \"Always\nallow\" survives window reloads.",
-
 		SourceLine: 117,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "del",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "address", TypeText: "string", Optional: false }, { Name: "params", TypeText: "ResourceDeleteParams", Optional: false }],
-
 		DocComment: "Stable sentinel address used for the in-process local agent host. Keyed\npersisted grants in user settings live under this name so that \"Always\nallow\" survives window reloads.",
-
 		SourceLine: 118,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "move",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "address", TypeText: "string", Optional: false }, { Name: "params", TypeText: "ResourceMoveParams", Optional: false }],
-
 		DocComment: "Stable sentinel address used for the in-process local agent host. Keyed\npersisted grants in user settings live under this name so that \"Always\nallow\" survives window reloads.",
-
 		SourceLine: 119,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "copy",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "address", TypeText: "string", Optional: false }, { Name: "params", TypeText: "ResourceCopyParams", Optional: false }],
-
 		DocComment: "Stable sentinel address used for the in-process local agent host. Keyed\npersisted grants in user settings live under this name so that \"Always\nallow\" survives window reloads.",
-
 		SourceLine: 120,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "resolve",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<ResourceResolveResult>",
-
 		Parameters: [{ Name: "address", TypeText: "string", Optional: false }, { Name: "params", TypeText: "ResourceResolveParams", Optional: false }],
-
 		DocComment: "Stable sentinel address used for the in-process local agent host. Keyed\npersisted grants in user settings live under this name so that \"Always\nallow\" survives window reloads.",
-
 		SourceLine: 121,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "mkdir",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "address", TypeText: "string", Optional: false }, { Name: "params", TypeText: "ResourceMkdirParams", Optional: false }],
-
 		DocComment: "Stable sentinel address used for the in-process local agent host. Keyed\npersisted grants in user settings live under this name so that \"Always\nallow\" survives window reloads.",
-
 		SourceLine: 122,
 	}
 ] as const;

@@ -25,7 +25,7 @@ function makeStatusBarService(): StatusBarService {
 	const Items = Effect.suspend(() => Effect.succeed(_items));
 
 	const ItemsChanges: Stream.Stream<ReadonlyArray<StatusBarItem>> =
-		Stream.empty();
+		Stream.empty;
 
 	const CreateItem = (
 		Item: CreateStatusBarItem,
@@ -48,47 +48,37 @@ function makeStatusBarService(): StatusBarService {
 		Id: string,
 
 		updates: Partial<Omit<StatusBarItem, "id">>,
-	): Effect.Effect<void, StatusBarItemNotFoundError | StatusBarUpdateError> =>
-		Effect.suspend(() => {
-			if (!_items.find((i) => i.id === Id))
-				return Effect.fail(new StatusBarItemNotFoundError(Id));
-
-			try {
-				_items = _items
-					.map((i) => (i.id === Id ? { ...i, ...updates } : i))
-					.sort((a, b) => a.priority - b.priority);
-
-				return Effect.void;
-			} catch (error) {
-				return Effect.fail(new StatusBarUpdateError(Id, error));
-			}
-		});
+	): Effect.Effect<void, StatusBarItemNotFoundError | StatusBarUpdateError> => {
+		if (!_items.find((i) => i.id === Id))
+			return Effect.fail(new StatusBarItemNotFoundError(Id));
+		try {
+			_items = _items
+				.map((i) => (i.id === Id ? { ...i, ...updates } : i))
+				.sort((a, b) => a.priority - b.priority);
+			return Effect.void;
+		} catch (error) {
+			return Effect.fail(new StatusBarUpdateError(Id, error));
+		}
+	};
 
 	const RemoveItem = (
 		Id: string,
-	): Effect.Effect<void, StatusBarItemNotFoundError> =>
-		Effect.suspend(() => {
-			if (!_items.find((i) => i.id === Id))
-				return Effect.fail(new StatusBarItemNotFoundError(Id));
-
-			_items = _items.filter((i) => i.id !== Id);
-
-			return Effect.void;
-		});
+	): Effect.Effect<void, StatusBarItemNotFoundError> => {
+		if (!_items.find((i) => i.id === Id))
+			return Effect.fail(new StatusBarItemNotFoundError(Id));
+		_items = _items.filter((i) => i.id !== Id);
+		return Effect.void;
+	};
 
 	const SetItemVisibility = (
 		Id: string,
-
 		visible: boolean,
-	): Effect.Effect<void, StatusBarItemNotFoundError> =>
-		Effect.suspend(() => {
-			if (!_items.find((i) => i.id === Id))
-				return Effect.fail(new StatusBarItemNotFoundError(Id));
-
-			if (!visible) return RemoveItem(Id);
-
-			return Effect.void;
-		});
+	): Effect.Effect<void, StatusBarItemNotFoundError> => {
+		if (!_items.find((i) => i.id === Id))
+			return Effect.fail(new StatusBarItemNotFoundError(Id));
+		if (!visible) return RemoveItem(Id);
+		return Effect.void;
+	};
 
 	const GetItemText = (Id: string): Effect.Effect<string | undefined> =>
 		Effect.succeed(_items.find((i) => i.id === Id)?.text);

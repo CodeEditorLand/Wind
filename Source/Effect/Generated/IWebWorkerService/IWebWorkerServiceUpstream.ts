@@ -5,56 +5,32 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IWebWorkerServiceTag = "IWebWorkerService" as const;
-
 export const IWebWorkerServiceSourcePath = "vs/platform/webWorker/browser/webWorkerService.ts" as const;
-
 export const IWebWorkerServiceSourceLine = 10 as const;
-
 export interface IWebWorkerServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	getWorkerUrl(descriptor: WebWorkerDescriptor): string;
 }
-
 export const IWebWorkerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 13,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getWorkerUrl",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "string",
-
 		Parameters: [{ Name: "descriptor", TypeText: "WebWorkerDescriptor", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 17,
 	}
 ] as const;

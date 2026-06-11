@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IMobileVisualViewportTag = "mobileVisualViewport" as const;
-
 export const IMobileVisualViewportSourcePath = "vs/sessions/browser/parts/mobile/mobileVisualViewport.ts" as const;
-
 export const IMobileVisualViewportSourceLine = 38 as const;
-
 // Decorator doc:
 // /**
 //  * Threshold (in CSS pixels) above which the visual viewport delta is
@@ -28,7 +24,6 @@ export const IMobileVisualViewportSourceLine = 38 as const;
  */
 
 export interface IMobileVisualViewportUpstream {
-
 	/**
 	 * Threshold (in CSS pixels) above which the visual viewport delta is
 	 * treated as a virtual keyboard being visible. A few dozen pixels can
@@ -37,24 +32,15 @@ export interface IMobileVisualViewportUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IMobileVisualViewportMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Threshold (in CSS pixels) above which the visual viewport delta is\ntreated as a virtual keyboard being visible. A few dozen pixels can\nappear briefly during URL-bar collapse / address-bar shrink, so we\nrequire a clearly keyboard-sized delta before flipping the context.",
-
 		SourceLine: 45,
 	}
 ] as const;

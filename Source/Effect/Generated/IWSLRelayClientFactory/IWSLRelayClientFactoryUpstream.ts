@@ -5,56 +5,32 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IWSLRelayClientFactoryTag = "wslRelayClientFactory" as const;
-
 export const IWSLRelayClientFactorySourcePath = "vs/platform/agentHost/electron-browser/wslRemoteAgentHostServiceImpl.ts" as const;
-
 export const IWSLRelayClientFactorySourceLine = 33 as const;
-
 export interface IWSLRelayClientFactoryUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	createClient(mainService: IWSLRemoteAgentHostMainService, connectionId: string, address: string): RemoteAgentHostProtocolClient;
 }
-
 export const IWSLRelayClientFactoryMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 36,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "createClient",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "RemoteAgentHostProtocolClient",
-
 		Parameters: [{ Name: "mainService", TypeText: "IWSLRemoteAgentHostMainService", Optional: false }, { Name: "connectionId", TypeText: "string", Optional: false }, { Name: "address", TypeText: "string", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 37,
 	}
 ] as const;

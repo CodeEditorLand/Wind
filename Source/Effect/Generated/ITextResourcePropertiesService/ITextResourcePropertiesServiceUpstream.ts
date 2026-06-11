@@ -5,43 +5,29 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ITextResourcePropertiesServiceTag = "textResourcePropertiesService" as const;
-
 export const ITextResourcePropertiesServiceSourcePath = "vs/editor/common/services/textResourceConfiguration.ts" as const;
-
 export const ITextResourcePropertiesServiceSourceLine = 79 as const;
-
 // Decorator doc:
 // /**
 //  * All affected keys. Also includes language overrides and keys changed under language overrides.
 //  */
 // 
 export interface ITextResourcePropertiesServiceUpstream {
-
 	/**
 	 * All affected keys. Also includes language overrides and keys changed under language overrides.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const ITextResourcePropertiesServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "All affected keys. Also includes language overrides and keys changed under language overrides.",
-
 		SourceLine: 83,
 	}
 ] as const;

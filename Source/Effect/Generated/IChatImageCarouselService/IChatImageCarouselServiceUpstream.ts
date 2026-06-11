@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatImageCarouselServiceTag = "chatImageCarouselService" as const;
-
 export const IChatImageCarouselServiceSourcePath = "vs/workbench/contrib/chat/browser/chatImageCarouselService.ts" as const;
-
 export const IChatImageCarouselServiceSourceLine = 18 as const;
-
 export interface IChatImageCarouselServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IChatImageCarouselServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 21,
 	}
 ] as const;

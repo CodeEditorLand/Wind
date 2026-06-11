@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChecksumServiceTag = "checksumService" as const;
-
 export const IChecksumServiceSourcePath = "vs/platform/checksum/common/checksumService.ts" as const;
-
 export const IChecksumServiceSourceLine = 9 as const;
-
 export interface IChecksumServiceUpstream {
-
 	readonly _serviceBrand: undefined;
 }
-
 export const IChecksumServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 13,
 	}
 ] as const;

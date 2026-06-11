@@ -5,15 +5,10 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IThemeServiceTag = "themeService" as const;
-
 export const IThemeServiceSourcePath = "vs/platform/theme/common/themeService.ts" as const;
-
 export const IThemeServiceSourceLine = 17 as const;
-
 export interface IThemeServiceUpstream {
-
 	/**
 	 * Resolves the color of the given color identifier. If the theme does not
 	 * specify the color, the default color is returned unless <code>useDefault</code> is set to false.
@@ -21,7 +16,6 @@ export interface IThemeServiceUpstream {
 	 * @param useDefault specifies if the default color should be used. If not set, the default is used.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * Resolves the color of the given color identifier. If the theme does not
 	 * specify the color, the default color is returned unless <code>useDefault</code> is set to false.
@@ -29,7 +23,6 @@ export interface IThemeServiceUpstream {
 	 * @param useDefault specifies if the default color should be used. If not set, the default is used.
 	 */
 	readonly onDidColorThemeChange: Event<IColorTheme>;
-
 	/**
 	 * Resolves the color of the given color identifier. If the theme does not
 	 * specify the color, the default color is returned unless <code>useDefault</code> is set to false.
@@ -37,7 +30,6 @@ export interface IThemeServiceUpstream {
 	 * @param useDefault specifies if the default color should be used. If not set, the default is used.
 	 */
 	readonly onDidFileIconThemeChange: Event<IFileIconTheme>;
-
 	/**
 	 * Resolves the color of the given color identifier. If the theme does not
 	 * specify the color, the default color is returned unless <code>useDefault</code> is set to false.
@@ -45,7 +37,6 @@ export interface IThemeServiceUpstream {
 	 * @param useDefault specifies if the default color should be used. If not set, the default is used.
 	 */
 	readonly onDidProductIconThemeChange: Event<IProductIconTheme>;
-
 	/**
 	 * Resolves the color of the given color identifier. If the theme does not
 	 * specify the color, the default color is returned unless <code>useDefault</code> is set to false.
@@ -53,7 +44,6 @@ export interface IThemeServiceUpstream {
 	 * @param useDefault specifies if the default color should be used. If not set, the default is used.
 	 */
 	getColorTheme(): IColorTheme;
-
 	/**
 	 * Resolves the color of the given color identifier. If the theme does not
 	 * specify the color, the default color is returned unless <code>useDefault</code> is set to false.
@@ -61,7 +51,6 @@ export interface IThemeServiceUpstream {
 	 * @param useDefault specifies if the default color should be used. If not set, the default is used.
 	 */
 	getFileIconTheme(): IFileIconTheme;
-
 	/**
 	 * Resolves the color of the given color identifier. If the theme does not
 	 * specify the color, the default color is returned unless <code>useDefault</code> is set to false.
@@ -70,138 +59,75 @@ export interface IThemeServiceUpstream {
 	 */
 	getProductIconTheme(): IProductIconTheme;
 }
-
 export const IThemeServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Resolves the color of the given color identifier. If the theme does not\nspecify the color, the default color is returned unless <code>useDefault</code> is set to false.\n@param color the id of the color\n@param useDefault specifies if the default color should be used. If not set, the default is used.",
-
 		SourceLine: 115,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidColorThemeChange",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<IColorTheme>",
-
 		Parameters: [],
-
 		DocComment: "Resolves the color of the given color identifier. If the theme does not\nspecify the color, the default color is returned unless <code>useDefault</code> is set to false.\n@param color the id of the color\n@param useDefault specifies if the default color should be used. If not set, the default is used.",
-
 		SourceLine: 115,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidFileIconThemeChange",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<IFileIconTheme>",
-
 		Parameters: [],
-
 		DocComment: "Resolves the color of the given color identifier. If the theme does not\nspecify the color, the default color is returned unless <code>useDefault</code> is set to false.\n@param color the id of the color\n@param useDefault specifies if the default color should be used. If not set, the default is used.",
-
 		SourceLine: 115,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidProductIconThemeChange",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<IProductIconTheme>",
-
 		Parameters: [],
-
 		DocComment: "Resolves the color of the given color identifier. If the theme does not\nspecify the color, the default color is returned unless <code>useDefault</code> is set to false.\n@param color the id of the color\n@param useDefault specifies if the default color should be used. If not set, the default is used.",
-
 		SourceLine: 115,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getColorTheme",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IColorTheme",
-
 		Parameters: [],
-
 		DocComment: "Resolves the color of the given color identifier. If the theme does not\nspecify the color, the default color is returned unless <code>useDefault</code> is set to false.\n@param color the id of the color\n@param useDefault specifies if the default color should be used. If not set, the default is used.",
-
 		SourceLine: 117,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getFileIconTheme",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IFileIconTheme",
-
 		Parameters: [],
-
 		DocComment: "Resolves the color of the given color identifier. If the theme does not\nspecify the color, the default color is returned unless <code>useDefault</code> is set to false.\n@param color the id of the color\n@param useDefault specifies if the default color should be used. If not set, the default is used.",
-
 		SourceLine: 121,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getProductIconTheme",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IProductIconTheme",
-
 		Parameters: [],
-
 		DocComment: "Resolves the color of the given color identifier. If the theme does not\nspecify the color, the default color is returned unless <code>useDefault</code> is set to false.\n@param color the id of the color\n@param useDefault specifies if the default color should be used. If not set, the default is used.",
-
 		SourceLine: 125,
 	}
 ] as const;

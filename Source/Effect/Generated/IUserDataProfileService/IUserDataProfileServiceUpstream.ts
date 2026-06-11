@@ -5,98 +5,54 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IUserDataProfileServiceTag = "IUserDataProfileService" as const;
-
 export const IUserDataProfileServiceSourcePath = "vs/workbench/services/userDataProfile/common/userDataProfile.ts" as const;
-
 export const IUserDataProfileServiceSourceLine = 26 as const;
-
 export interface IUserDataProfileServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	readonly currentProfile: IUserDataProfile;
-
 	readonly onDidChangeCurrentProfile: Event<DidChangeUserDataProfileEvent>;
-
 	updateCurrentProfile(currentProfile: IUserDataProfile): Promise<void>;
 }
-
 export const IUserDataProfileServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 28,
 	},
-
 	{
-
 		Kind: "Property",
-
 		Name: "currentProfile",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "IUserDataProfile",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 28,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeCurrentProfile",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<DidChangeUserDataProfileEvent>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 28,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "updateCurrentProfile",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "currentProfile", TypeText: "IUserDataProfile", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 31,
 	}
 ] as const;

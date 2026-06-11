@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IApplicationStorageMainServiceTag = "applicationStorageMainService" as const;
-
 export const IApplicationStorageMainServiceSourcePath = "vs/platform/storage/electron-main/storageMainService.ts" as const;
-
 export const IApplicationStorageMainServiceSourceLine = 331 as const;
-
 // Decorator doc:
 // /**
 //  * Provides access to the application storage shared across all
@@ -21,7 +17,6 @@ export const IApplicationStorageMainServiceSourceLine = 331 as const;
 //  */
 // 
 export interface IApplicationStorageMainServiceUpstream {
-
 	/**
 	 * Provides access to the application storage shared across all
 	 * windows and all profiles.
@@ -29,7 +24,6 @@ export interface IApplicationStorageMainServiceUpstream {
 	 * Rather use `IApplicationStorageMainService` for that purpose.
 	 */
 	get(key: string, scope: ApplicationStorageScope, fallbackValue: string): string;
-
 	/**
 	 * Provides access to the application storage shared across all
 	 * windows and all profiles.
@@ -37,7 +31,6 @@ export interface IApplicationStorageMainServiceUpstream {
 	 * Rather use `IApplicationStorageMainService` for that purpose.
 	 */
 	get(key: string, scope: ApplicationStorageScope, fallbackValue?: string): string | undefined;
-
 	/**
 	 * Provides access to the application storage shared across all
 	 * windows and all profiles.
@@ -45,7 +38,6 @@ export interface IApplicationStorageMainServiceUpstream {
 	 * Rather use `IApplicationStorageMainService` for that purpose.
 	 */
 	getBoolean(key: string, scope: ApplicationStorageScope, fallbackValue: boolean): boolean;
-
 	/**
 	 * Provides access to the application storage shared across all
 	 * windows and all profiles.
@@ -53,7 +45,6 @@ export interface IApplicationStorageMainServiceUpstream {
 	 * Rather use `IApplicationStorageMainService` for that purpose.
 	 */
 	getBoolean(key: string, scope: ApplicationStorageScope, fallbackValue?: boolean): boolean | undefined;
-
 	/**
 	 * Provides access to the application storage shared across all
 	 * windows and all profiles.
@@ -61,7 +52,6 @@ export interface IApplicationStorageMainServiceUpstream {
 	 * Rather use `IApplicationStorageMainService` for that purpose.
 	 */
 	getNumber(key: string, scope: ApplicationStorageScope, fallbackValue: number): number;
-
 	/**
 	 * Provides access to the application storage shared across all
 	 * windows and all profiles.
@@ -69,7 +59,6 @@ export interface IApplicationStorageMainServiceUpstream {
 	 * Rather use `IApplicationStorageMainService` for that purpose.
 	 */
 	getNumber(key: string, scope: ApplicationStorageScope, fallbackValue?: number): number | undefined;
-
 	/**
 	 * Provides access to the application storage shared across all
 	 * windows and all profiles.
@@ -77,7 +66,6 @@ export interface IApplicationStorageMainServiceUpstream {
 	 * Rather use `IApplicationStorageMainService` for that purpose.
 	 */
 	store(key: string, value: string | boolean | number | undefined | null, scope: ApplicationStorageScope, target: StorageTarget): void;
-
 	/**
 	 * Provides access to the application storage shared across all
 	 * windows and all profiles.
@@ -85,7 +73,6 @@ export interface IApplicationStorageMainServiceUpstream {
 	 * Rather use `IApplicationStorageMainService` for that purpose.
 	 */
 	remove(key: string, scope: ApplicationStorageScope): void;
-
 	/**
 	 * Provides access to the application storage shared across all
 	 * windows and all profiles.
@@ -93,7 +80,6 @@ export interface IApplicationStorageMainServiceUpstream {
 	 * Rather use `IApplicationStorageMainService` for that purpose.
 	 */
 	keys(scope: ApplicationStorageScope, target: StorageTarget): string[];
-
 	/**
 	 * Provides access to the application storage shared across all
 	 * windows and all profiles.
@@ -101,7 +87,6 @@ export interface IApplicationStorageMainServiceUpstream {
 	 * Rather use `IApplicationStorageMainService` for that purpose.
 	 */
 	switch(): never;
-
 	/**
 	 * Provides access to the application storage shared across all
 	 * windows and all profiles.
@@ -110,214 +95,115 @@ export interface IApplicationStorageMainServiceUpstream {
 	 */
 	isNew(scope: ApplicationStorageScope): boolean;
 }
-
 export const IApplicationStorageMainServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Method",
-
 		Name: "get",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "string",
-
 		Parameters: [{ Name: "key", TypeText: "string", Optional: false }, { Name: "scope", TypeText: "ApplicationStorageScope", Optional: false }, { Name: "fallbackValue", TypeText: "string", Optional: false }],
-
 		DocComment: "Provides access to the application storage shared across all\nwindows and all profiles.\nNote: DO NOT use this for reading/writing from the main process!\nRather use `IApplicationStorageMainService` for that purpose.",
-
 		SourceLine: 354,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "get",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "string | undefined",
-
 		Parameters: [{ Name: "key", TypeText: "string", Optional: false }, { Name: "scope", TypeText: "ApplicationStorageScope", Optional: false }, { Name: "fallbackValue", TypeText: "string", Optional: true }],
-
 		DocComment: "Provides access to the application storage shared across all\nwindows and all profiles.\nNote: DO NOT use this for reading/writing from the main process!\nRather use `IApplicationStorageMainService` for that purpose.",
-
 		SourceLine: 354,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getBoolean",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [{ Name: "key", TypeText: "string", Optional: false }, { Name: "scope", TypeText: "ApplicationStorageScope", Optional: false }, { Name: "fallbackValue", TypeText: "boolean", Optional: false }],
-
 		DocComment: "Provides access to the application storage shared across all\nwindows and all profiles.\nNote: DO NOT use this for reading/writing from the main process!\nRather use `IApplicationStorageMainService` for that purpose.",
-
 		SourceLine: 357,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getBoolean",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean | undefined",
-
 		Parameters: [{ Name: "key", TypeText: "string", Optional: false }, { Name: "scope", TypeText: "ApplicationStorageScope", Optional: false }, { Name: "fallbackValue", TypeText: "boolean", Optional: true }],
-
 		DocComment: "Provides access to the application storage shared across all\nwindows and all profiles.\nNote: DO NOT use this for reading/writing from the main process!\nRather use `IApplicationStorageMainService` for that purpose.",
-
 		SourceLine: 357,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getNumber",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "number",
-
 		Parameters: [{ Name: "key", TypeText: "string", Optional: false }, { Name: "scope", TypeText: "ApplicationStorageScope", Optional: false }, { Name: "fallbackValue", TypeText: "number", Optional: false }],
-
 		DocComment: "Provides access to the application storage shared across all\nwindows and all profiles.\nNote: DO NOT use this for reading/writing from the main process!\nRather use `IApplicationStorageMainService` for that purpose.",
-
 		SourceLine: 360,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "getNumber",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "number | undefined",
-
 		Parameters: [{ Name: "key", TypeText: "string", Optional: false }, { Name: "scope", TypeText: "ApplicationStorageScope", Optional: false }, { Name: "fallbackValue", TypeText: "number", Optional: true }],
-
 		DocComment: "Provides access to the application storage shared across all\nwindows and all profiles.\nNote: DO NOT use this for reading/writing from the main process!\nRather use `IApplicationStorageMainService` for that purpose.",
-
 		SourceLine: 360,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "store",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "key", TypeText: "string", Optional: false }, { Name: "value", TypeText: "string | boolean | number | undefined | null", Optional: false }, { Name: "scope", TypeText: "ApplicationStorageScope", Optional: false }, { Name: "target", TypeText: "StorageTarget", Optional: false }],
-
 		DocComment: "Provides access to the application storage shared across all\nwindows and all profiles.\nNote: DO NOT use this for reading/writing from the main process!\nRather use `IApplicationStorageMainService` for that purpose.",
-
 		SourceLine: 363,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "remove",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "key", TypeText: "string", Optional: false }, { Name: "scope", TypeText: "ApplicationStorageScope", Optional: false }],
-
 		DocComment: "Provides access to the application storage shared across all\nwindows and all profiles.\nNote: DO NOT use this for reading/writing from the main process!\nRather use `IApplicationStorageMainService` for that purpose.",
-
 		SourceLine: 365,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "keys",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "string[]",
-
 		Parameters: [{ Name: "scope", TypeText: "ApplicationStorageScope", Optional: false }, { Name: "target", TypeText: "StorageTarget", Optional: false }],
-
 		DocComment: "Provides access to the application storage shared across all\nwindows and all profiles.\nNote: DO NOT use this for reading/writing from the main process!\nRather use `IApplicationStorageMainService` for that purpose.",
-
 		SourceLine: 367,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "switch",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "never",
-
 		Parameters: [],
-
 		DocComment: "Provides access to the application storage shared across all\nwindows and all profiles.\nNote: DO NOT use this for reading/writing from the main process!\nRather use `IApplicationStorageMainService` for that purpose.",
-
 		SourceLine: 369,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "isNew",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "boolean",
-
 		Parameters: [{ Name: "scope", TypeText: "ApplicationStorageScope", Optional: false }],
-
 		DocComment: "Provides access to the application storage shared across all\nwindows and all profiles.\nNote: DO NOT use this for reading/writing from the main process!\nRather use `IApplicationStorageMainService` for that purpose.",
-
 		SourceLine: 371,
 	}
 ] as const;

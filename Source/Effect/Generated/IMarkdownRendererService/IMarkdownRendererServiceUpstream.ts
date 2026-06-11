@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IMarkdownRendererServiceTag = "markdownRendererService" as const;
-
 export const IMarkdownRendererServiceSourcePath = "vs/platform/markdown/browser/markdownRenderer.ts" as const;
-
 export const IMarkdownRendererServiceSourceLine = 36 as const;
-
 // Decorator doc:
 // /**
 //  * Renders markdown to HTML.
@@ -26,21 +22,18 @@ export const IMarkdownRendererServiceSourceLine = 36 as const;
  */
 
 export interface IMarkdownRendererServiceUpstream {
-
 	/**
 	 * Renders markdown to HTML.
 	 * This interface allows a upper level component to pass a custom markdown renderer to sub-components.
 	 * If you want to render markdown content in a standard way, prefer using the {@linkcode IMarkdownRendererService}.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * Renders markdown to HTML.
 	 * This interface allows a upper level component to pass a custom markdown renderer to sub-components.
 	 * If you want to render markdown content in a standard way, prefer using the {@linkcode IMarkdownRendererService}.
 	 */
 	render(markdown: IMarkdownString, options?: MarkdownRenderOptions & IMarkdownRendererExtraOptions, outElement?: HTMLElement): IRenderedMarkdown;
-
 	/**
 	 * Renders markdown to HTML.
 	 * This interface allows a upper level component to pass a custom markdown renderer to sub-components.
@@ -48,62 +41,35 @@ export interface IMarkdownRendererServiceUpstream {
 	 */
 	setDefaultCodeBlockRenderer(renderer: IMarkdownCodeBlockRenderer): void;
 }
-
 export const IMarkdownRendererServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Renders markdown to HTML.\nThis interface allows a upper level component to pass a custom markdown renderer to sub-components.\nIf you want to render markdown content in a standard way, prefer using the {@linkcode IMarkdownRendererService}.",
-
 		SourceLine: 47,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "render",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IRenderedMarkdown",
-
 		Parameters: [{ Name: "markdown", TypeText: "IMarkdownString", Optional: false }, { Name: "options", TypeText: "MarkdownRenderOptions & IMarkdownRendererExtraOptions", Optional: true }, { Name: "outElement", TypeText: "HTMLElement", Optional: true }],
-
 		DocComment: "Renders markdown to HTML.\nThis interface allows a upper level component to pass a custom markdown renderer to sub-components.\nIf you want to render markdown content in a standard way, prefer using the {@linkcode IMarkdownRendererService}.",
-
 		SourceLine: 49,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "setDefaultCodeBlockRenderer",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "renderer", TypeText: "IMarkdownCodeBlockRenderer", Optional: false }],
-
 		DocComment: "Renders markdown to HTML.\nThis interface allows a upper level component to pass a custom markdown renderer to sub-components.\nIf you want to render markdown content in a standard way, prefer using the {@linkcode IMarkdownRendererService}.",
-
 		SourceLine: 51,
 	}
 ] as const;

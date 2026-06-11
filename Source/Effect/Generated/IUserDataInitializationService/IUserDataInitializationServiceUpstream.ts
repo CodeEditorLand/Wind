@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IUserDataInitializationServiceTag = "IUserDataInitializationService" as const;
-
 export const IUserDataInitializationServiceSourcePath = "vs/workbench/services/userData/browser/userDataInit.ts" as const;
-
 export const IUserDataInitializationServiceSourceLine = 22 as const;
-
 export interface IUserDataInitializationServiceUpstream {
-
 	_serviceBrand: undefined;
 }
-
 export const IUserDataInitializationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 24,
 	}
 ] as const;

@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatViewFactoryTag = "chatViewFactory" as const;
-
 export const IChatViewFactorySourcePath = "vs/sessions/services/chatView/browser/chatViewFactory.ts" as const;
-
 export const IChatViewFactorySourceLine = 9 as const;
-
 /**
  * Creates {@link AbstractChatView} instances for the {@link SessionsPart}
  * internal grid. The factory lives in the services layer so that core
@@ -20,7 +16,6 @@ export const IChatViewFactorySourceLine = 9 as const;
  */
 
 export interface IChatViewFactoryUpstream {
-
 	/**
 	 * Creates {@link AbstractChatView} instances for the {@link SessionsPart}
 	 * internal grid. The factory lives in the services layer so that core
@@ -29,24 +24,15 @@ export interface IChatViewFactoryUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IChatViewFactoryMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Creates {@link AbstractChatView} instances for the {@link SessionsPart}\ninternal grid. The factory lives in the services layer so that core\n(`sessions/browser/`) can instantiate chat views without depending on the\nconcrete view implementations, which live in `sessions/contrib/chat/`.",
-
 		SourceLine: 19,
 	}
 ] as const;

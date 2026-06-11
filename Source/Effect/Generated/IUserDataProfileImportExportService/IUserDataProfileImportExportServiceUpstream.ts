@@ -5,182 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IUserDataProfileImportExportServiceTag = "IUserDataProfileImportExportService" as const;
-
 export const IUserDataProfileImportExportServiceSourcePath = "vs/workbench/services/userDataProfile/common/userDataProfile.ts" as const;
-
 export const IUserDataProfileImportExportServiceSourceLine = 100 as const;
-
 export interface IUserDataProfileImportExportServiceUpstream {
-
 	readonly _serviceBrand: undefined;
-
 	registerProfileContentHandler(id: string, profileContentHandler: IUserDataProfileContentHandler): IDisposable;
-
 	unregisterProfileContentHandler(id: string): void;
-
 	resolveProfileTemplate(uri: URI): Promise<IUserDataProfileTemplate | null>;
-
 	exportProfile(profile: IUserDataProfile, exportFlags?: ProfileResourceTypeFlags): Promise<void>;
-
 	createFromProfile(from: IUserDataProfile, options: IUserDataProfileCreateOptions, token: CancellationToken): Promise<IUserDataProfile | undefined>;
-
 	createProfileFromTemplate(profileTemplate: IUserDataProfileTemplate, options: IUserDataProfileCreateOptions, token: CancellationToken): Promise<IUserDataProfile | undefined>;
-
 	createTroubleshootProfile(): Promise<void>;
 }
-
 export const IUserDataProfileImportExportServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 102,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "registerProfileContentHandler",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "IDisposable",
-
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }, { Name: "profileContentHandler", TypeText: "IUserDataProfileContentHandler", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 104,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "unregisterProfileContentHandler",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "id", TypeText: "string", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 105,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "resolveProfileTemplate",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IUserDataProfileTemplate | null>",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 107,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "exportProfile",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [{ Name: "profile", TypeText: "IUserDataProfile", Optional: false }, { Name: "exportFlags", TypeText: "ProfileResourceTypeFlags", Optional: true }],
-
 		DocComment: null,
-
 		SourceLine: 108,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "createFromProfile",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IUserDataProfile | undefined>",
-
 		Parameters: [{ Name: "from", TypeText: "IUserDataProfile", Optional: false }, { Name: "options", TypeText: "IUserDataProfileCreateOptions", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 109,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "createProfileFromTemplate",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<IUserDataProfile | undefined>",
-
 		Parameters: [{ Name: "profileTemplate", TypeText: "IUserDataProfileTemplate", Optional: false }, { Name: "options", TypeText: "IUserDataProfileCreateOptions", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 110,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "createTroubleshootProfile",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<void>",
-
 		Parameters: [],
-
 		DocComment: null,
-
 		SourceLine: 111,
 	}
 ] as const;

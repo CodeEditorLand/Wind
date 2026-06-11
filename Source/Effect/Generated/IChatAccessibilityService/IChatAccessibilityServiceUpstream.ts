@@ -5,139 +5,85 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IChatAccessibilityServiceTag = "chatAccessibilityService" as const;
-
 export const IChatAccessibilityServiceSourcePath = "vs/workbench/contrib/chat/browser/chat.ts" as const;
-
 export const IChatAccessibilityServiceSourceLine = 199 as const;
-
 // Decorator doc:
 // /**
 //  * A workspace item that can be selected in the workspace picker.
 //  */
 // 
 export interface IChatAccessibilityServiceUpstream {
-
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	acceptRequest(uri: URI, skipRequestSignal?: boolean): void;
-
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	disposeRequest(requestId: URI): void;
-
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	acceptResponse(widget: ChatWidget, container: HTMLElement, response: IChatResponseViewModel | string | undefined, requestId: URI | undefined, isVoiceInput?: boolean): void;
-
 	/**
 	 * A workspace item that can be selected in the workspace picker.
 	 */
 	acceptElicitation(message: IChatElicitationRequest): void;
 }
-
 export const IChatAccessibilityServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "A workspace item that can be selected in the workspace picker.",
-
 		SourceLine: 201,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "acceptRequest",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "uri", TypeText: "URI", Optional: false }, { Name: "skipRequestSignal", TypeText: "boolean", Optional: true }],
-
 		DocComment: "A workspace item that can be selected in the workspace picker.",
-
 		SourceLine: 202,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "disposeRequest",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "requestId", TypeText: "URI", Optional: false }],
-
 		DocComment: "A workspace item that can be selected in the workspace picker.",
-
 		SourceLine: 203,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "acceptResponse",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "widget", TypeText: "ChatWidget", Optional: false }, { Name: "container", TypeText: "HTMLElement", Optional: false }, { Name: "response", TypeText: "IChatResponseViewModel | string | undefined", Optional: false }, { Name: "requestId", TypeText: "URI | undefined", Optional: false }, { Name: "isVoiceInput", TypeText: "boolean", Optional: true }],
-
 		DocComment: "A workspace item that can be selected in the workspace picker.",
-
 		SourceLine: 204,
 	},
-
 	{
-
 		Kind: "Method",
-
 		Name: "acceptElicitation",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "void",
-
 		Parameters: [{ Name: "message", TypeText: "IChatElicitationRequest", Optional: false }],
-
 		DocComment: "A workspace item that can be selected in the workspace picker.",
-
 		SourceLine: 205,
 	}
 ] as const;

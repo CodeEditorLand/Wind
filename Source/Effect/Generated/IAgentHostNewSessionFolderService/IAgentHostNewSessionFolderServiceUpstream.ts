@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAgentHostNewSessionFolderServiceTag = "agentHostNewSessionFolderService" as const;
-
 export const IAgentHostNewSessionFolderServiceSourcePath = "vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostNewSessionFolderService.ts" as const;
-
 export const IAgentHostNewSessionFolderServiceSourceLine = 14 as const;
-
 /**
  * Per-window store of the working directory a user picked for a not-yet-started
  * agent-host session, keyed by the chat session resource it was picked against
@@ -24,7 +20,6 @@ export const IAgentHostNewSessionFolderServiceSourceLine = 14 as const;
  */
 
 export interface IAgentHostNewSessionFolderServiceUpstream {
-
 	/**
 	 * Per-window store of the working directory a user picked for a not-yet-started
 	 * agent-host session, keyed by the chat session resource it was picked against
@@ -37,24 +32,15 @@ export interface IAgentHostNewSessionFolderServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IAgentHostNewSessionFolderServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Per-window store of the working directory a user picked for a not-yet-started\nagent-host session, keyed by the chat session resource it was picked against\n(including the untitled compose resource). An agent-host session's working\ndirectory is an argument to session creation and is immutable afterwards, so\nin a multi-root window the Folder picker chip records the choice here and the\nworking-directory resolution sites consult it before falling back to the\nfirst workspace folder. Keying by the compose resource lets the choice\nsurvive the untitled-to-real rebind that happens when the session is created.",
-
 		SourceLine: 27,
 	}
 ] as const;

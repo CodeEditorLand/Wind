@@ -5,17 +5,11 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IMainProcessServiceTag = "mainProcessService" as const;
-
 export const IMainProcessServiceSourcePath = "vs/platform/ipc/common/mainProcessService.ts" as const;
-
 export const IMainProcessServiceSourceLine = 10 as const;
-
 export interface IMainProcessServiceUpstream {
-
 	// (no members extracted in same file - resolve cross-file)
 }
-
 export const IMainProcessServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 ] as const;

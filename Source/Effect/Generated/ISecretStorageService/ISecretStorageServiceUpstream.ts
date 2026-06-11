@@ -5,67 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ISecretStorageServiceTag = "secretStorageService" as const;
-
 export const ISecretStorageServiceSourcePath = "vs/platform/secrets/common/secrets.ts" as const;
-
 export const ISecretStorageServiceSourceLine = 86 as const;
-
 // Decorator doc:
 // /**
 //  * The storage key prefix used for all secrets.
 //  */
 // 
 export interface ISecretStorageServiceUpstream {
-
 	/**
 	 * The storage key prefix used for all secrets.
 	 */
 	readonly _serviceBrand: undefined;
-
 	/**
 	 * The storage key prefix used for all secrets.
 	 */
 	readonly onDidChangeSecret: Event<string>;
 }
-
 export const ISecretStorageServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "The storage key prefix used for all secrets.",
-
 		SourceLine: 97,
 	},
-
 	{
-
 		Kind: "Event",
-
 		Name: "onDidChangeSecret",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "Event<string>",
-
 		Parameters: [],
-
 		DocComment: "The storage key prefix used for all secrets.",
-
 		SourceLine: 97,
 	}
 ] as const;

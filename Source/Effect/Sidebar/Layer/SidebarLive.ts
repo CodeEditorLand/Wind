@@ -25,10 +25,10 @@ function makeService(): SidebarService {
 	const Panels = Effect.suspend(() => Effect.succeed(_panels));
 
 	const PanelsChanges: Stream.Stream<ReadonlyArray<SidebarPanel>> =
-		Stream.empty();
+		Stream.empty;
 
 	const ActivePanelChanges: Stream.Stream<string | undefined> =
-		Stream.empty();
+		Stream.empty;
 
 	const GetActivePanel: Effect.Effect<string | undefined> = Effect.suspend(
 		() => Effect.succeed(_activePanel),
@@ -55,65 +55,48 @@ function makeService(): SidebarService {
 		Id: string,
 
 		updates: Partial<Omit<SidebarPanel, "id">>,
-	): Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError> =>
-		Effect.suspend(() => {
-			const existing = _panels.find((p) => p.id === Id);
-
-			if (!existing)
-				return Effect.fail(new SidebarPanelNotFoundError(Id));
-
-			try {
-				_panels = _panels
-					.map((p) => (p.id === Id ? { ...p, ...updates } : p))
-					.sort((a, b) => a.priority - b.priority);
-
-				return Effect.void;
-			} catch (error) {
-				return Effect.fail(new SidebarUpdateError(Id, error));
-			}
-		});
+	): Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError> => {
+		const existing = _panels.find((p) => p.id === Id);
+		if (!existing) return Effect.fail(new SidebarPanelNotFoundError(Id));
+		try {
+			_panels = _panels
+				.map((p) => (p.id === Id ? { ...p, ...updates } : p))
+				.sort((a, b) => a.priority - b.priority);
+			return Effect.void;
+		} catch (error) {
+			return Effect.fail(new SidebarUpdateError(Id, error));
+		}
+	};
 
 	const RemovePanel = (
 		Id: string,
-	): Effect.Effect<void, SidebarPanelNotFoundError> =>
-		Effect.suspend(() => {
-			if (!_panels.find((p) => p.id === Id))
-				return Effect.fail(new SidebarPanelNotFoundError(Id));
-
-			_panels = _panels.filter((p) => p.id !== Id);
-
-			if (_activePanel === Id) _activePanel = undefined;
-
-			return Effect.void;
-		});
+	): Effect.Effect<void, SidebarPanelNotFoundError> => {
+		if (!_panels.find((p) => p.id === Id))
+			return Effect.fail(new SidebarPanelNotFoundError(Id));
+		_panels = _panels.filter((p) => p.id !== Id);
+		if (_activePanel === Id) _activePanel = undefined;
+		return Effect.void;
+	};
 
 	const SetActivePanel = (
 		Id: string,
-	): Effect.Effect<void, SidebarPanelNotFoundError> =>
-		Effect.suspend(() => {
-			if (!_panels.find((p) => p.id === Id))
-				return Effect.fail(new SidebarPanelNotFoundError(Id));
-
-			_panels = _panels.map((p) =>
-				p.id === Id ? { ...p, collapsed: false } : p,
-			);
-
-			_activePanel = Id;
-
-			return Effect.void;
-		});
+	): Effect.Effect<void, SidebarPanelNotFoundError> => {
+		if (!_panels.find((p) => p.id === Id))
+			return Effect.fail(new SidebarPanelNotFoundError(Id));
+		_panels = _panels.map((p) =>
+			p.id === Id ? { ...p, collapsed: false } : p,
+		);
+		_activePanel = Id;
+		return Effect.void;
+	};
 
 	const TogglePanel = (
 		Id: string,
-	): Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError> =>
-		Effect.suspend(() => {
-			const existing = _panels.find((p) => p.id === Id);
-
-			if (!existing)
-				return Effect.fail(new SidebarPanelNotFoundError(Id));
-
-			return UpdatePanel(Id, { collapsed: !existing.collapsed });
-		});
+	): Effect.Effect<void, SidebarPanelNotFoundError | SidebarUpdateError> => {
+		const existing = _panels.find((p) => p.id === Id);
+		if (!existing) return Effect.fail(new SidebarPanelNotFoundError(Id));
+		return UpdatePanel(Id, { collapsed: !existing.collapsed });
+	};
 
 	const CollapsePanel = (
 		Id: string,

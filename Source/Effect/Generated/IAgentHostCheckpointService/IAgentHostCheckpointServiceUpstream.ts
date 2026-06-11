@@ -5,44 +5,30 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IAgentHostCheckpointServiceTag = "agentHostCheckpointService" as const;
-
 export const IAgentHostCheckpointServiceSourcePath = "vs/platform/agentHost/common/agentHostCheckpointService.ts" as const;
-
 export const IAgentHostCheckpointServiceSourceLine = 9 as const;
-
 /**
  * `session_metadata` key under which the per-session baseline (turn/0)
  * checkpoint ref is stored.
  */
 
 export interface IAgentHostCheckpointServiceUpstream {
-
 	/**
 	 * `session_metadata` key under which the per-session baseline (turn/0)
 	 * checkpoint ref is stored.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IAgentHostCheckpointServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "`session_metadata` key under which the per-session baseline (turn/0)\ncheckpoint ref is stored.",
-
 		SourceLine: 42,
 	}
 ] as const;

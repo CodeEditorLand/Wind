@@ -5,35 +5,21 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IProxyAuthServiceTag = "proxyAuthService" as const;
-
 export const IProxyAuthServiceSourcePath = "vs/platform/native/electron-main/auth.ts" as const;
-
 export const IProxyAuthServiceSourceLine = 35 as const;
-
 export interface IProxyAuthServiceUpstream {
-
 	lookupAuthorization(authInfo: AuthInfo): Promise<Credentials | undefined>;
 }
-
 export const IProxyAuthServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Method",
-
 		Name: "lookupAuthorization",
-
 		Readonly: false,
-
 		Optional: false,
-
 		TypeText: "Promise<Credentials | undefined>",
-
 		Parameters: [{ Name: "authInfo", TypeText: "AuthInfo", Optional: false }],
-
 		DocComment: null,
-
 		SourceLine: 38,
 	}
 ] as const;

@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ICodexProxyServiceTag = "codexProxyService" as const;
-
 export const ICodexProxyServiceSourcePath = "vs/platform/agentHost/node/codex/codexProxyService.ts" as const;
-
 export const ICodexProxyServiceSourceLine = 57 as const;
-
 // Decorator doc:
 // /**
 //  * Refcounted handle to the local OpenAI-Responses → CAPI proxy.
@@ -29,7 +25,6 @@ export const ICodexProxyServiceSourceLine = 57 as const;
 //  */
 // 
 export interface ICodexProxyServiceUpstream {
-
 	/**
 	 * Refcounted handle to the local OpenAI-Responses → CAPI proxy.
 	 * The handle owns a nonce that the codex CLI passes as `Bearer <nonce>` on
@@ -46,24 +41,15 @@ export interface ICodexProxyServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const ICodexProxyServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Refcounted handle to the local OpenAI-Responses → CAPI proxy.\nThe handle owns a nonce that the codex CLI passes as `Bearer <nonce>` on\nevery request. The proxy validates that nonce, then re-issues the request\nto CAPI using the **current** GitHub Copilot token — which can rotate\nunderneath the codex process without affecting it. Call\n{@link setToken} when the upstream token changes; in-flight requests keep\nusing the value they captured at dispatch time, new requests pick up the\nfresh value.\nSubprocess-ownership invariant: any subprocess given `baseUrl` / `nonce`\nMUST be killed before this handle is disposed; otherwise the proxy may\nrebind on a different port on next `start()` and the subprocess silently\nloses its endpoint.",
-
 		SourceLine: 44,
 	}
 ] as const;

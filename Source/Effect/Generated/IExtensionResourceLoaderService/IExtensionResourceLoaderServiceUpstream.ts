@@ -5,42 +5,28 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IExtensionResourceLoaderServiceTag = "extensionResourceLoaderService" as const;
-
 export const IExtensionResourceLoaderServiceSourcePath = "vs/platform/extensionResourceLoader/common/extensionResourceLoader.ts" as const;
-
 export const IExtensionResourceLoaderServiceSourceLine = 26 as const;
-
 /**
  * A service useful for reading resources from within extensions.
  */
 
 export interface IExtensionResourceLoaderServiceUpstream {
-
 	/**
 	 * A service useful for reading resources from within extensions.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IExtensionResourceLoaderServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "A service useful for reading resources from within extensions.",
-
 		SourceLine: 32,
 	}
 ] as const;

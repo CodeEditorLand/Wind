@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const IBrowserViewCDPServiceTag = "browserViewCDPService" as const;
-
 export const IBrowserViewCDPServiceSourcePath = "vs/workbench/contrib/browserView/common/browserView.ts" as const;
-
 export const IBrowserViewCDPServiceSourceLine = 203 as const;
-
 // Decorator doc:
 // /**
 //  * Tools are available and the page is shared with the agent.
@@ -22,30 +18,20 @@ export const IBrowserViewCDPServiceSourceLine = 203 as const;
  */
 
 export interface IBrowserViewCDPServiceUpstream {
-
 	/**
 	 * Tools are available and the page is shared with the agent.
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const IBrowserViewCDPServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Tools are available and the page is shared with the agent.",
-
 		SourceLine: 210,
 	}
 ] as const;

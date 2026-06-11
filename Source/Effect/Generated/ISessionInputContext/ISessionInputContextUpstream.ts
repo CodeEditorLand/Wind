@@ -5,13 +5,9 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
-
 export const ISessionInputContextTag = "sessionInputContext" as const;
-
 export const ISessionInputContextSourcePath = "vs/sessions/contrib/chat/browser/sessionInputContext.ts" as const;
-
 export const ISessionInputContextSourceLine = 11 as const;
-
 /**
  * Publishes the session that a chat input toolbar — and the pickers
  * contributed into it — should act upon.
@@ -30,7 +26,6 @@ export const ISessionInputContextSourceLine = 11 as const;
  */
 
 export interface ISessionInputContextUpstream {
-
 	/**
 	 * Publishes the session that a chat input toolbar — and the pickers
 	 * contributed into it — should act upon.
@@ -49,24 +44,15 @@ export interface ISessionInputContextUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
-
 export const ISessionInputContextMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
-
 		Kind: "Property",
-
 		Name: "_serviceBrand",
-
 		Readonly: true,
-
 		Optional: false,
-
 		TypeText: "undefined",
-
 		Parameters: [],
-
 		DocComment: "Publishes the session that a chat input toolbar — and the pickers\ncontributed into it — should act upon.\nPickers contributed through {@link IActionViewItemService} are constructed\nby a factory that only receives the scoped instantiation service of the\ntoolbar that hosts them. Rather than self-resolving the window's active\nsession (which is wrong when several inputs are visible), the factory reads\nthis service from that scoped instantiation service and threads the\nresulting {@link session} observable into the picker's constructor.\nThe global default ({@link ActiveSessionInputContext}) reports the window's\nactive session, so toolbars outside a {@link NewChatInputWidget} scope (e.g.\nthe running-session chat input) keep working unchanged. A\n{@link NewChatInputWidget} overrides this service in its own scoped\ninstantiation service with a {@link SessionInputContext} bound to that\nwidget's session.",
-
 		SourceLine: 32,
 	}
 ] as const;
