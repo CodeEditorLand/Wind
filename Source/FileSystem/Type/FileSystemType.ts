@@ -5,15 +5,16 @@
  * @category Type
  */
 
-import type { FileType } from "./FileType.js";
-import type { URI } from "./URI.js";
-
 // ============================================================================
 // File Metadata Types
 // ============================================================================
 
 // IStat matches VS Code's IStat exactly - re-export directly.
 import type { IStat } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/files/common/files.js";
+
+import type { FileType } from "./FileType.js";
+import type { URI } from "./URI.js";
+
 export type { IStat };
 
 // ============================================================================

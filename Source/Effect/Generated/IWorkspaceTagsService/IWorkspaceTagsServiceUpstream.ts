@@ -5,47 +5,81 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IWorkspaceTagsServiceTag = "workspaceTagsService" as const;
+
 export const IWorkspaceTagsServiceSourcePath = "vs/workbench/contrib/tags/common/workspaceTags.ts" as const;
+
 export const IWorkspaceTagsServiceSourceLine = 13 as const;
+
 export interface IWorkspaceTagsServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	getTags(): Promise<Tags>;
+
 	/**
 	 * Returns an id for the workspace, different from the id returned by the context service. A hash based
 	 * on the folder uri or workspace configuration, not time-based, and undefined for empty workspaces.
 	 */
 	getHashedRemotesFromUri(workspaceUri: URI, stripEndingDotGit?: boolean): Promise<string[]>;
 }
+
 export const IWorkspaceTagsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 16,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getTags",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<Tags>",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 18,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getHashedRemotesFromUri",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<string[]>",
+
 		Parameters: [{ Name: "workspaceUri", TypeText: "URI", Optional: false }, { Name: "stripEndingDotGit", TypeText: "boolean", Optional: true }],
+
 		DocComment: "Returns an id for the workspace, different from the id returned by the context service. A hash based\non the folder uri or workspace configuration, not time-based, and undefined for empty workspaces.",
+
 		SourceLine: 26,
 	}
 ] as const;

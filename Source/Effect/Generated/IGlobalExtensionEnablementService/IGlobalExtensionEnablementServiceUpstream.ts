@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IGlobalExtensionEnablementServiceTag = "IGlobalExtensionEnablementService" as const;
+
 export const IGlobalExtensionEnablementServiceSourcePath = "vs/platform/extensionManagement/common/extensionManagement.ts" as const;
+
 export const IGlobalExtensionEnablementServiceSourceLine = 645 as const;
+
 // Decorator doc:
 // /**
 //  * Service to interact with the Visual Studio Code Marketplace to get extensions.
@@ -15,81 +19,131 @@ export const IGlobalExtensionEnablementServiceSourceLine = 645 as const;
 //  */
 // 
 export interface IGlobalExtensionEnablementServiceUpstream {
+
 	/**
 	 * Service to interact with the Visual Studio Code Marketplace to get extensions.
 	 * @throws Error if the Marketplace is not enabled or not reachable.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Service to interact with the Visual Studio Code Marketplace to get extensions.
 	 * @throws Error if the Marketplace is not enabled or not reachable.
 	 */
 	readonly onDidChangeEnablement: Event<{ readonly extensions: IExtensionIdentifier[]; readonly source?: string }>;
+
 	/**
 	 * Service to interact with the Visual Studio Code Marketplace to get extensions.
 	 * @throws Error if the Marketplace is not enabled or not reachable.
 	 */
 	getDisabledExtensions(): IExtensionIdentifier[];
+
 	/**
 	 * Service to interact with the Visual Studio Code Marketplace to get extensions.
 	 * @throws Error if the Marketplace is not enabled or not reachable.
 	 */
 	enableExtension(extension: IExtensionIdentifier, source?: string): Promise<boolean>;
+
 	/**
 	 * Service to interact with the Visual Studio Code Marketplace to get extensions.
 	 * @throws Error if the Marketplace is not enabled or not reachable.
 	 */
 	disableExtension(extension: IExtensionIdentifier, source?: string): Promise<boolean>;
 }
+
 export const IGlobalExtensionEnablementServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Service to interact with the Visual Studio Code Marketplace to get extensions.\n@throws Error if the Marketplace is not enabled or not reachable.",
+
 		SourceLine: 648,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeEnablement",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<{ readonly extensions: IExtensionIdentifier[]; readonly source?: string }>",
+
 		Parameters: [],
+
 		DocComment: "Service to interact with the Visual Studio Code Marketplace to get extensions.\n@throws Error if the Marketplace is not enabled or not reachable.",
+
 		SourceLine: 648,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getDisabledExtensions",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IExtensionIdentifier[]",
+
 		Parameters: [],
+
 		DocComment: "Service to interact with the Visual Studio Code Marketplace to get extensions.\n@throws Error if the Marketplace is not enabled or not reachable.",
+
 		SourceLine: 651,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "enableExtension",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<boolean>",
+
 		Parameters: [{ Name: "extension", TypeText: "IExtensionIdentifier", Optional: false }, { Name: "source", TypeText: "string", Optional: true }],
+
 		DocComment: "Service to interact with the Visual Studio Code Marketplace to get extensions.\n@throws Error if the Marketplace is not enabled or not reachable.",
+
 		SourceLine: 652,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "disableExtension",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<boolean>",
+
 		Parameters: [{ Name: "extension", TypeText: "IExtensionIdentifier", Optional: false }, { Name: "source", TypeText: "string", Optional: true }],
+
 		DocComment: "Service to interact with the Visual Studio Code Marketplace to get extensions.\n@throws Error if the Marketplace is not enabled or not reachable.",
+
 		SourceLine: 653,
 	}
 ] as const;

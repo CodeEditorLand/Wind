@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAuthenticationMcpAccessServiceTag = "IAuthenticationMcpAccessService" as const;
+
 export const IAuthenticationMcpAccessServiceSourcePath = "vs/workbench/services/authentication/browser/authenticationMcpAccessService.ts" as const;
+
 export const IAuthenticationMcpAccessServiceSourceLine = 53 as const;
+
 // Decorator doc:
 // /**
 //  * Compares two MCP server URLs for the purpose of access binding. They are compared by their canonical
@@ -17,6 +21,7 @@ export const IAuthenticationMcpAccessServiceSourceLine = 53 as const;
 //  */
 // 
 export interface IAuthenticationMcpAccessServiceUpstream {
+
 	/**
 	 * Compares two MCP server URLs for the purpose of access binding. They are compared by their canonical
 	 * WHATWG URL form, so cosmetic differences in the origin (host case, default port, encoding) and a root
@@ -24,6 +29,7 @@ export interface IAuthenticationMcpAccessServiceUpstream {
 	 * a path ("foo.com/a" vs "foo.com/a/") is preserved as a meaningful difference between endpoints.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Compares two MCP server URLs for the purpose of access binding. They are compared by their canonical
 	 * WHATWG URL form, so cosmetic differences in the origin (host case, default port, encoding) and a root
@@ -31,6 +37,7 @@ export interface IAuthenticationMcpAccessServiceUpstream {
 	 * a path ("foo.com/a" vs "foo.com/a/") is preserved as a meaningful difference between endpoints.
 	 */
 	readonly onDidChangeMcpSessionAccess: Event<{ providerId: string; accountName: string }>;
+
 	/**
 	 * Compares two MCP server URLs for the purpose of access binding. They are compared by their canonical
 	 * WHATWG URL form, so cosmetic differences in the origin (host case, default port, encoding) and a root
@@ -38,6 +45,7 @@ export interface IAuthenticationMcpAccessServiceUpstream {
 	 * a path ("foo.com/a" vs "foo.com/a/") is preserved as a meaningful difference between endpoints.
 	 */
 	readAllowedMcpServers(providerId: string, accountName: string): AllowedMcpServer[];
+
 	/**
 	 * Compares two MCP server URLs for the purpose of access binding. They are compared by their canonical
 	 * WHATWG URL form, so cosmetic differences in the origin (host case, default port, encoding) and a root
@@ -45,6 +53,7 @@ export interface IAuthenticationMcpAccessServiceUpstream {
 	 * a path ("foo.com/a" vs "foo.com/a/") is preserved as a meaningful difference between endpoints.
 	 */
 	updateAllowedMcpServers(providerId: string, accountName: string, mcpServers: AllowedMcpServer[]): void;
+
 	/**
 	 * Compares two MCP server URLs for the purpose of access binding. They are compared by their canonical
 	 * WHATWG URL form, so cosmetic differences in the origin (host case, default port, encoding) and a root
@@ -53,55 +62,100 @@ export interface IAuthenticationMcpAccessServiceUpstream {
 	 */
 	removeAllowedMcpServers(providerId: string, accountName: string): void;
 }
+
 export const IAuthenticationMcpAccessServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Compares two MCP server URLs for the purpose of access binding. They are compared by their canonical\nWHATWG URL form, so cosmetic differences in the origin (host case, default port, encoding) and a root\ntrailing slash (\"foo.com\" vs \"foo.com/\") don't force a spurious re-consent — while a trailing slash on\na path (\"foo.com/a\" vs \"foo.com/a/\") is preserved as a meaningful difference between endpoints.",
+
 		SourceLine: 55,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeMcpSessionAccess",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<{ providerId: string; accountName: string }>",
+
 		Parameters: [],
+
 		DocComment: "Compares two MCP server URLs for the purpose of access binding. They are compared by their canonical\nWHATWG URL form, so cosmetic differences in the origin (host case, default port, encoding) and a root\ntrailing slash (\"foo.com\" vs \"foo.com/\") don't force a spurious re-consent — while a trailing slash on\na path (\"foo.com/a\" vs \"foo.com/a/\") is preserved as a meaningful difference between endpoints.",
+
 		SourceLine: 55,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "readAllowedMcpServers",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "AllowedMcpServer[]",
+
 		Parameters: [{ Name: "providerId", TypeText: "string", Optional: false }, { Name: "accountName", TypeText: "string", Optional: false }],
+
 		DocComment: "Compares two MCP server URLs for the purpose of access binding. They are compared by their canonical\nWHATWG URL form, so cosmetic differences in the origin (host case, default port, encoding) and a root\ntrailing slash (\"foo.com\" vs \"foo.com/\") don't force a spurious re-consent — while a trailing slash on\na path (\"foo.com/a\" vs \"foo.com/a/\") is preserved as a meaningful difference between endpoints.",
+
 		SourceLine: 83,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "updateAllowedMcpServers",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "providerId", TypeText: "string", Optional: false }, { Name: "accountName", TypeText: "string", Optional: false }, { Name: "mcpServers", TypeText: "AllowedMcpServer[]", Optional: false }],
+
 		DocComment: "Compares two MCP server URLs for the purpose of access binding. They are compared by their canonical\nWHATWG URL form, so cosmetic differences in the origin (host case, default port, encoding) and a root\ntrailing slash (\"foo.com\" vs \"foo.com/\") don't force a spurious re-consent — while a trailing slash on\na path (\"foo.com/a\" vs \"foo.com/a/\") is preserved as a meaningful difference between endpoints.",
+
 		SourceLine: 84,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeAllowedMcpServers",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "providerId", TypeText: "string", Optional: false }, { Name: "accountName", TypeText: "string", Optional: false }],
+
 		DocComment: "Compares two MCP server URLs for the purpose of access binding. They are compared by their canonical\nWHATWG URL form, so cosmetic differences in the origin (host case, default port, encoding) and a root\ntrailing slash (\"foo.com\" vs \"foo.com/\") don't force a spurious re-consent — while a trailing slash on\na path (\"foo.com/a\" vs \"foo.com/a/\") is preserved as a meaningful difference between endpoints.",
+
 		SourceLine: 85,
 	}
 ] as const;

@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISessionsManagementServiceTag = "sessionsManagementService" as const;
+
 export const ISessionsManagementServiceSourcePath = "vs/sessions/services/sessions/common/sessionsManagement.ts" as const;
+
 export const ISessionsManagementServiceSourceLine = 306 as const;
+
 // Decorator doc:
 // /**
 //  * Options for sending a request through the sessions management service.
@@ -22,6 +26,7 @@ export const ISessionsManagementServiceSourceLine = 306 as const;
  */
 
 export interface ISessionsManagementServiceUpstream {
+
 	/**
 	 * Options for sending a request through the sessions management service.
 	 * Extends the provider-level {@link ISessionsProviderSendRequestOptions} with
@@ -29,15 +34,24 @@ export interface ISessionsManagementServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ISessionsManagementServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Options for sending a request through the sessions management service.\nExtends the provider-level {@link ISessionsProviderSendRequestOptions} with\nmanagement-only concerns that the provider is not aware of.",
+
 		SourceLine: 120,
 	}
 ] as const;

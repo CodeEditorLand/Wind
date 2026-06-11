@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentHostOTelServiceTag = "agentHostOTelService" as const;
+
 export const IAgentHostOTelServiceSourcePath = "vs/platform/agentHost/common/otel/agentHostOTelService.ts" as const;
+
 export const IAgentHostOTelServiceSourceLine = 46 as const;
+
 // Decorator doc:
 // /**
 //  * Lean service that wires the @github/copilot-sdk telemetry hook to either:
@@ -34,6 +38,7 @@ export const IAgentHostOTelServiceSourceLine = 46 as const;
  */
 
 export interface IAgentHostOTelServiceUpstream {
+
 	/**
 	 * Lean service that wires the @github/copilot-sdk telemetry hook to either:
 	 * - **External-only mode**: pass user-configured exporter settings straight through
@@ -47,15 +52,24 @@ export interface IAgentHostOTelServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IAgentHostOTelServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Lean service that wires the @github/copilot-sdk telemetry hook to either:\n- **External-only mode**: pass user-configured exporter settings straight through\nso the SDK's spawned CLI exports OTel data directly to the user's sink.\n- **DB mode** (`COPILOT_OTEL_DB_SPAN_EXPORTER_ENABLED=true`): point the SDK at a\nloopback OTLP/HTTP receiver, persist all spans into a local SQLite store, and\noptionally fan-out to a user-configured external sink as well.\nThe interface lives in `common/` so consumers (DI registration, tests, callers\nin other layers) can import it without pulling in the node-only concrete\nimplementation and its transitive native dependencies (`node:sqlite`).",
+
 		SourceLine: 25,
 	}
 ] as const;

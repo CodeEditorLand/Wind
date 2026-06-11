@@ -15,15 +15,25 @@
  * @category Walk
  */
 export interface SourceFile {
-    readonly SourcePath: string;
-    readonly AbsolutePath: string;
-    readonly Contents: string;
+	readonly SourcePath: string;
+
+	readonly AbsolutePath: string;
+
+	readonly Contents: string;
 }
+
 export interface SourceTreeWalkerOptions {
-    readonly Root: string;
-    readonly IncludeExtensions: ReadonlyArray<string>;
-    readonly ExcludeSegments: ReadonlyArray<string>;
+	readonly Root: string;
+
+	readonly IncludeExtensions: ReadonlyArray<string>;
+
+	readonly ExcludeSegments: ReadonlyArray<string>;
 }
-export declare const WalkSourceTree: (options: SourceTreeWalkerOptions) => AsyncIterableIterator<SourceFile>;
+
+export declare const WalkSourceTree: (
+	options: SourceTreeWalkerOptions,
+) => AsyncIterableIterator<SourceFile>;
+
 export default WalkSourceTree;
+
 //# sourceMappingURL=SourceTreeWalker.d.ts.map

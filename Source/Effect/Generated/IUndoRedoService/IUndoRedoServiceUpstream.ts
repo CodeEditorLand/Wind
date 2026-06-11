@@ -5,80 +5,134 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IUndoRedoServiceTag = "undoRedoService" as const;
+
 export const IUndoRedoServiceSourcePath = "vs/platform/undoRedo/common/undoRedo.ts" as const;
+
 export const IUndoRedoServiceSourceLine = 10 as const;
+
 export interface IUndoRedoServiceUpstream {
+
 	/**
 	 * The resource impacted by this element.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * The resource impacted by this element.
 	 */
 	canUndo(resource: URI | UndoRedoSource): boolean;
+
 	/**
 	 * The resource impacted by this element.
 	 */
 	undo(resource: URI | UndoRedoSource): Promise<void> | void;
+
 	/**
 	 * The resource impacted by this element.
 	 */
 	canRedo(resource: URI | UndoRedoSource): boolean;
+
 	/**
 	 * The resource impacted by this element.
 	 */
 	redo(resource: URI | UndoRedoSource): Promise<void> | void;
 }
+
 export const IUndoRedoServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "The resource impacted by this element.",
+
 		SourceLine: 134,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "canUndo",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "resource", TypeText: "URI | UndoRedoSource", Optional: false }],
+
 		DocComment: "The resource impacted by this element.",
+
 		SourceLine: 185,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "undo",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void> | void",
+
 		Parameters: [{ Name: "resource", TypeText: "URI | UndoRedoSource", Optional: false }],
+
 		DocComment: "The resource impacted by this element.",
+
 		SourceLine: 186,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "canRedo",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "resource", TypeText: "URI | UndoRedoSource", Optional: false }],
+
 		DocComment: "The resource impacted by this element.",
+
 		SourceLine: 188,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "redo",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void> | void",
+
 		Parameters: [{ Name: "resource", TypeText: "URI | UndoRedoSource", Optional: false }],
+
 		DocComment: "The resource impacted by this element.",
+
 		SourceLine: 189,
 	}
 ] as const;

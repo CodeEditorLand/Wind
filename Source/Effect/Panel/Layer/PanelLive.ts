@@ -1,16 +1,12 @@
 /**
  * @module Effect/Panel/Layer/PanelLive
  * @description
- * Live layer for Panel service.
- * Provides the production implementation using SubscriptionRef for reactive state management.
- * @see {@link Effect/Panel/Interface/PanelService} Service interface
- * @see {@link Effect/Panel/Layer/PanelMock} Mock layer
+ * Live layer for Panel service - plain mutable state, no Effect-TS runtime overhead.
  * @category Layer
  */
 
-import { Effect, Layer, SubscriptionRef } from "effect";
+import { Effect, Layer, Stream } from "effect";
 
-import { Telemetry, TelemetryLive } from "../../Telemetry.js";
 import PanelUpdateError from "../Error/PanelUpdateError.js";
 import PanelViewNotFoundError from "../Error/PanelViewNotFoundError.js";
 import type { PanelService } from "../Interface/PanelService.js";
@@ -21,294 +17,173 @@ import type {
 	PanelViewType,
 } from "../Type/PanelType.js";
 
-/**
- * Live layer for Panel service.
- * Provides reactive panel management with SubscriptionRef-based state.
- *
- * @example
- * ```ts
- * import { Layer } from "effect";
- * import { PanelLive } from "./Effect/Panel/Layer/PanelLive.js";
- * import { TelemetryLive } from "./Effect/Telemetry/index.js";
- *
- * const appLayer = Layer.mergeAll(TelemetryLive, PanelLive);
- * ```
- */
-const PanelLive = Layer.effect(
-	PanelTag,
+function makePanelService(): PanelService {
+	let _views: ReadonlyArray<PanelView> = [];
 
-	Effect.gen(function* () {
-		const TelemetryService = Effect.runSync(
-			Effect.provide(Telemetry, TelemetryLive),
-		);
+	let _activeView: string | undefined = undefined;
 
-		// In-memory storage of panel views as reactive ref
-		const ViewsRef = yield* SubscriptionRef.make<ReadonlyArray<PanelView>>(
-			[],
-		);
+	const GetView = (Id: string): Effect.Effect<PanelView | undefined> =>
+		Effect.succeed(_views.find((v) => v.id === Id));
 
-		// Active view state as reactive ref
-		const ActiveViewRef = yield* SubscriptionRef.make<string | undefined>(
-			undefined,
-		);
+	const Views = Effect.suspend(() => Effect.succeed(_views));
 
-		// Atom: Create a new panel view
-		const CreateView = (
-			View: CreatePanelView,
-		): Effect.Effect<PanelView, never> =>
-			Effect.gen(function* () {
-				const Id = `panel-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+	const ViewsChanges: Stream.Stream<ReadonlyArray<PanelView>> = Stream.empty();
 
-				const NewView: PanelView = { ...View, id: Id };
+	const ActiveViewChanges: Stream.Stream<string | undefined> = Stream.empty();
 
-				yield* SubscriptionRef.modify(ViewsRef, (Views) => [
-					undefined,
+	const GetActiveView: Effect.Effect<string | undefined> = Effect.suspend(
+		() => Effect.succeed(_activeView),
+	);
 
-					[...Views, NewView].sort((a, b) => a.priority - b.priority),
-				]);
+	const CreateView = (View: CreatePanelView): Effect.Effect<PanelView> =>
+		Effect.sync(() => {
+			const Id = `panel-${Date.now()}-${Math.random()
+				.toString(36)
+				.substring(2, 9)}`;
 
-				yield* TelemetryService.log(
-					"info",
+			const NewView: PanelView = { ...View, id: Id };
 
-					`Created panel view: ${Id}`,
-				);
+			_views = [..._views, NewView].sort((a, b) => a.priority - b.priority);
 
-				return NewView;
-			});
+			return NewView;
+		});
 
-		// Atom: Update an existing panel view
-		const UpdateView = (
-			Id: string,
+	const UpdateView = (
+		Id: string,
 
-			updates: Partial<Omit<PanelView, "id">>,
-		): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
-			Effect.gen(function* () {
-				const Existing = yield* GetView(Id);
+		updates: Partial<Omit<PanelView, "id">>,
+	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
+		Effect.suspend(() => {
+			if (!_views.find((v) => v.id === Id))
+				return Effect.fail(new PanelViewNotFoundError(Id));
 
-				if (!Existing) {
-					return yield* Effect.fail(new PanelViewNotFoundError(Id));
-				}
+			try {
+				_views = _views
+					.map((v) => (v.id === Id ? { ...v, ...updates } : v))
+					.sort((a, b) => a.priority - b.priority);
 
-				try {
-					yield* SubscriptionRef.modify(ViewsRef, (Views) => [
-						undefined,
+				return Effect.void;
+			} catch (error) {
+				return Effect.fail(new PanelUpdateError(Id, error));
+			}
+		});
 
-						Views.map((View) =>
-							View.id === Id ? { ...View, ...updates } : View,
-						).sort((a, b) => a.priority - b.priority),
-					]);
+	const RemoveView = (
+		Id: string,
+	): Effect.Effect<void, PanelViewNotFoundError> =>
+		Effect.suspend(() => {
+			if (!_views.find((v) => v.id === Id))
+				return Effect.fail(new PanelViewNotFoundError(Id));
 
-					yield* TelemetryService.log(
-						"info",
+			_views = _views.filter((v) => v.id !== Id);
 
-						`Updated panel view: ${Id}`,
-					);
-				} catch (error) {
-					return yield* Effect.fail(new PanelUpdateError(Id, error));
-				}
-			});
+			if (_activeView === Id) _activeView = undefined;
 
-		// Atom: Remove a panel view
-		const RemoveView = (
-			Id: string,
-		): Effect.Effect<void, PanelViewNotFoundError> =>
-			Effect.gen(function* () {
-				const Existing = yield* GetView(Id);
+			return Effect.void;
+		});
 
-				if (!Existing) {
-					return yield* Effect.fail(new PanelViewNotFoundError(Id));
-				}
+	const SetActiveView = (
+		Id: string,
+	): Effect.Effect<void, PanelViewNotFoundError> =>
+		Effect.suspend(() => {
+			if (!_views.find((v) => v.id === Id))
+				return Effect.fail(new PanelViewNotFoundError(Id));
 
-				yield* SubscriptionRef.modify(ViewsRef, (Views) => [
-					undefined,
-
-					Views.filter((View) => View.id !== Id),
-				]);
-
-				// Clear active state if this was the active view
-				const CurrentActive = yield* ActiveViewRef.get;
-
-				if (CurrentActive === Id) {
-					yield* SubscriptionRef.set(ActiveViewRef, undefined);
-				}
-
-				yield* TelemetryService.log(
-					"info",
-
-					`Removed panel view: ${Id}`,
-				);
-			});
-
-		// Atom: Get a specific panel view
-		const GetView = (
-			Id: string,
-		): Effect.Effect<PanelView | undefined, never> =>
-			Effect.map(ViewsRef.get, (Views) =>
-				Views.find((View) => View.id === Id),
+			_views = _views.map((v) =>
+				v.id === Id ? { ...v, visible: true, maximized: false } : v,
 			);
 
-		// Atom: Get all panel views
-		const Views = ViewsRef.get;
+			_activeView = Id;
 
-		// Atom: Stream of views changes
-		const ViewsChanges = ViewsRef.changes;
+			return Effect.void;
+		});
 
-		// Atom: Set active view
-		const SetActiveView = (
-			Id: string,
-		): Effect.Effect<void, PanelViewNotFoundError> =>
-			Effect.gen(function* () {
-				const Existing = yield* GetView(Id);
+	const ShowView = (
+		Id: string,
+	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
+		UpdateView(Id, { visible: true });
 
-				if (!Existing) {
-					return yield* Effect.fail(new PanelViewNotFoundError(Id));
-				}
+	const HideView = (
+		Id: string,
+	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
+		UpdateView(Id, { visible: false });
 
-				// Show the view when setting it as active
-				yield* SubscriptionRef.modify(ViewsRef, (Views) => [
-					undefined,
+	const ToggleView = (
+		Id: string,
+	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
+		Effect.suspend(() => {
+			const existing = _views.find((v) => v.id === Id);
 
-					Views.map((View) =>
-						View.id === Id
-							? { ...View, visible: true, maximized: false }
-							: View,
-					),
-				]);
+			if (!existing) return Effect.fail(new PanelViewNotFoundError(Id));
 
-				yield* SubscriptionRef.set(ActiveViewRef, Id);
+			return UpdateView(Id, { visible: !existing.visible });
+		});
 
-				yield* TelemetryService.log(
-					"info",
+	const MaximizeView = (
+		Id: string,
+	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
+		Effect.suspend(() => {
+			if (!_views.find((v) => v.id === Id))
+				return Effect.fail(new PanelViewNotFoundError(Id));
 
-					`Set active panel view: ${Id}`,
-				);
-			});
+			_views = _views.map((v) => ({ ...v, maximized: v.id === Id }));
 
-		// Atom: Get active view
-		const GetActiveView = ActiveViewRef.get;
+			return Effect.void;
+		});
 
-		// Atom: Stream of active view changes
-		const ActiveViewChanges = ActiveViewRef.changes;
+	const RestoreView = (
+		Id: string,
+	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
+		UpdateView(Id, { maximized: false });
 
-		// Atom: Show view
-		const ShowView = (
-			Id: string,
-		): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
-			Effect.gen(function* () {
-				yield* UpdateView(Id, { visible: true });
+	const GetViewsByType = (
+		Type: PanelViewType,
+	): Effect.Effect<ReadonlyArray<PanelView>> =>
+		Effect.succeed(_views.filter((v) => v.type === Type));
 
-				yield* TelemetryService.log("info", `Showed panel view: ${Id}`);
-			});
+	const GetVisibleViews: Effect.Effect<ReadonlyArray<PanelView>> =
+		Effect.suspend(() => Effect.succeed(_views.filter((v) => v.visible)));
 
-		// Atom: Hide view
-		const HideView = (
-			Id: string,
-		): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
-			Effect.gen(function* () {
-				yield* UpdateView(Id, { visible: false });
+	const GetMaximizedView: Effect.Effect<PanelView | undefined> =
+		Effect.suspend(() => Effect.succeed(_views.find((v) => v.maximized)));
 
-				yield* TelemetryService.log("info", `Hid panel view: ${Id}`);
-			});
+	return {
+		createView: CreateView,
 
-		// Atom: Toggle view visibility
-		const ToggleView = (
-			Id: string,
-		): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
-			Effect.gen(function* () {
-				const Existing = yield* GetView(Id);
+		updateView: UpdateView,
 
-				if (!Existing) {
-					return yield* Effect.fail(new PanelViewNotFoundError(Id));
-				}
+		removeView: RemoveView,
 
-				yield* UpdateView(Id, { visible: !Existing.visible });
+		getView: GetView,
 
-				yield* TelemetryService.log(
-					"info",
+		views: Views,
 
-					`Toggled panel view: ${Id}`,
-				);
-			});
+		viewsChanges: ViewsChanges,
 
-		// Atom: Maximize view
-		const MaximizeView = (
-			Id: string,
-		): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
-			Effect.gen(function* () {
-				// Restore all other views first
-				yield* SubscriptionRef.modify(ViewsRef, (Views) => [
-					undefined,
+		setActiveView: SetActiveView,
 
-					Views.map((View) =>
-						View.id === Id
-							? { ...View, maximized: true }
-							: { ...View, maximized: false },
-					),
-				]);
+		getActiveView: GetActiveView,
 
-				yield* TelemetryService.log(
-					"info",
+		activeViewChanges: ActiveViewChanges,
 
-					`Maximized panel view: ${Id}`,
-				);
-			});
+		showView: ShowView,
 
-		// Atom: Restore view
-		const RestoreView = (
-			Id: string,
-		): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
-			Effect.gen(function* () {
-				yield* UpdateView(Id, { maximized: false });
+		hideView: HideView,
 
-				yield* TelemetryService.log(
-					"info",
+		toggleView: ToggleView,
 
-					`Restored panel view: ${Id}`,
-				);
-			});
+		maximizeView: MaximizeView,
 
-		// Atom: Get views by type
-		const GetViewsByType = (
-			Type: PanelViewType,
-		): Effect.Effect<ReadonlyArray<PanelView>, never> =>
-			Effect.map(Views, (Views) =>
-				Views.filter((View) => View.type === Type),
-			);
+		restoreView: RestoreView,
 
-		// Atom: Get visible views
-		const GetVisibleViews: Effect.Effect<
-			ReadonlyArray<PanelView>,
-			never
-		> = Effect.map(Views, (Views) => Views.filter((View) => View.visible));
+		getViewsByType: GetViewsByType,
 
-		// Atom: Get maximized view
-		const GetMaximizedView: Effect.Effect<PanelView | undefined, never> =
-			Effect.map(Views, (Views) => Views.find((View) => View.maximized));
+		getVisibleViews: GetVisibleViews,
 
-		yield* TelemetryService.log("info", "Panel service initialized");
+		getMaximizedView: GetMaximizedView,
+	} satisfies PanelService;
+}
 
-		const service: PanelService = {
-			createView: CreateView,
-			updateView: UpdateView,
-			removeView: RemoveView,
-			getView: GetView,
-			views: Views,
-			viewsChanges: ViewsChanges,
-			setActiveView: SetActiveView,
-			getActiveView: GetActiveView,
-			activeViewChanges: ActiveViewChanges,
-			showView: ShowView,
-			hideView: HideView,
-			toggleView: ToggleView,
-			maximizeView: MaximizeView,
-			restoreView: RestoreView,
-			getViewsByType: GetViewsByType,
-			getVisibleViews: GetVisibleViews,
-			getMaximizedView: GetMaximizedView,
-		};
-
-		return service;
-	}),
-);
+const PanelLive = Layer.succeed(PanelTag, makePanelService());
 
 export default PanelLive;

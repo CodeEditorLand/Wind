@@ -13,6 +13,12 @@
  * @category Extract
  */
 import type { InterfaceMemberRecord } from "../Type/InterfaceMemberRecord.js";
-export declare const ExtractInterfaceMembers: (source: string, interfaceName: string) => ReadonlyArray<InterfaceMemberRecord>;
+
+export declare const ExtractInterfaceMembers: (
+	source: string,
+	interfaceName: string,
+) => ReadonlyArray<InterfaceMemberRecord>;
+
 export default ExtractInterfaceMembers;
+
 //# sourceMappingURL=ExtractInterfaceMembers.d.ts.map

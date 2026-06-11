@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IActivityServiceTag = "activityService" as const;
+
 export const IActivityServiceSourcePath = "vs/workbench/services/activity/common/activity.ts" as const;
+
 export const IActivityServiceSourceLine = 20 as const;
+
 export interface IActivityServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const IActivityServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 24,
 	}
 ] as const;

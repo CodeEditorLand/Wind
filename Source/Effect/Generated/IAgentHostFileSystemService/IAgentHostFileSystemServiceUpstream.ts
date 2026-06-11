@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentHostFileSystemServiceTag = "agentHostFileSystemService" as const;
+
 export const IAgentHostFileSystemServiceSourcePath = "vs/platform/agentHost/common/agentHostFileSystemService.ts" as const;
+
 export const IAgentHostFileSystemServiceSourceLine = 25 as const;
+
 // Decorator doc:
 // /**
 //  * Scheme used for the in-memory plugin filesystem backing synced customizations.
@@ -16,6 +20,7 @@ export const IAgentHostFileSystemServiceSourceLine = 25 as const;
 //  */
 // 
 export interface IAgentHostFileSystemServiceUpstream {
+
 	/**
 	 * Scheme used for the in-memory plugin filesystem backing synced customizations.
 	 * URIs under this scheme are served by a registered {@link InMemoryFileSystemProvider}
@@ -23,15 +28,24 @@ export interface IAgentHostFileSystemServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IAgentHostFileSystemServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Scheme used for the in-memory plugin filesystem backing synced customizations.\nURIs under this scheme are served by a registered {@link InMemoryFileSystemProvider}\nand are reachable by the agent host via `fetchContent`.",
+
 		SourceLine: 28,
 	}
 ] as const;

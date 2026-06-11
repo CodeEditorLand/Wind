@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentHostUntitledProvisionalSessionServiceTag = "agentHostUntitledProvisionalSessionService" as const;
+
 export const IAgentHostUntitledProvisionalSessionServiceSourcePath = "vs/workbench/contrib/chat/browser/agentSessions/agentHost/agentHostUntitledProvisionalSessionService.ts" as const;
+
 export const IAgentHostUntitledProvisionalSessionServiceSourceLine = 70 as const;
+
 // Decorator doc:
 // /**
 //  * LM editing map for untitled agent-host chat sessions.
@@ -92,6 +96,7 @@ export const IAgentHostUntitledProvisionalSessionServiceSourceLine = 70 as const
  */
 
 export interface IAgentHostUntitledProvisionalSessionServiceUpstream {
+
 	/**
 	 * LM editing map for untitled agent-host chat sessions.
 	 * This service exists so session-config chip choices made before first Send
@@ -134,15 +139,24 @@ export interface IAgentHostUntitledProvisionalSessionServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IAgentHostUntitledProvisionalSessionServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "LM editing map for untitled agent-host chat sessions.\nThis service exists so session-config chip choices made before first Send\nreach the backend `SessionState.config.values`. Do not simplify this into a\ndirect picker-only cache: the agent reads config through the backend state\nwhen a provisional session materializes.\nResource identities:\n- chat UI resource: `agent-host-PROVIDER:/untitled-<uuid>` before first Send.\n- backend resource: `PROVIDER:/untitled-<uuid>` for the provisional state.\n- real chat resource: `agent-host-PROVIDER:/<uuid>` after\n`chatServiceImpl.acceptInput` calls `createNewChatSessionItem`.\n- real backend resource: `PROVIDER:/<uuid>` after `tryRebind`.\nRequired flow:\n1. `AgentHostChatInputPicker` calls `getOrCreate(untitled, provider, cwd)`.\nThis creates a backend provisional session so `SessionConfigChanged`\nactions have a reducer-owned `SessionState` to update.\n2. On first Send, `AgentHostSessionListController.newChatSessionItem`\nreceives both `request.untitledResource` and the newly generated real\nresource. It must call `tryRebind` before the handler invokes the agent.\n3. `tryRebind` snapshots `state.config.values` from the untitled backend\nprovisional, creates a new provisional for the real backend resource with\nthat config, swaps `_entries`, fires `onDidChange` for both resources,\nthen best-effort disposes the untitled backend provisional.\n4. `AgentHostSessionHandler._invokeAgent` calls `get(realResource)`. When a\nrebound provisional exists, it takes a refcounted subscription on that\nbackend state up front so the rest of the handler observes the preserved\n`state.config.values` instead of a freshly created empty session. The\neager-state branch then skips `_createAndSubscribe`; the agent\nmaterializes the provisional and reads the preserved config values.\nInvariants to preserve:\n- `_entries` is keyed by chat UI resources and stores backend resources.\n- `getOrCreate` is serialized per chat UI resource; chip instances may race.\n- `tryRebind` is best-effort. Failure must degrade to the handler's normal\ncreate path rather than blocking Send.\n- Abandoned untitled chats must dispose their backend provisional state when\n`IChatService.onDidDisposeSession` reports the chat UI resource.\n- Callers own provider and working-directory consistency. Derive them from\nthe chat resource/session type and active workspace in the same way on\ncreate and rebind.",
+
 		SourceLine: 80,
 	}
 ] as const;

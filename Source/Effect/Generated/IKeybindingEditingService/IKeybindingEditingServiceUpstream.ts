@@ -5,65 +5,119 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IKeybindingEditingServiceTag = "keybindingEditingService" as const;
+
 export const IKeybindingEditingServiceSourcePath = "vs/workbench/services/keybinding/common/keybindingEditing.ts" as const;
+
 export const IKeybindingEditingServiceSourceLine = 27 as const;
+
 export interface IKeybindingEditingServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	addKeybinding(keybindingItem: ResolvedKeybindingItem, key: string, when: string | undefined): Promise<void>;
+
 	editKeybinding(keybindingItem: ResolvedKeybindingItem, key: string, when: string | undefined): Promise<void>;
+
 	removeKeybinding(keybindingItem: ResolvedKeybindingItem): Promise<void>;
+
 	resetKeybinding(keybindingItem: ResolvedKeybindingItem): Promise<void>;
 }
+
 export const IKeybindingEditingServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 31,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "addKeybinding",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "keybindingItem", TypeText: "ResolvedKeybindingItem", Optional: false }, { Name: "key", TypeText: "string", Optional: false }, { Name: "when", TypeText: "string | undefined", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 33,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "editKeybinding",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "keybindingItem", TypeText: "ResolvedKeybindingItem", Optional: false }, { Name: "key", TypeText: "string", Optional: false }, { Name: "when", TypeText: "string | undefined", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 35,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "removeKeybinding",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "keybindingItem", TypeText: "ResolvedKeybindingItem", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 37,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resetKeybinding",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "keybindingItem", TypeText: "ResolvedKeybindingItem", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 39,
 	}
 ] as const;

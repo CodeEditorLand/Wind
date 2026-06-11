@@ -841,7 +841,6 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 
 export const WorkbenchIntegrationLiveLayer = Layer.effect(
 	WorkbenchIntegrationTag,
-
 	WorkbenchIntegrationServiceLive,
 ).pipe(Layer.provide(FileSystemProviderLive));
 

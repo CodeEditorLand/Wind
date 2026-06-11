@@ -5,54 +5,98 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IUserDataSyncLocalStoreServiceTag = "IUserDataSyncLocalStoreService" as const;
+
 export const IUserDataSyncLocalStoreServiceSourcePath = "vs/platform/userDataSync/common/userDataSync.ts" as const;
+
 export const IUserDataSyncLocalStoreServiceSourceLine = 280 as const;
+
 export interface IUserDataSyncLocalStoreServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	writeResource(resource: ServerResource, content: string, cTime: Date, collection?: string, root?: URI): Promise<void>;
+
 	getAllResourceRefs(resource: ServerResource, collection?: string, root?: URI): Promise<IResourceRefHandle[]>;
+
 	resolveResourceContent(resource: ServerResource, ref: string, collection?: string, root?: URI): Promise<string | null>;
 }
+
 export const IUserDataSyncLocalStoreServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 282,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "writeResource",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "resource", TypeText: "ServerResource", Optional: false }, { Name: "content", TypeText: "string", Optional: false }, { Name: "cTime", TypeText: "Date", Optional: false }, { Name: "collection", TypeText: "string", Optional: true }, { Name: "root", TypeText: "URI", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 283,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getAllResourceRefs",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IResourceRefHandle[]>",
+
 		Parameters: [{ Name: "resource", TypeText: "ServerResource", Optional: false }, { Name: "collection", TypeText: "string", Optional: true }, { Name: "root", TypeText: "URI", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 284,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resolveResourceContent",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<string | null>",
+
 		Parameters: [{ Name: "resource", TypeText: "ServerResource", Optional: false }, { Name: "ref", TypeText: "string", Optional: false }, { Name: "collection", TypeText: "string", Optional: true }, { Name: "root", TypeText: "URI", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 285,
 	}
 ] as const;

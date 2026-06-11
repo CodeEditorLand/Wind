@@ -6,20 +6,32 @@
  * developer running `pnpm run Codegen`.
  * @category Type
  */
-export type CodegenProblem = {
-    readonly _tag: "CodegenSourceTreeMissing";
-    readonly path: string;
-} | {
-    readonly _tag: "CodegenFileReadFailed";
-    readonly path: string;
-    readonly error: Error;
-} | {
-    readonly _tag: "CodegenParseFailed";
-    readonly path: string;
-    readonly error: Error;
-} | {
-    readonly _tag: "CodegenEmitFailed";
-    readonly path: string;
-    readonly error: Error;
-};
+export type CodegenProblem =
+	| {
+			readonly _tag: "CodegenSourceTreeMissing";
+
+			readonly path: string;
+	  }
+	| {
+			readonly _tag: "CodegenFileReadFailed";
+
+			readonly path: string;
+
+			readonly error: Error;
+	  }
+	| {
+			readonly _tag: "CodegenParseFailed";
+
+			readonly path: string;
+
+			readonly error: Error;
+	  }
+	| {
+			readonly _tag: "CodegenEmitFailed";
+
+			readonly path: string;
+
+			readonly error: Error;
+	  };
+
 //# sourceMappingURL=CodegenProblem.d.ts.map

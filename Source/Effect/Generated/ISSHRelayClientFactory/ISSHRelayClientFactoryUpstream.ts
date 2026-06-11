@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISSHRelayClientFactoryTag = "sshRelayClientFactory" as const;
+
 export const ISSHRelayClientFactorySourcePath = "vs/platform/agentHost/electron-browser/sshRemoteAgentHostServiceImpl.ts" as const;
+
 export const ISSHRelayClientFactorySourceLine = 36 as const;
+
 export interface ISSHRelayClientFactoryUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	createClient(mainService: ISSHRemoteAgentHostMainService, connectionId: string, address: string): RemoteAgentHostProtocolClient;
 }
+
 export const ISSHRelayClientFactoryMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 39,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "createClient",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "RemoteAgentHostProtocolClient",
+
 		Parameters: [{ Name: "mainService", TypeText: "ISSHRemoteAgentHostMainService", Optional: false }, { Name: "connectionId", TypeText: "string", Optional: false }, { Name: "address", TypeText: "string", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 40,
 	}
 ] as const;

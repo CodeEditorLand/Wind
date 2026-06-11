@@ -14,15 +14,25 @@
  * @category Resolve
  */
 import type { InterfaceMemberRecord } from "../Type/InterfaceMemberRecord.js";
+
 export interface ResolveOptions {
-    readonly InterfaceName: string;
-    readonly DecoratorFilePath: string;
-    readonly DecoratorFileContents: string;
+	readonly InterfaceName: string;
+
+	readonly DecoratorFilePath: string;
+
+	readonly DecoratorFileContents: string;
 }
+
 export interface ResolveOutcome {
-    readonly Members: ReadonlyArray<InterfaceMemberRecord>;
-    readonly ResolvedFromPath: string;
+	readonly Members: ReadonlyArray<InterfaceMemberRecord>;
+
+	readonly ResolvedFromPath: string;
 }
-export declare const ResolveInterfaceCrossFile: (options: ResolveOptions) => Promise<ResolveOutcome | null>;
+
+export declare const ResolveInterfaceCrossFile: (
+	options: ResolveOptions,
+) => Promise<ResolveOutcome | null>;
+
 export default ResolveInterfaceCrossFile;
+
 //# sourceMappingURL=ResolveInterfaceCrossFile.d.ts.map

@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISessionsSetUpServiceTag = "sessionsSetUpService" as const;
+
 export const ISessionsSetUpServiceSourcePath = "vs/sessions/browser/sessionsSetUpService.ts" as const;
+
 export const ISessionsSetUpServiceSourceLine = 40 as const;
+
 export interface ISessionsSetUpServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const ISessionsSetUpServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 43,
 	}
 ] as const;

@@ -139,6 +139,7 @@ function makeWorkspacesService(): WorkspacesService {
 			IPCService.events(SkyEvent.WorkspacesChanged).pipe(
 				Stream.map((Event): WorkspacesChangeEvent => {
 					const E = Event as { args: unknown[] };
+
 					const Payload = (E.args[0] ?? {}) as Record<
 						string,
 						unknown

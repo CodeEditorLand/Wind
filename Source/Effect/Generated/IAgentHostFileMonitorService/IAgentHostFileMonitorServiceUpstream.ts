@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAgentHostFileMonitorServiceTag = "agentHostFileMonitorService" as const;
+
 export const IAgentHostFileMonitorServiceSourcePath = "vs/platform/agentHost/node/agentHostFileMonitorService.ts" as const;
+
 export const IAgentHostFileMonitorServiceSourceLine = 15 as const;
+
 export interface IAgentHostFileMonitorServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	acquire(folder: URI, callback: () => void, options?: IAgentHostFileMonitorOptions): IDisposable | undefined;
 }
+
 export const IAgentHostFileMonitorServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 31,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "acquire",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDisposable | undefined",
+
 		Parameters: [{ Name: "folder", TypeText: "URI", Optional: false }, { Name: "callback", TypeText: "() => void", Optional: false }, { Name: "options", TypeText: "IAgentHostFileMonitorOptions", Optional: true }],
+
 		DocComment: null,
+
 		SourceLine: 32,
 	}
 ] as const;

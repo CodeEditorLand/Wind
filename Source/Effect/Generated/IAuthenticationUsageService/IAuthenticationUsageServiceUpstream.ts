@@ -5,21 +5,35 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IAuthenticationUsageServiceTag = "IAuthenticationUsageService" as const;
+
 export const IAuthenticationUsageServiceSourcePath = "vs/workbench/services/authentication/browser/authenticationUsageService.ts" as const;
+
 export const IAuthenticationUsageServiceSourceLine = 22 as const;
+
 export interface IAuthenticationUsageServiceUpstream {
+
 	readonly _serviceBrand: undefined;
 }
+
 export const IAuthenticationUsageServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 24,
 	}
 ] as const;

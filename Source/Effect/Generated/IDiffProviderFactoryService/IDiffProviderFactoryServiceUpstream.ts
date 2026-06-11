@@ -5,32 +5,56 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IDiffProviderFactoryServiceTag = "diffProviderFactoryService" as const;
+
 export const IDiffProviderFactoryServiceSourcePath = "vs/editor/browser/widget/diffEditor/diffProviderFactoryService.ts" as const;
+
 export const IDiffProviderFactoryServiceSourceLine = 19 as const;
+
 export interface IDiffProviderFactoryServiceUpstream {
+
 	readonly _serviceBrand: undefined;
+
 	createDiffProvider(options: IDocumentDiffFactoryOptions): IDocumentDiffProvider;
 }
+
 export const IDiffProviderFactoryServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: null,
+
 		SourceLine: 26,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "createDiffProvider",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "IDocumentDiffProvider",
+
 		Parameters: [{ Name: "options", TypeText: "IDocumentDiffFactoryOptions", Optional: false }],
+
 		DocComment: null,
+
 		SourceLine: 27,
 	}
 ] as const;

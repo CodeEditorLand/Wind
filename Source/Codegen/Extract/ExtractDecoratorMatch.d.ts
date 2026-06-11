@@ -15,12 +15,21 @@
  * @category Extract
  */
 export interface DecoratorMatch {
-    readonly DecoratorName: string;
-    readonly InterfaceName: string;
-    readonly DecoratorTag: string;
-    readonly SourceLine: number;
-    readonly DocComment: string | null;
+	readonly DecoratorName: string;
+
+	readonly InterfaceName: string;
+
+	readonly DecoratorTag: string;
+
+	readonly SourceLine: number;
+
+	readonly DocComment: string | null;
 }
-export declare const ExtractDecoratorMatches: (source: string) => ReadonlyArray<DecoratorMatch>;
+
+export declare const ExtractDecoratorMatches: (
+	source: string,
+) => ReadonlyArray<DecoratorMatch>;
+
 export default ExtractDecoratorMatches;
+
 //# sourceMappingURL=ExtractDecoratorMatch.d.ts.map

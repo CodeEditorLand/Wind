@@ -5,38 +5,62 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISharedTunnelsServiceTag = "sharedTunnelsService" as const;
+
 export const ISharedTunnelsServiceSourcePath = "vs/platform/tunnel/common/tunnel.ts" as const;
+
 export const ISharedTunnelsServiceSourceLine = 18 as const;
+
 export interface ISharedTunnelsServiceUpstream {
+
 	/**
 	 * @deprecated
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * @deprecated
 	 */
 	openTunnel(authority: string, addressProvider: IAddressProvider | undefined, remoteHost: string | undefined, remotePort: number, localHost: string, localPort?: number, elevateIfNeeded?: boolean, privacy?: string, protocol?: string): Promise<RemoteTunnel | string | undefined> | undefined;
 }
+
 export const ISharedTunnelsServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "@deprecated",
+
 		SourceLine: 121,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "openTunnel",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<RemoteTunnel | string | undefined> | undefined",
+
 		Parameters: [{ Name: "authority", TypeText: "string", Optional: false }, { Name: "addressProvider", TypeText: "IAddressProvider | undefined", Optional: false }, { Name: "remoteHost", TypeText: "string | undefined", Optional: false }, { Name: "remotePort", TypeText: "number", Optional: false }, { Name: "localHost", TypeText: "string", Optional: false }, { Name: "localPort", TypeText: "number", Optional: true }, { Name: "elevateIfNeeded", TypeText: "boolean", Optional: true }, { Name: "privacy", TypeText: "string", Optional: true }, { Name: "protocol", TypeText: "string", Optional: true }],
+
 		DocComment: "@deprecated",
+
 		SourceLine: 123,
 	}
 ] as const;

@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ILanguageModelToolsConfirmationServiceTag = "ILanguageModelToolsConfirmationService" as const;
+
 export const ILanguageModelToolsConfirmationServiceSourcePath = "vs/workbench/contrib/chat/common/tools/languageModelToolsConfirmationService.ts" as const;
+
 export const ILanguageModelToolsConfirmationServiceSourceLine = 137 as const;
+
 // Decorator doc:
 // /**
 //  * Computes a stable, bounded key for a tool+parameters combination
@@ -22,6 +26,7 @@ export const ILanguageModelToolsConfirmationServiceSourceLine = 137 as const;
  */
 
 export interface ILanguageModelToolsConfirmationServiceUpstream {
+
 	/**
 	 * Computes a stable, bounded key for a tool+parameters combination
 	 * using SHA-256 via SubtleCrypto. The resulting hex digest ensures
@@ -29,15 +34,24 @@ export interface ILanguageModelToolsConfirmationServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ILanguageModelToolsConfirmationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Computes a stable, bounded key for a tool+parameters combination\nusing SHA-256 via SubtleCrypto. The resulting hex digest ensures\nraw parameter values are never leaked into storage.",
+
 		SourceLine: 113,
 	}
 ] as const;

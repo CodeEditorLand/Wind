@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IClaudeAgentSdkServiceTag = "claudeAgentSdkService" as const;
+
 export const IClaudeAgentSdkServiceSourcePath = "vs/platform/agentHost/node/claude/claudeAgentSdkService.ts" as const;
+
 export const IClaudeAgentSdkServiceSourceLine = 15 as const;
+
 /**
  * Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.
  * Every method on this interface corresponds 1:1 to a single SDK export.
@@ -19,6 +23,7 @@ export const IClaudeAgentSdkServiceSourceLine = 15 as const;
  */
 
 export interface IClaudeAgentSdkServiceUpstream {
+
 	/**
 	 * Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.
 	 * Every method on this interface corresponds 1:1 to a single SDK export.
@@ -29,6 +34,7 @@ export interface IClaudeAgentSdkServiceUpstream {
 	 * interface for the raw bindings.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.
 	 * Every method on this interface corresponds 1:1 to a single SDK export.
@@ -39,6 +45,7 @@ export interface IClaudeAgentSdkServiceUpstream {
 	 * interface for the raw bindings.
 	 */
 	listSessions(): Promise<readonly SDKSessionInfo[]>;
+
 	/**
 	 * Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.
 	 * Every method on this interface corresponds 1:1 to a single SDK export.
@@ -49,6 +56,7 @@ export interface IClaudeAgentSdkServiceUpstream {
 	 * interface for the raw bindings.
 	 */
 	getSessionInfo(sessionId: string): Promise<SDKSessionInfo | undefined>;
+
 	/**
 	 * Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.
 	 * Every method on this interface corresponds 1:1 to a single SDK export.
@@ -59,6 +67,7 @@ export interface IClaudeAgentSdkServiceUpstream {
 	 * interface for the raw bindings.
 	 */
 	startup(params: { options: Options; initializeTimeoutMs?: number }): Promise<WarmQuery>;
+
 	/**
 	 * Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.
 	 * Every method on this interface corresponds 1:1 to a single SDK export.
@@ -69,6 +78,7 @@ export interface IClaudeAgentSdkServiceUpstream {
 	 * interface for the raw bindings.
 	 */
 	getSessionMessages(sessionId: string, options?: GetSessionMessagesOptions): Promise<readonly SessionMessage[]>;
+
 	/**
 	 * Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.
 	 * Every method on this interface corresponds 1:1 to a single SDK export.
@@ -79,6 +89,7 @@ export interface IClaudeAgentSdkServiceUpstream {
 	 * interface for the raw bindings.
 	 */
 	listSubagents(sessionId: string, options?: ListSubagentsOptions): Promise<readonly string[]>;
+
 	/**
 	 * Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.
 	 * Every method on this interface corresponds 1:1 to a single SDK export.
@@ -89,6 +100,7 @@ export interface IClaudeAgentSdkServiceUpstream {
 	 * interface for the raw bindings.
 	 */
 	getSubagentMessages(sessionId: string, agentId: string, options?: GetSubagentMessagesOptions): Promise<readonly SessionMessage[]>;
+
 	/**
 	 * Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.
 	 * Every method on this interface corresponds 1:1 to a single SDK export.
@@ -100,7 +112,9 @@ export interface IClaudeAgentSdkServiceUpstream {
 	 */
 	createSdkMcpServer(options: {
 		name: string;
+
 		version?: string;
+
 		// SDK signature: `tools?: Array<SdkMcpToolDefinition<any>>`. The `any`
 		// here is required to match the SDK's own erased generic and to allow
 		// callers to pass an array of tools whose schemas differ from each other.
@@ -108,85 +122,157 @@ export interface IClaudeAgentSdkServiceUpstream {
 		tools?: Array<SdkMcpToolDefinition<any>>;
 	}): Promise<McpSdkServerConfigWithInstance>;
 }
+
 export const IClaudeAgentSdkServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.\nEvery method on this interface corresponds 1:1 to a single SDK export.\nThe shim owns lazy module loading and the first-failure log-once\nconvention; it does NOT compose, wrap, or add behavior on top of the\nSDK's surface. Higher-level orchestration (e.g. building the in-process\nclient-tool MCP server) lives in dedicated modules that depend on this\ninterface for the raw bindings.",
+
 		SourceLine: 28,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "listSessions",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<readonly SDKSessionInfo[]>",
+
 		Parameters: [],
+
 		DocComment: "Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.\nEvery method on this interface corresponds 1:1 to a single SDK export.\nThe shim owns lazy module loading and the first-failure log-once\nconvention; it does NOT compose, wrap, or add behavior on top of the\nSDK's surface. Higher-level orchestration (e.g. building the in-process\nclient-tool MCP server) lives in dedicated modules that depend on this\ninterface for the raw bindings.",
+
 		SourceLine: 30,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getSessionInfo",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<SDKSessionInfo | undefined>",
+
 		Parameters: [{ Name: "sessionId", TypeText: "string", Optional: false }],
+
 		DocComment: "Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.\nEvery method on this interface corresponds 1:1 to a single SDK export.\nThe shim owns lazy module loading and the first-failure log-once\nconvention; it does NOT compose, wrap, or add behavior on top of the\nSDK's surface. Higher-level orchestration (e.g. building the in-process\nclient-tool MCP server) lives in dedicated modules that depend on this\ninterface for the raw bindings.",
+
 		SourceLine: 31,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "startup",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<WarmQuery>",
+
 		Parameters: [{ Name: "params", TypeText: "{ options: Options; initializeTimeoutMs?: number }", Optional: false }],
+
 		DocComment: "Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.\nEvery method on this interface corresponds 1:1 to a single SDK export.\nThe shim owns lazy module loading and the first-failure log-once\nconvention; it does NOT compose, wrap, or add behavior on top of the\nSDK's surface. Higher-level orchestration (e.g. building the in-process\nclient-tool MCP server) lives in dedicated modules that depend on this\ninterface for the raw bindings.",
+
 		SourceLine: 32,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getSessionMessages",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<readonly SessionMessage[]>",
+
 		Parameters: [{ Name: "sessionId", TypeText: "string", Optional: false }, { Name: "options", TypeText: "GetSessionMessagesOptions", Optional: true }],
+
 		DocComment: "Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.\nEvery method on this interface corresponds 1:1 to a single SDK export.\nThe shim owns lazy module loading and the first-failure log-once\nconvention; it does NOT compose, wrap, or add behavior on top of the\nSDK's surface. Higher-level orchestration (e.g. building the in-process\nclient-tool MCP server) lives in dedicated modules that depend on this\ninterface for the raw bindings.",
+
 		SourceLine: 33,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "listSubagents",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<readonly string[]>",
+
 		Parameters: [{ Name: "sessionId", TypeText: "string", Optional: false }, { Name: "options", TypeText: "ListSubagentsOptions", Optional: true }],
+
 		DocComment: "Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.\nEvery method on this interface corresponds 1:1 to a single SDK export.\nThe shim owns lazy module loading and the first-failure log-once\nconvention; it does NOT compose, wrap, or add behavior on top of the\nSDK's surface. Higher-level orchestration (e.g. building the in-process\nclient-tool MCP server) lives in dedicated modules that depend on this\ninterface for the raw bindings.",
+
 		SourceLine: 34,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getSubagentMessages",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<readonly SessionMessage[]>",
+
 		Parameters: [{ Name: "sessionId", TypeText: "string", Optional: false }, { Name: "agentId", TypeText: "string", Optional: false }, { Name: "options", TypeText: "GetSubagentMessagesOptions", Optional: true }],
+
 		DocComment: "Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.\nEvery method on this interface corresponds 1:1 to a single SDK export.\nThe shim owns lazy module loading and the first-failure log-once\nconvention; it does NOT compose, wrap, or add behavior on top of the\nSDK's surface. Higher-level orchestration (e.g. building the in-process\nclient-tool MCP server) lives in dedicated modules that depend on this\ninterface for the raw bindings.",
+
 		SourceLine: 35,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "createSdkMcpServer",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<McpSdkServerConfigWithInstance>",
+
 		Parameters: [{ Name: "options", TypeText: "{\n\t\tname: string;\n\t\tversion?: string;\n\t\t// SDK signature: `tools?: Array<SdkMcpToolDefinition<any>>`. The `any`\n\t\t// here is required to match the SDK's own erased generic and to allow\n\t\t// callers to pass an array of tools whose schemas differ from each other.\n\t\t// eslint-disable-next-line @typescript-eslint/no-explicit-any\n\t\ttools?: Array<SdkMcpToolDefinition<any>>;\n\t}", Optional: false }],
+
 		DocComment: "Pure per-method passthrough shim over `@anthropic-ai/claude-agent-sdk`.\nEvery method on this interface corresponds 1:1 to a single SDK export.\nThe shim owns lazy module loading and the first-failure log-once\nconvention; it does NOT compose, wrap, or add behavior on top of the\nSDK's surface. Higher-level orchestration (e.g. building the in-process\nclient-tool MCP server) lives in dedicated modules that depend on this\ninterface for the raw bindings.",
+
 		SourceLine: 37,
 	}
 ] as const;

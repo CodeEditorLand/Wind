@@ -5,226 +5,267 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITerminalServiceTag = "terminalService" as const;
+
 export const ITerminalServiceSourcePath = "vs/workbench/contrib/terminal/browser/terminal.ts" as const;
+
 export const ITerminalServiceSourceLine = 39 as const;
+
 export interface ITerminalServiceUpstream {
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly foregroundInstances: readonly ITerminalInstance[];
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly isProcessSupportRegistered: boolean;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly connectionState: TerminalConnectionState;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly whenConnected: Promise<void>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly onDidCreateInstance: Event<ITerminalInstance>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly onDidChangeInstanceDimensions: Event<ITerminalInstance>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly onDidRequestStartExtensionTerminal: Event<IStartExtensionTerminalRequest>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly onDidRegisterProcessSupport: Event<void>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly onDidChangeConnectionState: Event<void>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly onAnyInstanceDataInput: Event<ITerminalInstance>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly onAnyInstanceIconChange: Event<{ instance: ITerminalInstance; userInitiated: boolean }>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly onAnyInstanceMaximumDimensionsChange: Event<ITerminalInstance>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly onAnyInstancePrimaryStatusChange: Event<ITerminalInstance>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly onAnyInstanceProcessIdReady: Event<ITerminalInstance>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly onAnyInstanceSelectionChange: Event<ITerminalInstance>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly onAnyInstanceTitleChange: Event<ITerminalInstance>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly onAnyInstanceShellTypeChanged: Event<ITerminalInstance>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	readonly onAnyInstanceAddedCapabilityType: Event<TerminalCapability>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	getActiveOrCreateInstance(options?: { acceptsInput?: boolean }): Promise<ITerminalInstance>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	revealTerminal(source: ITerminalInstance, preserveFocus?: boolean): Promise<void>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	revealActiveTerminal(preserveFocus?: boolean): Promise<void>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	moveToEditor(source: ITerminalInstance, group?: GroupIdentifier | SIDE_GROUP_TYPE | ACTIVE_GROUP_TYPE | AUX_WINDOW_GROUP_TYPE): void;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	moveIntoNewEditor(source: ITerminalInstance): void;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	moveToTerminalView(source: ITerminalInstance | URI): Promise<void>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	getPrimaryBackend(): ITerminalBackend | undefined;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	setNextCommandId(id: number, commandLine: string, commandId: string): Promise<void>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	registerProcessSupport(isSupported: boolean): void;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	showProfileQuickPick(type: 'setDefault' | 'createInstance', cwd?: string | URI): Promise<ITerminalInstance | undefined>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	setContainers(panelContainer: HTMLElement, terminalContainer: HTMLElement): void;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	requestStartExtensionTerminal(proxy: ITerminalProcessExtHostProxy, cols: number, rows: number): Promise<ITerminalLaunchError | undefined>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	isAttachedToTerminal(remoteTerm: IRemoteTerminalAttachTarget): boolean;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	safeDisposeTerminal(instance: ITerminalInstance): Promise<void>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	getDefaultInstanceHost(): ITerminalInstanceHost;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	getInstanceHost(target: ITerminalLocationOptions | undefined): Promise<ITerminalInstanceHost>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
 	 * been initialized.
 	 */
 	resolveLocation(location?: ITerminalLocationOptions): Promise<TerminalLocation | undefined>;
+
 	/**
 	 * A terminal contribution that gets created whenever a terminal is created. A contribution has
 	 * access to the process manager through the constructor and provides a method for when xterm.js has
@@ -232,375 +273,708 @@ export interface ITerminalServiceUpstream {
 	 */
 	setNativeDelegate(nativeCalls: ITerminalServiceNativeDelegate): void;
 }
+
 export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "foregroundInstances",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "readonly ITerminalInstance[]",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "isProcessSupportRegistered",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "connectionState",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "TerminalConnectionState",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "whenConnected",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidCreateInstance",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITerminalInstance>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeInstanceDimensions",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITerminalInstance>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidRequestStartExtensionTerminal",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<IStartExtensionTerminalRequest>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidRegisterProcessSupport",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeConnectionState",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onAnyInstanceDataInput",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITerminalInstance>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onAnyInstanceIconChange",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<{ instance: ITerminalInstance; userInitiated: boolean }>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onAnyInstanceMaximumDimensionsChange",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITerminalInstance>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onAnyInstancePrimaryStatusChange",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITerminalInstance>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onAnyInstanceProcessIdReady",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITerminalInstance>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onAnyInstanceSelectionChange",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITerminalInstance>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onAnyInstanceTitleChange",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITerminalInstance>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onAnyInstanceShellTypeChanged",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<ITerminalInstance>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onAnyInstanceAddedCapabilityType",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<TerminalCapability>",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 489,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getActiveOrCreateInstance",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ITerminalInstance>",
+
 		Parameters: [{ Name: "options", TypeText: "{ acceptsInput?: boolean }", Optional: true }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 559,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "revealTerminal",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "source", TypeText: "ITerminalInstance", Optional: false }, { Name: "preserveFocus", TypeText: "boolean", Optional: true }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 560,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "revealActiveTerminal",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "preserveFocus", TypeText: "boolean", Optional: true }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 573,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "moveToEditor",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "source", TypeText: "ITerminalInstance", Optional: false }, { Name: "group", TypeText: "GroupIdentifier | SIDE_GROUP_TYPE | ACTIVE_GROUP_TYPE | AUX_WINDOW_GROUP_TYPE", Optional: true }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 574,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "moveIntoNewEditor",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "source", TypeText: "ITerminalInstance", Optional: false }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 575,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "moveToTerminalView",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "source", TypeText: "ITerminalInstance | URI", Optional: false }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 576,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getPrimaryBackend",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ITerminalBackend | undefined",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 577,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setNextCommandId",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "id", TypeText: "number", Optional: false }, { Name: "commandLine", TypeText: "string", Optional: false }, { Name: "commandId", TypeText: "string", Optional: false }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 578,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "registerProcessSupport",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "isSupported", TypeText: "boolean", Optional: false }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 586,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "showProfileQuickPick",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ITerminalInstance | undefined>",
+
 		Parameters: [{ Name: "type", TypeText: "'setDefault' | 'createInstance'", Optional: false }, { Name: "cwd", TypeText: "string | URI", Optional: true }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 588,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setContainers",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "panelContainer", TypeText: "HTMLElement", Optional: false }, { Name: "terminalContainer", TypeText: "HTMLElement", Optional: false }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 590,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "requestStartExtensionTerminal",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ITerminalLaunchError | undefined>",
+
 		Parameters: [{ Name: "proxy", TypeText: "ITerminalProcessExtHostProxy", Optional: false }, { Name: "cols", TypeText: "number", Optional: false }, { Name: "rows", TypeText: "number", Optional: false }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 592,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isAttachedToTerminal",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "boolean",
+
 		Parameters: [{ Name: "remoteTerm", TypeText: "IRemoteTerminalAttachTarget", Optional: false }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 593,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "safeDisposeTerminal",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "instance", TypeText: "ITerminalInstance", Optional: false }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 594,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getDefaultInstanceHost",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "ITerminalInstanceHost",
+
 		Parameters: [],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 596,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "getInstanceHost",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<ITerminalInstanceHost>",
+
 		Parameters: [{ Name: "target", TypeText: "ITerminalLocationOptions | undefined", Optional: false }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 597,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "resolveLocation",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<TerminalLocation | undefined>",
+
 		Parameters: [{ Name: "location", TypeText: "ITerminalLocationOptions", Optional: true }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 599,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "setNativeDelegate",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "void",
+
 		Parameters: [{ Name: "nativeCalls", TypeText: "ITerminalServiceNativeDelegate", Optional: false }],
+
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
+
 		SourceLine: 600,
 	}
 ] as const;

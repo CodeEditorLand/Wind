@@ -5,29 +5,43 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ITimerServiceTag = "timerService" as const;
+
 export const ITimerServiceSourcePath = "vs/workbench/services/timer/browser/timerService.ts" as const;
+
 export const ITimerServiceSourceLine = 476 as const;
+
 // Decorator doc:
 // /**
 //  * If this started the main process and renderer or just a renderer (new or reloaded).
 //  */
 // 
 export interface ITimerServiceUpstream {
+
 	/**
 	 * If this started the main process and renderer or just a renderer (new or reloaded).
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ITimerServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "If this started the main process and renderer or just a renderer (new or reloaded).",
+
 		SourceLine: 428,
 	}
 ] as const;

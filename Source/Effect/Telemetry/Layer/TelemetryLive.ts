@@ -1,21 +1,11 @@
 /**
  * @module Effect/Telemetry/Layer/TelemetryLive
  * @description
- * Live layer for Telemetry service.
- * Provides the production implementation using SubscriptionRef for reactive state.
- * @see {@link Effect/Telemetry/Interface/TelemetryService} Service interface
- * @see {@link Effect/Telemetry/Layer/TelemetryMock} Mock layer
+ * Live layer for Telemetry service - plain Map state, no Effect-TS runtime overhead.
  * @category Layer
  */
 
-import {
-	Effect,
-	HashMap,
-	Layer,
-	Option,
-	Stream,
-	SubscriptionRef,
-} from "effect";
+import { Effect, Layer, Stream } from "effect";
 
 import type { TelemetryService } from "../Interface/TelemetryService.js";
 import TelemetryTag from "../Tag/TelemetryTag.js";
@@ -27,36 +17,21 @@ import type {
 	TelemetrySpan,
 } from "../Type/TelemetryType.js";
 
-/**
- * Factory for TelemetryService — synchronous, no Effect deps.
- */
 function makeTelemetryService(): TelemetryService {
-	// Storage for metrics and spans
-	const metricsRef = Effect.runSync(
-		SubscriptionRef.make<
-			HashMap.HashMap<string, ReadonlyArray<TelemetryMetric>>
-		>(HashMap.empty()),
-	);
+	const _metrics = new Map<string, TelemetryMetric[]>();
 
-	const spansRef = Effect.runSync(
-		SubscriptionRef.make<
-			HashMap.HashMap<string, ReadonlyArray<TelemetrySpan>>
-		>(HashMap.empty()),
-	);
+	const _spans = new Map<string, TelemetrySpan[]>();
 
-	const eventsRef = Effect.runSync(
-		SubscriptionRef.make<ReadonlyArray<TelemetryEvent>>([]),
-	);
+	let _events: TelemetryEvent[] = [];
 
-	// Atom: Record a metric
 	const recordMetric = (
 		name: string,
 
 		value: number,
 
 		labels?: Record<string, string>,
-	): Effect.Effect<void, never> =>
-		Effect.gen(function* () {
+	): Effect.Effect<void> =>
+		Effect.sync(() => {
 			const metric: TelemetryMetric = {
 				name,
 				value,
@@ -64,58 +39,34 @@ function makeTelemetryService(): TelemetryService {
 				labels: labels ?? ({} as Readonly<Record<string, string>>),
 			};
 
-			const currentMetrics = yield* metricsRef.get;
+			const existing = _metrics.get(name) ?? [];
 
-			const existing = Option.getOrElse(
-				HashMap.get(currentMetrics, name),
+			_metrics.set(name, [...existing, metric].slice(-1000));
 
-				() => [] as ReadonlyArray<any>,
-			);
-
-			yield* SubscriptionRef.set(
-				metricsRef,
-
-				HashMap.set(
-					currentMetrics,
-
-					name,
-
-					[...existing, metric].slice(-1000),
-				),
-			);
-
-			const currentEvents = yield* eventsRef.get;
-
-			yield* SubscriptionRef.set(
-				eventsRef,
-
-				[
-					...currentEvents,
-
-					{
-						type: "metric" as const,
-						timestamp: Date.now(),
-						data: metric,
-					},
-				].slice(-10000),
-			);
+			_events = [
+				..._events,
+				{
+					type: "metric" as const,
+					timestamp: Date.now(),
+					data: metric,
+				},
+			].slice(-10000);
 		});
 
-	// Atom: Start a span
 	const startSpan = (
 		name: string,
 
 		labels?: Record<string, string>,
-	): Effect.Effect<SpanHandle, never> =>
+	): Effect.Effect<SpanHandle> =>
 		Effect.sync((): SpanHandle => {
 			const startTime = Date.now();
 
 			const end = (
 				success: boolean,
 
-				error?: string | undefined,
-			): Effect.Effect<void, never> =>
-				Effect.gen(function* () {
+				error?: string,
+			): Effect.Effect<void> =>
+				Effect.sync(() => {
 					const endTime = Date.now();
 
 					const span: TelemetrySpan = {
@@ -128,78 +79,42 @@ function makeTelemetryService(): TelemetryService {
 						labels: labels ?? {},
 					};
 
-					const currentSpans = yield* spansRef.get;
+					const existing = _spans.get(name) ?? [];
 
-					const existing = Option.getOrElse(
-						HashMap.get(currentSpans, name),
+					_spans.set(name, [...existing, span].slice(-1000));
 
-						() => [] as ReadonlyArray<any>,
-					);
-
-					yield* SubscriptionRef.set(
-						spansRef,
-
-						HashMap.set(
-							currentSpans,
-
-							name,
-
-							[...existing, span].slice(-1000),
-						),
-					);
-
-					const currentEvents = yield* eventsRef.get;
-
-					yield* SubscriptionRef.set(
-						eventsRef,
-
-						[
-							...currentEvents,
-
-							{
-								type: "span" as const,
-								timestamp: Date.now(),
-								data: span,
-							},
-						].slice(-10000),
-					);
+					_events = [
+						..._events,
+						{
+							type: "span" as const,
+							timestamp: Date.now(),
+							data: span,
+						},
+					].slice(-10000);
 				});
 
 			return { end };
 		});
 
-	// Atom: Log an event
 	const log = (
 		level: TelemetryLog["level"],
 
 		message: string,
 
 		context?: Record<string, unknown>,
-	): Effect.Effect<void, never> =>
-		Effect.gen(function* () {
-			const logEntry: TelemetryLog = {
+	): Effect.Effect<void> =>
+		Effect.sync(() => {
+			const entry: TelemetryLog = {
 				level,
 				message,
 				context: context ?? {},
 			};
 
-			const currentEvents = yield* eventsRef.get;
+			_events = [
+				..._events,
+				{ type: "log" as const, timestamp: Date.now(), data: entry },
+			].slice(-10000);
 
-			yield* SubscriptionRef.set(
-				eventsRef,
-
-				[
-					...currentEvents,
-
-					{
-						type: "log" as const,
-						timestamp: Date.now(),
-						data: logEntry,
-					},
-				].slice(-10000),
-			);
-
-			// Trace via performance.mark - OTELBridge collects automatically
 			if (typeof performance !== "undefined") {
 				try {
 					performance.mark(
@@ -209,70 +124,35 @@ function makeTelemetryService(): TelemetryService {
 			}
 		});
 
-	// Stream of all events - use SubscriptionRef.changes
-	const events: Stream.Stream<
-		ReadonlyArray<TelemetryEvent>,
-		never
-	> = eventsRef.changes;
+	const events: Stream.Stream<ReadonlyArray<TelemetryEvent>> = Stream.empty();
 
-	// Atom: Get metrics by name
 	const getMetrics = (
 		name: string,
-	): Effect.Effect<ReadonlyArray<TelemetryMetric>, never> =>
-		metricsRef.get.pipe(
-			Effect.map((map) =>
-				Option.getOrElse(
-					HashMap.get(map, name),
+	): Effect.Effect<ReadonlyArray<TelemetryMetric>> =>
+		Effect.succeed(_metrics.get(name) ?? []);
 
-					() => [] as ReadonlyArray<any>,
-				),
-			),
-		);
+	const getAverageDuration = (name: string): Effect.Effect<number> =>
+		Effect.sync(() => {
+			const spans = _spans.get(name) ?? [];
 
-	// Atom: Get average duration for spans
-	const getAverageDuration = (name: string): Effect.Effect<number, never> =>
-		spansRef.get.pipe(
-			Effect.map((map) => {
-				const spans = Option.getOrElse(
-					HashMap.get(map, name),
+			if (spans.length === 0) return 0;
 
-					() => [] as ReadonlyArray<any>,
-				);
+			return (
+				spans.reduce((sum, s) => sum + (s.duration || 0), 0) /
+				spans.length
+			);
+		});
 
-				if (spans.length === 0) return 0;
+	const getSuccessRate = (name: string): Effect.Effect<number> =>
+		Effect.sync(() => {
+			const spans = _spans.get(name) ?? [];
 
-				const total = spans.reduce(
-					(sum, s) => sum + (s.duration || 0),
+			if (spans.length === 0) return 0;
 
-					0,
-				);
+			return spans.filter((s) => s.success).length / spans.length;
+		});
 
-				return total / spans.length;
-			}),
-		);
-
-	// Atom: Get success rate for spans
-	const getSuccessRate = (name: string): Effect.Effect<number, never> =>
-		spansRef.get.pipe(
-			Effect.map((map) => {
-				const spans = Option.getOrElse(
-					HashMap.get(map, name),
-
-					() => [] as ReadonlyArray<any>,
-				);
-
-				if (spans.length === 0) return 0;
-
-				const successful = spans.filter((s) => s.success).length;
-
-				return successful / spans.length;
-			}),
-		);
-
-	// Atom: Flush all telemetry - note: SubscriptionRef does not have .set in v3
-	const flush = Effect.void; // Simplified flush operation
-
-	const service: TelemetryService = {
+	return {
 		recordMetric,
 
 		startSpan,
@@ -287,24 +167,10 @@ function makeTelemetryService(): TelemetryService {
 
 		getSuccessRate,
 
-		flush,
+		flush: Effect.void,
 	};
-
-	return service;
 }
 
-/**
- * Live layer for Telemetry service.
- * Provides reactive telemetry management with SubscriptionRef-based state.
- *
- * @example
- * ```ts
- * import { Layer } from "effect";
- * import { TelemetryLive } from "./Effect/Telemetry/Layer/TelemetryLive.js";
- *
- * const appLayer = TelemetryLive;
- * ```
- */
 const TelemetryLive = Layer.succeed(TelemetryTag, makeTelemetryService());
 
 export default TelemetryLive;

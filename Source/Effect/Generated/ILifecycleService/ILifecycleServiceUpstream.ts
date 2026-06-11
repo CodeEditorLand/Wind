@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ILifecycleServiceTag = "lifecycleService" as const;
+
 export const ILifecycleServiceSourcePath = "vs/workbench/services/lifecycle/common/lifecycle.ts" as const;
+
 export const ILifecycleServiceSourceLine = 10 as const;
+
 /**
  * An event that is send out when the window is about to close. Clients have a chance to veto
  * the closing by either calling veto with a boolean "true" directly or with a promise that
@@ -18,6 +22,7 @@ export const ILifecycleServiceSourceLine = 10 as const;
  */
 
 export interface ILifecycleServiceUpstream {
+
 	/**
 	 * An event that is send out when the window is about to close. Clients have a chance to veto
 	 * the closing by either calling veto with a boolean "true" directly or with a promise that
@@ -28,15 +33,24 @@ export interface ILifecycleServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ILifecycleServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "An event that is send out when the window is about to close. Clients have a chance to veto\nthe closing by either calling veto with a boolean \"true\" directly or with a promise that\nresolves to a boolean. Returning a promise is useful in cases of long running operations\non shutdown.\nNote: It is absolutely important to avoid long running promises if possible. Please try hard\nto return a boolean directly. Returning a promise has quite an impact on the shutdown sequence!",
+
 		SourceLine: 234,
 	}
 ] as const;

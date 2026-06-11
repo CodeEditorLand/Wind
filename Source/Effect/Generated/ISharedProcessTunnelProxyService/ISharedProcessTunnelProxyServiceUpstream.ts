@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const ISharedProcessTunnelProxyServiceTag = "sharedProcessTunnelProxyService" as const;
+
 export const ISharedProcessTunnelProxyServiceSourcePath = "vs/platform/tunnel/common/sharedProcessTunnelProxyService.ts" as const;
+
 export const ISharedProcessTunnelProxyServiceSourceLine = 9 as const;
+
 /**
  * Credentials and metadata for the tunnel proxy.
  * This is the single type consumers need to configure an Electron session
@@ -16,6 +20,7 @@ export const ISharedProcessTunnelProxyServiceSourceLine = 9 as const;
  */
 
 export interface ISharedProcessTunnelProxyServiceUpstream {
+
 	/**
 	 * Credentials and metadata for the tunnel proxy.
 	 * This is the single type consumers need to configure an Electron session
@@ -24,15 +29,24 @@ export interface ISharedProcessTunnelProxyServiceUpstream {
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const ISharedProcessTunnelProxyServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Credentials and metadata for the tunnel proxy.\nThis is the single type consumers need to configure an Electron session\n(proxy URL, credentials for Basic auth, certificate fingerprint for\npinning the self-signed TLS certificate).",
+
 		SourceLine: 45,
 	}
 ] as const;

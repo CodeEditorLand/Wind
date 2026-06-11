@@ -6,20 +6,38 @@
  * Wind-side bridge shapes that mirror upstream verbatim.
  * @category Type
  */
-export type InterfaceMemberKind = "Property" | "Method" | "Event" | "Getter" | "Setter" | "Index";
+export type InterfaceMemberKind =
+	| "Property"
+	| "Method"
+	| "Event"
+	| "Getter"
+	| "Setter"
+	| "Index";
+
 export interface InterfaceMemberParameter {
-    readonly Name: string;
-    readonly TypeText: string;
-    readonly Optional: boolean;
+	readonly Name: string;
+
+	readonly TypeText: string;
+
+	readonly Optional: boolean;
 }
+
 export interface InterfaceMemberRecord {
-    readonly Kind: InterfaceMemberKind;
-    readonly Name: string;
-    readonly Readonly: boolean;
-    readonly Optional: boolean;
-    readonly TypeText: string;
-    readonly Parameters: ReadonlyArray<InterfaceMemberParameter>;
-    readonly DocComment: string | null;
-    readonly SourceLine: number;
+	readonly Kind: InterfaceMemberKind;
+
+	readonly Name: string;
+
+	readonly Readonly: boolean;
+
+	readonly Optional: boolean;
+
+	readonly TypeText: string;
+
+	readonly Parameters: ReadonlyArray<InterfaceMemberParameter>;
+
+	readonly DocComment: string | null;
+
+	readonly SourceLine: number;
 }
+
 //# sourceMappingURL=InterfaceMemberRecord.d.ts.map

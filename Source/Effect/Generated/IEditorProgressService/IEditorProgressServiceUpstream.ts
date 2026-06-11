@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IEditorProgressServiceTag = "editorProgressService" as const;
+
 export const IEditorProgressServiceSourcePath = "vs/platform/progress/common/progress.ts" as const;
+
 export const IEditorProgressServiceSourceLine = 221 as const;
+
 // Decorator doc:
 // /**
 //  * A progress service that can be used to report progress to various locations of the UI.
@@ -18,20 +22,30 @@ export const IEditorProgressServiceSourceLine = 221 as const;
  */
 
 export interface IEditorProgressServiceUpstream {
+
 	/**
 	 * A progress service that can be used to report progress to various locations of the UI.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IEditorProgressServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "A progress service that can be used to report progress to various locations of the UI.",
+
 		SourceLine: 228,
 	}
 ] as const;

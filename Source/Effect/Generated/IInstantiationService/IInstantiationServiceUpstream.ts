@@ -5,25 +5,39 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IInstantiationServiceTag = "instantiationService" as const;
+
 export const IInstantiationServiceSourcePath = "vs/platform/instantiation/common/instantiation.ts" as const;
+
 export const IInstantiationServiceSourceLine = 41 as const;
+
 export interface IInstantiationServiceUpstream {
+
 	/**
 	 * Given a list of arguments as a tuple, attempt to extract the leading, non-service arguments
 	 * to their own tuple.
 	 */
 	readonly _serviceBrand: undefined;
 }
+
 export const IInstantiationServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "Given a list of arguments as a tuple, attempt to extract the leading, non-service arguments\nto their own tuple.",
+
 		SourceLine: 54,
 	}
 ] as const;

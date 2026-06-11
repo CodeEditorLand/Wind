@@ -5,9 +5,13 @@
  */
 
 import type { InterfaceMemberRecord } from "../../../Codegen/Type/InterfaceMemberRecord.js";
+
 export const IWSLRemoteAgentHostServiceTag = "wslRemoteAgentHostService" as const;
+
 export const IWSLRemoteAgentHostServiceSourcePath = "vs/platform/agentHost/common/wslRemoteAgentHost.ts" as const;
+
 export const IWSLRemoteAgentHostServiceSourceLine = 78 as const;
+
 // Decorator doc:
 // /**
 //  * IPC channel name for the main-process WSL service.
@@ -18,132 +22,222 @@ export const IWSLRemoteAgentHostServiceSourceLine = 78 as const;
  */
 
 export interface IWSLRemoteAgentHostServiceUpstream {
+
 	/**
 	 * IPC channel name for the main-process WSL service.
 	 */
 	readonly _serviceBrand: undefined;
+
 	/**
 	 * IPC channel name for the main-process WSL service.
 	 */
 	readonly onDidChangeConnections: Event<void>;
+
 	/**
 	 * IPC channel name for the main-process WSL service.
 	 */
 	readonly onDidReportConnectProgress: Event<IWSLConnectProgress>;
+
 	/**
 	 * IPC channel name for the main-process WSL service.
 	 */
 	readonly connections: readonly IWSLAgentHostConnection[];
+
 	/**
 	 * IPC channel name for the main-process WSL service.
 	 */
 	isWSLAvailable(): Promise<boolean>;
+
 	/**
 	 * IPC channel name for the main-process WSL service.
 	 */
 	listDistros(): Promise<IWSLDistro[]>;
+
 	/**
 	 * IPC channel name for the main-process WSL service.
 	 */
 	listRunningDistros(): Promise<string[]>;
+
 	/**
 	 * IPC channel name for the main-process WSL service.
 	 */
 	connect(config: IWSLAgentHostConfig): Promise<IWSLAgentHostConnection>;
+
 	/**
 	 * IPC channel name for the main-process WSL service.
 	 */
 	disconnect(distro: string): Promise<void>;
 }
+
 export const IWSLRemoteAgentHostServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
+
 		Kind: "Property",
+
 		Name: "_serviceBrand",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "undefined",
+
 		Parameters: [],
+
 		DocComment: "IPC channel name for the main-process WSL service.",
+
 		SourceLine: 88,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidChangeConnections",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<void>",
+
 		Parameters: [],
+
 		DocComment: "IPC channel name for the main-process WSL service.",
+
 		SourceLine: 88,
 	},
+
 	{
+
 		Kind: "Event",
+
 		Name: "onDidReportConnectProgress",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "Event<IWSLConnectProgress>",
+
 		Parameters: [],
+
 		DocComment: "IPC channel name for the main-process WSL service.",
+
 		SourceLine: 88,
 	},
+
 	{
+
 		Kind: "Property",
+
 		Name: "connections",
+
 		Readonly: true,
+
 		Optional: false,
+
 		TypeText: "readonly IWSLAgentHostConnection[]",
+
 		Parameters: [],
+
 		DocComment: "IPC channel name for the main-process WSL service.",
+
 		SourceLine: 88,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "isWSLAvailable",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<boolean>",
+
 		Parameters: [],
+
 		DocComment: "IPC channel name for the main-process WSL service.",
+
 		SourceLine: 94,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "listDistros",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IWSLDistro[]>",
+
 		Parameters: [],
+
 		DocComment: "IPC channel name for the main-process WSL service.",
+
 		SourceLine: 95,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "listRunningDistros",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<string[]>",
+
 		Parameters: [],
+
 		DocComment: "IPC channel name for the main-process WSL service.",
+
 		SourceLine: 96,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "connect",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<IWSLAgentHostConnection>",
+
 		Parameters: [{ Name: "config", TypeText: "IWSLAgentHostConfig", Optional: false }],
+
 		DocComment: "IPC channel name for the main-process WSL service.",
+
 		SourceLine: 97,
 	},
+
 	{
+
 		Kind: "Method",
+
 		Name: "disconnect",
+
 		Readonly: false,
+
 		Optional: false,
+
 		TypeText: "Promise<void>",
+
 		Parameters: [{ Name: "distro", TypeText: "string", Optional: false }],
+
 		DocComment: "IPC channel name for the main-process WSL service.",
+
 		SourceLine: 98,
 	}
 ] as const;
