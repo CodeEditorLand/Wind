@@ -68,6 +68,10 @@ export default {
 		"extensionhostdebugservice:terminateSession",
 
 	// --- Extensions ---
+	ExtensionsActivate: "extensions:activate",
+
+	ExtensionsDownload: "extensions:download",
+
 	ExtensionsGet: "extensions:get",
 
 	ExtensionsGetAll: "extensions:getAll",
@@ -79,6 +83,8 @@ export default {
 
 	ExtensionsGetInstalled: "extensions:getInstalled",
 
+	ExtensionsGetCoreTranslation: "extensions:getCoreTranslation",
+
 	ExtensionsGetRecommendations: "extensions:getRecommendations",
 
 	ExtensionsGetUninstalled: "extensions:getUninstalled",
@@ -86,6 +92,8 @@ export default {
 	ExtensionsGetManifest: "extensions:getManifest",
 
 	ExtensionsInstall: "extensions:install",
+
+	ExtensionsSearch: "extensions:search",
 
 	ExtensionsIsActive: "extensions:isActive",
 
@@ -95,8 +103,6 @@ export default {
 
 	ExtensionsResetPinnedState:
 		"extensions:resetPinnedStateForAllUserExtensions",
-
-	ExtensionsActivate: "extensions:activate",
 
 	ExtensionsScanSystemExtensions: "extensions:scanSystemExtensions",
 
@@ -266,7 +272,14 @@ export default {
 
 	OutputCreate: "output:create",
 
+	OutputDispose: "output:dispose",
+
+	OutputReplace: "output:replace",
+
 	OutputShow: "output:show",
+
+	// --- Process ---
+	ProcessGetMemoryInfo: "process:getMemoryInfo",
 
 	// --- Progress ---
 	ProgressBegin: "progress:begin",
@@ -279,6 +292,10 @@ export default {
 	SearchFindFiles: "search:findFiles",
 
 	SearchFindInFiles: "search:findInFiles",
+
+	SearchCancel: "search:cancel",
+
+	SearchClearCache: "search:clearCache",
 
 	// --- Storage ---
 	StorageClose: "storage:close",
@@ -406,6 +423,8 @@ export default {
 
 	// --- Language features (dispatched to Cocoon via NodeDeferred track) ---
 	LanguagesGetAll: "languages:getAll",
+
+	LanguagesGetLanguages: "languages:getLanguages",
 
 	LanguagesGetEncodedLanguageId: "languages:getEncodedLanguageId",
 
