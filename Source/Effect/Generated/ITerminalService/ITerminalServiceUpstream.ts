@@ -241,7 +241,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Property",
@@ -251,7 +251,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "readonly ITerminalInstance[]",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Property",
@@ -261,7 +261,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "boolean",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Property",
@@ -271,7 +271,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "TerminalConnectionState",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Property",
@@ -281,7 +281,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Promise<void>",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Event",
@@ -291,7 +291,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Event<ITerminalInstance>",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Event",
@@ -301,7 +301,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Event<ITerminalInstance>",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Event",
@@ -311,7 +311,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Event<IStartExtensionTerminalRequest>",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Event",
@@ -321,7 +321,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Event<void>",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Event",
@@ -331,7 +331,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Event<void>",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Event",
@@ -341,7 +341,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Event<ITerminalInstance>",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Event",
@@ -351,7 +351,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Event<{ instance: ITerminalInstance; userInitiated: boolean }>",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Event",
@@ -361,7 +361,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Event<ITerminalInstance>",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Event",
@@ -371,7 +371,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Event<ITerminalInstance>",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Event",
@@ -381,7 +381,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Event<ITerminalInstance>",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Event",
@@ -391,7 +391,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Event<ITerminalInstance>",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Event",
@@ -401,7 +401,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Event<ITerminalInstance>",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Event",
@@ -411,7 +411,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Event<ITerminalInstance>",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Event",
@@ -421,7 +421,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Event<TerminalCapability>",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 489,
+		SourceLine: 476,
 	},
 	{
 		Kind: "Method",
@@ -431,7 +431,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Promise<ITerminalInstance>",
 		Parameters: [{ Name: "options", TypeText: "{ acceptsInput?: boolean }", Optional: true }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 559,
+		SourceLine: 546,
 	},
 	{
 		Kind: "Method",
@@ -441,7 +441,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Promise<void>",
 		Parameters: [{ Name: "source", TypeText: "ITerminalInstance", Optional: false }, { Name: "preserveFocus", TypeText: "boolean", Optional: true }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 560,
+		SourceLine: 547,
 	},
 	{
 		Kind: "Method",
@@ -451,7 +451,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Promise<void>",
 		Parameters: [{ Name: "preserveFocus", TypeText: "boolean", Optional: true }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 573,
+		SourceLine: 560,
 	},
 	{
 		Kind: "Method",
@@ -461,7 +461,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "void",
 		Parameters: [{ Name: "source", TypeText: "ITerminalInstance", Optional: false }, { Name: "group", TypeText: "GroupIdentifier | SIDE_GROUP_TYPE | ACTIVE_GROUP_TYPE | AUX_WINDOW_GROUP_TYPE", Optional: true }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 574,
+		SourceLine: 561,
 	},
 	{
 		Kind: "Method",
@@ -471,7 +471,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "void",
 		Parameters: [{ Name: "source", TypeText: "ITerminalInstance", Optional: false }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 575,
+		SourceLine: 562,
 	},
 	{
 		Kind: "Method",
@@ -481,7 +481,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Promise<void>",
 		Parameters: [{ Name: "source", TypeText: "ITerminalInstance | URI", Optional: false }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 576,
+		SourceLine: 563,
 	},
 	{
 		Kind: "Method",
@@ -491,7 +491,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "ITerminalBackend | undefined",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 577,
+		SourceLine: 564,
 	},
 	{
 		Kind: "Method",
@@ -501,7 +501,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Promise<void>",
 		Parameters: [{ Name: "id", TypeText: "number", Optional: false }, { Name: "commandLine", TypeText: "string", Optional: false }, { Name: "commandId", TypeText: "string", Optional: false }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 578,
+		SourceLine: 565,
 	},
 	{
 		Kind: "Method",
@@ -511,7 +511,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "void",
 		Parameters: [{ Name: "isSupported", TypeText: "boolean", Optional: false }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 586,
+		SourceLine: 573,
 	},
 	{
 		Kind: "Method",
@@ -521,7 +521,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Promise<ITerminalInstance | undefined>",
 		Parameters: [{ Name: "type", TypeText: "'setDefault' | 'createInstance'", Optional: false }, { Name: "cwd", TypeText: "string | URI", Optional: true }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 588,
+		SourceLine: 575,
 	},
 	{
 		Kind: "Method",
@@ -531,7 +531,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "void",
 		Parameters: [{ Name: "panelContainer", TypeText: "HTMLElement", Optional: false }, { Name: "terminalContainer", TypeText: "HTMLElement", Optional: false }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 590,
+		SourceLine: 577,
 	},
 	{
 		Kind: "Method",
@@ -541,7 +541,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Promise<ITerminalLaunchError | undefined>",
 		Parameters: [{ Name: "proxy", TypeText: "ITerminalProcessExtHostProxy", Optional: false }, { Name: "cols", TypeText: "number", Optional: false }, { Name: "rows", TypeText: "number", Optional: false }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 592,
+		SourceLine: 579,
 	},
 	{
 		Kind: "Method",
@@ -551,7 +551,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "boolean",
 		Parameters: [{ Name: "remoteTerm", TypeText: "IRemoteTerminalAttachTarget", Optional: false }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 593,
+		SourceLine: 580,
 	},
 	{
 		Kind: "Method",
@@ -561,7 +561,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Promise<void>",
 		Parameters: [{ Name: "instance", TypeText: "ITerminalInstance", Optional: false }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 594,
+		SourceLine: 581,
 	},
 	{
 		Kind: "Method",
@@ -571,7 +571,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "ITerminalInstanceHost",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 596,
+		SourceLine: 583,
 	},
 	{
 		Kind: "Method",
@@ -581,7 +581,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Promise<ITerminalInstanceHost>",
 		Parameters: [{ Name: "target", TypeText: "ITerminalLocationOptions | undefined", Optional: false }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 597,
+		SourceLine: 584,
 	},
 	{
 		Kind: "Method",
@@ -591,7 +591,7 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "Promise<TerminalLocation | undefined>",
 		Parameters: [{ Name: "location", TypeText: "ITerminalLocationOptions", Optional: true }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 599,
+		SourceLine: 586,
 	},
 	{
 		Kind: "Method",
@@ -601,6 +601,6 @@ export const ITerminalServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 		TypeText: "void",
 		Parameters: [{ Name: "nativeCalls", TypeText: "ITerminalServiceNativeDelegate", Optional: false }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 600,
+		SourceLine: 587,
 	}
 ] as const;

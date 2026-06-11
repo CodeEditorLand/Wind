@@ -125,7 +125,7 @@ export const IConfigurationServiceMembers: ReadonlyArray<InterfaceMemberRecord> 
 		Name: "keys",
 		Readonly: false,
 		Optional: false,
-		TypeText: "{\n\t\tdefault: string[];\n\t\tpolicy: string[];\n\t\tuser: string[];\n\t\tworkspace: string[];\n\t\tworkspaceFolder: string[];\n\t\tmemory?: string[];\n\t}",
+		TypeText: "{\r\n\t\tdefault: string[];\r\n\t\tpolicy: string[];\r\n\t\tuser: string[];\r\n\t\tworkspace: string[];\r\n\t\tworkspaceFolder: string[];\r\n\t\tmemory?: string[];\r\n\t}",
 		Parameters: [],
 		DocComment: "If `true`, do not notifies the error to user by showing the message box. Default is `false`.",
 		SourceLine: 199,

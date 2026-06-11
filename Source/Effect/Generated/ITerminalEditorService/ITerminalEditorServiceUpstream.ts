@@ -73,7 +73,7 @@ export const ITerminalEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord>
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 669,
+		SourceLine: 656,
 	},
 	{
 		Kind: "Method",
@@ -83,7 +83,7 @@ export const ITerminalEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord>
 		TypeText: "Promise<void>",
 		Parameters: [{ Name: "instance", TypeText: "ITerminalInstance", Optional: false }, { Name: "editorOptions", TypeText: "TerminalEditorLocation", Optional: true }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 674,
+		SourceLine: 661,
 	},
 	{
 		Kind: "Method",
@@ -93,7 +93,7 @@ export const ITerminalEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord>
 		TypeText: "void",
 		Parameters: [{ Name: "instance", TypeText: "ITerminalInstance", Optional: false }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 675,
+		SourceLine: 662,
 	},
 	{
 		Kind: "Method",
@@ -103,7 +103,7 @@ export const ITerminalEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord>
 		TypeText: "Promise<ITerminalInstance>",
 		Parameters: [{ Name: "instanceToSplit", TypeText: "ITerminalInstance", Optional: false }, { Name: "shellLaunchConfig", TypeText: "IShellLaunchConfig", Optional: true }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 676,
+		SourceLine: 663,
 	},
 	{
 		Kind: "Method",
@@ -113,7 +113,7 @@ export const ITerminalEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord>
 		TypeText: "Promise<void>",
 		Parameters: [{ Name: "preserveFocus", TypeText: "boolean", Optional: true }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 677,
+		SourceLine: 664,
 	},
 	{
 		Kind: "Method",
@@ -123,7 +123,7 @@ export const ITerminalEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord>
 		TypeText: "URI",
 		Parameters: [{ Name: "instance", TypeText: "ITerminalInstance", Optional: false }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 678,
+		SourceLine: 665,
 	},
 	{
 		Kind: "Method",
@@ -133,7 +133,7 @@ export const ITerminalEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord>
 		TypeText: "EditorInput",
 		Parameters: [{ Name: "deserializedInput", TypeText: "IDeserializedTerminalEditorInput", Optional: false }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 679,
+		SourceLine: 666,
 	},
 	{
 		Kind: "Method",
@@ -143,6 +143,6 @@ export const ITerminalEditorServiceMembers: ReadonlyArray<InterfaceMemberRecord>
 		TypeText: "TerminalEditorInput",
 		Parameters: [{ Name: "resource", TypeText: "URI", Optional: false }],
 		DocComment: "A terminal contribution that gets created whenever a terminal is created. A contribution has\naccess to the process manager through the constructor and provides a method for when xterm.js has\nbeen initialized.",
-		SourceLine: 680,
+		SourceLine: 667,
 	}
 ] as const;
