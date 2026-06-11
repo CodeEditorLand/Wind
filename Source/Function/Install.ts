@@ -8,8 +8,6 @@
  */
 export { default } from "./Install/Function/Install.js";
 
-export { Install } from "./Install/Function/Install.js";
-
 export { ResolveConfiguration } from "./Install/Function/ResolveConfiguration.js";
 
 export { CreateIPCRenderer } from "./Install/Function/CreateIPCRenderer.js";

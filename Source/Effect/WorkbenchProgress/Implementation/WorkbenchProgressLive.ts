@@ -30,7 +30,7 @@ const ToReporter = (
 		Effect.sync(() =>
 			upstream.report({
 				increment: Math.round(Fraction * 100),
-				message: Message,
+				...(Message !== undefined ? { message: Message } : {}),
 			}),
 		),
 });
@@ -59,8 +59,12 @@ function makeWorkbenchProgressService(): WorkbenchProgressService {
 							location: WorkbenchProgressLocationCode(
 								Options.location,
 							),
-							cancellable: Options.cancellable,
-							source: Options.source,
+							...(Options.cancellable !== undefined
+								? { cancellable: Options.cancellable }
+								: {}),
+							...(Options.source !== undefined
+								? { source: Options.source }
+								: {}),
 						},
 
 						async (Reporter) =>

@@ -686,7 +686,7 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 const _TierIPC: string =
 	(import.meta as any).env?.TierIPC ??
 	((globalThis as { __LandTiers?: Record<string, unknown> }).__LandTiers
-		?.TierIPC as string | undefined) ??
+		?.["TierIPC"] as string | undefined) ??
 	"Mountain";
 
 // Per-subsystem tier resolution (added 2026-05-25 - TIER-SYSTEM Step 4b).
@@ -1092,6 +1092,7 @@ class TauriChannel implements IChannel {
 					Arg !== undefined ? (Array.isArray(Arg) ? Arg : [Arg]) : [];
 
 				Promise.all([
+					// @ts-expect-error - no type declarations for the runtime VS Code module
 					import("../../../base/common/buffer.js") as Promise<{
 						VSBuffer: { wrap(buffer: Uint8Array): unknown };
 					}>,

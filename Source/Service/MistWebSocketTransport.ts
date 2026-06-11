@@ -38,7 +38,7 @@ const _Trace = (Tag: string, Message: string): void => {
 function _BackoffMs(): number {
 	const Idx = Math.min(_reconnectAttempts, _BackoffSteps.length - 1);
 
-	return _BackoffSteps[Idx];
+	return _BackoffSteps[Idx]!;
 }
 
 function _DrainPending(Reason: string): void {

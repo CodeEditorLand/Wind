@@ -13,7 +13,8 @@ import type { URI } from "./URI.js";
 // ============================================================================
 
 // IStat matches VS Code's IStat exactly - re-export directly.
-export type { IStat } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/files/common/files.js";
+import type { IStat } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/files/common/files.js";
+export type { IStat };
 
 // ============================================================================
 // File Write Options

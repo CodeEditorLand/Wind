@@ -5,7 +5,7 @@
  * @category Type
  */
 
-export { FileType, fileTypeToString } from "./FileType.js";
+export { FileType } from "./FileType.js";
 
 export { URI } from "./URI.js";
 

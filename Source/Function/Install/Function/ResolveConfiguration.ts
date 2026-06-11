@@ -120,8 +120,9 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 	const Product = await LoadProductJson();
 
 	const FileRoot =
-		typeof globalThis._VSCODE_FILE_ROOT === "string"
-			? globalThis._VSCODE_FILE_ROOT
+		typeof (globalThis as Record<string, unknown>)._VSCODE_FILE_ROOT ===
+		"string"
+			? (globalThis as Record<string, unknown>)._VSCODE_FILE_ROOT as string
 			: "/Static/Application/";
 
 	// Strip origin from FileRoot for appRoot (workbench.js prepends vscode-file://)

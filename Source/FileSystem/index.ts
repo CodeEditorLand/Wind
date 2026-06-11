@@ -39,7 +39,7 @@ export type {
 	IFileSystemProvider,
 } from "./Type/FileSystemType.js";
 
-export { FileType, fileTypeToString } from "./Type/FileType.js";
+export { FileType } from "./Type/FileType.js";
 
 export { URI } from "./Type/URI.js";
 

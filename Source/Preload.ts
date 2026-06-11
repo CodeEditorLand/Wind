@@ -133,7 +133,11 @@ const ipcRenderer = {
 		return tauriInvoke(
 			channel,
 
-			args.length === 0 ? undefined : args.length === 1 ? args[0] : args,
+			args.length === 0
+			? undefined
+			: args.length === 1
+				? (args[0] as import("@tauri-apps/api/core").InvokeArgs)
+				: (args as import("@tauri-apps/api/core").InvokeArgs),
 		) as Promise<unknown>;
 	},
 

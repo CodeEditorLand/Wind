@@ -52,8 +52,12 @@ function makeWorkbenchNotificationService(): WorkbenchNotificationService {
 						Options.severity,
 					),
 					message: Options.message,
-					source: Options.source,
-					silent: Options.silent,
+					...(Options.source !== undefined
+						? { source: Options.source }
+						: {}),
+					...(Options.silent !== undefined
+						? { silent: Options.silent }
+						: {}),
 				});
 
 				PublishLocal({

@@ -323,7 +323,7 @@ const pollUntil = (
 	timeout: number,
 
 	interval: number = DEFAULT_POLL_INTERVAL,
-): Effect.Effect<void> =>
+): Effect.Effect<void, WorkbenchIntegrationError> =>
 	Effect.gen(function* () {
 		const startTime = Date.now();
 
@@ -396,6 +396,8 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 		messagesRef,
 		defaultProvidersUnregisteredRef,
 	};
+
+	const fileSystemProviderService = yield* FileSystemProviderTag;
 
 	// ============================================================================
 	// Service Methods
@@ -515,8 +517,6 @@ const WorkbenchIntegrationServiceLive = Effect.gen(function* () {
 
 				`Registering Mountain provider for scheme: ${scheme}...`,
 			);
-
-			const fileSystemProviderService = yield* FileSystemProviderTag;
 
 			const provider = yield* Effect.mapError(
 				fileSystemProviderService.getProvider,
