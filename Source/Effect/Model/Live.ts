@@ -15,6 +15,7 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+import { TauriIPCLive } from "../IPC/index.js";
 import type { ModelService, TextModel } from "./Interface/ModelService.js";
 import { ModelServiceTag } from "./Tag/ModelServiceTag.js";
 import type { ModelProblem } from "./Type/ModelProblem.js";
@@ -48,9 +49,7 @@ const ParseTextModel = (raw: unknown): TextModel | null => {
 };
 
 function makeModelService(): ModelService {
-	const Globals = globalThis as any;
-
-	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+	const IPCService = TauriIPCLive;
 
 	const Service: ModelService = {
 		OpenModel: (uri) =>
@@ -123,10 +122,12 @@ function makeModelService(): ModelService {
 	return Service;
 }
 
+export const ModelServiceInstance = makeModelService();
+
 export const LiveModelServiceLayer = Layer.succeed(
 	ModelServiceTag,
 
-	makeModelService(),
+	ModelServiceInstance,
 );
 
 export default LiveModelServiceLayer;

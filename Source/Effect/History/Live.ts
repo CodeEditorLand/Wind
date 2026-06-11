@@ -17,6 +17,7 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+import { TauriIPCLive } from "../IPC/index.js";
 import type { HistoryService } from "./Interface/HistoryService.js";
 import { HistoryServiceTag } from "./Tag/HistoryServiceTag.js";
 import type { HistoryProblem } from "./Type/HistoryProblem.js";
@@ -27,9 +28,7 @@ const MakeHistoryProblem = (error: unknown): HistoryProblem => ({
 });
 
 function makeHistoryService(): HistoryService {
-	const Globals = globalThis as any;
-
-	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+	const IPCService = TauriIPCLive;
 
 	const Service: HistoryService = {
 		GoBack: () =>

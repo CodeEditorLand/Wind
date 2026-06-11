@@ -44,10 +44,8 @@ const ToError = (Cause: unknown): Error =>
 	Cause instanceof Error ? Cause : new Error(String(Cause));
 
 function makeWorkbenchStorageService(): WorkbenchStorageService {
-	const Globals = globalThis as unknown as WorkbenchStorageGlobals;
-
-	const Bridge: WorkbenchStorageBridgeShape | null =
-		Globals.__CEL_SERVICES__?.Storage ?? null;
+	const getBridge = (): WorkbenchStorageBridgeShape | null =>
+		(globalThis as unknown as WorkbenchStorageGlobals).__CEL_SERVICES__?.Storage ?? null;
 
 	const Unavailable = BridgeUnavailable(
 		"globalThis.__CEL_SERVICES__.Storage is null - the workbench has not yet exposed its IStorageService handle. Boot the workbench first or use WorkbenchStorageStub for tests.",
@@ -59,6 +57,7 @@ function makeWorkbenchStorageService(): WorkbenchStorageService {
 		Scope: WorkbenchStorageScope,
 	): Effect.Effect<string | undefined, WorkbenchStorageProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			try {
@@ -79,6 +78,7 @@ function makeWorkbenchStorageService(): WorkbenchStorageService {
 		Scope: WorkbenchStorageScope,
 	): Effect.Effect<boolean | undefined, WorkbenchStorageProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			try {
@@ -103,6 +103,7 @@ function makeWorkbenchStorageService(): WorkbenchStorageService {
 		Scope: WorkbenchStorageScope,
 	): Effect.Effect<number | undefined, WorkbenchStorageProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			try {
@@ -127,6 +128,7 @@ function makeWorkbenchStorageService(): WorkbenchStorageService {
 		Scope: WorkbenchStorageScope,
 	): Effect.Effect<T | undefined, WorkbenchStorageProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			try {
@@ -155,6 +157,7 @@ function makeWorkbenchStorageService(): WorkbenchStorageService {
 		Target: WorkbenchStorageTarget,
 	): Effect.Effect<void, WorkbenchStorageProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			try {
@@ -183,6 +186,7 @@ function makeWorkbenchStorageService(): WorkbenchStorageService {
 		Scope: WorkbenchStorageScope,
 	): Effect.Effect<void, WorkbenchStorageProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			try {
@@ -203,6 +207,7 @@ function makeWorkbenchStorageService(): WorkbenchStorageService {
 		Target: WorkbenchStorageTarget,
 	): Effect.Effect<readonly string[], WorkbenchStorageProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			return Bridge.keys(
@@ -216,6 +221,7 @@ function makeWorkbenchStorageService(): WorkbenchStorageService {
 		WorkbenchStorageChangeEvent,
 		WorkbenchStorageProblem
 	>((Emit) => {
+		const Bridge = getBridge();
 		if (!Bridge) {
 			Emit.fail(Unavailable);
 

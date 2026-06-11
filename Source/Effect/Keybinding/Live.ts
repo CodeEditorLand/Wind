@@ -15,6 +15,7 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+import { TauriIPCLive } from "../IPC/index.js";
 import type { KeybindingService } from "./Interface/KeybindingService.js";
 import { KeybindingServiceTag } from "./Tag/KeybindingServiceTag.js";
 import type { KeybindingProblem } from "./Type/KeybindingProblem.js";
@@ -25,9 +26,7 @@ const MakeKeybindingProblem = (error: unknown): KeybindingProblem => ({
 });
 
 function makeKeybindingService(): KeybindingService {
-	const Globals = globalThis as any;
-
-	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+	const IPCService = TauriIPCLive;
 
 	const Service: KeybindingService = {
 		AddKeybinding: (commandId, keybinding, when) =>

@@ -1,4 +1,3 @@
-import { invoke as TauriInvoke } from "@tauri-apps/api/core";
 /**
  * @module FileSystem/Implementation/FileSystemProviderImplementation
  * @description
@@ -7,9 +6,9 @@ import { invoke as TauriInvoke } from "@tauri-apps/api/core";
  * @category Implementation
  */
 
+import { invoke as TauriInvoke } from "@tauri-apps/api/core";
 import { Context, Effect, Layer } from "effect";
 
-import { IPC } from "../../Effect/IPC.js";
 import {
 	FileExistsError,
 	FileNotFoundError,

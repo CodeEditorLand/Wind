@@ -5,7 +5,7 @@
  * @category Layer
  */
 
-import { Effect, Layer, Stream } from "effect";
+import { Effect, Either, Layer, Stream } from "effect";
 
 import StatusBarItemNotFoundError from "../Error/StatusBarItemNotFoundError.js";
 import StatusBarUpdateError from "../Error/StatusBarUpdateError.js";
@@ -19,13 +19,27 @@ import type {
 function makeStatusBarService(): StatusBarService {
 	let _items: ReadonlyArray<StatusBarItem> = [];
 
+	const _itemsListeners: ((v: ReadonlyArray<StatusBarItem>) => void)[] = [];
+
 	const GetItem = (Id: string): Effect.Effect<StatusBarItem | undefined> =>
 		Effect.succeed(_items.find((i) => i.id === Id));
 
 	const Items = Effect.suspend(() => Effect.succeed(_items));
 
 	const ItemsChanges: Stream.Stream<ReadonlyArray<StatusBarItem>> =
-		Stream.empty;
+		Stream.asyncInterrupt<ReadonlyArray<StatusBarItem>>((emit) => {
+			const fn = (v: ReadonlyArray<StatusBarItem>) => emit.single(v);
+
+			_itemsListeners.push(fn);
+
+			return Either.left(
+				Effect.sync(() => {
+					const i = _itemsListeners.indexOf(fn);
+
+					if (i >= 0) _itemsListeners.splice(i, 1);
+				}),
+			);
+		});
 
 	const CreateItem = (
 		Item: CreateStatusBarItem,
@@ -41,6 +55,8 @@ function makeStatusBarService(): StatusBarService {
 				(a, b) => a.priority - b.priority,
 			);
 
+			_itemsListeners.forEach((fn) => fn(_items));
+
 			return NewItem;
 		});
 
@@ -48,13 +64,20 @@ function makeStatusBarService(): StatusBarService {
 		Id: string,
 
 		updates: Partial<Omit<StatusBarItem, "id">>,
-	): Effect.Effect<void, StatusBarItemNotFoundError | StatusBarUpdateError> => {
+	): Effect.Effect<
+		void,
+		StatusBarItemNotFoundError | StatusBarUpdateError
+	> => {
 		if (!_items.find((i) => i.id === Id))
 			return Effect.fail(new StatusBarItemNotFoundError(Id));
+
 		try {
 			_items = _items
 				.map((i) => (i.id === Id ? { ...i, ...updates } : i))
 				.sort((a, b) => a.priority - b.priority);
+
+			_itemsListeners.forEach((fn) => fn(_items));
+
 			return Effect.void;
 		} catch (error) {
 			return Effect.fail(new StatusBarUpdateError(Id, error));
@@ -66,17 +89,24 @@ function makeStatusBarService(): StatusBarService {
 	): Effect.Effect<void, StatusBarItemNotFoundError> => {
 		if (!_items.find((i) => i.id === Id))
 			return Effect.fail(new StatusBarItemNotFoundError(Id));
+
 		_items = _items.filter((i) => i.id !== Id);
+
+		_itemsListeners.forEach((fn) => fn(_items));
+
 		return Effect.void;
 	};
 
 	const SetItemVisibility = (
 		Id: string,
+
 		visible: boolean,
 	): Effect.Effect<void, StatusBarItemNotFoundError> => {
 		if (!_items.find((i) => i.id === Id))
 			return Effect.fail(new StatusBarItemNotFoundError(Id));
+
 		if (!visible) return RemoveItem(Id);
+
 		return Effect.void;
 	};
 

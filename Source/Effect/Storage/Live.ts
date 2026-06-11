@@ -14,6 +14,7 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+import { TauriIPCLive } from "../IPC/index.js";
 import type { StorageService } from "./Interface/StorageService.js";
 import { StorageServiceTag } from "./Tag/StorageServiceTag.js";
 import type { StorageProblem } from "./Type/StorageProblem.js";
@@ -24,9 +25,7 @@ const MakeStorageProblem = (error: unknown): StorageProblem =>
 		: { _tag: "StorageOperationFailed", error: new Error(String(error)) };
 
 function makeStorageService(): StorageService {
-	const Globals = globalThis as any;
-
-	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+	const IPCService = TauriIPCLive;
 
 	const Service: StorageService = {
 		Get: (key) =>

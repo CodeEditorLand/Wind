@@ -25,18 +25,19 @@ const ToError = (cause: unknown): Error =>
 	cause instanceof Error ? cause : new Error(String(cause));
 
 function makeWorkbenchLayoutService(): WorkbenchLayoutService {
-	const Globals = globalThis as unknown as WorkbenchLayoutGlobals;
+	const getBridge = (): WorkbenchLayoutBridgeShape | null =>
+		(globalThis as unknown as WorkbenchLayoutGlobals).__CEL_SERVICES__?.Layout ?? null;
 
-	const Bridge: WorkbenchLayoutBridgeShape | null =
-		Globals.__CEL_SERVICES__?.Layout ?? null;
-
-	const SnapshotPart = (Part: WorkbenchLayoutPart): boolean =>
-		Bridge?.isVisible(WorkbenchLayoutPartId(Part)) ?? false;
+	const SnapshotPart = (Part: WorkbenchLayoutPart): boolean => {
+		const Bridge = getBridge();
+		return Bridge?.isVisible(WorkbenchLayoutPartId(Part)) ?? false;
+	};
 
 	const Snapshot: Effect.Effect<
 		WorkbenchLayoutSnapshot,
 		WorkbenchLayoutProblem
 	> = Effect.gen(function* () {
+		const Bridge = getBridge();
 		if (!Bridge) return yield* Effect.fail(Unavailable);
 
 		const Visible = new Map<WorkbenchLayoutPart, boolean>();
@@ -57,6 +58,7 @@ function makeWorkbenchLayoutService(): WorkbenchLayoutService {
 		Visible: boolean,
 	): Effect.Effect<void, WorkbenchLayoutProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			yield* Effect.try({
@@ -79,6 +81,7 @@ function makeWorkbenchLayoutService(): WorkbenchLayoutService {
 		Part: WorkbenchLayoutPart,
 	): Effect.Effect<void, WorkbenchLayoutProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			const Current = SnapshotPart(Part);
@@ -88,6 +91,7 @@ function makeWorkbenchLayoutService(): WorkbenchLayoutService {
 
 	const Changes = Stream.async<WorkbenchLayoutChange, WorkbenchLayoutProblem>(
 		(Emit) => {
+			const Bridge = getBridge();
 			if (!Bridge) {
 				Emit.fail(Unavailable);
 

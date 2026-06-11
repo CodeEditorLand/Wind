@@ -37,10 +37,8 @@ const ToResolution = (
 const KEYBINDING_DISPATCH_EVENT = "cel:keybinding-dispatched";
 
 function makeWorkbenchKeybindingService(): WorkbenchKeybindingService {
-	const Globals = globalThis as unknown as WorkbenchKeybindingGlobals;
-
-	const Bridge: WorkbenchKeybindingBridgeShape | null =
-		Globals.__CEL_SERVICES__?.Keybinding ?? null;
+	const getBridge = (): WorkbenchKeybindingBridgeShape | null =>
+		(globalThis as unknown as WorkbenchKeybindingGlobals).__CEL_SERVICES__?.Keybinding ?? null;
 
 	const Lookup = (
 		CommandId: string,
@@ -49,6 +47,7 @@ function makeWorkbenchKeybindingService(): WorkbenchKeybindingService {
 		WorkbenchKeybindingProblem
 	> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			const Bindings = Bridge.lookupKeybindings(CommandId);
@@ -65,6 +64,7 @@ function makeWorkbenchKeybindingService(): WorkbenchKeybindingService {
 		WorkbenchKeybindingProblem
 	> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			const Binding = yield* Effect.try({

@@ -17,7 +17,7 @@
 
 import { Effect, Layer, Ref } from "effect";
 
-import { Commands } from "../Commands/Commands.js";
+import { CommandsServiceInstance } from "../Commands/Live.js";
 import type { EditorService } from "./Interface/EditorService.js";
 import { EditorServiceTag } from "./Tag/EditorServiceTag.js";
 import type { EditorProblem } from "./Type/EditorProblem.js";
@@ -28,9 +28,7 @@ const MakeEditorProblem = (error: unknown): EditorProblem =>
 		: { _tag: "EditorOperationFailed", error: new Error(String(error)) };
 
 function makeEditorService(): EditorService {
-	const Globals = globalThis as any;
-
-	const CommandsService = Globals.__CEL_SERVICES__?.Commands ?? null;
+	const CommandsService = CommandsServiceInstance;
 
 	// In-memory state for active and visible editors.
 	// Updated by listening to Tauri events from Mountain (P1 task).

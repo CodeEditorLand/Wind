@@ -13,6 +13,7 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+import { TauriIPCLive } from "../IPC/index.js";
 import type { QuickInputService } from "./Interface/QuickInputService.js";
 import { QuickInputServiceTag } from "./Tag/QuickInputServiceTag.js";
 import type { QuickInputProblem } from "./Type/QuickInputProblem.js";
@@ -27,9 +28,7 @@ const MakeQuickInputProblem = (error: unknown): QuickInputProblem =>
 			};
 
 function makeQuickInputService(): QuickInputService {
-	const Globals = globalThis as any;
-
-	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+	const IPCService = TauriIPCLive;
 
 	const Service: QuickInputService = {
 		ShowQuickPick: (items, options) =>

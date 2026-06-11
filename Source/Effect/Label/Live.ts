@@ -13,6 +13,7 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+import { TauriIPCLive } from "../IPC/index.js";
 import type { LabelService } from "./Interface/LabelService.js";
 import { LabelServiceTag } from "./Tag/LabelServiceTag.js";
 import type { LabelProblem } from "./Type/LabelProblem.js";
@@ -23,9 +24,7 @@ const MakeLabelProblem = (error: unknown): LabelProblem => ({
 });
 
 function makeLabelService(): LabelService {
-	const Globals = globalThis as any;
-
-	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+	const IPCService = TauriIPCLive;
 
 	const Service: LabelService = {
 		GetUriLabel: (uri, options) =>

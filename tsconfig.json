@@ -27,6 +27,7 @@
 		"noUnusedParameters": true,
 		"outDir": "Target",
 		"paths": {
+			"@Function/*": ["../Common/TypeScript/Function/*"],
 			"@codeeditorland/output/*": ["../Output/*"]
 		},
 		"plugins": [

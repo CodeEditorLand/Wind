@@ -13,6 +13,7 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+import { TauriIPCLive } from "../IPC/index.js";
 import type { ProgressService } from "./Interface/ProgressService.js";
 import { ProgressServiceTag } from "./Tag/ProgressServiceTag.js";
 import type { ProgressProblem } from "./Type/ProgressProblem.js";
@@ -23,9 +24,7 @@ const MakeProgressProblem = (error: unknown): ProgressProblem =>
 		: { _tag: "ProgressOperationFailed", error: new Error(String(error)) };
 
 function makeProgressService(): ProgressService {
-	const Globals = globalThis as any;
-
-	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+	const IPCService = TauriIPCLive;
 
 	const Service: ProgressService = {
 		Begin: (options) =>

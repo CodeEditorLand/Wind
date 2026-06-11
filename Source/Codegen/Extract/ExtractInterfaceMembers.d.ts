@@ -16,6 +16,7 @@ import type { InterfaceMemberRecord } from "../Type/InterfaceMemberRecord.js";
 
 export declare const ExtractInterfaceMembers: (
 	source: string,
+
 	interfaceName: string,
 ) => ReadonlyArray<InterfaceMemberRecord>;
 

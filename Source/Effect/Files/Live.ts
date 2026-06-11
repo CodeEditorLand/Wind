@@ -19,6 +19,7 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+import { TauriIPCLive } from "../IPC/index.js";
 import type { FilesService } from "./Interface/FilesService.js";
 import { FilesServiceTag } from "./Tag/FilesServiceTag.js";
 import type { FilesProblem } from "./Type/FilesProblem.js";
@@ -33,9 +34,7 @@ const UriToPath = (uri: string): string =>
 	uri.startsWith("file://") ? uri.slice("file://".length) : uri;
 
 function makeFilesService(): FilesService {
-	const Globals = globalThis as any;
-
-	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+	const IPCService = TauriIPCLive;
 
 	const Service: FilesService = {
 		ReadFile: (uri) => {

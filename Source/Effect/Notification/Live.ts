@@ -15,7 +15,7 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-import { IPC } from "../IPC.js";
+import { TauriIPCLive } from "../IPC/index.js";
 import type { NotificationService } from "./Interface/NotificationService.js";
 import { NotificationServiceTag } from "./Tag/NotificationServiceTag.js";
 import type { NotificationProblem } from "./Type/NotificationProblem.js";
@@ -30,9 +30,7 @@ const MakeNotificationProblem = (error: unknown): NotificationProblem =>
 			};
 
 function makeNotificationService(): NotificationService {
-	const Globals = globalThis as any;
-
-	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+	const IPCService = TauriIPCLive;
 
 	const Service: NotificationService = {
 		Show: (message, severity, actions) =>

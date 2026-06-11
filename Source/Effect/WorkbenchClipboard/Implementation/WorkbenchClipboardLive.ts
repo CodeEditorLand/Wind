@@ -18,13 +18,12 @@ const ToError = (cause: unknown): Error =>
 	cause instanceof Error ? cause : new Error(String(cause));
 
 function makeWorkbenchClipboardService(): WorkbenchClipboardService {
-	const Globals = globalThis as unknown as WorkbenchClipboardGlobals;
-
-	const Bridge: WorkbenchClipboardBridgeShape | null =
-		Globals.__CEL_SERVICES__?.Clipboard ?? null;
+	const getBridge = (): WorkbenchClipboardBridgeShape | null =>
+		(globalThis as unknown as WorkbenchClipboardGlobals).__CEL_SERVICES__?.Clipboard ?? null;
 
 	const ReadText: Effect.Effect<string, WorkbenchClipboardProblem> =
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			return yield* Effect.tryPromise({
@@ -41,6 +40,7 @@ function makeWorkbenchClipboardService(): WorkbenchClipboardService {
 		Value: string,
 	): Effect.Effect<void, WorkbenchClipboardProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			yield* Effect.tryPromise({
@@ -57,6 +57,7 @@ function makeWorkbenchClipboardService(): WorkbenchClipboardService {
 		ReadonlyArray<string>,
 		WorkbenchClipboardProblem
 	> = Effect.gen(function* () {
+		const Bridge = getBridge();
 		if (!Bridge) return yield* Effect.fail(Unavailable);
 
 		const Resources = yield* Effect.tryPromise({
@@ -75,6 +76,7 @@ function makeWorkbenchClipboardService(): WorkbenchClipboardService {
 		Uris: ReadonlyArray<string>,
 	): Effect.Effect<void, WorkbenchClipboardProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			const ToShim = Uris.map(

@@ -16,6 +16,7 @@ import { Effect, Layer, Stream } from "effect";
 
 import Channel from "../../IPC/Channel.js";
 import SkyEvent from "../../IPC/SkyEvent.js";
+import { TauriIPCLive } from "../IPC/index.js";
 import type {
 	WorkspaceFolder,
 	WorkspacesChangeEvent,
@@ -77,9 +78,7 @@ const CoerceFolderArray = (Value: unknown): readonly WorkspaceFolder[] => {
 };
 
 function makeWorkspacesService(): WorkspacesService {
-	const Globals = globalThis as any;
-
-	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+	const IPCService = TauriIPCLive;
 
 	const Service: WorkspacesService = {
 		GetFolders: () =>

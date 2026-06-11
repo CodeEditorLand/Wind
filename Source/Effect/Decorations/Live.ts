@@ -15,6 +15,7 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+import { TauriIPCLive } from "../IPC/index.js";
 import type {
 	DecorationsService,
 	FileDecoration,
@@ -28,9 +29,7 @@ const MakeDecorationsProblem = (error: unknown): DecorationsProblem => ({
 });
 
 function makeDecorationsService(): DecorationsService {
-	const Globals = globalThis as any;
-
-	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+	const IPCService = TauriIPCLive;
 
 	const Service: DecorationsService = {
 		GetDecoration: (uri, includeChildren) =>

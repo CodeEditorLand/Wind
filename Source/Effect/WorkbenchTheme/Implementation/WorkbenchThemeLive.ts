@@ -33,20 +33,20 @@ const ToError = (cause: unknown): Error =>
 	cause instanceof Error ? cause : new Error(String(cause));
 
 function makeWorkbenchThemeService(): WorkbenchThemeService {
-	const Globals = globalThis as unknown as WorkbenchThemeGlobals;
-
-	const Bridge: WorkbenchThemeBridgeShape | null =
-		Globals.__CEL_SERVICES__?.WorkbenchTheme ??
-		Globals.__CEL_SERVICES__?.Theme ??
+	const getBridge = (): WorkbenchThemeBridgeShape | null =>
+		(globalThis as unknown as WorkbenchThemeGlobals).__CEL_SERVICES__?.WorkbenchTheme ??
+		(globalThis as unknown as WorkbenchThemeGlobals).__CEL_SERVICES__?.Theme ??
 		null;
 
 	const Active = Effect.gen(function* () {
+		const Bridge = getBridge();
 		if (!Bridge) return yield* Effect.fail(Unavailable);
 
 		return ToDescriptor(Bridge.getColorTheme());
 	});
 
 	const List = Effect.gen(function* () {
+		const Bridge = getBridge();
 		if (!Bridge) return yield* Effect.fail(Unavailable);
 
 		const Themes = yield* Effect.promise(() => Bridge.getColorThemes());
@@ -58,6 +58,7 @@ function makeWorkbenchThemeService(): WorkbenchThemeService {
 		ThemeId: string,
 	): Effect.Effect<void, WorkbenchThemeProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			yield* Effect.tryPromise({
@@ -74,6 +75,7 @@ function makeWorkbenchThemeService(): WorkbenchThemeService {
 		Key: string,
 	): Effect.Effect<string | undefined, WorkbenchThemeProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			const Theme = Bridge.getColorTheme();
@@ -89,6 +91,7 @@ function makeWorkbenchThemeService(): WorkbenchThemeService {
 		WorkbenchThemeChangeEvent,
 		WorkbenchThemeProblem
 	>((Emit) => {
+		const Bridge = getBridge();
 		if (!Bridge) {
 			Emit.fail(Unavailable);
 

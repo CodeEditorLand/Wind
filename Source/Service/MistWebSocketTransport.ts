@@ -135,6 +135,24 @@ export function Initialize(port: number, secret: string): void {
 	_Connect();
 }
 
+export function ResetTransport(): void {
+	if (!_config) return;
+
+	if (_reconnectTimer !== null) {
+		clearTimeout(_reconnectTimer);
+
+		_reconnectTimer = null;
+	}
+
+	_dead = false;
+
+	_reconnectAttempts = 0;
+
+	_reconnectStart = 0;
+
+	_Connect();
+}
+
 export function IsAvailable(): boolean {
 	return !_dead && _ws !== null && _ws.readyState === WebSocket.OPEN;
 }

@@ -13,7 +13,7 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-import type { IPCService } from "../IPC/Interface/IPCService.js";
+import { TauriIPCLive } from "../IPC/index.js";
 import type { SearchService } from "./Interface/SearchService.js";
 import { SearchServiceTag } from "./Tag/SearchServiceTag.js";
 import type { SearchProblem } from "./Type/SearchProblem.js";
@@ -24,9 +24,7 @@ const MakeSearchProblem = (error: unknown): SearchProblem =>
 		: { _tag: "SearchOperationFailed", error: new Error(String(error)) };
 
 function makeSearchService(): SearchService {
-	const Globals = globalThis as any;
-
-	const IPCService: IPCService = Globals.__CEL_SERVICES__?.IPC;
+	const IPCService = TauriIPCLive;
 
 	const Service: SearchService = {
 		FindInFiles: (options) =>

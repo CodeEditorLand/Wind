@@ -13,6 +13,7 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+import { TauriIPCLive } from "../IPC/index.js";
 import type { TextFileService } from "./Interface/TextFileService.js";
 import { TextFileServiceTag } from "./Tag/TextFileServiceTag.js";
 import type { TextFileProblem } from "./Type/TextFileProblem.js";
@@ -26,9 +27,7 @@ const MakeTextFileProblem = (error: unknown): TextFileProblem =>
 		: { _tag: "TextFileOperationFailed", error: new Error(String(error)) };
 
 function makeLiveTextFileService(): TextFileService {
-	const Globals = globalThis as any;
-
-	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+	const IPCService = TauriIPCLive;
 
 	const Service: TextFileService = {
 		Read: (uri) =>

@@ -63,12 +63,11 @@ const ResolveTauriInvoke = (): TauriBridge["invoke"] | null => {
 };
 
 function makeWorkbenchLifecycleService(): WorkbenchLifecycleService {
-	const Globals = globalThis as unknown as WorkbenchLifecycleGlobals;
-
-	const Bridge: WorkbenchLifecycleBridgeShape | null =
-		Globals.__CEL_SERVICES__?.Lifecycle ?? null;
+	const getBridge = (): WorkbenchLifecycleBridgeShape | null =>
+		(globalThis as unknown as WorkbenchLifecycleGlobals).__CEL_SERVICES__?.Lifecycle ?? null;
 
 	const Current = Effect.gen(function* () {
+		const Bridge = getBridge();
 		if (!Bridge) return yield* Effect.fail(Unavailable);
 
 		return WorkbenchLifecyclePhaseFromCode(Bridge.phase);
@@ -88,14 +87,16 @@ function makeWorkbenchLifecycleService(): WorkbenchLifecycleService {
 						method: "lifecycle:advancePhase",
 						params: [WorkbenchLifecyclePhaseCode(Phase)],
 					}),
-				catch: () =>
-					({
+				catch: () => {
+					const B = getBridge();
+					return ({
 						_tag: "WorkbenchLifecyclePhaseRefused",
 						attempted: Phase,
-						current: Bridge
-							? WorkbenchLifecyclePhaseFromCode(Bridge.phase)
+						current: B
+							? WorkbenchLifecyclePhaseFromCode(B.phase)
 							: ("Starting" as const),
-					}) satisfies WorkbenchLifecycleProblem,
+					}) satisfies WorkbenchLifecycleProblem;
+				},
 			});
 		});
 
@@ -103,6 +104,7 @@ function makeWorkbenchLifecycleService(): WorkbenchLifecycleService {
 		Phase: WorkbenchLifecyclePhase,
 	): Effect.Effect<void, WorkbenchLifecycleProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			yield* Effect.promise(() =>
@@ -117,6 +119,7 @@ function makeWorkbenchLifecycleService(): WorkbenchLifecycleService {
 
 	const OnWillShutdown = Stream.async<void, WorkbenchLifecycleProblem>(
 		(Emit) => {
+			const Bridge = getBridge();
 			if (!Bridge) {
 				Emit.fail(Unavailable);
 
@@ -133,6 +136,7 @@ function makeWorkbenchLifecycleService(): WorkbenchLifecycleService {
 
 	const OnDidShutdown = Stream.async<void, WorkbenchLifecycleProblem>(
 		(Emit) => {
+			const Bridge = getBridge();
 			if (!Bridge) {
 				Emit.fail(Unavailable);
 

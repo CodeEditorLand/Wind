@@ -22,13 +22,11 @@ const ToError = (cause: unknown): Error =>
 	cause instanceof Error ? cause : new Error(String(cause));
 
 function makeWorkbenchCommandService(): WorkbenchCommandService {
-	const Globals = globalThis as unknown as WorkbenchCommandGlobals;
+	const getCommands = (): WorkbenchCommandBridgeShape | null =>
+		(globalThis as unknown as WorkbenchCommandGlobals).__CEL_SERVICES__?.Commands ?? null;
 
-	const Commands: WorkbenchCommandBridgeShape | null =
-		Globals.__CEL_SERVICES__?.Commands ?? null;
-
-	const Registry: WorkbenchCommandRegistryShape | null =
-		Globals.__CEL_SERVICES__?.CommandRegistry ?? null;
+	const getRegistry = (): WorkbenchCommandRegistryShape | null =>
+		(globalThis as unknown as WorkbenchCommandGlobals).__CEL_SERVICES__?.CommandRegistry ?? null;
 
 	const Execute = <T = unknown>(
 		CommandId: string,
@@ -36,6 +34,7 @@ function makeWorkbenchCommandService(): WorkbenchCommandService {
 		Args: ReadonlyArray<unknown>,
 	): Effect.Effect<T, WorkbenchCommandProblem> =>
 		Effect.gen(function* () {
+			const Commands = getCommands();
 			if (!Commands) return yield* Effect.fail(Unavailable);
 
 			const Result = yield* Effect.tryPromise({
@@ -64,6 +63,7 @@ function makeWorkbenchCommandService(): WorkbenchCommandService {
 		Args: ReadonlyArray<unknown>,
 	): Effect.Effect<void, WorkbenchCommandProblem> =>
 		Effect.gen(function* () {
+			const Commands = getCommands();
 			if (!Commands) return yield* Effect.fail(Unavailable);
 
 			yield* Effect.tryPromise({
@@ -78,6 +78,7 @@ function makeWorkbenchCommandService(): WorkbenchCommandService {
 		});
 
 	const ListIds = Effect.gen(function* () {
+		const Registry = getRegistry();
 		if (!Registry) return yield* Effect.fail(Unavailable);
 
 		return Array.from(Registry.getCommands().keys());
@@ -87,6 +88,7 @@ function makeWorkbenchCommandService(): WorkbenchCommandService {
 		CommandId: string,
 	): Effect.Effect<boolean, WorkbenchCommandProblem> =>
 		Effect.gen(function* () {
+			const Registry = getRegistry();
 			if (!Registry) return yield* Effect.fail(Unavailable);
 
 			return Registry.getCommand(CommandId) !== undefined;
@@ -96,6 +98,7 @@ function makeWorkbenchCommandService(): WorkbenchCommandService {
 		WorkbenchCommandExecutedEvent,
 		WorkbenchCommandProblem
 	>((Emit) => {
+		const Commands = getCommands();
 		if (!Commands) {
 			Emit.fail(Unavailable);
 

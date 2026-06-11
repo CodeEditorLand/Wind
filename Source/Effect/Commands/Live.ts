@@ -13,6 +13,7 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+import { TauriIPCLive } from "../IPC/index.js";
 import type { CommandsService } from "./Interface/CommandsService.js";
 import { CommandsServiceTag } from "./Tag/CommandsServiceTag.js";
 import type { CommandsProblem } from "./Type/CommandsProblem.js";
@@ -23,9 +24,7 @@ const MakeCommandsOperationFailed = (error: unknown): CommandsProblem => ({
 });
 
 function makeCommandsService(): CommandsService {
-	const Globals = globalThis as any;
-
-	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+	const IPCService = TauriIPCLive;
 
 	// Local handler registry for UI-side commands (registered from Wind/Sky).
 	// Handlers registered here execute directly without an IPC round-trip.
@@ -84,10 +83,12 @@ function makeCommandsService(): CommandsService {
 	return Service;
 }
 
+export const CommandsServiceInstance = makeCommandsService();
+
 export const LiveCommandsServiceLayer = Layer.succeed(
 	CommandsServiceTag,
 
-	makeCommandsService(),
+	CommandsServiceInstance,
 );
 
 export default LiveCommandsServiceLayer;

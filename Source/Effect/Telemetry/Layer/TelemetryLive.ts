@@ -5,7 +5,7 @@
  * @category Layer
  */
 
-import { Effect, Layer, Stream } from "effect";
+import { Effect, Either, Layer, Stream } from "effect";
 
 import type { TelemetryService } from "../Interface/TelemetryService.js";
 import TelemetryTag from "../Tag/TelemetryTag.js";
@@ -23,6 +23,8 @@ function makeTelemetryService(): TelemetryService {
 	const _spans = new Map<string, TelemetrySpan[]>();
 
 	let _events: TelemetryEvent[] = [];
+
+	const _eventsListeners: ((v: ReadonlyArray<TelemetryEvent>) => void)[] = [];
 
 	const recordMetric = (
 		name: string,
@@ -51,6 +53,8 @@ function makeTelemetryService(): TelemetryService {
 					data: metric,
 				},
 			].slice(-10000);
+
+			_eventsListeners.forEach((fn) => fn(_events));
 		});
 
 	const startSpan = (
@@ -91,6 +95,8 @@ function makeTelemetryService(): TelemetryService {
 							data: span,
 						},
 					].slice(-10000);
+
+					_eventsListeners.forEach((fn) => fn(_events));
 				});
 
 			return { end };
@@ -115,6 +121,8 @@ function makeTelemetryService(): TelemetryService {
 				{ type: "log" as const, timestamp: Date.now(), data: entry },
 			].slice(-10000);
 
+			_eventsListeners.forEach((fn) => fn(_events));
+
 			if (typeof performance !== "undefined") {
 				try {
 					performance.mark(
@@ -124,7 +132,17 @@ function makeTelemetryService(): TelemetryService {
 			}
 		});
 
-	const events: Stream.Stream<ReadonlyArray<TelemetryEvent>> = Stream.empty;
+	const events: Stream.Stream<ReadonlyArray<TelemetryEvent>> =
+		Stream.asyncInterrupt<ReadonlyArray<TelemetryEvent>>((emit) => {
+			const fn = (v: ReadonlyArray<TelemetryEvent>) => emit.single(v);
+			_eventsListeners.push(fn);
+			return Either.left(
+				Effect.sync(() => {
+					const i = _eventsListeners.indexOf(fn);
+					if (i >= 0) _eventsListeners.splice(i, 1);
+				}),
+			);
+		});
 
 	const getMetrics = (
 		name: string,

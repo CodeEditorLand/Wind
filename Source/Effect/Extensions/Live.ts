@@ -26,6 +26,7 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+import { TauriIPCLive } from "../IPC/index.js";
 import type { ExtensionsService } from "./Interface/ExtensionsService.js";
 import { ExtensionsServiceTag } from "./Tag/ExtensionsServiceTag.js";
 import type { ExtensionsProblem } from "./Type/ExtensionsProblem.js";
@@ -40,9 +41,7 @@ const MakeExtensionsProblem = (error: unknown): ExtensionsProblem =>
 			};
 
 function makeLiveExtensionsService(): ExtensionsService {
-	const Globals = globalThis as any;
-
-	const IPCService = Globals.__CEL_SERVICES__?.IPC ?? null;
+	const IPCService = TauriIPCLive;
 
 	const Service: ExtensionsService = {
 		GetExtension: (id) =>

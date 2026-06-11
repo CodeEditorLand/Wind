@@ -44,15 +44,14 @@ const ToSnapshot = (
 });
 
 function makeWorkbenchWorkspaceService(): WorkbenchWorkspaceService {
-	const Globals = globalThis as unknown as WorkbenchWorkspaceGlobals;
-
-	const Bridge: WorkbenchWorkspaceBridgeShape | null =
-		Globals.__CEL_SERVICES__?.Workspace ?? null;
+	const getBridge = (): WorkbenchWorkspaceBridgeShape | null =>
+		(globalThis as unknown as WorkbenchWorkspaceGlobals).__CEL_SERVICES__?.Workspace ?? null;
 
 	const Snapshot: Effect.Effect<
 		WorkbenchWorkspaceSnapshot,
 		WorkbenchWorkspaceProblem
 	> = Effect.gen(function* () {
+		const Bridge = getBridge();
 		if (!Bridge) return yield* Effect.fail(Unavailable);
 
 		return yield* Effect.try({
@@ -77,6 +76,7 @@ function makeWorkbenchWorkspaceService(): WorkbenchWorkspaceService {
 		WorkbenchWorkspaceProblem
 	> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			const Found = yield* Effect.try({
@@ -95,6 +95,7 @@ function makeWorkbenchWorkspaceService(): WorkbenchWorkspaceService {
 		WorkbenchWorkspaceFolderEvent,
 		WorkbenchWorkspaceProblem
 	>((Emit) => {
+		const Bridge = getBridge();
 		if (!Bridge) {
 			Emit.fail(Unavailable);
 

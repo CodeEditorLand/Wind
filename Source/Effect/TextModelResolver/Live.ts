@@ -14,6 +14,7 @@
 
 import { Effect, Layer } from "effect";
 
+import { ModelServiceInstance } from "../Model/Live.js";
 import type { TextModelResolverService } from "./Interface/TextModelResolverService.js";
 import { TextModelResolverServiceTag } from "./Tag/TextModelResolverServiceTag.js";
 import type { TextModelResolverProblem } from "./Type/TextModelResolverProblem.js";
@@ -24,9 +25,7 @@ const MakeResolverProblem = (error: unknown): TextModelResolverProblem => ({
 });
 
 function makeTextModelResolverService(): TextModelResolverService {
-	const Globals = globalThis as any;
-
-	const ModelService = Globals.__CEL_SERVICES__?.ModelService ?? null;
+	const ModelService = ModelServiceInstance;
 
 	// Simple reference counter: uri → open count
 	const RefCounts = new Map<string, number>();

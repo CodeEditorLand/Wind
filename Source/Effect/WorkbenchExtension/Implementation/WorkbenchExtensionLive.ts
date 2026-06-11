@@ -33,15 +33,14 @@ const ToDescriptor = (
 });
 
 function makeWorkbenchExtensionService(): WorkbenchExtensionService {
-	const Globals = globalThis as unknown as WorkbenchExtensionGlobals;
-
-	const Bridge: WorkbenchExtensionBridgeShape | null =
-		Globals.__CEL_SERVICES__?.Extension ?? null;
+	const getBridge = (): WorkbenchExtensionBridgeShape | null =>
+		(globalThis as unknown as WorkbenchExtensionGlobals).__CEL_SERVICES__?.Extension ?? null;
 
 	const Snapshot: Effect.Effect<
 		ReadonlyArray<WorkbenchExtensionDescriptor>,
 		WorkbenchExtensionProblem
 	> = Effect.gen(function* () {
+		const Bridge = getBridge();
 		if (!Bridge) return yield* Effect.fail(Unavailable);
 
 		return Bridge.extensions.map(ToDescriptor);
@@ -51,6 +50,7 @@ function makeWorkbenchExtensionService(): WorkbenchExtensionService {
 		ExtensionId: string,
 	): Effect.Effect<void, WorkbenchExtensionProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			yield* Effect.tryPromise({
@@ -76,6 +76,7 @@ function makeWorkbenchExtensionService(): WorkbenchExtensionService {
 		EventName: string,
 	): Effect.Effect<void, WorkbenchExtensionProblem> =>
 		Effect.gen(function* () {
+			const Bridge = getBridge();
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			yield* Effect.tryPromise({
@@ -93,6 +94,7 @@ function makeWorkbenchExtensionService(): WorkbenchExtensionService {
 		ReadonlyArray<WorkbenchExtensionDescriptor>,
 		WorkbenchExtensionProblem
 	>((Emit) => {
+		const Bridge = getBridge();
 		if (!Bridge) {
 			Emit.fail(Unavailable);
 
