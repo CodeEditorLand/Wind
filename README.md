@@ -341,10 +341,10 @@ Runtime.runPromise(AppRuntime, InvokeEffect);
 
 ## See Also&#x2001;🔗
 
-- [Wind Documentation](https://editor.land/Doc/wind)
-- [Architecture Overview](https://editor.land/Doc/architecture)
-- [Why Effect-TS](https://editor.land/Doc/why-effect-ts)
-- [Why Tauri](https://editor.land/Doc/why-tauri)
+- [Wind Documentation](https://Editor.Land/Doc/wind)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Why Effect-TS](https://Editor.Land/Doc/why-effect-ts)
+- [Why Tauri](https://Editor.Land/Doc/why-tauri)
 - [`Mountain`](https://github.com/CodeEditorLand/Mountain)
 - [`Sky`](https://github.com/CodeEditorLand/Sky)
 - [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)
