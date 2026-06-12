@@ -9,6 +9,7 @@ Configuration/
 
 # Generated code — rebuilt on every build, never committed
 Source/**/Generated/
+Source/**/*Generated.ts
 Target/**/Generated/
 
 # Environment files
