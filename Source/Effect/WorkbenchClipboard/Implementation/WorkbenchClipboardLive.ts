@@ -19,11 +19,13 @@ const ToError = (cause: unknown): Error =>
 
 function makeWorkbenchClipboardService(): WorkbenchClipboardService {
 	const getBridge = (): WorkbenchClipboardBridgeShape | null =>
-		(globalThis as unknown as WorkbenchClipboardGlobals).__CEL_SERVICES__?.Clipboard ?? null;
+		(globalThis as unknown as WorkbenchClipboardGlobals).__CEL_SERVICES__
+			?.Clipboard ?? null;
 
 	const ReadText: Effect.Effect<string, WorkbenchClipboardProblem> =
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			return yield* Effect.tryPromise({
@@ -41,6 +43,7 @@ function makeWorkbenchClipboardService(): WorkbenchClipboardService {
 	): Effect.Effect<void, WorkbenchClipboardProblem> =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			yield* Effect.tryPromise({
@@ -58,6 +61,7 @@ function makeWorkbenchClipboardService(): WorkbenchClipboardService {
 		WorkbenchClipboardProblem
 	> = Effect.gen(function* () {
 		const Bridge = getBridge();
+
 		if (!Bridge) return yield* Effect.fail(Unavailable);
 
 		const Resources = yield* Effect.tryPromise({
@@ -77,6 +81,7 @@ function makeWorkbenchClipboardService(): WorkbenchClipboardService {
 	): Effect.Effect<void, WorkbenchClipboardProblem> =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			const ToShim = Uris.map(

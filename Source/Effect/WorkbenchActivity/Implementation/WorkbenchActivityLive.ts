@@ -38,7 +38,8 @@ const ToBadge = (badge: WorkbenchActivityBadge): UpstreamWorkbenchBadge => {
 
 function makeWorkbenchActivityService(): WorkbenchActivityService {
 	const getBridge = (): WorkbenchActivityBridgeShape | null =>
-		(globalThis as unknown as WorkbenchActivityGlobals).__CEL_SERVICES__?.Activity ?? null;
+		(globalThis as unknown as WorkbenchActivityGlobals).__CEL_SERVICES__
+			?.Activity ?? null;
 
 	const ShowBadge = (
 		Badge: WorkbenchActivityBadge,
@@ -48,6 +49,7 @@ function makeWorkbenchActivityService(): WorkbenchActivityService {
 	> =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			const Disposable = Bridge.showViewContainerActivity(

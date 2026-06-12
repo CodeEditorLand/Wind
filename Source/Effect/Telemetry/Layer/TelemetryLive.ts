@@ -135,10 +135,13 @@ function makeTelemetryService(): TelemetryService {
 	const events: Stream.Stream<ReadonlyArray<TelemetryEvent>> =
 		Stream.asyncInterrupt<ReadonlyArray<TelemetryEvent>>((emit) => {
 			const fn = (v: ReadonlyArray<TelemetryEvent>) => emit.single(v);
+
 			_eventsListeners.push(fn);
+
 			return Either.left(
 				Effect.sync(() => {
 					const i = _eventsListeners.indexOf(fn);
+
 					if (i >= 0) _eventsListeners.splice(i, 1);
 				}),
 			);

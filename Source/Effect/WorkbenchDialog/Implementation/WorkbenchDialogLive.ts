@@ -24,13 +24,15 @@ const ToError = (cause: unknown): Error =>
 
 function makeWorkbenchDialogService(): WorkbenchDialogService {
 	const getBridge = (): WorkbenchDialogBridgeShape | null =>
-		(globalThis as unknown as WorkbenchDialogGlobals).__CEL_SERVICES__?.Dialog ?? null;
+		(globalThis as unknown as WorkbenchDialogGlobals).__CEL_SERVICES__
+			?.Dialog ?? null;
 
 	const Confirm = (
 		Options: WorkbenchDialogConfirmOptions,
 	): Effect.Effect<WorkbenchDialogConfirmResult, WorkbenchDialogProblem> =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			return yield* Effect.tryPromise({
@@ -55,6 +57,7 @@ function makeWorkbenchDialogService(): WorkbenchDialogService {
 	): Effect.Effect<number, WorkbenchDialogProblem> =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			const Buttons = Options.choices.map((Label) => ({
@@ -93,6 +96,7 @@ function makeWorkbenchDialogService(): WorkbenchDialogService {
 	const Info = (Message: string, Detail?: string) =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			yield* Effect.tryPromise({
@@ -108,6 +112,7 @@ function makeWorkbenchDialogService(): WorkbenchDialogService {
 	const ErrorVariant = (Message: string, Detail?: string) =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			yield* Effect.tryPromise({

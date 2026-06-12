@@ -23,10 +23,12 @@ const ToError = (cause: unknown): Error =>
 
 function makeWorkbenchCommandService(): WorkbenchCommandService {
 	const getCommands = (): WorkbenchCommandBridgeShape | null =>
-		(globalThis as unknown as WorkbenchCommandGlobals).__CEL_SERVICES__?.Commands ?? null;
+		(globalThis as unknown as WorkbenchCommandGlobals).__CEL_SERVICES__
+			?.Commands ?? null;
 
 	const getRegistry = (): WorkbenchCommandRegistryShape | null =>
-		(globalThis as unknown as WorkbenchCommandGlobals).__CEL_SERVICES__?.CommandRegistry ?? null;
+		(globalThis as unknown as WorkbenchCommandGlobals).__CEL_SERVICES__
+			?.CommandRegistry ?? null;
 
 	const Execute = <T = unknown>(
 		CommandId: string,
@@ -35,6 +37,7 @@ function makeWorkbenchCommandService(): WorkbenchCommandService {
 	): Effect.Effect<T, WorkbenchCommandProblem> =>
 		Effect.gen(function* () {
 			const Commands = getCommands();
+
 			if (!Commands) return yield* Effect.fail(Unavailable);
 
 			const Result = yield* Effect.tryPromise({
@@ -64,6 +67,7 @@ function makeWorkbenchCommandService(): WorkbenchCommandService {
 	): Effect.Effect<void, WorkbenchCommandProblem> =>
 		Effect.gen(function* () {
 			const Commands = getCommands();
+
 			if (!Commands) return yield* Effect.fail(Unavailable);
 
 			yield* Effect.tryPromise({
@@ -79,6 +83,7 @@ function makeWorkbenchCommandService(): WorkbenchCommandService {
 
 	const ListIds = Effect.gen(function* () {
 		const Registry = getRegistry();
+
 		if (!Registry) return yield* Effect.fail(Unavailable);
 
 		return Array.from(Registry.getCommands().keys());
@@ -89,6 +94,7 @@ function makeWorkbenchCommandService(): WorkbenchCommandService {
 	): Effect.Effect<boolean, WorkbenchCommandProblem> =>
 		Effect.gen(function* () {
 			const Registry = getRegistry();
+
 			if (!Registry) return yield* Effect.fail(Unavailable);
 
 			return Registry.getCommand(CommandId) !== undefined;
@@ -99,6 +105,7 @@ function makeWorkbenchCommandService(): WorkbenchCommandService {
 		WorkbenchCommandProblem
 	>((Emit) => {
 		const Commands = getCommands();
+
 		if (!Commands) {
 			Emit.fail(Unavailable);
 

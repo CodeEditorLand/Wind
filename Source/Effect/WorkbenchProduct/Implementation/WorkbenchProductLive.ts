@@ -19,13 +19,15 @@ const Unavailable: WorkbenchProductProblem = {
 
 function makeWorkbenchProductService(): WorkbenchProductService {
 	const getBridge = (): WorkbenchProductBridgeShape | null =>
-		(globalThis as unknown as WorkbenchProductGlobals).__CEL_SERVICES__?.Product ?? null;
+		(globalThis as unknown as WorkbenchProductGlobals).__CEL_SERVICES__
+			?.Product ?? null;
 
 	const Snapshot: Effect.Effect<
 		WorkbenchProductSnapshot,
 		WorkbenchProductProblem
 	> = Effect.gen(function* () {
 		const Bridge = getBridge();
+
 		if (!Bridge) return yield* Effect.fail(Unavailable);
 
 		return {
@@ -45,6 +47,7 @@ function makeWorkbenchProductService(): WorkbenchProductService {
 	): Effect.Effect<T | undefined, WorkbenchProductProblem> =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			return Bridge[Key] as T | undefined;

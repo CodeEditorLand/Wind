@@ -1129,11 +1129,10 @@ class TauriChannel implements IChannel {
 					if (Exposed?.wrap) return Exposed;
 
 					// @ts-expect-error - no type declarations for the runtime VS Code module
-					const Module = (await import(
-						"../../../base/common/buffer.js"
-					)) as {
-						VSBuffer: { wrap(buffer: Uint8Array): unknown };
-					};
+					const Module =
+						(await import("../../../base/common/buffer.js")) as {
+							VSBuffer: { wrap(buffer: Uint8Array): unknown };
+						};
 
 					return Module.VSBuffer;
 				};

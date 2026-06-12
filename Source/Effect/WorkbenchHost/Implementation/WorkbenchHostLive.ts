@@ -34,11 +34,13 @@ const Wrap = <A>(
 
 function makeWorkbenchHostService(): WorkbenchHostService {
 	const getBridge = (): WorkbenchHostBridgeShape | null =>
-		(globalThis as unknown as WorkbenchHostGlobals).__CEL_SERVICES__?.Host ?? null;
+		(globalThis as unknown as WorkbenchHostGlobals).__CEL_SERVICES__
+			?.Host ?? null;
 
 	const Reload: Effect.Effect<void, WorkbenchHostProblem> = Effect.gen(
 		function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			yield* Wrap("reload", () => Bridge.reload());
@@ -48,6 +50,7 @@ function makeWorkbenchHostService(): WorkbenchHostService {
 	const Restart: Effect.Effect<void, WorkbenchHostProblem> = Effect.gen(
 		function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			yield* Wrap("restart", () => Bridge.restart());
@@ -57,6 +60,7 @@ function makeWorkbenchHostService(): WorkbenchHostService {
 	const Close: Effect.Effect<void, WorkbenchHostProblem> = Effect.gen(
 		function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			yield* Wrap("close", () => Bridge.close());
@@ -66,6 +70,7 @@ function makeWorkbenchHostService(): WorkbenchHostService {
 	const Focus: Effect.Effect<void, WorkbenchHostProblem> = Effect.gen(
 		function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			yield* Wrap("focus", () => Bridge.focus());
@@ -77,6 +82,7 @@ function makeWorkbenchHostService(): WorkbenchHostService {
 	): Effect.Effect<void, WorkbenchHostProblem> =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			yield* Wrap("openWindow", () =>
@@ -91,6 +97,7 @@ function makeWorkbenchHostService(): WorkbenchHostService {
 	const OnDidChangeFocus = Stream.async<boolean, WorkbenchHostProblem>(
 		(Emit) => {
 			const Bridge = getBridge();
+
 			if (!Bridge?.onDidChangeFocus) {
 				Emit.fail(Unavailable);
 

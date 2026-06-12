@@ -51,13 +51,15 @@ const ToSnapshot = (
 
 function makeWorkbenchEditorService(): WorkbenchEditorService {
 	const getBridge = (): WorkbenchEditorBridgeShape | null =>
-		(globalThis as unknown as WorkbenchEditorGlobals).__CEL_SERVICES__?.Editor ?? null;
+		(globalThis as unknown as WorkbenchEditorGlobals).__CEL_SERVICES__
+			?.Editor ?? null;
 
 	const Active: Effect.Effect<
 		WorkbenchEditorActiveSnapshot,
 		WorkbenchEditorProblem
 	> = Effect.gen(function* () {
 		const Bridge = getBridge();
+
 		if (!Bridge) return yield* Effect.fail(Unavailable);
 
 		return ToSnapshot(Bridge.activeEditorPane);
@@ -68,6 +70,7 @@ function makeWorkbenchEditorService(): WorkbenchEditorService {
 	): Effect.Effect<WorkbenchEditorActiveSnapshot, WorkbenchEditorProblem> =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			const Pane = yield* Effect.tryPromise({
@@ -101,6 +104,7 @@ function makeWorkbenchEditorService(): WorkbenchEditorService {
 	const CloseActive: Effect.Effect<void, WorkbenchEditorProblem> = Effect.gen(
 		function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			const Pane = Bridge.activeEditorPane;
@@ -127,6 +131,7 @@ function makeWorkbenchEditorService(): WorkbenchEditorService {
 		WorkbenchEditorProblem
 	>((Emit) => {
 		const Bridge = getBridge();
+
 		if (!Bridge) {
 			Emit.fail(Unavailable);
 

@@ -36,13 +36,15 @@ const PublishLocal = (event: WorkbenchNotificationDispatched): void => {
 
 function makeWorkbenchNotificationService(): WorkbenchNotificationService {
 	const getBridge = (): WorkbenchNotificationBridgeShape | null =>
-		(globalThis as unknown as WorkbenchNotificationGlobals).__CEL_SERVICES__?.Notification ?? null;
+		(globalThis as unknown as WorkbenchNotificationGlobals).__CEL_SERVICES__
+			?.Notification ?? null;
 
 	const Notify = (
 		Options: WorkbenchNotificationOptions,
 	): Effect.Effect<void, WorkbenchNotificationProblem> =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			try {

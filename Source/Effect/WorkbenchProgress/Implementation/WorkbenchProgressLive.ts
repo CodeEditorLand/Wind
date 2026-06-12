@@ -37,7 +37,8 @@ const ToReporter = (
 
 function makeWorkbenchProgressService(): WorkbenchProgressService {
 	const getBridge = (): WorkbenchProgressBridgeShape | null =>
-		(globalThis as unknown as WorkbenchProgressGlobals).__CEL_SERVICES__?.Progress ?? null;
+		(globalThis as unknown as WorkbenchProgressGlobals).__CEL_SERVICES__
+			?.Progress ?? null;
 
 	const Run = <A>(
 		Options: WorkbenchProgressTaskOptions,
@@ -48,6 +49,7 @@ function makeWorkbenchProgressService(): WorkbenchProgressService {
 	): Effect.Effect<A, WorkbenchProgressProblem> =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			return yield* Effect.tryPromise({

@@ -22,13 +22,15 @@ const ToError = (cause: unknown): Error =>
 
 function makeWorkbenchContextKeyService(): WorkbenchContextKeyService {
 	const getBridge = (): WorkbenchContextKeyBridgeShape | null =>
-		(globalThis as unknown as WorkbenchContextKeyGlobals).__CEL_SERVICES__?.ContextKey ?? null;
+		(globalThis as unknown as WorkbenchContextKeyGlobals).__CEL_SERVICES__
+			?.ContextKey ?? null;
 
 	const Get = <T = unknown>(
 		Key: string,
 	): Effect.Effect<T | undefined, WorkbenchContextKeyProblem> =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			return Bridge.getContextKeyValue<T>(Key);
@@ -41,6 +43,7 @@ function makeWorkbenchContextKeyService(): WorkbenchContextKeyService {
 	): Effect.Effect<void, WorkbenchContextKeyProblem> =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			Bridge.createKey<T>(Key, undefined).set(Value);
@@ -51,6 +54,7 @@ function makeWorkbenchContextKeyService(): WorkbenchContextKeyService {
 	): Effect.Effect<void, WorkbenchContextKeyProblem> =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			Bridge.createKey(Key, undefined).reset();
@@ -61,6 +65,7 @@ function makeWorkbenchContextKeyService(): WorkbenchContextKeyService {
 	): Effect.Effect<boolean, WorkbenchContextKeyProblem> =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
+
 			if (!Bridge) return yield* Effect.fail(Unavailable);
 
 			return yield* Effect.try({
@@ -79,6 +84,7 @@ function makeWorkbenchContextKeyService(): WorkbenchContextKeyService {
 		WorkbenchContextKeyProblem
 	>((Emit) => {
 		const Bridge = getBridge();
+
 		if (!Bridge) {
 			Emit.fail(Unavailable);
 
