@@ -8,9 +8,6 @@
  * @category Layer
  */
 
-import { Effect, Layer } from "effect";
-
-import MountainSyncTag from "../Tag/MountainSyncTag.js";
 import type {
 	MountainSyncResult,
 	SyncStats,
@@ -23,46 +20,32 @@ import type {
  * @returns Mock MountainSync service instance
  */
 const makeMockMountainSync = () => ({
-	start: () => Effect.void,
-	stop: () => Effect.void,
-	syncNow: () =>
-		Effect.gen(function* () {
-			return {
-				success: true,
-				itemsSynced: 0,
-				duration: 1,
-			} satisfies MountainSyncResult;
-		}),
-	getStatus: () => Effect.succeed("idle" as const),
-	getStats: () =>
-		Effect.succeed({
-			lastSyncTime: Date.now(),
-			syncCount: 0,
-			successCount: 0,
-			errorCount: 0,
+	start: async () => {},
+	stop: async () => {},
+	syncNow: async () => {
+		return {
+			success: true,
 			itemsSynced: 0,
-		} satisfies SyncStats),
-	pause: () => Effect.void,
-	resume: () => Effect.void,
+			duration: 1,
+		} satisfies MountainSyncResult;
+	},
+	getStatus: async () => "idle" as const,
+	getStats: async () => ({
+		lastSyncTime: Date.now(),
+		syncCount: 0,
+		successCount: 0,
+		errorCount: 0,
+		itemsSynced: 0,
+	} satisfies SyncStats),
+	pause: async () => {},
+	resume: async () => {},
 });
 
 /**
  * Mock layer for MountainSync service.
  * Provides a no-op implementation for testing without dependencies.
- *
- * @example
- * ```ts
- * import { Layer } from "effect";
- * import { MountainSyncMock } from "./Effect/MountainSync/Layer/MountainSyncMock.js";
- *
- * const testLayer = MountainSyncMock;
- * ```
  */
-const MountainSyncMock = Layer.effect(
-	MountainSyncTag,
-
-	Effect.succeed(makeMockMountainSync()),
-);
+const MountainSyncMock = makeMockMountainSync();
 
 export default MountainSyncMock;
 

@@ -5,13 +5,8 @@ export type {
 	FileDecoration,
 } from "./Interface/DecorationsService.js";
 
-export {
-	DecorationsServiceTag,
-	Decorations,
-} from "./Tag/DecorationsServiceTag.js";
-
 export { StubDecorationsService } from "./Implementation/DecorationsStub.js";
 
-export { default as LiveDecorationsServiceLayer } from "./Live.js";
+export { default as LiveDecorationsService } from "./Live.js";
 
-export { default as MockDecorationsServiceLayer } from "./Mock.js";
+export { default as MockDecorationsService } from "./Mock.js";

@@ -1,12 +1,5 @@
-import { Layer } from "effect";
-
 import { StubEditorService } from "./Implementation/EditorStub.js";
-import { EditorServiceTag } from "./Tag/EditorServiceTag.js";
 
-export const MockEditorServiceLayer = Layer.succeed(
-	EditorServiceTag,
+export const MockEditorService = StubEditorService;
 
-	StubEditorService,
-);
-
-export default MockEditorServiceLayer;
+export default MockEditorService;

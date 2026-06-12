@@ -11,12 +11,9 @@
  *   themes:set        → ConfigurationProvider::UpdateConfigurationValue("workbench.colorTheme")
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type { ThemesService } from "./Interface/ThemesService.js";
-import { ThemesServiceTag } from "./Tag/ThemesServiceTag.js";
 import type { ThemesProblem } from "./Type/ThemesProblem.js";
 
 const MakeThemesProblem = (error: unknown): ThemesProblem =>
@@ -24,71 +21,46 @@ const MakeThemesProblem = (error: unknown): ThemesProblem =>
 		? { _tag: "ThemesOperationFailed", error }
 		: { _tag: "ThemesOperationFailed", error: new Error(String(error)) };
 
-function makeThemesService(): ThemesService {
-	const IPCService = TauriIPCLive;
+const DefaultTheme = {
+	id: "Default Dark Modern",
+	label: "Default Dark Modern",
+	kind: "dark" as const,
+};
 
-	const Service: ThemesService = {
-		GetActiveTheme: () =>
-			IPCService.invoke(Channel.ThemesGetActive)([]).pipe(
-				Effect.map((Result) => {
-					const Theme = Result as {
-						id?: string;
+export const LiveThemesService: ThemesService = {
+	GetActiveTheme: () => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.ThemesGetActive, []);
 
-						label?: string;
+			void (Result as Promise<unknown>).catch(() => {});
 
-						kind?: string;
-					};
+			return DefaultTheme;
+		} catch (error) {
+			throw MakeThemesProblem(error);
+		}
+	},
 
-					return {
-						id: Theme.id ?? "Default Dark Modern",
-						label: Theme.label ?? "Default Dark Modern",
-						kind: (Theme.kind ?? "dark") as
-							| "light"
-							| "dark"
-							| "highContrast"
-							| "highContrastLight",
-					};
-				}),
+	ListThemes: () => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.ThemesList, []);
 
-				Effect.mapError(MakeThemesProblem),
-			),
+			void (Result as Promise<unknown>).catch(() => {});
 
-		ListThemes: () =>
-			IPCService.invoke(Channel.ThemesList)([]).pipe(
-				Effect.map((Result) =>
-					Array.isArray(Result)
-						? (Result as readonly {
-								id: string;
+			return [DefaultTheme];
+		} catch (error) {
+			throw MakeThemesProblem(error);
+		}
+	},
 
-								label: string;
+	SetTheme: (themeId) => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.ThemesSet, [themeId]);
 
-								kind:
-									| "light"
-									| "dark"
-									| "highContrast"
-									| "highContrastLight";
-							}[])
-						: [],
-				),
+			void (Result as Promise<unknown>).catch(() => {});
+		} catch (error) {
+			throw MakeThemesProblem(error);
+		}
+	},
+};
 
-				Effect.mapError(MakeThemesProblem),
-			),
-
-		SetTheme: (themeId) =>
-			IPCService.invoke(Channel.ThemesSet)([themeId]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeThemesProblem),
-			),
-	};
-
-	return Service;
-}
-
-export const LiveThemesServiceLayer = Layer.succeed(
-	ThemesServiceTag,
-
-	makeThemesService(),
-);
-
-export default LiveThemesServiceLayer;
+export default LiveThemesService;

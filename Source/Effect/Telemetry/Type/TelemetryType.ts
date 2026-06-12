@@ -8,8 +8,6 @@
  * @category Type
  */
 
-import type { Effect } from "effect";
-
 /**
  * Represents a single metric measurement.
  * Contains the metric name, value, timestamp, and optional labels.
@@ -99,5 +97,5 @@ export interface SpanHandle {
 		success: boolean,
 
 		error?: string,
-	) => Effect.Effect<void, never>;
+	) => Promise<void>;
 }

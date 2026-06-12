@@ -1,21 +1,19 @@
-import { Effect } from "effect";
-
 import type { HistoryService } from "../Interface/HistoryService.js";
 
 export const StubHistoryService: HistoryService = {
-	GoBack: () => Effect.void,
+	GoBack: async () => {},
 
-	GoForward: () => Effect.void,
+	GoForward: async () => {},
 
-	CanGoBack: () => Effect.succeed(false),
+	CanGoBack: async () => false,
 
-	CanGoForward: () => Effect.succeed(false),
+	CanGoForward: async () => false,
 
-	Push: (_uri) => Effect.void,
+	Push: async (_uri) => {},
 
-	Clear: () => Effect.void,
+	Clear: async () => {},
 
-	GetStack: () => Effect.succeed([]),
+	GetStack: async () => [],
 };
 
 export default StubHistoryService;

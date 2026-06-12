@@ -1,15 +1,13 @@
-import { Effect } from "effect";
-
 import type { KeybindingService } from "../Interface/KeybindingService.js";
 
 export const StubKeybindingService: KeybindingService = {
-	AddKeybinding: (_commandId, _keybinding, _when) => Effect.void,
+	AddKeybinding: (_commandId, _keybinding, _when) => Promise.resolve(),
 
-	RemoveKeybinding: (_commandId) => Effect.void,
+	RemoveKeybinding: (_commandId) => Promise.resolve(),
 
-	LookupKeybinding: (_commandId) => Effect.succeed(null),
+	LookupKeybinding: (_commandId) => Promise.resolve(null),
 
-	GetKeybindings: () => Effect.succeed([]),
+	GetKeybindings: () => Promise.resolve([]),
 };
 
 export default StubKeybindingService;

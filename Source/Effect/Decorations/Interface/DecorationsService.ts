@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { DecorationsProblem } from "../Type/DecorationsProblem.js";
 
 /**
@@ -30,22 +28,22 @@ export interface DecorationsService {
 		uri: string,
 
 		includeChildren: boolean,
-	) => Effect.Effect<FileDecoration | null, DecorationsProblem>;
+	) => Promise<FileDecoration | null>;
 
 	/** Get decorations for multiple URIs in a single round-trip. */
 	readonly GetDecorations: (
 		uris: readonly string[],
-	) => Effect.Effect<ReadonlyMap<string, FileDecoration>, DecorationsProblem>;
+	) => Promise<ReadonlyMap<string, FileDecoration>>;
 
 	/** Register a decoration for a URI (overrides any existing decoration). */
 	readonly SetDecoration: (
 		uri: string,
 
 		decoration: FileDecoration,
-	) => Effect.Effect<void, DecorationsProblem>;
+	) => Promise<void>;
 
 	/** Remove decoration for a URI. */
 	readonly ClearDecoration: (
 		uri: string,
-	) => Effect.Effect<void, DecorationsProblem>;
+	) => Promise<void>;
 }

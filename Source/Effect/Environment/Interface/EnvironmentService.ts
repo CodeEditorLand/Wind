@@ -4,11 +4,8 @@
  * Service interface for environment detection and platform information.
  * Provides methods to detect platform, architecture, and environment settings.
  * @see {@link Effect/Environment/Implementation/EnvironmentImplementation} Implementation
- * @see {@link Effect/Environment/Tag/EnvironmentTag} Service tag
  * @category Interface
  */
-
-import { Effect } from "effect";
 
 import type { Architecture, Platform } from "../Type/EnvironmentType.js";
 
@@ -21,40 +18,37 @@ import type { Architecture, Platform } from "../Type/EnvironmentType.js";
  */
 export interface EnvironmentService {
 	/** Get comprehensive environment information */
-	readonly getInfo: Effect.Effect<
-		{
-			readonly platform: Platform;
+	readonly getInfo: {
+		readonly platform: Platform;
 
-			readonly architecture: Architecture;
+		readonly architecture: Architecture;
 
-			readonly locale: string;
+		readonly locale: string;
 
-			readonly timezone: string;
+		readonly timezone: string;
 
-			readonly userAgent: string;
+		readonly userAgent: string;
 
-			readonly isSecureContext: boolean;
+		readonly isSecureContext: boolean;
 
-			readonly language: string;
-		},
-		never
-	>;
+		readonly language: string;
+	};
 
 	/** Get platform type */
-	readonly getPlatform: Effect.Effect<Platform, never>;
+	readonly getPlatform: Platform;
 
 	/** Get architecture type */
-	readonly getArchitecture: Effect.Effect<Architecture, never>;
+	readonly getArchitecture: Architecture;
 
 	/** Check if running on Windows */
-	readonly isWindows: Effect.Effect<boolean, never>;
+	readonly isWindows: boolean;
 
 	/** Check if running on macOS */
-	readonly isMac: Effect.Effect<boolean, never>;
+	readonly isMac: boolean;
 
 	/** Check if running on Linux */
-	readonly isLinux: Effect.Effect<boolean, never>;
+	readonly isLinux: boolean;
 
 	/** Check if running in web environment */
-	readonly isWeb: Effect.Effect<boolean, never>;
+	readonly isWeb: boolean;
 }

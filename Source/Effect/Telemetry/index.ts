@@ -22,10 +22,7 @@ export type {
 // Service interface
 export type { TelemetryService } from "./Interface/TelemetryService.js";
 
-// Tag
-export { default as TelemetryTag, Telemetry } from "./Tag/TelemetryTag.js";
-
-// Layers
+// Live implementation (zero-Effect)
 export { default as TelemetryLive } from "./Layer/TelemetryLive.js";
 
 export { default as TelemetryMockLive } from "./Layer/TelemetryMock.js";

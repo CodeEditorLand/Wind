@@ -8,10 +8,7 @@
  * @category Layer
  */
 
-import { Effect, Layer, Stream } from "effect";
-
 import type { StatusBarService } from "../Interface/StatusBarService.js";
-import StatusBarTag from "../Tag/StatusBarTag.js";
 import type {
 	CreateStatusBarItem,
 	StatusBarItem,
@@ -24,35 +21,25 @@ import type {
  * @returns Mock StatusBar service instance
  */
 const makeMockStatusBar = (): StatusBarService => ({
-	createItem: (item: CreateStatusBarItem) =>
-		Effect.succeed({
-			...item,
-			id: `mock-statusbar-${Date.now()}`,
-		}),
-	updateItem: (_id: string, _updates: Partial<Omit<StatusBarItem, "id">>) =>
-		Effect.void,
-	removeItem: (_id: string) => Effect.void,
-	getItem: (_id: string) => Effect.succeed(undefined),
-	items: Effect.succeed([]),
-	itemsChanges: Stream.empty,
-	setItemVisibility: (_id: string, _visible: boolean) => Effect.void,
-	getItemText: (_id: string) => Effect.succeed(undefined),
-	setItemText: (_id: string, _text: string) => Effect.void,
+	createItem: (item: CreateStatusBarItem) => ({
+		...item,
+		id: `mock-statusbar-${Date.now()}`,
+	}),
+	updateItem: (_id: string, _updates: Partial<Omit<StatusBarItem, "id">>) => {},
+	removeItem: (_id: string) => {},
+	getItem: (_id: string) => undefined,
+	items: [],
+	onItemsChanges: (_listener) => () => {},
+	setItemVisibility: (_id: string, _visible: boolean) => {},
+	getItemText: (_id: string) => undefined,
+	setItemText: (_id: string, _text: string) => {},
 });
 
 /**
- * Mock layer for StatusBar service.
+ * Mock instance for StatusBar service.
  * Provides a no-op implementation for testing without dependencies.
- *
- * @example
- * ```ts
- * import { Layer } from "effect";
- * import { StatusBarMockLive } from "./Effect/StatusBar/Layer/StatusBarMock.js";
- *
- * const testLayer = StatusBarMockLive;
- * ```
  */
-const StatusBarMockLive = Layer.succeed(StatusBarTag, makeMockStatusBar());
+const StatusBarMockLive = makeMockStatusBar();
 
 export default StatusBarMockLive;
 

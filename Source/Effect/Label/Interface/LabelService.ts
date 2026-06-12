@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { LabelProblem } from "../Type/LabelProblem.js";
 
 /**
@@ -19,16 +17,16 @@ export interface LabelService {
 		uri: string,
 
 		options?: { readonly relative?: boolean },
-	) => Effect.Effect<string, LabelProblem>;
+	) => string;
 
 	/**
 	 * Return a human-readable label for the current workspace root.
 	 * Returns the workspace folder name, or empty string if no workspace is open.
 	 */
-	readonly GetWorkspaceLabel: () => Effect.Effect<string, LabelProblem>;
+	readonly GetWorkspaceLabel: () => string;
 
 	/**
 	 * Return only the base name (filename + extension) of a URI.
 	 */
-	readonly GetBaseLabel: (uri: string) => Effect.Effect<string, LabelProblem>;
+	readonly GetBaseLabel: (uri: string) => string;
 }

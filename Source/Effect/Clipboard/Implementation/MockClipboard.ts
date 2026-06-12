@@ -7,8 +7,6 @@
  * @category Implementation
  */
 
-import { Effect } from "effect";
-
 import type { ClipboardService } from "../Interface/ClipboardService.js";
 
 // ============================================================================
@@ -20,21 +18,21 @@ import type { ClipboardService } from "../Interface/ClipboardService.js";
  * Provides a simple in-memory clipboard state
  */
 export const MockClipboardService: ClipboardService = {
-	readText: () => Effect.succeed("mock clipboard text"),
+	readText: () => "mock clipboard text",
 
-	writeText: (_text: string) => Effect.void,
+	writeText: (_text: string) => {},
 
-	readHTML: () => Effect.succeed(""),
+	readHTML: () => "",
 
-	writeHTML: () => Effect.void,
+	writeHTML: () => {},
 
-	readImage: () => Effect.succeed(new Blob()),
+	readImage: () => new Blob(),
 
-	writeImage: () => Effect.void,
+	writeImage: () => {},
 
-	hasText: () => Effect.succeed(true),
+	hasText: () => true,
 
-	clear: () => Effect.void,
+	clear: () => {},
 };
 
 export default MockClipboardService;

@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { LifecycleProblem } from "../Type/LifecycleProblem.js";
 
 /**
@@ -35,10 +33,7 @@ export type LifecyclePhaseValue =
  */
 export interface LifecycleService {
 	/** Get the current lifecycle phase (1-4). */
-	readonly GetPhase: () => Effect.Effect<
-		LifecyclePhaseValue,
-		LifecycleProblem
-	>;
+	readonly GetPhase: () => Promise<LifecyclePhaseValue>;
 
 	/**
 	 * Resolve when the application reaches at least the given phase.
@@ -46,10 +41,10 @@ export interface LifecycleService {
 	 */
 	readonly WhenPhase: (
 		phase: LifecyclePhaseValue,
-	) => Effect.Effect<void, LifecycleProblem>;
+	) => Promise<void>;
 
 	/** Initiate a graceful application shutdown. */
-	readonly RequestShutdown: () => Effect.Effect<void, LifecycleProblem>;
+	readonly RequestShutdown: () => Promise<void>;
 
 	/**
 	 * Advance the application phase to at least the given value. No-op if the
@@ -60,5 +55,5 @@ export interface LifecycleService {
 	 */
 	readonly AdvancePhase: (
 		phase: LifecyclePhaseValue,
-	) => Effect.Effect<void, LifecycleProblem>;
+	) => Promise<void>;
 }

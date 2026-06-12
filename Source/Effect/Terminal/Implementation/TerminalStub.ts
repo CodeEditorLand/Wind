@@ -1,17 +1,15 @@
-import { Effect } from "effect";
-
 import type { TerminalService } from "../Interface/TerminalService.js";
 
 export const StubTerminalService: TerminalService = {
-	CreateTerminal: (_options) => Effect.succeed({ id: 0, name: "terminal" }),
+	CreateTerminal: (_options) => Promise.resolve({ id: 0, name: "terminal" }),
 
-	SendText: (_id, _text) => Effect.void,
+	SendText: (_id, _text) => Promise.resolve(),
 
-	Dispose: (_id) => Effect.void,
+	Dispose: (_id) => Promise.resolve(),
 
-	Show: (_id, _preserveFocus) => Effect.void,
+	Show: (_id, _preserveFocus) => Promise.resolve(),
 
-	Hide: (_id) => Effect.void,
+	Hide: (_id) => Promise.resolve(),
 };
 
 export default StubTerminalService;

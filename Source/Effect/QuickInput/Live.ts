@@ -10,12 +10,9 @@
  *   quickInput:showInputBox   → UserInterfaceProvider::ShowInputBox
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type { QuickInputService } from "./Interface/QuickInputService.js";
-import { QuickInputServiceTag } from "./Tag/QuickInputServiceTag.js";
 import type { QuickInputProblem } from "./Type/QuickInputProblem.js";
 
 const MakeQuickInputProblem = (error: unknown): QuickInputProblem =>
@@ -23,7 +20,6 @@ const MakeQuickInputProblem = (error: unknown): QuickInputProblem =>
 		? { _tag: "QuickInputOperationFailed", error }
 		: {
 				_tag: "QuickInputOperationFailed",
-
 				error: new Error(String(error)),
 			};
 
@@ -31,49 +27,41 @@ function makeQuickInputService(): QuickInputService {
 	const IPCService = TauriIPCLive;
 
 	const Service: QuickInputService = {
-		ShowQuickPick: (items, options) =>
-			IPCService.invoke(Channel.QuickInputShowQuickPick)([
-				items,
+		ShowQuickPick: async (items, options) => {
+			try {
+				const Result = await IPCService.invoke(Channel.QuickInputShowQuickPick)([
+					items,
+					options ?? {},
+				]);
+				if (Result === null || Result === undefined)
+					return undefined;
 
-				options ?? {},
-			]).pipe(
-				Effect.map((Result) => {
-					if (Result === null || Result === undefined)
-						return undefined;
+				return Result as {
+					label: string;
+					description?: string;
+					detail?: string;
+					picked?: boolean;
+				};
+			} catch (error) {
+				throw MakeQuickInputProblem(error);
+			}
+		},
 
-					return Result as {
-						label: string;
-
-						description?: string;
-
-						detail?: string;
-
-						picked?: boolean;
-					};
-				}),
-
-				Effect.mapError(MakeQuickInputProblem),
-			),
-
-		ShowInputBox: (options) =>
-			IPCService.invoke(Channel.QuickInputShowInputBox)([
-				options ?? {},
-			]).pipe(
-				Effect.map((Result) =>
-					typeof Result === "string" ? Result : undefined,
-				),
-
-				Effect.mapError(MakeQuickInputProblem),
-			),
+		ShowInputBox: async (options) => {
+			try {
+				const Result = await IPCService.invoke(Channel.QuickInputShowInputBox)([
+					options ?? {},
+				]);
+				return typeof Result === "string" ? Result : undefined;
+			} catch (error) {
+				throw MakeQuickInputProblem(error);
+			}
+		},
 	};
 
 	return Service;
 }
 
-export const LiveQuickInputServiceLayer = Layer.succeed(
-	QuickInputServiceTag,
+export const LiveQuickInputService = makeQuickInputService();
 
-	makeQuickInputService(),
-);
-
-export default LiveQuickInputServiceLayer;
+export default LiveQuickInputService;

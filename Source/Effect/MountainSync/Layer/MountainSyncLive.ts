@@ -12,11 +12,8 @@
  * @category Layer
  */
 
-import { Effect, Layer } from "effect";
-
 import makeMountainSync from "../Implementation/MountainSyncImplementation.js";
 import type { MountainSyncService } from "../Interface/MountainSyncService.js";
-import MountainSyncTag from "../Tag/MountainSyncTag.js";
 
 let Resolved: MountainSyncService | null = null;
 
@@ -28,9 +25,7 @@ const Resolve = (): MountainSyncService | null => {
 	const Services = (globalThis as any).__CEL_SERVICES__;
 
 	const Mountain = Services?.Mountain ?? null;
-
 	const IPC = Services?.IPC ?? null;
-
 	const Telemetry = Services?.Telemetry ?? null;
 
 	if (!Mountain || !IPC || !Telemetry) {
@@ -42,44 +37,54 @@ const Resolve = (): MountainSyncService | null => {
 	return Resolved;
 };
 
-const MountainSyncLive = Layer.succeed(MountainSyncTag, {
-	start: (Config) =>
-		Effect.suspend(() => Resolve()?.start(Config) ?? Effect.void),
+const MountainSyncLive: MountainSyncService = {
+	start: async (Config) => {
+		const svc = Resolve();
+		if (svc) await svc.start(Config);
+	},
 
-	stop: () => Effect.suspend(() => Resolve()?.stop() ?? Effect.void),
+	stop: async () => {
+		const svc = Resolve();
+		if (svc) await svc.stop();
+	},
 
-	syncNow: () =>
-		Effect.suspend(
-			() =>
-				Resolve()?.syncNow() ??
-				Effect.succeed({
-					success: false,
-					itemsSynced: 0,
-					duration: 0,
-				}),
-		),
+	syncNow: async () => {
+		const svc = Resolve();
+		if (svc) return svc.syncNow();
+		return {
+			success: false,
+			itemsSynced: 0,
+			duration: 0,
+		};
+	},
 
-	getStatus: () =>
-		Effect.suspend(
-			() => Resolve()?.getStatus() ?? Effect.succeed("idle" as const),
-		),
+	getStatus: async () => {
+		const svc = Resolve();
+		if (svc) return svc.getStatus();
+		return "idle" as const;
+	},
 
-	getStats: () =>
-		Effect.suspend(
-			() =>
-				Resolve()?.getStats() ??
-				Effect.succeed({
-					lastSyncTime: 0,
-					syncCount: 0,
-					successCount: 0,
-					errorCount: 0,
-					itemsSynced: 0,
-				}),
-		),
+	getStats: async () => {
+		const svc = Resolve();
+		if (svc) return svc.getStats();
+		return {
+			lastSyncTime: 0,
+			syncCount: 0,
+			successCount: 0,
+			errorCount: 0,
+			itemsSynced: 0,
+		};
+	},
 
-	pause: () => Effect.suspend(() => Resolve()?.pause() ?? Effect.void),
+	pause: async () => {
+		const svc = Resolve();
+		if (svc) await svc.pause();
+	},
 
-	resume: () => Effect.suspend(() => Resolve()?.resume() ?? Effect.void),
-} satisfies MountainSyncService);
+	resume: async () => {
+		const svc = Resolve();
+		if (svc) await svc.resume();
+	},
+} satisfies MountainSyncService;
 
 export default MountainSyncLive;

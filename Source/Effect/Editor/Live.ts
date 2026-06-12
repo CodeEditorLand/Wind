@@ -110,6 +110,6 @@ function makeEditorService(): EditorService {
 	return Service;
 }
 
-export const LiveEditorServiceLayer = makeEditorService();
+export const LiveEditorService = makeEditorService();
 
-export default LiveEditorServiceLayer;
+export default LiveEditorService;

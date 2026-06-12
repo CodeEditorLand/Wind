@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { HistoryProblem } from "../Type/HistoryProblem.js";
 
 /**
@@ -11,23 +9,23 @@ import type { HistoryProblem } from "../Type/HistoryProblem.js";
  */
 export interface HistoryService {
 	/** Navigate to the previous location in the history stack. */
-	readonly GoBack: () => Effect.Effect<void, HistoryProblem>;
+	readonly GoBack: () => Promise<void>;
 
 	/** Navigate to the next location in the history stack. */
-	readonly GoForward: () => Effect.Effect<void, HistoryProblem>;
+	readonly GoForward: () => Promise<void>;
 
 	/** Returns true if there is a previous location to navigate to. */
-	readonly CanGoBack: () => Effect.Effect<boolean, HistoryProblem>;
+	readonly CanGoBack: () => Promise<boolean>;
 
 	/** Returns true if there is a next location to navigate to. */
-	readonly CanGoForward: () => Effect.Effect<boolean, HistoryProblem>;
+	readonly CanGoForward: () => Promise<boolean>;
 
 	/** Push a new URI onto the navigation stack, clearing forward history. */
-	readonly Push: (uri: string) => Effect.Effect<void, HistoryProblem>;
+	readonly Push: (uri: string) => Promise<void>;
 
 	/** Clear the entire navigation history stack. */
-	readonly Clear: () => Effect.Effect<void, HistoryProblem>;
+	readonly Clear: () => Promise<void>;
 
 	/** Return the full history stack as a list of URIs (oldest first). */
-	readonly GetStack: () => Effect.Effect<readonly string[], HistoryProblem>;
+	readonly GetStack: () => Promise<readonly string[]>;
 }

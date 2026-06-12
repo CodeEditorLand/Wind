@@ -1,12 +1,5 @@
-import { Layer } from "effect";
-
 import { StubDecorationsService } from "./Implementation/DecorationsStub.js";
-import { DecorationsServiceTag } from "./Tag/DecorationsServiceTag.js";
 
-export const MockDecorationsServiceLayer = Layer.succeed(
-	DecorationsServiceTag,
+export const MockDecorationsService = StubDecorationsService;
 
-	StubDecorationsService,
-);
-
-export default MockDecorationsServiceLayer;
+export default MockDecorationsService;

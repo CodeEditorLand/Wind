@@ -12,12 +12,9 @@
  *   workingCopy:getDirtyCount → count of dirty resources
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type { WorkingCopyService } from "./Interface/WorkingCopyService.js";
-import { WorkingCopyServiceTag } from "./Tag/WorkingCopyServiceTag.js";
 import type { WorkingCopyProblem } from "./Type/WorkingCopyProblem.js";
 
 const MakeWorkingCopyProblem = (error: unknown): WorkingCopyProblem => ({
@@ -25,50 +22,61 @@ const MakeWorkingCopyProblem = (error: unknown): WorkingCopyProblem => ({
 	error: error instanceof Error ? error : new Error(String(error)),
 });
 
-function makeWorkingCopyService(): WorkingCopyService {
-	const IPCService = TauriIPCLive;
+export const LiveWorkingCopyService: WorkingCopyService = {
+	IsDirty: (uri) => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.WorkingCopyIsDirty, [uri]);
 
-	const Service: WorkingCopyService = {
-		IsDirty: (uri) =>
-			IPCService.invoke(Channel.WorkingCopyIsDirty)([uri]).pipe(
-				Effect.map((Result) => Result === true),
+			void (Result as Promise<unknown>).catch(() => {});
 
-				Effect.mapError(MakeWorkingCopyProblem),
-			),
+			return false;
+		} catch (error) {
+			throw MakeWorkingCopyProblem(error);
+		}
+	},
 
-		SetDirty: (uri, dirty) =>
-			IPCService.invoke(Channel.WorkingCopySetDirty)([uri, dirty]).pipe(
-				Effect.map(() => undefined as void),
+	SetDirty: (uri, dirty) => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.WorkingCopySetDirty, [
+				uri,
+				dirty,
+			]);
 
-				Effect.mapError(MakeWorkingCopyProblem),
-			),
+			void (Result as Promise<unknown>).catch(() => {});
+		} catch (error) {
+			throw MakeWorkingCopyProblem(error);
+		}
+	},
 
-		GetAllDirty: () =>
-			IPCService.invoke(Channel.WorkingCopyGetAllDirty)([]).pipe(
-				Effect.map((Result) =>
-					Array.isArray(Result) ? (Result as readonly string[]) : [],
-				),
+	GetAllDirty: () => {
+		try {
+			const Result = TauriIPCLive.invoke(
+				Channel.WorkingCopyGetAllDirty,
+				[],
+			);
 
-				Effect.mapError(MakeWorkingCopyProblem),
-			),
+			void (Result as Promise<unknown>).catch(() => {});
 
-		GetDirtyCount: () =>
-			IPCService.invoke(Channel.WorkingCopyGetDirtyCount)([]).pipe(
-				Effect.map((Result) =>
-					typeof Result === "number" ? Result : 0,
-				),
+			return [];
+		} catch (error) {
+			throw MakeWorkingCopyProblem(error);
+		}
+	},
 
-				Effect.mapError(MakeWorkingCopyProblem),
-			),
-	};
+	GetDirtyCount: () => {
+		try {
+			const Result = TauriIPCLive.invoke(
+				Channel.WorkingCopyGetDirtyCount,
+				[],
+			);
 
-	return Service;
-}
+			void (Result as Promise<unknown>).catch(() => {});
 
-export const LiveWorkingCopyServiceLayer = Layer.succeed(
-	WorkingCopyServiceTag,
+			return 0;
+		} catch (error) {
+			throw MakeWorkingCopyProblem(error);
+		}
+	},
+};
 
-	makeWorkingCopyService(),
-);
-
-export default LiveWorkingCopyServiceLayer;
+export default LiveWorkingCopyService;

@@ -18,12 +18,9 @@
  *   file:unwatch    → Unwatch(path)
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type { FilesService } from "./Interface/FilesService.js";
-import { FilesServiceTag } from "./Tag/FilesServiceTag.js";
 import type { FilesProblem } from "./Type/FilesProblem.js";
 
 const MakeFilesProblem = (error: unknown): FilesProblem =>
@@ -39,220 +36,162 @@ function makeFilesService(): FilesService {
 	const IPCService = TauriIPCLive;
 
 	const Service: FilesService = {
-		ReadFile: (uri) => {
+		ReadFile: async (uri) => {
 			const Path = UriToPath(uri);
 
-			return IPCService.invoke(Channel.FileRead)([Path]).pipe(
-				Effect.map((Result) => {
-					if (Result instanceof Uint8Array) return Result;
+			const Result = await IPCService.invoke(Channel.FileRead)([Path]);
 
-					if (typeof Result === "string")
-						return new TextEncoder().encode(Result);
+			if (Result instanceof Uint8Array) return Result;
 
-					if (Array.isArray(Result))
-						return new Uint8Array(Result as number[]);
+			if (typeof Result === "string")
+				return new TextEncoder().encode(Result);
 
-					return new Uint8Array();
-				}),
+			if (Array.isArray(Result))
+				return new Uint8Array(Result as number[]);
 
-				Effect.mapError(MakeFilesProblem),
-			);
+			return new Uint8Array();
 		},
 
-		WriteFile: (uri, content) => {
+		WriteFile: async (uri, content) => {
 			const Path = UriToPath(uri);
 
-			return IPCService.invoke(Channel.FileWrite)([
+			await IPCService.invoke(Channel.FileWrite)([
 				Path,
 
 				Array.from(content),
-			]).pipe(
-				Effect.map(() => undefined as void),
+			]);
+		},
 
-				Effect.mapError(MakeFilesProblem),
+		Stat: async (uri) => {
+			const Path = UriToPath(uri);
+
+			const Result = await IPCService.invoke(Channel.FileStat)([Path]);
+
+			const Metadata = Result as {
+				type?: number;
+
+				isFile?: boolean;
+
+				isDirectory?: boolean;
+
+				size?: number;
+
+				mtime?: number;
+			};
+
+			return {
+				// VS Code FileType: 0=Unknown 1=File 2=Directory 64=SymbolicLink
+				type: Metadata.type ?? (Metadata.isDirectory ? 2 : 1),
+				size: Metadata.size ?? 0,
+				mtime: Metadata.mtime ?? 0,
+			};
+		},
+
+		ReadDir: async (uri) => {
+			const Path = UriToPath(uri);
+
+			const Result = await IPCService.invoke(Channel.FileReaddir)([Path]);
+
+			if (!Array.isArray(Result)) return [];
+
+			// Result is an array of [name, type] tuples or plain names
+			return (Result as unknown[]).map(
+				(Entry): [string, number] => {
+					if (Array.isArray(Entry)) {
+						const [Name, Type] = Entry as [string, number];
+
+						return [Name, Type ?? 0];
+					}
+
+					return [String(Entry), 0];
+				},
 			);
 		},
 
-		Stat: (uri) => {
+		CreateDirectory: async (uri) => {
 			const Path = UriToPath(uri);
 
-			return IPCService.invoke(Channel.FileStat)([Path]).pipe(
-				Effect.map((Result) => {
-					const Metadata = Result as {
-						type?: number;
-
-						isFile?: boolean;
-
-						isDirectory?: boolean;
-
-						size?: number;
-
-						mtime?: number;
-					};
-
-					return {
-						// VS Code FileType: 0=Unknown 1=File 2=Directory 64=SymbolicLink
-						type: Metadata.type ?? (Metadata.isDirectory ? 2 : 1),
-						size: Metadata.size ?? 0,
-						mtime: Metadata.mtime ?? 0,
-					};
-				}),
-
-				Effect.mapError(MakeFilesProblem),
-			);
+			await IPCService.invoke(Channel.FileMkdir)([Path]);
 		},
 
-		ReadDir: (uri) => {
+		Delete: async (uri, options) => {
 			const Path = UriToPath(uri);
 
-			return IPCService.invoke(Channel.FileReaddir)([Path]).pipe(
-				Effect.map((Result) => {
-					if (!Array.isArray(Result)) return [];
-
-					// Result is an array of [name, type] tuples or plain names
-					return (Result as unknown[]).map(
-						(Entry): [string, number] => {
-							if (Array.isArray(Entry)) {
-								const [Name, Type] = Entry as [string, number];
-
-								return [Name, Type ?? 0];
-							}
-
-							return [String(Entry), 0];
-						},
-					);
-				}),
-
-				Effect.mapError(MakeFilesProblem),
-			);
-		},
-
-		CreateDirectory: (uri) => {
-			const Path = UriToPath(uri);
-
-			return IPCService.invoke(Channel.FileMkdir)([Path]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeFilesProblem),
-			);
-		},
-
-		Delete: (uri, options) => {
-			const Path = UriToPath(uri);
-
-			return IPCService.invoke(Channel.FileDelete)([
+			await IPCService.invoke(Channel.FileDelete)([
 				Path,
 
 				options ?? {},
-			]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeFilesProblem),
-			);
+			]);
 		},
 
-		Rename: (source, target, options) => {
+		Rename: async (source, target, options) => {
 			const SourcePath = UriToPath(source);
 
 			const TargetPath = UriToPath(target);
 
-			return IPCService.invoke(Channel.FileMove)([
+			await IPCService.invoke(Channel.FileMove)([
 				SourcePath,
 
 				TargetPath,
 
 				options ?? {},
-			]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeFilesProblem),
-			);
+			]);
 		},
 
-		Copy: (source, target, options) => {
+		Copy: async (source, target, options) => {
 			const SourcePath = UriToPath(source);
 
 			const TargetPath = UriToPath(target);
 
-			return IPCService.invoke(Channel.FileCopy)([
+			await IPCService.invoke(Channel.FileCopy)([
 				SourcePath,
 
 				TargetPath,
 
 				options ?? {},
-			]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeFilesProblem),
-			);
+			]);
 		},
 
-		Exists: (uri) => {
+		Exists: async (uri) => {
 			const Path = UriToPath(uri);
 
-			return IPCService.invoke(Channel.FileExists)([Path]).pipe(
-				Effect.map((Result) => Boolean(Result)),
+			const Result = await IPCService.invoke(Channel.FileExists)([Path]);
 
-				Effect.mapError(MakeFilesProblem),
-			);
+			return Boolean(Result);
 		},
 
-		Watch: (uri) => {
+		Watch: async (uri) => {
 			const Path = UriToPath(uri);
 
-			return IPCService.invoke(Channel.FileWatch)([Path]).pipe(
-				Effect.map(() => ({
-					dispose: () => {
-						void Effect.runFork(
-							IPCService.invoke(Channel.FileUnwatch)([Path]).pipe(
-								Effect.catchAll(() => Effect.void),
-							),
-						);
-					},
-				})),
+			await IPCService.invoke(Channel.FileWatch)([Path]);
 
-				Effect.mapError(MakeFilesProblem),
-			);
+			return {
+				dispose: () => {
+					IPCService.invoke(Channel.FileUnwatch)([Path]).catch(() => {});
+				},
+			};
 		},
 
-		// `UserInterface.ShowOpenDialog` / `…ShowSaveDialog` use dotted
-		// names inherited from the Cocoon→Mountain gRPC surface. Wave 5
-		// added them to the Channel registry (tail group with a
-		// rename-path comment pointing at `dialog:showOpen` /
-		// `dialog:showSave`). The Mountain-side handler rename is a
-		// coordinated follow-up; until then the wire strings stay
-		// dotted on both ends and the registry is the single source of
-		// truth for the spelling.
-		ShowOpenDialog: (Options) =>
-			IPCService.invoke(Channel.UserInterfaceShowOpenDialog)([
+		ShowOpenDialog: async (Options) => {
+			const Result = await IPCService.invoke(Channel.UserInterfaceShowOpenDialog)([
 				Options ?? {},
-			]).pipe(
-				Effect.map((Result) =>
-					Array.isArray(Result) ? (Result as string[]) : [],
-				),
+			]);
 
-				Effect.mapError(MakeFilesProblem),
-			),
+			return Array.isArray(Result) ? (Result as string[]) : [];
+		},
 
-		ShowSaveDialog: (Options) =>
-			IPCService.invoke(Channel.UserInterfaceShowSaveDialog)([
+		ShowSaveDialog: async (Options) => {
+			const Result = await IPCService.invoke(Channel.UserInterfaceShowSaveDialog)([
 				Options ?? {},
-			]).pipe(
-				Effect.map((Result) =>
-					typeof Result === "string" ? Result : undefined,
-				),
+			]);
 
-				Effect.mapError(MakeFilesProblem),
-			),
+			return typeof Result === "string" ? Result : undefined;
+		},
 	};
 
 	return Service;
 }
 
-export const LiveFilesServiceLayer = Layer.succeed(
-	FilesServiceTag,
+export const LiveFilesService = makeFilesService();
 
-	makeFilesService(),
-);
-
-export default LiveFilesServiceLayer;
+export default LiveFilesService;

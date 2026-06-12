@@ -8,8 +8,6 @@
  * @category Implementation
  */
 
-import { Effect } from "effect";
-
 import type { IPCService } from "../../IPC.js";
 import type { MountainService } from "../../Mountain.js";
 import type { TelemetryService } from "../../Telemetry.js";
@@ -22,28 +20,25 @@ import type { MountainSyncResult } from "../Type/MountainSyncType.js";
  * @param mountain - Mountain service for backend operations
  * @param ipc - IPC service for communication
  * @param telemetry - Telemetry service for logging
- * @returns Effect that produces MountainSyncResult
+ * @returns Promise that produces MountainSyncResult
  */
-const SyncNowEffect = (
+const SyncNowEffect = async (
 	_mountain: MountainService,
-
 	_ipc: IPCService,
-
 	telemetry: TelemetryService,
-): Effect.Effect<MountainSyncResult> =>
-	Effect.gen(function* () {
-		const StartTime = Date.now();
+): Promise<MountainSyncResult> => {
+	const StartTime = Date.now();
 
-		// DEPENDENCY: Requires Mountain service integration to fetch/sync state
-		// This would fetch changes from Mountain, sync state, etc.
+	// DEPENDENCY: Requires Mountain service integration to fetch/sync state
+	// This would fetch changes from Mountain, sync state, etc.
 
-		yield* telemetry.log("info", "[MountainSync] Performing sync...");
+	await telemetry.log("info", "[MountainSync] Performing sync...");
 
-		return {
-			success: true,
-			itemsSynced: 0,
-			duration: Date.now() - StartTime,
-		} satisfies MountainSyncResult;
-	});
+	return {
+		success: true,
+		itemsSynced: 0,
+		duration: Date.now() - StartTime,
+	} satisfies MountainSyncResult;
+};
 
 export default SyncNowEffect;

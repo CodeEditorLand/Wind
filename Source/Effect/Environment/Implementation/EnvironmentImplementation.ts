@@ -4,27 +4,17 @@
  * Main implementation of the Environment service. Provides live and mock layers
  * for detecting platform, architecture, and environment settings.
  * @see {@link Effect/Environment/Interface/EnvironmentService} Service interface
- * @see {@link Effect/Environment/Tag/EnvironmentTag} Service tag
  * @category Implementation
  * @example
  * ```typescript
- * import { EnvironmentLive } from "./Effect/Environment/Implementation/EnvironmentImplementation.js";
- * import { Effect } from "effect";
+ * import { LiveEnvironmentService } from "./Effect/Environment/Implementation/EnvironmentImplementation.js";
  *
- * const program = Effect.gen(function* () {
- *   const env = yield* EnvironmentTag;
- *   const info = yield* env.getInfo;
- *   console.log("Platform:", info.platform);
- * });
- *
- * Effect.runPromise(program.pipe(Effect.provide(EnvironmentLive)));
+ * const env = LiveEnvironmentService;
+ * console.log("Platform:", env.getPlatform);
  * ```
  */
 
-import { Effect, Layer } from "effect";
-
 import type { EnvironmentService } from "../Interface/EnvironmentService.js";
-import { EnvironmentTag } from "../Tag/EnvironmentTag.js";
 import type { Architecture, Platform } from "../Type/EnvironmentType.js";
 import {
 	DetectArchitecture,
@@ -43,7 +33,7 @@ import {
  * Detects actual environment information from browser APIs
  */
 const MakeLiveEnvironment: EnvironmentService = {
-	getInfo: Effect.sync(() => ({
+	getInfo: {
 		platform: DetectPlatform(),
 		architecture: DetectArchitecture(),
 		locale: DetectLocale(),
@@ -52,29 +42,22 @@ const MakeLiveEnvironment: EnvironmentService = {
 		isSecureContext:
 			typeof window !== "undefined" && window.isSecureContext,
 		language: DetectLocale().split("-")[0] || "en",
-	})),
+	},
 
-	getPlatform: Effect.sync(DetectPlatform),
+	getPlatform: DetectPlatform(),
 
-	getArchitecture: Effect.sync(DetectArchitecture),
+	getArchitecture: DetectArchitecture(),
 
-	isWindows: Effect.map(Effect.sync(DetectPlatform), (p) => p === "win32"),
+	isWindows: DetectPlatform() === "win32",
 
-	isMac: Effect.map(Effect.sync(DetectPlatform), (p) => p === "darwin"),
+	isMac: DetectPlatform() === "darwin",
 
-	isLinux: Effect.map(Effect.sync(DetectPlatform), (p) => p === "linux"),
+	isLinux: DetectPlatform() === "linux",
 
-	isWeb: Effect.map(Effect.sync(DetectPlatform), (p) => p === "web"),
+	isWeb: DetectPlatform() === "web",
 };
 
-/**
- * Live layer for Environment service
- */
-export const EnvironmentLive = Layer.effect(
-	EnvironmentTag,
-
-	Effect.succeed(MakeLiveEnvironment),
-);
+export const LiveEnvironmentService = MakeLiveEnvironment;
 
 // ============================================================================
 // Mock Implementation (for testing)
@@ -120,29 +103,22 @@ export const makeMockEnvironment = (
 	};
 
 	return {
-		getInfo: Effect.sync(() => mockInfo),
+		getInfo: mockInfo,
 
-		getPlatform: Effect.sync(() => mockInfo.platform),
+		getPlatform: mockInfo.platform,
 
-		getArchitecture: Effect.sync(() => mockInfo.architecture),
+		getArchitecture: mockInfo.architecture,
 
-		isWindows: Effect.sync(() => mockInfo.platform === "win32"),
+		isWindows: mockInfo.platform === "win32",
 
-		isMac: Effect.sync(() => mockInfo.platform === "darwin"),
+		isMac: mockInfo.platform === "darwin",
 
-		isLinux: Effect.sync(() => mockInfo.platform === "linux"),
+		isLinux: mockInfo.platform === "linux",
 
-		isWeb: Effect.sync(() => mockInfo.platform === "web"),
+		isWeb: mockInfo.platform === "web",
 	};
 };
 
-/**
- * Mock layer for Environment service
- */
-export const EnvironmentMock = Layer.effect(
-	EnvironmentTag,
+export const MockEnvironmentService = makeMockEnvironment();
 
-	Effect.succeed(makeMockEnvironment()),
-);
-
-export default EnvironmentLive;
+export default LiveEnvironmentService;

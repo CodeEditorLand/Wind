@@ -1,18 +1,16 @@
-import { Effect } from "effect";
-
 import type {
 	LifecyclePhaseValue,
 	LifecycleService,
 } from "../Interface/LifecycleService.js";
 
 export const StubLifecycleService: LifecycleService = {
-	GetPhase: () => Effect.succeed(4 as LifecyclePhaseValue),
+	GetPhase: async () => 4 as LifecyclePhaseValue,
 
-	WhenPhase: (_phase) => Effect.void,
+	WhenPhase: async (_phase) => {},
 
-	RequestShutdown: () => Effect.void,
+	RequestShutdown: async () => {},
 
-	AdvancePhase: (_phase) => Effect.void,
+	AdvancePhase: async (_phase) => {},
 };
 
 export default StubLifecycleService;

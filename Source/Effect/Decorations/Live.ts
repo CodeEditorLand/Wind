@@ -12,15 +12,12 @@
  *   decorations:clear     → remove decoration for a URI
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type {
 	DecorationsService,
 	FileDecoration,
 } from "./Interface/DecorationsService.js";
-import { DecorationsServiceTag } from "./Tag/DecorationsServiceTag.js";
 import type { DecorationsProblem } from "./Type/DecorationsProblem.js";
 
 const MakeDecorationsProblem = (error: unknown): DecorationsProblem => ({
@@ -32,60 +29,57 @@ function makeDecorationsService(): DecorationsService {
 	const IPCService = TauriIPCLive;
 
 	const Service: DecorationsService = {
-		GetDecoration: (uri, includeChildren) =>
-			IPCService.invoke(Channel.DecorationsGet)([
-				uri,
+		GetDecoration: async (uri, includeChildren) => {
+			try {
+				const Result = await IPCService.invoke(Channel.DecorationsGet, [
+					uri,
+					includeChildren,
+				]);
+				return Result != null ? (Result as FileDecoration) : null;
+			} catch (error) {
+				throw MakeDecorationsProblem(error);
+			}
+		},
 
-				includeChildren,
-			]).pipe(
-				Effect.map((Result) =>
-					Result != null ? (Result as FileDecoration) : null,
-				),
+		GetDecorations: async (uris) => {
+			try {
+				const Result = await IPCService.invoke(Channel.DecorationsGetMany, [uris]);
+				const Map_ = new Map<string, FileDecoration>();
 
-				Effect.mapError(MakeDecorationsProblem),
-			),
-
-		GetDecorations: (uris) =>
-			IPCService.invoke(Channel.DecorationsGetMany)([uris]).pipe(
-				Effect.map((Result) => {
-					const Map_ = new Map<string, FileDecoration>();
-
-					if (Result != null && typeof Result === "object") {
-						for (const [Key, Value] of Object.entries(
-							Result as Record<string, FileDecoration>,
-						)) {
-							Map_.set(Key, Value);
-						}
+				if (Result != null && typeof Result === "object") {
+					for (const [Key, Value] of Object.entries(
+						Result as Record<string, FileDecoration>,
+					)) {
+						Map_.set(Key, Value);
 					}
+				}
 
-					return Map_ as ReadonlyMap<string, FileDecoration>;
-				}),
+				return Map_ as ReadonlyMap<string, FileDecoration>;
+			} catch (error) {
+				throw MakeDecorationsProblem(error);
+			}
+		},
 
-				Effect.mapError(MakeDecorationsProblem),
-			),
+		SetDecoration: async (uri, decoration) => {
+			try {
+				await IPCService.invoke(Channel.DecorationsSet, [uri, decoration]);
+			} catch (error) {
+				throw MakeDecorationsProblem(error);
+			}
+		},
 
-		SetDecoration: (uri, decoration) =>
-			IPCService.invoke(Channel.DecorationsSet)([uri, decoration]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeDecorationsProblem),
-			),
-
-		ClearDecoration: (uri) =>
-			IPCService.invoke(Channel.DecorationsClear)([uri]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeDecorationsProblem),
-			),
+		ClearDecoration: async (uri) => {
+			try {
+				await IPCService.invoke(Channel.DecorationsClear, [uri]);
+			} catch (error) {
+				throw MakeDecorationsProblem(error);
+			}
+		},
 	};
 
 	return Service;
 }
 
-export const LiveDecorationsServiceLayer = Layer.succeed(
-	DecorationsServiceTag,
+export const LiveDecorationsService = makeDecorationsService();
 
-	makeDecorationsService(),
-);
-
-export default LiveDecorationsServiceLayer;
+export default LiveDecorationsService;

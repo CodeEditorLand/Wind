@@ -1,12 +1,5 @@
-import { Layer } from "effect";
-
 import { StubFilesService } from "./Implementation/FilesStub.js";
-import { FilesServiceTag } from "./Tag/FilesServiceTag.js";
 
-export const MockFilesServiceLayer = Layer.succeed(
-	FilesServiceTag,
+export const MockFilesService = StubFilesService;
 
-	StubFilesService,
-);
-
-export default MockFilesServiceLayer;
+export default MockFilesService;

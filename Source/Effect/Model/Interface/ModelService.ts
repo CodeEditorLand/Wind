@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { ModelProblem } from "../Type/ModelProblem.js";
 
 /**
@@ -31,12 +29,12 @@ export interface ModelService {
 	 * Open (or retrieve if already open) a text model for a URI.
 	 * Mountain reads the file and returns content + language id.
 	 */
-	readonly OpenModel: (uri: string) => Effect.Effect<TextModel, ModelProblem>;
+	readonly OpenModel: (uri: string) => Promise<TextModel>;
 
 	/**
 	 * Close and remove a model from the registry.
 	 */
-	readonly CloseModel: (uri: string) => Effect.Effect<void, ModelProblem>;
+	readonly CloseModel: (uri: string) => Promise<void>;
 
 	/**
 	 * Get the current model for a URI without opening it.
@@ -44,14 +42,13 @@ export interface ModelService {
 	 */
 	readonly GetModel: (
 		uri: string,
-	) => Effect.Effect<TextModel | null, ModelProblem>;
+	) => Promise<TextModel | null>;
 
 	/**
 	 * Return all currently open text models.
 	 */
-	readonly GetAllModels: () => Effect.Effect<
-		readonly TextModel[],
-		ModelProblem
+	readonly GetAllModels: () => Promise<
+		readonly TextModel[]
 	>;
 
 	/**
@@ -61,5 +58,5 @@ export interface ModelService {
 		uri: string,
 
 		content: string,
-	) => Effect.Effect<TextModel, ModelProblem>;
+	) => Promise<TextModel>;
 }

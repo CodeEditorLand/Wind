@@ -1,24 +1,22 @@
-import { Effect } from "effect";
-
 import type { ModelService } from "../Interface/ModelService.js";
 
 export const StubModelService: ModelService = {
 	OpenModel: (uri) =>
-		Effect.succeed({
+		Promise.resolve({
 			uri,
 			content: "",
 			version: 1,
 			languageId: "plaintext",
 		}),
 
-	CloseModel: (_uri) => Effect.void,
+	CloseModel: (_uri) => Promise.resolve(),
 
-	GetModel: (_uri) => Effect.succeed(null),
+	GetModel: (_uri) => Promise.resolve(null),
 
-	GetAllModels: () => Effect.succeed([]),
+	GetAllModels: () => Promise.resolve([]),
 
 	UpdateContent: (uri, content) =>
-		Effect.succeed({
+		Promise.resolve({
 			uri,
 			content,
 			version: 1,

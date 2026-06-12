@@ -19,11 +19,8 @@ export type {
 // Service interface
 export type { StatusBarService } from "./Interface/StatusBarService.js";
 
-// Tag
-export { default as StatusBarTag, StatusBar } from "./Tag/StatusBarTag.js";
-
 // Layers
-export { default as StatusBarLive } from "./Layer/StatusBarLive.js";
+export { default as LiveStatusBarService } from "./Layer/StatusBarLive.js";
 
 export { default as StatusBarMockLive } from "./Layer/StatusBarMock.js";
 

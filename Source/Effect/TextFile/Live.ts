@@ -12,12 +12,9 @@
  *   workingCopy:isDirty     → per-URI dirty check
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type { TextFileService } from "./Interface/TextFileService.js";
-import { TextFileServiceTag } from "./Tag/TextFileServiceTag.js";
 import type { TextFileProblem } from "./Type/TextFileProblem.js";
 
 const UriToPath = (uri: string): string =>
@@ -32,78 +29,66 @@ function makeLiveTextFileService(): TextFileService {
 	const IPCService = TauriIPCLive;
 
 	const Service: TextFileService = {
-		Read: (uri) =>
-			IPCService.invoke(Channel.TextFileRead)([UriToPath(uri)]).pipe(
-				Effect.map((Result) =>
-					typeof Result === "string" ? Result : String(Result),
-				),
+		Read: async (uri) => {
+			try {
+				const Result = await IPCService.invoke(Channel.TextFileRead)([UriToPath(uri)]);
+				return typeof Result === "string" ? Result : String(Result);
+			} catch (error) {
+				throw MakeTextFileProblem(error);
+			}
+		},
 
-				Effect.mapError(MakeTextFileProblem),
-			),
+		Write: async (uri, content) => {
+			try {
+				await IPCService.invoke(Channel.TextFileWrite)([UriToPath(uri), content]);
+			} catch (error) {
+				throw MakeTextFileProblem(error);
+			}
+		},
 
-		Write: (uri, content) =>
-			IPCService.invoke(Channel.TextFileWrite)([
-				UriToPath(uri),
+		Save: async (uri) => {
+			try {
+				await IPCService.invoke(Channel.TextFileSave)([UriToPath(uri)]);
+			} catch (error) {
+				throw MakeTextFileProblem(error);
+			}
+		},
 
-				content,
-			]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeTextFileProblem),
-			),
-
-		Save: (uri) =>
-			IPCService.invoke(Channel.TextFileSave)([UriToPath(uri)]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeTextFileProblem),
-			),
-
-		SaveAll: () =>
-			IPCService.invoke(Channel.WorkingCopyGetAllDirty)([]).pipe(
-				Effect.map((Result) =>
-					Array.isArray(Result) ? (Result as readonly string[]) : [],
-				),
-
-				Effect.flatMap((DirtyUris) =>
-					Effect.all(
-						DirtyUris.map((DirtyUri) =>
-							IPCService.invoke(Channel.TextFileSave)([
-								UriToPath(DirtyUri),
-							]),
-						),
-
-						{ concurrency: "unbounded" },
+		SaveAll: async () => {
+			try {
+				const Result = await IPCService.invoke(Channel.WorkingCopyGetAllDirty)([]);
+				const DirtyUris = Array.isArray(Result) ? (Result as readonly string[]) : [];
+				await Promise.all(
+					DirtyUris.map((DirtyUri) =>
+						IPCService.invoke(Channel.TextFileSave)([UriToPath(DirtyUri)]),
 					),
-				),
+				);
+			} catch (error) {
+				throw MakeTextFileProblem(error);
+			}
+		},
 
-				Effect.map(() => undefined as void),
+		IsDirty: async (uri) => {
+			try {
+				const Result = await IPCService.invoke(Channel.WorkingCopyIsDirty)([uri]);
+				return Result === true;
+			} catch (error) {
+				throw MakeTextFileProblem(error);
+			}
+		},
 
-				Effect.mapError(MakeTextFileProblem),
-			),
-
-		IsDirty: (uri) =>
-			IPCService.invoke(Channel.WorkingCopyIsDirty)([uri]).pipe(
-				Effect.map((Result) => Result === true),
-
-				Effect.mapError(MakeTextFileProblem),
-			),
-
-		Revert: (uri) =>
-			IPCService.invoke(Channel.TextFileRead)([UriToPath(uri)]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeTextFileProblem),
-			),
+		Revert: async (uri) => {
+			try {
+				await IPCService.invoke(Channel.TextFileRead)([UriToPath(uri)]);
+			} catch (error) {
+				throw MakeTextFileProblem(error);
+			}
+		},
 	};
 
 	return Service;
 }
 
-export const LiveTextFileServiceLayer = Layer.succeed(
-	TextFileServiceTag,
+export const LiveTextFileService = makeLiveTextFileService();
 
-	makeLiveTextFileService(),
-);
-
-export default LiveTextFileServiceLayer;
+export default LiveTextFileService;

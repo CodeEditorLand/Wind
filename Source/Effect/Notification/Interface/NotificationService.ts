@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { NotificationProblem } from "../Type/NotificationProblem.js";
 
 export type NotificationSeverity = "info" | "warning" | "error";
@@ -15,13 +13,13 @@ export interface NotificationService {
 		severity: NotificationSeverity,
 
 		actions?: readonly NotificationAction[],
-	) => Effect.Effect<string | undefined, NotificationProblem>;
+	) => Promise<string | undefined>;
 
 	readonly ShowProgress: (
 		title: string,
 
 		cancellable: boolean,
-	) => Effect.Effect<string, NotificationProblem>;
+	) => Promise<string>;
 
 	readonly UpdateProgress: (
 		id: string,
@@ -29,9 +27,9 @@ export interface NotificationService {
 		increment: number,
 
 		message?: string,
-	) => Effect.Effect<void, NotificationProblem>;
+	) => Promise<void>;
 
 	readonly EndProgress: (
 		id: string,
-	) => Effect.Effect<void, NotificationProblem>;
+	) => Promise<void>;
 }

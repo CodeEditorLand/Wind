@@ -5,13 +5,8 @@ export type {
 	WorkspaceFolder,
 } from "./Interface/WorkspacesService.js";
 
-export {
-	WorkspacesServiceTag,
-	Workspaces,
-} from "./Tag/WorkspacesServiceTag.js";
-
 export { StubWorkspacesService } from "./Implementation/WorkspacesStub.js";
 
-export { default as LiveWorkspacesServiceLayer } from "./Live.js";
+export { default as LiveWorkspacesService } from "./Live.js";
 
-export { default as MockWorkspacesServiceLayer } from "./Mock.js";
+export { default as MockWorkspacesService } from "./Mock.js";

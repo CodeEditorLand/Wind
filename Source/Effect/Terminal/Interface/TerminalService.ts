@@ -1,5 +1,3 @@
-import type { Effect, Stream } from "effect";
-
 import type { TerminalProblem } from "../Type/TerminalProblem.js";
 
 /**
@@ -15,24 +13,23 @@ export interface TerminalService {
 		readonly shellArgs?: readonly string[];
 
 		readonly cwd?: string;
-	}) => Effect.Effect<
-		{ readonly id: number; readonly name: string },
-		TerminalProblem
+	}) => Promise<
+		{ readonly id: number; readonly name: string }
 	>;
 
 	readonly SendText: (
 		id: number,
 
 		text: string,
-	) => Effect.Effect<void, TerminalProblem>;
+	) => Promise<void>;
 
-	readonly Dispose: (id: number) => Effect.Effect<void, TerminalProblem>;
+	readonly Dispose: (id: number) => Promise<void>;
 
 	readonly Show: (
 		id: number,
 
 		preserveFocus?: boolean,
-	) => Effect.Effect<void, TerminalProblem>;
+	) => Promise<void>;
 
-	readonly Hide: (id: number) => Effect.Effect<void, TerminalProblem>;
+	readonly Hide: (id: number) => Promise<void>;
 }

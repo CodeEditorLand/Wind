@@ -7,10 +7,7 @@
  * @category Implementation
  */
 
-import { Effect } from "effect";
-
 import type { ClipboardService } from "../Interface/ClipboardService.js";
-import type { ClipboardProblem } from "../Type/ClipboardProblem.js";
 import {
 	CreateFormatNotSupportedError,
 	CreateNotAvailableError,
@@ -27,46 +24,42 @@ import {
  * Uses the browser's Clipboard API
  */
 export const LiveBrowserClipboardService: ClipboardService = {
-	readText: () =>
-		Effect.tryPromise({
-			try: async () => {
-				if (typeof navigator === "undefined" || !navigator.clipboard) {
-					throw CreateNotAvailableError(
-						"Clipboard API not available in this environment",
-					);
-				}
+	readText: () => {
+		if (typeof navigator === "undefined" || !navigator.clipboard) {
+			throw CreateNotAvailableError(
+				"Clipboard API not available in this environment",
+			);
+		}
 
-				return await navigator.clipboard.readText();
-			},
-			catch: (error) => CreateReadError(error as Error),
-		}),
+		throw CreateReadError(
+			new Error("readText is async — use LiveBrowserClipboardAsync"),
+		);
+	},
 
-	writeText: (text: string) =>
-		Effect.tryPromise({
-			try: async () => {
-				if (typeof navigator === "undefined" || !navigator.clipboard) {
-					throw CreateNotAvailableError(
-						"Clipboard API not available in this environment",
-					);
-				}
+	writeText: (text: string) => {
+		if (typeof navigator === "undefined" || !navigator.clipboard) {
+			throw CreateNotAvailableError(
+				"Clipboard API not available in this environment",
+			);
+		}
 
-				await navigator.clipboard.writeText(text);
-			},
-			catch: (error) => CreateWriteError(error as Error),
-		}),
+		void navigator.clipboard.writeText(text).catch((error) => {
+			throw CreateWriteError(error as Error);
+		});
+	},
 
 	// Placeholder implementations for remaining methods
-	readHTML: () => Effect.fail(CreateFormatNotSupportedError("HTML")),
+	readHTML: () => { throw CreateFormatNotSupportedError("HTML"); },
 
-	writeHTML: () => Effect.fail(CreateFormatNotSupportedError("HTML")),
+	writeHTML: () => { throw CreateFormatNotSupportedError("HTML"); },
 
-	readImage: () => Effect.fail(CreateFormatNotSupportedError("Image")),
+	readImage: () => { throw CreateFormatNotSupportedError("Image"); },
 
-	writeImage: () => Effect.fail(CreateFormatNotSupportedError("Image")),
+	writeImage: () => { throw CreateFormatNotSupportedError("Image"); },
 
-	hasText: () => Effect.succeed(false),
+	hasText: () => false,
 
-	clear: () => Effect.void,
+	clear: () => {},
 };
 
 export default LiveBrowserClipboardService;

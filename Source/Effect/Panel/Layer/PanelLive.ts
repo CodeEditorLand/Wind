@@ -5,12 +5,9 @@
  * @category Layer
  */
 
-import { Effect, Either, Layer, Stream } from "effect";
-
 import PanelUpdateError from "../Error/PanelUpdateError.js";
 import PanelViewNotFoundError from "../Error/PanelViewNotFoundError.js";
 import type { PanelService } from "../Interface/PanelService.js";
-import PanelTag from "../Tag/PanelTag.js";
 import type {
 	CreatePanelView,
 	PanelView,
@@ -26,69 +23,52 @@ function makePanelService(): PanelService {
 
 	const _activeListeners: ((v: string | undefined) => void)[] = [];
 
-	const GetView = (Id: string): Effect.Effect<PanelView | undefined> =>
-		Effect.succeed(_views.find((v) => v.id === Id));
+	const GetView = (Id: string): PanelView | undefined =>
+		_views.find((v) => v.id === Id);
 
-	const Views = Effect.suspend(() => Effect.succeed(_views));
+	const Views: ReadonlyArray<PanelView> = _views;
 
-	const ViewsChanges: Stream.Stream<ReadonlyArray<PanelView>> =
-		Stream.asyncInterrupt<ReadonlyArray<PanelView>>((emit) => {
-			const fn = (v: ReadonlyArray<PanelView>) => emit.single(v);
+	const OnViewsChanges = (listener: (views: ReadonlyArray<PanelView>) => void): (() => void) => {
+		_viewsListeners.push(listener);
+		return () => {
+			const i = _viewsListeners.indexOf(listener);
+			if (i >= 0) _viewsListeners.splice(i, 1);
+		};
+	};
 
-			_viewsListeners.push(fn);
+	const OnActiveViewChanges = (listener: (id: string | undefined) => void): (() => void) => {
+		_activeListeners.push(listener);
+		return () => {
+			const i = _activeListeners.indexOf(listener);
+			if (i >= 0) _activeListeners.splice(i, 1);
+		};
+	};
 
-			return Either.left(
-				Effect.sync(() => {
-					const i = _viewsListeners.indexOf(fn);
+	const GetActiveView: string | undefined = _activeView;
 
-					if (i >= 0) _viewsListeners.splice(i, 1);
-				}),
-			);
-		});
+	const CreateView = (View: CreatePanelView): PanelView => {
+		const Id = `panel-${Date.now()}-${Math.random()
+			.toString(36)
+			.substring(2, 9)}`;
 
-	const ActiveViewChanges: Stream.Stream<string | undefined> =
-		Stream.asyncInterrupt<string | undefined>((emit) => {
-			const fn = (v: string | undefined) => emit.single(v);
+		const NewView: PanelView = { ...View, id: Id };
 
-			_activeListeners.push(fn);
+		_views = [..._views, NewView].sort(
+			(a, b) => a.priority - b.priority,
+		);
 
-			return Either.left(
-				Effect.sync(() => {
-					const i = _activeListeners.indexOf(fn);
+		_viewsListeners.forEach((fn) => fn(_views));
 
-					if (i >= 0) _activeListeners.splice(i, 1);
-				}),
-			);
-		});
-
-	const GetActiveView: Effect.Effect<string | undefined> = Effect.suspend(
-		() => Effect.succeed(_activeView),
-	);
-
-	const CreateView = (View: CreatePanelView): Effect.Effect<PanelView> =>
-		Effect.sync(() => {
-			const Id = `panel-${Date.now()}-${Math.random()
-				.toString(36)
-				.substring(2, 9)}`;
-
-			const NewView: PanelView = { ...View, id: Id };
-
-			_views = [..._views, NewView].sort(
-				(a, b) => a.priority - b.priority,
-			);
-
-			_viewsListeners.forEach((fn) => fn(_views));
-
-			return NewView;
-		});
+		return NewView;
+	};
 
 	const UpdateView = (
 		Id: string,
 
 		updates: Partial<Omit<PanelView, "id">>,
-	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> => {
+	): void => {
 		if (!_views.find((v) => v.id === Id))
-			return Effect.fail(new PanelViewNotFoundError(Id));
+			throw new PanelViewNotFoundError(Id);
 
 		try {
 			_views = _views
@@ -96,18 +76,16 @@ function makePanelService(): PanelService {
 				.sort((a, b) => a.priority - b.priority);
 
 			_viewsListeners.forEach((fn) => fn(_views));
-
-			return Effect.void;
 		} catch (error) {
-			return Effect.fail(new PanelUpdateError(Id, error));
+			throw new PanelUpdateError(Id, error);
 		}
 	};
 
 	const RemoveView = (
 		Id: string,
-	): Effect.Effect<void, PanelViewNotFoundError> => {
+	): void => {
 		if (!_views.find((v) => v.id === Id))
-			return Effect.fail(new PanelViewNotFoundError(Id));
+			throw new PanelViewNotFoundError(Id);
 
 		_views = _views.filter((v) => v.id !== Id);
 
@@ -118,15 +96,13 @@ function makePanelService(): PanelService {
 		}
 
 		_viewsListeners.forEach((fn) => fn(_views));
-
-		return Effect.void;
 	};
 
 	const SetActiveView = (
 		Id: string,
-	): Effect.Effect<void, PanelViewNotFoundError> => {
+	): void => {
 		if (!_views.find((v) => v.id === Id))
-			return Effect.fail(new PanelViewNotFoundError(Id));
+			throw new PanelViewNotFoundError(Id);
 
 		_views = _views.map((v) =>
 			v.id === Id ? { ...v, visible: true, maximized: false } : v,
@@ -137,56 +113,50 @@ function makePanelService(): PanelService {
 		_activeListeners.forEach((fn) => fn(Id));
 
 		_viewsListeners.forEach((fn) => fn(_views));
-
-		return Effect.void;
 	};
 
 	const ShowView = (
 		Id: string,
-	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
+	): void =>
 		UpdateView(Id, { visible: true });
 
 	const HideView = (
 		Id: string,
-	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
+	): void =>
 		UpdateView(Id, { visible: false });
 
 	const ToggleView = (
 		Id: string,
-	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> => {
+	): void => {
 		const existing = _views.find((v) => v.id === Id);
 
-		if (!existing) return Effect.fail(new PanelViewNotFoundError(Id));
+		if (!existing) throw new PanelViewNotFoundError(Id);
 
-		return UpdateView(Id, { visible: !existing.visible });
+		UpdateView(Id, { visible: !existing.visible });
 	};
 
 	const MaximizeView = (
 		Id: string,
-	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> => {
+	): void => {
 		if (!_views.find((v) => v.id === Id))
-			return Effect.fail(new PanelViewNotFoundError(Id));
+			throw new PanelViewNotFoundError(Id);
 
 		_views = _views.map((v) => ({ ...v, maximized: v.id === Id }));
-
-		return Effect.void;
 	};
 
 	const RestoreView = (
 		Id: string,
-	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> =>
+	): void =>
 		UpdateView(Id, { maximized: false });
 
 	const GetViewsByType = (
 		Type: PanelViewType,
-	): Effect.Effect<ReadonlyArray<PanelView>> =>
-		Effect.succeed(_views.filter((v) => v.type === Type));
+	): ReadonlyArray<PanelView> =>
+		_views.filter((v) => v.type === Type);
 
-	const GetVisibleViews: Effect.Effect<ReadonlyArray<PanelView>> =
-		Effect.suspend(() => Effect.succeed(_views.filter((v) => v.visible)));
+	const GetVisibleViews: ReadonlyArray<PanelView> = _views.filter((v) => v.visible);
 
-	const GetMaximizedView: Effect.Effect<PanelView | undefined> =
-		Effect.suspend(() => Effect.succeed(_views.find((v) => v.maximized)));
+	const GetMaximizedView: PanelView | undefined = _views.find((v) => v.maximized);
 
 	return {
 		createView: CreateView,
@@ -199,13 +169,13 @@ function makePanelService(): PanelService {
 
 		views: Views,
 
-		viewsChanges: ViewsChanges,
+		onViewsChanges: OnViewsChanges,
 
 		setActiveView: SetActiveView,
 
 		getActiveView: GetActiveView,
 
-		activeViewChanges: ActiveViewChanges,
+		onActiveViewChanges: OnActiveViewChanges,
 
 		showView: ShowView,
 
@@ -225,6 +195,6 @@ function makePanelService(): PanelService {
 	} satisfies PanelService;
 }
 
-const PanelLive = Layer.succeed(PanelTag, makePanelService());
+export const LivePanelService = makePanelService();
 
-export default PanelLive;
+export default LivePanelService;

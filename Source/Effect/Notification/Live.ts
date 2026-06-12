@@ -12,12 +12,9 @@
  *   notification:endProgress     → sky://ui/show-progress-end
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type { NotificationService } from "./Interface/NotificationService.js";
-import { NotificationServiceTag } from "./Tag/NotificationServiceTag.js";
 import type { NotificationProblem } from "./Type/NotificationProblem.js";
 
 const MakeNotificationProblem = (error: unknown): NotificationProblem =>
@@ -25,7 +22,6 @@ const MakeNotificationProblem = (error: unknown): NotificationProblem =>
 		? { _tag: "NotificationOperationFailed", error }
 		: {
 				_tag: "NotificationOperationFailed",
-
 				error: new Error(String(error)),
 			};
 
@@ -33,64 +29,57 @@ function makeNotificationService(): NotificationService {
 	const IPCService = TauriIPCLive;
 
 	const Service: NotificationService = {
-		Show: (message, severity, actions) =>
-			IPCService.invoke(Channel.NotificationShow)([
-				message,
+		Show: async (message, severity, actions) => {
+			try {
+				const Result = await IPCService.invoke(Channel.NotificationShow)([
+					message,
+					severity,
+					actions ?? [],
+				]);
+				return typeof Result === "string" ? Result : undefined;
+			} catch (error) {
+				throw MakeNotificationProblem(error);
+			}
+		},
 
-				severity,
+		ShowProgress: async (title, cancellable) => {
+			try {
+				const Result = await IPCService.invoke(Channel.NotificationShowProgress)([
+					title,
+					cancellable,
+				]);
+				return typeof Result === "string"
+					? Result
+					: `progress-${Date.now()}`;
+			} catch (error) {
+				throw MakeNotificationProblem(error);
+			}
+		},
 
-				actions ?? [],
-			]).pipe(
-				Effect.map((Result) =>
-					typeof Result === "string" ? Result : undefined,
-				),
+		UpdateProgress: async (id, increment, message) => {
+			try {
+				await IPCService.invoke(Channel.NotificationUpdateProgress)([
+					id,
+					increment,
+					message ?? "",
+				]);
+			} catch (error) {
+				throw MakeNotificationProblem(error);
+			}
+		},
 
-				Effect.mapError(MakeNotificationProblem),
-			),
-
-		ShowProgress: (title, cancellable) =>
-			IPCService.invoke(Channel.NotificationShowProgress)([
-				title,
-
-				cancellable,
-			]).pipe(
-				Effect.map((Result) =>
-					typeof Result === "string"
-						? Result
-						: `progress-${Date.now()}`,
-				),
-
-				Effect.mapError(MakeNotificationProblem),
-			),
-
-		UpdateProgress: (id, increment, message) =>
-			IPCService.invoke(Channel.NotificationUpdateProgress)([
-				id,
-
-				increment,
-
-				message ?? "",
-			]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeNotificationProblem),
-			),
-
-		EndProgress: (id) =>
-			IPCService.invoke(Channel.NotificationEndProgress)([id]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeNotificationProblem),
-			),
+		EndProgress: async (id) => {
+			try {
+				await IPCService.invoke(Channel.NotificationEndProgress)([id]);
+			} catch (error) {
+				throw MakeNotificationProblem(error);
+			}
+		},
 	};
 
 	return Service;
 }
 
-export const LiveNotificationServiceLayer = Layer.succeed(
-	NotificationServiceTag,
+export const LiveNotificationService = makeNotificationService();
 
-	makeNotificationService(),
-);
-
-export default LiveNotificationServiceLayer;
+export default LiveNotificationService;

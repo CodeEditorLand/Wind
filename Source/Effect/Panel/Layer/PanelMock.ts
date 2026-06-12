@@ -8,10 +8,7 @@
  * @category Layer
  */
 
-import { Effect, Layer, Stream } from "effect";
-
 import type { PanelService } from "../Interface/PanelService.js";
-import PanelTag from "../Tag/PanelTag.js";
 import type {
 	CreatePanelView,
 	PanelView,
@@ -25,43 +22,33 @@ import type {
  * @returns Mock Panel service instance
  */
 const makeMockPanel = (): PanelService => ({
-	createView: (view: CreatePanelView) =>
-		Effect.succeed({
-			...view,
-			id: `mock-panel-${Date.now()}`,
-		}),
-	updateView: (_id: string, _updates: Partial<Omit<PanelView, "id">>) =>
-		Effect.void,
-	removeView: (_id: string) => Effect.void,
-	getView: (_id: string) => Effect.succeed(undefined),
-	views: Effect.succeed([]),
-	viewsChanges: Stream.empty,
-	setActiveView: (_id: string) => Effect.void,
-	getActiveView: Effect.succeed(undefined),
-	activeViewChanges: Stream.empty,
-	showView: (_id: string) => Effect.void,
-	hideView: (_id: string) => Effect.void,
-	toggleView: (_id: string) => Effect.void,
-	maximizeView: (_id: string) => Effect.void,
-	restoreView: (_id: string) => Effect.void,
-	getViewsByType: (_type: PanelViewType) => Effect.succeed([]),
-	getVisibleViews: Effect.succeed([]),
-	getMaximizedView: Effect.succeed(undefined),
+	createView: (view: CreatePanelView) => ({
+		...view,
+		id: `mock-panel-${Date.now()}`,
+	}),
+	updateView: (_id: string, _updates: Partial<Omit<PanelView, "id">>) => {},
+	removeView: (_id: string) => {},
+	getView: (_id: string) => undefined,
+	views: [],
+	onViewsChanges: (_listener) => () => {},
+	setActiveView: (_id: string) => {},
+	getActiveView: undefined,
+	onActiveViewChanges: (_listener) => () => {},
+	showView: (_id: string) => {},
+	hideView: (_id: string) => {},
+	toggleView: (_id: string) => {},
+	maximizeView: (_id: string) => {},
+	restoreView: (_id: string) => {},
+	getViewsByType: (_type: PanelViewType) => [],
+	getVisibleViews: [],
+	getMaximizedView: undefined,
 });
 
 /**
- * Mock layer for Panel service.
+ * Mock instance for Panel service.
  * Provides a no-op implementation for testing without dependencies.
- *
- * @example
- * ```ts
- * import { Layer } from "effect";
- * import { PanelMockLive } from "./Effect/Panel/Layer/PanelMock.js";
- *
- * const testLayer = PanelMockLive;
- * ```
  */
-const PanelMockLive = Layer.succeed(PanelTag, makeMockPanel());
+const PanelMockLive = makeMockPanel();
 
 export default PanelMockLive;
 

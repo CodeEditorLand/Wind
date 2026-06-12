@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { ThemesProblem } from "../Type/ThemesProblem.js";
 
 export type ColorThemeKind =
@@ -17,12 +15,9 @@ export interface ColorTheme {
 }
 
 export interface ThemesService {
-	readonly GetActiveTheme: () => Effect.Effect<ColorTheme, ThemesProblem>;
+	readonly GetActiveTheme: () => ColorTheme;
 
-	readonly ListThemes: () => Effect.Effect<
-		readonly ColorTheme[],
-		ThemesProblem
-	>;
+	readonly ListThemes: () => readonly ColorTheme[];
 
-	readonly SetTheme: (themeId: string) => Effect.Effect<void, ThemesProblem>;
+	readonly SetTheme: (themeId: string) => void;
 }

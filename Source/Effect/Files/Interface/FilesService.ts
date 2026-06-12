@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { FilesProblem } from "../Type/FilesProblem.js";
 
 /**
@@ -7,38 +5,37 @@ import type { FilesProblem } from "../Type/FilesProblem.js";
  * Microsoft VSCode Reference: IFileService from vs/platform/files/common/files.ts
  */
 export interface FilesService {
-	readonly ReadFile: (uri: string) => Effect.Effect<Uint8Array, FilesProblem>;
+	readonly ReadFile: (uri: string) => Promise<Uint8Array>;
 
 	readonly WriteFile: (
 		uri: string,
 
 		content: Uint8Array,
-	) => Effect.Effect<void, FilesProblem>;
+	) => Promise<void>;
 
-	readonly Stat: (uri: string) => Effect.Effect<
+	readonly Stat: (uri: string) => Promise<
 		{
 			readonly type: number;
 
 			readonly size: number;
 
 			readonly mtime: number;
-		},
-		FilesProblem
+		}
 	>;
 
 	readonly ReadDir: (
 		uri: string,
-	) => Effect.Effect<readonly [string, number][], FilesProblem>;
+	) => Promise<readonly [string, number][]>;
 
 	readonly CreateDirectory: (
 		uri: string,
-	) => Effect.Effect<void, FilesProblem>;
+	) => Promise<void>;
 
 	readonly Delete: (
 		uri: string,
 
 		options?: { readonly recursive?: boolean },
-	) => Effect.Effect<void, FilesProblem>;
+	) => Promise<void>;
 
 	readonly Rename: (
 		source: string,
@@ -46,7 +43,7 @@ export interface FilesService {
 		target: string,
 
 		options?: { readonly overwrite?: boolean },
-	) => Effect.Effect<void, FilesProblem>;
+	) => Promise<void>;
 
 	readonly Copy: (
 		source: string,
@@ -54,13 +51,13 @@ export interface FilesService {
 		target: string,
 
 		options?: { readonly overwrite?: boolean },
-	) => Effect.Effect<void, FilesProblem>;
+	) => Promise<void>;
 
-	readonly Exists: (uri: string) => Effect.Effect<boolean, FilesProblem>;
+	readonly Exists: (uri: string) => Promise<boolean>;
 
 	readonly Watch: (
 		uri: string,
-	) => Effect.Effect<{ readonly dispose: () => void }, FilesProblem>;
+	) => Promise<{ readonly dispose: () => void }>;
 
 	/** Show a native file-open dialog. Returns selected URIs or empty array. */
 	readonly ShowOpenDialog: (options?: {
@@ -75,7 +72,7 @@ export interface FilesService {
 		readonly canSelectMany?: boolean;
 
 		readonly canSelectFolders?: boolean;
-	}) => Effect.Effect<readonly string[], FilesProblem>;
+	}) => Promise<readonly string[]>;
 
 	/** Show a native file-save dialog. Returns selected URI or undefined. */
 	readonly ShowSaveDialog: (options?: {
@@ -88,5 +85,5 @@ export interface FilesService {
 
 			readonly extensions: ReadonlyArray<string>;
 		}>;
-	}) => Effect.Effect<string | undefined, FilesProblem>;
+	}) => Promise<string | undefined>;
 }

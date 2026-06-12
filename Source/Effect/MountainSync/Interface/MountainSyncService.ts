@@ -4,12 +4,9 @@
  * Service interface for Mountain-Wind synchronization.
  * Provides methods to control background sync operations between Mountain and Wind.
  * @see {@link Effect/MountainSync/Type/MountainSyncType} Type definitions
- * @see {@link Effect/MountainSync/Tag/MountainSyncTag} Service tag
  * @see {@link Effect/MountainSync/Implementation/MountainSyncImplementation} Implementation
  * @category Interface
  */
-
-import type { Effect } from "effect";
 
 import type {
 	MountainSyncResult,
@@ -24,25 +21,25 @@ import type {
  */
 export interface MountainSyncService {
 	/** Start automatic synchronization with optional configuration overrides */
-	readonly start: (config?: Partial<SyncConfig>) => Effect.Effect<void>;
+	readonly start: (config?: Partial<SyncConfig>) => Promise<void>;
 
 	/** Stop the background synchronization process */
-	readonly stop: () => Effect.Effect<void>;
+	readonly stop: () => Promise<void>;
 
 	/** Perform an immediate synchronization operation on demand */
-	readonly syncNow: () => Effect.Effect<MountainSyncResult>;
+	readonly syncNow: () => Promise<MountainSyncResult>;
 
 	/** Get the current synchronization status */
-	readonly getStatus: () => Effect.Effect<
+	readonly getStatus: () => Promise<
 		"idle" | "syncing" | "paused" | "error"
 	>;
 
 	/** Get synchronization statistics and metrics */
-	readonly getStats: () => Effect.Effect<SyncStats>;
+	readonly getStats: () => Promise<SyncStats>;
 
 	/** Pause the background synchronization process */
-	readonly pause: () => Effect.Effect<void>;
+	readonly pause: () => Promise<void>;
 
 	/** Resume a paused background synchronization process */
-	readonly resume: () => Effect.Effect<void>;
+	readonly resume: () => Promise<void>;
 }

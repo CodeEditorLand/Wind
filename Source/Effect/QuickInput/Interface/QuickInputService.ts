@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { QuickInputProblem } from "../Type/QuickInputProblem.js";
 
 export interface QuickPickItem {
@@ -37,9 +35,9 @@ export interface QuickInputService {
 		items: readonly QuickPickItem[],
 
 		options?: QuickPickOptions,
-	) => Effect.Effect<QuickPickItem | undefined, QuickInputProblem>;
+	) => Promise<QuickPickItem | undefined>;
 
 	readonly ShowInputBox: (
 		options?: InputBoxOptions,
-	) => Effect.Effect<string | undefined, QuickInputProblem>;
+	) => Promise<string | undefined>;
 }

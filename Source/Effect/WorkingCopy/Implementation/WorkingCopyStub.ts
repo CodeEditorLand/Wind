@@ -1,15 +1,13 @@
-import { Effect } from "effect";
-
 import type { WorkingCopyService } from "../Interface/WorkingCopyService.js";
 
 export const StubWorkingCopyService: WorkingCopyService = {
-	IsDirty: (_uri) => Effect.succeed(false),
+	IsDirty: (_uri) => false,
 
-	SetDirty: (_uri, _dirty) => Effect.void,
+	SetDirty: (_uri, _dirty) => {},
 
-	GetAllDirty: () => Effect.succeed([]),
+	GetAllDirty: () => [],
 
-	GetDirtyCount: () => Effect.succeed(0),
+	GetDirtyCount: () => 0,
 };
 
 export default StubWorkingCopyService;

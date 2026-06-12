@@ -12,12 +12,9 @@
  *   model:updateContent → update content and increment version
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type { ModelService, TextModel } from "./Interface/ModelService.js";
-import { ModelServiceTag } from "./Tag/ModelServiceTag.js";
 import type { ModelProblem } from "./Type/ModelProblem.js";
 
 const MakeModelProblem = (error: unknown): ModelProblem => ({
@@ -52,82 +49,56 @@ function makeModelService(): ModelService {
 	const IPCService = TauriIPCLive;
 
 	const Service: ModelService = {
-		OpenModel: (uri) =>
-			IPCService.invoke(Channel.ModelOpen)([uri]).pipe(
-				Effect.mapError(MakeModelProblem),
+		OpenModel: async (uri) => {
+			const Result = await IPCService.invoke(Channel.ModelOpen)([uri]);
+			const Parsed = ParseTextModel(Result);
 
-				Effect.flatMap((Result) => {
-					const Parsed = ParseTextModel(Result);
+			if (!Parsed) {
+				throw MakeModelProblem(
+					new Error(`model:open returned invalid shape for ${uri}`),
+				);
+			}
 
-					return Parsed
-						? Effect.succeed(Parsed)
-						: Effect.fail({
-								_tag: "ModelOperationFailed" as const,
-								error: new Error(
-									`model:open returned invalid shape for ${uri}`,
-								),
-							} satisfies ModelProblem);
-				}),
-			),
+			return Parsed;
+		},
 
-		CloseModel: (uri) =>
-			IPCService.invoke(Channel.ModelClose)([uri]).pipe(
-				Effect.map(() => undefined as void),
+		CloseModel: async (uri) => {
+			await IPCService.invoke(Channel.ModelClose)([uri]);
+		},
 
-				Effect.mapError(MakeModelProblem),
-			),
+		GetModel: async (uri) => {
+			const Result = await IPCService.invoke(Channel.ModelGet)([uri]);
+			return ParseTextModel(Result);
+		},
 
-		GetModel: (uri) =>
-			IPCService.invoke(Channel.ModelGet)([uri]).pipe(
-				Effect.map((Result) => ParseTextModel(Result)),
+		GetAllModels: async () => {
+			const Result = await IPCService.invoke(Channel.ModelGetAll)([]);
 
-				Effect.mapError(MakeModelProblem),
-			),
+			if (!Array.isArray(Result)) return [];
 
-		GetAllModels: () =>
-			IPCService.invoke(Channel.ModelGetAll)([]).pipe(
-				Effect.map((Result) => {
-					if (!Array.isArray(Result))
-						return [] as readonly TextModel[];
+			return Result.flatMap((Item) => {
+				const Parsed = ParseTextModel(Item);
+				return Parsed ? [Parsed] : [];
+			});
+		},
 
-					return Result.flatMap((Item) => {
-						const Parsed = ParseTextModel(Item);
+		UpdateContent: async (uri, content) => {
+			const Result = await IPCService.invoke(Channel.ModelUpdateContent)([uri, content]);
+			const Parsed = ParseTextModel(Result);
 
-						return Parsed ? [Parsed] : [];
-					}) as readonly TextModel[];
-				}),
+			if (!Parsed) {
+				throw MakeModelProblem(
+					new Error(`model:updateContent returned invalid shape for ${uri}`),
+				);
+			}
 
-				Effect.mapError(MakeModelProblem),
-			),
-
-		UpdateContent: (uri, content) =>
-			IPCService.invoke(Channel.ModelUpdateContent)([uri, content]).pipe(
-				Effect.mapError(MakeModelProblem),
-
-				Effect.flatMap((Result) => {
-					const Parsed = ParseTextModel(Result);
-
-					return Parsed
-						? Effect.succeed(Parsed)
-						: Effect.fail({
-								_tag: "ModelOperationFailed" as const,
-								error: new Error(
-									`model:updateContent returned invalid shape for ${uri}`,
-								),
-							} satisfies ModelProblem);
-				}),
-			),
+			return Parsed;
+		},
 	};
 
 	return Service;
 }
 
-export const ModelServiceInstance = makeModelService();
+export const LiveModelService = makeModelService();
 
-export const LiveModelServiceLayer = Layer.succeed(
-	ModelServiceTag,
-
-	ModelServiceInstance,
-);
-
-export default LiveModelServiceLayer;
+export default LiveModelService;

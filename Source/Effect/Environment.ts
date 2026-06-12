@@ -6,20 +6,13 @@
  *
  * @see {@link Effect/Environment/Interface/EnvironmentService} Service interface
  * @see {@link Effect/Environment/Implementation/EnvironmentImplementation} Live implementation
- * @see {@link Effect/Environment/Tag/EnvironmentTag} Service tag
  * @category Service
  * @example
  * ```typescript
- * import Environment from "./Effect/Environment.js";
- * import { Effect } from "effect";
+ * import { LiveEnvironmentService } from "./Effect/Environment.js";
  *
- * const program = Effect.gen(function* () {
- *   const env = yield* Environment.EnvironmentTag;
- *   const info = yield* env.getInfo;
- *   console.log("Platform:", info.platform);
- * });
- *
- * Effect.runPromise(program.pipe(Effect.provide(Environment)));
+ * const env = LiveEnvironmentService;
+ * console.log("Platform:", env.getPlatform);
  * ```
  */
 
@@ -27,22 +20,18 @@
 // Re-exports from atomic modules
 // ============================================================================
 
-import EnvironmentLive, {
-	EnvironmentMock,
-	EnvironmentTag as EnvTag,
+import {
+	LiveEnvironmentService,
+	MockEnvironmentService,
 	makeMockEnvironment,
 } from "./Environment/index.js";
 
 // Export as default and named for backward compatibility
 export {
-	default,
-	EnvironmentMock,
+	LiveEnvironmentService as EnvironmentLive,
+	MockEnvironmentService as EnvironmentMock,
 	makeMockEnvironment,
-	EnvironmentTag,
 } from "./Environment/index.js";
-
-// Export EnvironmentLive as named export for backward compatibility
-export { EnvironmentLive };
 
 // Re-export types
 export type {
@@ -61,7 +50,7 @@ export {
 	GetUserAgent,
 } from "./Environment/index.js";
 
-// Backward compatibility - re-export as Environment
-export const Environment = EnvTag;
+// Backward compatibility
+export const Environment = LiveEnvironmentService;
 
 export type { EnvironmentInfo as Type } from "./Environment/index.js";

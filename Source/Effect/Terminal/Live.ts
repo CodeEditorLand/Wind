@@ -12,12 +12,9 @@
  *   terminal:hide      → TerminalProvider::HideTerminal
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type { TerminalService } from "./Interface/TerminalService.js";
-import { TerminalServiceTag } from "./Tag/TerminalServiceTag.js";
 import type { TerminalProblem } from "./Type/TerminalProblem.js";
 
 const MakeTerminalProblem = (error: unknown): TerminalProblem =>
@@ -29,60 +26,55 @@ function makeLiveTerminalService(): TerminalService {
 	const IPCService = TauriIPCLive;
 
 	const Service: TerminalService = {
-		CreateTerminal: (options) =>
-			IPCService.invoke(Channel.TerminalCreate)([options ?? {}]).pipe(
-				Effect.map((Result) => {
-					const Info = Result as { id?: number; name?: string };
+		CreateTerminal: async (options) => {
+			try {
+				const Result = await IPCService.invoke(Channel.TerminalCreate)([options ?? {}]);
+				const Info = Result as { id?: number; name?: string };
+				return {
+					id: Info.id ?? 0,
+					name: Info.name ?? "terminal",
+				};
+			} catch (error) {
+				throw MakeTerminalProblem(error);
+			}
+		},
 
-					return {
-						id: Info.id ?? 0,
-						name: Info.name ?? "terminal",
-					};
-				}),
+		SendText: async (id, text) => {
+			try {
+				await IPCService.invoke(Channel.TerminalSendText)([id, text]);
+			} catch (error) {
+				throw MakeTerminalProblem(error);
+			}
+		},
 
-				Effect.mapError(MakeTerminalProblem),
-			),
+		Dispose: async (id) => {
+			try {
+				await IPCService.invoke(Channel.TerminalDispose)([id]);
+			} catch (error) {
+				throw MakeTerminalProblem(error);
+			}
+		},
 
-		SendText: (id, text) =>
-			IPCService.invoke(Channel.TerminalSendText)([id, text]).pipe(
-				Effect.map(() => undefined as void),
+		Show: async (id, preserveFocus) => {
+			try {
+				await IPCService.invoke(Channel.TerminalShow)([id, preserveFocus ?? false]);
+			} catch (error) {
+				throw MakeTerminalProblem(error);
+			}
+		},
 
-				Effect.mapError(MakeTerminalProblem),
-			),
-
-		Dispose: (id) =>
-			IPCService.invoke(Channel.TerminalDispose)([id]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeTerminalProblem),
-			),
-
-		Show: (id, preserveFocus) =>
-			IPCService.invoke(Channel.TerminalShow)([
-				id,
-
-				preserveFocus ?? false,
-			]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeTerminalProblem),
-			),
-
-		Hide: (id) =>
-			IPCService.invoke(Channel.TerminalHide)([id]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeTerminalProblem),
-			),
+		Hide: async (id) => {
+			try {
+				await IPCService.invoke(Channel.TerminalHide)([id]);
+			} catch (error) {
+				throw MakeTerminalProblem(error);
+			}
+		},
 	};
 
 	return Service;
 }
 
-export const LiveTerminalServiceLayer = Layer.succeed(
-	TerminalServiceTag,
+export const LiveTerminalService = makeLiveTerminalService();
 
-	makeLiveTerminalService(),
-);
-
-export default LiveTerminalServiceLayer;
+export default LiveTerminalService;

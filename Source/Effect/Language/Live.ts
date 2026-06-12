@@ -13,10 +13,7 @@
  * visible in trace output.
  */
 
-import { Effect, Layer } from "effect";
-
 import type { LanguageService } from "./Interface/LanguageService.js";
-import { LanguageServiceTag } from "./Tag/LanguageServiceTag.js";
 import type { LanguageProblem } from "./Type/LanguageProblem.js";
 
 // Inline trace - performance.mark() collected by build-baked OTELBridge.
@@ -49,30 +46,26 @@ function makeLanguageService(): LanguageService {
 		},
 	});
 
-	const RegisterProvider = (
+	const RegisterProvider = async (
 		type: string,
-
 		selector: string,
-
 		provider: unknown,
-	): Effect.Effect<{ readonly dispose: () => void }, LanguageProblem> =>
-		Effect.try({
-			try: () => {
-				const Handle = NextHandle++;
+	): Promise<{ readonly dispose: () => void }> => {
+		try {
+			const Handle = NextHandle++;
+			ActiveProviders.set(Handle, { selector, type, provider });
 
-				ActiveProviders.set(Handle, { selector, type, provider });
+			// Wind-local only - nothing is sent to Mountain/Cocoon.
+			_Trace(
+				"language",
+				`register-local:${type}:${selector}:handle=${Handle}`,
+			);
 
-				// Wind-local only - nothing is sent to Mountain/Cocoon.
-				_Trace(
-					"language",
-
-					`register-local:${type}:${selector}:handle=${Handle}`,
-				);
-
-				return MakeDisposable(Handle);
-			},
-			catch: MakeLanguageProblem,
-		});
+			return MakeDisposable(Handle);
+		} catch (error) {
+			throw MakeLanguageProblem(error);
+		}
+	};
 
 	const Service: LanguageService = {
 		RegisterHoverProvider: (selector, provider) =>
@@ -99,27 +92,22 @@ function makeLanguageService(): LanguageService {
 		RegisterRenameProvider: (selector, provider) =>
 			RegisterProvider("rename", selector, provider),
 
-		GetLanguages: () =>
-			Effect.try({
-				try: () => {
-					// Return the set of selectors for which providers are registered
-					const Selectors = new Set(
-						[...ActiveProviders.values()].map((P) => P.selector),
-					);
-
-					return [...Selectors] as readonly string[];
-				},
-				catch: MakeLanguageProblem,
-			}),
+		GetLanguages: async () => {
+			try {
+				// Return the set of selectors for which providers are registered
+				const Selectors = new Set(
+					[...ActiveProviders.values()].map((P) => P.selector),
+				);
+				return [...Selectors] as readonly string[];
+			} catch (error) {
+				throw MakeLanguageProblem(error);
+			}
+		},
 	};
 
 	return Service;
 }
 
-export const LiveLanguageServiceLayer = Layer.succeed(
-	LanguageServiceTag,
+export const LiveLanguageService = makeLanguageService();
 
-	makeLanguageService(),
-);
-
-export default LiveLanguageServiceLayer;
+export default LiveLanguageService;

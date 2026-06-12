@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { ProgressProblem } from "../Type/ProgressProblem.js";
 
 export type ProgressLocation = "notification" | "statusBar" | "window";
@@ -21,13 +19,13 @@ export interface ProgressReport {
 export interface ProgressService {
 	readonly Begin: (
 		options: ProgressOptions,
-	) => Effect.Effect<string, ProgressProblem>;
+	) => Promise<string>;
 
 	readonly Report: (
 		id: string,
 
 		report: ProgressReport,
-	) => Effect.Effect<void, ProgressProblem>;
+	) => Promise<void>;
 
-	readonly End: (id: string) => Effect.Effect<void, ProgressProblem>;
+	readonly End: (id: string) => Promise<void>;
 }

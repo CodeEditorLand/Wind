@@ -1,12 +1,5 @@
-import { Layer } from "effect";
-
 import { StubKeybindingService } from "./Implementation/KeybindingStub.js";
-import { KeybindingServiceTag } from "./Tag/KeybindingServiceTag.js";
 
-export const MockKeybindingServiceLayer = Layer.succeed(
-	KeybindingServiceTag,
+export const MockKeybindingService = StubKeybindingService;
 
-	StubKeybindingService,
-);
-
-export default MockKeybindingServiceLayer;
+export default MockKeybindingService;

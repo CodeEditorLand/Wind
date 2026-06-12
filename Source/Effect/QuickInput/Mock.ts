@@ -1,12 +1,5 @@
-import { Layer } from "effect";
-
 import { StubQuickInputService } from "./Implementation/QuickInputStub.js";
-import { QuickInputServiceTag } from "./Tag/QuickInputServiceTag.js";
 
-export const MockQuickInputServiceLayer = Layer.succeed(
-	QuickInputServiceTag,
+export const MockQuickInputService = StubQuickInputService;
 
-	StubQuickInputService,
-);
-
-export default MockQuickInputServiceLayer;
+export default MockQuickInputService;

@@ -4,11 +4,8 @@
  * Service interface for clipboard operations. Provides read/write operations
  * for clipboard functionality with comprehensive error handling.
  * @see {@link Effect/Clipboard/Implementation/ClipboardImplementation} Implementation
- * @see {@link Effect/Clipboard/Tag/ClipboardServiceTag} Service tag
  * @category Interface
  */
-
-import { Effect } from "effect";
 
 import type { ClipboardProblem } from "../Type/ClipboardProblem.js";
 
@@ -21,23 +18,23 @@ import type { ClipboardProblem } from "../Type/ClipboardProblem.js";
  * Microsoft VSCode Reference: IClipboardService from vs/platform/clipboard/common/clipboardService.ts
  */
 export interface ClipboardService {
-	readonly readText: () => Effect.Effect<string, ClipboardProblem>;
+	readonly readText: () => string;
 
-	readonly writeText: (text: string) => Effect.Effect<void, ClipboardProblem>;
+	readonly writeText: (text: string) => void;
 
-	readonly readHTML: () => Effect.Effect<string, ClipboardProblem>;
+	readonly readHTML: () => string;
 
 	readonly writeHTML: (
 		html: string,
 
 		text: string,
-	) => Effect.Effect<void, ClipboardProblem>;
+	) => void;
 
-	readonly readImage: () => Effect.Effect<Blob, ClipboardProblem>;
+	readonly readImage: () => Blob;
 
-	readonly writeImage: (blob: Blob) => Effect.Effect<void, ClipboardProblem>;
+	readonly writeImage: (blob: Blob) => void;
 
-	readonly hasText: () => Effect.Effect<boolean, ClipboardProblem>;
+	readonly hasText: () => boolean;
 
-	readonly clear: () => Effect.Effect<void, ClipboardProblem>;
+	readonly clear: () => void;
 }

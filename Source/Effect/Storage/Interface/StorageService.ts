@@ -1,24 +1,19 @@
-import type { Effect } from "effect";
-
 import type { StorageProblem } from "../Type/StorageProblem.js";
 
 export interface StorageService {
-	readonly Get: (key: string) => Effect.Effect<unknown, StorageProblem>;
+	readonly Get: (key: string) => unknown;
 
 	readonly Set: (
 		key: string,
 
 		value: unknown,
-	) => Effect.Effect<void, StorageProblem>;
+	) => void;
 
-	readonly Delete: (key: string) => Effect.Effect<void, StorageProblem>;
+	readonly Delete: (key: string) => void;
 
-	readonly Keys: () => Effect.Effect<readonly string[], StorageProblem>;
+	readonly Keys: () => readonly string[];
 
-	readonly GetItems: () => Effect.Effect<
-		readonly (readonly [string, string])[],
-		StorageProblem
-	>;
+	readonly GetItems: () => readonly (readonly [string, string])[];
 
 	readonly UpdateItems: (request: {
 		readonly insert?:
@@ -26,7 +21,7 @@ export interface StorageService {
 			| Readonly<Record<string, unknown>>;
 
 		readonly delete?: readonly string[];
-	}) => Effect.Effect<void, StorageProblem>;
+	}) => void;
 
-	readonly Optimize: () => Effect.Effect<void, StorageProblem>;
+	readonly Optimize: () => void;
 }

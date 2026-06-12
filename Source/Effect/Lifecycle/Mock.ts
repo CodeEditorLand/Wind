@@ -1,12 +1,5 @@
-import { Layer } from "effect";
-
 import { StubLifecycleService } from "./Implementation/LifecycleStub.js";
-import { LifecycleServiceTag } from "./Tag/LifecycleServiceTag.js";
 
-export const MockLifecycleServiceLayer = Layer.succeed(
-	LifecycleServiceTag,
+export const MockLifecycleService = StubLifecycleService;
 
-	StubLifecycleService,
-);
-
-export default MockLifecycleServiceLayer;
+export default MockLifecycleService;

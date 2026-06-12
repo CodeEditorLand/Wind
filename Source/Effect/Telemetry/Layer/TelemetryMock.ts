@@ -8,11 +8,14 @@
  * @category Layer
  */
 
-import { Effect, Layer, Stream } from "effect";
-
 import type { TelemetryService } from "../Interface/TelemetryService.js";
-import TelemetryTag from "../Tag/TelemetryTag.js";
 import type { SpanHandle } from "../Type/TelemetryType.js";
+
+const emptyStream = new ReadableStream<never>({
+	start(controller) {
+		controller.close();
+	}
+});
 
 /**
  * Creates a mock Telemetry service implementation.
@@ -21,32 +24,24 @@ import type { SpanHandle } from "../Type/TelemetryType.js";
  * @returns Mock Telemetry service instance
  */
 const makeMockTelemetry = (): TelemetryService => ({
-	recordMetric: () => Effect.void,
+	recordMetric: () => Promise.resolve(),
 	startSpan: () =>
-		Effect.succeed({
-			end: () => Effect.void,
+		Promise.resolve({
+			end: () => Promise.resolve(),
 		} satisfies SpanHandle),
-	log: () => Effect.void,
-	events: Stream.empty,
-	getMetrics: () => Effect.succeed([]),
-	getAverageDuration: () => Effect.succeed(0),
-	getSuccessRate: () => Effect.succeed(0),
-	flush: Effect.void,
+	log: () => Promise.resolve(),
+	events: emptyStream,
+	getMetrics: () => Promise.resolve([]),
+	getAverageDuration: () => Promise.resolve(0),
+	getSuccessRate: () => Promise.resolve(0),
+	flush: Promise.resolve(),
 });
 
 /**
  * Mock layer for Telemetry service.
  * Provides a no-op implementation for testing without dependencies.
- *
- * @example
- * ```ts
- * import { Layer } from "effect";
- * import { TelemetryMockLive } from "./Effect/Telemetry/Layer/TelemetryMock.js";
- *
- * const testLayer = TelemetryMockLive;
- * ```
  */
-const TelemetryMockLive = Layer.succeed(TelemetryTag, makeMockTelemetry());
+const TelemetryMockLive = makeMockTelemetry();
 
 export default TelemetryMockLive;
 

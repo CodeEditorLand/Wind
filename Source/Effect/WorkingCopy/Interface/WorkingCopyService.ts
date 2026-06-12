@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { WorkingCopyProblem } from "../Type/WorkingCopyProblem.js";
 
 /**
@@ -14,21 +12,18 @@ export interface WorkingCopyService {
 	/** Returns true if the given URI has unsaved changes. */
 	readonly IsDirty: (
 		uri: string,
-	) => Effect.Effect<boolean, WorkingCopyProblem>;
+	) => boolean;
 
 	/** Mark a resource as dirty or clean. */
 	readonly SetDirty: (
 		uri: string,
 
 		dirty: boolean,
-	) => Effect.Effect<void, WorkingCopyProblem>;
+	) => void;
 
 	/** Return all URIs that currently have unsaved changes. */
-	readonly GetAllDirty: () => Effect.Effect<
-		readonly string[],
-		WorkingCopyProblem
-	>;
+	readonly GetAllDirty: () => readonly string[];
 
 	/** Return the count of resources with unsaved changes. */
-	readonly GetDirtyCount: () => Effect.Effect<number, WorkingCopyProblem>;
+	readonly GetDirtyCount: () => number;
 }

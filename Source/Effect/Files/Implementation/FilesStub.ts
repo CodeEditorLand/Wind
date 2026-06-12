@@ -1,31 +1,29 @@
-import { Effect } from "effect";
-
 import type { FilesService } from "../Interface/FilesService.js";
 
 export const StubFilesService: FilesService = {
-	ReadFile: () => Effect.die(new Error("stub")),
+	ReadFile: () => { throw new Error("stub"); },
 
-	WriteFile: () => Effect.void,
+	WriteFile: () => Promise.resolve(),
 
-	Stat: () => Effect.die(new Error("stub")),
+	Stat: () => { throw new Error("stub"); },
 
-	ReadDir: () => Effect.succeed([]),
+	ReadDir: () => Promise.resolve([]),
 
-	CreateDirectory: () => Effect.void,
+	CreateDirectory: () => Promise.resolve(),
 
-	Delete: () => Effect.void,
+	Delete: () => Promise.resolve(),
 
-	Rename: () => Effect.void,
+	Rename: () => Promise.resolve(),
 
-	Copy: () => Effect.void,
+	Copy: () => Promise.resolve(),
 
-	Exists: () => Effect.succeed(false),
+	Exists: () => Promise.resolve(false),
 
-	Watch: () => Effect.succeed({ dispose: () => {} }),
+	Watch: () => Promise.resolve({ dispose: () => {} }),
 
-	ShowOpenDialog: () => Effect.succeed([]),
+	ShowOpenDialog: () => Promise.resolve([]),
 
-	ShowSaveDialog: () => Effect.succeed(undefined),
+	ShowSaveDialog: () => Promise.resolve(undefined),
 };
 
 export default StubFilesService;

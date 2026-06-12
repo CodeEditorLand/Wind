@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { SearchProblem } from "../Type/SearchProblem.js";
 
 export interface TextSearchOptions {
@@ -35,9 +33,9 @@ export interface FileSearchOptions {
 export interface SearchService {
 	readonly FindInFiles: (
 		options: TextSearchOptions,
-	) => Effect.Effect<readonly TextSearchMatch[], SearchProblem>;
+	) => readonly TextSearchMatch[];
 
 	readonly FindFiles: (
 		options: FileSearchOptions,
-	) => Effect.Effect<readonly string[], SearchProblem>;
+	) => readonly string[];
 }

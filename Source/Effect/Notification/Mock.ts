@@ -1,12 +1,5 @@
-import { Layer } from "effect";
-
 import { StubNotificationService } from "./Implementation/NotificationStub.js";
-import { NotificationServiceTag } from "./Tag/NotificationServiceTag.js";
 
-export const MockNotificationServiceLayer = Layer.succeed(
-	NotificationServiceTag,
+export const MockNotificationService = StubNotificationService;
 
-	StubNotificationService,
-);
-
-export default MockNotificationServiceLayer;
+export default MockNotificationService;

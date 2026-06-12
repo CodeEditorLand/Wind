@@ -59,9 +59,9 @@ export type {
 } from "./Environment/index.js";
 // Environment (System detection)
 export {
-	EnvironmentLive,
-	EnvironmentMock,
-	EnvironmentTag,
+	LiveEnvironmentService as EnvironmentLive,
+	MockEnvironmentService as EnvironmentMock,
+	makeMockEnvironment,
 } from "./Environment/index.js";
 export type {
 	HealthMonitorHandle,
@@ -114,7 +114,7 @@ export type {
 } from "./Panel/index.js";
 
 // Panel (VSCode bottom panel management)
-export { Panel, PanelLive, PanelMockLive } from "./Panel/index.js";
+export { LivePanelService as PanelLive, PanelMockLive, makeMockPanel } from "./Panel/index.js";
 export type { SandboxService } from "./Sandbox/index.js";
 // Sandbox (Preload globals)
 export { Sandbox, SandboxLive, SandboxMockLive } from "./Sandbox/index.js";
@@ -134,9 +134,9 @@ export type {
 } from "./StatusBar/index.js";
 // StatusBar (VSCode status bar management)
 export {
-	StatusBar,
-	StatusBarLive,
+	LiveStatusBarService as StatusBarLive,
 	StatusBarMockLive,
+	makeMockStatusBar,
 } from "./StatusBar/index.js";
 export type { TelemetryService } from "./Telemetry/index.js";
 // Telemetry (Logging, Spans, Metrics)

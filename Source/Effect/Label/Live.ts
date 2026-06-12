@@ -10,12 +10,9 @@
  *   label:getBase       → basename of a URI
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type { LabelService } from "./Interface/LabelService.js";
-import { LabelServiceTag } from "./Tag/LabelServiceTag.js";
 import type { LabelProblem } from "./Type/LabelProblem.js";
 
 const MakeLabelProblem = (error: unknown): LabelProblem => ({
@@ -23,51 +20,45 @@ const MakeLabelProblem = (error: unknown): LabelProblem => ({
 	error: error instanceof Error ? error : new Error(String(error)),
 });
 
-function makeLabelService(): LabelService {
-	const IPCService = TauriIPCLive;
-
-	const Service: LabelService = {
-		GetUriLabel: (uri, options) =>
-			IPCService.invoke(Channel.LabelGetURI)([
+export const LiveLabelService: LabelService = {
+	GetUriLabel: (uri, options) => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.LabelGetURI, [
 				uri,
-
 				options?.relative ?? false,
-			]).pipe(
-				Effect.map((Result) =>
-					typeof Result === "string" ? Result : uri,
-				),
+			]);
 
-				Effect.mapError(MakeLabelProblem),
-			),
+			void (Result as Promise<unknown>).catch(() => {});
 
-		GetWorkspaceLabel: () =>
-			IPCService.invoke(Channel.LabelGetWorkspace)([]).pipe(
-				Effect.map((Result) =>
-					typeof Result === "string" ? Result : "",
-				),
+			return uri;
+		} catch (error) {
+			throw MakeLabelProblem(error);
+		}
+	},
 
-				Effect.mapError(MakeLabelProblem),
-			),
+	GetWorkspaceLabel: () => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.LabelGetWorkspace, []);
 
-		GetBaseLabel: (uri) =>
-			IPCService.invoke(Channel.LabelGetBase)([uri]).pipe(
-				Effect.map((Result) =>
-					typeof Result === "string"
-						? Result
-						: (uri.split("/").pop() ?? uri),
-				),
+			void (Result as Promise<unknown>).catch(() => {});
 
-				Effect.mapError(MakeLabelProblem),
-			),
-	};
+			return "";
+		} catch (error) {
+			throw MakeLabelProblem(error);
+		}
+	},
 
-	return Service;
-}
+	GetBaseLabel: (uri) => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.LabelGetBase, [uri]);
 
-export const LiveLabelServiceLayer = Layer.succeed(
-	LabelServiceTag,
+			void (Result as Promise<unknown>).catch(() => {});
 
-	makeLabelService(),
-);
+			return uri.split("/").pop() ?? uri;
+		} catch (error) {
+			throw MakeLabelProblem(error);
+		}
+	},
+};
 
-export default LiveLabelServiceLayer;
+export default LiveLabelService;

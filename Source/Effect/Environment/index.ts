@@ -6,20 +6,13 @@
  *
  * @see {@link Effect/Environment/Interface/EnvironmentService} Service interface
  * @see {@link Effect/Environment/Implementation/EnvironmentImplementation} Live implementation
- * @see {@link Effect/Environment/Tag/EnvironmentTag} Service tag
  * @category Service
  * @example
  * ```typescript
- * import { EnvironmentLive, EnvironmentTag } from "./Effect/Environment/index.js";
- * import { Effect } from "effect";
+ * import { LiveEnvironmentService } from "./Effect/Environment/index.js";
  *
- * const program = Effect.gen(function* () {
- *   const env = yield* EnvironmentTag;
- *   const info = yield* env.getInfo;
- *   console.log("Platform:", info.platform);
- * });
- *
- * Effect.runPromise(program.pipe(Effect.provide(EnvironmentLive)));
+ * const env = LiveEnvironmentService;
+ * console.log("Platform:", env.getPlatform);
  * ```
  */
 
@@ -35,14 +28,11 @@ export type { EnvironmentInfo } from "./Type/EnvironmentType.js";
 // Interface
 export type { EnvironmentService } from "./Interface/EnvironmentService.js";
 
-// Tag
-export { EnvironmentTag } from "./Tag/EnvironmentTag.js";
-
 // Implementation
 export {
-	EnvironmentLive as default,
-	EnvironmentLive,
-	EnvironmentMock,
+	LiveEnvironmentService as default,
+	LiveEnvironmentService,
+	MockEnvironmentService,
 	makeMockEnvironment,
 } from "./Implementation/EnvironmentImplementation.js";
 

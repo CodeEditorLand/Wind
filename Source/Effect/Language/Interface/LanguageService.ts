@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { LanguageProblem } from "../Type/LanguageProblem.js";
 
 /**
@@ -11,52 +9,51 @@ export interface LanguageService {
 		selector: string,
 
 		provider: unknown,
-	) => Effect.Effect<{ readonly dispose: () => void }, LanguageProblem>;
+	) => Promise<{ readonly dispose: () => void }>;
 
 	readonly RegisterCompletionProvider: (
 		selector: string,
 
 		provider: unknown,
-	) => Effect.Effect<{ readonly dispose: () => void }, LanguageProblem>;
+	) => Promise<{ readonly dispose: () => void }>;
 
 	readonly RegisterDefinitionProvider: (
 		selector: string,
 
 		provider: unknown,
-	) => Effect.Effect<{ readonly dispose: () => void }, LanguageProblem>;
+	) => Promise<{ readonly dispose: () => void }>;
 
 	readonly RegisterReferenceProvider: (
 		selector: string,
 
 		provider: unknown,
-	) => Effect.Effect<{ readonly dispose: () => void }, LanguageProblem>;
+	) => Promise<{ readonly dispose: () => void }>;
 
 	readonly RegisterCodeActionProvider: (
 		selector: string,
 
 		provider: unknown,
-	) => Effect.Effect<{ readonly dispose: () => void }, LanguageProblem>;
+	) => Promise<{ readonly dispose: () => void }>;
 
 	readonly RegisterDocumentFormattingProvider: (
 		selector: string,
 
 		provider: unknown,
-	) => Effect.Effect<{ readonly dispose: () => void }, LanguageProblem>;
+	) => Promise<{ readonly dispose: () => void }>;
 
 	readonly RegisterDocumentSymbolProvider: (
 		selector: string,
 
 		provider: unknown,
-	) => Effect.Effect<{ readonly dispose: () => void }, LanguageProblem>;
+	) => Promise<{ readonly dispose: () => void }>;
 
 	readonly RegisterRenameProvider: (
 		selector: string,
 
 		provider: unknown,
-	) => Effect.Effect<{ readonly dispose: () => void }, LanguageProblem>;
+	) => Promise<{ readonly dispose: () => void }>;
 
-	readonly GetLanguages: () => Effect.Effect<
-		readonly string[],
-		LanguageProblem
+	readonly GetLanguages: () => Promise<
+		readonly string[]
 	>;
 }

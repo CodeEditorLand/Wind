@@ -4,12 +4,9 @@
  * Service interface for Telemetry management.
  * Provides methods for metrics, spans, and logging with stream-based reactivity.
  * @see {@link Effect/Telemetry/Type/TelemetryType} Type definitions
- * @see {@link Effect/Telemetry/Tag/TelemetryTag} Service tag
  * @see {@link Effect/Telemetry/Layer/TelemetryLive} Live implementation
  * @category Interface
  */
-
-import type { Effect, Stream } from "effect";
 
 import type {
 	SpanHandle,
@@ -30,14 +27,14 @@ export interface TelemetryService {
 		value: number,
 
 		labels?: Record<string, string>,
-	) => Effect.Effect<void, never>;
+	) => Promise<void>;
 
 	/** Start a timed span and return a handle for ending it */
 	readonly startSpan: (
 		name: string,
 
 		labels?: Record<string, string>,
-	) => Effect.Effect<SpanHandle, never>;
+	) => Promise<SpanHandle>;
 
 	/** Log an event at the specified level */
 	readonly log: (
@@ -46,22 +43,22 @@ export interface TelemetryService {
 		message: string,
 
 		context?: Record<string, unknown>,
-	) => Effect.Effect<void, never>;
+	) => Promise<void>;
 
 	/** Stream of all telemetry events for reactive updates */
-	readonly events: Stream.Stream<ReadonlyArray<TelemetryEvent>, never>;
+	readonly events: ReadableStream<ReadonlyArray<TelemetryEvent>>;
 
 	/** Get all metrics recorded for a specific name */
 	readonly getMetrics: (
 		name: string,
-	) => Effect.Effect<ReadonlyArray<TelemetryMetric>, never>;
+	) => Promise<ReadonlyArray<TelemetryMetric>>;
 
 	/** Get average duration for spans with the given name */
-	readonly getAverageDuration: (name: string) => Effect.Effect<number, never>;
+	readonly getAverageDuration: (name: string) => Promise<number>;
 
 	/** Get success rate for spans with the given name */
-	readonly getSuccessRate: (name: string) => Effect.Effect<number, never>;
+	readonly getSuccessRate: (name: string) => Promise<number>;
 
 	/** Flush/clear all telemetry data */
-	readonly flush: Effect.Effect<void, never>;
+	readonly flush: Promise<void>;
 }

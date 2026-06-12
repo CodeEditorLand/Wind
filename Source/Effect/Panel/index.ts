@@ -20,11 +20,8 @@ export type {
 // Service interface
 export type { PanelService } from "./Interface/PanelService.js";
 
-// Tag
-export { default as PanelTag, Panel } from "./Tag/PanelTag.js";
-
 // Layers
-export { default as PanelLive } from "./Layer/PanelLive.js";
+export { default as LivePanelService } from "./Layer/PanelLive.js";
 
 export { default as PanelMockLive } from "./Layer/PanelMock.js";
 

@@ -1,5 +1,3 @@
-import type { Effect, Stream } from "effect";
-
 import type { WorkspacesProblem } from "../Type/WorkspacesProblem.js";
 
 export interface WorkspaceFolder {
@@ -26,24 +24,22 @@ export interface WorkspacesChangeEvent {
 }
 
 export interface WorkspacesService {
-	readonly GetFolders: () => Effect.Effect<
-		readonly WorkspaceFolder[],
-		WorkspacesProblem
+	readonly GetFolders: () => Promise<
+		readonly WorkspaceFolder[]
 	>;
 
 	readonly AddFolder: (
 		uri: string,
 
 		name?: string,
-	) => Effect.Effect<void, WorkspacesProblem>;
+	) => Promise<void>;
 
 	readonly RemoveFolder: (
 		uri: string,
-	) => Effect.Effect<void, WorkspacesProblem>;
+	) => Promise<void>;
 
-	readonly GetName: () => Effect.Effect<
-		string | undefined,
-		WorkspacesProblem
+	readonly GetName: () => Promise<
+		string | undefined
 	>;
 
 	/**
@@ -57,8 +53,7 @@ export interface WorkspacesService {
 	 * in lock-step with the `$deltaWorkspaceFolders` gRPC notification to
 	 * Cocoon.
 	 */
-	readonly OnChange: () => Stream.Stream<
-		WorkspacesChangeEvent,
-		WorkspacesProblem
+	readonly OnChange: () => ReadableStream<
+		WorkspacesChangeEvent
 	>;
 }

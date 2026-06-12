@@ -1,15 +1,13 @@
-import { Effect } from "effect";
-
 import type { DecorationsService } from "../Interface/DecorationsService.js";
 
 export const StubDecorationsService: DecorationsService = {
-	GetDecoration: (_uri, _includeChildren) => Effect.succeed(null),
+	GetDecoration: async (_uri, _includeChildren) => null,
 
-	GetDecorations: (_uris) => Effect.succeed(new Map()),
+	GetDecorations: async (_uris) => new Map(),
 
-	SetDecoration: (_uri, _decoration) => Effect.void,
+	SetDecoration: async (_uri, _decoration) => {},
 
-	ClearDecoration: (_uri) => Effect.void,
+	ClearDecoration: async (_uri) => {},
 };
 
 export default StubDecorationsService;

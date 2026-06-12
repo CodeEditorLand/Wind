@@ -7,13 +7,8 @@ export type {
 	InputBoxOptions,
 } from "./Interface/QuickInputService.js";
 
-export {
-	QuickInputServiceTag,
-	QuickInput,
-} from "./Tag/QuickInputServiceTag.js";
-
 export { StubQuickInputService } from "./Implementation/QuickInputStub.js";
 
-export { default as LiveQuickInputServiceLayer } from "./Live.js";
+export { default as LiveQuickInputService } from "./Live.js";
 
-export { default as MockQuickInputServiceLayer } from "./Mock.js";
+export { default as MockQuickInputService } from "./Mock.js";

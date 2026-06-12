@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { KeybindingProblem } from "../Type/KeybindingProblem.js";
 
 /**
@@ -24,12 +22,12 @@ export interface KeybindingService {
 		keybinding: string,
 
 		when?: string,
-	) => Effect.Effect<void, KeybindingProblem>;
+	) => Promise<void>;
 
 	/** Remove all dynamic keybindings registered for a command. */
 	readonly RemoveKeybinding: (
 		commandId: string,
-	) => Effect.Effect<void, KeybindingProblem>;
+	) => Promise<void>;
 
 	/**
 	 * Look up the resolved keybinding string for a command.
@@ -37,11 +35,10 @@ export interface KeybindingService {
 	 */
 	readonly LookupKeybinding: (
 		commandId: string,
-	) => Effect.Effect<string | null, KeybindingProblem>;
+	) => Promise<string | null>;
 
 	/** Return all currently registered dynamic keybinding entries. */
-	readonly GetKeybindings: () => Effect.Effect<
-		ReadonlyArray<{ commandId: string; keybinding: string; when?: string }>,
-		KeybindingProblem
+	readonly GetKeybindings: () => Promise<
+		ReadonlyArray<{ commandId: string; keybinding: string; when?: string }>
 	>;
 }

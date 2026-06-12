@@ -5,12 +5,9 @@
  * @category Layer
  */
 
-import { Effect, Either, Layer, Stream } from "effect";
-
 import StatusBarItemNotFoundError from "../Error/StatusBarItemNotFoundError.js";
 import StatusBarUpdateError from "../Error/StatusBarUpdateError.js";
 import type { StatusBarService } from "../Interface/StatusBarService.js";
-import StatusBarTag from "../Tag/StatusBarTag.js";
 import type {
 	CreateStatusBarItem,
 	StatusBarItem,
@@ -21,55 +18,44 @@ function makeStatusBarService(): StatusBarService {
 
 	const _itemsListeners: ((v: ReadonlyArray<StatusBarItem>) => void)[] = [];
 
-	const GetItem = (Id: string): Effect.Effect<StatusBarItem | undefined> =>
-		Effect.succeed(_items.find((i) => i.id === Id));
+	const GetItem = (Id: string): StatusBarItem | undefined =>
+		_items.find((i) => i.id === Id);
 
-	const Items = Effect.suspend(() => Effect.succeed(_items));
+	const Items: ReadonlyArray<StatusBarItem> = _items;
 
-	const ItemsChanges: Stream.Stream<ReadonlyArray<StatusBarItem>> =
-		Stream.asyncInterrupt<ReadonlyArray<StatusBarItem>>((emit) => {
-			const fn = (v: ReadonlyArray<StatusBarItem>) => emit.single(v);
-
-			_itemsListeners.push(fn);
-
-			return Either.left(
-				Effect.sync(() => {
-					const i = _itemsListeners.indexOf(fn);
-
-					if (i >= 0) _itemsListeners.splice(i, 1);
-				}),
-			);
-		});
+	const OnItemsChanges = (listener: (items: ReadonlyArray<StatusBarItem>) => void): (() => void) => {
+		_itemsListeners.push(listener);
+		return () => {
+			const i = _itemsListeners.indexOf(listener);
+			if (i >= 0) _itemsListeners.splice(i, 1);
+		};
+	};
 
 	const CreateItem = (
 		Item: CreateStatusBarItem,
-	): Effect.Effect<StatusBarItem> =>
-		Effect.sync(() => {
-			const Id = `statusbar-${Date.now()}-${Math.random()
-				.toString(36)
-				.substring(2, 9)}`;
+	): StatusBarItem => {
+		const Id = `statusbar-${Date.now()}-${Math.random()
+			.toString(36)
+			.substring(2, 9)}`;
 
-			const NewItem: StatusBarItem = { ...Item, id: Id };
+		const NewItem: StatusBarItem = { ...Item, id: Id };
 
-			_items = [..._items, NewItem].sort(
-				(a, b) => a.priority - b.priority,
-			);
+		_items = [..._items, NewItem].sort(
+			(a, b) => a.priority - b.priority,
+		);
 
-			_itemsListeners.forEach((fn) => fn(_items));
+		_itemsListeners.forEach((fn) => fn(_items));
 
-			return NewItem;
-		});
+		return NewItem;
+	};
 
 	const UpdateItem = (
 		Id: string,
 
 		updates: Partial<Omit<StatusBarItem, "id">>,
-	): Effect.Effect<
-		void,
-		StatusBarItemNotFoundError | StatusBarUpdateError
-	> => {
+	): void => {
 		if (!_items.find((i) => i.id === Id))
-			return Effect.fail(new StatusBarItemNotFoundError(Id));
+			throw new StatusBarItemNotFoundError(Id);
 
 		try {
 			_items = _items
@@ -77,47 +63,44 @@ function makeStatusBarService(): StatusBarService {
 				.sort((a, b) => a.priority - b.priority);
 
 			_itemsListeners.forEach((fn) => fn(_items));
-
-			return Effect.void;
 		} catch (error) {
-			return Effect.fail(new StatusBarUpdateError(Id, error));
+			throw new StatusBarUpdateError(Id, error);
 		}
 	};
 
 	const RemoveItem = (
 		Id: string,
-	): Effect.Effect<void, StatusBarItemNotFoundError> => {
+	): void => {
 		if (!_items.find((i) => i.id === Id))
-			return Effect.fail(new StatusBarItemNotFoundError(Id));
+			throw new StatusBarItemNotFoundError(Id);
 
 		_items = _items.filter((i) => i.id !== Id);
 
 		_itemsListeners.forEach((fn) => fn(_items));
-
-		return Effect.void;
 	};
 
 	const SetItemVisibility = (
 		Id: string,
 
 		visible: boolean,
-	): Effect.Effect<void, StatusBarItemNotFoundError> => {
+	): void => {
 		if (!_items.find((i) => i.id === Id))
-			return Effect.fail(new StatusBarItemNotFoundError(Id));
+			throw new StatusBarItemNotFoundError(Id);
 
-		if (!visible) return RemoveItem(Id);
-
-		return Effect.void;
+		if (!visible) {
+			RemoveItem(Id);
+			return;
+		}
 	};
 
-	const GetItemText = (Id: string): Effect.Effect<string | undefined> =>
-		Effect.succeed(_items.find((i) => i.id === Id)?.text);
+	const GetItemText = (Id: string): string | undefined =>
+		_items.find((i) => i.id === Id)?.text;
 
 	const SetItemText = (
 		Id: string,
 
 		text: string,
-	): Effect.Effect<void, StatusBarItemNotFoundError | StatusBarUpdateError> =>
+	): void =>
 		UpdateItem(Id, { text });
 
 	return {
@@ -131,7 +114,7 @@ function makeStatusBarService(): StatusBarService {
 
 		items: Items,
 
-		itemsChanges: ItemsChanges,
+		onItemsChanges: OnItemsChanges,
 
 		setItemVisibility: SetItemVisibility,
 
@@ -141,6 +124,6 @@ function makeStatusBarService(): StatusBarService {
 	} satisfies StatusBarService;
 }
 
-const StatusBarLive = Layer.succeed(StatusBarTag, makeStatusBarService());
+export const LiveStatusBarService = makeStatusBarService();
 
-export default StatusBarLive;
+export default LiveStatusBarService;

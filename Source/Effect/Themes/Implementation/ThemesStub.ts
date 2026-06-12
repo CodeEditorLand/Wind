@@ -1,5 +1,3 @@
-import { Effect } from "effect";
-
 import type { ThemesService } from "../Interface/ThemesService.js";
 
 const DefaultTheme = {
@@ -11,11 +9,11 @@ const DefaultTheme = {
 };
 
 export const StubThemesService: ThemesService = {
-	GetActiveTheme: () => Effect.succeed(DefaultTheme),
+	GetActiveTheme: () => DefaultTheme,
 
-	ListThemes: () => Effect.succeed([DefaultTheme]),
+	ListThemes: () => [DefaultTheme],
 
-	SetTheme: (_themeId) => Effect.void,
+	SetTheme: (_themeId) => {},
 };
 
 export default StubThemesService;

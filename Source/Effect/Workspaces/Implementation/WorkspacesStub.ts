@@ -1,19 +1,23 @@
-import { Effect, Stream } from "effect";
-
 import type { WorkspacesService } from "../Interface/WorkspacesService.js";
 
+const emptyStream = new ReadableStream<never>({
+	start(controller) {
+		controller.close();
+	}
+});
+
 export const StubWorkspacesService: WorkspacesService = {
-	GetFolders: () => Effect.succeed([]),
+	GetFolders: () => Promise.resolve([]),
 
-	AddFolder: (_uri, _name) => Effect.void,
+	AddFolder: (_uri, _name) => Promise.resolve(),
 
-	RemoveFolder: (_uri) => Effect.void,
+	RemoveFolder: (_uri) => Promise.resolve(),
 
-	GetName: () => Effect.succeed(undefined),
+	GetName: () => Promise.resolve(undefined),
 
 	// The stub never emits - tests that want change events should build a
-	// custom layer with `Stream.fromIterable` of scripted events.
-	OnChange: () => Stream.empty,
+	// custom layer with events.
+	OnChange: () => emptyStream,
 };
 
 export default StubWorkspacesService;

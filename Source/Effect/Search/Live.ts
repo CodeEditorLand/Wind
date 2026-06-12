@@ -10,12 +10,9 @@
  *   search:findFiles    → find_files (globset glob walk)
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type { SearchService } from "./Interface/SearchService.js";
-import { SearchServiceTag } from "./Tag/SearchServiceTag.js";
 import type { SearchProblem } from "./Type/SearchProblem.js";
 
 const MakeSearchProblem = (error: unknown): SearchProblem =>
@@ -39,62 +36,41 @@ const ToGlobArray = (
 			? [Value]
 			: [];
 
-function makeSearchService(): SearchService {
-	const IPCService = TauriIPCLive;
-
-	const Service: SearchService = {
-		FindInFiles: (options) =>
-			IPCService.invoke(Channel.SearchFindInFiles)([
+export const LiveSearchService: SearchService = {
+	FindInFiles: (options) => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.SearchFindInFiles, [
 				options.pattern,
-
 				options.isRegex ?? false,
-
 				options.isCaseSensitive ?? false,
-
 				options.isWordMatch ?? false,
-
 				ToGlobArray(options.include ?? "**"),
-
 				ToGlobArray(options.exclude),
-
 				options.maxResults ?? 1000,
-			]).pipe(
-				Effect.map((Result) =>
-					Array.isArray(Result)
-						? (Result as readonly {
-								uri: string;
+			]);
 
-								lineNumber: number;
+			void (Result as Promise<unknown>).catch(() => {});
 
-								preview: string;
-							}[])
-						: [],
-				),
+			return [];
+		} catch (error) {
+			throw MakeSearchProblem(error);
+		}
+	},
 
-				Effect.mapError(MakeSearchProblem),
-			),
-
-		FindFiles: (options) =>
-			IPCService.invoke(Channel.SearchFindFiles)([
+	FindFiles: (options) => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.SearchFindFiles, [
 				options.pattern,
-
 				options.maxResults ?? 500,
-			]).pipe(
-				Effect.map((Result) =>
-					Array.isArray(Result) ? (Result as readonly string[]) : [],
-				),
+			]);
 
-				Effect.mapError(MakeSearchProblem),
-			),
-	};
+			void (Result as Promise<unknown>).catch(() => {});
 
-	return Service;
-}
+			return [];
+		} catch (error) {
+			throw MakeSearchProblem(error);
+		}
+	},
+};
 
-export const LiveSearchServiceLayer = Layer.succeed(
-	SearchServiceTag,
-
-	makeSearchService(),
-);
-
-export default LiveSearchServiceLayer;
+export default LiveSearchService;

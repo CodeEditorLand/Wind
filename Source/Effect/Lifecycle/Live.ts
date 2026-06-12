@@ -11,15 +11,12 @@
  *   lifecycle:requestShutdown → initiate graceful app shutdown
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type {
 	LifecyclePhaseValue,
 	LifecycleService,
 } from "./Interface/LifecycleService.js";
-import { LifecycleServiceTag } from "./Tag/LifecycleServiceTag.js";
 import type { LifecycleProblem } from "./Type/LifecycleProblem.js";
 
 const MakeLifecycleProblem = (error: unknown): LifecycleProblem => ({
@@ -31,47 +28,45 @@ function makeLifecycleService(): LifecycleService {
 	const IPCService = TauriIPCLive;
 
 	const Service: LifecycleService = {
-		GetPhase: () =>
-			IPCService.invoke(Channel.LifecycleGetPhase)([]).pipe(
-				Effect.map(
-					(Result) =>
-						(typeof Result === "number"
-							? Result
-							: 1) as LifecyclePhaseValue,
-				),
+		GetPhase: async () => {
+			try {
+				const Result = await IPCService.invoke(Channel.LifecycleGetPhase, []);
+				return (typeof Result === "number"
+					? Result
+					: 1) as LifecyclePhaseValue;
+			} catch (error) {
+				throw MakeLifecycleProblem(error);
+			}
+		},
 
-				Effect.mapError(MakeLifecycleProblem),
-			),
+		WhenPhase: async (phase) => {
+			try {
+				await IPCService.invoke(Channel.LifecycleWhenPhase, [phase]);
+			} catch (error) {
+				throw MakeLifecycleProblem(error);
+			}
+		},
 
-		WhenPhase: (phase) =>
-			IPCService.invoke(Channel.LifecycleWhenPhase)([phase]).pipe(
-				Effect.map(() => undefined as void),
+		RequestShutdown: async () => {
+			try {
+				await IPCService.invoke(Channel.LifecycleRequestShutdown, []);
+			} catch (error) {
+				throw MakeLifecycleProblem(error);
+			}
+		},
 
-				Effect.mapError(MakeLifecycleProblem),
-			),
-
-		RequestShutdown: () =>
-			IPCService.invoke(Channel.LifecycleRequestShutdown)([]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeLifecycleProblem),
-			),
-
-		AdvancePhase: (phase) =>
-			IPCService.invoke(Channel.LifecycleAdvancePhase)([phase]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeLifecycleProblem),
-			),
+		AdvancePhase: async (phase) => {
+			try {
+				await IPCService.invoke(Channel.LifecycleAdvancePhase, [phase]);
+			} catch (error) {
+				throw MakeLifecycleProblem(error);
+			}
+		},
 	};
 
 	return Service;
 }
 
-export const LiveLifecycleServiceLayer = Layer.succeed(
-	LifecycleServiceTag,
+export const LiveLifecycleService = makeLifecycleService();
 
-	makeLifecycleService(),
-);
-
-export default LiveLifecycleServiceLayer;
+export default LiveLifecycleService;

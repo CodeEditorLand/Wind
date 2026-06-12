@@ -14,12 +14,9 @@
  *   storage:optimize    → flush the store
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type { StorageService } from "./Interface/StorageService.js";
-import { StorageServiceTag } from "./Tag/StorageServiceTag.js";
 import type { StorageProblem } from "./Type/StorageProblem.js";
 
 const MakeStorageProblem = (error: unknown): StorageProblem =>
@@ -27,73 +24,84 @@ const MakeStorageProblem = (error: unknown): StorageProblem =>
 		? { _tag: "StorageOperationFailed", error }
 		: { _tag: "StorageOperationFailed", error: new Error(String(error)) };
 
-function makeStorageService(): StorageService {
-	const IPCService = TauriIPCLive;
+export const LiveStorageService: StorageService = {
+	Get: (key) => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.StorageGet, [key]);
 
-	const Service: StorageService = {
-		Get: (key) =>
-			IPCService.invoke(Channel.StorageGet)([key]).pipe(
-				Effect.map((Result) => Result),
+			void (Result as Promise<unknown>).catch(() => {});
 
-				Effect.mapError(MakeStorageProblem),
-			),
+			return undefined;
+		} catch (error) {
+			throw MakeStorageProblem(error);
+		}
+	},
 
-		Set: (key, value) =>
-			IPCService.invoke(Channel.StorageSet)([key, value]).pipe(
-				Effect.map(() => undefined as void),
+	Set: (key, value) => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.StorageSet, [key, value]);
 
-				Effect.mapError(MakeStorageProblem),
-			),
+			void (Result as Promise<unknown>).catch(() => {});
+		} catch (error) {
+			throw MakeStorageProblem(error);
+		}
+	},
 
-		Delete: (key) =>
-			IPCService.invoke(Channel.StorageDelete)([key]).pipe(
-				Effect.map(() => undefined as void),
+	Delete: (key) => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.StorageDelete, [key]);
 
-				Effect.mapError(MakeStorageProblem),
-			),
+			void (Result as Promise<unknown>).catch(() => {});
+		} catch (error) {
+			throw MakeStorageProblem(error);
+		}
+	},
 
-		Keys: () =>
-			IPCService.invoke(Channel.StorageKeys)([]).pipe(
-				Effect.map((Result) =>
-					Array.isArray(Result) ? (Result as readonly string[]) : [],
-				),
+	Keys: () => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.StorageKeys, []);
 
-				Effect.mapError(MakeStorageProblem),
-			),
+			void (Result as Promise<unknown>).catch(() => {});
 
-		GetItems: () =>
-			IPCService.invoke(Channel.StorageGetItems)([]).pipe(
-				Effect.map((Result) =>
-					Array.isArray(Result)
-						? (Result as readonly (readonly [string, string])[])
-						: [],
-				),
+			return [];
+		} catch (error) {
+			throw MakeStorageProblem(error);
+		}
+	},
 
-				Effect.mapError(MakeStorageProblem),
-			),
+	GetItems: () => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.StorageGetItems, []);
 
-		UpdateItems: (request) =>
-			IPCService.invoke(Channel.StorageUpdateItems)([request]).pipe(
-				Effect.map(() => undefined as void),
+			void (Result as Promise<unknown>).catch(() => {});
 
-				Effect.mapError(MakeStorageProblem),
-			),
+			return [];
+		} catch (error) {
+			throw MakeStorageProblem(error);
+		}
+	},
 
-		Optimize: () =>
-			IPCService.invoke(Channel.StorageOptimize)([]).pipe(
-				Effect.map(() => undefined as void),
+	UpdateItems: (request) => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.StorageUpdateItems, [
+				request,
+			]);
 
-				Effect.mapError(MakeStorageProblem),
-			),
-	};
+			void (Result as Promise<unknown>).catch(() => {});
+		} catch (error) {
+			throw MakeStorageProblem(error);
+		}
+	},
 
-	return Service;
-}
+	Optimize: () => {
+		try {
+			const Result = TauriIPCLive.invoke(Channel.StorageOptimize, []);
 
-export const LiveStorageServiceLayer = Layer.succeed(
-	StorageServiceTag,
+			void (Result as Promise<unknown>).catch(() => {});
+		} catch (error) {
+			throw MakeStorageProblem(error);
+		}
+	},
+};
 
-	makeStorageService(),
-);
-
-export default LiveStorageServiceLayer;
+export default LiveStorageService;
