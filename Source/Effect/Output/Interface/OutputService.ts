@@ -1,6 +1,4 @@
-import type { Effect } from "effect";
-
-import type { OutputProblem } from "../Type/OutputProblem.js";
+/** Output channel service — manages VS Code Output view channels. */
 
 /**
  * Output channel service interface.
