@@ -24,6 +24,7 @@ const FindInterfaceBlock = (
 
 	interfaceName: string,
 ): { readonly Inner: string; readonly StartOffset: number } | null => {
+
 	const Pattern = new RegExp(
 		`(?:export\\s+)?interface\\s+${interfaceName}(?:<[^>]+>)?(?:\\s+extends\\s+[^\\{]+)?\\s*\\{`,
 	);
@@ -42,6 +43,7 @@ const FindInterfaceBlock = (
 		const Char = source[Cursor];
 
 		if (Char === "{") Depth += 1;
+
 		else if (Char === "}") {
 			Depth -= 1;
 
@@ -61,6 +63,7 @@ const FindInterfaceBlock = (
 };
 
 const StripJSDoc = (raw: string): string => {
+
 	const Lines = raw.split(/\r?\n/);
 
 	const Cleaned: string[] = [];
@@ -94,6 +97,7 @@ const ShouldSkipAngle = (
 
 	previousChar: string,
 ): boolean => {
+
 	if (char === ">") {
 		// `=>` arrow OR `>=` comparison.
 		if (previousChar === "=") return true;
@@ -113,6 +117,7 @@ const ShouldSkipAngle = (
 };
 
 const SplitMembers = (inner: string): ReadonlyArray<string> => {
+
 	const Out: string[] = [];
 
 	let Depth = 0;
@@ -163,6 +168,7 @@ const SplitMembers = (inner: string): ReadonlyArray<string> => {
 };
 
 const ExtractMemberDocComment = (beforeMember: string): string | null => {
+
 	const Match = /\/\*\*([\s\S]*?)\*\/\s*$/m.exec(beforeMember);
 
 	if (!Match) return null;
@@ -177,6 +183,7 @@ const SplitTopLevel = (
 
 	delimiter: string,
 ): ReadonlyArray<string> => {
+
 	const Out: string[] = [];
 
 	let Depth = 0;
@@ -228,6 +235,7 @@ const SplitTopLevel = (
 const ParseParameters = (
 	parameterText: string,
 ): ReadonlyArray<InterfaceMemberParameter> => {
+
 	const Trimmed = parameterText.trim();
 
 	if (Trimmed.length === 0) return [];
@@ -258,6 +266,7 @@ const KindFromShape = (
 
 	typeText: string,
 ): InterfaceMemberKind => {
+
 	if (/^get\s/.test(memberText) && memberText.includes(": ")) return "Getter";
 
 	if (/^set\s/.test(memberText)) return "Setter";
@@ -282,6 +291,7 @@ const KindFromShape = (
 };
 
 const LineFromOffset = (source: string, offset: number): number => {
+
 	let Line = 1;
 
 	for (let i = 0; i < offset && i < source.length; i++) {
@@ -298,10 +308,12 @@ const ParseMember = (
 
 	source: string,
 ): InterfaceMemberRecord | null => {
+
 	const ReadonlyMatch = /^readonly\s+/.exec(memberText);
 
 	const StrippedReadonly = ReadonlyMatch
 		? memberText.slice(ReadonlyMatch[0].length)
+
 		: memberText;
 
 	const MethodMatch =
@@ -369,6 +381,7 @@ export const ExtractInterfaceMembers = (
 
 	interfaceName: string,
 ): ReadonlyArray<InterfaceMemberRecord> => {
+
 	const Block = FindInterfaceBlock(source, interfaceName);
 
 	if (!Block) return [];

@@ -16,6 +16,7 @@
  * Options for configuring bootstrap behavior.
  */
 export interface BootstrapOptions {
+
 	/** Enable debug mode for detailed logging */
 	readonly debugMode?: boolean;
 
@@ -36,6 +37,7 @@ export interface BootstrapOptions {
  * Result of a single bootstrap stage execution.
  */
 export interface StageResult {
+
 	/** Name of the stage that was executed */
 	readonly stageName: string;
 
@@ -53,6 +55,7 @@ export interface StageResult {
  * Complete result of bootstrap execution.
  */
 export interface BootstrapResult {
+
 	/** Whether bootstrap completed successfully */
 	readonly success: boolean;
 

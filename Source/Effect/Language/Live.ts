@@ -19,22 +19,28 @@
 import { Effect, Layer } from "effect";
 
 import type { LanguageService } from "./Interface/LanguageService.js";
+
 import { LanguageServiceTag } from "./Tag/LanguageServiceTag.js";
+
 import type { LanguageProblem } from "./Type/LanguageProblem.js";
 
 const MakeLanguageProblem = (error: unknown): LanguageProblem =>
 	error instanceof Error
 		? { _tag: "LanguageOperationFailed", error }
+
 		: { _tag: "LanguageOperationFailed", error: new Error(String(error)) };
 
 /** Monotonically increasing handle counter for provider disposals. */
 let NextHandle = 1;
 
 function makeLanguageService(): LanguageService {
+
 	/** Active provider registrations keyed by handle. */
 	const ActiveProviders = new Map<
 		number,
+
 		{ selector: string; type: string; provider: unknown }
+
 	>();
 
 	const MakeDisposable = (

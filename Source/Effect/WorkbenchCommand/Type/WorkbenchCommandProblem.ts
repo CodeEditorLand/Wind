@@ -12,3 +12,13 @@ export type WorkbenchCommandProblem =
 
 			readonly error: Error;
 	  };
+
+export class WorkbenchCommandError extends Error {
+	readonly _tag = "WorkbenchCommandError" as const;
+
+	constructor(readonly Problem: WorkbenchCommandProblem) {
+		super("reason" in Problem ? Problem.reason : Problem._tag);
+
+		this.name = "WorkbenchCommandError";
+	}
+}

@@ -1,7 +1,3 @@
-import type { Effect } from "effect";
-
-import type { WorkbenchProgressProblem } from "../Type/WorkbenchProgressProblem.js";
-
 export type WorkbenchProgressLocation =
 	| "Notification"
 	| "Window"
@@ -29,5 +25,5 @@ export interface WorkbenchProgressService {
 		options: WorkbenchProgressTaskOptions,
 
 		body: (reporter: WorkbenchProgressReporter) => Promise<A>,
-	) => Effect.Effect<A, WorkbenchProgressProblem>;
+	) => Promise<A>;
 }

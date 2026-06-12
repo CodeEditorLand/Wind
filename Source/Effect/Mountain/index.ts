@@ -1,6 +1,3 @@
-// Convenience alias for backward compatibility
-import { MountainTag } from "./Tag/MountainTag.js";
-
 /**
  * @module Effect/Mountain
  * @description
@@ -9,22 +6,21 @@ import { MountainTag } from "./Tag/MountainTag.js";
  *
  * @example
  * ```ts
- * import { Mountain, MountainLive, MountainTag } from "./Effect/Mountain/index.js";
+ * import { MountainLive } from "./Effect/Mountain/index.js";
  *
- * // Using the service
- * const program = Effect.gen(function* () {
- *   const mountain = yield* MountainTag;
- *   const version = yield* mountain.version;
- *   return version;
+ * await MountainLive.connect();
+ *
+ * const Version = await MountainLive.version();
+ *
+ * const Subscription = MountainLive.onConnectionChange((State) => {
+ * 	// react to connection state changes
  * });
  *
- * // Providing the layer
- * const runnable = program.pipe(Effect.provide(MountainLive));
+ * Subscription.dispose();
  * ```
  *
  * @see {@link Effect/Mountain/Interface/MountainService} Service interface
  * @see {@link Effect/Mountain/Implementation/MountainImplementation} Live implementation
- * @see [Effect-TS Documentation](https://effect.website/docs/guide/context)
  * @category Service
  */
 
@@ -45,15 +41,21 @@ export type {
 } from "./Type/MountainType.js";
 
 // Service interface
-export type { MountainService } from "./Interface/MountainService.js";
+export type {
+	IDisposable,
+	MountainService,
+} from "./Interface/MountainService.js";
 
-// Service tag
-export { MountainTag } from "./Tag/MountainTag.js";
+// Service type alias (former Context.Tag; consumers use the live object)
+export type { MountainTag } from "./Tag/MountainTag.js";
 
-// Live implementation layer
-export { MountainLive } from "./Implementation/MountainImplementation.js";
+export type { MountainTag as Mountain } from "./Tag/MountainTag.js";
 
-// Mock implementation layer
+// Live implementation
+export {
+	CreateMountainService,
+	MountainLive,
+} from "./Implementation/MountainImplementation.js";
+
+// Mock implementation
 export { MountainMockLive } from "./Layer/MountainMock.js";
-
-export { MountainTag as Mountain };

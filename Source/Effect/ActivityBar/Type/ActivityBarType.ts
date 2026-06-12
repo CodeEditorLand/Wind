@@ -15,6 +15,7 @@
  * Represents a badge displayed on an activity bar item.
  */
 export interface ActivityBarBadge {
+
 	readonly text: string;
 
 	readonly color?: string;
@@ -24,6 +25,7 @@ export interface ActivityBarBadge {
  * Represents a complete activity bar item with all properties.
  */
 export interface ActivityBarItem {
+
 	readonly id: string;
 
 	readonly title: string;

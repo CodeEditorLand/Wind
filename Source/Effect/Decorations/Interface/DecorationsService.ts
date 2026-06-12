@@ -7,6 +7,7 @@ import type { DecorationsProblem } from "../Type/DecorationsProblem.js";
  * Microsoft VSCode Reference: IDecoration from vs/workbench/services/decorations/common/decorations.ts
  */
 export interface FileDecoration {
+
 	readonly badge?: string;
 
 	readonly tooltip?: string;
@@ -25,6 +26,7 @@ export interface FileDecoration {
  * vs/workbench/services/decorations/common/decorations.ts
  */
 export interface DecorationsService {
+
 	/** Get the decoration for a specific URI. Returns null when none applies. */
 	readonly GetDecoration: (
 		uri: string,

@@ -26,21 +26,28 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+
 import { TauriIPCLive } from "../IPC/index.js";
+
 import type { ExtensionsService } from "./Interface/ExtensionsService.js";
+
 import { ExtensionsServiceTag } from "./Tag/ExtensionsServiceTag.js";
+
 import type { ExtensionsProblem } from "./Type/ExtensionsProblem.js";
 
 const MakeExtensionsProblem = (error: unknown): ExtensionsProblem =>
 	error instanceof Error
 		? { _tag: "ExtensionsOperationFailed", error }
+
 		: {
+
 				_tag: "ExtensionsOperationFailed",
 
 				error: new Error(String(error)),
 			};
 
 function makeLiveExtensionsService(): ExtensionsService {
+
 	const IPCService = TauriIPCLive;
 
 	const Service: ExtensionsService = {

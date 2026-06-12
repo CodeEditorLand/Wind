@@ -2,28 +2,30 @@
  * @module FileSystem/Implementation/FileSystemProviderImplementation
  * @description
  * Implementation of the FileSystemProvider service using Tauri IPC to communicate with Mountain.
+ * All methods are plain async and throw typed `FileSystemProviderError` subclasses.
  * @see {@link FileSystem/Interface/FileSystemProviderService} Service interface
  * @category Implementation
  */
 
 import { invoke as TauriInvoke } from "@tauri-apps/api/core";
+
 import { Context, Effect, Layer } from "effect";
 
 import {
-	FileExistsError,
-	FileNotFoundError,
 	InvalidPathError,
-	NotSupportedError,
-	PermissionError,
 	toFileSystemProviderError,
 	UnknownFileSystemError,
 } from "../Error/FileSystemProviderError";
+
 import type { FileSystemProviderService } from "../Interface/FileSystemProvider";
+
 import type {
 	IFileSystemProvider,
 	IFileWriteOptions,
 } from "../Type/FileSystemType";
+
 import { FileType } from "../Type/FileType";
+
 import { URI } from "../Type/URI";
 
 // ============================================================================
@@ -35,6 +37,7 @@ import { URI } from "../Type/URI";
  * These must match the commands defined in Element/Mountain/Source/IPC/WindServiceHandlers.rs
  */
 const MountainCommands = {
+
 	READ: "file:read",
 
 	WRITE: "file:write",
@@ -55,16 +58,6 @@ const MountainCommands = {
 } as const;
 
 // ============================================================================
-// Service Tag
-// ============================================================================
-
-/**
- * Tag for accessing the FileSystemProvider service
- */
-export const FileSystemProviderTag =
-	Context.GenericTag<FileSystemProviderService>("FileSystemProvider");
-
-// ============================================================================
 // Utility Functions
 // ============================================================================
 
@@ -74,6 +67,7 @@ export const FileSystemProviderTag =
  * @returns File system path string
  */
 function uriToPath(uri: URI): string {
+
 	// fsPath is a getter on the real VS Code URI, not a method call.
 	const path = uri.fsPath;
 
@@ -82,15 +76,6 @@ function uriToPath(uri: URI): string {
 	}
 
 	return path;
-}
-
-/**
- * Convert file system path to URI
- * @param path - File system path
- * @returns File URI
- */
-function pathToUri(path: string): URI {
-	return URI.file(path);
 }
 
 /**
@@ -111,6 +96,7 @@ function toIStat(stats: {
 
 	accessed?: number;
 }): {
+
 	type: number;
 
 	size: number;
@@ -121,6 +107,7 @@ function toIStat(stats: {
 
 	permissions?: number;
 } {
+
 	// Determine file type
 	let type: FileType;
 
@@ -157,6 +144,7 @@ function toDirectoryEntries(
 		is_directory?: boolean;
 	}>,
 ): [string, FileType][] {
+
 	return entries.map((entry) => {
 		let type: FileType;
 
@@ -179,6 +167,7 @@ function toDirectoryEntries(
 const createProvider = (
 	invoke: (command: string, ...args: unknown[]) => Promise<unknown>,
 ) => {
+
 	class MountainFileSystemProvider implements IFileSystemProvider {
 		async readFile(uri: URI): Promise<Uint8Array> {
 			const path = uriToPath(uri);
@@ -212,7 +201,7 @@ const createProvider = (
 
 			content: Uint8Array,
 
-			options?: IFileWriteOptions,
+			_options?: IFileWriteOptions,
 		): Promise<void> {
 			const path = uriToPath(uri);
 
@@ -372,7 +361,7 @@ const createProvider = (
 			}
 		}
 
-		watch(uri: URI, options: any): any {
+		watch(_uri: URI, _options: unknown): { dispose: () => void } {
 			// File watching is not implemented in Mountain yet
 			// Return a no-op disposable
 			return {
@@ -387,14 +376,16 @@ const createProvider = (
 };
 
 // ============================================================================
-// Live Implementation Layer
+// Service (plain async)
 // ============================================================================
 
 /**
- * Live implementation layer for FileSystemProvider service.
- * Accesses Mountain's file system operations through Wind's IPC service.
+ * Build the FileSystemProvider service. Every method is plain async;
+ * failures throw `FileSystemProviderError` subclasses (VS Code name
+ * contract preserved by the error classes themselves).
  */
 function buildFileSystemService(): FileSystemProviderService {
+
 	// Create the provider with IPC access
 	const provider = createProvider((command, ...args) =>
 		TauriInvoke("MountainIPCInvoke", {
@@ -404,109 +395,123 @@ function buildFileSystemService(): FileSystemProviderService {
 	);
 
 	return {
+		provider: provider as unknown as IFileSystemProvider,
+
 		getProvider: Effect.succeed(provider as unknown as IFileSystemProvider),
 
-		readFile: (uri: string) =>
-			Effect.tryPromise({
-				try: () => provider.readFile(URI.parse(uri)),
-				catch: (error) =>
-					toFileSystemProviderError(error, "readFile", uri),
-			}),
+		readFile: async (uri: string) => {
+			try {
+				return await provider.readFile(URI.parse(uri));
+			} catch (error) {
+				throw toFileSystemProviderError(error, "readFile", uri);
+			}
+		},
 
-		writeFile: (uri: string, content: Uint8Array, options = {}) =>
-			Effect.tryPromise({
-				try: () =>
-					provider.writeFile(URI.parse(uri), content, {
-						create: options.create ?? true,
-						overwrite: options.overwrite ?? true,
-					} as IFileWriteOptions),
-				catch: (error) =>
-					toFileSystemProviderError(error, "writeFile", uri),
-			}),
+		writeFile: async (uri: string, content: Uint8Array, options = {}) => {
+			try {
+				await provider.writeFile(URI.parse(uri), content, {
+					create: options.create ?? true,
+					overwrite: options.overwrite ?? true,
+				} as IFileWriteOptions);
+			} catch (error) {
+				throw toFileSystemProviderError(error, "writeFile", uri);
+			}
+		},
 
-		delete: (uri: string) =>
-			Effect.tryPromise({
-				try: () => provider.delete(URI.parse(uri)),
-				catch: (error) =>
-					toFileSystemProviderError(error, "delete", uri),
-			}),
+		delete: async (uri: string) => {
+			try {
+				await provider.delete(URI.parse(uri));
+			} catch (error) {
+				throw toFileSystemProviderError(error, "delete", uri);
+			}
+		},
 
-		copy: (source: string, destination: string) =>
-			Effect.tryPromise({
-				try: () =>
-					provider.copy(
-						URI.parse(source),
+		copy: async (source: string, destination: string) => {
+			try {
+				await provider.copy(URI.parse(source), URI.parse(destination));
+			} catch (error) {
+				throw toFileSystemProviderError(
+					error,
 
-						URI.parse(destination),
-					),
-				catch: (error) =>
-					toFileSystemProviderError(
-						error,
+					"copy",
 
-						"copy",
+					`${source} -> ${destination}`,
+				);
+			}
+		},
 
-						`${source} -> ${destination}`,
-					),
-			}),
+		move: async (source: string, destination: string) => {
+			try {
+				await provider.move(URI.parse(source), URI.parse(destination));
+			} catch (error) {
+				throw toFileSystemProviderError(
+					error,
 
-		move: (source: string, destination: string) =>
-			Effect.tryPromise({
-				try: () =>
-					provider.move(
-						URI.parse(source),
+					"move",
 
-						URI.parse(destination),
-					),
-				catch: (error) =>
-					toFileSystemProviderError(
-						error,
+					`${source} -> ${destination}`,
+				);
+			}
+		},
 
-						"move",
+		readdir: async (uri: string) => {
+			try {
+				const entries = await provider.readdir(URI.parse(uri));
 
-						`${source} -> ${destination}`,
-					),
-			}),
+				return entries.map(
+					([name, type]) =>
+						[name, type as number] as [string, number],
+				);
+			} catch (error) {
+				throw toFileSystemProviderError(error, "readdir", uri);
+			}
+		},
 
-		readdir: (uri: string) =>
-			Effect.tryPromise({
-				try: () => provider.readdir(URI.parse(uri)),
-				catch: (error) =>
-					toFileSystemProviderError(error, "readdir", uri),
-			}).pipe(
-				Effect.map((entries) =>
-					entries.map(
-						([name, type]) =>
-							[name, type as number] as [string, number],
-					),
-				),
-			),
+		mkdir: async (uri: string, options = {}) => {
+			try {
+				await provider.mkdir(URI.parse(uri), options);
+			} catch (error) {
+				throw toFileSystemProviderError(error, "mkdir", uri);
+			}
+		},
 
-		mkdir: (uri: string, options = {}) =>
-			Effect.tryPromise({
-				try: () => provider.mkdir(URI.parse(uri), options),
-				catch: (error) =>
-					toFileSystemProviderError(error, "mkdir", uri),
-			}),
+		rmdir: async (uri: string) => {
+			try {
+				await provider.rmdir(URI.parse(uri));
+			} catch (error) {
+				throw toFileSystemProviderError(error, "rmdir", uri);
+			}
+		},
 
-		rmdir: (uri: string) =>
-			Effect.tryPromise({
-				try: () => provider.rmdir(URI.parse(uri)),
-				catch: (error) =>
-					toFileSystemProviderError(error, "rmdir", uri),
-			}),
-
-		stat: (uri: string) =>
-			Effect.tryPromise({
-				try: () => provider.stat(URI.parse(uri)),
-				catch: (error) => toFileSystemProviderError(error, "stat", uri),
-			}),
+		stat: async (uri: string) => {
+			try {
+				return await provider.stat(URI.parse(uri));
+			} catch (error) {
+				throw toFileSystemProviderError(error, "stat", uri);
+			}
+		},
 	} satisfies FileSystemProviderService;
 }
+
+const FileSystemProvider = buildFileSystemService();
+
+// ============================================================================
+// Effect compatibility (WorkbenchIntegrationImplementation only)
+// ============================================================================
+
+/**
+ * Tag retained solely for `Workbench/Implementation/
+ * WorkbenchIntegrationImplementation.ts`, which still resolves the
+ * service through Effect context. New consumers import the default
+ * export directly.
+ */
+export const FileSystemProviderTag =
+	Context.GenericTag<FileSystemProviderService>("FileSystemProvider");
 
 export const FileSystemProviderLive = Layer.succeed(
 	FileSystemProviderTag,
 
-	buildFileSystemService(),
+	FileSystemProvider,
 );
 
 // ============================================================================
@@ -515,4 +520,4 @@ export const FileSystemProviderLive = Layer.succeed(
 
 export { MountainCommands };
 
-export default FileSystemProviderLive;
+export default FileSystemProvider;

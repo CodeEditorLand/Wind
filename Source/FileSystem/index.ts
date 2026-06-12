@@ -7,6 +7,12 @@
  */
 
 // ============================================================================
+// Service
+// ============================================================================
+
+export { default as FileSystemProvider } from "./Implementation/FileSystemProviderImplementation.js";
+
+// ============================================================================
 // Tags
 // ============================================================================
 
@@ -32,37 +38,37 @@ export type { FileSystemProviderService } from "./Interface/FileSystemProvider.j
 // ============================================================================
 
 export type {
-	IStat,
-	IFileWriteOptions,
-	IWatchOptions,
 	IDisposable,
 	IFileSystemProvider,
+	IFileWriteOptions,
+	IStat,
+	IWatchOptions,
 } from "./Type/FileSystemType.js";
+
+export { FileSystemErrorCode } from "./Type/FileSystemType.js";
 
 export { FileType } from "./Type/FileType.js";
 
 export { URI } from "./Type/URI.js";
-
-export { FileSystemErrorCode } from "./Type/FileSystemType.js";
 
 // ============================================================================
 // Errors
 // ============================================================================
 
 export {
-	FileSystemProviderError,
-	FileNotFoundError,
 	FileExistsError,
-	PermissionError,
+	FileNotFoundError,
+	FileSystemProviderError,
 	InvalidPathError,
-	NotSupportedError,
-	UnknownFileSystemError,
-	toFileSystemProviderError,
-	isFileSystemProviderError,
-	isFileNotFoundError,
 	isFileExistsError,
-	isPermissionError,
+	isFileNotFoundError,
+	isFileSystemProviderError,
 	isInvalidPathError,
 	isNotSupportedError,
+	isPermissionError,
 	isUnknownFileSystemError,
+	NotSupportedError,
+	PermissionError,
+	toFileSystemProviderError,
+	UnknownFileSystemError,
 } from "./Error/FileSystemProviderError.js";

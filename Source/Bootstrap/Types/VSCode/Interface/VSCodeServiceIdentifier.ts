@@ -11,6 +11,7 @@
  * VSCode Service Identifier interface
  */
 export interface IVSCodeServiceIdentifier {
+
 	_serviceBrand: undefined;
 
 	toString(): string;

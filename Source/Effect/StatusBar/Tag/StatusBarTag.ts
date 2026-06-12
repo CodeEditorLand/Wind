@@ -29,6 +29,7 @@ import type { StatusBarService } from "../Interface/StatusBarService.js";
  */
 export default class StatusBarTag extends Context.Tag("StatusBar")<
 	StatusBarTag,
+
 	StatusBarService
 >() {}
 

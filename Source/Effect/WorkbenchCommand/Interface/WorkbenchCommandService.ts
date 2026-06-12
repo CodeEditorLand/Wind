@@ -1,7 +1,3 @@
-import type { Effect, Stream } from "effect";
-
-import type { WorkbenchCommandProblem } from "../Type/WorkbenchCommandProblem.js";
-
 export interface WorkbenchCommandExecutedEvent {
 	readonly commandId: string;
 
@@ -13,22 +9,19 @@ export interface WorkbenchCommandService {
 		commandId: string,
 
 		args: ReadonlyArray<unknown>,
-	) => Effect.Effect<T, WorkbenchCommandProblem>;
+	) => Promise<T>;
 
 	readonly ExecuteVoid: (
 		commandId: string,
 
 		args: ReadonlyArray<unknown>,
-	) => Effect.Effect<void, WorkbenchCommandProblem>;
+	) => Promise<void>;
 
-	readonly ListIds: Effect.Effect<readonly string[], WorkbenchCommandProblem>;
+	readonly ListIds: () => readonly string[];
 
-	readonly Has: (
-		commandId: string,
-	) => Effect.Effect<boolean, WorkbenchCommandProblem>;
+	readonly Has: (commandId: string) => boolean;
 
-	readonly OnExecute: Stream.Stream<
-		WorkbenchCommandExecutedEvent,
-		WorkbenchCommandProblem
-	>;
+	readonly OnExecute: (
+		callback: (event: WorkbenchCommandExecutedEvent) => void,
+	) => { readonly dispose: () => void };
 }

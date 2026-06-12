@@ -10,6 +10,7 @@
  * Configuration not ready error
  */
 export class ConfigurationNotReadyError extends Error {
+
 	readonly _tag = "ConfigurationNotReadyError";
 
 	constructor() {

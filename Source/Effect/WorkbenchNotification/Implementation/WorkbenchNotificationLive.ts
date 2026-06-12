@@ -1,22 +1,23 @@
-import { Effect, Stream } from "effect";
-
 import type {
 	WorkbenchNotificationDispatched,
 	WorkbenchNotificationOptions,
 	WorkbenchNotificationService,
 } from "../Interface/WorkbenchNotificationService.js";
-import type { WorkbenchNotificationProblem } from "../Type/WorkbenchNotificationProblem.js";
+
+import { WorkbenchNotificationError } from "../Type/WorkbenchNotificationProblem.js";
+
 import {
 	type WorkbenchNotificationBridgeShape,
 	type WorkbenchNotificationGlobals,
 	WorkbenchNotificationSeverityCode,
 } from "./WorkbenchNotificationBridgeShape.js";
 
-const Unavailable: WorkbenchNotificationProblem = {
-	_tag: "WorkbenchNotificationBridgeUnavailable",
+const Unavailable = (): WorkbenchNotificationError =>
+	new WorkbenchNotificationError({
+		_tag: "WorkbenchNotificationBridgeUnavailable",
 
-	reason: "globalThis.__CEL_SERVICES__.Notification is null - the workbench has not yet exposed its INotificationService handle.",
-};
+		reason: "globalThis.__CEL_SERVICES__.Notification is null - the workbench has not yet exposed its INotificationService handle.",
+	});
 
 const ToError = (cause: unknown): Error =>
 	cause instanceof Error ? cause : new Error(String(cause));
@@ -38,60 +39,54 @@ function makeWorkbenchNotificationService(): WorkbenchNotificationService {
 		(globalThis as unknown as WorkbenchNotificationGlobals).__CEL_SERVICES__
 			?.Notification ?? null;
 
-	const Notify = (
-		Options: WorkbenchNotificationOptions,
-	): Effect.Effect<void, WorkbenchNotificationProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
+	const Notify = (Options: WorkbenchNotificationOptions): void => {
+		const Bridge = getBridge();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			try {
-				Bridge.notify({
-					severity: WorkbenchNotificationSeverityCode(
-						Options.severity,
-					),
-					message: Options.message,
-					...(Options.source !== undefined
-						? { source: Options.source }
-						: {}),
-					...(Options.silent !== undefined
-						? { silent: Options.silent }
-						: {}),
-				});
+		try {
+			Bridge.notify({
+				severity: WorkbenchNotificationSeverityCode(Options.severity),
+				message: Options.message,
+				...(Options.source !== undefined
+					? { source: Options.source }
+					: {}),
+				...(Options.silent !== undefined
+					? { silent: Options.silent }
+					: {}),
+			});
 
-				PublishLocal({
-					severity: Options.severity,
-					message: Options.message,
-					source: Options.source,
-				});
-			} catch (Cause) {
-				return yield* Effect.fail<WorkbenchNotificationProblem>({
-					_tag: "WorkbenchNotificationDispatchFailed",
-					error: ToError(Cause),
-				});
-			}
-		});
+			PublishLocal({
+				severity: Options.severity,
+				message: Options.message,
+				source: Options.source,
+			});
+		} catch (Cause) {
+			throw new WorkbenchNotificationError({
+				_tag: "WorkbenchNotificationDispatchFailed",
+				error: ToError(Cause),
+			});
+		}
+	};
 
-	const Info = (Message: string) =>
+	const Info = (Message: string): void =>
 		Notify({ severity: "Info", message: Message });
 
-	const Warn = (Message: string) =>
+	const Warn = (Message: string): void =>
 		Notify({ severity: "Warning", message: Message });
 
-	const ErrorVariant = (Message: string) =>
+	const ErrorVariant = (Message: string): void =>
 		Notify({ severity: "Error", message: Message });
 
-	const OnDispatched = Stream.async<
-		WorkbenchNotificationDispatched,
-		WorkbenchNotificationProblem
-	>((Emit) => {
+	const OnDispatched = (
+		Callback: (event: WorkbenchNotificationDispatched) => void,
+	): { readonly dispose: () => void } => {
 		const Listener = (Event: Event) => {
 			const Detail = (
 				Event as CustomEvent<WorkbenchNotificationDispatched>
 			).detail;
 
-			Emit.single(Detail);
+			Callback(Detail);
 		};
 
 		try {
@@ -100,14 +95,16 @@ function makeWorkbenchNotificationService(): WorkbenchNotificationService {
 			// no window
 		}
 
-		return Effect.sync(() => {
-			try {
-				window.removeEventListener(NOTIFICATION_EVENT, Listener);
-			} catch {
-				// no window
-			}
-		});
-	});
+		return {
+			dispose: () => {
+				try {
+					window.removeEventListener(NOTIFICATION_EVENT, Listener);
+				} catch {
+					// no window
+				}
+			},
+		};
+	};
 
 	const Service: WorkbenchNotificationService = {
 		Notify,

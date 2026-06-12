@@ -18,17 +18,23 @@
 import { Effect, Layer } from "effect";
 
 import SkyEvent from "../../IPC/SkyEvent.js";
+
 import { CommandsServiceInstance } from "../Commands/Live.js";
+
 import type { EditorService } from "./Interface/EditorService.js";
+
 import { EditorServiceTag } from "./Tag/EditorServiceTag.js";
+
 import type { EditorProblem } from "./Type/EditorProblem.js";
 
 const MakeEditorProblem = (error: unknown): EditorProblem =>
 	error instanceof Error
 		? { _tag: "EditorOperationFailed", error }
+
 		: { _tag: "EditorOperationFailed", error: new Error(String(error)) };
 
 function makeEditorService(): EditorService {
+
 	const CommandsService = CommandsServiceInstance;
 
 	// In-memory state for active and visible editors.

@@ -9,8 +9,11 @@
 import { Context, Effect, SubscriptionRef } from "effect";
 
 import type { TelemetryService } from "../../Telemetry.js";
+
 import { ActivityBarItemNotFoundError } from "../Error/ActivityBarItemNotFoundError.js";
+
 import { ActivityBarUpdateError } from "../Error/ActivityBarUpdateError.js";
+
 import type {
 	ActivityBarBadge,
 	ActivityBarItem,
@@ -35,6 +38,7 @@ export const MakeCreateItem = (
 
 	Telemetry: TelemetryService,
 ) => {
+
 	return (
 		Item: CreateActivityBarItem,
 	): Effect.Effect<ActivityBarItem, never> =>
@@ -65,12 +69,14 @@ export const MakeUpdateItem = (
 
 	Telemetry: TelemetryService,
 ) => {
+
 	return (
 		Id: string,
 
 		Updates: Partial<Omit<ActivityBarItem, "id">>,
 	): Effect.Effect<
 		void,
+
 		ActivityBarItemNotFoundError | ActivityBarUpdateError
 	> =>
 		Effect.gen(function* () {
@@ -126,6 +132,7 @@ export const MakeRemoveItem = (
 
 	Telemetry: TelemetryService,
 ) => {
+
 	return (Id: string): Effect.Effect<void, ActivityBarItemNotFoundError> =>
 		Effect.gen(function* () {
 			const Existing = yield* GetItem(Id);
@@ -157,6 +164,7 @@ export const MakeRemoveItem = (
 export const MakeGetItem = (
 	ItemsRef: SubscriptionRef.SubscriptionRef<ReadonlyArray<ActivityBarItem>>,
 ) => {
+
 	return (Id: string): Effect.Effect<ActivityBarItem | undefined, never> =>
 		Effect.map(ItemsRef.get, (Items) =>
 			Items.find((Item) => Item.id === Id),
@@ -173,6 +181,7 @@ export const MakeSetActiveItem = (
 
 	Telemetry: TelemetryService,
 ) => {
+
 	return (Id: string): Effect.Effect<void, ActivityBarItemNotFoundError> =>
 		Effect.gen(function* () {
 			const Existing = yield* GetItem(Id);
@@ -197,19 +206,23 @@ export const MakeSetBadge = (
 		Updates: Partial<Omit<ActivityBarItem, "id">>,
 	) => Effect.Effect<
 		void,
+
 		ActivityBarItemNotFoundError | ActivityBarUpdateError
 	>,
 ) => {
+
 	return (
 		Id: string,
 
 		Badge: ActivityBarBadge | undefined,
 	): Effect.Effect<
 		void,
+
 		ActivityBarItemNotFoundError | ActivityBarUpdateError
 	> =>
 		Badge === undefined
 			? UpdateItem(Id, {} as Partial<Omit<ActivityBarItem, "id">>) // badge removed by helper
+
 			: UpdateItem(Id, { badge: Badge });
 };
 
@@ -219,11 +232,13 @@ export const MakeSetBadge = (
 export const MakeGetBadge = (
 	GetItem: (Id: string) => Effect.Effect<ActivityBarItem | undefined, never>,
 ) => {
+
 	return (Id: string): Effect.Effect<ActivityBarBadge | undefined, never> =>
 		Effect.map(GetItem(Id), (Item) => Item?.badge);
 };
 
 export default {
+
 	MakeCreateItem,
 
 	MakeUpdateItem,

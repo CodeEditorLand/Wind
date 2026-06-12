@@ -1,9 +1,4 @@
-import type { Effect, Stream } from "effect";
-
-import type {
-	WorkbenchLifecyclePhase,
-	WorkbenchLifecycleProblem,
-} from "../Type/WorkbenchLifecycleProblem.js";
+import type { WorkbenchLifecyclePhase } from "../Type/WorkbenchLifecycleProblem.js";
 
 export interface WorkbenchLifecyclePhaseChange {
 	readonly from: WorkbenchLifecyclePhase;
@@ -12,25 +7,21 @@ export interface WorkbenchLifecyclePhaseChange {
 }
 
 export interface WorkbenchLifecycleService {
-	readonly Current: Effect.Effect<
-		WorkbenchLifecyclePhase,
-		WorkbenchLifecycleProblem
-	>;
+	readonly Current: () => WorkbenchLifecyclePhase;
 
-	readonly Advance: (
-		phase: WorkbenchLifecyclePhase,
-	) => Effect.Effect<void, WorkbenchLifecycleProblem>;
+	readonly Advance: (phase: WorkbenchLifecyclePhase) => Promise<void>;
 
-	readonly When: (
-		phase: WorkbenchLifecyclePhase,
-	) => Effect.Effect<void, WorkbenchLifecycleProblem>;
+	readonly When: (phase: WorkbenchLifecyclePhase) => Promise<void>;
 
-	readonly Phases: Stream.Stream<
-		WorkbenchLifecyclePhaseChange,
-		WorkbenchLifecycleProblem
-	>;
+	readonly Phases: (
+		callback: (change: WorkbenchLifecyclePhaseChange) => void,
+	) => { readonly dispose: () => void };
 
-	readonly OnWillShutdown: Stream.Stream<void, WorkbenchLifecycleProblem>;
+	readonly OnWillShutdown: (callback: () => void) => {
+		readonly dispose: () => void;
+	};
 
-	readonly OnDidShutdown: Stream.Stream<void, WorkbenchLifecycleProblem>;
+	readonly OnDidShutdown: (callback: () => void) => {
+		readonly dispose: () => void;
+	};
 }

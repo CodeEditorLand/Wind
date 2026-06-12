@@ -10,15 +10,15 @@
  * Read path:
  *   1. If `Memory` writes have populated `__CEL_OVERRIDE_CONFIG__`
  *      for the section, the workbench's `getValue` short-circuits
- *      to the bag (handled by the native shim) - this layer just
- *      calls `getValue(section)` and trusts the cascade.
+ *      to the bag (handled by the native shim) - this implementation
+ *      just calls `getValue(section)` and trusts the cascade.
  *   2. Otherwise the workbench walks default → user → workspace →
  *      folder → override and returns the effective value.
  *
  * Write path:
  *   - `Memory` target: write to `__CEL_OVERRIDE_CONFIG__` directly,
- *     dispatch a `cel:user-settings-changed` DOM event so the
- *     `Changes` stream emits.
+ *     dispatch a `cel:user-settings-changed` DOM event so `Changes`
+ *     subscribers are notified.
  *   - Other targets: forward to `updateValue(section, value, target)`
  *     on the workbench's `IConfigurationService`. The workbench
  *     emits its native `onDidChangeConfiguration` event; we listen
@@ -27,19 +27,18 @@
  * Failure handling:
  *   - Bridge unavailable (the workbench hasn't started yet, or the
  *     `__CEL_SERVICES__` bag has a `null` for this key) ->
- *     `UserSettingsBridgeUnavailable`. The Layer doesn't `die`; it
- *     fails the Effect so callers can fall back to the Stub.
+ *     `UserSettingsError` with a `UserSettingsBridgeUnavailable`
+ *     problem so callers can fall back to the Stub.
  * @category Implementation
  */
-
-import { Effect, Stream } from "effect";
 
 import type {
 	UserSettingsChangeEvent,
 	UserSettingsService,
 	UserSettingsTarget,
 } from "../Interface/UserSettingsService.js";
-import type { UserSettingsProblem } from "../Type/UserSettingsProblem.js";
+
+import { UserSettingsError } from "../Type/UserSettingsProblem.js";
 
 interface VSCodeConfigurationBridge {
 	readonly getValue: <T>(section: string) => T | undefined;
@@ -119,147 +118,134 @@ function makeUserSettingsService(): UserSettingsService {
 
 	const Bridge = Globals.__CEL_SERVICES__?.Configuration ?? null;
 
-	const ProblemBridgeUnavailable: UserSettingsProblem = {
-		_tag: "UserSettingsBridgeUnavailable",
+	const Unavailable = (): UserSettingsError =>
+		new UserSettingsError({
+			_tag: "UserSettingsBridgeUnavailable",
 
-		reason: "globalThis.__CEL_SERVICES__.Configuration is null - the workbench hasn't injected its handles yet. Boot the workbench first or use UserSettingsStub for tests.",
-	};
+			reason: "globalThis.__CEL_SERVICES__.Configuration is null - the workbench hasn't injected its handles yet. Boot the workbench first or use UserSettingsStub for tests.",
+		});
 
 	const Service: UserSettingsService = {
-		Read: <T = unknown>(Section: string) =>
-			Effect.gen(function* () {
-				if (!Bridge) {
-					return yield* Effect.fail(ProblemBridgeUnavailable);
-				}
+		Read: <T = unknown>(Section: string): T => {
+			if (!Bridge) throw Unavailable();
 
-				try {
-					const Value = Bridge.getValue<T>(Section);
+			let Value: T | undefined;
 
-					if (Value === undefined) {
-						return yield* Effect.fail<UserSettingsProblem>({
-							_tag: "UserSettingsReadFailed",
-							section: Section,
-							error: new Error(
-								`Section "${Section}" missing from configuration cascade`,
-							),
-						});
-					}
-
-					return Value;
-				} catch (Error) {
-					return yield* Effect.fail<UserSettingsProblem>({
-						_tag: "UserSettingsReadFailed",
-						section: Section,
-						error:
-							Error instanceof globalThis.Error
-								? Error
-								: new globalThis.Error(String(Error)),
-					});
-				}
-			}),
-
-		ReadOptional: <T = unknown>(Section: string) =>
-			Effect.gen(function* () {
-				if (!Bridge) {
-					return yield* Effect.fail(ProblemBridgeUnavailable);
-				}
-
-				return Bridge.getValue<T>(Section);
-			}),
-
-		Write: (Section, Value, Target: UserSettingsTarget) =>
-			Effect.gen(function* () {
-				if (Target === "Memory") {
-					WriteOverride(Section, Value);
-
-					return;
-				}
-
-				if (!Bridge) {
-					return yield* Effect.fail(ProblemBridgeUnavailable);
-				}
-
-				yield* Effect.tryPromise({
-					try: () =>
-						Bridge.updateValue(
-							Section,
-
-							Value,
-
-							TargetCode(Target),
-						),
-					catch: (Error) =>
-						({
-							_tag: "UserSettingsWriteRejected",
-							section: Section,
-							target: Target,
-							reason:
-								Error instanceof globalThis.Error
-									? Error.message
-									: String(Error),
-						}) as UserSettingsProblem,
+			try {
+				Value = Bridge.getValue<T>(Section);
+			} catch (Cause) {
+				throw new UserSettingsError({
+					_tag: "UserSettingsReadFailed",
+					section: Section,
+					error:
+						Cause instanceof Error
+							? Cause
+							: new Error(String(Cause)),
 				});
-			}),
+			}
 
-		HasUserValue: (Section) =>
-			Effect.gen(function* () {
-				if (!Bridge?.inspect) {
-					return yield* Effect.fail(ProblemBridgeUnavailable);
-				}
+			if (Value === undefined) {
+				throw new UserSettingsError({
+					_tag: "UserSettingsReadFailed",
+					section: Section,
+					error: new Error(
+						`Section "${Section}" missing from configuration cascade`,
+					),
+				});
+			}
 
-				const Inspection = Bridge.inspect(Section);
+			return Value;
+		},
 
-				return Inspection.userValue !== undefined;
-			}),
+		ReadOptional: <T = unknown>(Section: string): T | undefined => {
+			if (!Bridge) throw Unavailable();
 
-		Changes: Stream.async<UserSettingsChangeEvent, UserSettingsProblem>(
-			(Emit) => {
-				if (!Bridge) {
-					Emit.failCause({
-						_tag: "Fail",
-						error: ProblemBridgeUnavailable,
-					} as never);
+			return Bridge.getValue<T>(Section);
+		},
 
-					return Effect.void;
-				}
+		Write: async (
+			Section: string,
 
-				const Subscription = Bridge.onDidChangeConfiguration(
-					(VSEvent) => {
-						const Keys = new Set(VSEvent.affectedKeys ?? []);
+			Value: unknown,
 
-						Emit.single({
-							affectedKeys: Keys,
-							source: "Workspace",
-						});
-					},
+			Target: UserSettingsTarget,
+		): Promise<void> => {
+			if (Target === "Memory") {
+				WriteOverride(Section, Value);
+
+				return;
+			}
+
+			if (!Bridge) throw Unavailable();
+
+			try {
+				await Bridge.updateValue(
+					Section,
+
+					Value,
+
+					TargetCode(Target),
 				);
+			} catch (Cause) {
+				throw new UserSettingsError({
+					_tag: "UserSettingsWriteRejected",
+					section: Section,
+					target: Target,
+					reason:
+						Cause instanceof Error ? Cause.message : String(Cause),
+				});
+			}
+		},
 
-				const OverrideListener = (Event: Event) => {
-					const Detail = (
-						Event as CustomEvent<{
-							readonly section: string;
+		HasUserValue: (Section: string): boolean => {
+			if (!Bridge?.inspect) throw Unavailable();
 
-							readonly source: UserSettingsTarget;
-						}>
-					).detail;
+			const Inspection = Bridge.inspect(Section);
 
-					Emit.single({
-						affectedKeys: new Set([Detail.section]),
-						source: Detail.source,
-					});
-				};
+			return Inspection.userValue !== undefined;
+		},
 
-				try {
-					window.addEventListener(
-						"cel:user-settings-changed",
+		Changes: (
+			Callback: (event: UserSettingsChangeEvent) => void,
+		): { readonly dispose: () => void } => {
+			if (!Bridge) throw Unavailable();
 
-						OverrideListener,
-					);
-				} catch {
-					// no window - not registering, just clean up subscription
-				}
+			const Subscription = Bridge.onDidChangeConfiguration((VSEvent) => {
+				const Keys = new Set(VSEvent.affectedKeys ?? []);
 
-				return Effect.sync(() => {
+				Callback({
+					affectedKeys: Keys,
+					source: "Workspace",
+				});
+			});
+
+			const OverrideListener = (Event: Event) => {
+				const Detail = (
+					Event as CustomEvent<{
+						readonly section: string;
+
+						readonly source: UserSettingsTarget;
+					}>
+				).detail;
+
+				Callback({
+					affectedKeys: new Set([Detail.section]),
+					source: Detail.source,
+				});
+			};
+
+			try {
+				window.addEventListener(
+					"cel:user-settings-changed",
+
+					OverrideListener,
+				);
+			} catch {
+				// no window - not registering, just clean up subscription
+			}
+
+			return {
+				dispose: () => {
 					Subscription.dispose();
 
 					try {
@@ -271,9 +257,9 @@ function makeUserSettingsService(): UserSettingsService {
 					} catch {
 						// see above
 					}
-				});
-			},
-		),
+				},
+			};
+		},
 	};
 
 	return Service;

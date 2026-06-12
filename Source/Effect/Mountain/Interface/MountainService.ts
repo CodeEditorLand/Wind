@@ -4,15 +4,9 @@
  * Service interface for Mountain backend integration.
  * Manages connection, RPC calls, and resource synchronization.
  * @see {@link Effect/Mountain/Implementation/MountainImplementation} Default implementation
- * @see [Effect-TS Services](https://effect.website/docs/guide/context)
  * @category Interface
  */
 
-import { Context, Effect, Stream } from "effect";
-
-import type { MountainConnectionError } from "../Error/MountainConnectionError.js";
-import type { MountainRPCError } from "../Error/MountainRPCError.js";
-import type { MountainSyncError } from "../Error/MountainSyncError.js";
 import type {
 	MountainConnectionState,
 	SyncResource,
@@ -24,64 +18,81 @@ import type {
 // ============================================================================
 
 /**
+ * Handle returned by subscription methods; call `dispose` to unsubscribe.
+ */
+export interface IDisposable {
+
+	readonly dispose: () => void;
+}
+
+/**
  * Service interface for Mountain backend operations.
  * Manages connection to the Mountain backend, RPC calls, and resource sync.
  */
 export interface MountainService {
-	/**
-	 * Current connection state.
-	 */
-	readonly connectionState: Effect.Effect<MountainConnectionState, never>;
 
 	/**
-	 * Stream of connection state changes.
+	 * Current connection state snapshot.
 	 */
-	readonly connectionChanges: Stream.Stream<MountainConnectionState, never>;
+	readonly connectionState: () => MountainConnectionState;
 
 	/**
-	 * Connect to Mountain backend.
-	 * @returns Effect that completes when connection is established
+	 * Subscribe to connection state changes.
+	 * @param Listener - Called with each new connection state
 	 */
-	readonly connect: Effect.Effect<void, MountainConnectionError>;
+	readonly onConnectionChange: (
+		Listener: (State: MountainConnectionState) => void,
+	) => IDisposable;
 
 	/**
-	 * Disconnect from Mountain backend.
-	 * @returns Effect that completes when disconnected
+	 * Connect to Mountain backend with capped exponential retry.
+	 * @throws MountainConnectionError after the retry budget is exhausted
 	 */
-	readonly disconnect: Effect.Effect<void, never>;
+	readonly connect: () => Promise<void>;
+
+	/**
+	 * Disconnect from Mountain backend and stop background sync.
+	 */
+	readonly disconnect: () => void;
 
 	/**
 	 * Execute RPC method.
-	 * @param method - The RPC method name
-	 * @returns A function that takes args and returns the RPC result
+	 * @param Method - The RPC method name
+	 * @returns A function that takes args and resolves to the RPC result
+	 * @throws MountainRPCError when the call fails
 	 */
 	readonly rpc: <T>(
-		method: string,
-	) => (args?: Record<string, unknown>) => Effect.Effect<T, MountainRPCError>;
+		Method: string,
+	) => (Args?: Record<string, unknown>) => Promise<T>;
 
 	/**
 	 * Sync a specific resource type.
-	 * @param resourceType - The type of resource to sync
-	 * @returns Effect that resolves to sync result
+	 * @param ResourceType - The type of resource to sync
+	 * @throws MountainSyncError when the sync fails
 	 */
-	readonly sync: (
-		resourceType: SyncResource["type"],
-	) => Effect.Effect<SyncResult, MountainSyncError>;
+	readonly sync: (ResourceType: SyncResource["type"]) => Promise<SyncResult>;
 
 	/**
-	 * Stream of all sync events.
+	 * Subscribe to sync events.
+	 * @param Listener - Called with each synced resource
 	 */
-	readonly syncEvents: Stream.Stream<SyncResource, never>;
+	readonly onSyncEvent: (
+		Listener: (Resource: SyncResource) => void,
+	) => IDisposable;
 
 	/**
 	 * Get Mountain version.
-	 * @returns Effect that resolves to version string
+	 * @throws MountainConnectionError when the backend is unreachable
 	 */
-	readonly version: Effect.Effect<string, MountainConnectionError>;
+	readonly version: () => Promise<string>;
 
 	/**
-	 * Health check.
-	 * @returns Effect that resolves to whether backend is healthy
+	 * Health check; resolves to whether the backend is healthy.
 	 */
-	readonly healthCheck: Effect.Effect<boolean, MountainConnectionError>;
+	readonly healthCheck: () => Promise<boolean>;
+
+	/**
+	 * Cancel retry/background loops and drop all listeners.
+	 */
+	readonly dispose: () => void;
 }

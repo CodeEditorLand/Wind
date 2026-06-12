@@ -10,6 +10,7 @@
  * Workbench data interface
  */
 export interface WorkbenchData {
+
 	/** Whether the workbench has been initialized */
 	initialized: boolean;
 

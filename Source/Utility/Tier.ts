@@ -106,6 +106,7 @@ const Injected =
 	(globalThis as { __LandTiers?: Record<string, unknown> }).__LandTiers ?? {};
 
 const Pick = <T extends string>(Capability: string, Fallback: T): T => {
+
 	const FromInjected = Injected[Capability];
 
 	if (typeof FromInjected === "string" && FromInjected.length > 0) {
@@ -122,6 +123,7 @@ const Pick = <T extends string>(Capability: string, Fallback: T): T => {
 };
 
 const Tier = {
+
 	RemoteProcedureCall: Pick<TierRemoteProcedureCallValue>(
 		"RemoteProcedureCall",
 
@@ -206,9 +208,11 @@ const Tier = {
 
 // One-shot boot banner - visible in browser DevTools.
 try {
+
 	// eslint-disable-next-line no-console
 	console.info("[LandFix:Tier] Wind tier set resolved:", Tier);
 } catch {
+
 	// Ignore - production bundles may strip `console`.
 }
 

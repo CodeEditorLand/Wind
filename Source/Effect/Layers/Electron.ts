@@ -2,17 +2,14 @@
  * @module Effect/Layers/Electron
  * @description
  * Complete Effect layer stack for Electron runtime (Sky).
- * Composes all atomic services into a runnable layer using Electron IPC.
+ * Composes the remaining Effect-typed services using Electron IPC.
+ * Configuration and Mountain are plain services exported from their
+ * Implementation modules and no longer appear in the layer stack.
  */
 
 import { Layer } from "effect";
 
-import {
-	ConfigurationLive,
-	ConfigurationWithSyncLive,
-} from "../Configuration.js";
 import { IPCElectronLive } from "../IPC.js";
-import { MountainLive } from "../Mountain.js";
 import { SandboxLive } from "../Sandbox.js";
 import { TelemetryLive } from "../Telemetry.js";
 
@@ -22,33 +19,30 @@ import { TelemetryLive } from "../Telemetry.js";
 
 /**
  * Base Electron layer stack.
- * Provides: Sandbox + IPC + Configuration + Telemetry + Mountain
+ * Provides: Sandbox + IPC + Telemetry
  *
  * Use this when you need manual control over configuration sync.
  */
 export const ElectronBaseLayer = Layer.empty
 	.pipe(Layer.provideMerge(SandboxLive))
 	.pipe(Layer.provideMerge(IPCElectronLive))
-	.pipe(Layer.provideMerge(TelemetryLive))
-	.pipe(Layer.provideMerge(ConfigurationLive))
-	.pipe(Layer.provideMerge(MountainLive));
+	.pipe(Layer.provideMerge(TelemetryLive));
 
 // ============================================================================
 // Full Electron Layer (with auto config sync)
 // ============================================================================
 
 /**
- * Full Electron layer stack with automatic configuration sync.
- * Provides: All base services + reactive Mountain-driven config updates
+ * Full Electron layer stack.
+ * Mountain-driven configuration sync runs inside the plain Mountain
+ * service while connected.
  *
  * This is the standard layer for Sky (Electron) builds.
  */
 export const ElectronLiveLayer = Layer.empty
 	.pipe(Layer.provideMerge(SandboxLive))
 	.pipe(Layer.provideMerge(IPCElectronLive))
-	.pipe(Layer.provideMerge(TelemetryLive))
-	.pipe(Layer.provideMerge(ConfigurationWithSyncLive))
-	.pipe(Layer.provideMerge(MountainLive));
+	.pipe(Layer.provideMerge(TelemetryLive));
 
 // ============================================================================
 // Electron Development Layer (with verbose logging)
@@ -61,9 +55,7 @@ export const ElectronLiveLayer = Layer.empty
 export const ElectronDevLayer = Layer.empty
 	.pipe(Layer.provideMerge(SandboxLive))
 	.pipe(Layer.provideMerge(IPCElectronLive))
-	.pipe(Layer.provideMerge(TelemetryLive))
-	.pipe(Layer.provideMerge(ConfigurationWithSyncLive))
-	.pipe(Layer.provideMerge(MountainLive));
+	.pipe(Layer.provideMerge(TelemetryLive));
 
 // Export default for convenience
 export default ElectronLiveLayer;

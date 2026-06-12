@@ -12,6 +12,7 @@
  * Includes the panel ID that was not found.
  */
 export default class SidebarPanelNotFoundError extends Error {
+
 	readonly _tag = "SidebarPanelNotFoundError";
 
 	constructor(panelId: string) {

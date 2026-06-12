@@ -8,43 +8,71 @@
 import { Layer } from "effect";
 
 import { ActivityBarLive } from "../ActivityBar.js";
+
 import { BootstrapLive } from "../Bootstrap.js";
+
 import { LiveClipboardServiceLayer as ClipboardLive } from "../Clipboard.js";
+
 import { LiveCommandsServiceLayer as CommandsLive } from "../Commands/Commands.js";
-import {
-	ConfigurationLive,
-	ConfigurationWithSyncLive,
-} from "../Configuration.js";
+
 import { LiveDecorationsServiceLayer as DecorationsLive } from "../Decorations/Decorations.js";
+
 import { LiveEditorServiceLayer as EditorLive } from "../Editor/Editor.js";
+
 import { EnvironmentLive } from "../Environment.js";
+
 import { LiveExtensionsServiceLayer as ExtensionsLive } from "../Extensions/Extensions.js";
+
 import { LiveFilesServiceLayer as FilesLive } from "../Files/Files.js";
+
 import { HealthLive } from "../Health.js";
+
 import { LiveHistoryServiceLayer as HistoryLive } from "../History/History.js";
+
 import { LiveKeybindingServiceLayer as KeybindingLive } from "../Keybinding/Keybinding.js";
+
 import { LiveLabelServiceLayer as LabelLive } from "../Label/Label.js";
+
 import { LiveLanguageServiceLayer as LanguageLive } from "../Language/Language.js";
+
 import { LiveLifecycleServiceLayer as LifecycleLive } from "../Lifecycle/Lifecycle.js";
+
 import { LiveModelServiceLayer as ModelLive } from "../Model/Model.js";
-import { MountainLive } from "../Mountain.js";
+
 import { MountainSyncLive } from "../MountainSync.js";
+
 import { LiveNotificationServiceLayer as NotificationLive } from "../Notification/Notification.js";
+
 import { LiveOutputServiceLayer as OutputLive } from "../Output/Output.js";
+
 import { PanelLive } from "../Panel.js";
+
 import { LiveProgressServiceLayer as ProgressLive } from "../Progress/Progress.js";
+
 import { LiveQuickInputServiceLayer as QuickInputLive } from "../QuickInput/QuickInput.js";
+
 import { SandboxLive } from "../Sandbox.js";
+
 import { LiveSearchServiceLayer as SearchLive } from "../Search/Search.js";
+
 import { SidebarLive } from "../Sidebar.js";
+
 import { StatusBarLive } from "../StatusBar.js";
+
 import { LiveStorageServiceLayer as StorageLive } from "../Storage/Storage.js";
+
 import { TelemetryLive } from "../Telemetry.js";
+
 import { LiveTerminalServiceLayer as TerminalLive } from "../Terminal/Terminal.js";
+
 import { default as LiveTextFileServiceLayer } from "../TextFile/Live.js";
+
 import { LiveTextModelResolverServiceLayer as TextModelResolverLive } from "../TextModelResolver/TextModelResolver.js";
+
 import { LiveThemesServiceLayer as ThemesLive } from "../Themes/Themes.js";
+
 import { LiveWorkingCopyServiceLayer as WorkingCopyLive } from "../WorkingCopy/WorkingCopy.js";
+
 import { LiveWorkspacesServiceLayer as WorkspacesLive } from "../Workspaces/Workspaces.js";
 
 // ============================================================================
@@ -56,7 +84,8 @@ import { LiveWorkspacesServiceLayer as WorkspacesLive } from "../Workspaces/Work
  * instead of 40+ chained .pipe(Layer.provideMerge) calls, reducing
  * intermediate composition objects from O(n) to O(1).
  *
- * Provides: Sandbox + IPC + Configuration + Telemetry + Mountain + UI Services
+ * Provides: Sandbox + IPC + Telemetry + UI Services. Configuration and
+ * Mountain are plain services exported from their Implementation modules.
  *
  * Use this when you need manual control over configuration sync.
  */
@@ -68,10 +97,6 @@ const BaseServices = Layer.mergeAll(
 	ClipboardLive,
 
 	TelemetryLive,
-
-	ConfigurationLive,
-
-	MountainLive,
 
 	MountainSyncLive,
 
@@ -141,12 +166,9 @@ export const TauriBaseLayer = BaseServices;
 // ============================================================================
 
 /**
- * Full Tauri layer stack with automatic configuration sync.
- * Provides: All base services + reactive Mountain-driven config updates.
- *
- * Uses ConfigurationWithSyncLive instead of ConfigurationLive for
- * automatic config synchronization. Built on the consolidated BaseServices
- * with minimal additional composition.
+ * Full Tauri layer stack.
+ * Provides: All base services. Mountain-driven configuration sync runs
+ * inside the plain Mountain service while connected.
  */
 export const TauriLiveLayer = Layer.mergeAll(
 	SandboxLive,
@@ -156,10 +178,6 @@ export const TauriLiveLayer = Layer.mergeAll(
 	ClipboardLive,
 
 	TelemetryLive,
-
-	ConfigurationWithSyncLive,
-
-	MountainLive,
 
 	MountainSyncLive,
 
@@ -239,10 +257,6 @@ export const TauriDevLayer = Layer.mergeAll(
 	ClipboardLive,
 
 	TelemetryLive,
-
-	ConfigurationWithSyncLive,
-
-	MountainLive,
 
 	MountainSyncLive,
 

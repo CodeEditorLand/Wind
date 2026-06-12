@@ -1,128 +1,130 @@
-import { Effect } from "effect";
-
 import type {
 	WorkbenchDialogConfirmOptions,
 	WorkbenchDialogConfirmResult,
 	WorkbenchDialogPickOptions,
 	WorkbenchDialogService,
 } from "../Interface/WorkbenchDialogService.js";
-import type { WorkbenchDialogProblem } from "../Type/WorkbenchDialogProblem.js";
+
+import { WorkbenchDialogError } from "../Type/WorkbenchDialogProblem.js";
+
 import type {
 	WorkbenchDialogBridgeShape,
 	WorkbenchDialogGlobals,
 } from "./WorkbenchDialogBridgeShape.js";
 
-const Unavailable: WorkbenchDialogProblem = {
-	_tag: "WorkbenchDialogBridgeUnavailable",
+const Unavailable = (): WorkbenchDialogError =>
+	new WorkbenchDialogError({
+		_tag: "WorkbenchDialogBridgeUnavailable",
 
-	reason: "globalThis.__CEL_SERVICES__.Dialog is null - the workbench has not yet exposed its IDialogService handle.",
-};
+		reason: "globalThis.__CEL_SERVICES__.Dialog is null - the workbench has not yet exposed its IDialogService handle.",
+	});
 
 const ToError = (cause: unknown): Error =>
 	cause instanceof Error ? cause : new Error(String(cause));
+
+const Failed = (Cause: unknown): WorkbenchDialogError =>
+	new WorkbenchDialogError({
+		_tag: "WorkbenchDialogFailed",
+		error: ToError(Cause),
+	});
 
 function makeWorkbenchDialogService(): WorkbenchDialogService {
 	const getBridge = (): WorkbenchDialogBridgeShape | null =>
 		(globalThis as unknown as WorkbenchDialogGlobals).__CEL_SERVICES__
 			?.Dialog ?? null;
 
-	const Confirm = (
+	const Confirm = async (
 		Options: WorkbenchDialogConfirmOptions,
-	): Effect.Effect<WorkbenchDialogConfirmResult, WorkbenchDialogProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
+	): Promise<WorkbenchDialogConfirmResult> => {
+		const Bridge = getBridge();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			return yield* Effect.tryPromise({
-				try: () =>
-					Bridge.confirm({
-						message: Options.message,
-						detail: Options.detail,
-						primaryButton: Options.primaryButton,
-						cancelButton: Options.cancelButton,
-						type: Options.type,
-					}),
-				catch: (Cause) =>
-					({
-						_tag: "WorkbenchDialogFailed",
-						error: ToError(Cause),
-					}) satisfies WorkbenchDialogProblem,
+		try {
+			return await Bridge.confirm({
+				message: Options.message,
+				...(Options.detail !== undefined
+					? { detail: Options.detail }
+					: {}),
+				...(Options.primaryButton !== undefined
+					? { primaryButton: Options.primaryButton }
+					: {}),
+				...(Options.cancelButton !== undefined
+					? { cancelButton: Options.cancelButton }
+					: {}),
+				...(Options.type !== undefined ? { type: Options.type } : {}),
 			});
-		});
+		} catch (Cause) {
+			throw Failed(Cause);
+		}
+	};
 
-	const Pick = (
+	const Pick = async (
 		Options: WorkbenchDialogPickOptions,
-	): Effect.Effect<number, WorkbenchDialogProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
+	): Promise<number> => {
+		const Bridge = getBridge();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			const Buttons = Options.choices.map((Label) => ({
-				label: Label,
-			}));
+		const Buttons = Options.choices.map((Label) => ({
+			label: Label,
+		}));
 
-			const Result = yield* Effect.tryPromise({
-				try: () =>
-					Bridge.prompt({
-						message: Options.message,
-						detail: Options.detail,
-						buttons: Buttons,
-						cancelButton:
-							Options.cancelId !== undefined
-								? {
-										label: Options.choices[
-											Options.cancelId
-										]!,
-									}
-								: undefined,
-					}),
-				catch: (Cause) =>
-					({
-						_tag: "WorkbenchDialogFailed",
-						error: ToError(Cause),
-					}) satisfies WorkbenchDialogProblem,
+		let Result: Awaited<ReturnType<typeof Bridge.prompt>>;
+
+		try {
+			Result = await Bridge.prompt({
+				message: Options.message,
+				...(Options.detail !== undefined
+					? { detail: Options.detail }
+					: {}),
+				buttons: Buttons,
+				...(Options.cancelId !== undefined
+					? {
+							cancelButton: {
+								label: Options.choices[Options.cancelId] ?? "",
+							},
+						}
+					: {}),
 			});
+		} catch (Cause) {
+			throw Failed(Cause);
+		}
 
-			const Index = Options.choices.findIndex(
-				(_, idx) => Result.result === Buttons[idx],
-			);
+		const Index = Options.choices.findIndex(
+			(_, idx) => Result.result === Buttons[idx],
+		);
 
-			return Index < 0 ? 0 : Index;
-		});
+		return Index < 0 ? 0 : Index;
+	};
 
-	const Info = (Message: string, Detail?: string) =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
+	const Info = async (Message: string, Detail?: string): Promise<void> => {
+		const Bridge = getBridge();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			yield* Effect.tryPromise({
-				try: () => Bridge.info(Message, Detail),
-				catch: (Cause) =>
-					({
-						_tag: "WorkbenchDialogFailed",
-						error: ToError(Cause),
-					}) satisfies WorkbenchDialogProblem,
-			});
-		});
+		try {
+			await Bridge.info(Message, Detail);
+		} catch (Cause) {
+			throw Failed(Cause);
+		}
+	};
 
-	const ErrorVariant = (Message: string, Detail?: string) =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
+	const ErrorVariant = async (
+		Message: string,
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		Detail?: string,
+	): Promise<void> => {
+		const Bridge = getBridge();
 
-			yield* Effect.tryPromise({
-				try: () => Bridge.error(Message, Detail),
-				catch: (Cause) =>
-					({
-						_tag: "WorkbenchDialogFailed",
-						error: ToError(Cause),
-					}) satisfies WorkbenchDialogProblem,
-			});
-		});
+		if (!Bridge) throw Unavailable();
+
+		try {
+			await Bridge.error(Message, Detail);
+		} catch (Cause) {
+			throw Failed(Cause);
+		}
+	};
 
 	const Service: WorkbenchDialogService = {
 		Confirm,

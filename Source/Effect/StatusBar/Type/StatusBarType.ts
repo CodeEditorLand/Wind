@@ -13,6 +13,7 @@
  * Contains all configurable properties for a status bar item.
  */
 export interface StatusBarItem {
+
 	/** Unique identifier for the status bar item */
 	readonly id: string;
 

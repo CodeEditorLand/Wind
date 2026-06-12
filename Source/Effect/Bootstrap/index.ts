@@ -1,9 +1,13 @@
 // Convenience export for quick bootstrap execution
 
 import { Effect, Layer } from "effect";
+
 import TelemetryLive from "../Telemetry/Layer/TelemetryLive.js";
+
 import { BootstrapLive } from "./Implementation/BootstrapImplementation.js";
+
 import { BootstrapTag } from "./Tag/BootstrapTag.js";
+
 import type {
 	BootstrapOptions,
 	BootstrapResult,
@@ -38,6 +42,7 @@ import type {
 
 // Live implementation layer
 export { BootstrapLive } from "./Implementation/BootstrapImplementation.js";
+
 // Stage implementations
 export {
 	stage0_Environment,
@@ -48,12 +53,16 @@ export {
 	stage5_Initialization,
 	stage6_HealthCheck,
 } from "./Implementation/BootstrapStage.js";
+
 // Service interface
 export type { BootstrapService } from "./Interface/BootstrapService.js";
+
 // Mock implementation layer
 export { BootstrapMock, makeMockBootstrap } from "./Layer/BootstrapMock.js";
+
 // Service tag
 export { BootstrapTag } from "./Tag/BootstrapTag.js";
+
 // Type definitions
 export type {
 	BootstrapOptions,

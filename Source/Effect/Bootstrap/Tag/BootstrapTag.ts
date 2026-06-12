@@ -32,6 +32,7 @@ import type { BootstrapService } from "../Interface/BootstrapService.js";
  */
 export class BootstrapTag extends Context.Tag("Effect/BootstrapService")<
 	BootstrapTag,
+
 	BootstrapService
 >() {}
 

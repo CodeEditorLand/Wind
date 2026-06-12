@@ -18,7 +18,9 @@ import {
 	type SandboxContext,
 	type SandboxGlobals,
 } from "../../../Types/Sandbox.js";
+
 import type { SandboxService } from "../Interface/SandboxService.js";
+
 import { Sandbox } from "../Tag/SandboxTag.js";
 
 /**
@@ -34,6 +36,7 @@ import { Sandbox } from "../Tag/SandboxTag.js";
  * ```
  */
 function makeSandboxService(): SandboxService {
+
 	// Check if preload has run
 	const checkReady = Effect.sync((): boolean => {
 		const vscode = (window as any).vscode as SandboxGlobals | undefined;

@@ -1,7 +1,3 @@
-import type { Effect, Stream } from "effect";
-
-import type { WorkbenchEditorProblem } from "../Type/WorkbenchEditorProblem.js";
-
 export interface WorkbenchEditorOpenInput {
 	readonly resource: string;
 
@@ -31,19 +27,15 @@ export interface WorkbenchEditorChangeEvent {
 }
 
 export interface WorkbenchEditorService {
-	readonly Active: Effect.Effect<
-		WorkbenchEditorActiveSnapshot,
-		WorkbenchEditorProblem
-	>;
+	readonly Active: () => WorkbenchEditorActiveSnapshot;
 
 	readonly Open: (
 		input: WorkbenchEditorOpenInput,
-	) => Effect.Effect<WorkbenchEditorActiveSnapshot, WorkbenchEditorProblem>;
+	) => Promise<WorkbenchEditorActiveSnapshot>;
 
-	readonly CloseActive: Effect.Effect<void, WorkbenchEditorProblem>;
+	readonly CloseActive: () => Promise<void>;
 
-	readonly OnActiveChange: Stream.Stream<
-		WorkbenchEditorChangeEvent,
-		WorkbenchEditorProblem
-	>;
+	readonly OnActiveChange: (
+		callback: (event: WorkbenchEditorChangeEvent) => void,
+	) => { readonly dispose: () => void };
 }

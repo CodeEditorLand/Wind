@@ -1,15 +1,11 @@
 /**
  * @module Effect/WorkbenchStorage/Interface/WorkbenchStorageService
  * @description
- * Effect-typed service interface for VS Code's `IStorageService`.
+ * Service interface for VS Code's `IStorageService`.
  * Scope-aware (Application / Profile / Workspace) so callers can
  * target the same key in different layers.
  * @category Interface
  */
-
-import type { Effect, Stream } from "effect";
-
-import type { WorkbenchStorageProblem } from "../Type/WorkbenchStorageProblem.js";
 
 /**
  * Mirror of VS Code's `StorageScope` enum.
@@ -41,25 +37,25 @@ export interface WorkbenchStorageService {
 		key: string,
 
 		scope: WorkbenchStorageScope,
-	) => Effect.Effect<string | undefined, WorkbenchStorageProblem>;
+	) => string | undefined;
 
 	readonly GetBoolean: (
 		key: string,
 
 		scope: WorkbenchStorageScope,
-	) => Effect.Effect<boolean | undefined, WorkbenchStorageProblem>;
+	) => boolean | undefined;
 
 	readonly GetNumber: (
 		key: string,
 
 		scope: WorkbenchStorageScope,
-	) => Effect.Effect<number | undefined, WorkbenchStorageProblem>;
+	) => number | undefined;
 
 	readonly GetObject: <T = unknown>(
 		key: string,
 
 		scope: WorkbenchStorageScope,
-	) => Effect.Effect<T | undefined, WorkbenchStorageProblem>;
+	) => T | undefined;
 
 	readonly Store: (
 		key: string,
@@ -69,22 +65,17 @@ export interface WorkbenchStorageService {
 		scope: WorkbenchStorageScope,
 
 		target: WorkbenchStorageTarget,
-	) => Effect.Effect<void, WorkbenchStorageProblem>;
+	) => void;
 
-	readonly Remove: (
-		key: string,
-
-		scope: WorkbenchStorageScope,
-	) => Effect.Effect<void, WorkbenchStorageProblem>;
+	readonly Remove: (key: string, scope: WorkbenchStorageScope) => void;
 
 	readonly Keys: (
 		scope: WorkbenchStorageScope,
 
 		target: WorkbenchStorageTarget,
-	) => Effect.Effect<readonly string[], WorkbenchStorageProblem>;
+	) => readonly string[];
 
-	readonly Changes: Stream.Stream<
-		WorkbenchStorageChangeEvent,
-		WorkbenchStorageProblem
-	>;
+	readonly Changes: (
+		callback: (event: WorkbenchStorageChangeEvent) => void,
+	) => { readonly dispose: () => void };
 }

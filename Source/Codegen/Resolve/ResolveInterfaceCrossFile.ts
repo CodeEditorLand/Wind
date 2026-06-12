@@ -15,15 +15,18 @@
  */
 
 import { readFile } from "node:fs/promises";
+
 import { dirname, join, resolve } from "node:path";
 
 import { ExtractInterfaceMembers } from "../Extract/ExtractInterfaceMembers.js";
+
 import type { InterfaceMemberRecord } from "../Type/InterfaceMemberRecord.js";
 
 const ImportLinePattern =
 	/import\s*(?:type\s*)?\{([^}]+)\}\s*from\s*['"]([^'"]+)['"]/g;
 
 const ParseImportSpecifiers = (importBlock: string): ReadonlyArray<string> => {
+
 	return importBlock
 		.split(",")
 		.map((entry) => {
@@ -43,6 +46,7 @@ const FindImportSource = (
 
 	interfaceName: string,
 ): string | null => {
+
 	ImportLinePattern.lastIndex = 0;
 
 	let Match: RegExpExecArray | null;
@@ -63,6 +67,7 @@ const NormaliseImportPath = (
 
 	importPath: string,
 ): string => {
+
 	if (importPath.endsWith(".ts")) return importPath;
 
 	if (importPath.endsWith(".js")) {
@@ -73,6 +78,7 @@ const NormaliseImportPath = (
 };
 
 export interface ResolveOptions {
+
 	readonly InterfaceName: string;
 
 	readonly DecoratorFilePath: string;
@@ -81,6 +87,7 @@ export interface ResolveOptions {
 }
 
 export interface ResolveOutcome {
+
 	readonly Members: ReadonlyArray<InterfaceMemberRecord>;
 
 	readonly ResolvedFromPath: string;
@@ -89,6 +96,7 @@ export interface ResolveOutcome {
 export const ResolveInterfaceCrossFile = async (
 	options: ResolveOptions,
 ): Promise<ResolveOutcome | null> => {
+
 	const ImportPath = FindImportSource(
 		options.DecoratorFileContents,
 

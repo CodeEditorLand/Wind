@@ -18,6 +18,7 @@ import type { Architecture, Platform } from "../Type/EnvironmentType.js";
  * @returns The detected platform type
  */
 export const DetectPlatform = (): Platform => {
+
 	if (typeof navigator === "undefined") {
 		return "web";
 	}
@@ -44,6 +45,7 @@ export const DetectPlatform = (): Platform => {
  * @returns The detected architecture type
  */
 export const DetectArchitecture = (): Architecture => {
+
 	// Web platform doesn't expose architecture
 	if (typeof navigator === "undefined") {
 		return "web";
@@ -65,6 +67,7 @@ export const DetectArchitecture = (): Architecture => {
  * @returns The detected locale string
  */
 export const DetectLocale = (): string => {
+
 	if (typeof navigator === "undefined") {
 		return "en-US";
 	}
@@ -77,6 +80,7 @@ export const DetectLocale = (): string => {
  * @returns The detected timezone string
  */
 export const DetectTimezone = (): string => {
+
 	try {
 		return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
 	} catch {
@@ -89,6 +93,7 @@ export const DetectTimezone = (): string => {
  * @returns The user agent string
  */
 export const GetUserAgent = (): string => {
+
 	if (typeof navigator === "undefined") {
 		return "Unknown";
 	}
@@ -97,6 +102,7 @@ export const GetUserAgent = (): string => {
 };
 
 const helpers = {
+
 	DetectPlatform,
 
 	DetectArchitecture,

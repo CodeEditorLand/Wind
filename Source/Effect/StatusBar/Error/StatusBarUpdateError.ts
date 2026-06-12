@@ -12,6 +12,7 @@
  * Includes the item ID and the underlying cause of the failure.
  */
 export default class StatusBarUpdateError extends Error {
+
 	readonly _tag = "StatusBarUpdateError";
 
 	override readonly cause: unknown;

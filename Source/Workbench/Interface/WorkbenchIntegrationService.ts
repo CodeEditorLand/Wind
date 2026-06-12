@@ -27,6 +27,7 @@ import type {
  * Manages the lifecycle of integrating Mountain's file system provider with VSCode.
  */
 export interface WorkbenchIntegrationService {
+
 	/**
 	 * Initialize workbench integration.
 	 * Waits for workbench to be ready, unregisters default providers,
@@ -68,6 +69,7 @@ export interface WorkbenchIntegrationService {
 	 */
 	readonly unregisterDefaultProviders: Effect.Effect<
 		void,
+
 		WorkbenchIntegrationError
 	>;
 

@@ -11,3 +11,13 @@ export type WorkbenchKeybindingProblem =
 
 			readonly error: Error;
 	  };
+
+export class WorkbenchKeybindingError extends Error {
+	readonly _tag = "WorkbenchKeybindingError" as const;
+
+	constructor(readonly Problem: WorkbenchKeybindingProblem) {
+		super("reason" in Problem ? Problem.reason : Problem._tag);
+
+		this.name = "WorkbenchKeybindingError";
+	}
+}

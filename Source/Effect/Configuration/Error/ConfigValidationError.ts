@@ -12,6 +12,7 @@
 // ============================================================================
 
 export class ConfigValidationError extends Error {
+
 	readonly _tag = "ConfigValidationError";
 
 	constructor(readonly issues: ReadonlyArray<string>) {

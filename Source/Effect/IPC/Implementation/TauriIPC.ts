@@ -7,7 +7,9 @@
  */
 
 import { invoke as tauriInvoke } from "@tauri-apps/api/core";
+
 import { emit, listen } from "@tauri-apps/api/event";
+
 import { Effect, Stream } from "effect";
 
 import {
@@ -16,6 +18,7 @@ import {
 	CreateIPCSubscriptionError,
 	type IPCSubscriptionError,
 } from "../Error/IPCError.js";
+
 import type { IPCService } from "../Interface/IPCService.js";
 
 // ============================================================================
@@ -28,6 +31,7 @@ import type { IPCService } from "../Interface/IPCService.js";
 const ChannelUnlisteners = new Map<string, Array<() => void>>();
 
 const RegisterUnlisten = (channel: string, unlisten: () => void): void => {
+
 	const Existing = ChannelUnlisteners.get(channel);
 
 	if (Existing) {
@@ -38,6 +42,7 @@ const RegisterUnlisten = (channel: string, unlisten: () => void): void => {
 };
 
 const UnregisterUnlisten = (channel: string, unlisten: () => void): void => {
+
 	const Existing = ChannelUnlisteners.get(channel);
 
 	if (!Existing) return;
@@ -50,6 +55,7 @@ const UnregisterUnlisten = (channel: string, unlisten: () => void): void => {
 };
 
 function buildTauriIPCService(): IPCService {
+
 	return {
 		send: (channel: string) => (args: ReadonlyArray<unknown>) =>
 			Effect.try({
@@ -81,6 +87,7 @@ function buildTauriIPCService(): IPCService {
 			channel: string,
 		): Stream.Stream<
 			{ readonly channel: string; readonly args: ReadonlyArray<unknown> },
+
 			IPCSubscriptionError
 		> =>
 			Stream.async((emit) => {
@@ -114,6 +121,7 @@ function buildTauriIPCService(): IPCService {
 			channel: string,
 		): Effect.Effect<
 			{ readonly channel: string; readonly args: ReadonlyArray<unknown> },
+
 			IPCSubscriptionError
 		> =>
 			Effect.async((resume) => {

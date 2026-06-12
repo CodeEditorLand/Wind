@@ -1,6 +1,3 @@
-// Convenience alias for backward compatibility
-import { ConfigurationTag } from "./Tag/ConfigurationTag.js";
-
 /**
  * @module Effect/Configuration
  * @description
@@ -9,22 +6,19 @@ import { ConfigurationTag } from "./Tag/ConfigurationTag.js";
  *
  * @example
  * ```ts
- * import { Configuration, ConfigurationLive, ConfigurationTag } from "./Effect/Configuration/index.js";
+ * import { ConfigurationLive } from "./Effect/Configuration/index.js";
  *
- * // Using the service
- * const program = Effect.gen(function* () {
- *   const configuration = yield* ConfigurationTag;
- *   const config = yield* configuration.get;
- *   return config;
+ * const Config = await ConfigurationLive.refresh();
+ *
+ * const Subscription = ConfigurationLive.onChange((Next) => {
+ * 	// react to configuration changes
  * });
  *
- * // Providing the layer
- * const runnable = program.pipe(Effect.provide(ConfigurationLive));
+ * Subscription.dispose();
  * ```
  *
  * @see {@link Effect/Configuration/Interface/ConfigurationService} Service interface
  * @see {@link Effect/Configuration/Implementation/ConfigurationImplementation} Live implementation
- * @see [Effect-TS Documentation](https://effect.website/docs/guide/context)
  * @category Service
  */
 
@@ -39,10 +33,15 @@ export { default as ConfigApplyError } from "./Error/ConfigApplyError.js";
 export type { ConfigSchemaIssue } from "./Type/ConfigurationSchemaType.js";
 
 // Service interface
-export type { ConfigurationService } from "./Interface/ConfigurationService.js";
+export type {
+	ConfigurationService,
+	IDisposable,
+} from "./Interface/ConfigurationService.js";
 
-// Service tag
-export { ConfigurationTag } from "./Tag/ConfigurationTag.js";
+// Service type alias (former Context.Tag; consumers use the live object)
+export type { ConfigurationTag } from "./Tag/ConfigurationTag.js";
+
+export type { ConfigurationTag as Configuration } from "./Tag/ConfigurationTag.js";
 
 // Helper functions
 export {
@@ -52,16 +51,15 @@ export {
 	GetConfigValue,
 } from "./Implementation/ConfigurationHelper.js";
 
-// Live implementation layer
+// Live implementation
 export {
+	CreateConfigurationService,
 	ConfigurationLive,
 	ConfigurationWithSyncLive,
 } from "./Implementation/ConfigurationImplementation.js";
 
-// Mock implementation layer
+// Mock implementation
 export {
 	ConfigurationMock,
 	makeMockConfiguration,
 } from "./Layer/ConfigurationMock.js";
-
-export { ConfigurationTag as Configuration };

@@ -1,9 +1,4 @@
-import type { Effect, Stream } from "effect";
-
-import type {
-	WorkbenchNotificationProblem,
-	WorkbenchNotificationSeverity,
-} from "../Type/WorkbenchNotificationProblem.js";
+import type { WorkbenchNotificationSeverity } from "../Type/WorkbenchNotificationProblem.js";
 
 export interface WorkbenchNotificationOptions {
 	readonly severity: WorkbenchNotificationSeverity;
@@ -24,24 +19,15 @@ export interface WorkbenchNotificationDispatched {
 }
 
 export interface WorkbenchNotificationService {
-	readonly Notify: (
-		options: WorkbenchNotificationOptions,
-	) => Effect.Effect<void, WorkbenchNotificationProblem>;
+	readonly Notify: (options: WorkbenchNotificationOptions) => void;
 
-	readonly Info: (
-		message: string,
-	) => Effect.Effect<void, WorkbenchNotificationProblem>;
+	readonly Info: (message: string) => void;
 
-	readonly Warn: (
-		message: string,
-	) => Effect.Effect<void, WorkbenchNotificationProblem>;
+	readonly Warn: (message: string) => void;
 
-	readonly Error: (
-		message: string,
-	) => Effect.Effect<void, WorkbenchNotificationProblem>;
+	readonly Error: (message: string) => void;
 
-	readonly OnDispatched: Stream.Stream<
-		WorkbenchNotificationDispatched,
-		WorkbenchNotificationProblem
-	>;
+	readonly OnDispatched: (
+		callback: (event: WorkbenchNotificationDispatched) => void,
+	) => { readonly dispose: () => void };
 }

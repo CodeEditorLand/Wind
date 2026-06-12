@@ -12,7 +12,9 @@
 import type { Effect, Stream } from "effect";
 
 import type StatusBarItemNotFoundError from "../Error/StatusBarItemNotFoundError.js";
+
 import type StatusBarUpdateError from "../Error/StatusBarUpdateError.js";
+
 import type {
 	CreateStatusBarItem,
 	StatusBarItem,
@@ -23,6 +25,7 @@ import type {
  * Provides CRUD operations and stream-based reactivity.
  */
 export interface StatusBarService {
+
 	/** Create a new status bar item with auto-generated ID */
 	readonly createItem: (
 		item: CreateStatusBarItem,

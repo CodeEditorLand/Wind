@@ -9,12 +9,14 @@
  */
 
 import type { ErrorSeverity } from "./ErrorSeverity.js";
+
 import type { StageName } from "./StageName.js";
 
 /**
  * Status update interface
  */
 export interface StatusUpdate {
+
 	/** Stage this update is for */
 	stage: StageName;
 

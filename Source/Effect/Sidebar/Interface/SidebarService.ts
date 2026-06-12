@@ -12,7 +12,9 @@
 import type { Effect, Stream } from "effect";
 
 import type SidebarPanelNotFoundError from "../Error/SidebarPanelNotFoundError.js";
+
 import type SidebarUpdateError from "../Error/SidebarUpdateError.js";
+
 import type { CreateSidebarPanel, SidebarPanel } from "../Type/SidebarType.js";
 
 /**
@@ -20,6 +22,7 @@ import type { CreateSidebarPanel, SidebarPanel } from "../Type/SidebarType.js";
  * Provides CRUD operations, collapse/expand control, and stream-based reactivity.
  */
 export interface SidebarService {
+
 	/** Create a new sidebar panel with auto-generated ID */
 	readonly createPanel: (
 		panel: CreateSidebarPanel,

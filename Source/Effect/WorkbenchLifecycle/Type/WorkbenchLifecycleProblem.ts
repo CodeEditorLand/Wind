@@ -17,3 +17,13 @@ export type WorkbenchLifecyclePhase =
 	| "Ready"
 	| "Restored"
 	| "Eventually";
+
+export class WorkbenchLifecycleError extends Error {
+	readonly _tag = "WorkbenchLifecycleError" as const;
+
+	constructor(readonly Problem: WorkbenchLifecycleProblem) {
+		super("reason" in Problem ? Problem.reason : Problem._tag);
+
+		this.name = "WorkbenchLifecycleError";
+	}
+}

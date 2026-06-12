@@ -11,3 +11,13 @@ export type WorkbenchContextKeyProblem =
 
 			readonly error: Error;
 	  };
+
+export class WorkbenchContextKeyError extends Error {
+	readonly _tag = "WorkbenchContextKeyError" as const;
+
+	constructor(readonly Problem: WorkbenchContextKeyProblem) {
+		super("reason" in Problem ? Problem.reason : Problem._tag);
+
+		this.name = "WorkbenchContextKeyError";
+	}
+}

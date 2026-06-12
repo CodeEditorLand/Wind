@@ -33,3 +33,13 @@ export type UserSettingsProblem =
 
 			readonly reason: string;
 	  };
+
+export class UserSettingsError extends Error {
+	readonly _tag = "UserSettingsError" as const;
+
+	constructor(readonly Problem: UserSettingsProblem) {
+		super("reason" in Problem ? Problem.reason : Problem._tag);
+
+		this.name = "UserSettingsError";
+	}
+}

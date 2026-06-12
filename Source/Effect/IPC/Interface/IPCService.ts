@@ -24,6 +24,7 @@ import type {
  * IPC Service interface
  */
 export interface IPCService {
+
 	/** Send a message without expecting a response */
 	readonly send: (
 		channel: string,
@@ -41,6 +42,7 @@ export interface IPCService {
 		channel: string,
 	) => Stream.Stream<
 		{ readonly channel: string; readonly args: ReadonlyArray<unknown> },
+
 		IPCSubscriptionError
 	>;
 
@@ -49,6 +51,7 @@ export interface IPCService {
 		channel: string,
 	) => Effect.Effect<
 		{ readonly channel: string; readonly args: ReadonlyArray<unknown> },
+
 		IPCSubscriptionError
 	>;
 

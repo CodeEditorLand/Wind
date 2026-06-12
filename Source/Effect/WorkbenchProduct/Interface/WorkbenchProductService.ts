@@ -1,7 +1,3 @@
-import type { Effect } from "effect";
-
-import type { WorkbenchProductProblem } from "../Type/WorkbenchProductProblem.js";
-
 export interface WorkbenchProductSnapshot {
 	readonly nameLong: string;
 
@@ -21,12 +17,7 @@ export interface WorkbenchProductSnapshot {
 }
 
 export interface WorkbenchProductService {
-	readonly Snapshot: Effect.Effect<
-		WorkbenchProductSnapshot,
-		WorkbenchProductProblem
-	>;
+	readonly Snapshot: () => WorkbenchProductSnapshot;
 
-	readonly Get: <T = unknown>(
-		key: string,
-	) => Effect.Effect<T | undefined, WorkbenchProductProblem>;
+	readonly Get: <T = unknown>(key: string) => T | undefined;
 }

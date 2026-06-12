@@ -14,17 +14,23 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+
 import { TauriIPCLive } from "../IPC/index.js";
+
 import type { ThemesService } from "./Interface/ThemesService.js";
+
 import { ThemesServiceTag } from "./Tag/ThemesServiceTag.js";
+
 import type { ThemesProblem } from "./Type/ThemesProblem.js";
 
 const MakeThemesProblem = (error: unknown): ThemesProblem =>
 	error instanceof Error
 		? { _tag: "ThemesOperationFailed", error }
+
 		: { _tag: "ThemesOperationFailed", error: new Error(String(error)) };
 
 function makeThemesService(): ThemesService {
+
 	const IPCService = TauriIPCLive;
 
 	const Service: ThemesService = {

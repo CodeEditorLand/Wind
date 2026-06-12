@@ -17,6 +17,7 @@ import { resolve } from "node:path";
 import { RunCodegen } from "./RunCodegen.js";
 
 const Main = async (): Promise<void> => {
+
 	const Cwd = process.cwd();
 
 	const SourceRoot = resolve(

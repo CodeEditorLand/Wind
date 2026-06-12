@@ -2,32 +2,33 @@
  * @module Effect/Mountain/Implementation/MountainImplementation
  * @description
  * Main implementation of Mountain service with connection management and sync.
- * Provides production-ready implementation with telemetry and background sync.
+ * Connection state lives in the closure; listeners are notified on every
+ * transition. Connect retries with capped exponential backoff and the
+ * background configuration sync runs as a stored Promise loop cancelled
+ * through an AbortController.
  * @see {@link Effect/Mountain/Interface/MountainService} Service interface
- * @see [Effect-TS Layers](https://effect.website/docs/guide/layer)
  * @category Implementation
  */
 
-import {
-	Context,
-	Effect,
-	Fiber,
-	Layer,
-	Schedule,
-	Stream,
-	SubscriptionRef,
-} from "effect";
+import { invoke as TauriInvoke } from "@tauri-apps/api/core";
+
+import DevLog from "../../../Function/DevLog.js";
 
 import Channel from "../../../IPC/Channel.js";
-import { Configuration } from "../../Configuration.js";
-import { IPC } from "../../IPC.js";
-import { Telemetry } from "../../Telemetry.js";
+
+import { ConfigurationLive } from "../../Configuration/Implementation/ConfigurationImplementation.js";
+
 import { MountainConnectionError } from "../Error/MountainConnectionError.js";
+
 import { MountainRPCError } from "../Error/MountainRPCError.js";
-import { MountainStateError } from "../Error/MountainStateError.js";
+
 import { MountainSyncError } from "../Error/MountainSyncError.js";
-import type { MountainService } from "../Interface/MountainService.js";
-import { MountainTag } from "../Tag/MountainTag.js";
+
+import type {
+	IDisposable,
+	MountainService,
+} from "../Interface/MountainService.js";
+
 import type {
 	MountainConnectionState,
 	SyncResource,
@@ -38,484 +39,463 @@ import type {
 // Live Implementation
 // ============================================================================
 
+// All Wind IPC calls route through the single `MountainIPCInvoke` Tauri
+// command. Mountain receives: method = channel name, params = flat array of
+// args - the same shape TauriMainProcessService produces.
+const Invoke = (
+	Method: string,
+
+	Params: ReadonlyArray<unknown>,
+): Promise<unknown> =>
+	TauriInvoke("MountainIPCInvoke", {
+		method: Method,
+		params: Params as unknown[],
+	});
+
+// Resolves after `Milliseconds`, or immediately when `Signal` aborts.
+const Wait = (Milliseconds: number, Signal?: AbortSignal): Promise<void> =>
+	new Promise((Resolve) => {
+		const OnAbort = (): void => {
+			clearTimeout(Timer);
+
+			Resolve();
+		};
+
+		const Timer = setTimeout(() => {
+			Signal?.removeEventListener("abort", OnAbort);
+
+			Resolve();
+		}, Milliseconds);
+
+		Signal?.addEventListener("abort", OnAbort, { once: true });
+	});
+
+// Retry budget mirrors the former Schedule: exponential backoff from 100ms
+// capped at 5s, at most 10 retries after the initial attempt.
+const MaxConnectRetries = 10;
+
+const InitialRetryDelayMilliseconds = 100;
+
+const MaxRetryDelayMilliseconds = 5_000;
+
+const SyncIntervalMilliseconds = 5_000;
+
 /**
- * Live implementation layer for Mountain service.
- * Provides reactive connection management with automatic retry and background sync.
+ * Creates the Mountain service.
+ * Provides connection management with automatic retry and background
+ * configuration sync while connected.
  */
-export const MountainLive = Layer.effect(
-	MountainTag,
+export const CreateMountainService = (): MountainService => {
 
-	Effect.gen(function* () {
-		const IPCService = yield* IPC;
+	let State: MountainConnectionState = { _tag: "Idle" };
 
-		const ConfigurationService = yield* Configuration;
+	const StateListeners = new Set<(State: MountainConnectionState) => void>();
 
-		const TelemetryService = yield* Telemetry;
+	const SyncListeners = new Set<(Resource: SyncResource) => void>();
 
-		// Connection state as reactive ref
-		const StateRef = yield* SubscriptionRef.make<MountainConnectionState>({
-			_tag: "Idle",
-		});
+	const ServiceAbort = new AbortController();
 
-		// Sync events stream
-		const SyncEventsRef = yield* SubscriptionRef.make<
-			ReadonlyArray<SyncResource>
-		>([]);
+	let SyncAbort: AbortController | null = null;
 
-		// Retry schedule: exponential backoff with max 30s
-		const RetrySchedule = Schedule.exponential("100 millis").pipe(
-			Schedule.union(Schedule.spaced("5 seconds")),
+	let SyncLoop: Promise<void> | null = null;
 
-			Schedule.intersect(Schedule.recurs(10)),
-		);
+	let ConnectPromise: Promise<void> | null = null;
 
-		// Helper: withSpan using captured telemetry (no external dependencies)
-		const WithSpanLocal = <A, E>(
-			Name: string,
+	const StopSyncLoop = (): void => {
+		SyncAbort?.abort();
 
-			EffectPayload: Effect.Effect<A, E, never>,
-		): Effect.Effect<A, E, never> =>
-			Effect.gen(function* () {
-				const Span = yield* TelemetryService.startSpan(Name);
+		SyncAbort = null;
 
-				return yield* EffectPayload.pipe(
-					Effect.tap(() => Span.end(true)),
+		// Observe the stored loop promise so a rejection is never unhandled
+		void SyncLoop?.catch(() => undefined);
 
-					Effect.catchAll((Error) =>
-						Effect.gen(function* () {
-							const ErrorValue = Error as Error;
+		SyncLoop = null;
+	};
 
-							const ErrorMsg = ErrorValue.message;
+	const StartSyncLoop = (): void => {
+		StopSyncLoop();
 
-							yield* Span.end(false, ErrorMsg);
+		const Controller = new AbortController();
 
-							return yield* Effect.fail(ErrorValue);
-						}),
-					),
-				);
-			});
+		SyncAbort = Controller;
 
-		// Atom: Update connection state
-		const SetState = (State: MountainConnectionState) =>
-			Effect.gen(function* () {
-				yield* SubscriptionRef.modify(StateRef, () => [
-					undefined,
+		DevLog("mountain", "Starting background sync");
 
-					State,
-				]);
+		SyncLoop = (async () => {
+			while (
+				!Controller.signal.aborted &&
+				!ServiceAbort.signal.aborted
+			) {
+				try {
+					await Sync("configuration");
+				} catch (Failure) {
+					DevLog(
+						"mountain",
 
-				yield* TelemetryService.log(
-					"info",
+						"Background configuration sync failed:",
 
-					`Mountain state: ${State._tag}`,
-				);
-			});
-
-		// Atom: Get current state
-		const ConnectionState = StateRef.get;
-
-		const ConnectionChanges = StateRef.changes;
-
-		// Atom: Connect to Mountain
-		const Connect = Effect.gen(function* () {
-			yield* SetState({ _tag: "Connecting", attempt: 1 });
-
-			const ConnectionEffect = Effect.gen(function* () {
-				// `mountain_get_status` is a legacy snake_case channel that
-				// predates the `prefix:method` convention. Registry relaxed
-				// in wave 5 to allow both shapes; rename to
-				// `mountain:getStatus` (coordinated Wind + Mountain change)
-				// is the future clean-up path.
-				const Status = yield* IPCService.invoke(
-					Channel.MountainGetStatus,
-				)([]).pipe(
-					Effect.map(
-						(Result): { connected: boolean; version: string } => {
-							const APIStatus = Result as {
-								connected?: boolean;
-
-								version?: string;
-							};
-
-							return {
-								connected: APIStatus.connected ?? false,
-								version: APIStatus.version ?? "unknown",
-							};
-						},
-					),
-
-					Effect.mapError(
-						(Error) => new MountainConnectionError(Error),
-					),
-				);
-
-				if (!Status.connected) {
-					yield* Effect.fail(
-						new MountainConnectionError("Mountain not ready"),
+						Failure,
 					);
 				}
 
-				yield* SetState({
-					_tag: "Connected",
-					version: Status.version,
-				});
+				await Wait(SyncIntervalMilliseconds, Controller.signal);
+			}
+		})();
+	};
 
-				yield* TelemetryService.log(
-					"info",
+	const SetState = (Next: MountainConnectionState): void => {
+		State = Next;
 
-					`Connected to Mountain v${Status.version}`,
-				);
-			}) satisfies Effect.Effect<void, MountainConnectionError, never>;
+		DevLog("mountain", `Mountain state: ${Next._tag}`);
 
-			return yield* Effect.retry(
-				WithSpanLocal("mountain_connect", ConnectionEffect),
+		for (const Listener of StateListeners) {
+			try {
+				Listener(Next);
+			} catch (Failure) {
+				DevLog("mountain", "Connection listener failed:", Failure);
+			}
+		}
 
-				RetrySchedule,
-			).pipe(
-				Effect.catchAll((Error) =>
-					Effect.gen(function* () {
-						const ErrorObj =
-							Error instanceof Error
-								? Error
-								: new Error(String(Error));
+		if (Next._tag === "Connected") {
+			StartSyncLoop();
+		} else if (Next._tag === "Disconnected" || Next._tag === "Error") {
+			StopSyncLoop();
+		}
+	};
 
-						yield* SetState({ _tag: "Error", error: ErrorObj });
+	const TryConnectOnce = async (): Promise<void> => {
+		// `mountain_get_status` is a legacy snake_case channel that
+		// predates the `prefix:method` convention. Registry relaxed
+		// in wave 5 to allow both shapes; rename to
+		// `mountain:getStatus` (coordinated Wind + Mountain change)
+		// is the future clean-up path.
+		let Result: { connected?: boolean; version?: string };
 
-						yield* TelemetryService.log(
-							"error",
+		try {
+			Result = (await Invoke(Channel.MountainGetStatus, [])) as {
+				connected?: boolean;
 
-							`Failed to connect: ${ErrorObj.message}`,
+				version?: string;
+			};
+		} catch (Failure) {
+			throw new MountainConnectionError(Failure);
+		}
+
+		if (!(Result.connected ?? false)) {
+			throw new MountainConnectionError("Mountain not ready");
+		}
+
+		const Version = Result.version ?? "unknown";
+
+		SetState({ _tag: "Connected", version: Version });
+
+		DevLog("mountain", `Connected to Mountain v${Version}`);
+	};
+
+	const Connect = (): Promise<void> => {
+		if (ConnectPromise) {
+			return ConnectPromise;
+		}
+
+		ConnectPromise = (async () => {
+			let Attempt = 1;
+
+			SetState({ _tag: "Connecting", attempt: Attempt });
+
+			for (;;) {
+				try {
+					await TryConnectOnce();
+
+					return;
+				} catch (Failure) {
+					const Cause =
+						Failure instanceof MountainConnectionError
+							? Failure
+							: new MountainConnectionError(Failure);
+
+					if (
+						Attempt > MaxConnectRetries ||
+						ServiceAbort.signal.aborted
+					) {
+						SetState({ _tag: "Error", error: Cause });
+
+						DevLog(
+							"mountain",
+
+							`Failed to connect: ${Cause.message}`,
 						);
 
-						yield* Effect.fail(Error as MountainConnectionError);
-					}),
-				),
-			);
-		}) satisfies Effect.Effect<void, MountainConnectionError, never>;
+						throw Cause;
+					}
 
-		// Atom: Disconnect
-		const Disconnect = Effect.gen(function* () {
-			yield* SetState({ _tag: "Disconnected", reason: "manual" });
+					await Wait(
+						Math.min(
+							InitialRetryDelayMilliseconds * 2 ** (Attempt - 1),
 
-			yield* TelemetryService.log("info", "Disconnected from Mountain");
+							MaxRetryDelayMilliseconds,
+						),
+
+						ServiceAbort.signal,
+					);
+
+					Attempt += 1;
+
+					SetState({ _tag: "Connecting", attempt: Attempt });
+				}
+			}
+		})().finally(() => {
+			ConnectPromise = null;
 		});
 
-		// Atom: RPC with telemetry
-		const RPC: MountainService["rpc"] = (Method) => (Args) =>
-			Effect.gen(function* () {
-				const CurrentState = yield* StateRef.get;
+		return ConnectPromise;
+	};
 
-				if (CurrentState._tag !== "Connected") {
-					// Auto-connect if not connected
-					yield* Connect;
+	const Disconnect = (): void => {
+		SetState({ _tag: "Disconnected", reason: "manual" });
+
+		DevLog("mountain", "Disconnected from Mountain");
+	};
+
+	const RPC =
+		<T>(Method: string) =>
+		async (Args?: Record<string, unknown>): Promise<T> => {
+			if (State._tag !== "Connected") {
+				// Auto-connect if not connected
+				await Connect();
+			}
+
+			try {
+				return (await Invoke(Method, Args ? [Args] : [])) as T;
+			} catch (Failure) {
+				const Message =
+					Failure instanceof Error
+						? Failure.message
+						: String(Failure);
+
+				// Check if connection lost
+				if (
+					Message.includes("connection") ||
+					Message.includes("network")
+				) {
+					SetState({
+						_tag: "Disconnected",
+						reason: "connection_lost",
+					});
 				}
 
-				const Span = yield* TelemetryService.startSpan(`rpc_${Method}`);
+				throw new MountainRPCError(Method, Failure);
+			}
+		};
 
-				return yield* IPCService.invoke(Method)(
-					Args ? [Args] : [],
-				).pipe(
-					Effect.mapError(
-						(Error) => new MountainRPCError(Method, Error),
-					),
+	const EmitSyncEvent = (Resource: SyncResource): void => {
+		for (const Listener of SyncListeners) {
+			try {
+				Listener(Resource);
+			} catch (Failure) {
+				DevLog("mountain", "Sync listener failed:", Failure);
+			}
+		}
+	};
 
-					Effect.tap(() => Span.end(true)),
+	const Sync = async (
+		ResourceType: SyncResource["type"],
+	): Promise<SyncResult> => {
+		const StartTime = Date.now();
 
-					Effect.catchAll((Error) =>
-						Effect.gen(function* () {
-							const ErrorMessage =
-								Error instanceof Error
-									? Error.message
-									: String(Error);
+		DevLog("mountain", `Starting sync for ${ResourceType}`);
 
-							yield* Span.end(false, ErrorMessage);
+		try {
+			switch (ResourceType) {
+				case "configuration": {
+					const MountainConfig = await RPC(
+						"mountain_get_configuration",
+					)();
 
-							// Check if connection lost
-							if (
-								ErrorMessage.includes("connection") ||
-								ErrorMessage.includes("network")
-							) {
-								yield* SetState({
-									_tag: "Disconnected",
-									reason: "connection_lost",
-								});
-							}
+					// Detect changes
+					const MountainHash = JSON.stringify(MountainConfig);
 
-							yield* Effect.fail(Error as MountainRPCError);
-						}),
-					),
-				) as any;
-			}) as any;
+					let LocalHash: string | null = null;
 
-		// Atom: Sync resource
-		const Sync = (ResourceType: SyncResource["type"]) =>
-			Effect.gen(function* () {
-				const Span = yield* TelemetryService.startSpan(
-					`sync_${ResourceType}`,
-				);
-
-				const StartTime = Date.now();
-
-				yield* TelemetryService.log(
-					"info",
-
-					`Starting sync for ${ResourceType}`,
-				);
-
-				const Result = yield* Effect.gen(function* () {
-					switch (ResourceType) {
-						case "configuration": {
-							const MountainConfig = (yield* RPC(
-								"mountain_get_configuration",
-							)()) as any;
-
-							const LocalConfig = yield* ConfigurationService.get;
-
-							// Detect changes
-							const MountainHash = JSON.stringify(MountainConfig);
-
-							const LocalHash = JSON.stringify(LocalConfig);
-
-							if (MountainHash !== LocalHash) {
-								yield* ConfigurationService.apply(
-									MountainConfig as any,
-								);
-
-								const Resource: SyncResource = {
-									type: "configuration",
-									id: "main",
-									data: MountainConfig,
-									timestamp: Date.now(),
-									hash: MountainHash,
-								};
-
-								yield* SubscriptionRef.modify(
-									SyncEventsRef,
-
-									(Events) => [
-										undefined,
-
-										[...Events, Resource].slice(-1000),
-									],
-								);
-							}
-
-							return {
-								success: true,
-								resourcesSynced: 1,
-								errors: [],
-							};
-						}
-
-						case "services": {
-							const Services = (yield* RPC(
-								"mountain_get_services_status",
-							)()) as any;
-
-							const Resource: SyncResource = {
-								type: "services",
-								id: "all",
-								data: Services,
-								timestamp: Date.now(),
-								hash: JSON.stringify(Services),
-							};
-
-							yield* SubscriptionRef.modify(
-								SyncEventsRef,
-
-								(Events) => [
-									undefined,
-
-									[...Events, Resource].slice(-1000),
-								],
-							);
-
-							return {
-								success: true,
-								resourcesSynced: Object.keys(Services).length,
-								errors: [],
-							};
-						}
-
-						case "state": {
-							const State = (yield* RPC(
-								"mountain_get_state",
-							)()) as any;
-
-							const Resource: SyncResource = {
-								type: "state",
-								id: "main",
-								data: State,
-								timestamp: Date.now(),
-								hash: JSON.stringify(State),
-							};
-
-							yield* SubscriptionRef.modify(
-								SyncEventsRef,
-
-								(Events) => [
-									undefined,
-
-									[...Events, Resource].slice(-1000),
-								],
-							);
-
-							return {
-								success: true,
-								resourcesSynced: 1,
-								errors: [],
-							};
-						}
-
-						default:
-							return {
-								success: false,
-								resourcesSynced: 0,
-								errors: [
-									`Unknown resource type: ${ResourceType}`,
-								],
-							};
+					try {
+						LocalHash = JSON.stringify(ConfigurationLive.get());
+					} catch {
+						LocalHash = null;
 					}
-				}).pipe(
-					Effect.tap((InnerResult) =>
-						Span.end(InnerResult.success, InnerResult.errors[0]),
-					),
 
-					Effect.catchAll((Error) =>
-						Effect.gen(function* () {
-							const ErrorMessage =
-								Error instanceof Error
-									? Error.message
-									: String(Error);
+					if (MountainHash !== LocalHash) {
+						const Validated =
+							ConfigurationLive.validate(MountainConfig);
 
-							yield* Span.end(false, ErrorMessage);
+						ConfigurationLive.replace(Validated);
 
-							yield* Effect.fail(
-								new MountainSyncError(ResourceType, Error),
-							);
-						}),
-					),
-				);
+						ConfigurationLive.apply(Validated);
 
-				const Duration = Date.now() - StartTime;
+						EmitSyncEvent({
+							type: "configuration",
+							id: "main",
+							data: MountainConfig,
+							timestamp: Date.now(),
+							hash: MountainHash,
+						});
+					}
 
-				return {
-					...Result,
-					duration: Duration,
-				} as SyncResult;
-			});
+					return {
+						success: true,
 
-		// Stream of sync events
-		const SyncEvents = SyncEventsRef.changes.pipe(
-			Stream.flatMap((Events) => Stream.fromIterable(Events)),
-		);
+						resourcesSynced: 1,
 
-		// Atom: Get version - using raw IPC to avoid error type issues
-		const Version: MountainService["version"] = Effect.gen(function* () {
-			const Status = yield* IPCService.invoke(Channel.MountainGetStatus)(
-				[],
-			).pipe(
-				Effect.map((Result): { version: string } => {
-					const APIStatus = Result as {
-						connected?: boolean;
+						errors: [],
 
-						version?: string;
+						duration: Date.now() - StartTime,
 					};
+				}
 
-					return { version: APIStatus.version ?? "unknown" };
-				}),
+				case "services": {
+					const Services = await RPC<Record<string, unknown>>(
+						"mountain_get_services_status",
+					)();
 
-				Effect.mapError((Error) => new MountainConnectionError(Error)),
-			);
+					EmitSyncEvent({
+						type: "services",
+						id: "all",
+						data: Services,
+						timestamp: Date.now(),
+						hash: JSON.stringify(Services),
+					});
 
-			return Status.version;
-		});
+					return {
+						success: true,
 
-		// Atom: Health check
-		const HealthCheck = Effect.gen(function* () {
-			return yield* Effect.orElse(
-				RPC(Channel.MountainGetStatus)().pipe(
-					Effect.map((Status: any) => Status.connected === true),
-				),
+						resourcesSynced: Object.keys(Services).length,
 
-				() => Effect.succeed(false),
-			);
-		});
+						errors: [],
 
-		// Set up background sync on connection
-		const SetupBackgroundSync = Effect.gen(function* () {
-			yield* Stream.runForEach(ConnectionChanges, (State) =>
-				State._tag === "Connected"
-					? Effect.gen(function* () {
-							yield* TelemetryService.log(
-								"info",
+						duration: Date.now() - StartTime,
+					};
+				}
 
-								"Starting background sync",
-							);
+				case "state": {
+					const StateData = await RPC("mountain_get_state")();
 
-							// Initial sync
-							yield* Sync("configuration").pipe(
-								Effect.catchAll((Error) =>
-									TelemetryService.log(
-										"error",
+					EmitSyncEvent({
+						type: "state",
+						id: "main",
+						data: StateData,
+						timestamp: Date.now(),
+						hash: JSON.stringify(StateData),
+					});
 
-										`Initial config sync failed: ${Error.message}`,
-									),
-								),
-							);
+					return {
+						success: true,
 
-							// Periodic sync every 5 seconds
-							const SyncFiber = yield* Stream.fromSchedule(
-								Schedule.spaced("5 seconds"),
-							).pipe(
-								Stream.runForEach(() =>
-									Sync("configuration").pipe(
-										Effect.catchAll((Error) =>
-											TelemetryService.log(
-												"error",
+						resourcesSynced: 1,
 
-												`Periodic sync failed: ${Error.message}`,
-											),
-										),
-									),
-								),
+						errors: [],
 
-								Effect.fork,
-							);
+						duration: Date.now() - StartTime,
+					};
+				}
 
-							// Stop sync on disconnect
-							yield* ConnectionChanges.pipe(
-								Stream.filter(
-									(S) =>
-										S._tag === "Disconnected" ||
-										S._tag === "Error",
-								),
+				default:
+					return {
+						success: false,
 
-								Stream.runForEach(() =>
-									Fiber.interrupt(SyncFiber),
-								),
-							);
-						})
-					: Effect.void,
-			);
-		}).pipe(Effect.fork);
+						resourcesSynced: 0,
 
-		yield* SetupBackgroundSync;
+						errors: [`Unknown resource type: ${ResourceType}`],
 
-		yield* TelemetryService.log("info", "Mountain service initialized");
+						duration: Date.now() - StartTime,
+					};
+			}
+		} catch (Failure) {
+			throw new MountainSyncError(ResourceType, Failure);
+		}
+	};
+
+	const Version = async (): Promise<string> => {
+		try {
+			const Status = (await Invoke(Channel.MountainGetStatus, [])) as {
+				version?: string;
+			};
+
+			return Status.version ?? "unknown";
+		} catch (Failure) {
+			throw new MountainConnectionError(Failure);
+		}
+	};
+
+	const HealthCheck = async (): Promise<boolean> => {
+		try {
+			const Status = await RPC<{ connected?: boolean }>(
+				Channel.MountainGetStatus,
+			)();
+
+			return Status.connected === true;
+		} catch {
+			return false;
+		}
+	};
+
+	const OnConnectionChange = (
+		Listener: (State: MountainConnectionState) => void,
+	): IDisposable => {
+		StateListeners.add(Listener);
 
 		return {
-			connectionState: ConnectionState,
-			connectionChanges: ConnectionChanges,
-			connect: Connect,
-			disconnect: Disconnect,
-			rpc: RPC,
-			sync: Sync,
-			syncEvents: SyncEvents,
-			version: Version,
-			healthCheck: HealthCheck,
+			dispose: () => {
+				StateListeners.delete(Listener);
+			},
 		};
-	}),
-);
+	};
+
+	const OnSyncEvent = (
+		Listener: (Resource: SyncResource) => void,
+	): IDisposable => {
+		SyncListeners.add(Listener);
+
+		return {
+			dispose: () => {
+				SyncListeners.delete(Listener);
+			},
+		};
+	};
+
+	const Dispose = (): void => {
+		ServiceAbort.abort();
+
+		StopSyncLoop();
+
+		StateListeners.clear();
+
+		SyncListeners.clear();
+	};
+
+	return {
+		connectionState: () => State,
+
+		onConnectionChange: OnConnectionChange,
+
+		connect: Connect,
+
+		disconnect: Disconnect,
+
+		rpc: RPC,
+
+		sync: Sync,
+
+		onSyncEvent: OnSyncEvent,
+
+		version: Version,
+
+		healthCheck: HealthCheck,
+
+		dispose: Dispose,
+	} satisfies MountainService;
+};
+
+/**
+ * Live Mountain service singleton.
+ */
+export const MountainLive: MountainService = CreateMountainService();
 
 export default MountainLive;

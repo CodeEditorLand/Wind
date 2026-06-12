@@ -1,7 +1,7 @@
 /**
  * @module Effect/WorkbenchStorage/Implementation/WorkbenchStorageLive
  * @description
- * Live `Layer<WorkbenchStorageService>` that bridges to the
+ * Live `WorkbenchStorageService` that bridges to the
  * workbench's `IStorageService` exposed on
  * `globalThis.__CEL_SERVICES__.Storage`, with read-time
  * short-circuit through `globalThis.__CEL_OVERRIDE_STORAGE__`
@@ -9,13 +9,11 @@
  *
  * The native shim already redirects upstream `get*` methods to the
  * override bag when the composite key `<scope>:<key>` is present;
- * this Live layer just calls `get(key, scope)` and trusts the
+ * this implementation just calls `get(key, scope)` and trusts the
  * cascade. Writes go through `store` directly. `Memory` writes
  * skip the workbench entirely and update the bag.
  * @category Implementation
  */
-
-import { Effect, Stream } from "effect";
 
 import type {
 	WorkbenchStorageChangeEvent,
@@ -23,21 +21,19 @@ import type {
 	WorkbenchStorageService,
 	WorkbenchStorageTarget,
 } from "../Interface/WorkbenchStorageService.js";
-import type { WorkbenchStorageProblem } from "../Type/WorkbenchStorageProblem.js";
+
+import { WorkbenchStorageError } from "../Type/WorkbenchStorageProblem.js";
+
 import type {
 	WorkbenchStorageBridgeShape,
 	WorkbenchStorageGlobals,
 } from "./WorkbenchStorageBridgeShape.js";
+
 import {
 	WorkbenchStorageScopeCode,
 	WorkbenchStorageScopeFromCode,
 	WorkbenchStorageTargetCode,
 } from "./WorkbenchStorageScopeCode.js";
-
-const BridgeUnavailable = (Reason: string): WorkbenchStorageProblem => ({
-	_tag: "WorkbenchStorageBridgeUnavailable",
-	reason: Reason,
-});
 
 const ToError = (Cause: unknown): Error =>
 	Cause instanceof Error ? Cause : new Error(String(Cause));
@@ -47,109 +43,72 @@ function makeWorkbenchStorageService(): WorkbenchStorageService {
 		(globalThis as unknown as WorkbenchStorageGlobals).__CEL_SERVICES__
 			?.Storage ?? null;
 
-	const Unavailable = BridgeUnavailable(
-		"globalThis.__CEL_SERVICES__.Storage is null - the workbench has not yet exposed its IStorageService handle. Boot the workbench first or use WorkbenchStorageStub for tests.",
-	);
+	const Unavailable = (): WorkbenchStorageError =>
+		new WorkbenchStorageError({
+			_tag: "WorkbenchStorageBridgeUnavailable",
+			reason: "globalThis.__CEL_SERVICES__.Storage is null - the workbench has not yet exposed its IStorageService handle. Boot the workbench first or use WorkbenchStorageStub for tests.",
+		});
+
+	const Read = <T>(
+		Key: string,
+
+		Scope: WorkbenchStorageScope,
+
+		Body: (
+			Bridge: WorkbenchStorageBridgeShape,
+
+			ScopeCode: number,
+		) => T,
+	): T => {
+		const Bridge = getBridge();
+
+		if (!Bridge) throw Unavailable();
+
+		try {
+			return Body(Bridge, WorkbenchStorageScopeCode(Scope));
+		} catch (Cause) {
+			throw new WorkbenchStorageError({
+				_tag: "WorkbenchStorageReadFailed",
+				key: Key,
+				scope: WorkbenchStorageScopeCode(Scope),
+				error: ToError(Cause),
+			});
+		}
+	};
 
 	const Get = (
 		Key: string,
 
 		Scope: WorkbenchStorageScope,
-	): Effect.Effect<string | undefined, WorkbenchStorageProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
-
-			if (!Bridge) return yield* Effect.fail(Unavailable);
-
-			try {
-				return Bridge.get(Key, WorkbenchStorageScopeCode(Scope));
-			} catch (Cause) {
-				return yield* Effect.fail<WorkbenchStorageProblem>({
-					_tag: "WorkbenchStorageReadFailed",
-					key: Key,
-					scope: WorkbenchStorageScopeCode(Scope),
-					error: ToError(Cause),
-				});
-			}
-		});
+	): string | undefined =>
+		Read(Key, Scope, (Bridge, ScopeCode) => Bridge.get(Key, ScopeCode));
 
 	const GetBoolean = (
 		Key: string,
 
 		Scope: WorkbenchStorageScope,
-	): Effect.Effect<boolean | undefined, WorkbenchStorageProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
-
-			if (!Bridge) return yield* Effect.fail(Unavailable);
-
-			try {
-				return Bridge.getBoolean(
-					Key,
-
-					WorkbenchStorageScopeCode(Scope),
-				);
-			} catch (Cause) {
-				return yield* Effect.fail<WorkbenchStorageProblem>({
-					_tag: "WorkbenchStorageReadFailed",
-					key: Key,
-					scope: WorkbenchStorageScopeCode(Scope),
-					error: ToError(Cause),
-				});
-			}
-		});
+	): boolean | undefined =>
+		Read(Key, Scope, (Bridge, ScopeCode) =>
+			Bridge.getBoolean(Key, ScopeCode),
+		);
 
 	const GetNumber = (
 		Key: string,
 
 		Scope: WorkbenchStorageScope,
-	): Effect.Effect<number | undefined, WorkbenchStorageProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
-
-			if (!Bridge) return yield* Effect.fail(Unavailable);
-
-			try {
-				return Bridge.getNumber(
-					Key,
-
-					WorkbenchStorageScopeCode(Scope),
-				);
-			} catch (Cause) {
-				return yield* Effect.fail<WorkbenchStorageProblem>({
-					_tag: "WorkbenchStorageReadFailed",
-					key: Key,
-					scope: WorkbenchStorageScopeCode(Scope),
-					error: ToError(Cause),
-				});
-			}
-		});
+	): number | undefined =>
+		Read(Key, Scope, (Bridge, ScopeCode) =>
+			Bridge.getNumber(Key, ScopeCode),
+		);
 
 	const GetObject = <T = unknown>(
 		Key: string,
 
 		Scope: WorkbenchStorageScope,
-	): Effect.Effect<T | undefined, WorkbenchStorageProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
-
-			if (!Bridge) return yield* Effect.fail(Unavailable);
-
-			try {
-				return Bridge.getObject<T>(
-					Key,
-
-					WorkbenchStorageScopeCode(Scope),
-				);
-			} catch (Cause) {
-				return yield* Effect.fail<WorkbenchStorageProblem>({
-					_tag: "WorkbenchStorageReadFailed",
-					key: Key,
-					scope: WorkbenchStorageScopeCode(Scope),
-					error: ToError(Cause),
-				});
-			}
-		});
+	): T | undefined =>
+		Read(Key, Scope, (Bridge, ScopeCode) =>
+			Bridge.getObject<T>(Key, ScopeCode),
+		);
 
 	const Store = (
 		Key: string,
@@ -159,84 +118,72 @@ function makeWorkbenchStorageService(): WorkbenchStorageService {
 		Scope: WorkbenchStorageScope,
 
 		Target: WorkbenchStorageTarget,
-	): Effect.Effect<void, WorkbenchStorageProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
+	): void => {
+		const Bridge = getBridge();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			try {
-				Bridge.store(
-					Key,
+		try {
+			Bridge.store(
+				Key,
 
-					Value,
+				Value,
 
-					WorkbenchStorageScopeCode(Scope),
+				WorkbenchStorageScopeCode(Scope),
 
-					WorkbenchStorageTargetCode(Target),
-				);
-			} catch (Cause) {
-				return yield* Effect.fail<WorkbenchStorageProblem>({
-					_tag: "WorkbenchStorageWriteFailed",
-					key: Key,
-					scope: WorkbenchStorageScopeCode(Scope),
-					error: ToError(Cause),
-				});
-			}
-		});
+				WorkbenchStorageTargetCode(Target),
+			);
+		} catch (Cause) {
+			throw new WorkbenchStorageError({
+				_tag: "WorkbenchStorageWriteFailed",
+				key: Key,
+				scope: WorkbenchStorageScopeCode(Scope),
+				error: ToError(Cause),
+			});
+		}
+	};
 
-	const Remove = (
-		Key: string,
+	const Remove = (Key: string, Scope: WorkbenchStorageScope): void => {
+		const Bridge = getBridge();
 
-		Scope: WorkbenchStorageScope,
-	): Effect.Effect<void, WorkbenchStorageProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
+		if (!Bridge) throw Unavailable();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
-
-			try {
-				Bridge.remove(Key, WorkbenchStorageScopeCode(Scope));
-			} catch (Cause) {
-				return yield* Effect.fail<WorkbenchStorageProblem>({
-					_tag: "WorkbenchStorageRemoveFailed",
-					key: Key,
-					scope: WorkbenchStorageScopeCode(Scope),
-					error: ToError(Cause),
-				});
-			}
-		});
+		try {
+			Bridge.remove(Key, WorkbenchStorageScopeCode(Scope));
+		} catch (Cause) {
+			throw new WorkbenchStorageError({
+				_tag: "WorkbenchStorageRemoveFailed",
+				key: Key,
+				scope: WorkbenchStorageScopeCode(Scope),
+				error: ToError(Cause),
+			});
+		}
+	};
 
 	const Keys = (
 		Scope: WorkbenchStorageScope,
 
 		Target: WorkbenchStorageTarget,
-	): Effect.Effect<readonly string[], WorkbenchStorageProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
-
-			if (!Bridge) return yield* Effect.fail(Unavailable);
-
-			return Bridge.keys(
-				WorkbenchStorageScopeCode(Scope),
-
-				WorkbenchStorageTargetCode(Target),
-			);
-		});
-
-	const Changes = Stream.async<
-		WorkbenchStorageChangeEvent,
-		WorkbenchStorageProblem
-	>((Emit) => {
+	): readonly string[] => {
 		const Bridge = getBridge();
 
-		if (!Bridge) {
-			Emit.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			return Effect.void;
-		}
+		return Bridge.keys(
+			WorkbenchStorageScopeCode(Scope),
 
-		const Subscription = Bridge.onDidChangeValue(
+			WorkbenchStorageTargetCode(Target),
+		);
+	};
+
+	const Changes = (
+		Callback: (event: WorkbenchStorageChangeEvent) => void,
+	): { readonly dispose: () => void } => {
+		const Bridge = getBridge();
+
+		if (!Bridge) throw Unavailable();
+
+		return Bridge.onDidChangeValue(
 			-1,
 
 			undefined,
@@ -244,15 +191,13 @@ function makeWorkbenchStorageService(): WorkbenchStorageService {
 			undefined,
 
 			(VSEvent) => {
-				Emit.single({
+				Callback({
 					key: VSEvent.key,
 					scope: WorkbenchStorageScopeFromCode(VSEvent.scope),
 				});
 			},
 		);
-
-		return Effect.sync(() => Subscription.dispose());
-	});
+	};
 
 	const Service: WorkbenchStorageService = {
 		Get,

@@ -1,9 +1,8 @@
 /**
- * # VineNotificationsLive
+ * # Vine notification subscription
  *
- * Effect-TS Layer that bridges Mountain's process-wide Vine
- * notification broadcast to a `Stream<NotificationFrame>` consumable
- * by every Wind/Sky subscriber concurrently.
+ * Bridges Mountain's process-wide Vine notification broadcast to plain
+ * frame callbacks consumable by every Wind/Sky subscriber concurrently.
  *
  * ## Architecture
  *
@@ -12,37 +11,36 @@
  * 2. The Tauri command `vine_subscribe_notifications` opens a
  *    `Channel<NotificationFramePayload>` that drains the broadcast
  *    receiver into the webview.
- * 3. This Layer wraps the channel into a `Stream<NotificationFrame>`
- *    so Effects can `Stream.filter`, `Stream.runForEach`,
- *    `Stream.merge`, etc.
+ * 3. This module multiplexes that single channel across an in-process
+ *    subscriber array - one Tauri channel total, N callbacks.
  *
  * ## Usage
  *
  * ```typescript
- * import { Effect, Stream, Layer } from "effect";
- * import { VineNotifications, VineNotificationsLive } from "..";
+ * import SubscribeVineNotifications, {
+ *     SubscribeMethod,
+ * } from "./NotificationStream.js";
  *
- * const traceDiagnostics = Effect.gen(function* () {
- *     const stream = yield* VineNotifications;
- *     yield* stream.pipe(
- *         Stream.filter((f) => f.method === "Diagnostic.Set"),
- *         Stream.runForEach((f) => Effect.logDebug(`diag.set: ${f.method}`)),
- *         Effect.fork,
- *     );
+ * const Subscription = await SubscribeVineNotifications((Frame) => {
+ *     console.debug(Frame.method);
  * });
  *
- * const program = traceDiagnostics.pipe(Effect.provide(VineNotificationsLive));
+ * // later
+ * Subscription.dispose();
  * ```
  *
- * Multiple subscribers compose freely - each `yield* VineNotifications`
- * gets its own dequeue from the underlying scoped queue, and the
- * Tauri channel is reference-counted so the subscription lives
- * exactly as long as any subscriber.
+ * Multiple subscribers compose freely - the Tauri channel is opened on
+ * the first subscription and released when the last subscriber
+ * disposes. Disposing the channel ends the Rust-side drain task: its
+ * `channel.send(...)` fails once the webview callback is unregistered.
  *
+ * Note on backpressure: delivery is synchronous fan-out per frame. The
+ * producer (Mountain broadcast) is capacity-bounded with drop-oldest,
+ * so a slow webview sees `Lagged(n)` gaps logged on the Rust side
+ * rather than memory growth here.
  */
 
 import type { Channel as TauriChannel } from "@tauri-apps/api/core";
-import { Context, Effect, Layer, Queue, Stream } from "effect";
 
 /**
  * Frame shape on the wire. Mirror of the Rust
@@ -54,6 +52,7 @@ import { Context, Effect, Layer, Queue, Stream } from "effect";
  * here; consumers should narrow per-method).
  */
 export interface NotificationFrame {
+
 	readonly sideCarIdentifier: string;
 
 	readonly method: string;
@@ -63,123 +62,179 @@ export interface NotificationFrame {
 	readonly timestampNanos: number;
 }
 
-/**
- * Effect-TS service tag for the notification stream. Consumers
- * `yield*` it to receive a `Stream<NotificationFrame>`.
- */
-export class VineNotifications extends Context.Tag("Land/Vine/Notifications")<
-	VineNotifications,
-	Stream.Stream<NotificationFrame>
->() {}
+export class VineSubscriptionError extends Error {
+
+	readonly _tag = "VineSubscriptionError" as const;
+
+	constructor(Message: string, Cause?: unknown) {
+		super(Message, Cause === undefined ? undefined : { cause: Cause });
+
+		this.name = "VineSubscriptionError";
+	}
+}
+
+type FrameSubscriber = (Frame: NotificationFrame) => void;
+
+const Subscribers: FrameSubscriber[] = [];
+
+let ActiveChannel: TauriChannel<NotificationFrame> | null = null;
+
+let PendingSetup: Promise<void> | null = null;
 
 /**
- * Live Layer. Opens the Tauri Channel, subscribes via
- * `vine_subscribe_notifications`, and provides a `Stream` backed by
- * an unbounded Effect Queue. The acquireRelease bracket ensures the
- * channel registration on the Mountain side is observable via
- * `vine_subscriber_count` - when this Layer goes out of scope the
- * channel closes and the Rust-side drain task exits naturally.
- *
- * Note on backpressure: the Effect Queue is unbounded so a slow
- * consumer cannot stall the producer. The producer (Mountain
- * broadcast) is itself capacity-bounded with drop-oldest, so the
- * worst-case scenario is `Lagged(n)` gaps logged on the Rust side
- * rather than memory growth here.
+ * Detach the webview-side channel callback. After this the Rust drain
+ * task's next `channel.send` fails and the task exits.
  */
-export const VineNotificationsLive = Layer.scoped(
-	VineNotifications,
+const ReleaseChannel = (
+	Subscription: TauriChannel<NotificationFrame>,
+): void => {
 
-	Effect.gen(function* () {
-		const queue = yield* Queue.unbounded<NotificationFrame>();
+	Subscription.onmessage = () => {};
 
-		const tauri = yield* Effect.tryPromise({
-			try: () =>
-				import("@tauri-apps/api/core").then((Module) => ({
-					Channel: Module.Channel,
-					invoke: Module.invoke,
-				})),
-			catch: (error) =>
-				new Error(
-					`Failed to load @tauri-apps/api/core: ${String(error)}`,
-				),
-		});
+	try {
+		(
+			Subscription as unknown as { cleanupCallback?: () => void }
+		).cleanupCallback?.();
+	} catch {}
+};
 
-		const channel: TauriChannel<NotificationFrame> =
-			new tauri.Channel<NotificationFrame>();
+/**
+ * Open the shared Tauri channel if it is not already open. If the
+ * `vine_subscribe_notifications` invoke fails after the channel was
+ * constructed, the partially-set-up channel is released before the
+ * error propagates.
+ */
+const EnsureChannel = (): Promise<void> => {
 
-		channel.onmessage = (frame: NotificationFrame) => {
-			Queue.unsafeOffer(queue, frame); // lean: no fiber per frame
+	if (ActiveChannel !== null) {
+		return Promise.resolve();
+	}
+
+	PendingSetup ??= (async () => {
+		const Tauri = await import("@tauri-apps/api/core");
+
+		const Subscription = new Tauri.Channel<NotificationFrame>();
+
+		Subscription.onmessage = (Frame) => {
+			for (const Deliver of [...Subscribers]) {
+				try {
+					Deliver(Frame);
+				} catch {}
+			}
 		};
 
-		yield* Effect.acquireRelease(
-			Effect.tryPromise({
-				try: () =>
-					tauri.invoke<number>("vine_subscribe_notifications", {
-						channel,
-					}),
-				catch: (error) =>
-					new Error(
-						`vine_subscribe_notifications failed: ${String(error)}`,
-					),
-			}),
+		try {
+			await Tauri.invoke<number>("vine_subscribe_notifications", {
+				channel: Subscription,
+			});
 
-			() =>
-				Effect.gen(function* () {
-					// The Rust drain task exits when the Channel closes
-					// (its `channel.send(...)` returns Err). Closing the
-					// queue here is what triggers that on the next
-					// frame attempt; no separate unsubscribe RPC needed.
-					yield* Queue.shutdown(queue);
-				}),
-		);
+			ActiveChannel = Subscription;
+		} catch (Cause) {
+			ReleaseChannel(Subscription);
 
-		return Stream.fromQueue(queue);
-	}),
-);
+			throw new VineSubscriptionError(
+				`vine_subscribe_notifications failed: ${String(Cause)}`,
+
+				Cause,
+			);
+		}
+	})().finally(() => {
+		PendingSetup = null;
+	});
+
+	return PendingSetup;
+};
+
+const SubscribeFrames = async (
+	OnFrame: FrameSubscriber,
+): Promise<{ readonly dispose: () => void }> => {
+
+	Subscribers.push(OnFrame);
+
+	try {
+		await EnsureChannel();
+	} catch (Cause) {
+		const Index = Subscribers.indexOf(OnFrame);
+
+		if (Index !== -1) {
+			Subscribers.splice(Index, 1);
+		}
+
+		throw Cause;
+	}
+
+	let Disposed = false;
+
+	return {
+		dispose: (): void => {
+			if (Disposed) {
+				return;
+			}
+
+			Disposed = true;
+
+			const Index = Subscribers.indexOf(OnFrame);
+
+			if (Index !== -1) {
+				Subscribers.splice(Index, 1);
+			}
+
+			if (Subscribers.length === 0 && ActiveChannel !== null) {
+				const Subscription = ActiveChannel;
+
+				ActiveChannel = null;
+
+				ReleaseChannel(Subscription);
+			}
+		},
+	};
+};
 
 /**
- * Convenience: filter the stream to a single sky-channel method
- * prefix. Returns an Effect that yields a filtered stream.
- *
- * ```typescript
- * const treeViewEvents = yield* SubscribeMethodPrefix("tree-view");
- * yield* treeViewEvents.pipe(
- *     Stream.runForEach((f) => Effect.logDebug(f.method)),
- *     Effect.fork,
- * );
- * ```
+ * Convenience: deliver only frames whose method starts with `Prefix`.
  */
-export const SubscribeMethodPrefix = (prefix: string) =>
-	Effect.gen(function* () {
-		const stream = yield* VineNotifications;
+export const SubscribeMethodPrefix = (
+	Prefix: string,
 
-		return stream.pipe(
-			Stream.filter((frame) => frame.method.startsWith(prefix)),
-		);
+	OnFrame: FrameSubscriber,
+): Promise<{ readonly dispose: () => void }> =>
+	SubscribeFrames((Frame) => {
+		if (Frame.method.startsWith(Prefix)) {
+			OnFrame(Frame);
+		}
 	});
 
 /**
- * Convenience: filter to exact-match method name.
+ * Convenience: deliver only exact-match method names.
  */
-export const SubscribeMethod = (method: string) =>
-	Effect.gen(function* () {
-		const stream = yield* VineNotifications;
+export const SubscribeMethod = (
+	Method: string,
 
-		return stream.pipe(Stream.filter((frame) => frame.method === method));
+	OnFrame: FrameSubscriber,
+): Promise<{ readonly dispose: () => void }> =>
+	SubscribeFrames((Frame) => {
+		if (Frame.method === Method) {
+			OnFrame(Frame);
+		}
 	});
 
 /**
  * Diagnostic: ask Mountain for the current subscriber count. Useful
  * for verifying registrations don't leak across reloads.
  */
-export const SubscriberCount = Effect.gen(function* () {
-	const Module = yield* Effect.tryPromise({
-		try: () => import("@tauri-apps/api/core"),
-		catch: (error) => new Error(`tauri import: ${String(error)}`),
-	});
+export const SubscriberCount = async (): Promise<number> => {
 
-	return yield* Effect.tryPromise({
-		try: () => Module.invoke<number>("vine_subscriber_count"),
-		catch: (error) => new Error(`vine_subscriber_count: ${String(error)}`),
-	});
-});
+	const Tauri = await import("@tauri-apps/api/core");
+
+	return Tauri.invoke<number>("vine_subscriber_count");
+};
+
+/**
+ * Subscribe to every Vine notification frame. Resolves once the
+ * shared Tauri channel is registered with Mountain; the returned
+ * disposable removes the callback and, when it is the last one,
+ * releases the channel.
+ */
+export default (
+	OnFrame: FrameSubscriber,
+): Promise<{ readonly dispose: () => void }> => SubscribeFrames(OnFrame);

@@ -11,13 +11,17 @@
 import { Effect, Layer, SubscriptionRef } from "effect";
 
 import { Telemetry } from "../../Telemetry.js";
+
 import type { ActivityBarService } from "../Interface/ActivityBarService.js";
+
 import { ActivityBarTag } from "../Tag/ActivityBarTag.js";
+
 import type {
 	ActivityBarBadge,
 	ActivityBarItem,
 	CreateActivityBarItem,
 } from "../Type/ActivityBarType.js";
+
 import {
 	MakeCreateItem,
 	MakeGetBadge,

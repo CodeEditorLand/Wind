@@ -3,6 +3,7 @@ import { Effect } from "effect";
 import type { TextModelResolverService } from "../Interface/TextModelResolverService.js";
 
 const StubModel = {
+
 	uri: "",
 
 	content: "",
@@ -13,6 +14,7 @@ const StubModel = {
 } as const;
 
 export const StubTextModelResolverService: TextModelResolverService = {
+
 	Resolve: (uri) =>
 		Effect.succeed({
 			model: { ...StubModel, uri },

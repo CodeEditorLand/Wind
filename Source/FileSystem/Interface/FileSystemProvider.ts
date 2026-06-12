@@ -2,7 +2,8 @@
  * @module FileSystem/Interface/FileSystemProvider
  * @description
  * Interface for the FileSystemProvider service.
- * Defines the service contract following Wind's architectural pattern.
+ * All operations are plain async; failures throw `FileSystemProviderError`
+ * subclasses (the error classes carry the VS Code `name` contract).
  * @see {@link FileSystem/Implementation/FileSystemProviderImplementation} Default implementation
  * @category Interface
  */
@@ -10,6 +11,7 @@
 import type { Effect } from "effect";
 
 import type { FileSystemProviderError } from "../Error/FileSystemProviderError.js";
+
 import type { IFileSystemProvider } from "../Type/FileSystemType.js";
 
 // ============================================================================
@@ -21,30 +23,39 @@ import type { IFileSystemProvider } from "../Type/FileSystemType.js";
  * Provides methods for file system operations via Tauri IPC to Mountain.
  */
 export interface FileSystemProviderService {
+
 	/**
-	 * Get the underlying IFileSystemProvider interface
-	 * @returns Effect that resolves to the file system provider
+	 * The underlying IFileSystemProvider (URI-object API).
+	 */
+	readonly provider: IFileSystemProvider;
+
+	/**
+	 * Effect-wrapped provider accessor. Retained only for
+	 * `Workbench/Implementation/WorkbenchIntegrationImplementation.ts`,
+	 * which resolves the provider inside Effect.gen; everything else
+	 * reads `provider` directly.
 	 */
 	readonly getProvider: Effect.Effect<
 		IFileSystemProvider,
+
 		FileSystemProviderError
 	>;
 
 	/**
 	 * Read file contents as binary data
 	 * @param uri - URI of the file to read
-	 * @returns Effect resolving to file contents as Uint8Array
+	 * @returns Promise resolving to file contents as Uint8Array
+	 * @throws FileSystemProviderError
 	 */
-	readonly readFile: (
-		uri: string,
-	) => Effect.Effect<Uint8Array, FileSystemProviderError>;
+	readonly readFile: (uri: string) => Promise<Uint8Array>;
 
 	/**
 	 * Write data to a file
 	 * @param uri - URI of the file to write
 	 * @param content - File content as Uint8Array
 	 * @param options - Write options (create, overwrite)
-	 * @returns Effect that completes when write is complete
+	 * @returns Promise that resolves when write is complete
+	 * @throws FileSystemProviderError
 	 */
 	readonly writeFile: (
 		uri: string,
@@ -52,88 +63,78 @@ export interface FileSystemProviderService {
 		content: Uint8Array,
 
 		options?: { create?: boolean; overwrite?: boolean },
-	) => Effect.Effect<void, FileSystemProviderError>;
+	) => Promise<void>;
 
 	/**
 	 * Delete a file or directory
 	 * @param uri - URI of the file/directory to delete
-	 * @returns Effect that completes when deletion is complete
+	 * @returns Promise that resolves when deletion is complete
+	 * @throws FileSystemProviderError
 	 */
-	readonly delete: (
-		uri: string,
-	) => Effect.Effect<void, FileSystemProviderError>;
+	readonly delete: (uri: string) => Promise<void>;
 
 	/**
 	 * Copy a file or directory
 	 * @param source - Source URI
 	 * @param destination - Destination URI
-	 * @returns Effect that completes when copy is complete
+	 * @returns Promise that resolves when copy is complete
+	 * @throws FileSystemProviderError
 	 */
-	readonly copy: (
-		source: string,
-
-		destination: string,
-	) => Effect.Effect<void, FileSystemProviderError>;
+	readonly copy: (source: string, destination: string) => Promise<void>;
 
 	/**
 	 * Move/rename a file or directory
 	 * @param source - Source URI
 	 * @param destination - Destination URI
-	 * @returns Effect that completes when move is complete
+	 * @returns Promise that resolves when move is complete
+	 * @throws FileSystemProviderError
 	 */
-	readonly move: (
-		source: string,
-
-		destination: string,
-	) => Effect.Effect<void, FileSystemProviderError>;
+	readonly move: (source: string, destination: string) => Promise<void>;
 
 	/**
 	 * List directory contents
 	 * @param uri - URI of the directory to read
-	 * @returns Effect resolving to array of [name, FileType] tuples
+	 * @returns Promise resolving to array of [name, FileType] tuples
+	 * @throws FileSystemProviderError
 	 */
-	readonly readdir: (
-		uri: string,
-	) => Effect.Effect<[string, number][], FileSystemProviderError>;
+	readonly readdir: (uri: string) => Promise<[string, number][]>;
 
 	/**
 	 * Create a directory
 	 * @param uri - URI of the directory to create
 	 * @param options - Options (e.g., recursive creation)
-	 * @returns Effect that completes when directory is created
+	 * @returns Promise that resolves when directory is created
+	 * @throws FileSystemProviderError
 	 */
 	readonly mkdir: (
 		uri: string,
 
 		options?: { recursive?: boolean },
-	) => Effect.Effect<void, FileSystemProviderError>;
+	) => Promise<void>;
 
 	/**
 	 * Remove a directory
 	 * @param uri - URI of the directory to remove
-	 * @returns Effect that completes when directory is removed
+	 * @returns Promise that resolves when directory is removed
+	 * @throws FileSystemProviderError
 	 */
-	readonly rmdir: (
-		uri: string,
-	) => Effect.Effect<void, FileSystemProviderError>;
+	readonly rmdir: (uri: string) => Promise<void>;
 
 	/**
 	 * Get file/directory statistics
 	 * @param uri - URI of the file/directory to stat
-	 * @returns Effect resolving to file statistics
+	 * @returns Promise resolving to file statistics
+	 * @throws FileSystemProviderError
 	 */
-	readonly stat: (uri: string) => Effect.Effect<
-		{
-			type: number;
+	readonly stat: (uri: string) => Promise<{
+		type: number;
 
-			size: number;
+		size: number;
 
-			ctime: number;
+		ctime: number;
 
-			mtime: number;
+		mtime: number;
 
-			permissions?: number;
-		},
-		FileSystemProviderError
-	>;
+		permissions?: number;
+	}>;
 }

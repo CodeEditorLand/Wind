@@ -11,7 +11,9 @@
 import { Context, Effect } from "effect";
 
 import type { IPCBlockError } from "../Error/IPCBlockError.js";
+
 import type { NetworkBlockError } from "../Error/NetworkBlockError.js";
+
 import type { NetworkRestrictionConfig } from "../Type/NetworkRestrictionConfig.js";
 
 // ============================================================================
@@ -22,6 +24,7 @@ import type { NetworkRestrictionConfig } from "../Type/NetworkRestrictionConfig.
  * Blocked request entry for logging
  */
 export interface BlockedRequest {
+
 	readonly timestamp: number;
 
 	readonly type: "http" | "https" | "websocket" | "ipc";
@@ -40,6 +43,7 @@ export type TelemetryLevel = "NONE" | "CRASH" | "ERROR" | "USAGE";
  * Network Restrictions service interface
  */
 export interface NetworkRestrictionsService {
+
 	/** Check if a URL is allowed */
 	readonly checkURL: (
 		url: string,
@@ -68,6 +72,7 @@ export interface NetworkRestrictionsService {
 	/** Get list of blocked requests (for debugging) */
 	readonly getBlockedRequests: Effect.Effect<
 		ReadonlyArray<BlockedRequest>,
+
 		never
 	>;
 

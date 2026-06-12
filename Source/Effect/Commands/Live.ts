@@ -13,9 +13,13 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+
 import { TauriIPCLive } from "../IPC/index.js";
+
 import type { CommandsService } from "./Interface/CommandsService.js";
+
 import { CommandsServiceTag } from "./Tag/CommandsServiceTag.js";
+
 import type { CommandsProblem } from "./Type/CommandsProblem.js";
 
 const MakeCommandsOperationFailed = (error: unknown): CommandsProblem => ({
@@ -24,12 +28,14 @@ const MakeCommandsOperationFailed = (error: unknown): CommandsProblem => ({
 });
 
 function makeCommandsService(): CommandsService {
+
 	const IPCService = TauriIPCLive;
 
 	// Local handler registry for UI-side commands (registered from Wind/Sky).
 	// Handlers registered here execute directly without an IPC round-trip.
 	const LocalHandlers = new Map<
 		string,
+
 		(...args: readonly unknown[]) => unknown
 	>();
 

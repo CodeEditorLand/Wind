@@ -6,6 +6,7 @@ import type { ModelProblem } from "../Type/ModelProblem.js";
  * Text model entry held by the model registry.
  */
 export interface TextModel {
+
 	/** URI identifying this text document. */
 	readonly uri: string;
 
@@ -27,6 +28,7 @@ export interface TextModel {
  * The registry is kept in sync with Mountain's document state via IPC.
  */
 export interface ModelService {
+
 	/**
 	 * Open (or retrieve if already open) a text model for a URI.
 	 * Mountain reads the file and returns content + language id.
@@ -51,6 +53,7 @@ export interface ModelService {
 	 */
 	readonly GetAllModels: () => Effect.Effect<
 		readonly TextModel[],
+
 		ModelProblem
 	>;
 

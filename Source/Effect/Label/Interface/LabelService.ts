@@ -10,6 +10,7 @@ import type { LabelProblem } from "../Type/LabelProblem.js";
  * and file paths. Used in the explorer tree, tabs, and breadcrumbs.
  */
 export interface LabelService {
+
 	/**
 	 * Resolve a display label for a URI.
 	 * @param uri - The URI to label (e.g. "file:///home/user/project/src/foo.ts")

@@ -9,15 +9,21 @@
 
 import { Effect } from "effect";
 
-import { Configuration } from "../../Configuration.js";
+import { ConfigurationLive } from "../../Configuration.js";
+
 import {
 	EnvironmentTag,
 	type EnvironmentInfo,
 } from "../../Environment/index.js";
+
 import { HealthTag } from "../../Health.js";
-import { MountainTag } from "../../Mountain.js";
+
+import { MountainLive } from "../../Mountain.js";
+
 import { Sandbox } from "../../Sandbox.js";
+
 import { Telemetry, withSpan } from "../../Telemetry.js";
+
 import type { StageResult } from "../Type/BootstrapType.js";
 
 // ============================================================================
@@ -99,7 +105,7 @@ export const stage2_Configuration = withSpan(
 		const telemetry = yield* Telemetry;
 
 		// Ensure configuration is loaded
-		yield* (yield* Configuration).get;
+		yield* Effect.tryPromise(() => ConfigurationLive.refresh());
 
 		telemetry.log("info", "[Bootstrap] Stage 2: Loading configuration...");
 
@@ -131,7 +137,7 @@ export const stage3_Services = withSpan(
 		);
 
 		// Connect to mountain backend
-		yield* (yield* MountainTag).connect;
+		yield* Effect.tryPromise(() => MountainLive.connect());
 
 		telemetry.log("info", "[Bootstrap] Mountain connected");
 
@@ -247,6 +253,7 @@ export const stage6_HealthCheck = withSpan(
 );
 
 export default {
+
 	stage0_Environment,
 
 	stage1_Preload,

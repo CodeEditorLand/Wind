@@ -15,9 +15,13 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+
 import { TauriIPCLive } from "../IPC/index.js";
+
 import type { WorkingCopyService } from "./Interface/WorkingCopyService.js";
+
 import { WorkingCopyServiceTag } from "./Tag/WorkingCopyServiceTag.js";
+
 import type { WorkingCopyProblem } from "./Type/WorkingCopyProblem.js";
 
 const MakeWorkingCopyProblem = (error: unknown): WorkingCopyProblem => ({
@@ -26,6 +30,7 @@ const MakeWorkingCopyProblem = (error: unknown): WorkingCopyProblem => ({
 });
 
 function makeWorkingCopyService(): WorkingCopyService {
+
 	const IPCService = TauriIPCLive;
 
 	const Service: WorkingCopyService = {

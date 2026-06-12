@@ -15,12 +15,16 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+
 import { TauriIPCLive } from "../IPC/index.js";
+
 import type {
 	DecorationsService,
 	FileDecoration,
 } from "./Interface/DecorationsService.js";
+
 import { DecorationsServiceTag } from "./Tag/DecorationsServiceTag.js";
+
 import type { DecorationsProblem } from "./Type/DecorationsProblem.js";
 
 const MakeDecorationsProblem = (error: unknown): DecorationsProblem => ({
@@ -29,6 +33,7 @@ const MakeDecorationsProblem = (error: unknown): DecorationsProblem => ({
 });
 
 function makeDecorationsService(): DecorationsService {
+
 	const IPCService = TauriIPCLive;
 
 	const Service: DecorationsService = {

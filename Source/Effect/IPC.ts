@@ -20,6 +20,7 @@ import {
 
 // Error types for backward compatibility
 export class IPCInvokeError extends Error {
+
 	readonly _tag = "IPCInvokeError";
 
 	readonly _channel: string;
@@ -50,6 +51,7 @@ export class IPCInvokeError extends Error {
 }
 
 export class IPCSendError extends Error {
+
 	readonly _tag = "IPCSendError";
 
 	readonly _channel: string;
@@ -80,6 +82,7 @@ export class IPCSendError extends Error {
 }
 
 export class IPCSubscriptionError extends Error {
+
 	readonly _tag = "IPCSubscriptionError";
 
 	readonly _channel: string;

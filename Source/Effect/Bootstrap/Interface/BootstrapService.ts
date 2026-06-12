@@ -33,6 +33,7 @@ import type {
  * - Stage 6: Health checks
  */
 export interface BootstrapService {
+
 	/**
 	 * Run the bootstrap process with optional configuration.
 	 * @param options - Options for controlling bootstrap behavior

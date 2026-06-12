@@ -12,7 +12,9 @@
 import { Context, Effect, Stream } from "effect";
 
 import type { ActivityBarItemNotFoundError } from "../Error/ActivityBarItemNotFoundError.js";
+
 import type { ActivityBarUpdateError } from "../Error/ActivityBarUpdateError.js";
+
 import type {
 	ActivityBarBadge,
 	ActivityBarItem,
@@ -27,6 +29,7 @@ import type {
  * Manages activity bar items, their display state, badges, and active item.
  */
 export interface ActivityBarService {
+
 	/**
 	 * Create a new activity bar item.
 	 * @param item - The item data (without id, which is auto-generated)
@@ -47,6 +50,7 @@ export interface ActivityBarService {
 		updates: Partial<Omit<ActivityBarItem, "id">>,
 	) => Effect.Effect<
 		void,
+
 		ActivityBarItemNotFoundError | ActivityBarUpdateError
 	>;
 
@@ -110,6 +114,7 @@ export interface ActivityBarService {
 		badge: ActivityBarBadge | undefined,
 	) => Effect.Effect<
 		void,
+
 		ActivityBarItemNotFoundError | ActivityBarUpdateError
 	>;
 
@@ -130,6 +135,7 @@ export interface ActivityBarService {
 		id: string,
 	) => Effect.Effect<
 		void,
+
 		ActivityBarItemNotFoundError | ActivityBarUpdateError
 	>;
 }

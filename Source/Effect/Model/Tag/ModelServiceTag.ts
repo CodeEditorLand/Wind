@@ -4,6 +4,7 @@ import type { ModelService } from "../Interface/ModelService.js";
 
 export class ModelServiceTag extends Context.Tag("Application/ModelService")<
 	ModelServiceTag,
+
 	ModelService
 >() {}
 

@@ -1,19 +1,20 @@
 /**
  * @module Effect/Configuration/Layer/ConfigurationMock
  * @description
- * Mock implementation layer for Configuration service.
+ * Mock implementation for Configuration service.
  * Used in testing and development scenarios.
  * @see {@link Effect/Configuration/Implementation/ConfigurationImplementation} Live implementation
- * @see [Effect-TS Mocking](https://effect.website/docs/guide/testing)
  * @category Layer
  */
 
-import { Effect, Layer, Stream } from "effect";
-
 import type { ISandboxConfiguration } from "../../../Types/Sandbox.js";
+
 import { MakeValidate } from "../Implementation/ConfigurationHelper.js";
-import type { ConfigurationService } from "../Interface/ConfigurationService.js";
-import { ConfigurationTag } from "../Tag/ConfigurationTag.js";
+
+import type {
+	ConfigurationService,
+	IDisposable,
+} from "../Interface/ConfigurationService.js";
 
 // ============================================================================
 // Mock Implementation
@@ -25,9 +26,10 @@ import { ConfigurationTag } from "../Tag/ConfigurationTag.js";
 export const makeMockConfiguration = (
 	overrides?: Partial<ISandboxConfiguration>,
 ): ConfigurationService => {
+
 	const validate = MakeValidate();
 
-	const mockConfig: ISandboxConfiguration = {
+	let mockConfig: ISandboxConfiguration = {
 		zoomLevel: 0,
 
 		userEnv: {},
@@ -42,29 +44,45 @@ export const makeMockConfiguration = (
 		...overrides,
 	};
 
-	return {
-		get: Effect.succeed(mockConfig),
+	const listeners = new Set<(Config: ISandboxConfiguration) => void>();
 
-		fetch: Effect.succeed(mockConfig),
+	return {
+		get: () => mockConfig,
+
+		fetch: async () => mockConfig,
 
 		validate,
 
-		apply: () => Effect.void,
+		apply: () => undefined,
 
-		changes: Stream.empty,
+		replace: (Config: ISandboxConfiguration) => {
+			mockConfig = Config;
 
-		refresh: Effect.succeed(mockConfig),
+			for (const Listener of listeners) {
+				Listener(Config);
+			}
+		},
+
+		onChange: (
+			Listener: (Config: ISandboxConfiguration) => void,
+		): IDisposable => {
+			listeners.add(Listener);
+
+			return {
+				dispose: () => {
+					listeners.delete(Listener);
+				},
+			};
+		},
+
+		refresh: async () => mockConfig,
 	} satisfies ConfigurationService;
 };
 
 /**
- * Mock implementation layer for Configuration service.
+ * Mock Configuration service instance.
  * Provides simple no-op implementation for testing.
  */
-export const ConfigurationMock = Layer.succeed(
-	ConfigurationTag,
-
-	makeMockConfiguration(),
-);
+export const ConfigurationMock: ConfigurationService = makeMockConfiguration();
 
 export default ConfigurationMock;

@@ -1,20 +1,9 @@
-import type { Effect } from "effect";
-
-import type { WorkbenchClipboardProblem } from "../Type/WorkbenchClipboardProblem.js";
-
 export interface WorkbenchClipboardService {
-	readonly ReadText: Effect.Effect<string, WorkbenchClipboardProblem>;
+	readonly ReadText: () => Promise<string>;
 
-	readonly WriteText: (
-		value: string,
-	) => Effect.Effect<void, WorkbenchClipboardProblem>;
+	readonly WriteText: (value: string) => Promise<void>;
 
-	readonly ReadResources: Effect.Effect<
-		ReadonlyArray<string>,
-		WorkbenchClipboardProblem
-	>;
+	readonly ReadResources: () => Promise<ReadonlyArray<string>>;
 
-	readonly WriteResources: (
-		uris: ReadonlyArray<string>,
-	) => Effect.Effect<void, WorkbenchClipboardProblem>;
+	readonly WriteResources: (uris: ReadonlyArray<string>) => Promise<void>;
 }

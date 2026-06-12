@@ -1,5 +1,5 @@
 /**
- * Live `Layer<WorkbenchLifecycleService>`. Bridges VS Code's
+ * Live `WorkbenchLifecycleService`. Bridges VS Code's
  * `ILifecycleService` exposed on `globalThis.__CEL_SERVICES__.
  * Lifecycle`.
  *
@@ -9,16 +9,16 @@
  * Phase reads + waits go through the workbench bridge.
  */
 
-import { Effect, Stream } from "effect";
-
 import type {
 	WorkbenchLifecyclePhaseChange,
 	WorkbenchLifecycleService,
 } from "../Interface/WorkbenchLifecycleService.js";
-import type {
-	WorkbenchLifecyclePhase,
-	WorkbenchLifecycleProblem,
+
+import {
+	WorkbenchLifecycleError,
+	type WorkbenchLifecyclePhase,
 } from "../Type/WorkbenchLifecycleProblem.js";
+
 import {
 	type WorkbenchLifecycleBridgeShape,
 	type WorkbenchLifecycleGlobals,
@@ -26,11 +26,12 @@ import {
 	WorkbenchLifecyclePhaseFromCode,
 } from "./WorkbenchLifecycleBridgeShape.js";
 
-const Unavailable: WorkbenchLifecycleProblem = {
-	_tag: "WorkbenchLifecycleBridgeUnavailable",
+const Unavailable = (): WorkbenchLifecycleError =>
+	new WorkbenchLifecycleError({
+		_tag: "WorkbenchLifecycleBridgeUnavailable",
 
-	reason: "globalThis.__CEL_SERVICES__.Lifecycle is null - the workbench has not yet exposed its ILifecycleService handle.",
-};
+		reason: "globalThis.__CEL_SERVICES__.Lifecycle is null - the workbench has not yet exposed its ILifecycleService handle.",
+	});
 
 interface TauriBridge {
 	readonly invoke: (
@@ -66,95 +67,70 @@ function makeWorkbenchLifecycleService(): WorkbenchLifecycleService {
 		(globalThis as unknown as WorkbenchLifecycleGlobals).__CEL_SERVICES__
 			?.Lifecycle ?? null;
 
-	const Current = Effect.gen(function* () {
+	const Current = (): WorkbenchLifecyclePhase => {
 		const Bridge = getBridge();
 
-		if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
 		return WorkbenchLifecyclePhaseFromCode(Bridge.phase);
+	};
+
+	const Advance = async (Phase: WorkbenchLifecyclePhase): Promise<void> => {
+		const Invoke = ResolveTauriInvoke();
+
+		if (!Invoke) throw Unavailable();
+
+		try {
+			await Invoke("MountainIPCInvoke", {
+				method: "lifecycle:advancePhase",
+				params: [WorkbenchLifecyclePhaseCode(Phase)],
+			});
+		} catch {
+			const B = getBridge();
+
+			throw new WorkbenchLifecycleError({
+				_tag: "WorkbenchLifecyclePhaseRefused",
+				attempted: Phase,
+				current: B
+					? WorkbenchLifecyclePhaseFromCode(B.phase)
+					: ("Starting" as const),
+			});
+		}
+	};
+
+	const When = async (Phase: WorkbenchLifecyclePhase): Promise<void> => {
+		const Bridge = getBridge();
+
+		if (!Bridge) throw Unavailable();
+
+		await Bridge.when(WorkbenchLifecyclePhaseCode(Phase));
+	};
+
+	const Phases = (
+		_Callback: (change: WorkbenchLifecyclePhaseChange) => void,
+	): { readonly dispose: () => void } => ({
+		dispose: () => {},
 	});
 
-	const Advance = (
-		Phase: WorkbenchLifecyclePhase,
-	): Effect.Effect<void, WorkbenchLifecycleProblem> =>
-		Effect.gen(function* () {
-			const Invoke = ResolveTauriInvoke();
+	const OnWillShutdown = (
+		Callback: () => void,
+	): { readonly dispose: () => void } => {
+		const Bridge = getBridge();
 
-			if (!Invoke) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			yield* Effect.tryPromise({
-				try: () =>
-					Invoke("MountainIPCInvoke", {
-						method: "lifecycle:advancePhase",
-						params: [WorkbenchLifecyclePhaseCode(Phase)],
-					}),
-				catch: () => {
-					const B = getBridge();
+		return Bridge.onWillShutdown(() => Callback());
+	};
 
-					return {
-						_tag: "WorkbenchLifecyclePhaseRefused",
-						attempted: Phase,
-						current: B
-							? WorkbenchLifecyclePhaseFromCode(B.phase)
-							: ("Starting" as const),
-					} satisfies WorkbenchLifecycleProblem;
-				},
-			});
-		});
+	const OnDidShutdown = (
+		Callback: () => void,
+	): { readonly dispose: () => void } => {
+		const Bridge = getBridge();
 
-	const When = (
-		Phase: WorkbenchLifecyclePhase,
-	): Effect.Effect<void, WorkbenchLifecycleProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
+		if (!Bridge) throw Unavailable();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
-
-			yield* Effect.promise(() =>
-				Bridge.when(WorkbenchLifecyclePhaseCode(Phase)),
-			);
-		});
-
-	const Phases = Stream.async<
-		WorkbenchLifecyclePhaseChange,
-		WorkbenchLifecycleProblem
-	>(() => Effect.void);
-
-	const OnWillShutdown = Stream.async<void, WorkbenchLifecycleProblem>(
-		(Emit) => {
-			const Bridge = getBridge();
-
-			if (!Bridge) {
-				Emit.fail(Unavailable);
-
-				return Effect.void;
-			}
-
-			const Subscription = Bridge.onWillShutdown(() =>
-				Emit.single(undefined),
-			);
-
-			return Effect.sync(() => Subscription.dispose());
-		},
-	);
-
-	const OnDidShutdown = Stream.async<void, WorkbenchLifecycleProblem>(
-		(Emit) => {
-			const Bridge = getBridge();
-
-			if (!Bridge) {
-				Emit.fail(Unavailable);
-
-				return Effect.void;
-			}
-
-			const Subscription = Bridge.onDidShutdown(() =>
-				Emit.single(undefined),
-			);
-
-			return Effect.sync(() => Subscription.dispose());
-		},
-	);
+		return Bridge.onDidShutdown(() => Callback());
+	};
 
 	const Service: WorkbenchLifecycleService = {
 		Current,

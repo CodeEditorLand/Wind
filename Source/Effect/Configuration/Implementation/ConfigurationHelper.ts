@@ -6,16 +6,12 @@
  * @category Implementation
  */
 
-import { Effect, Stream } from "effect";
+import type { ISandboxConfiguration } from "../../../Types/Sandbox.js";
 
-import {
-	ConfigurationNotReadyError,
-	type ISandboxConfiguration,
-} from "../../../Types/Sandbox.js";
-import type { TelemetryService } from "../../Telemetry.js";
 import { ConfigApplyError } from "../Error/ConfigApplyError.js";
-import { ConfigFetchError } from "../Error/ConfigFetchError.js";
+
 import { ConfigValidationError } from "../Error/ConfigValidationError.js";
+
 import type { ConfigSchemaIssue } from "../Type/ConfigurationSchemaType.js";
 
 // ============================================================================
@@ -28,6 +24,7 @@ import type { ConfigSchemaIssue } from "../Type/ConfigurationSchemaType.js";
 const ValidateConfiguration = (
 	Config: unknown,
 ): ReadonlyArray<ConfigSchemaIssue> => {
+
 	const Issues: ConfigSchemaIssue[] = [];
 
 	if (!Config || typeof Config !== "object") {
@@ -71,6 +68,7 @@ const ValidateConfiguration = (
 		} else {
 			const Workspace = ConfigData["workspace"] as Record<
 				string,
+
 				unknown
 			>;
 
@@ -104,67 +102,59 @@ const ValidateConfiguration = (
 // ============================================================================
 
 /**
- * Creates the validate effect implementation.
+ * Creates the validate function.
+ * The returned function throws {@link ConfigValidationError} on invalid input.
  */
 const MakeValidate = () => {
-	return (
-		Config: unknown,
-	): Effect.Effect<ISandboxConfiguration, ConfigValidationError> =>
-		Effect.sync(() => ValidateConfiguration(Config)).pipe(
-			Effect.flatMap((Issues) =>
-				Issues.length > 0
-					? Effect.fail(
-							new ConfigValidationError(
-								Issues.map(
-									(Issue) =>
-										`${Issue.path}: ${Issue.message}`,
-								),
-							),
-						)
-					: Effect.succeed(Config as ISandboxConfiguration),
-			),
-		);
+
+	return (Config: unknown): ISandboxConfiguration => {
+		const Issues = ValidateConfiguration(Config);
+
+		if (Issues.length > 0) {
+			throw new ConfigValidationError(
+				Issues.map((Issue) => `${Issue.path}: ${Issue.message}`),
+			);
+		}
+
+		return Config as ISandboxConfiguration;
+	};
 };
 
 /**
- * Creates the apply effect implementation.
+ * Creates the apply function.
+ * The returned function throws {@link ConfigApplyError} when a setting
+ * cannot be applied.
  */
 const MakeApply = () => {
-	return (
-		Config: ISandboxConfiguration,
-	): Effect.Effect<void, ConfigApplyError> =>
-		Effect.gen(function* () {
-			// Apply zoom level
-			if (Config.zoomLevel !== undefined) {
-				yield* Effect.try({
-					try: () => {
-						if (window && (window as any).vscode) {
-							(window as any).vscode.postMessage({
-								type: "setZoomLevel",
-								payload: Config.zoomLevel,
-							});
-						}
-					},
-					catch: (Error) => new ConfigApplyError("zoomLevel", Error),
-				});
-			}
 
-			// Apply user environment variables
-			if (Config.userEnv) {
-				for (const [Key, Value] of Object.entries(
-					Config.userEnv || {},
-				)) {
-					yield* Effect.try({
-						try: () => {
-							if (typeof process !== "undefined" && process.env) {
-								process.env[Key] = Value as string;
-							}
-						},
-						catch: (Error) => new ConfigApplyError(Key, Error),
+	return (Config: ISandboxConfiguration): void => {
+		// Apply zoom level
+		if (Config.zoomLevel !== undefined) {
+			try {
+				if (window && (window as any).vscode) {
+					(window as any).vscode.postMessage({
+						type: "setZoomLevel",
+						payload: Config.zoomLevel,
 					});
 				}
+			} catch (Error) {
+				throw new ConfigApplyError("zoomLevel", Error);
 			}
-		});
+		}
+
+		// Apply user environment variables
+		if (Config.userEnv) {
+			for (const [Key, Value] of Object.entries(Config.userEnv || {})) {
+				try {
+					if (typeof process !== "undefined" && process.env) {
+						process.env[Key] = Value as string;
+					}
+				} catch (Error) {
+					throw new ConfigApplyError(Key, Error);
+				}
+			}
+		}
+	};
 };
 
 /**
@@ -175,6 +165,7 @@ const GetConfigValue = <T>(
 
 	Path: string,
 ): T | undefined => {
+
 	const Parts = Path.split(".");
 
 	let Current: unknown = Config;

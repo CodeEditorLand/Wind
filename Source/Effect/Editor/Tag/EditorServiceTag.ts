@@ -4,6 +4,7 @@ import type { EditorService } from "../Interface/EditorService.js";
 
 export class EditorServiceTag extends Context.Tag("Application/EditorService")<
 	EditorServiceTag,
+
 	EditorService
 >() {}
 

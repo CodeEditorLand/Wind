@@ -1,7 +1,3 @@
-import type { Effect, Stream } from "effect";
-
-import type { WorkbenchExtensionProblem } from "../Type/WorkbenchExtensionProblem.js";
-
 export interface WorkbenchExtensionDescriptor {
 	readonly identifier: string;
 
@@ -17,21 +13,15 @@ export interface WorkbenchExtensionDescriptor {
 }
 
 export interface WorkbenchExtensionService {
-	readonly Snapshot: Effect.Effect<
-		ReadonlyArray<WorkbenchExtensionDescriptor>,
-		WorkbenchExtensionProblem
-	>;
+	readonly Snapshot: () => ReadonlyArray<WorkbenchExtensionDescriptor>;
 
-	readonly Activate: (
-		extensionId: string,
-	) => Effect.Effect<void, WorkbenchExtensionProblem>;
+	readonly Activate: (extensionId: string) => Promise<void>;
 
-	readonly ActivateByEvent: (
-		event: string,
-	) => Effect.Effect<void, WorkbenchExtensionProblem>;
+	readonly ActivateByEvent: (event: string) => Promise<void>;
 
-	readonly OnExtensionsChange: Stream.Stream<
-		ReadonlyArray<WorkbenchExtensionDescriptor>,
-		WorkbenchExtensionProblem
-	>;
+	readonly OnExtensionsChange: (
+		callback: (
+			extensions: ReadonlyArray<WorkbenchExtensionDescriptor>,
+		) => void,
+	) => { readonly dispose: () => void };
 }

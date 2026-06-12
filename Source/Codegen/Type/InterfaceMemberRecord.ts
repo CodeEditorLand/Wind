@@ -16,6 +16,7 @@ export type InterfaceMemberKind =
 	| "Index";
 
 export interface InterfaceMemberParameter {
+
 	readonly Name: string;
 
 	readonly TypeText: string;
@@ -24,6 +25,7 @@ export interface InterfaceMemberParameter {
 }
 
 export interface InterfaceMemberRecord {
+
 	readonly Kind: InterfaceMemberKind;
 
 	readonly Name: string;

@@ -11,7 +11,9 @@
 import { Effect, Layer, Stream } from "effect";
 
 import type { PanelService } from "../Interface/PanelService.js";
+
 import PanelTag from "../Tag/PanelTag.js";
+
 import type {
 	CreatePanelView,
 	PanelView,

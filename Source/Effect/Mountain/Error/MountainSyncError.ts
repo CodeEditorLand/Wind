@@ -12,6 +12,7 @@
 // ============================================================================
 
 export class MountainSyncError extends Error {
+
 	readonly _tag = "MountainSyncError";
 
 	readonly resource: string;

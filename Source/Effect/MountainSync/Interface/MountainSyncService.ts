@@ -23,6 +23,7 @@ import type {
  * stop, pause, resume, and on-demand sync capabilities.
  */
 export interface MountainSyncService {
+
 	/** Start automatic synchronization with optional configuration overrides */
 	readonly start: (config?: Partial<SyncConfig>) => Effect.Effect<void>;
 

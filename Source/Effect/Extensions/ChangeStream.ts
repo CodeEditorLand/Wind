@@ -1,7 +1,7 @@
 /**
  * @module Effect/Extensions/ChangeStream
  * @description
- * Merged event stream for extension lifecycle changes.
+ * Merged event subscription for extension lifecycle changes.
  *
  * Mountain emits two disjoint Tauri events after the K2/K3 install /
  * uninstall handlers complete:
@@ -10,26 +10,25 @@
  *   - `sky://extensions/uninstalled` → `{ identifier, location }`
  *
  * Consumers (sidebar view, notification toast, error-tracking hook) almost
- * always want the union of both - a single stream tagged with the change
- * kind - rather than subscribing to each raw event. `ExtensionChangeStream`
- * is that union, typed via the Wind `SkyEvent` registry so wire-string
- * changes caught at compile time.
+ * always want the union of both - a single callback tagged with the change
+ * kind - rather than subscribing to each raw event. The default export
+ * registers both Tauri listeners and delivers the union, typed via the
+ * Wind `SkyEvent` registry so wire-string changes are caught at compile
+ * time.
  *
- * Atom K-followup: this is the Sky sidebar's subscription point. The
- * workbench's `ExtensionEnablementService` refreshes via
- * `onDidChangeExtensions`; wire that observer to
- * `Stream.runForEach(ExtensionChangeStream, …)` so the sidebar re-renders
- * live without a workbench reload.
+ * The Sky sidebar subscribes through
+ * `Sky/Source/Workbench/Electron/Extension/Change/Subscriber.ts`; the
+ * workbench's `ExtensionEnablementService` refreshes on each delivered
+ * change so the sidebar re-renders live without a workbench reload.
  */
 
-import { Effect, Stream } from "effect";
+import { listen } from "@tauri-apps/api/event";
 
 import SkyEvent from "../../IPC/SkyEvent.js";
-import { IPC } from "../IPC.js";
-import type { IPCSubscriptionError } from "../IPC/Error/IPCError.js";
 
 export type ExtensionChange =
 	| {
+
 			readonly Kind: "Installed";
 
 			readonly Identifier: string;
@@ -38,7 +37,9 @@ export type ExtensionChange =
 
 			readonly Location: string;
 	  }
+
 	| {
+
 			readonly Kind: "Uninstalled";
 
 			readonly Identifier: string;
@@ -46,11 +47,25 @@ export type ExtensionChange =
 			readonly Location: string | undefined;
 	  };
 
+export class ExtensionChangeSubscriptionError extends Error {
+
+	readonly _tag = "ExtensionChangeSubscriptionError" as const;
+
+	constructor(Channel: string, Cause: unknown) {
+		super(`Failed to subscribe to ${Channel}: ${String(Cause)}`, {
+			cause: Cause,
+		});
+
+		this.name = "ExtensionChangeSubscriptionError";
+	}
+}
+
 const ReadString = (
 	Record: Readonly<Record<string, unknown>>,
 
 	Field: string,
 ): string => {
+
 	const Value = Record[Field];
 
 	return typeof Value === "string" ? Value : "";
@@ -61,70 +76,85 @@ const ReadOptionalString = (
 
 	Field: string,
 ): string | undefined => {
+
 	const Value = Record[Field];
 
 	return typeof Value === "string" ? Value : undefined;
 };
 
-const FirstArgAsPayload = (Frame: {
-	readonly args: ReadonlyArray<unknown>;
-}): Readonly<Record<string, unknown>> | null => {
-	const First = Frame.args[0];
+const AsPayload = (Value: unknown): Readonly<Record<string, unknown>> | null =>
+	Value !== null && typeof Value === "object"
+		? (Value as Readonly<Record<string, unknown>>)
 
-	return First !== null && typeof First === "object"
-		? (First as Readonly<Record<string, unknown>>)
 		: null;
-};
 
 /**
- * Install + uninstall events merged into a single Effect-TS stream of
- * typed `ExtensionChange` items. Any payload shape mismatch produces an
+ * Install + uninstall events merged into a single callback of typed
+ * `ExtensionChange` items. Any payload shape mismatch produces an
  * empty string / undefined rather than dropping the event - the
  * receiver's refresh logic can re-fetch `extensions:getAll` to recover
  * authoritative state.
+ *
+ * Resolves once both Tauri listeners are registered. If either
+ * registration fails, any listener already registered is detached and
+ * an `ExtensionChangeSubscriptionError` is thrown.
  */
-export default Effect.gen(function* () {
-	const IPCService = yield* IPC;
+export default async (
+	Callback: (Change: ExtensionChange) => void,
+): Promise<{ readonly dispose: () => void }> => {
 
-	const Installed = IPCService.events(SkyEvent.ExtensionsInstalled).pipe(
-		Stream.map((Frame): ExtensionChange | null => {
-			const Payload = FirstArgAsPayload(Frame);
+	const Unlisteners: Array<() => void> = [];
 
-			if (Payload === null) {
-				return null;
-			}
+	const Detach = (): void => {
+		for (const Unlisten of Unlisteners.splice(0)) {
+			try {
+				Unlisten();
+			} catch {}
+		}
+	};
 
-			return {
-				Kind: "Installed",
-				Identifier: ReadString(Payload, "identifier"),
-				Version: ReadString(Payload, "version"),
-				Location: ReadString(Payload, "location"),
-			};
-		}),
+	const Subscribe = async (
+		Channel: string,
 
-		Stream.filter((Event): Event is ExtensionChange => Event !== null),
-	);
+		Decode: (Payload: Readonly<Record<string, unknown>>) => ExtensionChange,
+	): Promise<void> => {
+		try {
+			Unlisteners.push(
+				await listen<unknown>(Channel, (Event) => {
+					const Payload = AsPayload(Event.payload);
 
-	const Uninstalled = IPCService.events(SkyEvent.ExtensionsUninstalled).pipe(
-		Stream.map((Frame): ExtensionChange | null => {
-			const Payload = FirstArgAsPayload(Frame);
+					if (Payload === null) {
+						return;
+					}
 
-			if (Payload === null) {
-				return null;
-			}
+					Callback(Decode(Payload));
+				}),
+			);
+		} catch (Cause) {
+			throw new ExtensionChangeSubscriptionError(Channel, Cause);
+		}
+	};
 
-			return {
-				Kind: "Uninstalled",
-				Identifier: ReadString(Payload, "identifier"),
-				Location: ReadOptionalString(Payload, "location"),
-			};
-		}),
+	try {
+		await Subscribe(SkyEvent.ExtensionsInstalled, (Payload) => ({
+			Kind: "Installed",
+			Identifier: ReadString(Payload, "identifier"),
+			Version: ReadString(Payload, "version"),
+			Location: ReadString(Payload, "location"),
+		}));
 
-		Stream.filter((Event): Event is ExtensionChange => Event !== null),
-	);
+		await Subscribe(SkyEvent.ExtensionsUninstalled, (Payload) => ({
+			Kind: "Uninstalled",
+			Identifier: ReadString(Payload, "identifier"),
+			Location: ReadOptionalString(Payload, "location"),
+		}));
+	} catch (Cause) {
+		Detach();
 
-	return Stream.merge(Installed, Uninstalled) satisfies Stream.Stream<
-		ExtensionChange,
-		IPCSubscriptionError
-	>;
-});
+		throw Cause;
+	}
+
+	return {
+		dispose: Detach,
+	};
+};

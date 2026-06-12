@@ -8,9 +8,13 @@
 import { Effect, Either, Layer, Stream } from "effect";
 
 import PanelUpdateError from "../Error/PanelUpdateError.js";
+
 import PanelViewNotFoundError from "../Error/PanelViewNotFoundError.js";
+
 import type { PanelService } from "../Interface/PanelService.js";
+
 import PanelTag from "../Tag/PanelTag.js";
+
 import type {
 	CreatePanelView,
 	PanelView,
@@ -18,6 +22,7 @@ import type {
 } from "../Type/PanelType.js";
 
 function makePanelService(): PanelService {
+
 	let _views: ReadonlyArray<PanelView> = [];
 
 	let _activeView: string | undefined = undefined;
@@ -88,6 +93,7 @@ function makePanelService(): PanelService {
 		updates: Partial<Omit<PanelView, "id">>,
 	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> => {
 		if (!_views.find((v) => v.id === Id))
+
 			return Effect.fail(new PanelViewNotFoundError(Id));
 
 		try {
@@ -107,6 +113,7 @@ function makePanelService(): PanelService {
 		Id: string,
 	): Effect.Effect<void, PanelViewNotFoundError> => {
 		if (!_views.find((v) => v.id === Id))
+
 			return Effect.fail(new PanelViewNotFoundError(Id));
 
 		_views = _views.filter((v) => v.id !== Id);
@@ -126,6 +133,7 @@ function makePanelService(): PanelService {
 		Id: string,
 	): Effect.Effect<void, PanelViewNotFoundError> => {
 		if (!_views.find((v) => v.id === Id))
+
 			return Effect.fail(new PanelViewNotFoundError(Id));
 
 		_views = _views.map((v) =>
@@ -165,6 +173,7 @@ function makePanelService(): PanelService {
 		Id: string,
 	): Effect.Effect<void, PanelViewNotFoundError | PanelUpdateError> => {
 		if (!_views.find((v) => v.id === Id))
+
 			return Effect.fail(new PanelViewNotFoundError(Id));
 
 		_views = _views.map((v) => ({ ...v, maximized: v.id === Id }));

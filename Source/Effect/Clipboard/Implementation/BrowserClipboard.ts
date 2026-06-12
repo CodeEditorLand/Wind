@@ -10,7 +10,9 @@
 import { Effect } from "effect";
 
 import type { ClipboardService } from "../Interface/ClipboardService.js";
+
 import type { ClipboardProblem } from "../Type/ClipboardProblem.js";
+
 import {
 	CreateFormatNotSupportedError,
 	CreateNotAvailableError,
@@ -27,6 +29,7 @@ import {
  * Uses the browser's Clipboard API
  */
 export const LiveBrowserClipboardService: ClipboardService = {
+
 	readText: () =>
 		Effect.tryPromise({
 			try: async () => {

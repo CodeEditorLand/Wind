@@ -11,3 +11,13 @@ export type WorkbenchLayoutProblem =
 
 			readonly error: Error;
 	  };
+
+export class WorkbenchLayoutError extends Error {
+	readonly _tag = "WorkbenchLayoutError" as const;
+
+	constructor(readonly Problem: WorkbenchLayoutProblem) {
+		super("reason" in Problem ? Problem.reason : Problem._tag);
+
+		this.name = "WorkbenchLayoutError";
+	}
+}

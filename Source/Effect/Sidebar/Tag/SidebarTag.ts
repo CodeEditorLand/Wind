@@ -29,6 +29,7 @@ import type { SidebarService } from "../Interface/SidebarService.js";
  */
 export default class SidebarTag extends Context.Tag("Sidebar")<
 	SidebarTag,
+
 	SidebarService
 >() {}
 

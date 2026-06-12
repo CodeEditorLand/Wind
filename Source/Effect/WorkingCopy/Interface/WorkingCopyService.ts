@@ -11,6 +11,7 @@ import type { WorkingCopyProblem } from "../Type/WorkingCopyProblem.js";
  * vs/workbench/services/workingCopy/common/workingCopyService.ts
  */
 export interface WorkingCopyService {
+
 	/** Returns true if the given URI has unsaved changes. */
 	readonly IsDirty: (
 		uri: string,
@@ -26,6 +27,7 @@ export interface WorkingCopyService {
 	/** Return all URIs that currently have unsaved changes. */
 	readonly GetAllDirty: () => Effect.Effect<
 		readonly string[],
+
 		WorkingCopyProblem
 	>;
 

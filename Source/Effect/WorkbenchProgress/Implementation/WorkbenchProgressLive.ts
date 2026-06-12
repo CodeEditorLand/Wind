@@ -1,11 +1,11 @@
-import { Effect } from "effect";
-
 import type {
 	WorkbenchProgressReporter,
 	WorkbenchProgressService,
 	WorkbenchProgressTaskOptions,
 } from "../Interface/WorkbenchProgressService.js";
-import type { WorkbenchProgressProblem } from "../Type/WorkbenchProgressProblem.js";
+
+import { WorkbenchProgressError } from "../Type/WorkbenchProgressProblem.js";
+
 import {
 	type UpstreamProgressReporter,
 	type WorkbenchProgressBridgeShape,
@@ -13,11 +13,12 @@ import {
 	WorkbenchProgressLocationCode,
 } from "./WorkbenchProgressBridgeShape.js";
 
-const Unavailable: WorkbenchProgressProblem = {
-	_tag: "WorkbenchProgressBridgeUnavailable",
+const Unavailable = (): WorkbenchProgressError =>
+	new WorkbenchProgressError({
+		_tag: "WorkbenchProgressBridgeUnavailable",
 
-	reason: "globalThis.__CEL_SERVICES__.Progress is null.",
-};
+		reason: "globalThis.__CEL_SERVICES__.Progress is null.",
+	});
 
 const ToError = (cause: unknown): Error =>
 	cause instanceof Error ? cause : new Error(String(cause));
@@ -37,42 +38,38 @@ function makeWorkbenchProgressService(): WorkbenchProgressService {
 		(globalThis as unknown as WorkbenchProgressGlobals).__CEL_SERVICES__
 			?.Progress ?? null;
 
-	const Run = <A>(
+	const Run = async <A>(
 		Options: WorkbenchProgressTaskOptions,
 
 		Body: (reporter: WorkbenchProgressReporter) => Promise<A>,
-	): Effect.Effect<A, WorkbenchProgressProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
+	): Promise<A> => {
+		const Bridge = getBridge();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			return yield* Effect.tryPromise({
-				try: () =>
-					Bridge.withProgress(
-						{
-							title: Options.title,
-							location: WorkbenchProgressLocationCode(
-								Options.location,
-							),
-							...(Options.cancellable !== undefined
-								? { cancellable: Options.cancellable }
-								: {}),
-							...(Options.source !== undefined
-								? { source: Options.source }
-								: {}),
-						},
+		try {
+			return await Bridge.withProgress(
+				{
+					title: Options.title,
+					location: WorkbenchProgressLocationCode(Options.location),
+					...(Options.cancellable !== undefined
+						? { cancellable: Options.cancellable }
+						: {}),
+					...(Options.source !== undefined
+						? { source: Options.source }
+						: {}),
+				},
 
-						(Reporter) => Body(ToReporter(Reporter)),
-					),
-				catch: (Cause) =>
-					({
-						_tag: "WorkbenchProgressTaskFailed",
-						title: Options.title,
-						error: ToError(Cause),
-					}) satisfies WorkbenchProgressProblem,
+				(Reporter) => Body(ToReporter(Reporter)),
+			);
+		} catch (Cause) {
+			throw new WorkbenchProgressError({
+				_tag: "WorkbenchProgressTaskFailed",
+				title: Options.title,
+				error: ToError(Cause),
 			});
-		});
+		}
+	};
 
 	const Service: WorkbenchProgressService = { Run };
 

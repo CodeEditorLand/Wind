@@ -20,6 +20,7 @@ import type { ClipboardService } from "../Interface/ClipboardService.js";
  * Provides a simple in-memory clipboard state
  */
 export const MockClipboardService: ClipboardService = {
+
 	readText: () => Effect.succeed("mock clipboard text"),
 
 	writeText: (_text: string) => Effect.void,

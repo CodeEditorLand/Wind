@@ -1,7 +1,7 @@
 /**
  * @module Effect/Configuration
  * @description
- * Atomic configuration service using Effect-TS.
+ * Atomic configuration service.
  * Consolidates configuration fetching, validation, and reactive updates.
  * Replaces duplicated logic in Preload, MountainIntegrationService, and MountainWindSync.
  *
@@ -11,10 +11,10 @@
  * @example
  * ```ts
  * // Old (still works):
- * import { Configuration, ConfigurationLive } from "./Effect/Configuration.js";
+ * import { ConfigurationLive } from "./Effect/Configuration.js";
  *
  * // New (recommended):
- * import { Configuration, ConfigurationLive } from "./Effect/Configuration/index.js";
+ * import { ConfigurationLive } from "./Effect/Configuration/index.js";
  * ```
  */
 
@@ -25,14 +25,15 @@ export {
 	ConfigApplyError,
 	type ConfigSchemaIssue,
 	type ConfigurationService,
-	ConfigurationTag,
+	type ConfigurationTag,
+	type Configuration,
 	ValidateConfiguration,
 	MakeValidate,
 	MakeApply,
 	GetConfigValue,
+	CreateConfigurationService,
 	ConfigurationLive,
 	ConfigurationWithSyncLive,
 	ConfigurationMock,
 	makeMockConfiguration,
-	Configuration,
 } from "./Configuration/index.js";

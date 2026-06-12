@@ -12,6 +12,7 @@
 // ============================================================================
 
 export class MountainRPCError extends Error {
+
 	readonly _tag = "MountainRPCError";
 
 	readonly method: string;

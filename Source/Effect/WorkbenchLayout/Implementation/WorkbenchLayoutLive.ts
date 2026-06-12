@@ -1,12 +1,12 @@
-import { Effect, Stream } from "effect";
-
 import type {
 	WorkbenchLayoutChange,
 	WorkbenchLayoutPart,
 	WorkbenchLayoutService,
 	WorkbenchLayoutSnapshot,
 } from "../Interface/WorkbenchLayoutService.js";
-import type { WorkbenchLayoutProblem } from "../Type/WorkbenchLayoutProblem.js";
+
+import { WorkbenchLayoutError } from "../Type/WorkbenchLayoutProblem.js";
+
 import {
 	WorkbenchLayoutAllParts,
 	type WorkbenchLayoutBridgeShape,
@@ -14,11 +14,12 @@ import {
 	WorkbenchLayoutPartId,
 } from "./WorkbenchLayoutBridgeShape.js";
 
-const Unavailable: WorkbenchLayoutProblem = {
-	_tag: "WorkbenchLayoutBridgeUnavailable",
+const Unavailable = (): WorkbenchLayoutError =>
+	new WorkbenchLayoutError({
+		_tag: "WorkbenchLayoutBridgeUnavailable",
 
-	reason: "globalThis.__CEL_SERVICES__.Layout is null.",
-};
+		reason: "globalThis.__CEL_SERVICES__.Layout is null.",
+	});
 
 const ToError = (cause: unknown): Error =>
 	cause instanceof Error ? cause : new Error(String(cause));
@@ -34,13 +35,10 @@ function makeWorkbenchLayoutService(): WorkbenchLayoutService {
 		return Bridge?.isVisible(WorkbenchLayoutPartId(Part)) ?? false;
 	};
 
-	const Snapshot: Effect.Effect<
-		WorkbenchLayoutSnapshot,
-		WorkbenchLayoutProblem
-	> = Effect.gen(function* () {
+	const Snapshot = (): WorkbenchLayoutSnapshot => {
 		const Bridge = getBridge();
 
-		if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
 		const Visible = new Map<WorkbenchLayoutPart, boolean>();
 
@@ -50,71 +48,57 @@ function makeWorkbenchLayoutService(): WorkbenchLayoutService {
 
 		return {
 			visible: Visible,
+
 			maximized: new Map<WorkbenchLayoutPart, boolean>(),
 		};
-	});
+	};
 
-	const SetVisible = (
-		Part: WorkbenchLayoutPart,
+	const SetVisible = (Part: WorkbenchLayoutPart, Visible: boolean): void => {
+		const Bridge = getBridge();
 
-		Visible: boolean,
-	): Effect.Effect<void, WorkbenchLayoutProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
+		if (!Bridge) throw Unavailable();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		try {
+			Bridge.setPartHidden(
+				!Visible,
 
-			yield* Effect.try({
-				try: () =>
-					Bridge.setPartHidden(
-						!Visible,
-
-						WorkbenchLayoutPartId(Part),
-					),
-				catch: (Cause) =>
-					({
-						_tag: "WorkbenchLayoutToggleFailed",
-						part: Part,
-						error: ToError(Cause),
-					}) satisfies WorkbenchLayoutProblem,
+				WorkbenchLayoutPartId(Part),
+			);
+		} catch (Cause) {
+			throw new WorkbenchLayoutError({
+				_tag: "WorkbenchLayoutToggleFailed",
+				part: Part,
+				error: ToError(Cause),
 			});
-		});
+		}
+	};
 
-	const Toggle = (
-		Part: WorkbenchLayoutPart,
-	): Effect.Effect<void, WorkbenchLayoutProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
+	const Toggle = (Part: WorkbenchLayoutPart): void => {
+		const Bridge = getBridge();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			const Current = SnapshotPart(Part);
+		const Current = SnapshotPart(Part);
 
-			yield* SetVisible(Part, !Current);
-		});
+		SetVisible(Part, !Current);
+	};
 
-	const Changes = Stream.async<WorkbenchLayoutChange, WorkbenchLayoutProblem>(
-		(Emit) => {
-			const Bridge = getBridge();
+	const Changes = (
+		Callback: (change: WorkbenchLayoutChange) => void,
+	): { readonly dispose: () => void } => {
+		const Bridge = getBridge();
 
-			if (!Bridge) {
-				Emit.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-				return Effect.void;
+		return Bridge.onDidChangePartVisibility(() => {
+			for (const Part of WorkbenchLayoutAllParts) {
+				Callback({
+					part: Part,
+					visible: SnapshotPart(Part),
+				});
 			}
-
-			const Subscription = Bridge.onDidChangePartVisibility(() => {
-				for (const Part of WorkbenchLayoutAllParts) {
-					Emit.single({
-						part: Part,
-						visible: SnapshotPart(Part),
-					});
-				}
-			});
-
-			return Effect.sync(() => Subscription.dispose());
-		},
-	);
+		});
+	};
 
 	const Service: WorkbenchLayoutService = {
 		Snapshot,

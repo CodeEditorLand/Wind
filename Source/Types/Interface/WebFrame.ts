@@ -10,5 +10,6 @@
  * WebFrame interface
  */
 export interface WebFrame {
+
 	readonly setZoomLevel: (level: number) => void;
 }

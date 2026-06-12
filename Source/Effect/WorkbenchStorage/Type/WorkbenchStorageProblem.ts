@@ -40,3 +40,13 @@ export type WorkbenchStorageProblem =
 
 			readonly error: Error;
 	  };
+
+export class WorkbenchStorageError extends Error {
+	readonly _tag = "WorkbenchStorageError" as const;
+
+	constructor(readonly Problem: WorkbenchStorageProblem) {
+		super("reason" in Problem ? Problem.reason : Problem._tag);
+
+		this.name = "WorkbenchStorageError";
+	}
+}

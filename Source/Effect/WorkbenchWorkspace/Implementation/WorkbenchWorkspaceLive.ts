@@ -1,12 +1,12 @@
-import { Effect, Stream } from "effect";
-
 import type {
 	WorkbenchWorkspaceFolder,
 	WorkbenchWorkspaceFolderEvent,
 	WorkbenchWorkspaceService,
 	WorkbenchWorkspaceSnapshot,
 } from "../Interface/WorkbenchWorkspaceService.js";
-import type { WorkbenchWorkspaceProblem } from "../Type/WorkbenchWorkspaceProblem.js";
+
+import { WorkbenchWorkspaceError } from "../Type/WorkbenchWorkspaceProblem.js";
+
 import type {
 	UpstreamWorkspace,
 	UpstreamWorkspaceFolder,
@@ -14,11 +14,12 @@ import type {
 	WorkbenchWorkspaceGlobals,
 } from "./WorkbenchWorkspaceBridgeShape.js";
 
-const Unavailable: WorkbenchWorkspaceProblem = {
-	_tag: "WorkbenchWorkspaceBridgeUnavailable",
+const Unavailable = (): WorkbenchWorkspaceError =>
+	new WorkbenchWorkspaceError({
+		_tag: "WorkbenchWorkspaceBridgeUnavailable",
 
-	reason: "globalThis.__CEL_SERVICES__.Workspace is null.",
-};
+		reason: "globalThis.__CEL_SERVICES__.Workspace is null.",
+	});
 
 const ToError = (cause: unknown): Error =>
 	cause instanceof Error ? cause : new Error(String(cause));
@@ -47,74 +48,60 @@ function makeWorkbenchWorkspaceService(): WorkbenchWorkspaceService {
 		(globalThis as unknown as WorkbenchWorkspaceGlobals).__CEL_SERVICES__
 			?.Workspace ?? null;
 
-	const Snapshot: Effect.Effect<
-		WorkbenchWorkspaceSnapshot,
-		WorkbenchWorkspaceProblem
-	> = Effect.gen(function* () {
+	const Snapshot = (): WorkbenchWorkspaceSnapshot => {
 		const Bridge = getBridge();
 
-		if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-		return yield* Effect.try({
-			try: () => ToSnapshot(Bridge.getWorkspace()),
-			catch: (Cause) =>
-				({
-					_tag: "WorkbenchWorkspaceQueryFailed",
-					error: ToError(Cause),
-				}) satisfies WorkbenchWorkspaceProblem,
-		});
-	});
+		try {
+			return ToSnapshot(Bridge.getWorkspace());
+		} catch (Cause) {
+			throw new WorkbenchWorkspaceError({
+				_tag: "WorkbenchWorkspaceQueryFailed",
+				error: ToError(Cause),
+			});
+		}
+	};
 
-	const Folders: Effect.Effect<
-		ReadonlyArray<WorkbenchWorkspaceFolder>,
-		WorkbenchWorkspaceProblem
-	> = Snapshot.pipe(Effect.map((Snap) => Snap.folders));
+	const Folders = (): ReadonlyArray<WorkbenchWorkspaceFolder> =>
+		Snapshot().folders;
 
 	const FolderForResource = (
 		Uri: string,
-	): Effect.Effect<
-		WorkbenchWorkspaceFolder | null,
-		WorkbenchWorkspaceProblem
-	> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
-
-			if (!Bridge) return yield* Effect.fail(Unavailable);
-
-			const Found = yield* Effect.try({
-				try: () => Bridge.getWorkspaceFolder({ toString: () => Uri }),
-				catch: (Cause) =>
-					({
-						_tag: "WorkbenchWorkspaceQueryFailed",
-						error: ToError(Cause),
-					}) satisfies WorkbenchWorkspaceProblem,
-			});
-
-			return Found ? ToFolder(Found) : null;
-		});
-
-	const OnFolderChange = Stream.async<
-		WorkbenchWorkspaceFolderEvent,
-		WorkbenchWorkspaceProblem
-	>((Emit) => {
+	): WorkbenchWorkspaceFolder | null => {
 		const Bridge = getBridge();
 
-		if (!Bridge) {
-			Emit.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			return Effect.void;
+		let Found: UpstreamWorkspaceFolder | null | undefined;
+
+		try {
+			Found = Bridge.getWorkspaceFolder({ toString: () => Uri });
+		} catch (Cause) {
+			throw new WorkbenchWorkspaceError({
+				_tag: "WorkbenchWorkspaceQueryFailed",
+				error: ToError(Cause),
+			});
 		}
 
-		const Subscription = Bridge.onDidChangeWorkspaceFolders((Event) => {
-			Emit.single({
+		return Found ? ToFolder(Found) : null;
+	};
+
+	const OnFolderChange = (
+		Callback: (event: WorkbenchWorkspaceFolderEvent) => void,
+	): { readonly dispose: () => void } => {
+		const Bridge = getBridge();
+
+		if (!Bridge) throw Unavailable();
+
+		return Bridge.onDidChangeWorkspaceFolders((Event) => {
+			Callback({
 				added: Event.added.map(ToFolder),
 				removed: Event.removed.map(ToFolder),
 				changed: Event.changed.map(ToFolder),
 			});
 		});
-
-		return Effect.sync(() => Subscription.dispose());
-	});
+	};
 
 	const Service: WorkbenchWorkspaceService = {
 		Snapshot,

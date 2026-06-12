@@ -3,13 +3,14 @@
  * @description
  * Test layer stack with all mocks.
  * Useful for unit testing without real backend dependencies.
+ * Configuration and Mountain mocks are plain objects exported from
+ * `Configuration/Layer/ConfigurationMock.js` and
+ * `Mountain/Layer/MountainMock.js` and no longer appear in the layer stack.
  */
 
 import { Layer } from "effect";
 
-import { ConfigurationMock } from "../Configuration.js";
 import { IPCMockLive } from "../IPC.js";
-import { MountainMockLive } from "../Mountain.js";
 import { SandboxMockLive } from "../Sandbox.js";
 import { TelemetryLive, TelemetryMockLive } from "../Telemetry.js";
 
@@ -24,9 +25,7 @@ import { TelemetryLive, TelemetryMockLive } from "../Telemetry.js";
 export const TestLayer = Layer.empty
 	.pipe(Layer.provideMerge(SandboxMockLive))
 	.pipe(Layer.provideMerge(IPCMockLive))
-	.pipe(Layer.provideMerge(ConfigurationMock))
-	.pipe(Layer.provideMerge(TelemetryMockLive))
-	.pipe(Layer.provideMerge(MountainMockLive));
+	.pipe(Layer.provideMerge(TelemetryMockLive));
 
 // ============================================================================
 // Test Layer with Real Telemetry
@@ -39,9 +38,7 @@ export const TestLayer = Layer.empty
 export const TestWithTelemetryLayer = Layer.empty
 	.pipe(Layer.provideMerge(SandboxMockLive))
 	.pipe(Layer.provideMerge(IPCMockLive))
-	.pipe(Layer.provideMerge(ConfigurationMock))
-	.pipe(Layer.provideMerge(TelemetryLive))
-	.pipe(Layer.provideMerge(MountainMockLive));
+	.pipe(Layer.provideMerge(TelemetryLive));
 
 // Export default for convenience
 export default TestLayer;

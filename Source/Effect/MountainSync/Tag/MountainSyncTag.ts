@@ -29,5 +29,6 @@ import type { MountainSyncService } from "../Interface/MountainSyncService.js";
  */
 export default class MountainSyncTag extends Context.Tag("Effect/MountainSync")<
 	MountainSyncTag,
+
 	MountainSyncService
 >() {}

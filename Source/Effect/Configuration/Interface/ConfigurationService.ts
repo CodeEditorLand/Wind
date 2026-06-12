@@ -4,71 +4,72 @@
  * Service interface for configuration management.
  * Provides methods to fetch, validate, apply, and react to configuration changes.
  * @see {@link Effect/Configuration/Implementation/ConfigurationImplementation} Default implementation
- * @see [Effect-TS Services](https://effect.website/docs/guide/context)
  * @category Interface
  */
 
-import { Context, Effect, Stream } from "effect";
-
-import type {
-	ConfigurationNotReadyError,
-	ISandboxConfiguration,
-} from "../../../Types/Sandbox.js";
-import type { ConfigApplyError } from "../Error/ConfigApplyError.js";
-import type { ConfigFetchError } from "../Error/ConfigFetchError.js";
-import type { ConfigValidationError } from "../Error/ConfigValidationError.js";
+import type { ISandboxConfiguration } from "../../../Types/Sandbox.js";
 
 // ============================================================================
 // Service Interface
 // ============================================================================
 
 /**
+ * Handle returned by subscription methods; call `dispose` to unsubscribe.
+ */
+export interface IDisposable {
+
+	readonly dispose: () => void;
+}
+
+/**
  * Service interface for Configuration operations.
  * Manages configuration fetching, validation, and reactive updates.
  */
 export interface ConfigurationService {
+
 	/**
 	 * Get current configuration snapshot.
-	 * @returns Effect that resolves to the current configuration
+	 * @throws ConfigurationNotReadyError when no configuration is loaded yet
 	 */
-	readonly get: Effect.Effect<
-		ISandboxConfiguration,
-		ConfigurationNotReadyError
-	>;
+	readonly get: () => ISandboxConfiguration;
 
 	/**
 	 * Fetch configuration from backend.
-	 * @returns Effect that resolves to the fetched configuration
+	 * @throws ConfigFetchError when both sandbox and IPC fetch fail
 	 */
-	readonly fetch: Effect.Effect<ISandboxConfiguration, ConfigFetchError>;
+	readonly fetch: () => Promise<ISandboxConfiguration>;
 
 	/**
 	 * Validate configuration structure.
-	 * @param config - The configuration to validate
-	 * @returns Effect that resolves to validated configuration or validation error
+	 * @param Config - The configuration to validate
+	 * @throws ConfigValidationError when the structure is invalid
 	 */
-	readonly validate: (
-		config: unknown,
-	) => Effect.Effect<ISandboxConfiguration, ConfigValidationError>;
+	readonly validate: (Config: unknown) => ISandboxConfiguration;
 
 	/**
 	 * Apply configuration (zoom, userEnv, etc.).
-	 * @param config - The configuration to apply
-	 * @returns Effect that completes when configuration is applied
+	 * @param Config - The configuration to apply
+	 * @throws ConfigApplyError when a setting cannot be applied
 	 */
-	readonly apply: (
-		config: ISandboxConfiguration,
-	) => Effect.Effect<void, ConfigApplyError>;
+	readonly apply: (Config: ISandboxConfiguration) => void;
 
 	/**
-	 * Stream of configuration changes.
-	 * Emits new configuration whenever it changes.
+	 * Replace the current configuration snapshot and notify listeners.
+	 * @param Config - The new configuration
 	 */
-	readonly changes: Stream.Stream<ISandboxConfiguration, never>;
+	readonly replace: (Config: ISandboxConfiguration) => void;
+
+	/**
+	 * Subscribe to configuration changes.
+	 * @param Listener - Called with the new configuration on every change
+	 */
+	readonly onChange: (
+		Listener: (Config: ISandboxConfiguration) => void,
+	) => IDisposable;
 
 	/**
 	 * Force refresh configuration from backend.
-	 * @returns Effect that resolves to the refreshed configuration
+	 * @throws ConfigFetchError when the fetch fails
 	 */
-	readonly refresh: Effect.Effect<ISandboxConfiguration, ConfigFetchError>;
+	readonly refresh: () => Promise<ISandboxConfiguration>;
 }

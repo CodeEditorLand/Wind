@@ -20,6 +20,7 @@ import { ValidateIPCChannel } from "./ValidateIPCChannel.js";
  * Creates an IPC renderer interface
  */
 export function CreateIPCRenderer(): IpcRenderer {
+
 	const self: IpcRenderer = {
 		send: (Channel: string): void => {
 			if (!ValidateIPCChannel(Channel)) return;

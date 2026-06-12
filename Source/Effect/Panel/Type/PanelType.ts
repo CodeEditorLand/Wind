@@ -24,6 +24,7 @@ export type PanelViewType =
  * Contains all configurable properties for a panel view.
  */
 export interface PanelView {
+
 	/** Unique identifier for the panel view */
 	readonly id: string;
 

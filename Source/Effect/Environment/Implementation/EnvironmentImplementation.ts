@@ -24,8 +24,11 @@
 import { Effect, Layer } from "effect";
 
 import type { EnvironmentService } from "../Interface/EnvironmentService.js";
+
 import { EnvironmentTag } from "../Tag/EnvironmentTag.js";
+
 import type { Architecture, Platform } from "../Type/EnvironmentType.js";
+
 import {
 	DetectArchitecture,
 	DetectLocale,
@@ -43,6 +46,7 @@ import {
  * Detects actual environment information from browser APIs
  */
 const MakeLiveEnvironment: EnvironmentService = {
+
 	getInfo: Effect.sync(() => ({
 		platform: DetectPlatform(),
 		architecture: DetectArchitecture(),
@@ -102,6 +106,7 @@ export const makeMockEnvironment = (
 		readonly language: string;
 	}>,
 ): EnvironmentService => {
+
 	const mockInfo = {
 		platform: "web" as const,
 

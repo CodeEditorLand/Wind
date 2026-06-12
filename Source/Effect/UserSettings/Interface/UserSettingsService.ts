@@ -1,7 +1,7 @@
 /**
  * @module Effect/UserSettings/Interface/UserSettingsService
  * @description
- * Effect-typed service interface for the workbench's user-tier
+ * Service interface for the workbench's user-tier
  * configuration (settings.json + workspace + folder + override).
  * Wraps VS Code's `IConfigurationService` exposed on
  * `globalThis.__CEL_SERVICES__.Configuration` and consults the
@@ -13,10 +13,6 @@
  * because VS Code uses the same word for both.
  * @category Interface
  */
-
-import type { Effect, Stream } from "effect";
-
-import type { UserSettingsProblem } from "../Type/UserSettingsProblem.js";
 
 /**
  * Workbench-tier configuration target. Picks which layer of the
@@ -43,17 +39,13 @@ export interface UserSettingsService {
 	 * override bag wins (the native `InjectConfigurationOverlay`
 	 * shim short-circuits the read at that point).
 	 */
-	readonly Read: <T = unknown>(
-		section: string,
-	) => Effect.Effect<T, UserSettingsProblem>;
+	readonly Read: <T = unknown>(section: string) => T;
 
 	/**
 	 * Like `Read` but yields `undefined` for missing sections
-	 * instead of failing. Useful for optional settings.
+	 * instead of throwing. Useful for optional settings.
 	 */
-	readonly ReadOptional: <T = unknown>(
-		section: string,
-	) => Effect.Effect<T | undefined, UserSettingsProblem>;
+	readonly ReadOptional: <T = unknown>(section: string) => T | undefined;
 
 	/**
 	 * Write a setting at the given target layer. `Memory` writes
@@ -67,22 +59,19 @@ export interface UserSettingsService {
 		value: unknown,
 
 		target: UserSettingsTarget,
-	) => Effect.Effect<void, UserSettingsProblem>;
+	) => Promise<void>;
 
 	/**
 	 * Inspect whether a section has any non-default value.
 	 */
-	readonly HasUserValue: (
-		section: string,
-	) => Effect.Effect<boolean, UserSettingsProblem>;
+	readonly HasUserValue: (section: string) => boolean;
 
 	/**
-	 * Stream of configuration-change events. Each event lists the
-	 * sections whose value changed; subscribers can `Read` the new
+	 * Subscribe to configuration-change events. Each event lists the
+	 * sections whose value changed; subscribers can read the new
 	 * value with `Read(section)` after receiving an event.
 	 */
-	readonly Changes: Stream.Stream<
-		UserSettingsChangeEvent,
-		UserSettingsProblem
-	>;
+	readonly Changes: (callback: (event: UserSettingsChangeEvent) => void) => {
+		readonly dispose: () => void;
+	};
 }

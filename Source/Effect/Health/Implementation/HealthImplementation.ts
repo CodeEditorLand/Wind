@@ -7,11 +7,16 @@
 
 import { Effect, Layer, Schedule } from "effect";
 
-import { ConfigurationTag } from "../../Configuration.js";
+import { ConfigurationLive } from "../../Configuration.js";
+
 import { EnvironmentTag } from "../../Environment.js";
-import { MountainTag } from "../../Mountain.js";
+
+import { MountainLive } from "../../Mountain.js";
+
 import { TelemetryTag } from "../../Telemetry.js";
+
 import { HealthTag } from "../Tag/HealthTag.js";
+
 import type {
 	HealthService,
 	HealthStatus,
@@ -69,11 +74,11 @@ export const makeHealthChecker = (): HealthService => ({
 					);
 
 				case "mountain": {
-					const Mountain = yield* MountainTag;
-
 					const MountainTime = Date.now() - StartTime;
 
-					return yield* Mountain.version.pipe(
+					return yield* Effect.tryPromise(() =>
+						MountainLive.version(),
+					).pipe(
 						Effect.map(
 							(version) =>
 								({
@@ -110,11 +115,11 @@ export const makeHealthChecker = (): HealthService => ({
 					} satisfies ServiceHealth);
 
 				case "configuration": {
-					const Config = yield* ConfigurationTag;
-
 					const ConfigTime = Date.now() - StartTime;
 
-					return yield* Config.get.pipe(
+					return yield* Effect.try(() =>
+						ConfigurationLive.get(),
+					).pipe(
 						Effect.map(
 							() =>
 								({

@@ -1,11 +1,11 @@
-import { Effect, Stream } from "effect";
-
 import type {
 	WorkbenchThemeChangeEvent,
 	WorkbenchThemeDescriptor,
 	WorkbenchThemeService,
 } from "../Interface/WorkbenchThemeService.js";
-import type { WorkbenchThemeProblem } from "../Type/WorkbenchThemeProblem.js";
+
+import { WorkbenchThemeError } from "../Type/WorkbenchThemeProblem.js";
+
 import {
 	type UpstreamWorkbenchColorTheme,
 	type UpstreamWorkbenchTheme,
@@ -14,11 +14,12 @@ import {
 	WorkbenchThemeKindFromUpstream,
 } from "./WorkbenchThemeBridgeShape.js";
 
-const Unavailable: WorkbenchThemeProblem = {
-	_tag: "WorkbenchThemeBridgeUnavailable",
+const Unavailable = (): WorkbenchThemeError =>
+	new WorkbenchThemeError({
+		_tag: "WorkbenchThemeBridgeUnavailable",
 
-	reason: "globalThis.__CEL_SERVICES__.WorkbenchTheme is null - the workbench has not yet exposed its IWorkbenchThemeService handle.",
-};
+		reason: "globalThis.__CEL_SERVICES__.WorkbenchTheme is null - the workbench has not yet exposed its IWorkbenchThemeService handle.",
+	});
 
 const ToDescriptor = (
 	upstream: UpstreamWorkbenchTheme,
@@ -39,83 +40,70 @@ function makeWorkbenchThemeService(): WorkbenchThemeService {
 			?.Theme ??
 		null;
 
-	const Active = Effect.gen(function* () {
+	const Active = (): WorkbenchThemeDescriptor => {
 		const Bridge = getBridge();
 
-		if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
 		return ToDescriptor(Bridge.getColorTheme());
-	});
+	};
 
-	const List = Effect.gen(function* () {
+	const List = async (): Promise<readonly WorkbenchThemeDescriptor[]> => {
 		const Bridge = getBridge();
 
-		if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-		const Themes = yield* Effect.promise(() => Bridge.getColorThemes());
+		const Themes = await Bridge.getColorThemes();
 
 		return Themes.map(ToDescriptor);
-	});
+	};
 
-	const Apply = (
-		ThemeId: string,
-	): Effect.Effect<void, WorkbenchThemeProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
+	const Apply = async (ThemeId: string): Promise<void> => {
+		const Bridge = getBridge();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			yield* Effect.tryPromise({
-				try: () => Bridge.setColorTheme(ThemeId),
-				catch: (Cause) =>
-					({
-						_tag: "WorkbenchThemeApplyFailed",
-						error: ToError(Cause),
-					}) satisfies WorkbenchThemeProblem,
+		try {
+			await Bridge.setColorTheme(ThemeId);
+		} catch (Cause) {
+			throw new WorkbenchThemeError({
+				_tag: "WorkbenchThemeApplyFailed",
+				error: ToError(Cause),
 			});
-		});
+		}
+	};
 
-	const Token = (
-		Key: string,
-	): Effect.Effect<string | undefined, WorkbenchThemeProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
+	const Token = (Key: string): string | undefined => {
+		const Bridge = getBridge();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			const Theme = Bridge.getColorTheme();
+		const Theme = Bridge.getColorTheme();
 
-			const Color = Theme.getColor?.(Key);
+		const Color = Theme.getColor?.(Key);
 
-			return Color ? Color.toString() : undefined;
-		});
+		return Color ? Color.toString() : undefined;
+	};
 
 	let LastApplied: WorkbenchThemeDescriptor | undefined;
 
-	const Changes = Stream.async<
-		WorkbenchThemeChangeEvent,
-		WorkbenchThemeProblem
-	>((Emit) => {
+	const Changes = (
+		Callback: (event: WorkbenchThemeChangeEvent) => void,
+	): { readonly dispose: () => void } => {
 		const Bridge = getBridge();
 
-		if (!Bridge) {
-			Emit.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			return Effect.void;
-		}
-
-		const Subscription = Bridge.onDidColorThemeChange(
+		return Bridge.onDidColorThemeChange(
 			(Next: UpstreamWorkbenchColorTheme) => {
 				const Current = ToDescriptor(Next);
 
-				Emit.single({ previous: LastApplied, current: Current });
+				Callback({ previous: LastApplied, current: Current });
 
 				LastApplied = Current;
 			},
 		);
-
-		return Effect.sync(() => Subscription.dispose());
-	});
+	};
 
 	const Service: WorkbenchThemeService = {
 		Active,

@@ -7,6 +7,7 @@ import type { TextFileProblem } from "../Type/TextFileProblem.js";
  * Microsoft VSCode Reference: ITextFileService from vs/workbench/services/textfile/common/textfiles.ts
  */
 export interface TextFileService {
+
 	readonly Read: (uri: string) => Effect.Effect<string, TextFileProblem>;
 
 	readonly Write: (

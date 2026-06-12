@@ -4,6 +4,7 @@ import type { ThemesService } from "../Interface/ThemesService.js";
 
 export class ThemesServiceTag extends Context.Tag("Application/ThemesService")<
 	ThemesServiceTag,
+
 	ThemesService
 >() {}
 

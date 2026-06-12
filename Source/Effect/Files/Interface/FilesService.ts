@@ -7,6 +7,7 @@ import type { FilesProblem } from "../Type/FilesProblem.js";
  * Microsoft VSCode Reference: IFileService from vs/platform/files/common/files.ts
  */
 export interface FilesService {
+
 	readonly ReadFile: (uri: string) => Effect.Effect<Uint8Array, FilesProblem>;
 
 	readonly WriteFile: (
@@ -23,6 +24,7 @@ export interface FilesService {
 
 			readonly mtime: number;
 		},
+
 		FilesProblem
 	>;
 

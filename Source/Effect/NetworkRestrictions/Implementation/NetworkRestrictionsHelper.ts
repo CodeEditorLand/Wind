@@ -15,6 +15,7 @@ import {
 	TelemetryEndpoint,
 	UpdateEndpoint,
 } from "../Constant/NetworkRestrictionsConstant.js";
+
 import type { NetworkRestrictionConfig } from "../Type/NetworkRestrictionConfig.js";
 
 // ============================================================================
@@ -32,6 +33,7 @@ export const IsInternalURL = (
 
 	Url: string,
 ): boolean => {
+
 	try {
 		const UrlObj = new URL(Url);
 
@@ -71,6 +73,7 @@ export const IsBlockedURL = (
 
 	Url: string,
 ): boolean => {
+
 	// Check telemetry endpoints
 	if (Config.blockTelemetry) {
 		for (const Pattern of TelemetryEndpoint) {
@@ -137,6 +140,7 @@ export const IsAllowedURL = (
 
 	Url: string,
 ): boolean => {
+
 	if (Config.allowedDomains.length === 0) {
 		return false;
 	}
@@ -156,6 +160,7 @@ export const IsAllowedURL = (
  * @returns true if the IPC channel is allowed
  */
 export const IsIPCAllowed = (Channel: string): boolean => {
+
 	// Must start with vscode:
 	if (!Channel.startsWith("vscode:")) {
 		return false;
@@ -179,6 +184,7 @@ export const IsIPCAllowed = (Channel: string): boolean => {
 };
 
 const helpers = {
+
 	IsInternalURL,
 
 	IsBlockedURL,

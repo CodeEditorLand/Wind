@@ -15,17 +15,23 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+
 import { TauriIPCLive } from "../IPC/index.js";
+
 import type { TerminalService } from "./Interface/TerminalService.js";
+
 import { TerminalServiceTag } from "./Tag/TerminalServiceTag.js";
+
 import type { TerminalProblem } from "./Type/TerminalProblem.js";
 
 const MakeTerminalProblem = (error: unknown): TerminalProblem =>
 	error instanceof Error
 		? { _tag: "TerminalOperationFailed", error }
+
 		: { _tag: "TerminalOperationFailed", error: new Error(String(error)) };
 
 function makeLiveTerminalService(): TerminalService {
+
 	const IPCService = TauriIPCLive;
 
 	const Service: TerminalService = {

@@ -12,6 +12,7 @@
 // ============================================================================
 
 export class ActivityBarItemNotFoundError extends Error {
+
 	readonly _tag = "ActivityBarItemNotFoundError";
 
 	constructor(itemId: string) {

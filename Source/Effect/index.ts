@@ -27,12 +27,14 @@ export type { SandboxService } from "./Sandbox/index.js";
 
 // Configuration
 export {
-	Configuration,
 	ConfigurationLive,
 	ConfigurationWithSyncLive,
 } from "./Configuration.js";
 
-export type { ConfigurationService } from "./Configuration.js";
+export type {
+	Configuration,
+	ConfigurationService,
+} from "./Configuration.js";
 
 // Telemetry (Logging, Spans, Metrics)
 export {
@@ -46,9 +48,10 @@ export {
 export type { TelemetryService } from "./Telemetry/index.js";
 
 // Mountain (Backend connection & RPC)
-export { Mountain, MountainLive, MountainMockLive } from "./Mountain/index.js";
+export { MountainLive, MountainMockLive } from "./Mountain/index.js";
 
 export type {
+	Mountain,
 	MountainService,
 	MountainConnectionState,
 	SyncResource,

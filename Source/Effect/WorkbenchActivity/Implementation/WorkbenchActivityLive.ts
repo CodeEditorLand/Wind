@@ -1,21 +1,22 @@
-import { Effect } from "effect";
-
 import type {
 	WorkbenchActivityBadge,
 	WorkbenchActivityService,
 } from "../Interface/WorkbenchActivityService.js";
-import type { WorkbenchActivityProblem } from "../Type/WorkbenchActivityProblem.js";
+
+import { WorkbenchActivityError } from "../Type/WorkbenchActivityProblem.js";
+
 import type {
 	UpstreamWorkbenchBadge,
 	WorkbenchActivityBridgeShape,
 	WorkbenchActivityGlobals,
 } from "./WorkbenchActivityBridgeShape.js";
 
-const Unavailable: WorkbenchActivityProblem = {
-	_tag: "WorkbenchActivityBridgeUnavailable",
+const Unavailable = (): WorkbenchActivityError =>
+	new WorkbenchActivityError({
+		_tag: "WorkbenchActivityBridgeUnavailable",
 
-	reason: "globalThis.__CEL_SERVICES__.Activity is null.",
-};
+		reason: "globalThis.__CEL_SERVICES__.Activity is null.",
+	});
 
 const Disposables = new Map<string, { readonly dispose: () => void }>();
 
@@ -42,41 +43,36 @@ function makeWorkbenchActivityService(): WorkbenchActivityService {
 
 	const ShowBadge = (
 		Badge: WorkbenchActivityBadge,
-	): Effect.Effect<
-		{ readonly dispose: () => void },
-		WorkbenchActivityProblem
-	> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
+	): { readonly dispose: () => void } => {
+		const Bridge = getBridge();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			const Disposable = Bridge.showViewContainerActivity(
-				Badge.viewContainerId,
+		const Disposable = Bridge.showViewContainerActivity(
+			Badge.viewContainerId,
 
-				{
-					badge: ToBadge(Badge),
-					priority: Badge.priority,
-				},
-			);
+			{
+				badge: ToBadge(Badge),
+				...(Badge.priority !== undefined
+					? { priority: Badge.priority }
+					: {}),
+			},
+		);
 
-			Disposables.set(Badge.viewContainerId, Disposable);
+		Disposables.set(Badge.viewContainerId, Disposable);
 
-			return Disposable;
-		});
+		return Disposable;
+	};
 
-	const Clear = (
-		ViewContainerId: string,
-	): Effect.Effect<void, WorkbenchActivityProblem> =>
-		Effect.sync(() => {
-			const Disposable = Disposables.get(ViewContainerId);
+	const Clear = (ViewContainerId: string): void => {
+		const Disposable = Disposables.get(ViewContainerId);
 
-			if (Disposable) {
-				Disposable.dispose();
+		if (Disposable) {
+			Disposable.dispose();
 
-				Disposables.delete(ViewContainerId);
-			}
-		});
+			Disposables.delete(ViewContainerId);
+		}
+	};
 
 	const Service: WorkbenchActivityService = { ShowBadge, Clear };
 

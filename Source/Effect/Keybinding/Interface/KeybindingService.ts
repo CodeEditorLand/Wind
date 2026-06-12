@@ -12,6 +12,7 @@ import type { KeybindingProblem } from "../Type/KeybindingProblem.js";
  * vs/platform/keybinding/common/keybinding.ts
  */
 export interface KeybindingService {
+
 	/**
 	 * Register a dynamic keybinding.
 	 * @param commandId  Command to invoke (e.g. "workbench.action.files.save")
@@ -42,6 +43,7 @@ export interface KeybindingService {
 	/** Return all currently registered dynamic keybinding entries. */
 	readonly GetKeybindings: () => Effect.Effect<
 		ReadonlyArray<{ commandId: string; keybinding: string; when?: string }>,
+
 		KeybindingProblem
 	>;
 }

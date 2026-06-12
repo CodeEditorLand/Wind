@@ -1,5 +1,6 @@
 // Layers - import and re-export both layers
 import { LiveClipboardServiceLayer as LiveLayer } from "./Clipboard/Live.js";
+
 import { MockClipboardServiceLayer as MockLayer } from "./Clipboard/Mock.js";
 
 /**

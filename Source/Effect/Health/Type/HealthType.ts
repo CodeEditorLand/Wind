@@ -13,6 +13,7 @@
 export type HealthStatus = "healthy" | "degraded" | "unhealthy" | "unknown";
 
 export interface ServiceHealth {
+
 	readonly serviceName: string;
 
 	readonly status: HealthStatus;
@@ -27,6 +28,7 @@ export interface ServiceHealth {
 }
 
 export interface SystemHealth {
+
 	readonly overallStatus: HealthStatus;
 
 	readonly services: ReadonlyArray<ServiceHealth>;

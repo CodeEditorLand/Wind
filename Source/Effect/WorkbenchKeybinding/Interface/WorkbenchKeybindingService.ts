@@ -1,7 +1,3 @@
-import type { Effect, Stream } from "effect";
-
-import type { WorkbenchKeybindingProblem } from "../Type/WorkbenchKeybindingProblem.js";
-
 export interface WorkbenchKeybindingResolution {
 	readonly commandId: string | null;
 
@@ -21,20 +17,13 @@ export interface WorkbenchKeybindingDispatch {
 export interface WorkbenchKeybindingService {
 	readonly Lookup: (
 		commandId: string,
-	) => Effect.Effect<
-		ReadonlyArray<WorkbenchKeybindingResolution>,
-		WorkbenchKeybindingProblem
-	>;
+	) => ReadonlyArray<WorkbenchKeybindingResolution>;
 
 	readonly Resolve: (
 		event: KeyboardEvent,
-	) => Effect.Effect<
-		WorkbenchKeybindingResolution | null,
-		WorkbenchKeybindingProblem
-	>;
+	) => WorkbenchKeybindingResolution | null;
 
-	readonly Chords: Stream.Stream<
-		WorkbenchKeybindingDispatch,
-		WorkbenchKeybindingProblem
-	>;
+	readonly Chords: (
+		callback: (dispatch: WorkbenchKeybindingDispatch) => void,
+	) => { readonly dispose: () => void };
 }

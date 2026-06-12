@@ -16,17 +16,23 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+
 import { TauriIPCLive } from "../IPC/index.js";
+
 import type { OutputService } from "./Interface/OutputService.js";
+
 import { OutputServiceTag } from "./Tag/OutputServiceTag.js";
+
 import type { OutputProblem } from "./Type/OutputProblem.js";
 
 const MakeOutputProblem = (error: unknown): OutputProblem =>
 	error instanceof Error
 		? { _tag: "OutputOperationFailed", error }
+
 		: { _tag: "OutputOperationFailed", error: new Error(String(error)) };
 
 function makeOutputService(): OutputService {
+
 	const IPCService = TauriIPCLive;
 
 	// Local set of active channel names for Dispose tracking

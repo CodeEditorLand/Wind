@@ -1,19 +1,15 @@
-import type { Effect, Stream } from "effect";
-
-import type { WorkbenchHostProblem } from "../Type/WorkbenchHostProblem.js";
-
 export interface WorkbenchHostService {
-	readonly Reload: Effect.Effect<void, WorkbenchHostProblem>;
+	readonly Reload: () => Promise<void>;
 
-	readonly Restart: Effect.Effect<void, WorkbenchHostProblem>;
+	readonly Restart: () => Promise<void>;
 
-	readonly Close: Effect.Effect<void, WorkbenchHostProblem>;
+	readonly Close: () => Promise<void>;
 
-	readonly Focus: Effect.Effect<void, WorkbenchHostProblem>;
+	readonly Focus: () => Promise<void>;
 
-	readonly OpenWindow: (
-		uris: ReadonlyArray<string>,
-	) => Effect.Effect<void, WorkbenchHostProblem>;
+	readonly OpenWindow: (uris: ReadonlyArray<string>) => Promise<void>;
 
-	readonly OnDidChangeFocus: Stream.Stream<boolean, WorkbenchHostProblem>;
+	readonly OnDidChangeFocus: (callback: (focused: boolean) => void) => {
+		readonly dispose: () => void;
+	};
 }

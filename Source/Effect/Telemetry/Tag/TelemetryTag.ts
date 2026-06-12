@@ -29,6 +29,7 @@ import type { TelemetryService } from "../Interface/TelemetryService.js";
  */
 export default class TelemetryTag extends Context.Tag("Telemetry")<
 	TelemetryTag,
+
 	TelemetryService
 >() {}
 

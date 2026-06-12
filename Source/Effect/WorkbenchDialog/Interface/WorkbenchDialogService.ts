@@ -1,7 +1,3 @@
-import type { Effect } from "effect";
-
-import type { WorkbenchDialogProblem } from "../Type/WorkbenchDialogProblem.js";
-
 export interface WorkbenchDialogConfirmOptions {
 	readonly message: string;
 
@@ -33,21 +29,11 @@ export interface WorkbenchDialogPickOptions {
 export interface WorkbenchDialogService {
 	readonly Confirm: (
 		options: WorkbenchDialogConfirmOptions,
-	) => Effect.Effect<WorkbenchDialogConfirmResult, WorkbenchDialogProblem>;
+	) => Promise<WorkbenchDialogConfirmResult>;
 
-	readonly Pick: (
-		options: WorkbenchDialogPickOptions,
-	) => Effect.Effect<number, WorkbenchDialogProblem>;
+	readonly Pick: (options: WorkbenchDialogPickOptions) => Promise<number>;
 
-	readonly Info: (
-		message: string,
+	readonly Info: (message: string, detail?: string) => Promise<void>;
 
-		detail?: string,
-	) => Effect.Effect<void, WorkbenchDialogProblem>;
-
-	readonly Error: (
-		message: string,
-
-		detail?: string,
-	) => Effect.Effect<void, WorkbenchDialogProblem>;
+	readonly Error: (message: string, detail?: string) => Promise<void>;
 }

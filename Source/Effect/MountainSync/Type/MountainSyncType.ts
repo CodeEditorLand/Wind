@@ -26,6 +26,7 @@ export type SyncStatus = "idle" | "syncing" | "paused" | "error";
  * Controls sync behavior including intervals, retry policies, and batch sizes.
  */
 export interface SyncConfig {
+
 	/** Whether synchronization is enabled */
 	readonly enabled: boolean;
 
@@ -47,6 +48,7 @@ export interface SyncConfig {
  * Provides metrics on sync performance and history.
  */
 export interface SyncStats {
+
 	/** Timestamp of the last successful sync operation */
 	readonly lastSyncTime: number;
 
@@ -68,6 +70,7 @@ export interface SyncStats {
  * Contains outcome details and any error information.
  */
 export interface MountainSyncResult {
+
 	/** Whether the sync operation completed successfully */
 	readonly success: boolean;
 

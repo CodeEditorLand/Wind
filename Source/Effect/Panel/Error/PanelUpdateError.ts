@@ -12,6 +12,7 @@
  * Includes the view ID and the underlying cause of the failure.
  */
 export default class PanelUpdateError extends Error {
+
 	readonly _tag = "PanelUpdateError";
 
 	override readonly cause: unknown;

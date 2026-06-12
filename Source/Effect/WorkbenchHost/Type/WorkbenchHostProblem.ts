@@ -11,3 +11,13 @@ export type WorkbenchHostProblem =
 
 			readonly error: Error;
 	  };
+
+export class WorkbenchHostError extends Error {
+	readonly _tag = "WorkbenchHostError" as const;
+
+	constructor(readonly Problem: WorkbenchHostProblem) {
+		super("reason" in Problem ? Problem.reason : Problem._tag);
+
+		this.name = "WorkbenchHostError";
+	}
+}

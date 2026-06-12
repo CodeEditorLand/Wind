@@ -13,14 +13,19 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+
 import { TauriIPCLive } from "../IPC/index.js";
+
 import type { SearchService } from "./Interface/SearchService.js";
+
 import { SearchServiceTag } from "./Tag/SearchServiceTag.js";
+
 import type { SearchProblem } from "./Type/SearchProblem.js";
 
 const MakeSearchProblem = (error: unknown): SearchProblem =>
 	error instanceof Error
 		? { _tag: "SearchOperationFailed", error }
+
 		: { _tag: "SearchOperationFailed", error: new Error(String(error)) };
 
 /**
@@ -32,14 +37,17 @@ const ToGlobArray = (
 	Value: string | readonly string[] | undefined,
 ): readonly string[] =>
 	Array.isArray(Value)
+
 		? (Value as readonly string[]).filter(
 				(Pattern) => typeof Pattern === "string" && Pattern !== "",
 			)
+
 		: typeof Value === "string" && Value !== ""
 			? [Value]
 			: [];
 
 function makeSearchService(): SearchService {
+
 	const IPCService = TauriIPCLive;
 
 	const Service: SearchService = {

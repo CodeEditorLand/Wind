@@ -1,115 +1,98 @@
-import { Effect, Stream } from "effect";
-
 import type { WorkbenchHostService } from "../Interface/WorkbenchHostService.js";
-import type { WorkbenchHostProblem } from "../Type/WorkbenchHostProblem.js";
+
+import { WorkbenchHostError } from "../Type/WorkbenchHostProblem.js";
+
 import type {
 	WorkbenchHostBridgeShape,
 	WorkbenchHostGlobals,
 } from "./WorkbenchHostBridgeShape.js";
 
-const Unavailable: WorkbenchHostProblem = {
-	_tag: "WorkbenchHostBridgeUnavailable",
+const Unavailable = (): WorkbenchHostError =>
+	new WorkbenchHostError({
+		_tag: "WorkbenchHostBridgeUnavailable",
 
-	reason: "globalThis.__CEL_SERVICES__.Host is null.",
-};
+		reason: "globalThis.__CEL_SERVICES__.Host is null.",
+	});
 
 const ToError = (cause: unknown): Error =>
 	cause instanceof Error ? cause : new Error(String(cause));
 
-const Wrap = <A>(
+const Wrap = async <A>(
 	Operation: string,
 
 	Run: () => Promise<A>,
-): Effect.Effect<A, WorkbenchHostProblem> =>
-	Effect.tryPromise({
-		try: Run,
-		catch: (Cause) =>
-			({
-				_tag: "WorkbenchHostOperationFailed",
-				operation: Operation,
-				error: ToError(Cause),
-			}) satisfies WorkbenchHostProblem,
-	});
+): Promise<A> => {
+	try {
+		return await Run();
+	} catch (Cause) {
+		throw new WorkbenchHostError({
+			_tag: "WorkbenchHostOperationFailed",
+			operation: Operation,
+			error: ToError(Cause),
+		});
+	}
+};
 
 function makeWorkbenchHostService(): WorkbenchHostService {
 	const getBridge = (): WorkbenchHostBridgeShape | null =>
 		(globalThis as unknown as WorkbenchHostGlobals).__CEL_SERVICES__
 			?.Host ?? null;
 
-	const Reload: Effect.Effect<void, WorkbenchHostProblem> = Effect.gen(
-		function* () {
-			const Bridge = getBridge();
+	const Reload = async (): Promise<void> => {
+		const Bridge = getBridge();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			yield* Wrap("reload", () => Bridge.reload());
-		},
-	);
+		await Wrap("reload", () => Bridge.reload());
+	};
 
-	const Restart: Effect.Effect<void, WorkbenchHostProblem> = Effect.gen(
-		function* () {
-			const Bridge = getBridge();
+	const Restart = async (): Promise<void> => {
+		const Bridge = getBridge();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			yield* Wrap("restart", () => Bridge.restart());
-		},
-	);
+		await Wrap("restart", () => Bridge.restart());
+	};
 
-	const Close: Effect.Effect<void, WorkbenchHostProblem> = Effect.gen(
-		function* () {
-			const Bridge = getBridge();
+	const Close = async (): Promise<void> => {
+		const Bridge = getBridge();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			yield* Wrap("close", () => Bridge.close());
-		},
-	);
+		await Wrap("close", () => Bridge.close());
+	};
 
-	const Focus: Effect.Effect<void, WorkbenchHostProblem> = Effect.gen(
-		function* () {
-			const Bridge = getBridge();
+	const Focus = async (): Promise<void> => {
+		const Bridge = getBridge();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			yield* Wrap("focus", () => Bridge.focus());
-		},
-	);
+		await Wrap("focus", () => Bridge.focus());
+	};
 
-	const OpenWindow = (
-		Uris: ReadonlyArray<string>,
-	): Effect.Effect<void, WorkbenchHostProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
+	const OpenWindow = async (Uris: ReadonlyArray<string>): Promise<void> => {
+		const Bridge = getBridge();
 
-			if (!Bridge) return yield* Effect.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			yield* Wrap("openWindow", () =>
-				Bridge.openWindow(
-					Uris.map((Value) => ({
-						uri: { toString: () => Value },
-					})),
-				),
-			);
-		});
+		await Wrap("openWindow", () =>
+			Bridge.openWindow(
+				Uris.map((Value) => ({
+					uri: { toString: () => Value },
+				})),
+			),
+		);
+	};
 
-	const OnDidChangeFocus = Stream.async<boolean, WorkbenchHostProblem>(
-		(Emit) => {
-			const Bridge = getBridge();
+	const OnDidChangeFocus = (
+		Callback: (focused: boolean) => void,
+	): { readonly dispose: () => void } => {
+		const Bridge = getBridge();
 
-			if (!Bridge?.onDidChangeFocus) {
-				Emit.fail(Unavailable);
+		if (!Bridge?.onDidChangeFocus) throw Unavailable();
 
-				return Effect.void;
-			}
-
-			const Subscription = Bridge.onDidChangeFocus((Focused) =>
-				Emit.single(Focused),
-			);
-
-			return Effect.sync(() => Subscription.dispose());
-		},
-	);
+		return Bridge.onDidChangeFocus((Focused) => Callback(Focused));
+	};
 
 	const Service: WorkbenchHostService = {
 		Reload,

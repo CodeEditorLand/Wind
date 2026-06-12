@@ -15,15 +15,20 @@
  */
 export type MountainConnectionState =
 	| { readonly _tag: "Idle" }
+
 	| { readonly _tag: "Connecting"; readonly attempt: number }
+
 	| { readonly _tag: "Connected"; readonly version: string }
+
 	| { readonly _tag: "Disconnected"; readonly reason: string }
+
 	| { readonly _tag: "Error"; readonly error: Error };
 
 /**
  * Represents a synced resource from Mountain.
  */
 export interface SyncResource {
+
 	/** Type of the resource being synced */
 	readonly type: "configuration" | "services" | "state" | "files";
 
@@ -44,6 +49,7 @@ export interface SyncResource {
  * Result of a sync operation.
  */
 export interface SyncResult {
+
 	/** Whether the sync was successful */
 	readonly success: boolean;
 

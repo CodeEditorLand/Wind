@@ -14,12 +14,16 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
+
 import { TauriIPCLive } from "../IPC/index.js";
+
 import type {
 	LifecyclePhaseValue,
 	LifecycleService,
 } from "./Interface/LifecycleService.js";
+
 import { LifecycleServiceTag } from "./Tag/LifecycleServiceTag.js";
+
 import type { LifecycleProblem } from "./Type/LifecycleProblem.js";
 
 const MakeLifecycleProblem = (error: unknown): LifecycleProblem => ({
@@ -28,6 +32,7 @@ const MakeLifecycleProblem = (error: unknown): LifecycleProblem => ({
 });
 
 function makeLifecycleService(): LifecycleService {
+
 	const IPCService = TauriIPCLive;
 
 	const Service: LifecycleService = {

@@ -12,10 +12,15 @@
 import { Effect, Fiber } from "effect";
 
 import type { IPCService } from "../../IPC.js";
+
 import type { MountainService } from "../../Mountain.js";
+
 import type { TelemetryService } from "../../Telemetry.js";
+
 import type { MountainSyncService } from "../Interface/MountainSyncService.js";
+
 import type { SyncConfig, SyncStatus } from "../Type/MountainSyncType.js";
+
 import SyncNowEffect from "./MountainSyncHelper.js";
 
 /**
@@ -23,6 +28,7 @@ import SyncNowEffect from "./MountainSyncHelper.js";
  * Provides reasonable defaults for sync behavior.
  */
 const defaultSyncConfig: SyncConfig = {
+
 	enabled: true,
 
 	syncIntervalMs: 5000,
@@ -50,6 +56,7 @@ const makeMountainSync = (
 
 	TelemetryService: TelemetryService,
 ): MountainSyncService => {
+
 	// Internal state management
 	let SyncFiber: Fiber.Fiber<void, never> | null = null;
 

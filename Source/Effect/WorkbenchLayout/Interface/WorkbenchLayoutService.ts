@@ -1,7 +1,3 @@
-import type { Effect, Stream } from "effect";
-
-import type { WorkbenchLayoutProblem } from "../Type/WorkbenchLayoutProblem.js";
-
 export type WorkbenchLayoutPart =
 	| "ActivityBar"
 	| "Sidebar"
@@ -24,23 +20,13 @@ export interface WorkbenchLayoutChange {
 }
 
 export interface WorkbenchLayoutService {
-	readonly Snapshot: Effect.Effect<
-		WorkbenchLayoutSnapshot,
-		WorkbenchLayoutProblem
-	>;
+	readonly Snapshot: () => WorkbenchLayoutSnapshot;
 
-	readonly SetVisible: (
-		part: WorkbenchLayoutPart,
+	readonly SetVisible: (part: WorkbenchLayoutPart, visible: boolean) => void;
 
-		visible: boolean,
-	) => Effect.Effect<void, WorkbenchLayoutProblem>;
+	readonly Toggle: (part: WorkbenchLayoutPart) => void;
 
-	readonly Toggle: (
-		part: WorkbenchLayoutPart,
-	) => Effect.Effect<void, WorkbenchLayoutProblem>;
-
-	readonly Changes: Stream.Stream<
-		WorkbenchLayoutChange,
-		WorkbenchLayoutProblem
-	>;
+	readonly Changes: (callback: (change: WorkbenchLayoutChange) => void) => {
+		readonly dispose: () => void;
+	};
 }

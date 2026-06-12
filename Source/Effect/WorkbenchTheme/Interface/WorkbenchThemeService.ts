@@ -1,7 +1,3 @@
-import type { Effect, Stream } from "effect";
-
-import type { WorkbenchThemeProblem } from "../Type/WorkbenchThemeProblem.js";
-
 export type WorkbenchThemeKind = "vs" | "vs-dark" | "hc-black" | "hc-light";
 
 export interface WorkbenchThemeDescriptor {
@@ -19,26 +15,15 @@ export interface WorkbenchThemeChangeEvent {
 }
 
 export interface WorkbenchThemeService {
-	readonly Active: Effect.Effect<
-		WorkbenchThemeDescriptor,
-		WorkbenchThemeProblem
-	>;
+	readonly Active: () => WorkbenchThemeDescriptor;
 
-	readonly List: Effect.Effect<
-		readonly WorkbenchThemeDescriptor[],
-		WorkbenchThemeProblem
-	>;
+	readonly List: () => Promise<readonly WorkbenchThemeDescriptor[]>;
 
-	readonly Apply: (
-		themeId: string,
-	) => Effect.Effect<void, WorkbenchThemeProblem>;
+	readonly Apply: (themeId: string) => Promise<void>;
 
-	readonly Token: (
-		key: string,
-	) => Effect.Effect<string | undefined, WorkbenchThemeProblem>;
+	readonly Token: (key: string) => string | undefined;
 
-	readonly Changes: Stream.Stream<
-		WorkbenchThemeChangeEvent,
-		WorkbenchThemeProblem
-	>;
+	readonly Changes: (
+		callback: (event: WorkbenchThemeChangeEvent) => void,
+	) => { readonly dispose: () => void };
 }

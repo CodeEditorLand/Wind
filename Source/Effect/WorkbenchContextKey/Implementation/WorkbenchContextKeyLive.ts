@@ -1,20 +1,21 @@
-import { Effect, Stream } from "effect";
-
 import type {
 	WorkbenchContextKeyChangeEvent,
 	WorkbenchContextKeyService,
 } from "../Interface/WorkbenchContextKeyService.js";
-import type { WorkbenchContextKeyProblem } from "../Type/WorkbenchContextKeyProblem.js";
+
+import { WorkbenchContextKeyError } from "../Type/WorkbenchContextKeyProblem.js";
+
 import type {
 	WorkbenchContextKeyBridgeShape,
 	WorkbenchContextKeyGlobals,
 } from "./WorkbenchContextKeyBridgeShape.js";
 
-const Unavailable: WorkbenchContextKeyProblem = {
-	_tag: "WorkbenchContextKeyBridgeUnavailable",
+const Unavailable = (): WorkbenchContextKeyError =>
+	new WorkbenchContextKeyError({
+		_tag: "WorkbenchContextKeyBridgeUnavailable",
 
-	reason: "globalThis.__CEL_SERVICES__.ContextKey is null.",
-};
+		reason: "globalThis.__CEL_SERVICES__.ContextKey is null.",
+	});
 
 const ToError = (cause: unknown): Error =>
 	cause instanceof Error ? cause : new Error(String(cause));
@@ -24,83 +25,62 @@ function makeWorkbenchContextKeyService(): WorkbenchContextKeyService {
 		(globalThis as unknown as WorkbenchContextKeyGlobals).__CEL_SERVICES__
 			?.ContextKey ?? null;
 
-	const Get = <T = unknown>(
-		Key: string,
-	): Effect.Effect<T | undefined, WorkbenchContextKeyProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
-
-			if (!Bridge) return yield* Effect.fail(Unavailable);
-
-			return Bridge.getContextKeyValue<T>(Key);
-		});
-
-	const Set = <T>(
-		Key: string,
-
-		Value: T,
-	): Effect.Effect<void, WorkbenchContextKeyProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
-
-			if (!Bridge) return yield* Effect.fail(Unavailable);
-
-			Bridge.createKey<T>(Key, undefined).set(Value);
-		});
-
-	const Reset = (
-		Key: string,
-	): Effect.Effect<void, WorkbenchContextKeyProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
-
-			if (!Bridge) return yield* Effect.fail(Unavailable);
-
-			Bridge.createKey(Key, undefined).reset();
-		});
-
-	const Match = (
-		Expression: string,
-	): Effect.Effect<boolean, WorkbenchContextKeyProblem> =>
-		Effect.gen(function* () {
-			const Bridge = getBridge();
-
-			if (!Bridge) return yield* Effect.fail(Unavailable);
-
-			return yield* Effect.try({
-				try: () => Bridge.contextMatchesRules(Expression),
-				catch: (Cause) =>
-					({
-						_tag: "WorkbenchContextKeyEvalFailed",
-						expression: Expression,
-						error: ToError(Cause),
-					}) satisfies WorkbenchContextKeyProblem,
-			});
-		});
-
-	const Changes = Stream.async<
-		WorkbenchContextKeyChangeEvent,
-		WorkbenchContextKeyProblem
-	>((Emit) => {
+	const Get = <T = unknown>(Key: string): T | undefined => {
 		const Bridge = getBridge();
 
-		if (!Bridge) {
-			Emit.fail(Unavailable);
+		if (!Bridge) throw Unavailable();
 
-			return Effect.void;
+		return Bridge.getContextKeyValue<T>(Key);
+	};
+
+	const SetKey = <T>(Key: string, Value: T): void => {
+		const Bridge = getBridge();
+
+		if (!Bridge) throw Unavailable();
+
+		Bridge.createKey<T>(Key, undefined).set(Value);
+	};
+
+	const Reset = (Key: string): void => {
+		const Bridge = getBridge();
+
+		if (!Bridge) throw Unavailable();
+
+		Bridge.createKey(Key, undefined).reset();
+	};
+
+	const Match = (Expression: string): boolean => {
+		const Bridge = getBridge();
+
+		if (!Bridge) throw Unavailable();
+
+		try {
+			return Bridge.contextMatchesRules(Expression);
+		} catch (Cause) {
+			throw new WorkbenchContextKeyError({
+				_tag: "WorkbenchContextKeyEvalFailed",
+				expression: Expression,
+				error: ToError(Cause),
+			});
 		}
+	};
 
-		const Subscription = Bridge.onDidChangeContext((Event) => {
-			Emit.single({ affectedKeys: Event.keys ?? new Set() });
+	const Changes = (
+		Callback: (event: WorkbenchContextKeyChangeEvent) => void,
+	): { readonly dispose: () => void } => {
+		const Bridge = getBridge();
+
+		if (!Bridge) throw Unavailable();
+
+		return Bridge.onDidChangeContext((Event) => {
+			Callback({ affectedKeys: Event.keys ?? new Set() });
 		});
-
-		return Effect.sync(() => Subscription.dispose());
-	});
+	};
 
 	const Service: WorkbenchContextKeyService = {
 		Get,
 
-		Set,
+		Set: SetKey,
 
 		Reset,
 

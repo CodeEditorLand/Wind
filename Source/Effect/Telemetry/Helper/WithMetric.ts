@@ -39,6 +39,7 @@ export default function withMetric<A, E, R>(
 
 	labels?: Record<string, string>,
 ) {
+
 	return Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
 

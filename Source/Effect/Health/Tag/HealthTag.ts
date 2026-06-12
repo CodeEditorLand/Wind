@@ -11,6 +11,7 @@ import type { HealthService } from "../Interface/HealthService.js";
 
 export class HealthTag extends Context.Tag("Effect/HealthService")<
 	HealthTag,
+
 	HealthService
 >() {}
 

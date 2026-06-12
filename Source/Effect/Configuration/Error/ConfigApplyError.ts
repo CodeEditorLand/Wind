@@ -12,6 +12,7 @@
 // ============================================================================
 
 export class ConfigApplyError extends Error {
+
 	readonly _tag = "ConfigApplyError";
 
 	constructor(
