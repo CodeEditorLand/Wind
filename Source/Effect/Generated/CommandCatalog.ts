@@ -23,7 +23,7 @@ export interface CommandCatalogEntry {
 	readonly HasKeybinding: boolean;
 }
 
-export const CommandCatalogVersion = "2026-06-11" as const;
+export const CommandCatalogVersion = "2026-06-12" as const;
 
 export const CommandCatalogTotal = 554 as const;
 
@@ -2510,7 +2510,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "phone",
 		Kind: "CommandsRegistry",
 		SourcePath: "vs/sessions/browser/workbench.ts",
-		SourceLine: 537,
+		SourceLine: 549,
 		HasKeybinding: false,
 	},
 	{
@@ -2790,7 +2790,7 @@ export const CommandCatalog: ReadonlyArray<CommandCatalogEntry> = [
 		CommandIdentifier: "sessions.chatCompositeBar.togglePin",
 		Kind: "MenuRegistry",
 		SourcePath: "vs/sessions/contrib/sessions/browser/sessionsActions.ts",
-		SourceLine: 412,
+		SourceLine: 413,
 		HasKeybinding: false,
 	},
 	{

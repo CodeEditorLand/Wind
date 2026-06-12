@@ -53,6 +53,10 @@ export interface ITerminalSandboxServiceUpstream {
 	 * Whether the current caller is using the default approval permission flow.
 	 */
 	installMissingSandboxDependencies(missingDependencies: string[], sessionResource: URI | undefined, token: CancellationToken, options: ISandboxDependencyInstallOptions): Promise<ISandboxDependencyInstallResult>;
+	/**
+	 * Whether the current caller is using the default approval permission flow.
+	 */
+	runSandboxRemediation(remediation: TerminalSandboxPreCheckRemediation, sessionResource: URI | undefined, token: CancellationToken, options: ISandboxDependencyInstallOptions): Promise<ISandboxDependencyInstallResult>;
 }
 export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord> = [
 	{
@@ -63,7 +67,7 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "undefined",
 		Parameters: [],
 		DocComment: "Whether the current caller is using the default approval permission flow.",
-		SourceLine: 101,
+		SourceLine: 108,
 	},
 	{
 		Kind: "Method",
@@ -73,7 +77,7 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "Promise<boolean>",
 		Parameters: [{ Name: "precheckInputs", TypeText: "ITerminalSandboxPrecheckInputs", Optional: true }],
 		DocComment: "Whether the current caller is using the default approval permission flow.",
-		SourceLine: 102,
+		SourceLine: 109,
 	},
 	{
 		Kind: "Method",
@@ -83,7 +87,7 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "Promise<boolean>",
 		Parameters: [{ Name: "precheckInputs", TypeText: "ITerminalSandboxPrecheckInputs", Optional: true }],
 		DocComment: "Whether the current caller is using the default approval permission flow.",
-		SourceLine: 103,
+		SourceLine: 110,
 	},
 	{
 		Kind: "Method",
@@ -93,7 +97,7 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "Promise<OperatingSystem>",
 		Parameters: [],
 		DocComment: "Whether the current caller is using the default approval permission flow.",
-		SourceLine: 104,
+		SourceLine: 111,
 	},
 	{
 		Kind: "Method",
@@ -103,7 +107,7 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "Promise<ITerminalSandboxPrerequisiteCheckResult>",
 		Parameters: [{ Name: "forceRefresh", TypeText: "boolean", Optional: true }, { Name: "precheckInputs", TypeText: "ITerminalSandboxPrecheckInputs", Optional: true }],
 		DocComment: "Whether the current caller is using the default approval permission flow.",
-		SourceLine: 105,
+		SourceLine: 112,
 	},
 	{
 		Kind: "Method",
@@ -113,7 +117,7 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "Promise<string | undefined>",
 		Parameters: [{ Name: "forceRefresh", TypeText: "boolean", Optional: true }, { Name: "precheckInputs", TypeText: "ITerminalSandboxPrecheckInputs", Optional: true }],
 		DocComment: "Whether the current caller is using the default approval permission flow.",
-		SourceLine: 113,
+		SourceLine: 120,
 	},
 	{
 		Kind: "Method",
@@ -123,7 +127,7 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "URI | undefined",
 		Parameters: [],
 		DocComment: "Whether the current caller is using the default approval permission flow.",
-		SourceLine: 114,
+		SourceLine: 121,
 	},
 	{
 		Kind: "Method",
@@ -133,7 +137,7 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "void",
 		Parameters: [],
 		DocComment: "Whether the current caller is using the default approval permission flow.",
-		SourceLine: 115,
+		SourceLine: 122,
 	},
 	{
 		Kind: "Method",
@@ -143,7 +147,7 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "ITerminalSandboxResolvedNetworkDomains",
 		Parameters: [],
 		DocComment: "Whether the current caller is using the default approval permission flow.",
-		SourceLine: 116,
+		SourceLine: 123,
 	},
 	{
 		Kind: "Method",
@@ -153,7 +157,7 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "Promise<string[]>",
 		Parameters: [],
 		DocComment: "Whether the current caller is using the default approval permission flow.",
-		SourceLine: 117,
+		SourceLine: 124,
 	},
 	{
 		Kind: "Method",
@@ -163,6 +167,16 @@ export const ITerminalSandboxServiceMembers: ReadonlyArray<InterfaceMemberRecord
 		TypeText: "Promise<ISandboxDependencyInstallResult>",
 		Parameters: [{ Name: "missingDependencies", TypeText: "string[]", Optional: false }, { Name: "sessionResource", TypeText: "URI | undefined", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }, { Name: "options", TypeText: "ISandboxDependencyInstallOptions", Optional: false }],
 		DocComment: "Whether the current caller is using the default approval permission flow.",
-		SourceLine: 118,
+		SourceLine: 125,
+	},
+	{
+		Kind: "Method",
+		Name: "runSandboxRemediation",
+		Readonly: false,
+		Optional: false,
+		TypeText: "Promise<ISandboxDependencyInstallResult>",
+		Parameters: [{ Name: "remediation", TypeText: "TerminalSandboxPreCheckRemediation", Optional: false }, { Name: "sessionResource", TypeText: "URI | undefined", Optional: false }, { Name: "token", TypeText: "CancellationToken", Optional: false }, { Name: "options", TypeText: "ISandboxDependencyInstallOptions", Optional: false }],
+		DocComment: "Whether the current caller is using the default approval permission flow.",
+		SourceLine: 126,
 	}
 ] as const;

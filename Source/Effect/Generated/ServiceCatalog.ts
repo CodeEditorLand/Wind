@@ -19,7 +19,7 @@ export interface ServiceCatalogEntry {
 	readonly MemberCount: number;
 }
 
-export const ServiceCatalogVersion = "2026-06-11" as const;
+export const ServiceCatalogVersion = "2026-06-12" as const;
 
 export const ServiceCatalogTotal = 517 as const;
 
@@ -237,7 +237,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "agentHostService",
 		InterfaceName: "IAgentHostService",
 		SourcePath: "vs/platform/agentHost/common/agentService.ts",
-		SourceLine: 1225,
+		SourceLine: 1265,
 		MemberCount: 5,
 	},
 	{
@@ -317,7 +317,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "agentService",
 		InterfaceName: "IAgentService",
 		SourcePath: "vs/platform/agentHost/common/agentService.ts",
-		SourceLine: 904,
+		SourceLine: 930,
 		MemberCount: 1,
 	},
 	{
@@ -757,7 +757,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "chatModeService",
 		InterfaceName: "IChatModeService",
 		SourcePath: "vs/workbench/contrib/chat/common/chatModes.ts",
-		SourceLine: 38,
+		SourceLine: 39,
 		MemberCount: 1,
 	},
 	{
@@ -797,7 +797,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "IChatService",
 		InterfaceName: "IChatService",
 		SourcePath: "vs/workbench/contrib/chat/common/chatService/chatService.ts",
-		SourceLine: 1590,
+		SourceLine: 1626,
 		MemberCount: 33,
 	},
 	{
@@ -2269,7 +2269,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "IMcpElicitationService",
 		InterfaceName: "IMcpElicitationService",
 		SourcePath: "vs/workbench/contrib/mcp/common/mcpTypes.ts",
-		SourceLine: 1040,
+		SourceLine: 1061,
 		MemberCount: 1,
 	},
 	{
@@ -2325,7 +2325,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "IMcpServerSampling",
 		InterfaceName: "IMcpSamplingService",
 		SourcePath: "vs/workbench/contrib/mcp/common/mcpTypes.ts",
-		SourceLine: 970,
+		SourceLine: 991,
 		MemberCount: 4,
 	},
 	{
@@ -2349,7 +2349,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "IMcpWorkbenchService",
 		InterfaceName: "IMcpWorkbenchService",
 		SourcePath: "vs/workbench/contrib/mcp/common/mcpTypes.ts",
-		SourceLine: 840,
+		SourceLine: 861,
 		MemberCount: 14,
 	},
 	{
@@ -2373,7 +2373,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		DecoratorTag: "menuService",
 		InterfaceName: "IMenuService",
 		SourcePath: "vs/platform/actions/common/actions.ts",
-		SourceLine: 374,
+		SourceLine: 375,
 		MemberCount: 1,
 	},
 	{
@@ -3382,7 +3382,7 @@ export const ServiceCatalog: ReadonlyArray<ServiceCatalogEntry> = [
 		InterfaceName: "ITerminalSandboxService",
 		SourcePath: "vs/platform/sandbox/common/terminalSandboxService.ts",
 		SourceLine: 13,
-		MemberCount: 11,
+		MemberCount: 12,
 	},
 	{
 		DecoratorName: "ITerminalService",
