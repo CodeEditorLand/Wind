@@ -1,5 +1,4 @@
 import type { TextModel } from "../../Model/Interface/ModelService.js";
-import type { TextModelResolverProblem } from "../Type/TextModelResolverProblem.js";
 
 /**
  * TextModelResolver service interface.

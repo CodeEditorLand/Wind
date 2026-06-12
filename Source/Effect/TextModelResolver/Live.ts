@@ -14,12 +14,9 @@
 
 import { Effect } from "effect";
 
-import type { TextModel } from "../../Model/Interface/ModelService.js";
-import { ModelServiceInstance } from "../../Model/Live.js";
+import type { TextModel } from "../Model/Interface/ModelService.js";
+import { ModelServiceInstance } from "../Model/Live.js";
 import type { TextModelResolverService } from "./Interface/TextModelResolverService.js";
-
-const MakeResolverProblem = (error: unknown): Error =>
-	error instanceof Error ? error : new Error(String(error));
 
 function makeTextModelResolverService(): TextModelResolverService {
 	const ModelService = ModelServiceInstance;

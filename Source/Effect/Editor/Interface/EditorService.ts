@@ -1,5 +1,3 @@
-import type { EditorProblem } from "../Type/EditorProblem.js";
-
 /**
  * Editor service interface
  * Microsoft VSCode Reference: ICodeEditorService from vs/editor/browser/services/codeEditorService.ts

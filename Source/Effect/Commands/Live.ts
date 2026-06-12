@@ -14,9 +14,6 @@ import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type { CommandsService } from "./Interface/CommandsService.js";
 
-const MakeCommandsError = (error: unknown): Error =>
-	error instanceof Error ? error : new Error(String(error));
-
 function makeCommandsService(): CommandsService {
 	const IPCService = TauriIPCLive;
 

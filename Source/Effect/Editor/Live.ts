@@ -19,11 +19,6 @@ import SkyEvent from "../../IPC/SkyEvent.js";
 import { CommandsServiceInstance } from "../Commands/Live.js";
 import type { EditorService } from "./Interface/EditorService.js";
 
-const MakeEditorProblem = (error: unknown): Error =>
-	error instanceof Error
-		? error
-		: new Error(String(error));
-
 function makeEditorService(): EditorService {
 	const CommandsService = CommandsServiceInstance;
 

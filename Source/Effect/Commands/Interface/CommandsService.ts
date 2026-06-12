@@ -1,5 +1,3 @@
-import type { CommandsProblem } from "../Type/CommandsProblem.js";
-
 /**
  * Commands service interface
  * Microsoft VSCode Reference: ICommandService from vs/platform/commands/common/commands.ts
