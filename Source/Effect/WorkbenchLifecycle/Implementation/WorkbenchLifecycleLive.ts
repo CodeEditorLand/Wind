@@ -9,13 +9,12 @@
  * Phase reads + waits go through the workbench bridge.
  */
 
-import { Effect, Layer, Stream } from "effect";
+import { Effect, Stream } from "effect";
 
 import type {
 	WorkbenchLifecyclePhaseChange,
 	WorkbenchLifecycleService,
 } from "../Interface/WorkbenchLifecycleService.js";
-import { WorkbenchLifecycleServiceTag } from "../Tag/WorkbenchLifecycleServiceTag.js";
 import type {
 	WorkbenchLifecyclePhase,
 	WorkbenchLifecycleProblem,
@@ -174,10 +173,6 @@ function makeWorkbenchLifecycleService(): WorkbenchLifecycleService {
 	return Service;
 }
 
-export const WorkbenchLifecycleLive = Layer.succeed(
-	WorkbenchLifecycleServiceTag,
-
-	makeWorkbenchLifecycleService(),
-);
+export const WorkbenchLifecycleLive = makeWorkbenchLifecycleService();
 
 export default WorkbenchLifecycleLive;

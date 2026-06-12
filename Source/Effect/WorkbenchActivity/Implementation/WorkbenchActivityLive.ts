@@ -1,10 +1,9 @@
-import { Effect, Layer } from "effect";
+import { Effect } from "effect";
 
 import type {
 	WorkbenchActivityBadge,
 	WorkbenchActivityService,
 } from "../Interface/WorkbenchActivityService.js";
-import { WorkbenchActivityServiceTag } from "../Tag/WorkbenchActivityServiceTag.js";
 import type { WorkbenchActivityProblem } from "../Type/WorkbenchActivityProblem.js";
 import type {
 	UpstreamWorkbenchBadge,
@@ -84,10 +83,6 @@ function makeWorkbenchActivityService(): WorkbenchActivityService {
 	return Service;
 }
 
-export const WorkbenchActivityLive = Layer.succeed(
-	WorkbenchActivityServiceTag,
-
-	makeWorkbenchActivityService(),
-);
+export const WorkbenchActivityLive = makeWorkbenchActivityService();
 
 export default WorkbenchActivityLive;

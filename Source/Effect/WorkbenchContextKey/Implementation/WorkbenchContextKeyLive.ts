@@ -1,10 +1,9 @@
-import { Effect, Layer, Stream } from "effect";
+import { Effect, Stream } from "effect";
 
 import type {
 	WorkbenchContextKeyChangeEvent,
 	WorkbenchContextKeyService,
 } from "../Interface/WorkbenchContextKeyService.js";
-import { WorkbenchContextKeyServiceTag } from "../Tag/WorkbenchContextKeyServiceTag.js";
 import type { WorkbenchContextKeyProblem } from "../Type/WorkbenchContextKeyProblem.js";
 import type {
 	WorkbenchContextKeyBridgeShape,
@@ -113,10 +112,6 @@ function makeWorkbenchContextKeyService(): WorkbenchContextKeyService {
 	return Service;
 }
 
-export const WorkbenchContextKeyLive = Layer.succeed(
-	WorkbenchContextKeyServiceTag,
-
-	makeWorkbenchContextKeyService(),
-);
+export const WorkbenchContextKeyLive = makeWorkbenchContextKeyService();
 
 export default WorkbenchContextKeyLive;

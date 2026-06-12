@@ -1,10 +1,9 @@
-import { Effect, Layer } from "effect";
+import { Effect } from "effect";
 
 import type {
 	WorkbenchProductService,
 	WorkbenchProductSnapshot,
 } from "../Interface/WorkbenchProductService.js";
-import { WorkbenchProductServiceTag } from "../Tag/WorkbenchProductServiceTag.js";
 import type { WorkbenchProductProblem } from "../Type/WorkbenchProductProblem.js";
 import type {
 	WorkbenchProductBridgeShape,
@@ -58,10 +57,6 @@ function makeWorkbenchProductService(): WorkbenchProductService {
 	return Service;
 }
 
-export const WorkbenchProductLive = Layer.succeed(
-	WorkbenchProductServiceTag,
-
-	makeWorkbenchProductService(),
-);
+export const WorkbenchProductLive = makeWorkbenchProductService();
 
 export default WorkbenchProductLive;

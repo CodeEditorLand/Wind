@@ -1,10 +1,9 @@
-import { Effect, Layer, Stream } from "effect";
+import { Effect, Stream } from "effect";
 
 import type {
 	WorkbenchExtensionDescriptor,
 	WorkbenchExtensionService,
 } from "../Interface/WorkbenchExtensionService.js";
-import { WorkbenchExtensionServiceTag } from "../Tag/WorkbenchExtensionServiceTag.js";
 import type { WorkbenchExtensionProblem } from "../Type/WorkbenchExtensionProblem.js";
 import type {
 	UpstreamExtensionDescriptor,
@@ -126,10 +125,6 @@ function makeWorkbenchExtensionService(): WorkbenchExtensionService {
 	return Service;
 }
 
-export const WorkbenchExtensionLive = Layer.succeed(
-	WorkbenchExtensionServiceTag,
-
-	makeWorkbenchExtensionService(),
-);
+export const WorkbenchExtensionLive = makeWorkbenchExtensionService();
 
 export default WorkbenchExtensionLive;

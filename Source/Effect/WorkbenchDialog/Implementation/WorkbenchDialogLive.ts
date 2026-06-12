@@ -1,4 +1,4 @@
-import { Effect, Layer } from "effect";
+import { Effect } from "effect";
 
 import type {
 	WorkbenchDialogConfirmOptions,
@@ -6,7 +6,6 @@ import type {
 	WorkbenchDialogPickOptions,
 	WorkbenchDialogService,
 } from "../Interface/WorkbenchDialogService.js";
-import { WorkbenchDialogServiceTag } from "../Tag/WorkbenchDialogServiceTag.js";
 import type { WorkbenchDialogProblem } from "../Type/WorkbenchDialogProblem.js";
 import type {
 	WorkbenchDialogBridgeShape,
@@ -138,10 +137,6 @@ function makeWorkbenchDialogService(): WorkbenchDialogService {
 	return Service;
 }
 
-export const WorkbenchDialogLive = Layer.succeed(
-	WorkbenchDialogServiceTag,
-
-	makeWorkbenchDialogService(),
-);
+export const WorkbenchDialogLive = makeWorkbenchDialogService();
 
 export default WorkbenchDialogLive;

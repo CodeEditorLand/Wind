@@ -32,14 +32,13 @@
  * @category Implementation
  */
 
-import { Effect, Layer, Stream } from "effect";
+import { Effect, Stream } from "effect";
 
 import type {
 	UserSettingsChangeEvent,
 	UserSettingsService,
 	UserSettingsTarget,
 } from "../Interface/UserSettingsService.js";
-import { UserSettingsServiceTag } from "../Tag/UserSettingsServiceTag.js";
 import type { UserSettingsProblem } from "../Type/UserSettingsProblem.js";
 
 interface VSCodeConfigurationBridge {
@@ -280,10 +279,6 @@ function makeUserSettingsService(): UserSettingsService {
 	return Service;
 }
 
-export const UserSettingsLive = Layer.succeed(
-	UserSettingsServiceTag,
-
-	makeUserSettingsService(),
-);
+export const UserSettingsLive = makeUserSettingsService();
 
 export default UserSettingsLive;

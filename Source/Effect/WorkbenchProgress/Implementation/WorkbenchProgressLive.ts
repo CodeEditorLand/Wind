@@ -1,11 +1,10 @@
-import { Effect, Layer } from "effect";
+import { Effect } from "effect";
 
 import type {
 	WorkbenchProgressReporter,
 	WorkbenchProgressService,
 	WorkbenchProgressTaskOptions,
 } from "../Interface/WorkbenchProgressService.js";
-import { WorkbenchProgressServiceTag } from "../Tag/WorkbenchProgressServiceTag.js";
 import type { WorkbenchProgressProblem } from "../Type/WorkbenchProgressProblem.js";
 import {
 	type UpstreamProgressReporter,
@@ -80,10 +79,6 @@ function makeWorkbenchProgressService(): WorkbenchProgressService {
 	return Service;
 }
 
-export const WorkbenchProgressLive = Layer.succeed(
-	WorkbenchProgressServiceTag,
-
-	makeWorkbenchProgressService(),
-);
+export const WorkbenchProgressLive = makeWorkbenchProgressService();
 
 export default WorkbenchProgressLive;

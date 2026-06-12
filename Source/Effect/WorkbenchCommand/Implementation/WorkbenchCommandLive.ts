@@ -1,10 +1,9 @@
-import { Effect, Layer, Stream } from "effect";
+import { Effect, Stream } from "effect";
 
 import type {
 	WorkbenchCommandExecutedEvent,
 	WorkbenchCommandService,
 } from "../Interface/WorkbenchCommandService.js";
-import { WorkbenchCommandServiceTag } from "../Tag/WorkbenchCommandServiceTag.js";
 import type { WorkbenchCommandProblem } from "../Type/WorkbenchCommandProblem.js";
 import type {
 	WorkbenchCommandBridgeShape,
@@ -132,10 +131,6 @@ function makeWorkbenchCommandService(): WorkbenchCommandService {
 	};
 }
 
-export const WorkbenchCommandLive = Layer.succeed(
-	WorkbenchCommandServiceTag,
-
-	makeWorkbenchCommandService(),
-);
+export const WorkbenchCommandLive = makeWorkbenchCommandService();
 
 export default WorkbenchCommandLive;

@@ -1,4 +1,4 @@
-import { Effect, Layer, Stream } from "effect";
+import { Effect, Stream } from "effect";
 
 import type {
 	WorkbenchWorkspaceFolder,
@@ -6,7 +6,6 @@ import type {
 	WorkbenchWorkspaceService,
 	WorkbenchWorkspaceSnapshot,
 } from "../Interface/WorkbenchWorkspaceService.js";
-import { WorkbenchWorkspaceServiceTag } from "../Tag/WorkbenchWorkspaceServiceTag.js";
 import type { WorkbenchWorkspaceProblem } from "../Type/WorkbenchWorkspaceProblem.js";
 import type {
 	UpstreamWorkspace,
@@ -130,10 +129,6 @@ function makeWorkbenchWorkspaceService(): WorkbenchWorkspaceService {
 	return Service;
 }
 
-export const WorkbenchWorkspaceLive = Layer.succeed(
-	WorkbenchWorkspaceServiceTag,
-
-	makeWorkbenchWorkspaceService(),
-);
+export const WorkbenchWorkspaceLive = makeWorkbenchWorkspaceService();
 
 export default WorkbenchWorkspaceLive;

@@ -1,7 +1,6 @@
-import { Effect, Layer, Stream } from "effect";
+import { Effect, Stream } from "effect";
 
 import type { WorkbenchHostService } from "../Interface/WorkbenchHostService.js";
-import { WorkbenchHostServiceTag } from "../Tag/WorkbenchHostServiceTag.js";
 import type { WorkbenchHostProblem } from "../Type/WorkbenchHostProblem.js";
 import type {
 	WorkbenchHostBridgeShape,
@@ -129,10 +128,6 @@ function makeWorkbenchHostService(): WorkbenchHostService {
 	return Service;
 }
 
-export const WorkbenchHostLive = Layer.succeed(
-	WorkbenchHostServiceTag,
-
-	makeWorkbenchHostService(),
-);
+export const WorkbenchHostLive = makeWorkbenchHostService();
 
 export default WorkbenchHostLive;

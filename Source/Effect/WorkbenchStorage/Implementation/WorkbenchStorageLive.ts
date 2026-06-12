@@ -15,7 +15,7 @@
  * @category Implementation
  */
 
-import { Effect, Layer, Stream } from "effect";
+import { Effect, Stream } from "effect";
 
 import type {
 	WorkbenchStorageChangeEvent,
@@ -23,7 +23,6 @@ import type {
 	WorkbenchStorageService,
 	WorkbenchStorageTarget,
 } from "../Interface/WorkbenchStorageService.js";
-import { WorkbenchStorageServiceTag } from "../Tag/WorkbenchStorageServiceTag.js";
 import type { WorkbenchStorageProblem } from "../Type/WorkbenchStorageProblem.js";
 import type {
 	WorkbenchStorageBridgeShape,
@@ -276,10 +275,6 @@ function makeWorkbenchStorageService(): WorkbenchStorageService {
 	return Service;
 }
 
-export const WorkbenchStorageLive = Layer.succeed(
-	WorkbenchStorageServiceTag,
-
-	makeWorkbenchStorageService(),
-);
+export const WorkbenchStorageLive = makeWorkbenchStorageService();
 
 export default WorkbenchStorageLive;

@@ -1,11 +1,10 @@
-import { Effect, Layer, Stream } from "effect";
+import { Effect, Stream } from "effect";
 
 import type {
 	WorkbenchNotificationDispatched,
 	WorkbenchNotificationOptions,
 	WorkbenchNotificationService,
 } from "../Interface/WorkbenchNotificationService.js";
-import { WorkbenchNotificationServiceTag } from "../Tag/WorkbenchNotificationServiceTag.js";
 import type { WorkbenchNotificationProblem } from "../Type/WorkbenchNotificationProblem.js";
 import {
 	WorkbenchNotificationSeverityCode,
@@ -125,10 +124,6 @@ function makeWorkbenchNotificationService(): WorkbenchNotificationService {
 	return Service;
 }
 
-export const WorkbenchNotificationLive = Layer.succeed(
-	WorkbenchNotificationServiceTag,
-
-	makeWorkbenchNotificationService(),
-);
+export const WorkbenchNotificationLive = makeWorkbenchNotificationService();
 
 export default WorkbenchNotificationLive;

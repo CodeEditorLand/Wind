@@ -1,4 +1,4 @@
-import { Effect, Layer, Stream } from "effect";
+import { Effect, Stream } from "effect";
 
 import type {
 	WorkbenchLayoutChange,
@@ -6,7 +6,6 @@ import type {
 	WorkbenchLayoutService,
 	WorkbenchLayoutSnapshot,
 } from "../Interface/WorkbenchLayoutService.js";
-import { WorkbenchLayoutServiceTag } from "../Tag/WorkbenchLayoutServiceTag.js";
 import type { WorkbenchLayoutProblem } from "../Type/WorkbenchLayoutProblem.js";
 import {
 	WorkbenchLayoutAllParts,
@@ -130,10 +129,6 @@ function makeWorkbenchLayoutService(): WorkbenchLayoutService {
 	return Service;
 }
 
-export const WorkbenchLayoutLive = Layer.succeed(
-	WorkbenchLayoutServiceTag,
-
-	makeWorkbenchLayoutService(),
-);
+export const WorkbenchLayoutLive = makeWorkbenchLayoutService();
 
 export default WorkbenchLayoutLive;

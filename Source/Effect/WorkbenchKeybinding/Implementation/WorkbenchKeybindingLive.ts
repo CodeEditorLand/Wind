@@ -1,11 +1,10 @@
-import { Effect, Layer, Stream } from "effect";
+import { Effect, Stream } from "effect";
 
 import type {
 	WorkbenchKeybindingDispatch,
 	WorkbenchKeybindingResolution,
 	WorkbenchKeybindingService,
 } from "../Interface/WorkbenchKeybindingService.js";
-import { WorkbenchKeybindingServiceTag } from "../Tag/WorkbenchKeybindingServiceTag.js";
 import type { WorkbenchKeybindingProblem } from "../Type/WorkbenchKeybindingProblem.js";
 import type {
 	UpstreamResolvedKeybinding,
@@ -124,10 +123,6 @@ function makeWorkbenchKeybindingService(): WorkbenchKeybindingService {
 	return Service;
 }
 
-export const WorkbenchKeybindingLive = Layer.succeed(
-	WorkbenchKeybindingServiceTag,
-
-	makeWorkbenchKeybindingService(),
-);
+export const WorkbenchKeybindingLive = makeWorkbenchKeybindingService();
 
 export default WorkbenchKeybindingLive;

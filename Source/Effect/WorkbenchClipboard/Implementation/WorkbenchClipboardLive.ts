@@ -1,7 +1,6 @@
-import { Effect, Layer } from "effect";
+import { Effect } from "effect";
 
 import type { WorkbenchClipboardService } from "../Interface/WorkbenchClipboardService.js";
-import { WorkbenchClipboardServiceTag } from "../Tag/WorkbenchClipboardServiceTag.js";
 import type { WorkbenchClipboardProblem } from "../Type/WorkbenchClipboardProblem.js";
 import type {
 	WorkbenchClipboardBridgeShape,
@@ -112,10 +111,6 @@ function makeWorkbenchClipboardService(): WorkbenchClipboardService {
 	};
 }
 
-export const WorkbenchClipboardLive = Layer.succeed(
-	WorkbenchClipboardServiceTag,
-
-	makeWorkbenchClipboardService(),
-);
+export const WorkbenchClipboardLive = makeWorkbenchClipboardService();
 
 export default WorkbenchClipboardLive;

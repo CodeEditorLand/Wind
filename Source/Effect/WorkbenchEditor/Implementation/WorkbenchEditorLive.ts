@@ -1,4 +1,4 @@
-import { Effect, Layer, Stream } from "effect";
+import { Effect, Stream } from "effect";
 
 import type {
 	WorkbenchEditorActiveSnapshot,
@@ -6,7 +6,6 @@ import type {
 	WorkbenchEditorOpenInput,
 	WorkbenchEditorService,
 } from "../Interface/WorkbenchEditorService.js";
-import { WorkbenchEditorServiceTag } from "../Tag/WorkbenchEditorServiceTag.js";
 import type { WorkbenchEditorProblem } from "../Type/WorkbenchEditorProblem.js";
 import type {
 	UpstreamEditorPaneSnapshot,
@@ -161,10 +160,6 @@ function makeWorkbenchEditorService(): WorkbenchEditorService {
 	return Service;
 }
 
-export const WorkbenchEditorLive = Layer.succeed(
-	WorkbenchEditorServiceTag,
-
-	makeWorkbenchEditorService(),
-);
+export const WorkbenchEditorLive = makeWorkbenchEditorService();
 
 export default WorkbenchEditorLive;

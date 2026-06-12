@@ -1,11 +1,10 @@
-import { Effect, Layer, Stream } from "effect";
+import { Effect, Stream } from "effect";
 
 import type {
 	WorkbenchThemeChangeEvent,
 	WorkbenchThemeDescriptor,
 	WorkbenchThemeService,
 } from "../Interface/WorkbenchThemeService.js";
-import { WorkbenchThemeServiceTag } from "../Tag/WorkbenchThemeServiceTag.js";
 import type { WorkbenchThemeProblem } from "../Type/WorkbenchThemeProblem.js";
 import {
 	WorkbenchThemeKindFromUpstream,
@@ -133,10 +132,6 @@ function makeWorkbenchThemeService(): WorkbenchThemeService {
 	return Service;
 }
 
-export const WorkbenchThemeLive = Layer.succeed(
-	WorkbenchThemeServiceTag,
-
-	makeWorkbenchThemeService(),
-);
+export const WorkbenchThemeLive = makeWorkbenchThemeService();
 
 export default WorkbenchThemeLive;
