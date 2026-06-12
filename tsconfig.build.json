@@ -1,39 +1,35 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "strict": true,
-    "noEmit": true,
-    "skipLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@Function/*": [
-        "../Common/TypeScript/Function/*"
-      ],
-      "@codeeditorland/output/*": [
-        "../Output/*"
-      ]
-    }
-  },
-  "include": [
-    "Source/Build.ts",
-    "Source/Constant/**/*.ts",
-    "Source/Type/**/*.ts",
-    "Source/Variable/**/*.ts",
-    "Source/Effect/Layers/**/*.ts"
-  ],
-  "exclude": [
-    "Target",
-    "node_modules",
-    "Source/Effect/Generated",
-    "Source/Polyfill",
-    "Source/Service",
-    "Source/Plugin",
-    "Source/Codegen",
-    "Source/Configuration",
-    "Source/Bootstrap",
-    "Source/Function/Install",
-    "Source/Workbench"
-  ]
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"strict": true,
+		"noEmit": true,
+		"skipLibCheck": true,
+		"baseUrl": ".",
+		"paths": {
+			"@Function/*": ["../Common/TypeScript/Function/*"],
+			"@codeeditorland/output/*": ["../Output/*"]
+		}
+	},
+	"include": [
+		"Source/Build.ts",
+		"Source/Constant/**/*.ts",
+		"Source/Type/**/*.ts",
+		"Source/Variable/**/*.ts",
+		"Source/Effect/Layers/**/*.ts"
+	],
+	"exclude": [
+		"Target",
+		"node_modules",
+		"Source/Effect/Generated",
+		"Source/Polyfill",
+		"Source/Service",
+		"Source/Plugin",
+		"Source/Codegen",
+		"Source/Configuration",
+		"Source/Bootstrap",
+		"Source/Function/Install",
+		"Source/Workbench"
+	]
 }

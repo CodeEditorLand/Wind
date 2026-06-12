@@ -42,11 +42,11 @@
 The `TypeScript`/`Effect-TS` Service Layer for Land&#x2001;🏞️
 
 > **`Electron`'s `IPC` bridge forces every panel interaction through untyped
-> `JSON` serialization — brittle, untyped, and opaque. `Wind` replaces it with
+> `JSON` serialization - brittle, untyped, and opaque. `Wind` replaces it with
 > typed `Tauri` commands routed to `Rust` handlers in `Mountain`'s core.**
 
 _"Every service is a typed `Effect`. Every call is traced. Every error is
-tagged. The bridge is not a black box — it's an open, composable, effectful
+tagged. The bridge is not a black box - it's an open, composable, effectful
 program."_
 
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://github.com/CodeEditorLand/Wind/tree/Current/LICENSE)
@@ -60,8 +60,8 @@ program."_
 
 **Wind** is the `TypeScript`/`Effect-TS` service layer that bridges `Sky`
 (Land's VS Code-based UI) to the `Tauri` desktop shell and `Mountain`'s `Rust`
-backend. It replaces `VS Code`'s `Electron` `IPC` bridge — which forces every
-panel interaction through untyped `JSON` serialization — with typed `Tauri`
+backend. It replaces `VS Code`'s `Electron` `IPC` bridge - which forces every
+panel interaction through untyped `JSON` serialization - with typed `Tauri`
 commands routed to `Rust` handlers in `Mountain`'s core. It provides the
 `Effect-TS` native service layer that enables `Sky` to function within the
 `Tauri` shell.
@@ -77,15 +77,15 @@ workbench code communicates through `Tauri`'s `invoke` system instead of
 
 `Wind` is engineered to:
 
-1. **Provide a Typed Service Layer** — Replace `Electron`'s untyped `JSON` `IPC`
+1. **Provide a Typed Service Layer** - Replace `Electron`'s untyped `JSON` `IPC`
    with `Effect-TS` services that carry typed tags, composable `Layer`s, and
    deterministic dependency injection.
-2. **Emulate the VS Code Renderer Environment** — Shim `Electron` and `Node.js`
+2. **Emulate the VS Code Renderer Environment** - Shim `Electron` and `Node.js`
    APIs so VS Code workbench code runs unchanged inside the `Tauri` `WebView`.
-3. **Route Through Tauri Commands** — Connect every frontend request to
+3. **Route Through Tauri Commands** - Connect every frontend request to
    `Mountain`'s `Rust` handlers via Tauri's typed `invoke` and `event` system,
    avoiding raw serialization boundaries.
-4. **Enable Code Generation** — Walk the VS Code service catalog, extract
+4. **Enable Code Generation** - Walk the VS Code service catalog, extract
    interface signatures and command registrations, and emit bridge shapes and
    catalogs for the full workbench surface.
 
@@ -93,41 +93,41 @@ workbench code communicates through `Tauri`'s `invoke` system instead of
 
 ## Key Features&#x2001;🔐
 
-**`Effect-TS` Service Architecture** — 40+ service modules, each structured as
+**`Effect-TS` Service Architecture** - 40+ service modules, each structured as
 an atomic unit with `Tag`, `Interface`, `Implementation`, `Layer`, `Type`, and
 `Error` subdirectories. Every service is a typed `Effect` that composes via
 `Layer` into `TauriLiveLayer`, `ElectronLiveLayer`, and `TestLayer` stacks.
 
-**`Preload.ts` Environment Emulation** — Shims `Electron`'s `ipcRenderer`,
+**`Preload.ts` Environment Emulation** - Shims `Electron`'s `ipcRenderer`,
 `process`, `require`, and `Node.js` globals, establishing `window.vscode` and a
 compatible execution context inside the `Tauri` `WebView`. VS Code workbench
 code runs without modification.
 
-**Typed IPC over Tauri** — Replaces `Electron`'s `ipcMain`/`ipcRenderer` with
+**Typed IPC over Tauri** - Replaces `Electron`'s `ipcMain`/`ipcRenderer` with
 typed `Tauri` `invoke` and `listen` calls through `Effect/IPC`. Every invocation
 carries a tagged error type (`IPCError`) and is routed through the
 `Service/TauriMainProcessService.ts` channel router.
 
-**Codegen Pipeline** — The `Codegen/` directory walks the VS Code workbench
+**Codegen Pipeline** - The `Codegen/` directory walks the VS Code workbench
 service catalog, extracts decorators and interface members, resolves cross-file
 references, and emits `BridgeShape` files, service catalogs, and command
 registrations. Generated bridges power the `Workbench*` services in `Effect/`.
 
-**`Mountain` RPC Service** — Maintains a typed `RPC` connection to the `Rust`
+**`Mountain` RPC Service** - Maintains a typed `RPC` connection to the `Rust`
 backend for configuration synchronization, state management, and native
 operations. The `MountainSync` sub-service performs background polling for
 configuration changes.
 
-**File System Provider** — A VS Code-compatible `FileSystemProvider` with
+**File System Provider** - A VS Code-compatible `FileSystemProvider` with
 `MountainCommands` bridge, type-safe `URI` handling, and tagged
 `FileSystemProviderError`s. Exposes `Tauri`'s native OS file dialogs through
 `Effect-TS` wrappers.
 
-**Telemetry Integration** — `PostHog` bridge with browser and server-side
+**Telemetry Integration** - `PostHog` bridge with browser and server-side
 tracking, configuration-driven feature flags, fallback persistence, and
 `Effect-TS` spans and metrics helpers.
 
-**Layer Composition** — Three pre-composed layer stacks: `TauriLiveLayer` (full
+**Layer Composition** - Three pre-composed layer stacks: `TauriLiveLayer` (full
 production stack with 40+ services), `ElectronLiveLayer` (compatibility layer
 for `Electron`-based testing), and `TestLayer` (isolated mock layer for unit
 testing).
@@ -214,13 +214,13 @@ graph LR
 
 | Component             | Path                                 | Description                                                                                   |
 | --------------------- | ------------------------------------ | --------------------------------------------------------------------------------------------- |
-| Preload Shim          | `Source/Preload.ts`                  | VS Code environment emulation in Tauri WebView — shims Electron APIs, creates `window.vscode` |
+| Preload Shim          | `Source/Preload.ts`                  | VS Code environment emulation in Tauri WebView - shims Electron APIs, creates `window.vscode` |
 | IPC Service           | `Source/Effect/IPC/`                 | Inter-process communication via Tauri `invoke` with typed, tagged errors                      |
 | Mountain RPC          | `Source/Effect/Mountain/`            | Backend RPC connection service for configuration, state, and native operations                |
 | Mountain Sync         | `Source/Effect/MountainSync/`        | Background configuration synchronization with change detection                                |
 | Configuration         | `Source/Effect/Configuration/`       | Workbench configuration with sync and change detection                                        |
 | Bootstrap             | `Source/Effect/Bootstrap/`           | Multi-stage bootstrap orchestration for service initialization                                |
-| Codegen               | `Source/Codegen/`                    | VS Code service code generator — walks service catalog, emits bridge shapes                   |
+| Codegen               | `Source/Codegen/`                    | VS Code service code generator - walks service catalog, emits bridge shapes                   |
 | Sandbox               | `Source/Effect/Sandbox/`             | Preload globals and environment service                                                       |
 | Telemetry             | `Source/Effect/Telemetry/`           | Logging, spans, and metrics (PostHog/OTLP)                                                    |
 | Environment           | `Source/Effect/Environment/`         | System and platform detection                                                                 |
@@ -379,7 +379,7 @@ Wind/
 
 `Wind` is the middle layer between `Sky` (the UI) and `Tauri` / `Mountain` (the
 backend). It provides the service abstraction that `Sky` consumes to perform
-file operations, dialogs, configuration, and state management — all through
+file operations, dialogs, configuration, and state management - all through
 typed, tagged `Effect` services rather than untyped `IPC`. Communication flows
 through `Tauri`'s `invoke` (request) and `event` (notification) channels.
 
@@ -505,11 +505,11 @@ Wind enforces security at multiple layers:
 
 | Layer                    | Mechanism                                                                                                               |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| **Type safety**          | Full `TypeScript` / `Effect-TS` type system across all service boundaries — every invocation carries tagged error types |
+| **Type safety**          | Full `TypeScript` / `Effect-TS` type system across all service boundaries - every invocation carries tagged error types |
 | **IPC isolation**        | All backend communication flows through typed `Tauri` commands, not raw `JSON` serialization                            |
 | **Sandbox**              | The `Sandbox` service controls what globals and APIs are exposed to the `WebView` renderer                              |
 | **Network restrictions** | The `NetworkRestrictions` service enforces access controls and blocks unauthorized outbound requests                    |
-| **Dependency injection** | `Effect-TS` `Layer` system ensures services only receive their declared dependencies — no ambient access to globals     |
+| **Dependency injection** | `Effect-TS` `Layer` system ensures services only receive their declared dependencies - no ambient access to globals     |
 | **Telemetry privacy**    | `PostHog` configuration supports opt-out, anonymous identifiers, and fallback persistence without PII                   |
 
 ---
@@ -531,32 +531,32 @@ Wind is designed to be compatible with:
 ## API Reference
 
 - **[Effect Service Interfaces](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Effect/)**
-  — All `Effect-TS` service tags, interfaces, and implementations
+  - All `Effect-TS` service tags, interfaces, and implementations
 - **[Preload API](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)**
-  — Environment shim and `window.vscode` globals
+  - Environment shim and `window.vscode` globals
 - **[Layer Compositions](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Effect/Layers/)**
-  — `Tauri`, `Electron`, and `Test` layer stacks
+  - `Tauri`, `Electron`, and `Test` layer stacks
 - **[Codegen Documentation](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Codegen/)**
-  — Service catalog walker, interface extraction, and bridge shape generation
+  - Service catalog walker, interface extraction, and bridge shape generation
 
 ---
 
 ## Related Documentation
 
-- [Architecture Overview](https://Editor.Land/Doc/architecture) — Internal
+- [Architecture Overview](https://Editor.Land/Doc/architecture) - Internal
   module structure
-- [Why Effect-TS](https://Editor.Land/Doc/why-effect-ts) — Design rationale for
+- [Why Effect-TS](https://Editor.Land/Doc/why-effect-ts) - Design rationale for
   `Effect-TS`
-- [Why Tauri](https://Editor.Land/Doc/why-tauri) — Design rationale for `Tauri`
-- [Land Documentation](../../Documentation/GitHub/README.md) — Complete
+- [Why Tauri](https://Editor.Land/Doc/why-tauri) - Design rationale for `Tauri`
+- [Land Documentation](../../Documentation/GitHub/README.md) - Complete
   documentation index
-- [Sky ☀️](https://github.com/CodeEditorLand/Sky) — UI component layer that
+- [Sky ☀️](https://github.com/CodeEditorLand/Sky) - UI component layer that
   consumes Wind services
-- [Cocoon 🦋](https://github.com/CodeEditorLand/Cocoon) — Extension host sidecar
+- [Cocoon 🦋](https://github.com/CodeEditorLand/Cocoon) - Extension host sidecar
   (correlated frontend element)
-- [Worker ⚙️](https://github.com/CodeEditorLand/Worker) — Service worker for
+- [Worker ⚙️](https://github.com/CodeEditorLand/Worker) - Service worker for
   caching and offline support
-- [Mountain ⛰️](https://github.com/CodeEditorLand/Mountain) — Native desktop
+- [Mountain ⛰️](https://github.com/CodeEditorLand/Mountain) - Native desktop
   shell and `gRPC` backend
 
 ---
