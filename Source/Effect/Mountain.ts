@@ -20,17 +20,17 @@
 
 // Re-export from atomic modules for backward compatibility
 export {
-	MountainConnectionError,
-	MountainRPCError,
-	MountainSyncError,
-	MountainStateError,
-	type MountainConnectionState,
-	type SyncResource,
-	type SyncResult,
-	type MountainService,
-	type MountainTag,
-	type Mountain,
 	CreateMountainService,
+	type Mountain,
+	MountainConnectionError,
+	type MountainConnectionState,
 	MountainLive,
 	MountainMockLive,
+	MountainRPCError,
+	type MountainService,
+	MountainStateError,
+	MountainSyncError,
+	type MountainTag,
+	type SyncResource,
+	type SyncResult,
 } from "./Mountain/index.js";

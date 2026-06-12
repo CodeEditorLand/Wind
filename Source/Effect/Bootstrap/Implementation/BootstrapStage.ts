@@ -12,8 +12,8 @@ import { Effect } from "effect";
 import { ConfigurationLive } from "../../Configuration.js";
 
 import {
-	EnvironmentTag,
 	type EnvironmentInfo,
+	EnvironmentTag,
 } from "../../Environment/index.js";
 
 import { HealthTag } from "../../Health.js";
@@ -253,7 +253,6 @@ export const stage6_HealthCheck = withSpan(
 );
 
 export default {
-
 	stage0_Environment,
 
 	stage1_Preload,

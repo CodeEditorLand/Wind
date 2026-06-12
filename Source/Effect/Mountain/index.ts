@@ -30,6 +30,7 @@ export { default as MountainConnectionError } from "./Error/MountainConnectionEr
 export { default as MountainRPCError } from "./Error/MountainRPCError.js";
 export { default as MountainStateError } from "./Error/MountainStateError.js";
 export { default as MountainSyncError } from "./Error/MountainSyncError.js";
+
 // Live implementation
 export {
 	CreateMountainService,
