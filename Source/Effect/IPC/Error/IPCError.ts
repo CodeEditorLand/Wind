@@ -7,105 +7,82 @@
  */
 
 // ============================================================================
-// Type Definitions
+// Error Classes
 // ============================================================================
 
 /**
  * Error thrown when IPC invoke fails
  */
-export interface IPCInvokeError {
-	readonly _tag: "IPCInvokeError";
+export class IPCInvokeError extends Error {
+	readonly _tag = "IPCInvokeError" as const;
 
 	readonly channel: string;
 
 	readonly cause: unknown;
 
-	readonly message: string;
+	constructor(channel: string, cause: unknown) {
+		super(`IPC invoke failed on channel '${channel}': ${String(cause)}`);
 
-	readonly name: string;
+		this.channel = channel;
+
+		this.cause = cause;
+
+		Object.setPrototypeOf(this, IPCInvokeError.prototype);
+	}
+
+	override get name() {
+		return "IPCInvokeError";
+	}
 }
 
 /**
  * Error thrown when IPC send fails
  */
-export interface IPCSendError {
-	readonly _tag: "IPCSendError";
+export class IPCSendError extends Error {
+	readonly _tag = "IPCSendError" as const;
 
 	readonly channel: string;
 
 	readonly cause: unknown;
 
-	readonly message: string;
+	constructor(channel: string, cause: unknown) {
+		super(`IPC send failed on channel '${channel}': ${String(cause)}`);
 
-	readonly name: string;
+		this.channel = channel;
+
+		this.cause = cause;
+
+		Object.setPrototypeOf(this, IPCSendError.prototype);
+	}
+
+	override get name() {
+		return "IPCSendError";
+	}
 }
 
 /**
  * Error thrown when IPC subscription fails
  */
-export interface IPCSubscriptionError {
-	readonly _tag: "IPCSubscriptionError";
+export class IPCSubscriptionError extends Error {
+	readonly _tag = "IPCSubscriptionError" as const;
 
 	readonly channel: string;
 
 	readonly cause: unknown;
 
-	readonly message: string;
+	constructor(channel: string, cause: unknown) {
+		super(
+			`IPC subscription failed on channel '${channel}': ${String(cause)}`,
+		);
 
-	readonly name: string;
+		this.channel = channel;
+
+		this.cause = cause;
+
+		Object.setPrototypeOf(this, IPCSubscriptionError.prototype);
+	}
+
+	override get name() {
+		return "IPCSubscriptionError";
+	}
 }
-
-// ============================================================================
-// Implementation
-// ============================================================================
-
-/**
- * Creates an IPCInvokeError instance
- */
-const CreateIPCInvokeError = (
-	channel: string,
-
-	cause: unknown,
-): IPCInvokeError => ({
-	_tag: "IPCInvokeError",
-	channel,
-	cause,
-	message: `IPC invoke failed on channel '${channel}': ${String(cause)}`,
-	name: "IPCInvokeError",
-});
-
-/**
- * Creates an IPCSendError instance
- */
-const CreateIPCSendError = (channel: string, cause: unknown): IPCSendError => ({
-	_tag: "IPCSendError",
-	channel,
-	cause,
-	message: `IPC send failed on channel '${channel}': ${String(cause)}`,
-	name: "IPCSendError",
-});
-
-/**
- * Creates an IPCSubscriptionError instance
- */
-const CreateIPCSubscriptionError = (
-	channel: string,
-
-	cause: unknown,
-): IPCSubscriptionError => ({
-	_tag: "IPCSubscriptionError",
-	channel,
-	cause,
-	message: `IPC subscription failed on channel '${channel}': ${String(cause)}`,
-	name: "IPCSubscriptionError",
-});
-
-export { CreateIPCInvokeError, CreateIPCSendError, CreateIPCSubscriptionError };
-
-export default {
-	CreateIPCInvokeError,
-
-	CreateIPCSendError,
-
-	CreateIPCSubscriptionError,
-};

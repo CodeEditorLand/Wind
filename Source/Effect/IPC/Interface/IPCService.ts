@@ -3,12 +3,10 @@
  * @description
  * Service interface for IPC (Inter-Process Communication) operations.
  * Provides methods for sending messages, invoking methods, and subscribing to events.
- * @see {@link Effect/IPC/Implementation/IPCImplementation} Implementation
- * @see {@link Effect/IPC/Tag/IPCTag} Service tag
+ * All methods are plain sync/async; errors surface as thrown IPC errors.
+ * @see {@link Effect/IPC/Implementation/TauriIPC} Implementation
  * @category Interface
  */
-
-import { Effect, Stream } from "effect";
 
 import type {
 	IPCInvokeError,
@@ -17,43 +15,62 @@ import type {
 } from "../Error/IPCError.js";
 
 // ============================================================================
+// Subscription Types
+// ============================================================================
+
+/**
+ * Event emitted on an IPC channel
+ */
+export interface IPCEvent {
+	readonly channel: string;
+
+	readonly args: ReadonlyArray<unknown>;
+}
+
+/**
+ * Callback for channel events — called once per event
+ */
+export type IPCEventListener = (event: IPCEvent) => void;
+
+/**
+ * Cleanup function for event listeners
+ */
+export type IPCCleanup = () => void;
+
+/**
+ * Async iterator-like stream of events
+ */
+export interface IPCEventStream {
+	/** Subscribe to events; returns cleanup function */
+	readonly subscribe: (listener: IPCEventListener) => IPCCleanup;
+}
+
+// ============================================================================
 // Service Interface
 // ============================================================================
 
 /**
- * IPC Service interface
+ * IPC Service interface — plain functions, no Effect wrappers
  */
 export interface IPCService {
 	/** Send a message without expecting a response */
-	readonly send: (
-		channel: string,
-	) => (args: ReadonlyArray<unknown>) => Effect.Effect<void, IPCSendError>;
+	readonly send: (channel: string, args: ReadonlyArray<unknown>) => void;
 
 	/** Invoke a method and await response */
 	readonly invoke: (
 		channel: string,
-	) => (
 		args: ReadonlyArray<unknown>,
-	) => Effect.Effect<unknown, IPCInvokeError>;
+	) => Promise<unknown>;
 
-	/** Subscribe to events on a channel as a Stream */
-	readonly events: (
-		channel: string,
-	) => Stream.Stream<
-		{ readonly channel: string; readonly args: ReadonlyArray<unknown> },
-		IPCSubscriptionError
-	>;
+	/** Subscribe to events on a channel */
+	readonly events: (channel: string) => IPCEventStream;
 
 	/** One-shot event listener */
 	readonly once: (
 		channel: string,
-	) => Effect.Effect<
-		{ readonly channel: string; readonly args: ReadonlyArray<unknown> },
-		IPCSubscriptionError
-	>;
+		callback: IPCEventListener,
+	) => Promise<void>;
 
 	/** Remove all listeners for a channel */
-	readonly removeAllListeners: (
-		channel: string,
-	) => Effect.Effect<void, never>;
+	readonly removeAllListeners: (channel: string) => void;
 }
