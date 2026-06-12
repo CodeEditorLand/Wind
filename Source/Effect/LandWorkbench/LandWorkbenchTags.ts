@@ -4,96 +4,96 @@
  * Single re-export point for every `Workbench<X>ServiceTag` Wind
  * provides. Consumers `import { WorkbenchStorage, WorkbenchTheme }
  * from "@codeeditorland/wind/.../LandWorkbenchTags.js"` once and
- * yield each tag from inside `Effect.gen`.
+ * use each type alias in annotations.
  * @category Composition
  */
 
-export {
+export type {
 	UserSettingsServiceTag,
 	UserSettings,
 } from "../UserSettings/Tag/UserSettingsServiceTag.js";
 
-export {
+export type {
 	WorkbenchActivityServiceTag,
 	WorkbenchActivity,
 } from "../WorkbenchActivity/Tag/WorkbenchActivityServiceTag.js";
 
-export {
+export type {
 	WorkbenchClipboardServiceTag,
 	WorkbenchClipboard,
 } from "../WorkbenchClipboard/Tag/WorkbenchClipboardServiceTag.js";
 
-export {
+export type {
 	WorkbenchCommandServiceTag,
 	WorkbenchCommand,
 } from "../WorkbenchCommand/Tag/WorkbenchCommandServiceTag.js";
 
-export {
+export type {
 	WorkbenchContextKeyServiceTag,
 	WorkbenchContextKey,
 } from "../WorkbenchContextKey/Tag/WorkbenchContextKeyServiceTag.js";
 
-export {
+export type {
 	WorkbenchDialogServiceTag,
 	WorkbenchDialog,
 } from "../WorkbenchDialog/Tag/WorkbenchDialogServiceTag.js";
 
-export {
+export type {
 	WorkbenchEditorServiceTag,
 	WorkbenchEditor,
 } from "../WorkbenchEditor/Tag/WorkbenchEditorServiceTag.js";
 
-export {
+export type {
 	WorkbenchExtensionServiceTag,
 	WorkbenchExtension,
 } from "../WorkbenchExtension/Tag/WorkbenchExtensionServiceTag.js";
 
-export {
+export type {
 	WorkbenchHostServiceTag,
 	WorkbenchHost,
 } from "../WorkbenchHost/Tag/WorkbenchHostServiceTag.js";
 
-export {
+export type {
 	WorkbenchKeybindingServiceTag,
 	WorkbenchKeybinding,
 } from "../WorkbenchKeybinding/Tag/WorkbenchKeybindingServiceTag.js";
 
-export {
+export type {
 	WorkbenchLayoutServiceTag,
 	WorkbenchLayout,
 } from "../WorkbenchLayout/Tag/WorkbenchLayoutServiceTag.js";
 
-export {
+export type {
 	WorkbenchLifecycleServiceTag,
 	WorkbenchLifecycle,
 } from "../WorkbenchLifecycle/Tag/WorkbenchLifecycleServiceTag.js";
 
-export {
+export type {
 	WorkbenchNotificationServiceTag,
 	WorkbenchNotification,
 } from "../WorkbenchNotification/Tag/WorkbenchNotificationServiceTag.js";
 
-export {
+export type {
 	WorkbenchProductServiceTag,
 	WorkbenchProduct,
 } from "../WorkbenchProduct/Tag/WorkbenchProductServiceTag.js";
 
-export {
+export type {
 	WorkbenchProgressServiceTag,
 	WorkbenchProgress,
 } from "../WorkbenchProgress/Tag/WorkbenchProgressServiceTag.js";
 
-export {
+export type {
 	WorkbenchStorageServiceTag,
 	WorkbenchStorage,
 } from "../WorkbenchStorage/Tag/WorkbenchStorageServiceTag.js";
 
-export {
+export type {
 	WorkbenchThemeServiceTag,
 	WorkbenchTheme,
 } from "../WorkbenchTheme/Tag/WorkbenchThemeServiceTag.js";
 
-export {
+export type {
 	WorkbenchWorkspaceServiceTag,
 	WorkbenchWorkspace,
 } from "../WorkbenchWorkspace/Tag/WorkbenchWorkspaceServiceTag.js";

@@ -7,8 +7,18 @@
  * @category Public
  */
 
-export { LandWorkbenchLayer } from "./LandWorkbenchLayer.js";
-
 export { LandWorkbenchRuntime } from "./LandWorkbenchRuntime.js";
+
+export type { LandWorkbenchServices } from "./LandWorkbenchRuntime.js";
+
+export {
+	CELWind,
+	InstallLandWorkbench,
+} from "./LandWorkbenchGlobal.js";
+
+export type {
+	CELWindGlobals,
+	CELWindGlobalShape,
+} from "./LandWorkbenchGlobal.js";
 
 export * from "./LandWorkbenchTags.js";

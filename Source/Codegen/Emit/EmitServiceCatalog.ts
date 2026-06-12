@@ -5,7 +5,7 @@
  * `Wind/Source/Effect/Generated/ServiceCatalog.ts` containing one
  * entry per discovered decorator. Wind code that wants to enumerate
  * the surface (Phase-2 batch progress dashboard, audit scripts,
- * the future `LandWorkbenchLayer` autoloader) imports the catalog
+ * the LandWorkbench registry autoloader) imports the catalog
  * once and iterates.
  *
  * The catalog is the only file the rest of Wind ever needs to
