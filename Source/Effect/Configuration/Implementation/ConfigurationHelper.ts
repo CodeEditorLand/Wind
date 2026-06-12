@@ -137,8 +137,8 @@ const MakeApply = () => {
 						payload: Config.zoomLevel,
 					});
 				}
-			} catch (Error) {
-				throw new ConfigApplyError("zoomLevel", Error);
+			} catch (Failure) {
+				throw new ConfigApplyError("zoomLevel", Failure);
 			}
 		}
 
@@ -149,8 +149,8 @@ const MakeApply = () => {
 					if (typeof process !== "undefined" && process.env) {
 						process.env[Key] = Value as string;
 					}
-				} catch (Error) {
-					throw new ConfigApplyError(Key, Error);
+				} catch (Failure) {
+					throw new ConfigApplyError(Key, Failure);
 				}
 			}
 		}

@@ -64,13 +64,13 @@ export const CreateConfigurationService = (): ConfigurationService => {
 		) {
 			try {
 				return await Context.resolveConfiguration();
-			} catch (Error) {
+			} catch (Failure) {
 				DevLog(
 					"config",
 
 					"[Configuration] Sandbox resolveConfiguration failed, falling back to IPC:",
 
-					Error,
+					Failure,
 				);
 			}
 		}
@@ -81,8 +81,8 @@ export const CreateConfigurationService = (): ConfigurationService => {
 				method: "mountain_get_workbench_configuration",
 				params: [],
 			})) as ISandboxConfiguration;
-		} catch (Error) {
-			throw new ConfigFetchError(Error);
+		} catch (Failure) {
+			throw new ConfigFetchError(Failure);
 		}
 	};
 
@@ -92,8 +92,8 @@ export const CreateConfigurationService = (): ConfigurationService => {
 		for (const Listener of Listeners) {
 			try {
 				Listener(Config);
-			} catch (Error) {
-				DevLog("config", "[Configuration] Listener failed:", Error);
+			} catch (Failure) {
+				DevLog("config", "[Configuration] Listener failed:", Failure);
 			}
 		}
 	};
