@@ -10,6 +10,7 @@
  *   output:appendLine  → emit to Sky output panel (with newline)
  *   output:clear       → clear output panel
  *   output:show        → show output panel
+ *   output:dispose     → drop channel from Mountain's OutputChannelManager
  */
 
 import { Effect, Layer } from "effect";
@@ -76,9 +77,15 @@ function makeOutputService(): OutputService {
 			),
 
 		Dispose: (channelName) =>
-			Effect.sync(() => {
-				ActiveChannels.delete(channelName);
-			}),
+			IPCService.invoke(Channel.OutputDispose)([channelName]).pipe(
+				Effect.map(() => {
+					ActiveChannels.delete(channelName);
+
+					return undefined as void;
+				}),
+
+				Effect.mapError(MakeOutputProblem),
+			),
 	};
 
 	return Service;

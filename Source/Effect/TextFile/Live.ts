@@ -5,9 +5,11 @@
  * channels. Reads and writes UTF-8 text files.
  *
  * IPC channels (WindServiceHandlers.rs):
- *   textFile:read  → tokio::fs::read_to_string
- *   textFile:write → tokio::fs::write
- *   textFile:save  → no-op dirty-state hint
+ *   textFile:read           → tokio::fs::read_to_string
+ *   textFile:write          → tokio::fs::write
+ *   textFile:save           → no-op dirty-state hint
+ *   workingCopy:getAllDirty → list dirty URIs (drives SaveAll)
+ *   workingCopy:isDirty     → per-URI dirty check
  */
 
 import { Effect, Layer } from "effect";
@@ -58,13 +60,34 @@ function makeLiveTextFileService(): TextFileService {
 			),
 
 		SaveAll: () =>
-			IPCService.invoke(Channel.TextFileSave)([]).pipe(
+			IPCService.invoke(Channel.WorkingCopyGetAllDirty)([]).pipe(
+				Effect.map((Result) =>
+					Array.isArray(Result) ? (Result as readonly string[]) : [],
+				),
+
+				Effect.flatMap((DirtyUris) =>
+					Effect.all(
+						DirtyUris.map((DirtyUri) =>
+							IPCService.invoke(Channel.TextFileSave)([
+								UriToPath(DirtyUri),
+							]),
+						),
+
+						{ concurrency: "unbounded" },
+					),
+				),
+
 				Effect.map(() => undefined as void),
 
 				Effect.mapError(MakeTextFileProblem),
 			),
 
-		IsDirty: (_uri) => Effect.succeed(false),
+		IsDirty: (uri) =>
+			IPCService.invoke(Channel.WorkingCopyIsDirty)([uri]).pipe(
+				Effect.map((Result) => Result === true),
+
+				Effect.mapError(MakeTextFileProblem),
+			),
 
 		Revert: (uri) =>
 			IPCService.invoke(Channel.TextFileRead)([UriToPath(uri)]).pipe(
