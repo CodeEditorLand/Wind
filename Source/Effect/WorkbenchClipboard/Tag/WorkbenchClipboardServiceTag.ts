@@ -1,11 +1,14 @@
-import { Context } from "effect";
+/**
+ * @module Effect/WorkbenchClipboard/Tag/WorkbenchClipboardServiceTag
+ * @description
+ * Type alias for `WorkbenchClipboardService`. The Effect Context.Tag was
+ * removed - services are plain objects in the LandWorkbench
+ * registry.
+ * @category Tag
+ */
 
 import type { WorkbenchClipboardService } from "../Interface/WorkbenchClipboardService.js";
 
-export class WorkbenchClipboardServiceTag extends Context.Tag(
-	"Application/WorkbenchClipboardService",
-)<WorkbenchClipboardServiceTag, WorkbenchClipboardService>() {}
+export type WorkbenchClipboardServiceTag = WorkbenchClipboardService;
 
-export const WorkbenchClipboard = WorkbenchClipboardServiceTag;
-
-export default WorkbenchClipboardServiceTag;
+export type WorkbenchClipboard = WorkbenchClipboardService;

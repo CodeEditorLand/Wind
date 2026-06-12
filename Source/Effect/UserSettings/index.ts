@@ -10,7 +10,7 @@
  * @category Public
  */
 
-export {
+export type {
 	UserSettingsServiceTag,
 	UserSettings,
 } from "./Tag/UserSettingsServiceTag.js";

@@ -1,19 +1,14 @@
 /**
  * @module Effect/UserSettings/Tag/UserSettingsServiceTag
  * @description
- * Effect Context.Tag binding for `UserSettingsService`. Use this
- * tag in `Effect.Layer` composition + `Effect.gen` consumers.
+ * Type alias for `UserSettingsService`. The Effect Context.Tag was
+ * removed - services are plain objects in the LandWorkbench
+ * registry.
  * @category Tag
  */
 
-import { Context } from "effect";
-
 import type { UserSettingsService } from "../Interface/UserSettingsService.js";
 
-export class UserSettingsServiceTag extends Context.Tag(
-	"Application/UserSettingsService",
-)<UserSettingsServiceTag, UserSettingsService>() {}
+export type UserSettingsServiceTag = UserSettingsService;
 
-export const UserSettings = UserSettingsServiceTag;
-
-export default UserSettingsServiceTag;
+export type UserSettings = UserSettingsService;

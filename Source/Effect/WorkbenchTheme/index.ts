@@ -1,4 +1,4 @@
-export {
+export type {
 	WorkbenchThemeServiceTag,
 	WorkbenchTheme,
 } from "./Tag/WorkbenchThemeServiceTag.js";

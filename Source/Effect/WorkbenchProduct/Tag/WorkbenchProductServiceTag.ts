@@ -1,11 +1,14 @@
-import { Context } from "effect";
+/**
+ * @module Effect/WorkbenchProduct/Tag/WorkbenchProductServiceTag
+ * @description
+ * Type alias for `WorkbenchProductService`. The Effect Context.Tag was
+ * removed - services are plain objects in the LandWorkbench
+ * registry.
+ * @category Tag
+ */
 
 import type { WorkbenchProductService } from "../Interface/WorkbenchProductService.js";
 
-export class WorkbenchProductServiceTag extends Context.Tag(
-	"Application/WorkbenchProductService",
-)<WorkbenchProductServiceTag, WorkbenchProductService>() {}
+export type WorkbenchProductServiceTag = WorkbenchProductService;
 
-export const WorkbenchProduct = WorkbenchProductServiceTag;
-
-export default WorkbenchProductServiceTag;
+export type WorkbenchProduct = WorkbenchProductService;

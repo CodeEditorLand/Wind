@@ -1,4 +1,4 @@
-export {
+export type {
 	WorkbenchContextKeyServiceTag,
 	WorkbenchContextKey,
 } from "./Tag/WorkbenchContextKeyServiceTag.js";

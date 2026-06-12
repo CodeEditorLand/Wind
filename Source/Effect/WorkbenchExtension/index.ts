@@ -1,4 +1,4 @@
-export {
+export type {
 	WorkbenchExtensionServiceTag,
 	WorkbenchExtension,
 } from "./Tag/WorkbenchExtensionServiceTag.js";

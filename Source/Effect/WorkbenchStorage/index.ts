@@ -7,7 +7,7 @@
  * @category Public
  */
 
-export {
+export type {
 	WorkbenchStorageServiceTag,
 	WorkbenchStorage,
 } from "./Tag/WorkbenchStorageServiceTag.js";

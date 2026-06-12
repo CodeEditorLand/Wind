@@ -1,4 +1,4 @@
-export {
+export type {
 	WorkbenchClipboardServiceTag,
 	WorkbenchClipboard,
 } from "./Tag/WorkbenchClipboardServiceTag.js";

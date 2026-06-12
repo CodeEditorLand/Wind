@@ -1,11 +1,14 @@
-import { Context } from "effect";
+/**
+ * @module Effect/WorkbenchKeybinding/Tag/WorkbenchKeybindingServiceTag
+ * @description
+ * Type alias for `WorkbenchKeybindingService`. The Effect Context.Tag was
+ * removed - services are plain objects in the LandWorkbench
+ * registry.
+ * @category Tag
+ */
 
 import type { WorkbenchKeybindingService } from "../Interface/WorkbenchKeybindingService.js";
 
-export class WorkbenchKeybindingServiceTag extends Context.Tag(
-	"Application/WorkbenchKeybindingService",
-)<WorkbenchKeybindingServiceTag, WorkbenchKeybindingService>() {}
+export type WorkbenchKeybindingServiceTag = WorkbenchKeybindingService;
 
-export const WorkbenchKeybinding = WorkbenchKeybindingServiceTag;
-
-export default WorkbenchKeybindingServiceTag;
+export type WorkbenchKeybinding = WorkbenchKeybindingService;

@@ -1,4 +1,4 @@
-export {
+export type {
 	WorkbenchKeybindingServiceTag,
 	WorkbenchKeybinding,
 } from "./Tag/WorkbenchKeybindingServiceTag.js";
