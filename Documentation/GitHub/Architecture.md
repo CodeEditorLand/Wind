@@ -404,6 +404,22 @@ await workbench.startup();
 
 ---
 
+## Shim Compatibility
+
+| 🟠 Low-Level Shim | 🔵 Coverage Shim |
+|-------------------|-----------------|
+| Tier: `TierShim=Own\|Preempt` | Tier: `TierShim=Proxy\|Replace` |
+| Engine prototype hooks | Service routing + audit |
+
+> This Element supports the Land deep-shim interception system. Gated behind
+> `TierShim` env var (default: `None` — zero overhead).
+>
+> **Wind shim architecture:** `Source/Shim/` with 11 files — SwallowMap,
+> RedirectBus, IPCInterceptor, AuditLog, EventInterceptor, NetworkProxy,
+> AsyncProxy, etc. — the 🔵 coverage hub.
+
+---
+
 **Project Maintainers:** Source Open
 ([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
 [GitHub Repository](https://github.com/CodeEditorLand/Wind) |
