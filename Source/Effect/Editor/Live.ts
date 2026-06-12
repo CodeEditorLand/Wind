@@ -8,7 +8,7 @@
  *
  * Architecture:
  *  - Active editor state is maintained in a SubscriptionRef that is updated
- *    by listening to Mountain's `editor:activeChanged` Tauri event.
+ *    by listening to Mountain's `sky://editor/active-changed` Tauri event.
  *  - OpenEditor delegates to Mountain's `native:openExternal` (file:// URIs)
  *    or to the Monaco open command for workspace files.
  *  - Selections / decorations operate on the current Monaco editor instance
@@ -17,6 +17,7 @@
 
 import { Effect, Layer, Ref } from "effect";
 
+import SkyEvent from "../../IPC/SkyEvent.js";
 import { CommandsServiceInstance } from "../Commands/Live.js";
 import type { EditorService } from "./Interface/EditorService.js";
 import { EditorServiceTag } from "./Tag/EditorServiceTag.js";
@@ -37,8 +38,12 @@ function makeEditorService(): EditorService {
 	const VisibleEditorsRef = Ref.unsafeMake<readonly unknown[]>([]);
 
 	// Listen to Mountain editor-change events emitted by Mountain via
-	// `AppHandle.emit("editor:activeChanged", { uri, viewColumn })`.
+	// `AppHandle.emit(SkyEvent::EditorActiveChanged, { uri, viewColumn })`.
 	// Update the ActiveEditorRef so GetActiveEditor returns the current uri.
+	const ActiveChangedSubscription: { Unlisten: (() => void) | null } = {
+		Unlisten: null,
+	};
+
 	void Effect.runFork(
 		Effect.gen(function* () {
 			// Subscribe to the Tauri event channel.
@@ -49,7 +54,7 @@ function makeEditorService(): EditorService {
 			yield* Effect.promise(
 				() =>
 					new Promise<void>((Resolve) => {
-						void listen("editor:activeChanged", (Event) => {
+						void listen(SkyEvent.EditorActiveChanged, (Event) => {
 							void Effect.runFork(
 								Ref.set(
 									ActiveEditorRef,
@@ -57,7 +62,11 @@ function makeEditorService(): EditorService {
 									Event.payload ?? null,
 								),
 							);
-						}).then(() => Resolve());
+						}).then((Unlisten) => {
+							ActiveChangedSubscription.Unlisten = Unlisten;
+
+							Resolve();
+						});
 					}),
 			);
 		}).pipe(Effect.catchAll(() => Effect.void)),

@@ -172,6 +172,31 @@ const ChannelRouteMap: Record<string, string> = {
 	// Mountain's `git:*` subprocess handlers (see
 	// `Mountain/Source/IPC/WindServiceHandlers/Git.rs`).
 	localGit: "git",
+
+	scm: "scm",
+
+	debug: "debug",
+
+	tasks: "tasks",
+
+	auth: "auth",
+
+	language: "language",
+
+	languages: "languages",
+
+	process: "process",
+
+	browserViewGroup: "browserView",
+
+	// `watcher` is VS Code's `IFileWatcherService` channel; its
+	// `watch`/`unwatch` methods land on Mountain's `file:watch`/
+	// `file:unwatch` arms. `setVerboseLogging` stays stubbed below.
+	watcher: "file",
+
+	env: "env",
+
+	history: "history",
 };
 
 const FireAndForgetChannels = new Set(["logger", "output"]);
@@ -236,11 +261,12 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	sharedProcess: {},
 
 	utilityProcessWorker: {
-		// createWorker must be a Promise (not an object wrapping one).
-		// The workbench calls .then() directly on the return value; wrapping
-		// in { onDidTerminate } made it a non-thenable causing a silent hang
-		// in DiskFileSystemProvider. Matches Output's lockstep copy.
-		createWorker: new Promise(() => {}),
+		// createWorker must be a settled Promise (not an object wrapping
+		// one). The workbench calls .then() directly on the return value;
+		// wrapping in { onDidTerminate } made it a non-thenable causing a
+		// silent hang in DiskFileSystemProvider, and a never-settling
+		// Promise hangs language-detection service init.
+		createWorker: Promise.resolve(undefined),
 
 		disposeWorker: undefined,
 	},
@@ -258,17 +284,7 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	mcpGateway: {},
 
 	browserViewGroup: {
-		updateKeybindings: undefined,
-
-		updateTheme: undefined,
-
-		updateConfiguration: undefined,
-
 		getBrowserViews: [],
-
-		openDevTools: undefined,
-
-		closeDevTools: undefined,
 	},
 
 	// Fix: terminals.windows - IExternalTerminalService.getDefaultTerminalForPlatforms()
@@ -280,23 +296,6 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 
 			osx: "Terminal.app",
 		},
-	},
-
-	// Fix: update.setInternalOrg - IUpdateService methods
-	update: {
-		checkForUpdates: { updateType: 0 },
-
-		downloadUpdate: undefined,
-
-		applyUpdate: undefined,
-
-		quitAndInstall: undefined,
-
-		isLatestVersion: true,
-
-		setInternalOrg: undefined,
-
-		_getInitialState: { type: 0 },
 	},
 
 	// Fix: webview - `IWebviewManagerService` stub. Stock VS Code uses
@@ -316,16 +315,10 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 		showReference: undefined,
 	},
 
-	// Fix: watcher - `IFileWatcherService` stub. Land routes file
-	// watching via Mountain's typed `FileWatcher.Register` IPC, not
-	// through the platform's `watcher` channel. Stub the legacy ops to
-	// stop them from hitting `Unknown method` paths during workbench
-	// boot. Mirror of Output copy.
+	// `watcher` - `IFileWatcherService`. `watch`/`unwatch` route to
+	// Mountain through the `watcher: "file"` ChannelRouteMap entry;
+	// only the logging toggle is a no-op.
 	watcher: {
-		watch: undefined,
-
-		unwatch: undefined,
-
 		setVerboseLogging: undefined,
 	},
 
@@ -913,33 +906,18 @@ class TauriChannel implements IChannel {
 
 		const Stubs = StubChannels[this.ChannelName];
 
-		if (Stubs !== undefined) {
+		// A stub entry only answers for the commands it names explicitly.
+		// Commands absent from the stub object fall through to
+		// ChannelRouteMap routing (or the `miss` forward below), so a
+		// partially-stubbed channel like `process` still reaches
+		// Mountain's real handlers for its non-stubbed methods.
+		if (
+			Stubs !== undefined &&
+			Object.prototype.hasOwnProperty.call(Stubs, Command)
+		) {
 			_Trace("ipc", `stub:${this.ChannelName}.${Command}`);
 
 			const StubValue = Stubs[Command];
-
-			// Disposition: `value` = real payload, `noop` = undefined on
-			// purpose, `drift` = key missing from stub object (worth
-			// investigating). Mirror of the Output copy.
-			const Disposition = Object.prototype.hasOwnProperty.call(
-				Stubs,
-
-				Command,
-			)
-				? StubValue === undefined
-					? "noop"
-					: "value"
-				: "drift";
-
-			// Only forward for `drift` - the noteworthy case. `value` /
-			// `noop` are routine and would saturate the IPC channel.
-			if (Disposition === "drift") {
-				_DevLogForward(
-					"channel-stub",
-
-					`stub-hit channel=${this.ChannelName} cmd=${Command} disposition=${Disposition}`,
-				);
-			}
 
 			return (StubValue !== undefined ? StubValue : undefined) as T;
 		}

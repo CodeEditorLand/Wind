@@ -497,6 +497,8 @@ export default {
 
 	AuthRemoveSession: "auth:removeSession",
 
+	AuthValidateToken: "auth:validateToken",
+
 	// --- Legacy wire-shape channels (non prefix:method) ---
 	// Two historical channel groups don't follow the `prefix:method` shape
 	// the rest of the registry uses:

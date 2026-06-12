@@ -14,6 +14,8 @@
  *   file:move       → Move(source, target, { overwrite? })
  *   file:copy       → Copy(source, target, { overwrite? })
  *   file:exists     → Exists(path)
+ *   file:watch      → Watch(path)
+ *   file:unwatch    → Unwatch(path)
  */
 
 import { Effect, Layer } from "effect";
@@ -196,20 +198,21 @@ function makeFilesService(): FilesService {
 		},
 
 		Watch: (uri) => {
-			// Watch registration is fire-and-forget for now.
-			// Mountain's CocoonService.watch_file stores the intent.
 			const Path = UriToPath(uri);
 
-			return IPCService.invoke(Channel.FileRead)([Path]) // Verify path exists
-				.pipe(
-					Effect.map(() => ({
-						dispose: () => {
-							// No-op until notify crate integration is complete
-						},
-					})),
+			return IPCService.invoke(Channel.FileWatch)([Path]).pipe(
+				Effect.map(() => ({
+					dispose: () => {
+						void Effect.runFork(
+							IPCService.invoke(Channel.FileUnwatch)([Path]).pipe(
+								Effect.catchAll(() => Effect.void),
+							),
+						);
+					},
+				})),
 
-					Effect.mapError(MakeFilesProblem),
-				);
+				Effect.mapError(MakeFilesProblem),
+			);
 		},
 
 		// `UserInterface.ShowOpenDialog` / `…ShowSaveDialog` use dotted
