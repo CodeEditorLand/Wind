@@ -4,11 +4,8 @@
  * Service interface for bootstrap orchestration.
  * Manages the startup sequence for the VSCode workbench.
  * @see {@link Effect/Bootstrap/Implementation/BootstrapImplementation} Default implementation
- * @see [Effect-TS Services](https://effect.website/docs/guide/context)
  * @category Interface
  */
-
-import { Context, Effect } from "effect";
 
 import type {
 	BootstrapOptions,
@@ -36,9 +33,7 @@ export interface BootstrapService {
 	/**
 	 * Run the bootstrap process with optional configuration.
 	 * @param options - Options for controlling bootstrap behavior
-	 * @returns Effect that resolves to the bootstrap result
+	 * @returns Promise resolving to the bootstrap result
 	 */
-	readonly run: (
-		options?: BootstrapOptions,
-	) => Effect.Effect<BootstrapResult, never>;
+	readonly run: (options?: BootstrapOptions) => Promise<BootstrapResult>;
 }

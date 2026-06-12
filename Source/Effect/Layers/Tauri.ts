@@ -7,8 +7,6 @@
 
 import { Layer } from "effect";
 
-import { ActivityBarLive } from "../ActivityBar.js";
-import { BootstrapLive } from "../Bootstrap.js";
 import { LiveClipboardServiceLayer as ClipboardLive } from "../Clipboard.js";
 import { LiveCommandsServiceLayer as CommandsLive } from "../Commands/Commands.js";
 import { LiveDecorationsServiceLayer as DecorationsLive } from "../Decorations/Decorations.js";
@@ -16,7 +14,6 @@ import { LiveEditorServiceLayer as EditorLive } from "../Editor/Editor.js";
 import { EnvironmentLive } from "../Environment.js";
 import { LiveExtensionsServiceLayer as ExtensionsLive } from "../Extensions/Extensions.js";
 import { LiveFilesServiceLayer as FilesLive } from "../Files/Files.js";
-import { HealthLive } from "../Health.js";
 import { LiveHistoryServiceLayer as HistoryLive } from "../History/History.js";
 import { LiveKeybindingServiceLayer as KeybindingLive } from "../Keybinding/Keybinding.js";
 import { LiveLabelServiceLayer as LabelLive } from "../Label/Label.js";
@@ -66,12 +63,6 @@ const BaseServices = Layer.mergeAll(
 	TelemetryLive,
 
 	MountainSyncLive,
-
-	HealthLive,
-
-	BootstrapLive,
-
-	ActivityBarLive,
 
 	PanelLive,
 
@@ -148,12 +139,6 @@ export const TauriLiveLayer = Layer.mergeAll(
 
 	MountainSyncLive,
 
-	HealthLive,
-
-	BootstrapLive,
-
-	ActivityBarLive,
-
 	PanelLive,
 
 	SidebarLive,
@@ -226,12 +211,6 @@ export const TauriDevLayer = Layer.mergeAll(
 	TelemetryLive,
 
 	MountainSyncLive,
-
-	HealthLive,
-
-	BootstrapLive,
-
-	ActivityBarLive,
 
 	PanelLive,
 

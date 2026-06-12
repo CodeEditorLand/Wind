@@ -8,7 +8,6 @@
  */
 
 import { invoke as TauriInvoke } from "@tauri-apps/api/core";
-import { Context, Effect, Layer } from "effect";
 
 import {
 	InvalidPathError,
@@ -385,8 +384,6 @@ function buildFileSystemService(): FileSystemProviderService {
 	return {
 		provider: provider as unknown as IFileSystemProvider,
 
-		getProvider: Effect.succeed(provider as unknown as IFileSystemProvider),
-
 		readFile: async (uri: string) => {
 			try {
 				return await provider.readFile(URI.parse(uri));
@@ -482,25 +479,6 @@ function buildFileSystemService(): FileSystemProviderService {
 }
 
 const FileSystemProvider = buildFileSystemService();
-
-// ============================================================================
-// Effect compatibility (WorkbenchIntegrationImplementation only)
-// ============================================================================
-
-/**
- * Tag retained solely for `Workbench/Implementation/
- * WorkbenchIntegrationImplementation.ts`, which still resolves the
- * service through Effect context. New consumers import the default
- * export directly.
- */
-export const FileSystemProviderTag =
-	Context.GenericTag<FileSystemProviderService>("FileSystemProvider");
-
-export const FileSystemProviderLive = Layer.succeed(
-	FileSystemProviderTag,
-
-	FileSystemProvider,
-);
 
 // ============================================================================
 // Exports

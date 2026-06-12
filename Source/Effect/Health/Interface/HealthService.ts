@@ -5,26 +5,26 @@
  * @category Interface
  */
 
-import { Effect } from "effect";
-
 import type {
 	HealthStatus,
 	ServiceHealth,
 	SystemHealth,
 } from "../Type/HealthType.js";
 
+export interface HealthMonitorHandle {
+	readonly dispose: () => void;
+}
+
 export interface HealthService {
-	readonly checkService: (
-		serviceName: string,
-	) => Effect.Effect<ServiceHealth, never>;
+	readonly checkService: (serviceName: string) => Promise<ServiceHealth>;
 
-	readonly checkAllServices: () => Effect.Effect<SystemHealth, never>;
+	readonly checkAllServices: () => Promise<SystemHealth>;
 
-	readonly getOverallStatus: () => Effect.Effect<HealthStatus, never>;
+	readonly getOverallStatus: () => Promise<HealthStatus>;
 
 	readonly monitorService: (
 		serviceName: string,
 
 		intervalMs: number,
-	) => Effect.Effect<void, never>;
+	) => HealthMonitorHandle;
 }

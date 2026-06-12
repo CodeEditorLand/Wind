@@ -7,13 +7,12 @@
  */
 
 // ============================================================================
-// Tags
+// Service
 // ============================================================================
 
 export {
-	WorkbenchIntegrationTag,
-	WorkbenchIntegrationLiveLayer,
 	default,
+	WorkbenchIntegration,
 } from "./Implementation/WorkbenchIntegrationImplementation.js";
 
 // ============================================================================
@@ -27,13 +26,13 @@ export type { WorkbenchIntegrationService } from "./Interface/WorkbenchIntegrati
 // ============================================================================
 
 export type {
-	WorkbenchState,
+	ProviderRegistrationResult,
+	WorkbenchDiagnostics,
 	WorkbenchInitState,
 	WorkbenchIntegrationConfig,
-	ProviderRegistrationResult,
-	WorkspaceContext,
-	WorkbenchDiagnostics,
 	WorkbenchIntegrationError,
+	WorkbenchState,
+	WorkspaceContext,
 } from "./Type/WorkbenchIntegrationType.js";
 
 export { WorkbenchIntegrationErrorCode } from "./Type/WorkbenchIntegrationType.js";

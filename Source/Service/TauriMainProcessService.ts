@@ -23,14 +23,37 @@ const _Trace = (Tag: string, Message: string): void => {
 	} catch {}
 };
 
-// Mirror a tagged line into Mountain's dev-log file sink so
+// Mirror tagged lines into Mountain's dev-log file sink so
 // `Trace=<tag> tail -f Mountain.dev.log` picks up TS-originated
 // traffic alongside Rust `dev_log!` output. Fire-and-forget - never
 // awaits, never throws. Mountain short-circuits cheaply when the tag
-// isn't enabled. Sends BOTH casings (`Tag`/`Message` + `tag`/`message`)
-// so Tauri's param-case handling doesn't require a guess - the Rust
-// command coalesces whichever arrived populated.
-const _DevLogForward = (Tag: string, Message: string): void => {
+// isn't enabled. Entries buffer for 100ms and flush as a single
+// `RenderDevLog` invoke per tag (the Rust command takes one message
+// string, so the batch is newline-joined), capped at 20 entries per
+// flush window - overflow is dropped and counted in a trailing line.
+// One invoke per burst instead of one per error keeps IPC-error
+// storms during extension activation from competing with real IPC
+// traffic on the Tauri invoke channel. Sends BOTH casings
+// (`Tag`/`Message` + `tag`/`message`) so Tauri's param-case handling
+// doesn't require a guess - the Rust command coalesces whichever
+// arrived populated.
+const _DevLogBuffer: Array<{ Tag: string; Message: string }> = [];
+
+let _DevLogDropped = 0;
+
+let _DevLogFlushTimer: ReturnType<typeof setTimeout> | null = null;
+
+const _DevLogFlush = (): void => {
+	_DevLogFlushTimer = null;
+
+	const Batch = _DevLogBuffer.splice(0, _DevLogBuffer.length);
+
+	const Dropped = _DevLogDropped;
+
+	_DevLogDropped = 0;
+
+	if (Batch.length === 0) return;
+
 	try {
 		const Internals = (window as any).__TAURI_INTERNALS__;
 
@@ -41,13 +64,46 @@ const _DevLogForward = (Tag: string, Message: string): void => {
 
 		if (typeof Invoke !== "function") return;
 
-		Invoke("RenderDevLog", {
-			Tag,
-			Message,
-			tag: Tag,
-			message: Message,
-		}).catch(() => {});
+		if (Dropped > 0) {
+			Batch.push({
+				Tag: Batch[Batch.length - 1]?.Tag ?? "channel-stub",
+
+				Message: `(+${Dropped} entries dropped this flush window)`,
+			});
+		}
+
+		const ByTag = new Map<string, string[]>();
+
+		for (const Entry of Batch) {
+			const Lines = ByTag.get(Entry.Tag);
+
+			if (Lines) Lines.push(Entry.Message);
+			else ByTag.set(Entry.Tag, [Entry.Message]);
+		}
+
+		for (const [Tag, Messages] of ByTag) {
+			const Message = Messages.join("\n");
+
+			Invoke("RenderDevLog", {
+				Tag,
+				Message,
+				tag: Tag,
+				message: Message,
+			}).catch(() => {});
+		}
 	} catch {}
+};
+
+const _DevLogForward = (Tag: string, Message: string): void => {
+	if (_DevLogBuffer.length >= 20) {
+		_DevLogDropped += 1;
+	} else {
+		_DevLogBuffer.push({ Tag, Message });
+	}
+
+	if (_DevLogFlushTimer === null) {
+		_DevLogFlushTimer = setTimeout(_DevLogFlush, 100);
+	}
 };
 
 // Timed trace - wraps an async operation with start/end marks + measure.
@@ -203,6 +259,134 @@ const ChannelRouteMap: Record<string, string> = {
 // `output:createOutputChannel`/`registerLogger` handlers return handles
 // the workbench callers consume, so those calls must round-trip.
 const FireAndForgetChannels = new Set(["logger"]);
+
+// Channel-event → `sky://` Tauri event mapping.
+//
+// Stock VS Code's `Channel.listen("foo")` returns a streaming `Event<T>`
+// fed by the channel server. We don't run a channel server - Tauri's
+// `app.emit("sky://X", payload)` is the wire substrate. Each channel
+// event the workbench subscribes to maps to a `sky://` Tauri event name
+// plus an optional `Map` function that reshapes the Tauri payload into
+// the shape the renderer-side service expects. Without an entry the
+// fallthrough in `listen()` returns a never-firing Event. Keep in
+// lockstep with the Output copy at
+// `Element/Output/Source/Service/Tauri/Main/Process/Service.ts`.
+type ChannelEventBridgeEntry = {
+	Channel: string;
+
+	Map?: (Payload: unknown) => unknown;
+};
+
+const ChannelEventBridge: Record<
+	string,
+	Record<string, ChannelEventBridgeEntry>
+> = {
+	localPty: {
+		// VS Code's `IPtyService.onProcessData` expects
+		// `{ id: number, event: IProcessDataEvent | string }` per
+		// `vs/platform/terminal/common/terminal.ts`. Mountain emits
+		// `{ id, data }` from `Environment/TerminalProvider.rs::PTYReader`.
+		// Re-key `data` → `event` to match.
+		onProcessData: {
+			Channel: "sky://terminal/data",
+
+			Map: (P) => {
+				const Obj = P as { id?: number; data?: string } | undefined;
+
+				if (!Obj || typeof Obj.id !== "number") return undefined;
+
+				return { id: Obj.id, event: Obj.data ?? "" };
+			},
+		},
+
+		// Listen on `sky://terminal/create` because that's when Mountain
+		// spawns the PTY (same moment the process is "ready" from the
+		// renderer's POV - the workbench uses this event to drive xterm
+		// MOUNT and start consuming `onProcessData`). The `processId`
+		// channel exists separately for extension-host PID notifications
+		// from Cocoon - not the same signal.
+		onProcessReady: {
+			Channel: "sky://terminal/create",
+
+			Map: (P) => {
+				const Obj = P as { id?: number; pid?: number } | undefined;
+
+				if (!Obj || typeof Obj.id !== "number") return undefined;
+
+				return {
+					id: Obj.id,
+
+					event: {
+						pid: Obj.pid ?? 0,
+
+						cwd: "",
+
+						windowsPty: undefined,
+					},
+				};
+			},
+		},
+
+		onProcessExit: {
+			Channel: "sky://terminal/exit",
+
+			Map: (P) => {
+				const Obj = P as { id?: number; code?: number } | undefined;
+
+				if (!Obj || typeof Obj.id !== "number") return undefined;
+
+				return { id: Obj.id, event: Obj.code ?? 0 };
+			},
+		},
+	},
+
+	// Mountain emits `sky://terminal/create` and `sky://terminal/exit`
+	// (BATCH-19 Part B). Exposing them on the `terminal` channel as
+	// `onTerminalCreate`/`onTerminalExit` lets workbench components
+	// (the terminal panel, ITerminalInstanceService) learn about
+	// lifecycle transitions without polling.
+	terminal: {
+		onTerminalData: { Channel: "sky://terminal/data" },
+
+		onTerminalCreate: { Channel: "sky://terminal/create" },
+
+		onTerminalExit: { Channel: "sky://terminal/exit" },
+	},
+
+	// Mountain emits `sky://extensions/installed` with
+	// `{ identifier, version, location }` (ExtensionInstall.rs +
+	// ScanAndPopulateExtensions.rs) and `sky://extensions/uninstalled`
+	// with `{ identifier, location }` (ExtensionUninstall.rs) so the
+	// Extensions sidebar refreshes without polling `getInstalled`.
+	extensions: {
+		onDidInstallExtension: { Channel: "sky://extensions/installed" },
+
+		onDidUninstallExtension: { Channel: "sky://extensions/uninstalled" },
+	},
+
+	localFilesystem: {
+		fileChange: { Channel: "sky://vfs/fileChange" },
+	},
+
+	configuration: {
+		onDidChangeConfiguration: { Channel: "sky://configuration/changed" },
+	},
+
+	// Mountain emits `sky://workspaces/changed` with
+	// `{ added, removed, folders }` whenever the folder set mutates
+	// (BATCH-14 broadcast variant). Wind subscribes so the workbench's
+	// workspace service and recent-folders UI see the change the same
+	// tick that Cocoon sees its `$deltaWorkspaceFolders` notification.
+	workspaces: {
+		onDidChangeWorkspaceFolders: { Channel: "sky://workspaces/changed" },
+	},
+
+	lifecycle: {
+		onWillShutdown: { Channel: "sky://lifecycle/willShutdown" },
+
+		onDidChangePhase: { Channel: "sky://lifecycle/phaseChanged" },
+	},
+};
 
 const FileSystemChannels = new Set(["localFilesystem"]);
 
@@ -1126,6 +1310,50 @@ class TauriChannel implements IChannel {
 	listen<T>(Event: string, Arg?: unknown): VSCodeEvent<T> {
 		_Trace("ipc", `listen:${this.ChannelName}.${Event}`);
 
+		// Channel-event subscriptions that route through Tauri's event
+		// system - see `ChannelEventBridge` above. The `Disposed` flag
+		// makes a dispose() issued BEFORE the async `listen()` resolves
+		// still unhook deterministically: the resolution callback checks
+		// the flag and immediately unlistens instead of leaking the
+		// subscription.
+		const SkyEventBridge = ChannelEventBridge[this.ChannelName]?.[Event];
+
+		if (SkyEventBridge) {
+			return ((Listener: (Payload: unknown) => void) => {
+				let Disposed = false;
+
+				let Unlisten: (() => void) | null = null;
+
+				import("@tauri-apps/api/event")
+					.then(({ listen }) => {
+						if (Disposed) return;
+
+						return listen(SkyEventBridge.Channel, (TauriEvent) => {
+							const Mapped = SkyEventBridge.Map
+								? SkyEventBridge.Map(TauriEvent.payload)
+								: TauriEvent.payload;
+
+							if (Mapped !== undefined) Listener(Mapped);
+						});
+					})
+					.then((Result) => {
+						if (typeof Result === "function") {
+							if (Disposed) Result();
+							else Unlisten = Result;
+						}
+					})
+					.catch(() => {});
+
+				return {
+					dispose: () => {
+						Disposed = true;
+
+						Unlisten?.();
+					},
+				};
+			}) as unknown as VSCodeEvent<T>;
+		}
+
 		if (
 			FileSystemChannels.has(this.ChannelName) &&
 			Event === "readFileStream"
@@ -1186,168 +1414,6 @@ class TauriChannel implements IChannel {
 					});
 
 				return { dispose: () => {} };
-			}) as unknown as VSCodeEvent<T>;
-		}
-
-		// ----------------------------------------------------------------
-		// localFilesystem - fileChange (file watcher notifications)
-		// ----------------------------------------------------------------
-		if (
-			FileSystemChannels.has(this.ChannelName) &&
-			Event === "fileChange"
-		) {
-			return ((Listener: (Data: unknown) => void) => {
-				const Unlisten = (window as any).__TAURI__?.event?.listen(
-					"sky://vfs/fileChange",
-
-					(TauriEvent: any) => Listener(TauriEvent.payload),
-				);
-
-				return {
-					dispose: () => {
-						Unlisten?.then((F: () => void) => F());
-					},
-				};
-			}) as unknown as VSCodeEvent<T>;
-		}
-
-		// ----------------------------------------------------------------
-		// configuration - onDidChangeConfiguration
-		// ----------------------------------------------------------------
-		if (
-			this.ChannelName === "configuration" &&
-			Event === "onDidChangeConfiguration"
-		) {
-			return ((Listener: (Data: unknown) => void) => {
-				const Unlisten = (window as any).__TAURI__?.event?.listen(
-					"sky://configuration/changed",
-
-					(TauriEvent: any) => Listener(TauriEvent.payload),
-				);
-
-				return {
-					dispose: () => {
-						Unlisten?.then((F: () => void) => F());
-					},
-				};
-			}) as unknown as VSCodeEvent<T>;
-		}
-
-		// ----------------------------------------------------------------
-		// terminal - onTerminalData
-		// ----------------------------------------------------------------
-		if (this.ChannelName === "terminal" && Event === "onTerminalData") {
-			return ((Listener: (Data: unknown) => void) => {
-				const Unlisten = (window as any).__TAURI__?.event?.listen(
-					"sky://terminal/data",
-
-					(TauriEvent: any) => Listener(TauriEvent.payload),
-				);
-
-				return {
-					dispose: () => {
-						Unlisten?.then((F: () => void) => F());
-					},
-				};
-			}) as unknown as VSCodeEvent<T>;
-		}
-
-		// ----------------------------------------------------------------
-		// terminal - onTerminalCreate / onTerminalExit
-		//
-		// Mountain emits `sky://terminal/create` and `sky://terminal/exit`
-		// (BATCH-19 Part B). Exposing them on the `terminal` channel as
-		// `onTerminalCreate`/`onTerminalExit` lets workbench components
-		// (the terminal panel, ITerminalInstanceService) learn about
-		// lifecycle transitions without polling.
-		// ----------------------------------------------------------------
-		if (
-			this.ChannelName === "terminal" &&
-			(Event === "onTerminalCreate" || Event === "onTerminalExit")
-		) {
-			const Channel =
-				Event === "onTerminalCreate"
-					? "sky://terminal/create"
-					: "sky://terminal/exit";
-
-			return ((Listener: (Data: unknown) => void) => {
-				const Unlisten = (window as any).__TAURI__?.event?.listen(
-					Channel,
-
-					(TauriEvent: any) => Listener(TauriEvent.payload),
-				);
-
-				return {
-					dispose: () => {
-						Unlisten?.then((F: () => void) => F());
-					},
-				};
-			}) as unknown as VSCodeEvent<T>;
-		}
-
-		// ----------------------------------------------------------------
-		// workspaces - onDidChangeWorkspaceFolders
-		//
-		// Mountain emits `sky://workspaces/changed` with
-		// `{ added, removed, folders }` whenever the folder set mutates
-		// (BATCH-14 broadcast variant). Wind subscribes so the workbench's
-		// workspace service and recent-folders UI see the change the same
-		// tick that Cocoon sees its `$deltaWorkspaceFolders` notification.
-		// ----------------------------------------------------------------
-		if (
-			this.ChannelName === "workspaces" &&
-			Event === "onDidChangeWorkspaceFolders"
-		) {
-			return ((Listener: (Data: unknown) => void) => {
-				const Unlisten = (window as any).__TAURI__?.event?.listen(
-					"sky://workspaces/changed",
-
-					(TauriEvent: any) => Listener(TauriEvent.payload),
-				);
-
-				return {
-					dispose: () => {
-						Unlisten?.then((F: () => void) => F());
-					},
-				};
-			}) as unknown as VSCodeEvent<T>;
-		}
-
-		// ----------------------------------------------------------------
-		// lifecycle - onWillShutdown
-		// ----------------------------------------------------------------
-		if (this.ChannelName === "lifecycle" && Event === "onWillShutdown") {
-			return ((Listener: (Data: unknown) => void) => {
-				const Unlisten = (window as any).__TAURI__?.event?.listen(
-					"sky://lifecycle/willShutdown",
-
-					(TauriEvent: any) => Listener(TauriEvent.payload),
-				);
-
-				return {
-					dispose: () => {
-						Unlisten?.then((F: () => void) => F());
-					},
-				};
-			}) as unknown as VSCodeEvent<T>;
-		}
-
-		// ----------------------------------------------------------------
-		// lifecycle - onDidChangePhase
-		// ----------------------------------------------------------------
-		if (this.ChannelName === "lifecycle" && Event === "onDidChangePhase") {
-			return ((Listener: (Data: unknown) => void) => {
-				const Unlisten = (window as any).__TAURI__?.event?.listen(
-					"sky://lifecycle/phaseChanged",
-
-					(TauriEvent: any) => Listener(TauriEvent.payload),
-				);
-
-				return {
-					dispose: () => {
-						Unlisten?.then((F: () => void) => F());
-					},
-				};
 			}) as unknown as VSCodeEvent<T>;
 		}
 

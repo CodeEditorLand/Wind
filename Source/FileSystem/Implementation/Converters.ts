@@ -4,7 +4,7 @@
  * Pure conversion helpers between VS Code URI/IStat shapes and the
  * raw JSON objects that Mountain returns from `file:stat` / `file:readdir`.
  * Isolated here so unit tests can verify the mapping without the full
- * Effect layer or IPC stack.
+ * IPC stack.
  */
 
 import { InvalidPathError } from "../Error/FileSystemProviderError";

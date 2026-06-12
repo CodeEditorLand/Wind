@@ -10,20 +10,8 @@
 // Service
 // ============================================================================
 
-export { default as FileSystemProvider } from "./Implementation/FileSystemProviderImplementation.js";
-
-// ============================================================================
-// Tags
-// ============================================================================
-
-export { FileSystemProviderTag } from "./Implementation/FileSystemProviderImplementation.js";
-
-// ============================================================================
-// Layers
-// ============================================================================
-
 export {
-	FileSystemProviderLive,
+	default as FileSystemProvider,
 	MountainCommands,
 } from "./Implementation/FileSystemProviderImplementation.js";
 

@@ -1,19 +1,16 @@
 /**
  * @module Effect/Language/Live
  * @description
- * Live implementation of LanguageService. Provider registrations are
- * fire-and-forget from the Wind side - the actual provider logic lives in
- * Cocoon (extension host) and is stored in Mountain's ProviderRegistration
- * via gRPC. Wind holds a local disposable reference for each registration so
- * extensions can call `.dispose()` to unregister.
- *
- * Provider registration is tracked locally in a Map so disposal works without
- * a Mountain round-trip. A numeric handle is assigned to each registration
- * and sent to Mountain via the `language:register` IPC channel (added in P1).
- *
- * For now, registration is accepted locally; the actual Mountain-side storage
- * is handled by Cocoon → Mountain gRPC. This layer is primarily responsible
- * for the Wind/UI side of language feature lifecycle.
+ * Live implementation of LanguageService. This layer is WIND-LOCAL ONLY:
+ * registrations are tracked in an in-memory Map and are NOT forwarded to
+ * Mountain or Cocoon - no `language:register` IPC channel exists on the
+ * Mountain side. Real language providers route through Cocoon (extension
+ * host) and reach Mountain's ProviderRegistration via gRPC; this layer
+ * only covers the Wind/UI side of language feature lifecycle (local
+ * disposal bookkeeping and `GetLanguages()` over locally-registered
+ * selectors). Each registration emits a `land:language:register-local:*`
+ * performance mark so misuse (expecting cross-process registration) is
+ * visible in trace output.
  */
 
 import { Effect, Layer } from "effect";
@@ -21,6 +18,13 @@ import { Effect, Layer } from "effect";
 import type { LanguageService } from "./Interface/LanguageService.js";
 import { LanguageServiceTag } from "./Tag/LanguageServiceTag.js";
 import type { LanguageProblem } from "./Type/LanguageProblem.js";
+
+// Inline trace - performance.mark() collected by build-baked OTELBridge.
+const _Trace = (Tag: string, Message: string): void => {
+	try {
+		performance.mark(`land:${Tag}:${Message}`);
+	} catch {}
+};
 
 const MakeLanguageProblem = (error: unknown): LanguageProblem =>
 	error instanceof Error
@@ -57,6 +61,13 @@ function makeLanguageService(): LanguageService {
 				const Handle = NextHandle++;
 
 				ActiveProviders.set(Handle, { selector, type, provider });
+
+				// Wind-local only - nothing is sent to Mountain/Cocoon.
+				_Trace(
+					"language",
+
+					`register-local:${type}:${selector}:handle=${Handle}`,
+				);
 
 				return MakeDisposable(Handle);
 			},

@@ -13,6 +13,15 @@
 // ============================================================================
 
 /**
+ * Logger injected into the bootstrap pipeline.
+ */
+export type BootstrapLogger = (
+	level: "info" | "warn" | "error",
+
+	message: string,
+) => void;
+
+/**
  * Options for configuring bootstrap behavior.
  */
 export interface BootstrapOptions {

@@ -10,176 +10,146 @@
 // INDIVIDUAL SERVICES
 // ============================================================================
 
-// IPC (Inter-Process Communication)
-export {
-	IPCTag as IPC,
-	IPCTauriLive,
-	IPCElectronLive,
-	IPCMockLive,
-} from "./IPC.js";
-
-export type { IPCService } from "./IPC.js";
-
-// Sandbox (Preload globals)
-export { Sandbox, SandboxLive, SandboxMockLive } from "./Sandbox/index.js";
-
-export type { SandboxService } from "./Sandbox/index.js";
-
-// Configuration
-export {
-	ConfigurationLive,
-	ConfigurationWithSyncLive,
-} from "./Configuration.js";
-
-export type { Configuration, ConfigurationService } from "./Configuration.js";
-
-// Telemetry (Logging, Spans, Metrics)
-export {
-	Telemetry,
-	TelemetryLive,
-	TelemetryMockLive,
-	withSpan,
-	withMetric,
-} from "./Telemetry/index.js";
-
-export type { TelemetryService } from "./Telemetry/index.js";
-
-// Mountain (Backend connection & RPC)
-export { MountainLive, MountainMockLive } from "./Mountain/index.js";
-
 export type {
-	Mountain,
-	MountainService,
-	MountainConnectionState,
-	SyncResource,
-} from "./Mountain/index.js";
-
-// MountainSync (Background synchronization)
+	ProviderRegistrationResult,
+	WorkbenchDiagnostics,
+	WorkbenchInitState,
+	WorkbenchIntegrationConfig,
+	WorkbenchIntegrationService,
+	WorkbenchState,
+	WorkspaceContext,
+} from "../Workbench/index.js";
+// Workbench (VSCode browser workbench integration)
 export {
-	MountainSyncTag,
-	MountainSyncLive,
-	MountainSyncMock,
-} from "./MountainSync/index.js";
-
+	WorkbenchIntegration as Workbench,
+	WorkbenchIntegrationErrorCode,
+} from "../Workbench/index.js";
 export type {
-	MountainSyncService,
-	SyncConfig,
-	SyncStats,
-	MountainSyncResult,
-	SyncStatus,
-} from "./MountainSync/index.js";
-
-// Environment (System detection)
-export { EnvironmentTag } from "./Environment/index.js";
-
-export { EnvironmentLive } from "./Environment/index.js";
-
-export { EnvironmentMock } from "./Environment/index.js";
-
+	ActivityBarBadge,
+	ActivityBarItem,
+	ActivityBarService,
+	CreateActivityBarItem,
+} from "./ActivityBar/index.js";
+// ActivityBar (VSCode activity bar management)
+export { ActivityBarLive, ActivityBarMockLive } from "./ActivityBar/index.js";
 export type {
-	EnvironmentService,
-	EnvironmentInfo,
-	Platform,
-	Architecture,
-} from "./Environment/index.js";
-
-// Health (Service health checks)
-export { HealthTag, HealthLive, HealthMock } from "./Health/index.js";
-
-export type {
-	HealthService,
-	ServiceHealth,
-	SystemHealth,
-	HealthStatus,
-} from "./Health/index.js";
-
+	BootstrapLogger,
+	BootstrapOptions,
+	BootstrapResult,
+	BootstrapService,
+	StageResult,
+} from "./Bootstrap/index.js";
 // Bootstrap (Orchestration of all stages)
 export {
-	BootstrapTag,
 	BootstrapLive,
 	BootstrapMock,
 	runBootstrap,
 } from "./Bootstrap/index.js";
-
-export type {
-	BootstrapService,
-	BootstrapOptions,
-	StageResult,
-	BootstrapResult,
-} from "./Bootstrap/index.js";
-
+export type { ClipboardProblem, ClipboardService } from "./Clipboard.js";
 // Clipboard (System clipboard access)
 export {
 	ClipboardServiceTag,
 	LiveClipboardServiceLayer,
 	MockClipboardServiceLayer,
 } from "./Clipboard.js";
-
-export type { ClipboardService, ClipboardProblem } from "./Clipboard.js";
-
-// ActivityBar (VSCode activity bar management)
+export type { Configuration, ConfigurationService } from "./Configuration.js";
+// Configuration
 export {
-	ActivityBar,
-	ActivityBarLive,
-	ActivityBarMockLive,
-} from "./ActivityBar/index.js";
-
+	ConfigurationLive,
+	ConfigurationWithSyncLive,
+} from "./Configuration.js";
 export type {
-	ActivityBarService,
-	ActivityBarItem,
-	CreateActivityBarItem,
-	ActivityBarBadge,
-} from "./ActivityBar/index.js";
-
-// Panel (VSCode bottom panel management)
-export { Panel, PanelLive, PanelMockLive } from "./Panel/index.js";
-
+	Architecture,
+	EnvironmentInfo,
+	EnvironmentService,
+	Platform,
+} from "./Environment/index.js";
+// Environment (System detection)
+export {
+	EnvironmentLive,
+	EnvironmentMock,
+	EnvironmentTag,
+} from "./Environment/index.js";
 export type {
+	HealthMonitorHandle,
+	HealthService,
+	HealthStatus,
+	ServiceHealth,
+	SystemHealth,
+} from "./Health/index.js";
+
+// Health (Service health checks)
+export { HealthLive, HealthMock } from "./Health/index.js";
+export type { IPCService } from "./IPC.js";
+// IPC (Inter-Process Communication)
+export {
+	IPCElectronLive,
+	IPCMockLive,
+	IPCTag as IPC,
+	IPCTauriLive,
+} from "./IPC.js";
+export type {
+	Mountain,
+	MountainConnectionState,
+	MountainService,
+	SyncResource,
+} from "./Mountain/index.js";
+// Mountain (Backend connection & RPC)
+export { MountainLive, MountainMockLive } from "./Mountain/index.js";
+export type {
+	MountainSyncResult,
+	MountainSyncService,
+	SyncConfig,
+	SyncStats,
+	SyncStatus,
+} from "./MountainSync/index.js";
+// MountainSync (Background synchronization)
+export {
+	MountainSyncLive,
+	MountainSyncMock,
+	MountainSyncTag,
+} from "./MountainSync/index.js";
+export type {
+	CreatePanelView,
 	PanelService,
 	PanelView,
-	CreatePanelView,
 	PanelViewType,
 } from "./Panel/index.js";
 
+// Panel (VSCode bottom panel management)
+export { Panel, PanelLive, PanelMockLive } from "./Panel/index.js";
+export type { SandboxService } from "./Sandbox/index.js";
+// Sandbox (Preload globals)
+export { Sandbox, SandboxLive, SandboxMockLive } from "./Sandbox/index.js";
+
+export type {
+	CreateSidebarPanel,
+	SidebarPanel,
+	SidebarService,
+} from "./Sidebar/index.js";
 // Sidebar (VSCode sidebar management)
 export { Sidebar, SidebarLive, SidebarMockLive } from "./Sidebar/index.js";
 
 export type {
-	SidebarService,
-	SidebarPanel,
-	CreateSidebarPanel,
-} from "./Sidebar/index.js";
-
+	CreateStatusBarItem,
+	StatusBarItem,
+	StatusBarService,
+} from "./StatusBar/index.js";
 // StatusBar (VSCode status bar management)
 export {
 	StatusBar,
 	StatusBarLive,
 	StatusBarMockLive,
 } from "./StatusBar/index.js";
-
-export type {
-	StatusBarService,
-	StatusBarItem,
-	CreateStatusBarItem,
-} from "./StatusBar/index.js";
-
-// Workbench (VSCode browser workbench integration)
+export type { TelemetryService } from "./Telemetry/index.js";
+// Telemetry (Logging, Spans, Metrics)
 export {
-	WorkbenchIntegrationTag as Workbench,
-	WorkbenchIntegrationLiveLayer as WorkbenchLive,
-} from "../Workbench/index.js";
-
-export type {
-	WorkbenchIntegrationService,
-	WorkbenchState,
-	WorkbenchInitState,
-	WorkbenchIntegrationConfig,
-	ProviderRegistrationResult,
-	WorkspaceContext,
-	WorkbenchDiagnostics,
-} from "../Workbench/index.js";
-
-export { WorkbenchIntegrationErrorCode } from "../Workbench/index.js";
+	Telemetry,
+	TelemetryLive,
+	TelemetryMockLive,
+	withMetric,
+	withSpan,
+} from "./Telemetry/index.js";
 
 // ============================================================================
 // LAYERS (For runtime composition)
@@ -187,63 +157,51 @@ export { WorkbenchIntegrationErrorCode } from "../Workbench/index.js";
 
 export {
 	TauriBaseLayer,
-	TauriLiveLayer,
 	TauriDevLayer,
+	TauriLiveLayer,
 } from "./Layers/Tauri.js";
 
 // ============================================================================
 // ERROR TYPES
 // ============================================================================
 
-// IPC errors
-export { IPCInvokeError, IPCSendError, IPCSubscriptionError } from "./IPC.js";
-
-// Configuration errors
-export {
-	ConfigFetchError,
-	ConfigValidationError,
-	ConfigApplyError,
-} from "./Configuration.js";
-
-// Telemetry errors
-export { TelemetryCollectionError } from "./Telemetry/index.js";
-
-// Mountain errors
-export {
-	MountainConnectionError,
-	MountainRPCError,
-	MountainSyncError,
-	MountainStateError,
-} from "./Mountain/index.js";
-
+export type { FileSystemProviderService } from "../FileSystem/index.js";
+// FileSystem (VSCode-like file system access)
+export { FileSystemProvider } from "../FileSystem/index.js";
 // ActivityBar errors
 export {
 	ActivityBarItemNotFoundError,
 	ActivityBarUpdateError,
 } from "./ActivityBar/index.js";
-
+// Configuration errors
+export {
+	ConfigApplyError,
+	ConfigFetchError,
+	ConfigValidationError,
+} from "./Configuration.js";
+// IPC errors
+export { IPCInvokeError, IPCSendError, IPCSubscriptionError } from "./IPC.js";
+// Mountain errors
+export {
+	MountainConnectionError,
+	MountainRPCError,
+	MountainStateError,
+	MountainSyncError,
+} from "./Mountain/index.js";
 // Panel errors
-export { PanelViewNotFoundError, PanelUpdateError } from "./Panel/index.js";
-
+export { PanelUpdateError, PanelViewNotFoundError } from "./Panel/index.js";
 // Sidebar errors
 export {
 	SidebarPanelNotFoundError,
 	SidebarUpdateError,
 } from "./Sidebar/index.js";
-
 // StatusBar errors
 export {
 	StatusBarItemNotFoundError,
 	StatusBarUpdateError,
 } from "./StatusBar/index.js";
-
-// FileSystem (VSCode-like file system access)
-export {
-	FileSystemProviderTag,
-	FileSystemProviderLive,
-} from "../FileSystem/index.js";
-
-export type { FileSystemProviderService } from "../FileSystem/index.js";
+// Telemetry errors
+export { TelemetryCollectionError } from "./Telemetry/index.js";
 
 // ============================================================================
 // ATOMIC SERVICE BARRELS

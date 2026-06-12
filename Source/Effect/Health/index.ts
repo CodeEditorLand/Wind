@@ -2,7 +2,7 @@
  * @module Effect/Health
  * @description
  * Health monitoring service for checking service availability and system health.
- * Replaces Bootstrap Stage6 - HealthCheck with Effect-based monitoring.
+ * Plain async service replacing the former Effect-based monitoring.
  * @category Service
  */
 
@@ -14,10 +14,10 @@ export type {
 } from "./Type/HealthType.js";
 
 // Interface
-export type { HealthService } from "./Interface/HealthService.js";
-
-// Tag
-export { HealthTag } from "./Tag/HealthTag.js";
+export type {
+	HealthMonitorHandle,
+	HealthService,
+} from "./Interface/HealthService.js";
 
 // Implementation helpers
 export {
@@ -31,7 +31,7 @@ export {
 	makeMockHealth,
 } from "./Implementation/HealthImplementation.js";
 
-// Layers
+// Live and mock services
 export {
 	HealthLive,
 	HealthMock,

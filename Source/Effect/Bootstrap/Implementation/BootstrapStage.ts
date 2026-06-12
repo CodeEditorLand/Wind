@@ -2,249 +2,233 @@
  * @module Effect/Bootstrap/Implementation/BootstrapStage
  * @description
  * Individual stage implementations for the bootstrap process.
- * Each stage is a standalone effect that can be composed.
+ * Each stage is a plain async function returning a StageResult.
  * @see {@link Effect/Bootstrap/Implementation/BootstrapImplementation} Main orchestration
  * @category Implementation
  */
 
-import { Effect } from "effect";
-
+import { SandboxNotReadyError } from "../../../Types/Sandbox.js";
 import { ConfigurationLive } from "../../Configuration.js";
 import {
-	EnvironmentTag,
-	type EnvironmentInfo,
-} from "../../Environment/index.js";
-import { HealthTag } from "../../Health.js";
+	DetectArchitecture,
+	DetectLocale,
+	DetectPlatform,
+	DetectTimezone,
+} from "../../Environment/Implementation/EnvironmentHelper.js";
+import { HealthLive } from "../../Health.js";
 import { MountainLive } from "../../Mountain.js";
-import { Sandbox } from "../../Sandbox.js";
-import { Telemetry, withSpan } from "../../Telemetry.js";
-import type { StageResult } from "../Type/BootstrapType.js";
+import type {
+	BootstrapLogger,
+	StageResult,
+} from "../Type/BootstrapType.js";
 
 // ============================================================================
 // Stage Implementations
 // ============================================================================
 
+const Wait = (Milliseconds: number): Promise<void> =>
+	new Promise((Resolve) => {
+		setTimeout(Resolve, Milliseconds);
+	});
+
+// Preload readiness poll budget: 100ms intervals for up to 30 seconds.
+const PreloadPollIntervalMilliseconds = 100;
+
+const PreloadPollMaxAttempts = 300;
+
 /**
  * Stage 0: Environment detection
  * Detects platform, architecture, locale, and timezone.
  */
-export const stage0_Environment = withSpan(
-	"stage0_environment",
+export const stage0_Environment = async (
+	Log: BootstrapLogger,
+): Promise<StageResult> => {
+	Log("info", "[Bootstrap] Stage 0: Detecting environment...");
 
-	Effect.gen(function* () {
-		const telemetry = yield* Telemetry;
+	Log(
+		"info",
 
-		const environment = yield* EnvironmentTag;
+		`[Bootstrap] Environment: ${DetectPlatform()}/${DetectArchitecture()}`,
+	);
 
-		telemetry.log("info", "[Bootstrap] Stage 0: Detecting environment...");
+	Log(
+		"info",
 
-		const envInfo: EnvironmentInfo = yield* environment.getInfo;
+		`[Bootstrap] Locale: ${DetectLocale()}, Timezone: ${DetectTimezone()}`,
+	);
 
-		telemetry.log(
-			"info",
-
-			`[Bootstrap] Environment: ${envInfo.platform}/${envInfo.architecture}`,
-		);
-
-		telemetry.log(
-			"info",
-
-			`[Bootstrap] Locale: ${envInfo.locale}, Timezone: ${envInfo.timezone}`,
-		);
-
-		return {
-			stageName: "Environment",
-			success: true as boolean,
-			duration: 0, // Will be set by caller
-			error: undefined,
-		} satisfies StageResult;
-	}),
-);
+	return {
+		stageName: "Environment",
+		success: true as boolean,
+		duration: 0, // Will be set by caller
+		error: undefined,
+	} satisfies StageResult;
+};
 
 /**
  * Stage 1: Preload readiness
  * Waits for preload script to complete and globals to be available.
  */
-export const stage1_Preload = withSpan(
-	"stage1_preload",
+export const stage1_Preload = async (
+	Log: BootstrapLogger,
+): Promise<StageResult> => {
+	Log("info", "[Bootstrap] Stage 1: Waiting for preload...");
 
-	Effect.gen(function* () {
-		const telemetry = yield* Telemetry;
+	let Ready = false;
 
-		const sandbox = yield* Sandbox;
+	for (let Attempt = 0; Attempt < PreloadPollMaxAttempts; Attempt++) {
+		const PreloadGlobals = (
+			window as unknown as { preloadGlobals?: Record<string, unknown> }
+		).preloadGlobals;
 
-		telemetry.log("info", "[Bootstrap] Stage 1: Waiting for preload...");
+		if (
+			PreloadGlobals?.["process"] &&
+			PreloadGlobals["ipcRenderer"] &&
+			(window as unknown as { vscode?: unknown }).vscode
+		) {
+			Ready = true;
 
-		void (yield* sandbox.awaitReady);
+			break;
+		}
 
-		telemetry.log("info", "[Bootstrap] Preload ready, globals available");
+		await Wait(PreloadPollIntervalMilliseconds);
+	}
 
-		return {
-			stageName: "Preload",
-			success: true as boolean,
-			duration: 0,
-			error: undefined,
-		} satisfies StageResult;
-	}),
-);
+	if (!Ready) {
+		throw new SandboxNotReadyError();
+	}
+
+	Log("info", "[Bootstrap] Preload ready, globals available");
+
+	return {
+		stageName: "Preload",
+		success: true as boolean,
+		duration: 0,
+		error: undefined,
+	} satisfies StageResult;
+};
 
 /**
  * Stage 2: Configuration loading
  * Loads and applies configuration settings.
  */
-export const stage2_Configuration = withSpan(
-	"stage2_configuration",
+export const stage2_Configuration = async (
+	Log: BootstrapLogger,
+): Promise<StageResult> => {
+	// Ensure configuration is loaded
+	await ConfigurationLive.refresh();
 
-	Effect.gen(function* () {
-		const telemetry = yield* Telemetry;
+	Log("info", "[Bootstrap] Stage 2: Loading configuration...");
 
-		// Ensure configuration is loaded
-		yield* Effect.tryPromise(() => ConfigurationLive.refresh());
+	Log("info", "[Bootstrap] Configuration applied");
 
-		telemetry.log("info", "[Bootstrap] Stage 2: Loading configuration...");
-
-		telemetry.log("info", "[Bootstrap] Configuration applied");
-
-		return {
-			stageName: "Configuration",
-			success: true as boolean,
-			duration: 0,
-			error: undefined,
-		} satisfies StageResult;
-	}),
-);
+	return {
+		stageName: "Configuration",
+		success: true as boolean,
+		duration: 0,
+		error: undefined,
+	} satisfies StageResult;
+};
 
 /**
  * Stage 3: Services initialization
  * Connects to backend services (Mountain).
  */
-export const stage3_Services = withSpan(
-	"stage3_services",
+export const stage3_Services = async (
+	Log: BootstrapLogger,
+): Promise<StageResult> => {
+	Log("info", "[Bootstrap] Stage 3: Connecting to Mountain backend...");
 
-	Effect.gen(function* () {
-		const telemetry = yield* Telemetry;
+	// Connect to mountain backend
+	await MountainLive.connect();
 
-		telemetry.log(
-			"info",
+	Log("info", "[Bootstrap] Mountain connected");
 
-			"[Bootstrap] Stage 3: Connecting to Mountain backend...",
-		);
-
-		// Connect to mountain backend
-		yield* Effect.tryPromise(() => MountainLive.connect());
-
-		telemetry.log("info", "[Bootstrap] Mountain connected");
-
-		return {
-			stageName: "Services",
-			success: true as boolean,
-			duration: 0,
-			error: undefined,
-		} satisfies StageResult;
-	}),
-);
+	return {
+		stageName: "Services",
+		success: true as boolean,
+		duration: 0,
+		error: undefined,
+	} satisfies StageResult;
+};
 
 /**
  * Stage 4: Preparation
  * Prepares workbench resources and assets.
  */
-export const stage4_Preparation = withSpan(
-	"stage4_preparation",
+export const stage4_Preparation = async (
+	Log: BootstrapLogger,
+): Promise<StageResult> => {
+	Log("info", "[Bootstrap] Stage 4: Preparing workbench resources...");
 
-	Effect.gen(function* () {
-		const telemetry = yield* Telemetry;
+	// Load VSCode output bundle
+	// This would load @codeeditorland/output
+	Log("info", "[Bootstrap] Workbench resources prepared");
 
-		telemetry.log(
-			"info",
-
-			"[Bootstrap] Stage 4: Preparing workbench resources...",
-		);
-
-		// Load VSCode output bundle
-		// This would load @codeeditorland/output
-		telemetry.log("info", "[Bootstrap] Workbench resources prepared");
-
-		return {
-			stageName: "Preparation",
-			success: true as boolean,
-			duration: 0,
-			error: undefined,
-		} satisfies StageResult;
-	}),
-);
+	return {
+		stageName: "Preparation",
+		success: true as boolean,
+		duration: 0,
+		error: undefined,
+	} satisfies StageResult;
+};
 
 /**
  * Stage 5: Initialization
  * Initializes VSCode workbench and dispatches completion event.
  */
-export const stage5_Initialization = withSpan(
-	"stage5_initialization",
+export const stage5_Initialization = async (
+	Log: BootstrapLogger,
+): Promise<StageResult> => {
+	Log("info", "[Bootstrap] Stage 5: Initializing VSCode workbench...");
 
-	Effect.gen(function* () {
-		const telemetry = yield* Telemetry;
+	// Initialize VSCode workbench
+	// This would call into the VSCode API from @codeeditorland/output
+	Log("info", "[Bootstrap] VSCode workbench initialized");
 
-		telemetry.log(
-			"info",
+	// Dispatch completion event
+	window.dispatchEvent(
+		new CustomEvent("land-bootstrap-complete", {
+			detail: { success: true },
+		}),
+	);
 
-			"[Bootstrap] Stage 5: Initializing VSCode workbench...",
-		);
-
-		// Initialize VSCode workbench
-		// This would call into the VSCode API from @codeeditorland/output
-		telemetry.log("info", "[Bootstrap] VSCode workbench initialized");
-
-		// Dispatch completion event
-		yield* Effect.sync(() => {
-			window.dispatchEvent(
-				new CustomEvent("land-bootstrap-complete", {
-					detail: { success: true },
-				}),
-			);
-		});
-
-		return {
-			stageName: "Initialization",
-			success: true as boolean,
-			duration: 0,
-			error: undefined,
-		} satisfies StageResult;
-	}),
-);
+	return {
+		stageName: "Initialization",
+		success: true as boolean,
+		duration: 0,
+		error: undefined,
+	} satisfies StageResult;
+};
 
 /**
  * Stage 6: Health check
  * Runs health checks on all services.
  */
-export const stage6_HealthCheck = withSpan(
-	"stage6_healthcheck",
+export const stage6_HealthCheck = async (
+	Log: BootstrapLogger,
+): Promise<StageResult> => {
+	Log("info", "[Bootstrap] Stage 6: Running health checks...");
 
-	Effect.gen(function* () {
-		const telemetry = yield* Telemetry;
+	const SystemHealth = await HealthLive.checkAllServices();
 
-		const health = yield* HealthTag;
+	Log(
+		"info",
 
-		telemetry.log("info", "[Bootstrap] Stage 6: Running health checks...");
+		`[Bootstrap] Health check result: ${SystemHealth.overallStatus}`,
+	);
 
-		const systemHealth = yield* health.checkAllServices();
+	if (SystemHealth.overallStatus === "unhealthy") {
+		Log("error", "[Bootstrap] Some services are unhealthy!");
+	}
 
-		telemetry.log(
-			"info",
-
-			`[Bootstrap] Health check result: ${systemHealth.overallStatus}`,
-		);
-
-		if (systemHealth.overallStatus === "unhealthy") {
-			telemetry.log("error", "[Bootstrap] Some services are unhealthy!");
-		}
-
-		return {
-			stageName: "HealthCheck",
-			success: systemHealth.overallStatus !== "unhealthy",
-			duration: 0,
-			error: undefined,
-		} satisfies StageResult;
-	}),
-);
+	return {
+		stageName: "HealthCheck",
+		success: SystemHealth.overallStatus !== "unhealthy",
+		duration: 0,
+		error: undefined,
+	} satisfies StageResult;
+};
 
 export default {
 	stage0_Environment,

@@ -8,9 +8,6 @@
  * @category Interface
  */
 
-import type { Effect } from "effect";
-
-import type { FileSystemProviderError } from "../Error/FileSystemProviderError.js";
 import type { IFileSystemProvider } from "../Type/FileSystemType.js";
 
 // ============================================================================
@@ -26,17 +23,6 @@ export interface FileSystemProviderService {
 	 * The underlying IFileSystemProvider (URI-object API).
 	 */
 	readonly provider: IFileSystemProvider;
-
-	/**
-	 * Effect-wrapped provider accessor. Retained only for
-	 * `Workbench/Implementation/WorkbenchIntegrationImplementation.ts`,
-	 * which resolves the provider inside Effect.gen; everything else
-	 * reads `provider` directly.
-	 */
-	readonly getProvider: Effect.Effect<
-		IFileSystemProvider,
-		FileSystemProviderError
-	>;
 
 	/**
 	 * Read file contents as binary data

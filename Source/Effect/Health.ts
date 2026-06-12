@@ -1,14 +1,13 @@
-// Import and re-export layers
+// Import and re-export the plain services
 import {
-	HealthLive as LiveLayer,
-	HealthMock as MockLayer,
+	HealthLive as LiveService,
+	HealthMock as MockService,
 } from "./Health/Implementation/HealthImplementation.js";
 
 /**
  * @module Effect/Health
  * @description
  * Health monitoring service for checking service availability and system health.
- * Replaces Bootstrap Stage6 - HealthCheck with Effect-based monitoring.
  * @category Service
  */
 
@@ -24,10 +23,10 @@ export type {
 } from "./Health/index.js";
 
 // Interface
-export type { HealthService } from "./Health/Interface/HealthService.js";
-
-// Tag
-export { HealthTag } from "./Health/index.js";
+export type {
+	HealthMonitorHandle,
+	HealthService,
+} from "./Health/Interface/HealthService.js";
 
 // Implementation helpers
 export {
@@ -35,9 +34,9 @@ export {
 	CreateServiceHealthWithNoResponseTime,
 } from "./Health/index.js";
 
-export { LiveLayer, MockLayer };
+export { LiveService, MockService };
 
 // Backward compatibility aliases
-export const HealthLive = LiveLayer;
+export const HealthLive = LiveService;
 
-export const HealthMock = MockLayer;
+export const HealthMock = MockService;

@@ -29,8 +29,8 @@ Native File System
 - **URI Handling**: Convert between VSCode URIs (`file:///path/to/file`) and
   file system paths
 - **Error Handling**: Comprehensive error types for different failure modes
-- **Effect-TS Integration**: Full Effect-TS pattern support for functional
-  composition
+- **Plain Async API**: Every operation is a plain `Promise`-returning method
+  that throws typed `FileSystemProviderError` subclasses
 
 ## Mountain IPC Commands
 
@@ -53,26 +53,19 @@ The service invokes these Mountain IPC commands (defined in
 ### Basic Usage
 
 ```typescript
-import { Effect } from "effect";
+import { FileSystemProvider } from "./FileSystem/index.js";
 
-import { FileSystemProviderTag } from "./FileSystem/index.js";
+// Read a file
+const content = await FileSystemProvider.readFile("file:///path/to/file.txt");
+console.log(content);
 
-// Get the service
-const program = Effect.gen(function* () {
-	const fs = yield* FileSystemProviderTag;
+// List directory
+const entries = await FileSystemProvider.readdir("file:///path/to/dir");
+console.log(entries);
 
-	// Read a file
-	const content = yield* fs.readFile("file:///path/to/file.txt");
-	console.log(content);
-
-	// List directory
-	const entries = yield* fs.readdir("file:///path/to/dir");
-	console.log(entries);
-
-	// Get file stats
-	const stats = yield* fs.stat("file:///path/to/file.txt");
-	console.log(stats);
-});
+// Get file stats
+const stats = await FileSystemProvider.stat("file:///path/to/file.txt");
+console.log(stats);
 ```
 
 ### Using URIs
@@ -118,27 +111,15 @@ try {
 }
 ```
 
-### Layer Composition
+### URI-Object Provider
 
 ```typescript
-import { Layer } from "effect";
+import { FileSystemProvider, URI } from "./FileSystem/index.js";
 
-import { IPCTauriLive } from "./Effect/IPC.js";
-import {
-	FileSystemProviderLive,
-	FileSystemProviderTag,
-} from "./FileSystem/index.js";
+// The underlying IFileSystemProvider works with URI objects directly
+const provider = FileSystemProvider.provider;
 
-// Create the FileSystem layer
-const FileSystemLayer = FileSystemProviderLive.pipe(
-	Layer.provide(IPCTauriLive),
-);
-
-// Use in runtime
-const program = Effect.gen(function* () {
-	const fs = yield* FileSystemProviderTag;
-	// ...
-}).pipe(Effect.provide(FileSystemLayer));
+const content = await provider.readFile(URI.file("/path/to/file.txt"));
 ```
 
 ## File Types
@@ -183,8 +164,9 @@ To integrate with the VSCode browser workbench:
 
 ```typescript
 // In workbench initialization
-const fs = yield * FileSystemProviderTag;
-vscode.workspace.registerFileSystemProvider("file", fs);
+import { FileSystemProvider } from "./FileSystem/index.js";
+
+vscode.workspace.registerFileSystemProvider("file", FileSystemProvider.provider);
 ```
 
 2. The workbench will automatically use this provider for all file operations.
@@ -204,7 +186,7 @@ vscode.workspace.registerFileSystemProvider("file", fs);
 - [x] Handle errors gracefully
 - [x] Convert URIs to paths correctly
 - [x] VSCode-like IFileSystemProvider interface
-- [x] Effect-TS pattern integration
+- [x] Plain async API with typed errors
 - [ ] File watching (stub implementation)
 - [ ] Integration testing with browser workbench
 
@@ -212,5 +194,4 @@ vscode.workspace.registerFileSystemProvider("file", fs);
 
 - [Mountain IPC Handlers](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs)
 - [Wind IPC Service](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Effect/IPC.ts)
-- [Effect-TS Services](https://effect.website/docs/guide/context)
 - [Sky Browser Workbench](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Effect/Layers/Tauri.ts)
