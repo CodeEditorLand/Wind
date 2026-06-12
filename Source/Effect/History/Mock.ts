@@ -1,12 +1,5 @@
-import { Layer } from "effect";
-
 import { StubHistoryService } from "./Implementation/HistoryStub.js";
-import { HistoryServiceTag } from "./Tag/HistoryServiceTag.js";
 
-export const MockHistoryServiceLayer = Layer.succeed(
-	HistoryServiceTag,
+export const MockHistoryService = StubHistoryService;
 
-	StubHistoryService,
-);
-
-export default MockHistoryServiceLayer;
+export default MockHistoryService;

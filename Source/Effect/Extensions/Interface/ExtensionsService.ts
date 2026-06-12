@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { ExtensionsProblem } from "../Type/ExtensionsProblem.js";
 
 /**
@@ -14,18 +12,17 @@ import type { ExtensionsProblem } from "../Type/ExtensionsProblem.js";
 export interface ExtensionsService {
 	readonly GetExtension: (
 		id: string,
-	) => Effect.Effect<unknown | undefined, ExtensionsProblem>;
+	) => Promise<unknown | undefined>;
 
-	readonly GetAllExtensions: () => Effect.Effect<
-		readonly unknown[],
-		ExtensionsProblem
+	readonly GetAllExtensions: () => Promise<
+		readonly unknown[]
 	>;
 
 	readonly IsActive: (
 		id: string,
-	) => Effect.Effect<boolean, ExtensionsProblem>;
+	) => Promise<boolean>;
 
-	readonly Activate: (id: string) => Effect.Effect<void, ExtensionsProblem>;
+	readonly Activate: (id: string) => Promise<void>;
 
 	/**
 	 * Install a local `.vsix` file. `VsixPath` is accepted as either a plain
@@ -37,7 +34,7 @@ export interface ExtensionsService {
 	 */
 	readonly InstallVsix: (
 		VsixPath: string,
-	) => Effect.Effect<unknown, ExtensionsProblem>;
+	) => Promise<unknown>;
 
 	/**
 	 * Uninstall an installed extension by identifier (e.g. "publisher.name").
@@ -46,5 +43,5 @@ export interface ExtensionsService {
 	 */
 	readonly Uninstall: (
 		Identifier: string,
-	) => Effect.Effect<boolean, ExtensionsProblem>;
+	) => Promise<boolean>;
 }

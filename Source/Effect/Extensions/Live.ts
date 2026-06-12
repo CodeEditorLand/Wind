@@ -23,12 +23,9 @@
  *   ExtensionsUninstall → handle_extensions_uninstall (K3)
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type { ExtensionsService } from "./Interface/ExtensionsService.js";
-import { ExtensionsServiceTag } from "./Tag/ExtensionsServiceTag.js";
 import type { ExtensionsProblem } from "./Type/ExtensionsProblem.js";
 
 const MakeExtensionsProblem = (error: unknown): ExtensionsProblem =>
@@ -44,74 +41,74 @@ function makeLiveExtensionsService(): ExtensionsService {
 	const IPCService = TauriIPCLive;
 
 	const Service: ExtensionsService = {
-		GetExtension: (id) =>
-			IPCService.invoke(Channel.ExtensionsGet)([id]).pipe(
-				Effect.map((Result) =>
-					Result === null || Result === undefined
-						? undefined
-						: Result,
-				),
+		GetExtension: async (id) => {
+			try {
+				const Result = await IPCService.invoke(Channel.ExtensionsGet, [id]);
+				return Result === null || Result === undefined
+					? undefined
+					: Result;
+			} catch (error) {
+				throw MakeExtensionsProblem(error);
+			}
+		},
 
-				Effect.mapError(MakeExtensionsProblem),
-			),
+		GetAllExtensions: async () => {
+			try {
+				const Result = await IPCService.invoke(Channel.ExtensionsGetAll, []);
+				return Array.isArray(Result) ? (Result as readonly unknown[]) : [];
+			} catch (error) {
+				throw MakeExtensionsProblem(error);
+			}
+		},
 
-		GetAllExtensions: () =>
-			IPCService.invoke(Channel.ExtensionsGetAll)([]).pipe(
-				Effect.map((Result) =>
-					Array.isArray(Result) ? (Result as readonly unknown[]) : [],
-				),
-
-				Effect.mapError(MakeExtensionsProblem),
-			),
-
-		IsActive: (id) =>
-			IPCService.invoke(Channel.ExtensionsIsActive)([id]).pipe(
-				Effect.map((Result) => Boolean(Result)),
-
-				Effect.mapError(MakeExtensionsProblem),
-			),
+		IsActive: async (id) => {
+			try {
+				const Result = await IPCService.invoke(Channel.ExtensionsIsActive, [id]);
+				return Boolean(Result);
+			} catch (error) {
+				throw MakeExtensionsProblem(error);
+			}
+		},
 
 		// `extensions:activate` sends an `activationEvent` gRPC
 		// notification to Cocoon (`$activateByEvent`) via Mountain.
 		// Mountain's handler triggers the extension host activation
 		// machinery for the named extension ID.
-		Activate: (id) =>
-			IPCService.invoke(Channel.ExtensionsActivate)([id]).pipe(
-				Effect.map(() => undefined as void),
+		Activate: async (id) => {
+			try {
+				await IPCService.invoke(Channel.ExtensionsActivate, [id]);
+			} catch {
+				// Fallback: verify the extension exists even if
+				// activation fails (e.g. extension host not yet up).
+				try {
+					await IPCService.invoke(Channel.ExtensionsGet, [id]);
+				} catch (error) {
+					throw MakeExtensionsProblem(error);
+				}
+			}
+		},
 
-				Effect.catchAll(() =>
-					// Fallback: verify the extension exists even if
-					// activation fails (e.g. extension host not yet up).
-					IPCService.invoke(Channel.ExtensionsGet)([id]).pipe(
-						Effect.map(() => undefined as void),
+		InstallVsix: async (VsixPath) => {
+			try {
+				return await IPCService.invoke(Channel.ExtensionsInstall, [VsixPath]);
+			} catch (error) {
+				throw MakeExtensionsProblem(error);
+			}
+		},
 
-						Effect.mapError(MakeExtensionsProblem),
-					),
-				),
-
-				Effect.mapError(MakeExtensionsProblem),
-			),
-
-		InstallVsix: (VsixPath) =>
-			IPCService.invoke(Channel.ExtensionsInstall)([VsixPath]).pipe(
-				Effect.mapError(MakeExtensionsProblem),
-			),
-
-		Uninstall: (Identifier) =>
-			IPCService.invoke(Channel.ExtensionsUninstall)([Identifier]).pipe(
-				Effect.map((Result) => Result === true),
-
-				Effect.mapError(MakeExtensionsProblem),
-			),
+		Uninstall: async (Identifier) => {
+			try {
+				const Result = await IPCService.invoke(Channel.ExtensionsUninstall, [Identifier]);
+				return Result === true;
+			} catch (error) {
+				throw MakeExtensionsProblem(error);
+			}
+		},
 	};
 
 	return Service;
 }
 
-export const LiveExtensionsServiceLayer = Layer.succeed(
-	ExtensionsServiceTag,
+export const LiveExtensionsService = makeLiveExtensionsService();
 
-	makeLiveExtensionsService(),
-);
-
-export default LiveExtensionsServiceLayer;
+export default LiveExtensionsService;

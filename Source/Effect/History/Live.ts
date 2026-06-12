@@ -14,12 +14,9 @@
  *   history:getStack    → return the full history stack
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type { HistoryService } from "./Interface/HistoryService.js";
-import { HistoryServiceTag } from "./Tag/HistoryServiceTag.js";
 import type { HistoryProblem } from "./Type/HistoryProblem.js";
 
 const MakeHistoryProblem = (error: unknown): HistoryProblem => ({
@@ -31,65 +28,69 @@ function makeHistoryService(): HistoryService {
 	const IPCService = TauriIPCLive;
 
 	const Service: HistoryService = {
-		GoBack: () =>
-			IPCService.invoke(Channel.HistoryGoBack)([]).pipe(
-				Effect.map(() => undefined as void),
+		GoBack: async () => {
+			try {
+				await IPCService.invoke(Channel.HistoryGoBack, []);
+			} catch (error) {
+				throw MakeHistoryProblem(error);
+			}
+		},
 
-				Effect.mapError(MakeHistoryProblem),
-			),
+		GoForward: async () => {
+			try {
+				await IPCService.invoke(Channel.HistoryGoForward, []);
+			} catch (error) {
+				throw MakeHistoryProblem(error);
+			}
+		},
 
-		GoForward: () =>
-			IPCService.invoke(Channel.HistoryGoForward)([]).pipe(
-				Effect.map(() => undefined as void),
+		CanGoBack: async () => {
+			try {
+				const Result = await IPCService.invoke(Channel.HistoryCanGoBack, []);
+				return Result === true;
+			} catch (error) {
+				throw MakeHistoryProblem(error);
+			}
+		},
 
-				Effect.mapError(MakeHistoryProblem),
-			),
+		CanGoForward: async () => {
+			try {
+				const Result = await IPCService.invoke(Channel.HistoryCanGoForward, []);
+				return Result === true;
+			} catch (error) {
+				throw MakeHistoryProblem(error);
+			}
+		},
 
-		CanGoBack: () =>
-			IPCService.invoke(Channel.HistoryCanGoBack)([]).pipe(
-				Effect.map((Result) => Result === true),
+		Push: async (uri) => {
+			try {
+				await IPCService.invoke(Channel.HistoryPush, [uri]);
+			} catch (error) {
+				throw MakeHistoryProblem(error);
+			}
+		},
 
-				Effect.mapError(MakeHistoryProblem),
-			),
+		Clear: async () => {
+			try {
+				await IPCService.invoke(Channel.HistoryClear, []);
+			} catch (error) {
+				throw MakeHistoryProblem(error);
+			}
+		},
 
-		CanGoForward: () =>
-			IPCService.invoke(Channel.HistoryCanGoForward)([]).pipe(
-				Effect.map((Result) => Result === true),
-
-				Effect.mapError(MakeHistoryProblem),
-			),
-
-		Push: (uri) =>
-			IPCService.invoke(Channel.HistoryPush)([uri]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeHistoryProblem),
-			),
-
-		Clear: () =>
-			IPCService.invoke(Channel.HistoryClear)([]).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeHistoryProblem),
-			),
-
-		GetStack: () =>
-			IPCService.invoke(Channel.HistoryGetStack)([]).pipe(
-				Effect.map((Result) =>
-					Array.isArray(Result) ? (Result as readonly string[]) : [],
-				),
-
-				Effect.mapError(MakeHistoryProblem),
-			),
+		GetStack: async () => {
+			try {
+				const Result = await IPCService.invoke(Channel.HistoryGetStack, []);
+				return Array.isArray(Result) ? (Result as readonly string[]) : [];
+			} catch (error) {
+				throw MakeHistoryProblem(error);
+			}
+		},
 	};
 
 	return Service;
 }
 
-export const LiveHistoryServiceLayer = Layer.succeed(
-	HistoryServiceTag,
+export const LiveHistoryService = makeHistoryService();
 
-	makeHistoryService(),
-);
-
-export default LiveHistoryServiceLayer;
+export default LiveHistoryService;
