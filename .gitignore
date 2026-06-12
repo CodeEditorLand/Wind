@@ -7,6 +7,10 @@
 Configuration/
 .node_modules/
 
+# Generated code — rebuilt on every build, never committed
+Source/**/Generated/
+Target/**/Generated/
+
 # Environment files
 .env
 .env.local
