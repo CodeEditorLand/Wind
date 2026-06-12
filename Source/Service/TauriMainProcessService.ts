@@ -153,7 +153,8 @@ const ChannelRouteMap: Record<string, string> = {
 
 	localPty: "localPty",
 
-	// update: stubbed - Mountain doesn't implement IUpdateService yet
+	update: "update",
+
 	url: "url",
 
 	menubar: "menubar",
