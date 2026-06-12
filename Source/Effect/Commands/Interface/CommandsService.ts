@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { CommandsProblem } from "../Type/CommandsProblem.js";
 
 /**
@@ -11,19 +9,14 @@ export interface CommandsService {
 		id: string,
 
 		handler: (...args: readonly unknown[]) => unknown,
-	) => Effect.Effect<void, CommandsProblem>;
+	) => void;
 
 	readonly ExecuteCommand: <T = unknown>(
 		id: string,
 		...args: readonly unknown[]
-	) => Effect.Effect<T, CommandsProblem>;
+	) => Promise<T>;
 
-	readonly UnregisterCommand: (
-		id: string,
-	) => Effect.Effect<void, CommandsProblem>;
+	readonly UnregisterCommand: (id: string) => void;
 
-	readonly GetCommands: () => Effect.Effect<
-		readonly string[],
-		CommandsProblem
-	>;
+	readonly GetCommands: () => Promise<readonly string[]>;
 }

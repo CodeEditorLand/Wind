@@ -10,18 +10,12 @@
  *   commands:getAll   → GetAllCommands()
  */
 
-import { Effect, Layer } from "effect";
-
 import Channel from "../../IPC/Channel.js";
 import { TauriIPCLive } from "../IPC/index.js";
 import type { CommandsService } from "./Interface/CommandsService.js";
-import { CommandsServiceTag } from "./Tag/CommandsServiceTag.js";
-import type { CommandsProblem } from "./Type/CommandsProblem.js";
 
-const MakeCommandsOperationFailed = (error: unknown): CommandsProblem => ({
-	_tag: "CommandsOperationFailed",
-	error: error instanceof Error ? error : new Error(String(error)),
-});
+const MakeCommandsError = (error: unknown): Error =>
+	error instanceof Error ? error : new Error(String(error));
 
 function makeCommandsService(): CommandsService {
 	const IPCService = TauriIPCLive;
@@ -34,50 +28,43 @@ function makeCommandsService(): CommandsService {
 	>();
 
 	const Service: CommandsService = {
-		RegisterCommand: (id, handler) =>
-			Effect.sync(() => {
-				LocalHandlers.set(id, handler);
-			}),
+		RegisterCommand: (id, handler) => {
+			LocalHandlers.set(id, handler);
+		},
 
-		ExecuteCommand: <T = unknown>(
+		ExecuteCommand: async <T = unknown>(
 			id: string,
 			...args: readonly unknown[]
-		): Effect.Effect<T, CommandsProblem> => {
+		): Promise<T> => {
 			// Check local handlers first (UI-side commands execute synchronously)
 			const LocalHandler = LocalHandlers.get(id);
 
 			if (LocalHandler !== undefined) {
-				return Effect.try({
-					try: () => LocalHandler(...args) as T,
-					catch: MakeCommandsOperationFailed,
-				});
+				return LocalHandler(...args) as T;
 			}
 
 			// Delegate to Mountain's CommandRegistry via IPC
-			return IPCService.invoke(Channel.CommandsExecute)([
+			const Result = await IPCService.invoke(Channel.CommandsExecute, [
 				id,
 
 				args[0] ?? null,
-			]).pipe(
-				Effect.map((Result) => Result as T),
+			]);
 
-				Effect.mapError(MakeCommandsOperationFailed),
-			);
+			return Result as T;
 		},
 
-		UnregisterCommand: (id) =>
-			Effect.sync(() => {
-				LocalHandlers.delete(id);
-			}),
+		UnregisterCommand: (id) => {
+			LocalHandlers.delete(id);
+		},
 
-		GetCommands: () =>
-			IPCService.invoke(Channel.CommandsGetAll)([]).pipe(
-				Effect.map((Result) =>
-					Array.isArray(Result) ? (Result as readonly string[]) : [],
-				),
+		GetCommands: async (): Promise<readonly string[]> => {
+			const Result = await IPCService.invoke(
+				Channel.CommandsGetAll,
+				[],
+			);
 
-				Effect.mapError(MakeCommandsOperationFailed),
-			),
+			return Array.isArray(Result) ? (Result as readonly string[]) : [];
+		},
 	};
 
 	return Service;
@@ -85,10 +72,4 @@ function makeCommandsService(): CommandsService {
 
 export const CommandsServiceInstance = makeCommandsService();
 
-export const LiveCommandsServiceLayer = Layer.succeed(
-	CommandsServiceTag,
-
-	CommandsServiceInstance,
-);
-
-export default LiveCommandsServiceLayer;
+export default CommandsServiceInstance;
