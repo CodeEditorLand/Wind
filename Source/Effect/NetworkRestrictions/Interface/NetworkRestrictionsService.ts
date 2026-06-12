@@ -8,10 +8,6 @@
  * @category Interface
  */
 
-import { Context, Effect } from "effect";
-
-import type { IPCBlockError } from "../Error/IPCBlockError.js";
-import type { NetworkBlockError } from "../Error/NetworkBlockError.js";
 import type { NetworkRestrictionConfig } from "../Type/NetworkRestrictionConfig.js";
 
 // ============================================================================
@@ -37,48 +33,38 @@ export interface BlockedRequest {
 export type TelemetryLevel = "NONE" | "CRASH" | "ERROR" | "USAGE";
 
 /**
- * Network Restrictions service interface
+ * Network Restrictions service interface.
+ *
+ * `checkURL` throws {@link Effect/NetworkRestrictions/Error/NetworkBlockError}
+ * and `checkIPCChannel` throws
+ * {@link Effect/NetworkRestrictions/Error/IPCBlockError} when the target is
+ * blocked.
  */
 export interface NetworkRestrictionsService {
 	/** Check if a URL is allowed */
-	readonly checkURL: (
-		url: string,
-	) => Effect.Effect<boolean, NetworkBlockError>;
+	readonly checkURL: (url: string) => boolean;
 
 	/** Block a URL (used by window.fetch override) */
-	readonly blockURL: (
-		url: string,
-
-		reason: string,
-	) => Effect.Effect<void, never>;
+	readonly blockURL: (url: string, reason: string) => void;
 
 	/** Check if an IPC channel is allowed */
-	readonly checkIPCChannel: (
-		channel: string,
-	) => Effect.Effect<boolean, IPCBlockError>;
+	readonly checkIPCChannel: (channel: string) => boolean;
 
 	/** Get current configuration */
-	readonly config: Effect.Effect<NetworkRestrictionConfig, never>;
+	readonly config: () => NetworkRestrictionConfig;
 
-	/** Update configuration (atomic) */
-	readonly updateConfig: (
-		config: Partial<NetworkRestrictionConfig>,
-	) => Effect.Effect<void, never>;
+	/** Update configuration */
+	readonly updateConfig: (config: Partial<NetworkRestrictionConfig>) => void;
 
 	/** Get list of blocked requests (for debugging) */
-	readonly getBlockedRequests: Effect.Effect<
-		ReadonlyArray<BlockedRequest>,
-		never
-	>;
+	readonly getBlockedRequests: () => ReadonlyArray<BlockedRequest>;
 
 	/** Clear blocked requests log */
-	readonly clearBlockedRequests: Effect.Effect<void, never>;
+	readonly clearBlockedRequests: () => void;
 
 	/** Set telemetry level (NONE, CRASH, ERROR, USAGE) */
-	readonly setTelemetryLevel: (
-		level: TelemetryLevel,
-	) => Effect.Effect<void, never>;
+	readonly setTelemetryLevel: (level: TelemetryLevel) => void;
 
 	/** Get current telemetry level */
-	readonly getTelemetryLevel: Effect.Effect<TelemetryLevel, never>;
+	readonly getTelemetryLevel: () => TelemetryLevel;
 }

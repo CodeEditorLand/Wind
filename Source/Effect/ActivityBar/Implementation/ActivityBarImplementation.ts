@@ -1,109 +1,168 @@
 /**
  * @module Effect/ActivityBar/Implementation/ActivityBarImplementation
  * @description
- * Main implementation of ActivityBar service using reactive subscriptions.
- * Provides production-ready implementation with telemetry support.
+ * Main implementation of ActivityBar service backed by a plain in-memory
+ * store. The former reactive change streams had zero consumers and were
+ * removed; Sky reads activity state through WorkbenchActivityLive instead.
  * @see {@link Effect/ActivityBar/Interface/ActivityBarService} Service interface
- * @see [Effect-TS Layers](https://effect.website/docs/guide/layer)
  * @category Implementation
  */
 
-import { Effect, Layer, SubscriptionRef } from "effect";
-
-import { Telemetry } from "../../Telemetry.js";
+import { ActivityBarItemNotFoundError } from "../Error/ActivityBarItemNotFoundError.js";
+import { ActivityBarUpdateError } from "../Error/ActivityBarUpdateError.js";
 import type { ActivityBarService } from "../Interface/ActivityBarService.js";
-import { ActivityBarTag } from "../Tag/ActivityBarTag.js";
 import type {
 	ActivityBarBadge,
 	ActivityBarItem,
 	CreateActivityBarItem,
 } from "../Type/ActivityBarType.js";
-import {
-	MakeCreateItem,
-	MakeGetBadge,
-	MakeGetItem,
-	MakeRemoveItem,
-	MakeSetActiveItem,
-	MakeSetBadge,
-	MakeUpdateItem,
-} from "./ActivityBarHelper.js";
+import { GenerateItemId } from "./ActivityBarHelper.js";
 
 // ============================================================================
 // Live Implementation
 // ============================================================================
 
+type ActivityBarLogger = (
+	level: "info" | "warn" | "error",
+
+	message: string,
+) => void;
+
+// Mirrors the observable side effect of the Telemetry service's log method
+// without pulling in its Effect-typed surface.
+const DefaultLogger: ActivityBarLogger = (Level, Message) => {
+	if (typeof performance !== "undefined") {
+		try {
+			performance.mark(`land:telemetry:${Level}:${Message.slice(0, 80)}`);
+		} catch {}
+	}
+};
+
 /**
- * Live implementation layer for ActivityBar service.
- * Provides in-memory storage with reactive state management.
+ * Creates the ActivityBar service with a plain in-memory store.
  */
-export const ActivityBarLive = Layer.effect(
-	ActivityBarTag,
+export const makeActivityBar = (
+	Log: ActivityBarLogger = DefaultLogger,
+): ActivityBarService => {
+	let _items: ActivityBarItem[] = [];
 
-	Effect.gen(function* () {
-		const TelemetryService = yield* Telemetry;
+	let _activeItem: string | undefined;
 
-		// In-memory storage of activity bar items as reactive ref
-		const ItemsRef = yield* SubscriptionRef.make<
-			ReadonlyArray<ActivityBarItem>
-		>([]);
+	const getItem = (Id: string): ActivityBarItem | undefined =>
+		_items.find((Item) => Item.id === Id);
 
-		// Active item state as reactive ref
-		const ActiveItemRef = yield* SubscriptionRef.make<string | undefined>(
-			undefined,
-		);
+	const createItem = (Item: CreateActivityBarItem): ActivityBarItem => {
+		const Id = GenerateItemId();
 
-		// Atom: Get a specific activity bar item
-		const GetItem = MakeGetItem(ItemsRef);
+		const NewItem: ActivityBarItem = { ...Item, id: Id };
 
-		// Atom: Create a new activity bar item
-		const CreateItem = MakeCreateItem(ItemsRef, TelemetryService);
+		_items = [..._items, NewItem].sort((a, b) => a.position - b.position);
 
-		// Atom: Update an existing activity bar item
-		const UpdateItem = MakeUpdateItem(ItemsRef, GetItem, TelemetryService);
+		Log("info", `Created activity bar item: ${Id}`);
 
-		// Atom: Remove an activity bar item
-		const RemoveItem = MakeRemoveItem(
-			ItemsRef,
+		return NewItem;
+	};
 
-			ActiveItemRef,
+	const updateItem = (
+		Id: string,
 
-			GetItem,
+		Updates: Partial<Omit<ActivityBarItem, "id">>,
+	): void => {
+		const Existing = getItem(Id);
 
-			TelemetryService,
-		);
+		if (!Existing) {
+			throw new ActivityBarItemNotFoundError(Id);
+		}
 
-		// Atom: Set active item
-		const SetActiveItem = MakeSetActiveItem(
-			ActiveItemRef,
+		try {
+			const RemoveBadge = "badge" in Updates && Updates.badge === undefined;
 
-			GetItem,
+			const CleanUpdatesMap = new Map<string, unknown>();
 
-			TelemetryService,
-		);
+			Object.entries(Updates).forEach(([Key, Value]) => {
+				if (Key !== "badge" || Value !== undefined) {
+					CleanUpdatesMap.set(Key, Value);
+				}
+			});
 
-		// Atom: Set badge
-		const SetBadge = MakeSetBadge(UpdateItem);
+			const CleanUpdates: Partial<Omit<ActivityBarItem, "id">> =
+				Object.fromEntries(CleanUpdatesMap);
 
-		// Atom: Get badge
-		const GetBadge = MakeGetBadge(GetItem);
+			_items = _items
+				.map((Item) => {
+					if (Item.id !== Id) {
+						return Item;
+					}
 
-		yield* TelemetryService.log("info", "ActivityBar service initialized");
+					const { badge: _ExistingBadge, ...WithoutBadge } = Item;
 
-		return {
-			createItem: CreateItem,
-			updateItem: UpdateItem,
-			removeItem: RemoveItem,
-			getItem: GetItem,
-			items: ItemsRef.get,
-			itemsChanges: ItemsRef.changes,
-			setActiveItem: SetActiveItem,
-			getActiveItem: ActiveItemRef.get,
-			activeItemChanges: ActiveItemRef.changes,
-			setBadge: SetBadge,
-			getBadge: GetBadge,
-			clearBadge: (Id: string) => SetBadge(Id, undefined),
-		} satisfies ActivityBarService;
-	}),
-);
+					return RemoveBadge
+						? ({ ...WithoutBadge, ...CleanUpdates } as ActivityBarItem)
+						: { ...Item, ...CleanUpdates };
+				})
+				.sort((a, b) => a.position - b.position);
+
+			Log("info", `Updated activity bar item: ${Id}`);
+		} catch (Cause) {
+			throw new ActivityBarUpdateError(Id, Cause);
+		}
+	};
+
+	const removeItem = (Id: string): void => {
+		const Existing = getItem(Id);
+
+		if (!Existing) {
+			throw new ActivityBarItemNotFoundError(Id);
+		}
+
+		_items = _items.filter((Item) => Item.id !== Id);
+
+		if (_activeItem === Id) {
+			_activeItem = undefined;
+		}
+
+		Log("info", `Removed activity bar item: ${Id}`);
+	};
+
+	const setActiveItem = (Id: string): void => {
+		const Existing = getItem(Id);
+
+		if (!Existing) {
+			throw new ActivityBarItemNotFoundError(Id);
+		}
+
+		_activeItem = Id;
+
+		Log("info", `Set active activity bar item: ${Id}`);
+	};
+
+	const setBadge = (
+		Id: string,
+
+		Badge: ActivityBarBadge | undefined,
+	): void => {
+		updateItem(Id, { badge: Badge });
+	};
+
+	Log("info", "ActivityBar service initialized");
+
+	return {
+		createItem,
+		updateItem,
+		removeItem,
+		getItem,
+		items: () => _items,
+		setActiveItem,
+		getActiveItem: () => _activeItem,
+		setBadge,
+		getBadge: (Id: string) => getItem(Id)?.badge,
+		clearBadge: (Id: string) => setBadge(Id, undefined),
+	} satisfies ActivityBarService;
+};
+
+/**
+ * Live ActivityBar service with an in-memory store.
+ */
+export const ActivityBarLive: ActivityBarService = makeActivityBar();
 
 export default ActivityBarLive;

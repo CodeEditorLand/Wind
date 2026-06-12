@@ -1,6 +1,3 @@
-// Convenience alias for backward compatibility
-import { ActivityBarTag } from "./Tag/ActivityBarTag.js";
-
 /**
  * @module Effect/ActivityBar
  * @description
@@ -9,22 +6,18 @@ import { ActivityBarTag } from "./Tag/ActivityBarTag.js";
  *
  * @example
  * ```ts
- * import { ActivityBar, ActivityBarLive, ActivityBarTag } from "./Effect/ActivityBar/index.js";
+ * import { ActivityBarLive } from "./Effect/ActivityBar/index.js";
  *
- * // Using the service
- * const program = Effect.gen(function* () {
- *   const activityBar = yield* ActivityBarTag;
- *   const items = yield* activityBar.items;
- *   return items;
+ * const Item = ActivityBarLive.createItem({
+ * 	title: "Explorer",
+ * 	icon: "files",
+ * 	command: "workbench.view.explorer",
+ * 	position: 0,
  * });
- *
- * // Providing the layer
- * const runnable = program.pipe(Effect.provide(ActivityBarLive));
  * ```
  *
  * @see {@link Effect/ActivityBar/Interface/ActivityBarService} Service interface
  * @see {@link Effect/ActivityBar/Implementation/ActivityBarImplementation} Live implementation
- * @see [Effect-TS Documentation](https://effect.website/docs/guide/context)
  * @category Service
  */
 
@@ -43,25 +36,14 @@ export type {
 // Service interface
 export type { ActivityBarService } from "./Interface/ActivityBarService.js";
 
-// Service tag
-export { ActivityBarTag } from "./Tag/ActivityBarTag.js";
-
 // Helper functions
+export { GenerateItemId } from "./Implementation/ActivityBarHelper.js";
+
+// Live implementation
 export {
-	MakeCreateItem,
-	MakeUpdateItem,
-	MakeRemoveItem,
-	MakeGetItem,
-	MakeSetActiveItem,
-	MakeSetBadge,
-	MakeGetBadge,
-	GenerateItemId,
-} from "./Implementation/ActivityBarHelper.js";
+	ActivityBarLive,
+	makeActivityBar,
+} from "./Implementation/ActivityBarImplementation.js";
 
-// Live implementation layer
-export { ActivityBarLive } from "./Implementation/ActivityBarImplementation.js";
-
-// Mock implementation layer
+// Mock implementation
 export { ActivityBarMockLive } from "./Layer/ActivityBarMock.js";
-
-export { ActivityBarTag as ActivityBar };

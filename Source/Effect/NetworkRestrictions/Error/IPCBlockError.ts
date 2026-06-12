@@ -3,34 +3,39 @@
  * @description
  * Error thrown when an IPC channel is blocked by the NetworkRestrictions service.
  * @see {@link Effect/NetworkRestrictions/Implementation/NetworkRestrictionsImplementation} Usage context
- * @see [Error Handling Guide](https://effect.website/docs/guide/error-handling)
  * @category Error
  */
 
 // ============================================================================
-// Type Definitions
+// Error Definition
 // ============================================================================
 
 /**
  * Error thrown when an IPC channel is blocked
  */
-export interface IPCBlockError {
-	readonly _tag: "IPCBlockError";
+export class IPCBlockError extends Error {
+	readonly _tag = "IPCBlockError";
 
 	readonly channel: string;
 
 	readonly reason: string;
 
-	readonly message: string;
+	constructor(channel: string, reason: string) {
+		super(`IPC channel blocked: ${reason}`);
 
-	readonly name: string;
+		this.channel = channel;
 
-	readonly cause: string;
+		this.reason = reason;
+
+		this.cause = channel;
+
+		Object.setPrototypeOf(this, IPCBlockError.prototype);
+	}
+
+	override get name() {
+		return "IPCBlockError";
+	}
 }
-
-// ============================================================================
-// Implementation
-// ============================================================================
 
 /**
  * Creates an IPCBlockError instance
@@ -42,13 +47,6 @@ const CreateIPCBlockError = (
 	channel: string,
 
 	reason: string,
-): IPCBlockError => ({
-	_tag: "IPCBlockError",
-	channel,
-	reason,
-	message: `IPC channel blocked: ${reason}`,
-	name: "IPCBlockError",
-	cause: channel,
-});
+): IPCBlockError => new IPCBlockError(channel, reason);
 
 export default CreateIPCBlockError;

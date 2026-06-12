@@ -1,7 +1,7 @@
 /**
  * @module Effect/ActivityBar
  * @description
- * Atomic Activity Bar service using Effect-TS.
+ * Atomic Activity Bar service backed by a plain in-memory store.
  * Manages activity bar items, their display, and active state.
  *
  * @deprecated This file is maintained for backward compatibility.
@@ -10,10 +10,10 @@
  * @example
  * ```ts
  * // Old (still works):
- * import { ActivityBar, ActivityBarLive } from "./Effect/ActivityBar.js";
+ * import { ActivityBarLive } from "./Effect/ActivityBar.js";
  *
  * // New (recommended):
- * import { ActivityBar, ActivityBarLive } from "./Effect/ActivityBar/index.js";
+ * import { ActivityBarLive } from "./Effect/ActivityBar/index.js";
  * ```
  */
 
@@ -25,16 +25,8 @@ export {
 	type ActivityBarItem,
 	type CreateActivityBarItem,
 	type ActivityBarService,
-	ActivityBarTag,
-	ActivityBar,
-	MakeCreateItem,
-	MakeUpdateItem,
-	MakeRemoveItem,
-	MakeGetItem,
-	MakeSetActiveItem,
-	MakeSetBadge,
-	MakeGetBadge,
 	GenerateItemId,
+	makeActivityBar,
 	ActivityBarLive,
 	ActivityBarMockLive,
 } from "./ActivityBar/index.js";

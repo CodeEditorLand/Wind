@@ -3,34 +3,39 @@
  * @description
  * Error thrown when a network URL request is blocked by the NetworkRestrictions service.
  * @see {@link Effect/NetworkRestrictions/Implementation/NetworkRestrictionsImplementation} Usage context
- * @see [Error Handling Guide](https://effect.website/docs/guide/error-handling)
  * @category Error
  */
 
 // ============================================================================
-// Type Definitions
+// Error Definition
 // ============================================================================
 
 /**
  * Error thrown when a network request is blocked
  */
-export interface NetworkBlockError {
-	readonly _tag: "NetworkBlockError";
+export class NetworkBlockError extends Error {
+	readonly _tag = "NetworkBlockError";
 
 	readonly url: string;
 
 	readonly reason: string;
 
-	readonly message: string;
+	constructor(url: string, reason: string) {
+		super(`Network request blocked: ${reason}`);
 
-	readonly name: string;
+		this.url = url;
 
-	readonly cause: string;
+		this.reason = reason;
+
+		this.cause = url;
+
+		Object.setPrototypeOf(this, NetworkBlockError.prototype);
+	}
+
+	override get name() {
+		return "NetworkBlockError";
+	}
 }
-
-// ============================================================================
-// Implementation
-// ============================================================================
 
 /**
  * Creates a NetworkBlockError instance
@@ -42,13 +47,6 @@ const CreateNetworkBlockError = (
 	url: string,
 
 	reason: string,
-): NetworkBlockError => ({
-	_tag: "NetworkBlockError",
-	url,
-	reason,
-	message: `Network request blocked: ${reason}`,
-	name: "NetworkBlockError",
-	cause: url,
-});
+): NetworkBlockError => new NetworkBlockError(url, reason);
 
 export default CreateNetworkBlockError;
