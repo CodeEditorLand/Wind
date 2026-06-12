@@ -10,6 +10,7 @@ Configuration/
 # Generated code — rebuilt on every build, never committed
 Source/**/Generated/
 Source/**/*Generated.ts
+Source/ESBuild.js
 Target/**/Generated/
 
 # Environment files
