@@ -15,18 +15,14 @@
  *    via the Commands service.
  */
 
-import { Effect, Layer } from "effect";
-
 import SkyEvent from "../../IPC/SkyEvent.js";
 import { CommandsServiceInstance } from "../Commands/Live.js";
 import type { EditorService } from "./Interface/EditorService.js";
-import { EditorServiceTag } from "./Tag/EditorServiceTag.js";
-import type { EditorProblem } from "./Type/EditorProblem.js";
 
-const MakeEditorProblem = (error: unknown): EditorProblem =>
+const MakeEditorProblem = (error: unknown): Error =>
 	error instanceof Error
-		? { _tag: "EditorOperationFailed", error }
-		: { _tag: "EditorOperationFailed", error: new Error(String(error)) };
+		? error
+		: new Error(String(error));
 
 function makeEditorService(): EditorService {
 	const CommandsService = CommandsServiceInstance;
@@ -62,17 +58,11 @@ function makeEditorService(): EditorService {
 	})();
 
 	const Service: EditorService = {
-		GetActiveEditor: () =>
-			Effect.sync(() => _ActiveEditor).pipe(
-				Effect.mapError(MakeEditorProblem),
-			),
+		GetActiveEditor: () => _ActiveEditor,
 
-		GetVisibleEditors: () =>
-			Effect.sync(() => _VisibleEditors).pipe(
-				Effect.mapError(MakeEditorProblem),
-			),
+		GetVisibleEditors: () => _VisibleEditors,
 
-		OpenEditor: (uri, options) =>
+		OpenEditor: async (uri, options) =>
 			// Delegate to the Commands service using the Monaco open command.
 			// If that is not yet registered, fall back to the native file opener.
 			CommandsService.ExecuteCommand(
@@ -81,66 +71,50 @@ function makeEditorService(): EditorService {
 				uri,
 
 				options ?? {},
-			).pipe(Effect.mapError(MakeEditorProblem)),
-
-		CloseEditor: (_editor) =>
-			CommandsService.ExecuteCommand(
-				"workbench.action.closeActiveEditor",
-			).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeEditorProblem),
 			),
+
+		CloseEditor: async (_editor) => {
+			await CommandsService.ExecuteCommand(
+				"workbench.action.closeActiveEditor",
+			);
+		},
 
 		GetSelections: () =>
 			// Sky/Monaco holds the canonical selection state.
-			// We return an empty array here until the Monaco \u2192 Wind bridge
+			// We return an empty array here until the Monaco → Wind bridge
 			// is wired (P2: Editor Effect layer full implementation).
-			Effect.succeed([]),
+			[],
 
-		SetSelections: (_selections) =>
-			CommandsService.ExecuteCommand(
+		SetSelections: async (_selections) => {
+			await CommandsService.ExecuteCommand(
 				"editor.action.setSelection",
 
 				_selections,
-			).pipe(
-				Effect.map(() => undefined as void),
+			);
+		},
 
-				Effect.mapError(MakeEditorProblem),
-			),
-
-		RevealRange: (range, revealType) =>
-			CommandsService.ExecuteCommand(
+		RevealRange: async (range, revealType) => {
+			await CommandsService.ExecuteCommand(
 				"editor.revealRange",
 
 				range,
 
 				revealType ?? 0,
-			).pipe(
-				Effect.map(() => undefined as void),
+			);
+		},
 
-				Effect.mapError(MakeEditorProblem),
-			),
-
-		ApplyDecorations: (_editor, decorations) =>
-			CommandsService.ExecuteCommand(
+		ApplyDecorations: async (_editor, decorations) => {
+			await CommandsService.ExecuteCommand(
 				"editor.applyDecorations",
 
 				decorations,
-			).pipe(
-				Effect.map(() => undefined as void),
-
-				Effect.mapError(MakeEditorProblem),
-			),
+			);
+		},
 	};
 
 	return Service;
 }
 
-export const LiveEditorServiceLayer = Layer.succeed(
-	EditorServiceTag,
-
-	makeEditorService(),
-);
+export const LiveEditorServiceLayer = makeEditorService();
 
 export default LiveEditorServiceLayer;

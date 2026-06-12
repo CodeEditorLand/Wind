@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { TextModel } from "../../Model/Interface/ModelService.js";
 import type { TextModelResolverProblem } from "../Type/TextModelResolverProblem.js";
 
@@ -18,26 +16,19 @@ export interface TextModelResolverService {
 	 * Opens the model if not already open (delegates to ModelService).
 	 * Returns an IReference-like object with the model and a dispose function.
 	 */
-	readonly Resolve: (uri: string) => Effect.Effect<
-		{
-			readonly model: TextModel;
+	readonly Resolve: (uri: string) => Promise<{
+		readonly model: TextModel;
 
-			readonly dispose: () => void;
-		},
-		TextModelResolverProblem
-	>;
+		readonly dispose: () => void;
+	}>;
 
 	/**
 	 * Check if a model reference exists for the given URI.
 	 */
-	readonly HasModel: (
-		uri: string,
-	) => Effect.Effect<boolean, TextModelResolverProblem>;
+	readonly HasModel: (uri: string) => Promise<boolean>;
 
 	/**
 	 * Force-reload a model's content from disk (via Mountain).
 	 */
-	readonly Reload: (
-		uri: string,
-	) => Effect.Effect<TextModel, TextModelResolverProblem>;
+	readonly Reload: (uri: string) => Promise<TextModel>;
 }

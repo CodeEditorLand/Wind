@@ -1,5 +1,3 @@
-import type { Effect } from "effect";
-
 import type { EditorProblem } from "../Type/EditorProblem.js";
 
 /**
@@ -7,44 +5,33 @@ import type { EditorProblem } from "../Type/EditorProblem.js";
  * Microsoft VSCode Reference: ICodeEditorService from vs/editor/browser/services/codeEditorService.ts
  */
 export interface EditorService {
-	readonly GetActiveEditor: () => Effect.Effect<
-		unknown | null,
-		EditorProblem
-	>;
+	readonly GetActiveEditor: () => unknown | null;
 
-	readonly GetVisibleEditors: () => Effect.Effect<
-		readonly unknown[],
-		EditorProblem
-	>;
+	readonly GetVisibleEditors: () => readonly unknown[];
 
 	readonly OpenEditor: (
 		uri: string,
 
 		options?: Record<string, unknown>,
-	) => Effect.Effect<unknown, EditorProblem>;
+	) => Promise<unknown>;
 
-	readonly CloseEditor: (
-		editor: unknown,
-	) => Effect.Effect<void, EditorProblem>;
+	readonly CloseEditor: (editor: unknown) => Promise<void>;
 
-	readonly GetSelections: () => Effect.Effect<
-		readonly unknown[],
-		EditorProblem
-	>;
+	readonly GetSelections: () => readonly unknown[];
 
 	readonly SetSelections: (
 		selections: readonly unknown[],
-	) => Effect.Effect<void, EditorProblem>;
+	) => Promise<void>;
 
 	readonly RevealRange: (
 		range: unknown,
 
 		revealType?: number,
-	) => Effect.Effect<void, EditorProblem>;
+	) => Promise<void>;
 
 	readonly ApplyDecorations: (
 		editor: unknown,
 
 		decorations: readonly unknown[],
-	) => Effect.Effect<void, EditorProblem>;
+	) => Promise<void>;
 }

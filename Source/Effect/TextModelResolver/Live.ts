@@ -12,17 +12,14 @@
  *   model:updateContent → force-reload content from Mountain
  */
 
-import { Effect, Layer } from "effect";
+import { Effect } from "effect";
 
-import { ModelServiceInstance } from "../Model/Live.js";
+import type { TextModel } from "../../Model/Interface/ModelService.js";
+import { ModelServiceInstance } from "../../Model/Live.js";
 import type { TextModelResolverService } from "./Interface/TextModelResolverService.js";
-import { TextModelResolverServiceTag } from "./Tag/TextModelResolverServiceTag.js";
-import type { TextModelResolverProblem } from "./Type/TextModelResolverProblem.js";
 
-const MakeResolverProblem = (error: unknown): TextModelResolverProblem => ({
-	_tag: "TextModelResolverOperationFailed",
-	error: error instanceof Error ? error : new Error(String(error)),
-});
+const MakeResolverProblem = (error: unknown): Error =>
+	error instanceof Error ? error : new Error(String(error));
 
 function makeTextModelResolverService(): TextModelResolverService {
 	const ModelService = ModelServiceInstance;
@@ -30,56 +27,56 @@ function makeTextModelResolverService(): TextModelResolverService {
 	// Simple reference counter: uri → open count
 	const RefCounts = new Map<string, number>();
 
+	// Bridge: ModelService methods still return Effect.Effect until EFX Phase N.
+	// Use runPromise to convert to plain Promise for this service.
+	const OpenModel = (uri: string): Promise<TextModel> =>
+		Effect.runPromise(ModelService.OpenModel(uri));
+
+	const GetModel = (uri: string): Promise<TextModel | null> =>
+		Effect.runPromise(ModelService.GetModel(uri));
+
+	const CloseModel = (uri: string): Promise<void> =>
+		Effect.runPromise(ModelService.CloseModel(uri));
+
 	const Service: TextModelResolverService = {
-		Resolve: (uri) =>
-			ModelService.OpenModel(uri).pipe(
-				Effect.map((Model) => {
-					// Increment reference count
-					RefCounts.set(uri, (RefCounts.get(uri) ?? 0) + 1);
+		Resolve: async (uri) => {
+			const Model = await OpenModel(uri);
 
-					return {
-						model: Model,
-						dispose: () => {
-							const Count = (RefCounts.get(uri) ?? 1) - 1;
+			// Increment reference count
+			RefCounts.set(uri, (RefCounts.get(uri) ?? 0) + 1);
 
-							if (Count <= 0) {
-								RefCounts.delete(uri);
+			return {
+				model: Model,
+				dispose: () => {
+					const Count = (RefCounts.get(uri) ?? 1) - 1;
 
-								// Fire-and-forget close when ref count drops to zero
-								void Effect.runPromise(
-									ModelService.CloseModel(uri),
-								).catch(() => {});
-							} else {
-								RefCounts.set(uri, Count);
-							}
-						},
-					};
-				}),
+					if (Count <= 0) {
+						RefCounts.delete(uri);
 
-				Effect.mapError(MakeResolverProblem),
-			),
+						// Fire-and-forget close when ref count drops to zero
+						void CloseModel(uri).catch(() => {});
+					} else {
+						RefCounts.set(uri, Count);
+					}
+				},
+			};
+		},
 
-		HasModel: (uri) =>
-			ModelService.GetModel(uri).pipe(
-				Effect.map((Result) => Result !== null),
+		HasModel: async (uri) => {
+			const Result = await GetModel(uri);
 
-				Effect.mapError(MakeResolverProblem),
-			),
+			return Result !== null;
+		},
 
-		Reload: (uri) =>
+		Reload: async (uri) =>
 			// Re-open (Mountain always reads from disk on open)
-			ModelService.OpenModel(uri).pipe(
-				Effect.mapError(MakeResolverProblem),
-			),
+			OpenModel(uri),
 	};
 
 	return Service;
 }
 
-export const LiveTextModelResolverServiceLayer = Layer.succeed(
-	TextModelResolverServiceTag,
-
-	makeTextModelResolverService(),
-);
+export const LiveTextModelResolverServiceLayer =
+	makeTextModelResolverService();
 
 export default LiveTextModelResolverServiceLayer;
