@@ -105,18 +105,18 @@ class AuditLog {
 	 * Send the current batch to Mountain's dev log via Tauri IPC.
 	 * Called periodically (e.g., every 30 seconds) when TierShim=Proxy.
 	 */
-	static static sendToMountain(): Promise<void> {
+	static async sendToMountain(): Promise<void> {
 		const data = this.flush();
 		if (data.length === 0) {
-			return Promise.resolve();
+			return;
 		}
 
 		try {
 			// Access Tauri's global invoke — requires @tauri-apps/api in scope
 			const g = globalThis as Record<string, unknown>;
 			const tauri = g["__TAURI__"] as Record<string, unknown> | undefined;
-			const invoke = (tauri?.["core"]?.["invoke"] ?? tauri?.["invoke"]) as
-				| ((cmd: string, args: Record<string, unknown>) => Promise<unknown>)
+			const invoke = ((tauri?.["core"] as Record<string, unknown>)?.["invoke"] ?? tauri?.["invoke"]) as
+				((cmd: string, args: Record<string, unknown>) => Promise<unknown>)
 				| undefined;
 
 			if (typeof invoke === "function") {
@@ -136,6 +136,7 @@ class AuditLog {
 		} catch {
 			// Don't throw from audit — it's fire-and-forget
 		}
+		return;
 	}
 
 	/**
