@@ -10,8 +10,8 @@
 // Re-exports from atomic modules
 // ============================================================================
 
-// Types
-export type {
+// Errors
+export {
 	IPCInvokeError,
 	IPCSendError,
 	IPCSubscriptionError,

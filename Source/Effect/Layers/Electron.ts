@@ -3,13 +3,12 @@
  * @description
  * Complete Effect layer stack for Electron runtime (Sky).
  * Composes the remaining Effect-typed services using Electron IPC.
- * Configuration and Mountain are plain services exported from their
+ * Configuration, Mountain, and IPC are plain services exported from their
  * Implementation modules and no longer appear in the layer stack.
  */
 
 import { Layer } from "effect";
 
-import { IPCElectronLive } from "../IPC.js";
 import { SandboxLive } from "../Sandbox.js";
 import { TelemetryLive } from "../Telemetry.js";
 
@@ -19,13 +18,13 @@ import { TelemetryLive } from "../Telemetry.js";
 
 /**
  * Base Electron layer stack.
- * Provides: Sandbox + IPC + Telemetry
+ * Provides: Sandbox + Telemetry
  *
+ * IPC is a plain object — import TauriIPCLive directly.
  * Use this when you need manual control over configuration sync.
  */
 export const ElectronBaseLayer = Layer.empty
 	.pipe(Layer.provideMerge(SandboxLive))
-	.pipe(Layer.provideMerge(IPCElectronLive))
 	.pipe(Layer.provideMerge(TelemetryLive));
 
 // ============================================================================
@@ -41,7 +40,6 @@ export const ElectronBaseLayer = Layer.empty
  */
 export const ElectronLiveLayer = Layer.empty
 	.pipe(Layer.provideMerge(SandboxLive))
-	.pipe(Layer.provideMerge(IPCElectronLive))
 	.pipe(Layer.provideMerge(TelemetryLive));
 
 // ============================================================================
@@ -54,7 +52,6 @@ export const ElectronLiveLayer = Layer.empty
  */
 export const ElectronDevLayer = Layer.empty
 	.pipe(Layer.provideMerge(SandboxLive))
-	.pipe(Layer.provideMerge(IPCElectronLive))
 	.pipe(Layer.provideMerge(TelemetryLive));
 
 // Export default for convenience

@@ -80,13 +80,17 @@ export type {
 
 // Health (Service health checks)
 export { HealthLive, HealthMock } from "./Health/index.js";
-export type { IPCService } from "./IPC.js";
+export type {
+	IPCCleanup,
+	IPCEvent,
+	IPCEventListener,
+	IPCEventStream,
+	IPCService,
+} from "./IPC.js";
 // IPC (Inter-Process Communication)
 export {
-	IPCElectronLive,
-	IPCMockLive,
-	IPCTag as IPC,
-	IPCTauriLive,
+	TauriIPCLive as IPCLive,
+	MockIPCLive as IPCMockLive,
 } from "./IPC.js";
 export type {
 	Mountain,
