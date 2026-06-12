@@ -1,4 +1,9 @@
 // Convenience export for quick bootstrap execution
+import type {
+	BootstrapOptions,
+	BootstrapResult,
+} from "./Type/BootstrapType.js";
+
 import { Effect, Layer } from "effect";
 
 import TelemetryLive from "../Telemetry/Layer/TelemetryLive.js";
@@ -68,11 +73,13 @@ export { BootstrapMock, makeMockBootstrap } from "./Layer/BootstrapMock.js";
 // __TAURI__ isn't injected yet. The Bootstrap is diagnostic, not critical path.
 const BootstrapRunLayer = TelemetryLive.pipe(Layer.provideMerge(BootstrapLive));
 
-export const runBootstrap = (
-	options?: import("./Type/BootstrapType.js").BootstrapOptions,
-) =>
-	Effect.gen(function* () {
-		const bootstrap = yield* BootstrapTag;
+export const runBootstrap = async (
+	options?: BootstrapOptions,
+): Promise<BootstrapResult> =>
+	Effect.runPromise(
+		Effect.gen(function* () {
+			const bootstrap = yield* BootstrapTag;
 
-		return yield* bootstrap.run(options);
-	}).pipe(Effect.provide(BootstrapRunLayer));
+			return yield* bootstrap.run(options);
+		}).pipe(Effect.provide(BootstrapRunLayer)),
+	);
