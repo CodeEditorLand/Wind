@@ -21,19 +21,13 @@ export interface WorkbenchProgressTaskOptions {
 }
 
 export interface WorkbenchProgressReporter {
-	readonly Report: (
-		fraction: number,
-
-		message: string | undefined,
-	) => Effect.Effect<void, WorkbenchProgressProblem>;
+	readonly Report: (fraction: number, message: string | undefined) => void;
 }
 
 export interface WorkbenchProgressService {
 	readonly Run: <A>(
 		options: WorkbenchProgressTaskOptions,
 
-		body: (
-			reporter: WorkbenchProgressReporter,
-		) => Effect.Effect<A, WorkbenchProgressProblem>,
+		body: (reporter: WorkbenchProgressReporter) => Promise<A>,
 	) => Effect.Effect<A, WorkbenchProgressProblem>;
 }

@@ -83,17 +83,7 @@ function makeWorkspacesService(): WorkspacesService {
 	const Service: WorkspacesService = {
 		GetFolders: () =>
 			IPCService.invoke(Channel.WorkspacesGetFolders)([]).pipe(
-				Effect.map((Result) =>
-					Array.isArray(Result)
-						? (Result as readonly {
-								uri: string;
-
-								name: string;
-
-								index: number;
-							}[])
-						: [],
-				),
+				Effect.map((Result) => CoerceFolderArray(Result)),
 
 				Effect.mapError(MakeWorkspacesProblem),
 			),

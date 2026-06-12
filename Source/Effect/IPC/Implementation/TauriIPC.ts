@@ -22,6 +22,33 @@ import type { IPCService } from "../Interface/IPCService.js";
 // Tauri Implementation
 // ============================================================================
 
+// Unlisten functions per channel, captured when `listen()` resolves in
+// `events`/`once`, so `removeAllListeners` can actually detach Tauri
+// listeners instead of letting them accumulate across reloads.
+const ChannelUnlisteners = new Map<string, Array<() => void>>();
+
+const RegisterUnlisten = (channel: string, unlisten: () => void): void => {
+	const Existing = ChannelUnlisteners.get(channel);
+
+	if (Existing) {
+		Existing.push(unlisten);
+	} else {
+		ChannelUnlisteners.set(channel, [unlisten]);
+	}
+};
+
+const UnregisterUnlisten = (channel: string, unlisten: () => void): void => {
+	const Existing = ChannelUnlisteners.get(channel);
+
+	if (!Existing) return;
+
+	const Index = Existing.indexOf(unlisten);
+
+	if (Index !== -1) Existing.splice(Index, 1);
+
+	if (Existing.length === 0) ChannelUnlisteners.delete(channel);
+};
+
 function buildTauriIPCService(): IPCService {
 	return {
 		send: (channel: string) => (args: ReadonlyArray<unknown>) =>
@@ -35,12 +62,16 @@ function buildTauriIPCService(): IPCService {
 				try: () => {
 					// All Wind IPC calls route through the single
 					// `MountainIPCInvoke` Tauri command. Mountain receives:
-					// method = channel name, params = args array.
-					// Pass args directly when length !== 1; Tauri's serde
-					// handles ReadonlyArray<unknown> identically to unknown[].
+					// method = channel name, params = flat array of args -
+					// the same shape TauriMainProcessService produces.
+					// Always sending the array keeps a single array-valued
+					// argument (e.g. `[uris]`) from being unwrapped and
+					// spread into multiple Mountain-side args; Mountain
+					// wraps non-array params itself, so bare values were
+					// never required here.
 					return tauriInvoke("MountainIPCInvoke", {
 						method: channel,
-						params: args.length === 1 ? args[0] : args,
+						params: args as unknown[],
 					});
 				},
 				catch: (error) => CreateIPCInvokeError(channel, error),
@@ -63,12 +94,20 @@ function buildTauriIPCService(): IPCService {
 				})
 					.then((unlisten) => {
 						cleanup = unlisten;
+
+						RegisterUnlisten(channel, unlisten);
 					})
 					.catch((error) => {
 						emit.fail(CreateIPCSubscriptionError(channel, error));
 					});
 
-				return Effect.sync(() => cleanup?.());
+				return Effect.sync(() => {
+					if (cleanup) {
+						UnregisterUnlisten(channel, cleanup);
+
+						cleanup();
+					}
+				});
 			}),
 
 		once: (
@@ -85,14 +124,33 @@ function buildTauriIPCService(): IPCService {
 							args: [event.payload],
 						}),
 					);
-				}).catch((error) => {
-					resume(
-						Effect.fail(CreateIPCSubscriptionError(channel, error)),
-					);
-				});
+				})
+					.then((unlisten) => {
+						RegisterUnlisten(channel, unlisten);
+					})
+					.catch((error) => {
+						resume(
+							Effect.fail(
+								CreateIPCSubscriptionError(channel, error),
+							),
+						);
+					});
 			}),
 
-		removeAllListeners: (_channel: string) => Effect.void,
+		removeAllListeners: (channel: string) =>
+			Effect.sync(() => {
+				const Unlisteners = ChannelUnlisteners.get(channel);
+
+				if (!Unlisteners) return;
+
+				ChannelUnlisteners.delete(channel);
+
+				for (const Unlisten of Unlisteners) {
+					try {
+						Unlisten();
+					} catch {}
+				}
+			}),
 	};
 }
 

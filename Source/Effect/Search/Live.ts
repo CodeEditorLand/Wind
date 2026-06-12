@@ -23,6 +23,22 @@ const MakeSearchProblem = (error: unknown): SearchProblem =>
 		? { _tag: "SearchOperationFailed", error }
 		: { _tag: "SearchOperationFailed", error: new Error(String(error)) };
 
+/**
+ * Wire contract: include/exclude always travel as `string[]`. Accepts the
+ * workbench's single-string form and multi-root array form; empty strings
+ * are dropped.
+ */
+const ToGlobArray = (
+	Value: string | readonly string[] | undefined,
+): readonly string[] =>
+	Array.isArray(Value)
+		? (Value as readonly string[]).filter(
+				(Pattern) => typeof Pattern === "string" && Pattern !== "",
+			)
+		: typeof Value === "string" && Value !== ""
+			? [Value]
+			: [];
+
 function makeSearchService(): SearchService {
 	const IPCService = TauriIPCLive;
 
@@ -37,9 +53,9 @@ function makeSearchService(): SearchService {
 
 				options.isWordMatch ?? false,
 
-				options.include ?? "**",
+				ToGlobArray(options.include ?? "**"),
 
-				options.exclude ?? "",
+				ToGlobArray(options.exclude),
 
 				options.maxResults ?? 1000,
 			]).pipe(

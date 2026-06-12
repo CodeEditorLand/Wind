@@ -199,7 +199,10 @@ const ChannelRouteMap: Record<string, string> = {
 	history: "history",
 };
 
-const FireAndForgetChannels = new Set(["logger", "output"]);
+// `output` deliberately NOT fire-and-forget: Mountain's
+// `output:createOutputChannel`/`registerLogger` handlers return handles
+// the workbench callers consume, so those calls must round-trip.
+const FireAndForgetChannels = new Set(["logger"]);
 
 const FileSystemChannels = new Set(["localFilesystem"]);
 
@@ -911,6 +914,10 @@ class TauriChannel implements IChannel {
 		// ChannelRouteMap routing (or the `miss` forward below), so a
 		// partially-stubbed channel like `process` still reaches
 		// Mountain's real handlers for its non-stubbed methods.
+		// Stub resolution precedes BOTH the per-route tier dispatch and
+		// the Node-tier cocoon:request fallback below - a stub-listed
+		// command is answered locally and never reaches Cocoon,
+		// regardless of TierIPC.
 		if (
 			Stubs !== undefined &&
 			Object.prototype.hasOwnProperty.call(Stubs, Command)
@@ -937,7 +944,19 @@ class TauriChannel implements IChannel {
 			if (_EffectiveTier === "WebSocket" && MistWS.IsAvailable()) {
 				try {
 					return (await MistWS.invoke(MountainMethod, Params)) as T;
-				} catch {}
+				} catch (WSError) {
+					// Global Node tier: a Mountain re-dispatch would
+					// violate the Node-only contract - propagate.
+					if (_TierIPC === "Node") {
+						_Trace("mist-ws", `error:${MountainMethod}`);
+
+						throw WSError;
+					}
+
+					// Otherwise the call re-dispatches to Mountain below -
+					// trace so the double-dispatch is visible.
+					_Trace("mist-ws", `fallback-to-mountain:${MountainMethod}`);
+				}
 			}
 
 			if (_EffectiveTier === "Node") {
@@ -952,6 +971,15 @@ class TauriChannel implements IChannel {
 				const Result = await _TimedTrace("ipc", MountainMethod, () =>
 					InvokeMountain(MountainMethod, Params),
 				);
+
+				// NodeDeferred: Mountain answered but had no handler
+				// (strictly `undefined` - `null` is a legitimate Mountain
+				// result and must NOT fall back). Fall through to Cocoon.
+				if (Result === undefined && _EffectiveTier === "NodeDeferred") {
+					_Trace("ipc", `nodeDeferred:${MountainMethod}`);
+
+					return (await _InvokeViaNode(MountainMethod, Params)) as T;
+				}
 
 				if (
 					FileSystemChannels.has(this.ChannelName) &&
@@ -1041,7 +1069,20 @@ class TauriChannel implements IChannel {
 
 				_Trace("ipc", `error:${this.ChannelName}.${Command}`);
 
-				return undefined as T;
+				// NodeDeferred: a Mountain error counts as a miss -
+				// fall through to Cocoon instead of surfacing it.
+				if (_EffectiveTier === "NodeDeferred") {
+					_Trace("ipc", `nodeDeferred:${MountainMethod}`);
+
+					return (await _InvokeViaNode(MountainMethod, Params)) as T;
+				}
+
+				// Rethrow so callers expecting concrete shapes (arrays,
+				// tuples) see a rejected promise instead of `undefined`
+				// seeping into `.map`/`.forEach`. The workbench's channel
+				// clients handle rejection; known undefined-intolerant
+				// callers are covered by StubChannels above.
+				throw RawError;
 			}
 		}
 

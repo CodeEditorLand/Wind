@@ -11,9 +11,9 @@ export interface TextSearchOptions {
 
 	readonly isWordMatch?: boolean;
 
-	readonly include?: string;
+	readonly include?: string | readonly string[];
 
-	readonly exclude?: string;
+	readonly exclude?: string | readonly string[];
 
 	readonly maxResults?: number;
 }

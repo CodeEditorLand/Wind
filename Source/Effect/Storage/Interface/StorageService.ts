@@ -14,4 +14,19 @@ export interface StorageService {
 	readonly Delete: (key: string) => Effect.Effect<void, StorageProblem>;
 
 	readonly Keys: () => Effect.Effect<readonly string[], StorageProblem>;
+
+	readonly GetItems: () => Effect.Effect<
+		readonly (readonly [string, string])[],
+		StorageProblem
+	>;
+
+	readonly UpdateItems: (request: {
+		readonly insert?:
+			| readonly (readonly [string, unknown])[]
+			| Readonly<Record<string, unknown>>;
+
+		readonly delete?: readonly string[];
+	}) => Effect.Effect<void, StorageProblem>;
+
+	readonly Optimize: () => Effect.Effect<void, StorageProblem>;
 }

@@ -46,11 +46,9 @@ function makeTextModelResolverService(): TextModelResolverService {
 								RefCounts.delete(uri);
 
 								// Fire-and-forget close when ref count drops to zero
-								Effect.runFork(
-									ModelService.CloseModel(uri).pipe(
-										Effect.ignoreLogged,
-									),
-								);
+								void Effect.runPromise(
+									ModelService.CloseModel(uri),
+								).catch(() => {});
 							} else {
 								RefCounts.set(uri, Count);
 							}

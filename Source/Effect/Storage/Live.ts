@@ -5,10 +5,13 @@
  * via Tauri IPC. Persistent key-value store (survives app restarts).
  *
  * IPC channels (WindServiceHandlers.rs):
- *   storage:get    → StorageProvider::GetItem(key)
- *   storage:set    → StorageProvider::SetItem(key, value)
- *   storage:delete → StorageProvider::DeleteItem(key)
- *   storage:keys   → StorageProvider::GetKeys()
+ *   storage:get         → StorageProvider::GetItem(key)
+ *   storage:set         → StorageProvider::SetItem(key, value)
+ *   storage:delete      → StorageProvider::DeleteItem(key)
+ *   storage:keys        → StorageProvider::GetKeys()
+ *   storage:getItems    → bulk read as [key, value] tuples
+ *   storage:updateItems → bulk { insert, delete } in one round-trip
+ *   storage:optimize    → flush the store
  */
 
 import { Effect, Layer } from "effect";
@@ -54,6 +57,31 @@ function makeStorageService(): StorageService {
 				Effect.map((Result) =>
 					Array.isArray(Result) ? (Result as readonly string[]) : [],
 				),
+
+				Effect.mapError(MakeStorageProblem),
+			),
+
+		GetItems: () =>
+			IPCService.invoke(Channel.StorageGetItems)([]).pipe(
+				Effect.map((Result) =>
+					Array.isArray(Result)
+						? (Result as readonly (readonly [string, string])[])
+						: [],
+				),
+
+				Effect.mapError(MakeStorageProblem),
+			),
+
+		UpdateItems: (request) =>
+			IPCService.invoke(Channel.StorageUpdateItems)([request]).pipe(
+				Effect.map(() => undefined as void),
+
+				Effect.mapError(MakeStorageProblem),
+			),
+
+		Optimize: () =>
+			IPCService.invoke(Channel.StorageOptimize)([]).pipe(
+				Effect.map(() => undefined as void),
 
 				Effect.mapError(MakeStorageProblem),
 			),

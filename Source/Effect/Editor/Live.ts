@@ -15,7 +15,7 @@
  *    via the Commands service.
  */
 
-import { Effect, Layer, Ref } from "effect";
+import { Effect, Layer } from "effect";
 
 import SkyEvent from "../../IPC/SkyEvent.js";
 import { CommandsServiceInstance } from "../Commands/Live.js";
@@ -33,51 +33,44 @@ function makeEditorService(): EditorService {
 
 	// In-memory state for active and visible editors.
 	// Updated by listening to Tauri events from Mountain (P1 task).
-	const ActiveEditorRef = Ref.unsafeMake<unknown | null>(null);
+	let _ActiveEditor: unknown | null = null;
 
-	const VisibleEditorsRef = Ref.unsafeMake<readonly unknown[]>([]);
+	const _VisibleEditors: readonly unknown[] = [];
 
 	// Listen to Mountain editor-change events emitted by Mountain via
 	// `AppHandle.emit(SkyEvent::EditorActiveChanged, { uri, viewColumn })`.
-	// Update the ActiveEditorRef so GetActiveEditor returns the current uri.
+	// Update _ActiveEditor so GetActiveEditor returns the current uri.
 	const ActiveChangedSubscription: { Unlisten: (() => void) | null } = {
 		Unlisten: null,
 	};
 
-	void Effect.runFork(
-		Effect.gen(function* () {
+	void (async () => {
+		try {
 			// Subscribe to the Tauri event channel.
-			const { listen } = yield* Effect.promise(
-				() => import("@tauri-apps/api/event"),
+			const { listen } = await import("@tauri-apps/api/event");
+
+			ActiveChangedSubscription.Unlisten = await listen(
+				SkyEvent.EditorActiveChanged,
+
+				(Event) => {
+					_ActiveEditor = Event.payload ?? null;
+				},
 			);
-
-			yield* Effect.promise(
-				() =>
-					new Promise<void>((Resolve) => {
-						void listen(SkyEvent.EditorActiveChanged, (Event) => {
-							void Effect.runFork(
-								Ref.set(
-									ActiveEditorRef,
-
-									Event.payload ?? null,
-								),
-							);
-						}).then((Unlisten) => {
-							ActiveChangedSubscription.Unlisten = Unlisten;
-
-							Resolve();
-						});
-					}),
-			);
-		}).pipe(Effect.catchAll(() => Effect.void)),
-	);
+		} catch {
+			// Tauri event channel unavailable (e.g. outside the shell).
+		}
+	})();
 
 	const Service: EditorService = {
 		GetActiveEditor: () =>
-			Ref.get(ActiveEditorRef).pipe(Effect.mapError(MakeEditorProblem)),
+			Effect.sync(() => _ActiveEditor).pipe(
+				Effect.mapError(MakeEditorProblem),
+			),
 
 		GetVisibleEditors: () =>
-			Ref.get(VisibleEditorsRef).pipe(Effect.mapError(MakeEditorProblem)),
+			Effect.sync(() => _VisibleEditors).pipe(
+				Effect.mapError(MakeEditorProblem),
+			),
 
 		OpenEditor: (uri, options) =>
 			// Delegate to the Commands service using the Monaco open command.

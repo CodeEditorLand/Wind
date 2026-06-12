@@ -8,10 +8,10 @@ import type {
 import { WorkbenchProgressServiceTag } from "../Tag/WorkbenchProgressServiceTag.js";
 import type { WorkbenchProgressProblem } from "../Type/WorkbenchProgressProblem.js";
 import {
-	WorkbenchProgressLocationCode,
 	type UpstreamProgressReporter,
 	type WorkbenchProgressBridgeShape,
 	type WorkbenchProgressGlobals,
+	WorkbenchProgressLocationCode,
 } from "./WorkbenchProgressBridgeShape.js";
 
 const Unavailable: WorkbenchProgressProblem = {
@@ -27,12 +27,10 @@ const ToReporter = (
 	upstream: UpstreamProgressReporter,
 ): WorkbenchProgressReporter => ({
 	Report: (Fraction, Message) =>
-		Effect.sync(() =>
-			upstream.report({
-				increment: Math.round(Fraction * 100),
-				...(Message !== undefined ? { message: Message } : {}),
-			}),
-		),
+		upstream.report({
+			increment: Math.round(Fraction * 100),
+			...(Message !== undefined ? { message: Message } : {}),
+		}),
 });
 
 function makeWorkbenchProgressService(): WorkbenchProgressService {
@@ -43,9 +41,7 @@ function makeWorkbenchProgressService(): WorkbenchProgressService {
 	const Run = <A>(
 		Options: WorkbenchProgressTaskOptions,
 
-		Body: (
-			reporter: WorkbenchProgressReporter,
-		) => Effect.Effect<A, WorkbenchProgressProblem>,
+		Body: (reporter: WorkbenchProgressReporter) => Promise<A>,
 	): Effect.Effect<A, WorkbenchProgressProblem> =>
 		Effect.gen(function* () {
 			const Bridge = getBridge();
@@ -68,8 +64,7 @@ function makeWorkbenchProgressService(): WorkbenchProgressService {
 								: {}),
 						},
 
-						async (Reporter) =>
-							Effect.runPromise(Body(ToReporter(Reporter))),
+						(Reporter) => Body(ToReporter(Reporter)),
 					),
 				catch: (Cause) =>
 					({
