@@ -11,6 +11,8 @@ Configuration/
 Source/**/Generated/
 Source/**/*Generated.ts
 Source/ESBuild.js
+Source/**/*.d.ts
+Source/**/*.d.ts.map
 Target/**/Generated/
 
 # Environment files
