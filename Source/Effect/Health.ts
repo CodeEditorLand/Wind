@@ -15,18 +15,17 @@ import {
 // Re-exports from atomic modules
 // ============================================================================
 
+// Interface
+export type {
+	HealthMonitorHandle,
+	HealthService,
+} from "./Health/Interface/HealthService.js";
 // Types
 export type {
 	HealthStatus,
 	ServiceHealth,
 	SystemHealth,
 } from "./Health/index.js";
-
-// Interface
-export type {
-	HealthMonitorHandle,
-	HealthService,
-} from "./Health/Interface/HealthService.js";
 
 // Implementation helpers
 export {

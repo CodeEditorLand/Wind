@@ -19,14 +19,14 @@
 
 // Re-export from atomic modules for backward compatibility
 export {
-	ActivityBarItemNotFoundError,
-	ActivityBarUpdateError,
 	type ActivityBarBadge,
 	type ActivityBarItem,
-	type CreateActivityBarItem,
-	type ActivityBarService,
-	GenerateItemId,
-	makeActivityBar,
+	ActivityBarItemNotFoundError,
 	ActivityBarLive,
 	ActivityBarMockLive,
+	type ActivityBarService,
+	ActivityBarUpdateError,
+	type CreateActivityBarItem,
+	GenerateItemId,
+	makeActivityBar,
 } from "./ActivityBar/index.js";

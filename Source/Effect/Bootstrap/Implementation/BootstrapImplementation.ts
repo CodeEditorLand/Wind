@@ -57,7 +57,7 @@ export const makeBootstrap = (
 
 		Log("info", "[Bootstrap] Wind VSCode Workbench Bootstrap");
 
-		Log("info", "[Bootstrap] Debug mode: " + debugMode);
+		Log("info", `[Bootstrap] Debug mode: ${debugMode}`);
 
 		Log(
 			"info",

@@ -6,33 +6,27 @@
  * @category Service
  */
 
+// Implementation helpers
+export {
+	CreateServiceHealth,
+	CreateServiceHealthWithNoResponseTime,
+} from "./Implementation/HealthHelper.js";
+// Implementations
+// Live and mock services
+export {
+	HealthLive,
+	HealthMock,
+	makeHealthChecker,
+	makeMockHealth,
+} from "./Implementation/HealthImplementation.js";
+// Interface
+export type {
+	HealthMonitorHandle,
+	HealthService,
+} from "./Interface/HealthService.js";
 // Types
 export type {
 	HealthStatus,
 	ServiceHealth,
 	SystemHealth,
 } from "./Type/HealthType.js";
-
-// Interface
-export type {
-	HealthMonitorHandle,
-	HealthService,
-} from "./Interface/HealthService.js";
-
-// Implementation helpers
-export {
-	CreateServiceHealth,
-	CreateServiceHealthWithNoResponseTime,
-} from "./Implementation/HealthHelper.js";
-
-// Implementations
-export {
-	makeHealthChecker,
-	makeMockHealth,
-} from "./Implementation/HealthImplementation.js";
-
-// Live and mock services
-export {
-	HealthLive,
-	HealthMock,
-} from "./Implementation/HealthImplementation.js";

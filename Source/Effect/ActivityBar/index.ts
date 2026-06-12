@@ -25,25 +25,23 @@
 export { default as ActivityBarItemNotFoundError } from "./Error/ActivityBarItemNotFoundError.js";
 
 export { default as ActivityBarUpdateError } from "./Error/ActivityBarUpdateError.js";
-
+// Helper functions
+export { GenerateItemId } from "./Implementation/ActivityBarHelper.js";
+// Live implementation
+export {
+	ActivityBarLive,
+	makeActivityBar,
+} from "./Implementation/ActivityBarImplementation.js";
+// Service interface
+export type {
+	ActivityBarItemUpdate,
+	ActivityBarService,
+} from "./Interface/ActivityBarService.js";
+// Mock implementation
+export { ActivityBarMockLive } from "./Layer/ActivityBarMock.js";
 // Type definitions
 export type {
 	ActivityBarBadge,
 	ActivityBarItem,
 	CreateActivityBarItem,
 } from "./Type/ActivityBarType.js";
-
-// Service interface
-export type { ActivityBarService } from "./Interface/ActivityBarService.js";
-
-// Helper functions
-export { GenerateItemId } from "./Implementation/ActivityBarHelper.js";
-
-// Live implementation
-export {
-	ActivityBarLive,
-	makeActivityBar,
-} from "./Implementation/ActivityBarImplementation.js";
-
-// Mock implementation
-export { ActivityBarMockLive } from "./Layer/ActivityBarMock.js";

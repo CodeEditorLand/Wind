@@ -140,9 +140,7 @@ export const makeNetworkRestrictions = (
 		return true;
 	};
 
-	const updateConfig = (
-		Updates: Partial<NetworkRestrictionConfig>,
-	): void => {
+	const updateConfig = (Updates: Partial<NetworkRestrictionConfig>): void => {
 		_config = { ..._config, ...Updates } as NetworkRestrictionConfig;
 
 		Log("info", "[NetworkRestrictions] Configuration updated");

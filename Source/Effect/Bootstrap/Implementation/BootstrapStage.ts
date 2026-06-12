@@ -17,10 +17,7 @@ import {
 } from "../../Environment/Implementation/EnvironmentHelper.js";
 import { HealthLive } from "../../Health.js";
 import { MountainLive } from "../../Mountain.js";
-import type {
-	BootstrapLogger,
-	StageResult,
-} from "../Type/BootstrapType.js";
+import type { BootstrapLogger, StageResult } from "../Type/BootstrapType.js";
 
 // ============================================================================
 // Stage Implementations

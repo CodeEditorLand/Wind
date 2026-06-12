@@ -19,6 +19,16 @@ import type {
 // ============================================================================
 
 /**
+ * Partial update payload for an activity bar item.
+ * `badge: undefined` explicitly removes the badge.
+ */
+export type ActivityBarItemUpdate = Partial<
+	Omit<ActivityBarItem, "id" | "badge">
+> & {
+	badge?: ActivityBarBadge | undefined;
+};
+
+/**
  * Service interface for Activity Bar operations.
  * Manages activity bar items, their display state, badges, and active item.
  *
@@ -41,7 +51,7 @@ export interface ActivityBarService {
 	readonly updateItem: (
 		id: string,
 
-		updates: Partial<Omit<ActivityBarItem, "id">>,
+		updates: ActivityBarItemUpdate,
 	) => void;
 
 	/**

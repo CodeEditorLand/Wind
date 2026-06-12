@@ -100,7 +100,7 @@ export const IsBlockedURL = (
 
 	// Check marketplace
 	if (Config.blockMarketplace) {
-		for (const Pattern of MarketplaceEndpoint) {
+		for (const _Pattern of MarketplaceEndpoint) {
 			if (Url.includes("marketplace") || Url.includes("extensions")) {
 				return true;
 			}
@@ -109,7 +109,7 @@ export const IsBlockedURL = (
 
 	// Check updates
 	if (Config.blockExtensionUpdates) {
-		for (const Pattern of UpdateEndpoint) {
+		for (const _Pattern of UpdateEndpoint) {
 			if (Url.includes("update") || Url.includes("vscode-update")) {
 				return true;
 			}
@@ -117,7 +117,7 @@ export const IsBlockedURL = (
 	}
 
 	// Check AI endpoints
-	for (const Pattern of AiEndpoint) {
+	for (const _Pattern of AiEndpoint) {
 		if (Url.includes("github.com") || Url.includes("copilot")) {
 			return true;
 		}

@@ -24,7 +24,9 @@ import type {
 } from "../Type/HealthType.js";
 
 export const makeHealthChecker = (): HealthService => {
-	const checkService = async (ServiceName: string): Promise<ServiceHealth> => {
+	const checkService = async (
+		ServiceName: string,
+	): Promise<ServiceHealth> => {
 		const StartTime = Date.now();
 
 		switch (ServiceName.toLowerCase()) {

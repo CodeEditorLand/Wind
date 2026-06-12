@@ -18,11 +18,16 @@
 
 // Re-export from atomic modules for backward compatibility
 export {
+	BootstrapLive,
 	type BootstrapLogger,
+	BootstrapMock,
 	type BootstrapOptions,
-	type StageResult,
 	type BootstrapResult,
 	type BootstrapService,
+	makeBootstrap,
+	makeMockBootstrap,
+	runBootstrap,
+	type StageResult,
 	stage0_Environment,
 	stage1_Preload,
 	stage2_Configuration,
@@ -30,9 +35,4 @@ export {
 	stage4_Preparation,
 	stage5_Initialization,
 	stage6_HealthCheck,
-	BootstrapLive,
-	BootstrapMock,
-	makeBootstrap,
-	makeMockBootstrap,
-	runBootstrap,
 } from "./Bootstrap/index.js";

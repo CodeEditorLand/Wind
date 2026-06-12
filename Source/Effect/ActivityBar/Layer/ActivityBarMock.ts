@@ -7,10 +7,12 @@
  * @category Layer
  */
 
-import type { ActivityBarService } from "../Interface/ActivityBarService.js";
+import type {
+	ActivityBarItemUpdate,
+	ActivityBarService,
+} from "../Interface/ActivityBarService.js";
 import type {
 	ActivityBarBadge,
-	ActivityBarItem,
 	CreateActivityBarItem,
 } from "../Type/ActivityBarType.js";
 
@@ -27,11 +29,7 @@ export const ActivityBarMockLive: ActivityBarService = {
 		...item,
 		id: `mock-activitybar-${Date.now()}`,
 	}),
-	updateItem: (
-		_id: string,
-
-		_updates: Partial<Omit<ActivityBarItem, "id">>,
-	) => {},
+	updateItem: (_id: string, _updates: ActivityBarItemUpdate) => {},
 	removeItem: (_id: string) => {},
 	getItem: (_id: string) => undefined,
 	items: () => [],

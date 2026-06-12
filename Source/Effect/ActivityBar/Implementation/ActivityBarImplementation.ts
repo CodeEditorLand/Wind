@@ -10,7 +10,10 @@
 
 import { ActivityBarItemNotFoundError } from "../Error/ActivityBarItemNotFoundError.js";
 import { ActivityBarUpdateError } from "../Error/ActivityBarUpdateError.js";
-import type { ActivityBarService } from "../Interface/ActivityBarService.js";
+import type {
+	ActivityBarItemUpdate,
+	ActivityBarService,
+} from "../Interface/ActivityBarService.js";
 import type {
 	ActivityBarBadge,
 	ActivityBarItem,
@@ -63,11 +66,7 @@ export const makeActivityBar = (
 		return NewItem;
 	};
 
-	const updateItem = (
-		Id: string,
-
-		Updates: Partial<Omit<ActivityBarItem, "id">>,
-	): void => {
+	const updateItem = (Id: string, Updates: ActivityBarItemUpdate): void => {
 		const Existing = getItem(Id);
 
 		if (!Existing) {
@@ -75,7 +74,8 @@ export const makeActivityBar = (
 		}
 
 		try {
-			const RemoveBadge = "badge" in Updates && Updates.badge === undefined;
+			const RemoveBadge =
+				"badge" in Updates && Updates.badge === undefined;
 
 			const CleanUpdatesMap = new Map<string, unknown>();
 
@@ -97,7 +97,10 @@ export const makeActivityBar = (
 					const { badge: _ExistingBadge, ...WithoutBadge } = Item;
 
 					return RemoveBadge
-						? ({ ...WithoutBadge, ...CleanUpdates } as ActivityBarItem)
+						? ({
+								...WithoutBadge,
+								...CleanUpdates,
+							} as ActivityBarItem)
 						: { ...Item, ...CleanUpdates };
 				})
 				.sort((a, b) => a.position - b.position);

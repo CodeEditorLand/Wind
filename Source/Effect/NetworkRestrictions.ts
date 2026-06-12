@@ -19,44 +19,41 @@
 // Re-exports from atomic modules
 // ============================================================================
 
-// Error types
-export { default as CreateNetworkBlockError } from "./NetworkRestrictions/Error/NetworkBlockError.js";
-
-export { NetworkBlockError } from "./NetworkRestrictions/Error/NetworkBlockError.js";
-
-export { default as CreateIPCBlockError } from "./NetworkRestrictions/Error/IPCBlockError.js";
-
-export { IPCBlockError } from "./NetworkRestrictions/Error/IPCBlockError.js";
-
-// Types
-export type { NetworkRestrictionConfig } from "./NetworkRestrictions/Type/NetworkRestrictionConfig.js";
-
 // Constants
 export {
-	DEFAULT_NETWORK_RESTRICTIONS,
-	TelemetryEndpoint,
-	MarketplaceEndpoint,
-	UpdateEndpoint,
 	AiEndpoint,
 	ALLOWED_IPC_CHANNELS,
 	BLOCKED_IPC_CHANNELS,
+	DEFAULT_NETWORK_RESTRICTIONS,
+	MarketplaceEndpoint,
+	TelemetryEndpoint,
+	UpdateEndpoint,
 } from "./NetworkRestrictions/Constant/NetworkRestrictionsConstant.js";
-
-// Interface
-export type {
-	NetworkRestrictionsService,
-	BlockedRequest,
-	TelemetryLevel,
-} from "./NetworkRestrictions/Interface/NetworkRestrictionsService.js";
-
+export {
+	default as CreateIPCBlockError,
+	IPCBlockError,
+} from "./NetworkRestrictions/Error/IPCBlockError.js";
+// Error types
+export {
+	default as CreateNetworkBlockError,
+	NetworkBlockError,
+} from "./NetworkRestrictions/Error/NetworkBlockError.js";
 // Implementation
 export {
-	IsInternalURL,
-	IsBlockedURL,
 	IsAllowedURL,
+	IsBlockedURL,
+	IsInternalURL,
 	IsIPCAllowed,
 } from "./NetworkRestrictions/Implementation/NetworkRestrictionsHelper.js";
-
-export { makeNetworkRestrictions } from "./NetworkRestrictions/Implementation/NetworkRestrictionsImplementation.js";
-
-export { NetworkRestrictionsLive as default } from "./NetworkRestrictions/Implementation/NetworkRestrictionsImplementation.js";
+export {
+	makeNetworkRestrictions,
+	NetworkRestrictionsLive as default,
+} from "./NetworkRestrictions/Implementation/NetworkRestrictionsImplementation.js";
+// Interface
+export type {
+	BlockedRequest,
+	NetworkRestrictionsService,
+	TelemetryLevel,
+} from "./NetworkRestrictions/Interface/NetworkRestrictionsService.js";
+// Types
+export type { NetworkRestrictionConfig } from "./NetworkRestrictions/Type/NetworkRestrictionConfig.js";
