@@ -1,9 +1,8 @@
 /**
  * @module Effect/WorkbenchTheme/Tag/WorkbenchThemeServiceTag
  * @description
- * Type alias for `WorkbenchThemeService`. The Effect Context.Tag was
- * removed - services are plain objects in the LandWorkbench
- * registry.
+ * Type alias for `WorkbenchThemeService`. The live service object is
+ * available via the LandWorkbench registry.
  * @category Tag
  */
 

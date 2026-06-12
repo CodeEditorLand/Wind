@@ -10,19 +10,15 @@
  * @category Public
  */
 
+export { UserSettingsLive } from "./Implementation/UserSettingsLive.js";
+export { MakeUserSettingsStub } from "./Implementation/UserSettingsStub.js";
 export type {
-	UserSettingsServiceTag,
-	UserSettings,
-} from "./Tag/UserSettingsServiceTag.js";
-
-export type {
+	UserSettingsChangeEvent,
 	UserSettingsService,
 	UserSettingsTarget,
-	UserSettingsChangeEvent,
 } from "./Interface/UserSettingsService.js";
-
+export type {
+	UserSettings,
+	UserSettingsServiceTag,
+} from "./Tag/UserSettingsServiceTag.js";
 export type { UserSettingsProblem } from "./Type/UserSettingsProblem.js";
-
-export { UserSettingsLive } from "./Implementation/UserSettingsLive.js";
-
-export { MakeUserSettingsStub } from "./Implementation/UserSettingsStub.js";

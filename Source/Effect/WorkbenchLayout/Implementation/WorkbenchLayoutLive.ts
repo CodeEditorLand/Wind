@@ -9,9 +9,9 @@ import type {
 import type { WorkbenchLayoutProblem } from "../Type/WorkbenchLayoutProblem.js";
 import {
 	WorkbenchLayoutAllParts,
-	WorkbenchLayoutPartId,
 	type WorkbenchLayoutBridgeShape,
 	type WorkbenchLayoutGlobals,
+	WorkbenchLayoutPartId,
 } from "./WorkbenchLayoutBridgeShape.js";
 
 const Unavailable: WorkbenchLayoutProblem = {

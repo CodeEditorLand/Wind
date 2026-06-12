@@ -1,9 +1,8 @@
 /**
  * @module Effect/WorkbenchKeybinding/Tag/WorkbenchKeybindingServiceTag
  * @description
- * Type alias for `WorkbenchKeybindingService`. The Effect Context.Tag was
- * removed - services are plain objects in the LandWorkbench
- * registry.
+ * Type alias for `WorkbenchKeybindingService`. The live service object is
+ * available via the LandWorkbench registry.
  * @category Tag
  */
 

@@ -20,10 +20,10 @@ import type {
 	WorkbenchLifecycleProblem,
 } from "../Type/WorkbenchLifecycleProblem.js";
 import {
-	WorkbenchLifecyclePhaseCode,
-	WorkbenchLifecyclePhaseFromCode,
 	type WorkbenchLifecycleBridgeShape,
 	type WorkbenchLifecycleGlobals,
+	WorkbenchLifecyclePhaseCode,
+	WorkbenchLifecyclePhaseFromCode,
 } from "./WorkbenchLifecycleBridgeShape.js";
 
 const Unavailable: WorkbenchLifecycleProblem = {

@@ -8,28 +8,23 @@
  */
 
 export type {
-	WorkbenchStorageServiceTag,
-	WorkbenchStorage,
-} from "./Tag/WorkbenchStorageServiceTag.js";
-
-export type {
-	WorkbenchStorageService,
-	WorkbenchStorageScope,
-	WorkbenchStorageTarget,
-	WorkbenchStorageChangeEvent,
-} from "./Interface/WorkbenchStorageService.js";
-
-export type { WorkbenchStorageProblem } from "./Type/WorkbenchStorageProblem.js";
-
-export {
-	WorkbenchStorageScopeCode,
-	WorkbenchStorageTargetCode,
-	WorkbenchStorageScopeFromCode,
-} from "./Implementation/WorkbenchStorageScopeCode.js";
-
-export type {
 	WorkbenchStorageBridgeShape,
 	WorkbenchStorageGlobals,
 } from "./Implementation/WorkbenchStorageBridgeShape.js";
-
 export { WorkbenchStorageLive } from "./Implementation/WorkbenchStorageLive.js";
+export {
+	WorkbenchStorageScopeCode,
+	WorkbenchStorageScopeFromCode,
+	WorkbenchStorageTargetCode,
+} from "./Implementation/WorkbenchStorageScopeCode.js";
+export type {
+	WorkbenchStorageChangeEvent,
+	WorkbenchStorageScope,
+	WorkbenchStorageService,
+	WorkbenchStorageTarget,
+} from "./Interface/WorkbenchStorageService.js";
+export type {
+	WorkbenchStorage,
+	WorkbenchStorageServiceTag,
+} from "./Tag/WorkbenchStorageServiceTag.js";
+export type { WorkbenchStorageProblem } from "./Type/WorkbenchStorageProblem.js";

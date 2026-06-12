@@ -1,14 +1,13 @@
 // Convenience export for quick bootstrap execution
+
+import { Effect, Layer } from "effect";
+import TelemetryLive from "../Telemetry/Layer/TelemetryLive.js";
+import { BootstrapLive } from "./Implementation/BootstrapImplementation.js";
+import { BootstrapTag } from "./Tag/BootstrapTag.js";
 import type {
 	BootstrapOptions,
 	BootstrapResult,
 } from "./Type/BootstrapType.js";
-
-import { Effect, Layer } from "effect";
-
-import TelemetryLive from "../Telemetry/Layer/TelemetryLive.js";
-import { BootstrapLive } from "./Implementation/BootstrapImplementation.js";
-import { BootstrapTag } from "./Tag/BootstrapTag.js";
 
 /**
  * @module Effect/Bootstrap
@@ -37,19 +36,8 @@ import { BootstrapTag } from "./Tag/BootstrapTag.js";
  * @category Service
  */
 
-// Type definitions
-export type {
-	BootstrapOptions,
-	StageResult,
-	BootstrapResult,
-} from "./Type/BootstrapType.js";
-
-// Service interface
-export type { BootstrapService } from "./Interface/BootstrapService.js";
-
-// Service tag
-export { BootstrapTag } from "./Tag/BootstrapTag.js";
-
+// Live implementation layer
+export { BootstrapLive } from "./Implementation/BootstrapImplementation.js";
 // Stage implementations
 export {
 	stage0_Environment,
@@ -60,12 +48,18 @@ export {
 	stage5_Initialization,
 	stage6_HealthCheck,
 } from "./Implementation/BootstrapStage.js";
-
-// Live implementation layer
-export { BootstrapLive } from "./Implementation/BootstrapImplementation.js";
-
+// Service interface
+export type { BootstrapService } from "./Interface/BootstrapService.js";
 // Mock implementation layer
 export { BootstrapMock, makeMockBootstrap } from "./Layer/BootstrapMock.js";
+// Service tag
+export { BootstrapTag } from "./Tag/BootstrapTag.js";
+// Type definitions
+export type {
+	BootstrapOptions,
+	BootstrapResult,
+	StageResult,
+} from "./Type/BootstrapType.js";
 
 // Minimal layer: only Telemetry + Bootstrap. Individual stages fail gracefully
 // when their dependencies (IPC, Mountain, Environment, etc.) are unavailable.

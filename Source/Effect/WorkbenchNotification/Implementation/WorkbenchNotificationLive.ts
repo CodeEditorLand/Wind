@@ -7,9 +7,9 @@ import type {
 } from "../Interface/WorkbenchNotificationService.js";
 import type { WorkbenchNotificationProblem } from "../Type/WorkbenchNotificationProblem.js";
 import {
-	WorkbenchNotificationSeverityCode,
 	type WorkbenchNotificationBridgeShape,
 	type WorkbenchNotificationGlobals,
+	WorkbenchNotificationSeverityCode,
 } from "./WorkbenchNotificationBridgeShape.js";
 
 const Unavailable: WorkbenchNotificationProblem = {

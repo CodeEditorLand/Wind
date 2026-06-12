@@ -1,9 +1,8 @@
 /**
  * @module Effect/UserSettings/Tag/UserSettingsServiceTag
  * @description
- * Type alias for `UserSettingsService`. The Effect Context.Tag was
- * removed - services are plain objects in the LandWorkbench
- * registry.
+ * Type alias for `UserSettingsService`. The live service object is
+ * available via the LandWorkbench registry.
  * @category Tag
  */
 

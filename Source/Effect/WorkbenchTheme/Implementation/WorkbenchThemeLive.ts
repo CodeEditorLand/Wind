@@ -7,11 +7,11 @@ import type {
 } from "../Interface/WorkbenchThemeService.js";
 import type { WorkbenchThemeProblem } from "../Type/WorkbenchThemeProblem.js";
 import {
-	WorkbenchThemeKindFromUpstream,
 	type UpstreamWorkbenchColorTheme,
 	type UpstreamWorkbenchTheme,
 	type WorkbenchThemeBridgeShape,
 	type WorkbenchThemeGlobals,
+	WorkbenchThemeKindFromUpstream,
 } from "./WorkbenchThemeBridgeShape.js";
 
 const Unavailable: WorkbenchThemeProblem = {

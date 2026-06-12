@@ -9,91 +9,91 @@
  */
 
 export type {
-	UserSettingsServiceTag,
 	UserSettings,
+	UserSettingsServiceTag,
 } from "../UserSettings/Tag/UserSettingsServiceTag.js";
 
 export type {
-	WorkbenchActivityServiceTag,
 	WorkbenchActivity,
+	WorkbenchActivityServiceTag,
 } from "../WorkbenchActivity/Tag/WorkbenchActivityServiceTag.js";
 
 export type {
-	WorkbenchClipboardServiceTag,
 	WorkbenchClipboard,
+	WorkbenchClipboardServiceTag,
 } from "../WorkbenchClipboard/Tag/WorkbenchClipboardServiceTag.js";
 
 export type {
-	WorkbenchCommandServiceTag,
 	WorkbenchCommand,
+	WorkbenchCommandServiceTag,
 } from "../WorkbenchCommand/Tag/WorkbenchCommandServiceTag.js";
 
 export type {
-	WorkbenchContextKeyServiceTag,
 	WorkbenchContextKey,
+	WorkbenchContextKeyServiceTag,
 } from "../WorkbenchContextKey/Tag/WorkbenchContextKeyServiceTag.js";
 
 export type {
-	WorkbenchDialogServiceTag,
 	WorkbenchDialog,
+	WorkbenchDialogServiceTag,
 } from "../WorkbenchDialog/Tag/WorkbenchDialogServiceTag.js";
 
 export type {
-	WorkbenchEditorServiceTag,
 	WorkbenchEditor,
+	WorkbenchEditorServiceTag,
 } from "../WorkbenchEditor/Tag/WorkbenchEditorServiceTag.js";
 
 export type {
-	WorkbenchExtensionServiceTag,
 	WorkbenchExtension,
+	WorkbenchExtensionServiceTag,
 } from "../WorkbenchExtension/Tag/WorkbenchExtensionServiceTag.js";
 
 export type {
-	WorkbenchHostServiceTag,
 	WorkbenchHost,
+	WorkbenchHostServiceTag,
 } from "../WorkbenchHost/Tag/WorkbenchHostServiceTag.js";
 
 export type {
-	WorkbenchKeybindingServiceTag,
 	WorkbenchKeybinding,
+	WorkbenchKeybindingServiceTag,
 } from "../WorkbenchKeybinding/Tag/WorkbenchKeybindingServiceTag.js";
 
 export type {
-	WorkbenchLayoutServiceTag,
 	WorkbenchLayout,
+	WorkbenchLayoutServiceTag,
 } from "../WorkbenchLayout/Tag/WorkbenchLayoutServiceTag.js";
 
 export type {
-	WorkbenchLifecycleServiceTag,
 	WorkbenchLifecycle,
+	WorkbenchLifecycleServiceTag,
 } from "../WorkbenchLifecycle/Tag/WorkbenchLifecycleServiceTag.js";
 
 export type {
-	WorkbenchNotificationServiceTag,
 	WorkbenchNotification,
+	WorkbenchNotificationServiceTag,
 } from "../WorkbenchNotification/Tag/WorkbenchNotificationServiceTag.js";
 
 export type {
-	WorkbenchProductServiceTag,
 	WorkbenchProduct,
+	WorkbenchProductServiceTag,
 } from "../WorkbenchProduct/Tag/WorkbenchProductServiceTag.js";
 
 export type {
-	WorkbenchProgressServiceTag,
 	WorkbenchProgress,
+	WorkbenchProgressServiceTag,
 } from "../WorkbenchProgress/Tag/WorkbenchProgressServiceTag.js";
 
 export type {
-	WorkbenchStorageServiceTag,
 	WorkbenchStorage,
+	WorkbenchStorageServiceTag,
 } from "../WorkbenchStorage/Tag/WorkbenchStorageServiceTag.js";
 
 export type {
-	WorkbenchThemeServiceTag,
 	WorkbenchTheme,
+	WorkbenchThemeServiceTag,
 } from "../WorkbenchTheme/Tag/WorkbenchThemeServiceTag.js";
 
 export type {
-	WorkbenchWorkspaceServiceTag,
 	WorkbenchWorkspace,
+	WorkbenchWorkspaceServiceTag,
 } from "../WorkbenchWorkspace/Tag/WorkbenchWorkspaceServiceTag.js";
