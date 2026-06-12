@@ -25,3 +25,6 @@ Target/**/Generated/
 # IDE
 .vscode/
 .idea/
+
+# TypeScript incremental build cache
+tsconfig.tsbuildinfo
