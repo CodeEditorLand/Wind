@@ -46,6 +46,7 @@ class AuditLog {
 	 */
 	static record(entry: Omit<AuditEntry, "timestamp">): void {
 		const e: AuditEntry = { ...entry, timestamp: performance.now() };
+
 		this.entries.push(e);
 
 		if (this.entries.length > this.maxEntries) {
@@ -59,8 +60,11 @@ class AuditLog {
 	 */
 	static flush(): AuditEntry[] {
 		const copy = [...this.entries];
+
 		this.entries = [];
+
 		this.flushCount++;
+
 		return copy;
 	}
 
@@ -69,20 +73,26 @@ class AuditLog {
 	 */
 	static summary(): {
 		total: number;
+
 		byService: Record<string, number>;
+
 		byAction: Record<string, number>;
 	} {
 		const byService: Record<string, number> = {};
+
 		const byAction: Record<string, number> = {};
 
 		for (const e of this.entries) {
 			byService[e.serviceId] = (byService[e.serviceId] || 0) + 1;
+
 			byAction[e.action] = (byAction[e.action] || 0) + 1;
 		}
 
 		return {
 			total: this.entries.length,
+
 			byService,
+
 			byAction,
 		};
 	}
@@ -107,6 +117,7 @@ class AuditLog {
 	 */
 	static async sendToMountain(): Promise<void> {
 		const data = this.flush();
+
 		if (data.length === 0) {
 			return;
 		}
@@ -114,13 +125,22 @@ class AuditLog {
 		try {
 			// Access Tauri's global invoke — requires @tauri-apps/api in scope
 			const g = globalThis as Record<string, unknown>;
+
 			const tauri = g["__TAURI__"] as Record<string, unknown> | undefined;
-			const invoke = ((tauri?.["core"] as Record<string, unknown>)?.["invoke"] ?? tauri?.["invoke"]) as
-				((cmd: string, args: Record<string, unknown>) => Promise<unknown>)
+
+			const invoke = ((tauri?.["core"] as Record<string, unknown>)?.[
+				"invoke"
+			] ?? tauri?.["invoke"]) as
+				| ((
+						cmd: string,
+
+						args: Record<string, unknown>,
+				  ) => Promise<unknown>)
 				| undefined;
 
 			if (typeof invoke === "function") {
 				const summary = this.summary();
+
 				await invoke("MountainIPCInvoke", {
 					method: "diagnostic:log",
 					params: [
@@ -136,6 +156,7 @@ class AuditLog {
 		} catch {
 			// Don't throw from audit — it's fire-and-forget
 		}
+
 		return;
 	}
 
@@ -158,6 +179,7 @@ class AuditLog {
 	 */
 	static topServices(n = 20): Array<{ id: string; count: number }> {
 		const { byService } = this.summary();
+
 		return Object.entries(byService)
 			.sort(([, a], [, b]) => b - a)
 			.slice(0, n)
@@ -166,4 +188,5 @@ class AuditLog {
 }
 
 export { AuditLog };
+
 export type { AuditEntry };

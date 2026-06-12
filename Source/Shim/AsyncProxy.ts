@@ -1,6 +1,5 @@
 /**
  * @module Wind/Shim/AsyncProxy
- * @ts-nocheck — internal proxy, type-mismatch with TimerHandler is expected
  * @description
  * Intercepts setTimeout, setInterval, requestAnimationFrame, and
  * requestIdleCallback to route async scheduling through Land's scheduler.
@@ -25,19 +24,51 @@ import { IsEnabled } from "./Gate.js";
 // ──────────────────────────────────────
 
 /** Signature of a timer callback */
-type TimerCallback = (...args: unknown[]) => void;
+type AnyCallback = (...args: any[]) => void;
 
-/** Stored originals before interception */
-interface AsyncOriginals {
-	setTimeout: typeof globalThis.setTimeout;
-	clearTimeout: typeof globalThis.clearTimeout;
-	setInterval: typeof globalThis.setInterval;
-	clearInterval: typeof globalThis.clearInterval;
-	requestAnimationFrame: typeof globalThis.requestAnimationFrame;
-	cancelAnimationFrame: typeof globalThis.cancelAnimationFrame;
-	requestIdleCallback: typeof globalThis.requestIdleCallback;
-	cancelIdleCallback: typeof globalThis.cancelIdleCallback;
-}
+// ──────────────────────────────────────
+// Captured originals (before interception)
+// ──────────────────────────────────────
+
+/**
+ * Real async primitives captured at module init.
+ * Used as the fallthrough when TierShim is disabled and as the
+ * underlying dispatch mechanism for non-zero-delay timers.
+ *
+ * When TierShim=None, esbuild dead-code-eliminates this entire module,
+ * so the eager bind here has zero cost.
+ */
+const Originals = {
+	setTimeout: globalThis.setTimeout.bind(globalThis),
+
+	clearTimeout: globalThis.clearTimeout.bind(globalThis),
+
+	setInterval: globalThis.setInterval.bind(globalThis),
+
+	clearInterval: globalThis.clearInterval.bind(globalThis),
+
+	requestAnimationFrame: globalThis.requestAnimationFrame?.bind(globalThis),
+
+	cancelAnimationFrame: globalThis.cancelAnimationFrame?.bind(globalThis),
+
+	requestIdleCallback: (globalThis as Record<string, unknown>)
+		.requestIdleCallback
+		? (
+				globalThis as typeof globalThis & {
+					requestIdleCallback: typeof globalThis.requestIdleCallback;
+				}
+			).requestIdleCallback.bind(globalThis)
+		: undefined,
+
+	cancelIdleCallback: (globalThis as Record<string, unknown>)
+		.cancelIdleCallback
+		? (
+				globalThis as typeof globalThis & {
+					cancelIdleCallback: typeof globalThis.cancelIdleCallback;
+				}
+			).cancelIdleCallback.bind(globalThis)
+		: undefined,
+};
 
 // ──────────────────────────────────────
 // Scheduler batch state
@@ -45,22 +76,21 @@ interface AsyncOriginals {
 
 /** Pending timeouts waiting to be dispatched as a batch */
 const PendingTimeouts: Array<{
-	callback: TimerCallback;
+	callback: AnyCallback;
+
 	args: unknown[];
+
 	handle: number;
 }> = [];
 
 /** Pending intervals (long-lived — tracked until cleared) */
-const ActiveIntervals = new Map<number, number>();
+const ActiveIntervals = new Map<number, ReturnType<typeof setInterval>>();
 
 /** Whether a batch flush is already scheduled */
 let BatchScheduled = false;
 
 /** Next synthetic handle counter */
 let NextHandle = 1;
-
-/** Originals stored at install time */
-let Originals: AsyncOriginals | null = null;
 
 // ──────────────────────────────────────
 // Batch flush logic
@@ -84,9 +114,8 @@ function flushBatch(): void {
 
 function scheduleBatch(): void {
 	if (BatchScheduled) return;
-	BatchScheduled = true;
 
-	if (!Originals) return;
+	BatchScheduled = true;
 
 	// Use a microtask to flush after current synchronous work completes
 	Originals.setTimeout(flushBatch, 0);
@@ -96,18 +125,20 @@ function scheduleBatch(): void {
 // setTimeout interception
 // ──────────────────────────────────────
 
-function createProxySetTimeout(): typeof globalThis.setTimeout {
+function createProxySetTimeout(): typeof Originals.setTimeout {
 	return function proxySetTimeout(
-		callback: TimerHandler,
+		callback: ((...args: any[]) => void) | string,
+
 		delay?: number,
 		...args: any[]
-	): number {
+	): ReturnType<typeof setTimeout> {
 		const handle = NextHandle++;
 
 		if (typeof callback === "string") {
 			// Eval-style setTimeout — convert to function for safety
 			const code = callback;
-			const fn: TimerCallback = () => {
+
+			const fn: AnyCallback = () => {
 				try {
 					// eslint-disable-next-line no-eval
 					(0, eval)(code);
@@ -115,6 +146,7 @@ function createProxySetTimeout(): typeof globalThis.setTimeout {
 					// Swallow eval errors
 				}
 			};
+
 			PendingTimeouts.push({ callback: fn, args, handle });
 		} else {
 			PendingTimeouts.push({ callback, args, handle });
@@ -123,136 +155,161 @@ function createProxySetTimeout(): typeof globalThis.setTimeout {
 		// If delay is 0 (or not specified), batch into next microtask
 		if (!delay || delay <= 0) {
 			scheduleBatch();
-			return handle;
+
+			// Synthetic handle — cast to environment-appropriate return type
+			return handle as unknown as ReturnType<typeof setTimeout>;
 		}
 
 		// For non-zero delays, use the original setTimeout
-		if (!Originals) return handle;
-		const proxyCallback: TimerCallback = (...cbArgs: unknown[]) => {
+		const proxyCallback: AnyCallback = (...cbArgs: any[]) => {
 			// Remove from pending if still there
 			const idx = PendingTimeouts.findIndex((t) => t.handle === handle);
+
 			if (idx !== -1) PendingTimeouts.splice(idx, 1);
-			// @ts-ignore TimerHandler can be string | Function
+
 			(callback as any)(...cbArgs);
 		};
-		return Originals.setTimeout(proxyCallback, delay, ...args);
-	};
+
+		return Originals.setTimeout(
+			proxyCallback,
+
+			delay,
+			...args,
+		) as unknown as ReturnType<typeof setTimeout>;
+	} as typeof Originals.setTimeout;
 }
 
 // ──────────────────────────────────────
 // setInterval interception
 // ──────────────────────────────────────
 
-function createProxySetInterval(): typeof globalThis.setInterval {
+function createProxySetInterval(): typeof Originals.setInterval {
 	return function proxySetInterval(
-		callback: TimerHandler,
+		callback: ((...args: any[]) => void) | string,
+
 		delay?: number,
 		...args: any[]
-	): number {
+	): ReturnType<typeof setInterval> {
 		const handle = NextHandle++;
-
-		if (!Originals) return handle;
 
 		if (typeof callback === "string") {
 			const code = callback;
-			const fn: TimerCallback = () => {
+
+			const fn: AnyCallback = () => {
 				try {
 					(0, eval)(code);
 				} catch {
 					// Swallow eval errors
 				}
 			};
+
 			const realHandle = Originals.setInterval(fn, delay, ...args);
+
 			ActiveIntervals.set(handle, realHandle);
-			return handle;
+
+			// Synthetic handle
+			return handle as unknown as ReturnType<typeof setInterval>;
 		}
 
 		const realHandle = Originals.setInterval(callback, delay, ...args);
+
 		ActiveIntervals.set(handle, realHandle);
-		return handle;
-	};
+
+		// Synthetic handle
+		return handle as unknown as ReturnType<typeof setInterval>;
+	} as typeof Originals.setInterval;
 }
 
 // ──────────────────────────────────────
 // clearTimeout / clearInterval interception
 // ──────────────────────────────────────
 
-function createProxyClearTimeout(): typeof globalThis.clearTimeout {
+function createProxyClearTimeout(): typeof Originals.clearTimeout {
 	return function proxyClearTimeout(handle?: number): void {
 		if (handle === undefined) return;
 
 		// Try to remove from pending batch
 		const idx = PendingTimeouts.findIndex((t) => t.handle === handle);
+
 		if (idx !== -1) {
 			PendingTimeouts.splice(idx, 1);
+
 			return;
 		}
 
 		// Fall through to original
-		if (Originals) {
-			Originals.clearTimeout(handle);
-		}
-	};
+		Originals.clearTimeout(
+			handle as Parameters<typeof Originals.clearTimeout>[0],
+		);
+	} as typeof Originals.clearTimeout;
 }
 
-function createProxyClearInterval(): typeof globalThis.clearInterval {
+function createProxyClearInterval(): typeof Originals.clearInterval {
 	return function proxyClearInterval(handle?: number): void {
 		if (handle === undefined) return;
 
 		const realHandle = ActiveIntervals.get(handle);
-		if (realHandle !== undefined && Originals) {
-			Originals.clearInterval(realHandle);
+
+		if (realHandle !== undefined) {
+			Originals.clearInterval(
+				realHandle as Parameters<typeof Originals.clearInterval>[0],
+			);
+
 			ActiveIntervals.delete(handle);
+
 			return;
 		}
 
-		if (Originals) {
-			Originals.clearInterval(handle);
-		}
-	};
+		Originals.clearInterval(
+			handle as Parameters<typeof Originals.clearInterval>[0],
+		);
+	} as typeof Originals.clearInterval;
 }
 
 // ──────────────────────────────────────
 // requestAnimationFrame interception
 // ──────────────────────────────────────
 
-function createProxyRequestAnimationFrame(): typeof globalThis.requestAnimationFrame {
+function createProxyRequestAnimationFrame(): typeof Originals.requestAnimationFrame {
 	return function proxyRequestAnimationFrame(
 		callback: FrameRequestCallback,
 	): number {
-		if (!Originals) return 0;
+		if (!Originals.requestAnimationFrame) return 0;
+
 		return Originals.requestAnimationFrame(callback);
-	};
+	} as typeof Originals.requestAnimationFrame;
 }
 
-function createProxyCancelAnimationFrame(): typeof globalThis.cancelAnimationFrame {
+function createProxyCancelAnimationFrame(): typeof Originals.cancelAnimationFrame {
 	return function proxyCancelAnimationFrame(handle: number): void {
-		if (Originals) {
+		if (Originals.cancelAnimationFrame) {
 			Originals.cancelAnimationFrame(handle);
 		}
-	};
+	} as typeof Originals.cancelAnimationFrame;
 }
 
 // ──────────────────────────────────────
 // requestIdleCallback interception
 // ──────────────────────────────────────
 
-function createProxyRequestIdleCallback(): typeof globalThis.requestIdleCallback {
+function createProxyRequestIdleCallback(): typeof Originals.requestIdleCallback {
 	return function proxyRequestIdleCallback(
 		callback: IdleRequestCallback,
+
 		options?: IdleRequestOptions,
 	): number {
-		if (!Originals) return 0;
+		if (!Originals.requestIdleCallback) return 0;
+
 		return Originals.requestIdleCallback(callback, options);
-	};
+	} as typeof Originals.requestIdleCallback;
 }
 
-function createProxyCancelIdleCallback(): typeof globalThis.cancelIdleCallback {
+function createProxyCancelIdleCallback(): typeof Originals.cancelIdleCallback {
 	return function proxyCancelIdleCallback(handle: number): void {
-		if (Originals) {
+		if (Originals.cancelIdleCallback) {
 			Originals.cancelIdleCallback(handle);
 		}
-	};
+	} as typeof Originals.cancelIdleCallback;
 }
 
 // ──────────────────────────────────────
@@ -269,25 +326,28 @@ function createProxyCancelIdleCallback(): typeof globalThis.cancelIdleCallback {
 export default function installAsyncProxy(): void {
 	if (!IsEnabled) return;
 
-	// Capture originals once
-	Originals = {
-		setTimeout: globalThis.setTimeout.bind(globalThis),
-		clearTimeout: globalThis.clearTimeout.bind(globalThis),
-		setInterval: globalThis.setInterval.bind(globalThis),
-		clearInterval: globalThis.clearInterval.bind(globalThis),
-		requestAnimationFrame: globalThis.requestAnimationFrame.bind(globalThis),
-		cancelAnimationFrame: globalThis.cancelAnimationFrame.bind(globalThis),
-		requestIdleCallback: globalThis.requestIdleCallback.bind(globalThis),
-		cancelIdleCallback: globalThis.cancelIdleCallback.bind(globalThis),
-	};
+	// Replace globals with proxy wrappers
+	globalThis.setTimeout =
+		createProxySetTimeout() as typeof globalThis.setTimeout;
 
-	// Replace globals
-	globalThis.setTimeout = createProxySetTimeout() as typeof globalThis.setTimeout;
-	globalThis.clearTimeout = createProxyClearTimeout() as typeof globalThis.clearTimeout;
-	globalThis.setInterval = createProxySetInterval() as typeof globalThis.setInterval;
-	globalThis.clearInterval = createProxyClearInterval() as typeof globalThis.clearInterval;
-	globalThis.requestAnimationFrame = createProxyRequestAnimationFrame() as typeof globalThis.requestAnimationFrame;
-	globalThis.cancelAnimationFrame = createProxyCancelAnimationFrame() as typeof globalThis.cancelAnimationFrame;
-	globalThis.requestIdleCallback = createProxyRequestIdleCallback() as typeof globalThis.requestIdleCallback;
-	globalThis.cancelIdleCallback = createProxyCancelIdleCallback() as typeof globalThis.cancelIdleCallback;
+	globalThis.clearTimeout =
+		createProxyClearTimeout() as typeof globalThis.clearTimeout;
+
+	globalThis.setInterval =
+		createProxySetInterval() as typeof globalThis.setInterval;
+
+	globalThis.clearInterval =
+		createProxyClearInterval() as typeof globalThis.clearInterval;
+
+	globalThis.requestAnimationFrame =
+		createProxyRequestAnimationFrame() as typeof globalThis.requestAnimationFrame;
+
+	globalThis.cancelAnimationFrame =
+		createProxyCancelAnimationFrame() as typeof globalThis.cancelAnimationFrame;
+
+	globalThis.requestIdleCallback =
+		createProxyRequestIdleCallback() as typeof globalThis.requestIdleCallback;
+
+	globalThis.cancelIdleCallback =
+		createProxyCancelIdleCallback() as typeof globalThis.cancelIdleCallback;
 }

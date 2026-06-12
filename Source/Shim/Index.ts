@@ -17,12 +17,32 @@
  */
 
 export { type ShimLevel } from "./Type.js";
-export type { SwallowRule, SwallowDecision, RedirectHandler, ShimEvent, SwallowAction, RedirectTarget, FlowDirection } from "./Type.js";
 
-export { IsEnabled, IsProxy, IsReplace, IsOwn, IsPreempt, CurrentLevel } from "./Gate.js";
+export type {
+	SwallowRule,
+	SwallowDecision,
+	RedirectHandler,
+	ShimEvent,
+	SwallowAction,
+	RedirectTarget,
+	FlowDirection,
+} from "./Type.js";
+
+export {
+	IsEnabled,
+	IsProxy,
+	IsReplace,
+	IsOwn,
+	IsPreempt,
+	CurrentLevel,
+} from "./Gate.js";
 
 export { SwallowMap } from "./SwallowMap.js";
+
 export { RedirectBus } from "./RedirectBus.js";
+
 export { Intercept, createInterceptedInvoke } from "./IPCInterceptor.js";
+
 export { AuditLog } from "./AuditLog.js";
+
 export type { AuditEntry } from "./AuditLog.js";

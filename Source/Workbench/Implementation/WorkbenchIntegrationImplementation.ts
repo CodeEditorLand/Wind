@@ -14,13 +14,13 @@ import type { IDisposable } from "../../FileSystem/Type/FileSystemType.js";
 import { URI } from "../../FileSystem/Type/URI.js";
 import type { WorkbenchIntegrationService } from "../Interface/WorkbenchIntegrationService.js";
 import {
+	WorkbenchIntegrationError,
+	WorkbenchIntegrationErrorCode,
+	WorkbenchState,
 	type ProviderRegistrationResult,
 	type WorkbenchDiagnostics,
 	type WorkbenchInitState,
 	type WorkbenchIntegrationConfig,
-	WorkbenchIntegrationError,
-	WorkbenchIntegrationErrorCode,
-	WorkbenchState,
 	type WorkspaceContext,
 } from "../Type/WorkbenchIntegrationType.js";
 
@@ -256,9 +256,11 @@ const pollUntil = (
 
 		controller.signal.addEventListener(
 			"abort",
+
 			() => {
 				clearInterval(handle);
 			},
+
 			{ once: true },
 		);
 	});
@@ -276,9 +278,11 @@ const pollUntil = (
 
 		controller.signal.addEventListener(
 			"abort",
+
 			() => {
 				clearTimeout(handle);
 			},
+
 			{ once: true },
 		);
 	});
@@ -300,6 +304,7 @@ const pollUntil = (
 const buildWorkbenchIntegrationService = (): WorkbenchIntegrationService => {
 	let currentState: WorkbenchInitState = {
 		state: WorkbenchState.NotInitialized,
+
 		lastUpdated: Date.now(),
 	};
 
@@ -322,6 +327,7 @@ const buildWorkbenchIntegrationService = (): WorkbenchIntegrationService => {
 	const updateState = (state: WorkbenchState): WorkbenchInitState => {
 		const newState: WorkbenchInitState = {
 			state,
+
 			lastUpdated: Date.now(),
 		};
 
@@ -406,6 +412,7 @@ const buildWorkbenchIntegrationService = (): WorkbenchIntegrationService => {
 		// We'll convert strings to URI objects when calling the provider
 		const vscodeProvider: VSCodeFileSystemProvider = {
 			readFile: (uriStr: string) => provider.readFile(URI.parse(uriStr)),
+
 			writeFile: (uriStr: string, content: Uint8Array, options) =>
 				provider.writeFile(
 					URI.parse(uriStr),
@@ -419,25 +426,32 @@ const buildWorkbenchIntegrationService = (): WorkbenchIntegrationService => {
 							}
 						: undefined,
 				),
+
 			delete: (uriStr: string) => provider.delete(URI.parse(uriStr)),
+
 			copy: (sourceStr: string, destinationStr: string) =>
 				provider.copy(
 					URI.parse(sourceStr),
 
 					URI.parse(destinationStr),
 				),
+
 			move: (sourceStr: string, destinationStr: string) =>
 				provider.move(
 					URI.parse(sourceStr),
 
 					URI.parse(destinationStr),
 				),
+
 			readdir: (uriStr: string) => provider.readdir(URI.parse(uriStr)),
+
 			mkdir: (uriStr: string, options) =>
 				provider.mkdir(URI.parse(uriStr), {
 					recursive: options?.recursive ?? false,
 				}),
+
 			rmdir: (uriStr: string) => provider.rmdir(URI.parse(uriStr)),
+
 			stat: (uriStr: string) => provider.stat(URI.parse(uriStr)),
 		};
 
@@ -466,10 +480,14 @@ const buildWorkbenchIntegrationService = (): WorkbenchIntegrationService => {
 
 		const result: ProviderRegistrationResult = {
 			success: true,
+
 			providerName: "MountainFileSystemProvider",
+
 			scheme,
+
 			details: {
 				method: "API override (Option A)",
+
 				timestamp: Date.now(),
 			},
 		};
@@ -580,9 +598,13 @@ const buildWorkbenchIntegrationService = (): WorkbenchIntegrationService => {
 		() => {
 			const diagnostics: WorkbenchDiagnostics = {
 				state: currentState,
+
 				vscodeAvailable: isVSCodeAvailable(),
+
 				monacoAvailable: isMonacoAvailable(),
+
 				serviceCollectionAccessible: false, // Browser workbench doesn't expose this
+
 				defaultProvidersFound: defaultProvidersUnregistered
 					? ["IndexedDB (overridden)"]
 					: ["IndexedDB"],
@@ -590,6 +612,7 @@ const buildWorkbenchIntegrationService = (): WorkbenchIntegrationService => {
 					registrationResult,
 				}),
 				...(workspaceContext !== undefined && { workspaceContext }),
+
 				messages,
 			};
 
@@ -599,6 +622,7 @@ const buildWorkbenchIntegrationService = (): WorkbenchIntegrationService => {
 	const reset: WorkbenchIntegrationService["reset"] = () => {
 		currentState = {
 			state: WorkbenchState.NotInitialized,
+
 			lastUpdated: Date.now(),
 		};
 
@@ -622,14 +646,23 @@ const buildWorkbenchIntegrationService = (): WorkbenchIntegrationService => {
 
 	return {
 		initialize,
+
 		getState,
+
 		onStateChange,
+
 		registerProvider,
+
 		unregisterDefaultProviders,
+
 		configureWorkspace,
+
 		getDiagnostics,
+
 		isWorkbenchReady,
+
 		waitForWorkbench,
+
 		reset,
 	} satisfies WorkbenchIntegrationService;
 };

@@ -41,6 +41,7 @@ export interface SwallowRule {
 /** The decision produced by the SwallowMap for a given method */
 export interface SwallowDecision {
 	action: SwallowAction;
+
 	redirectTo: RedirectTarget;
 }
 

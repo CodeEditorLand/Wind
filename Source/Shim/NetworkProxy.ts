@@ -24,6 +24,7 @@ import { IsEnabled } from "./Gate.js";
 
 const TelemetryPatterns: readonly string[] = [
 	"dc.services.visualstudio.com",
+
 	"vortex.data.microsoft.com",
 ];
 
@@ -37,6 +38,7 @@ function isTelemetryEndpoint(url: string): boolean {
 
 const GalleryPatterns: readonly string[] = [
 	"marketplace.visualstudio.com",
+
 	"open-vsx.org",
 ];
 
@@ -50,7 +52,9 @@ function isGalleryEndpoint(url: string): boolean {
 
 function extractUrl(input: RequestInfo | URL): string {
 	if (typeof input === "string") return input;
+
 	if (input instanceof URL) return input.href;
+
 	return input.url;
 }
 
@@ -60,6 +64,7 @@ function extractUrl(input: RequestInfo | URL): string {
 
 async function handleVscodeFileRequest(
 	url: string,
+
 	_init?: RequestInit,
 ): Promise<Response> {
 	// Route vscode-file:// through Mountain's scheme handler.
@@ -71,7 +76,8 @@ async function handleVscodeFileRequest(
 		// underlying service needs wiring.
 		return new Response(null, {
 			status: 501,
-			statusText: "Not Implemented — vscode-file:// handler pending Mountain wire-up",
+			statusText:
+				"Not Implemented — vscode-file:// handler pending Mountain wire-up",
 		});
 	} catch {
 		return new Response(null, { status: 500 });
@@ -84,6 +90,7 @@ async function handleVscodeFileRequest(
 
 async function handleGalleryRequest(
 	url: string,
+
 	_init?: RequestInit,
 ): Promise<Response> {
 	// Route extension gallery queries to Land's gallery service.
@@ -93,7 +100,8 @@ async function handleGalleryRequest(
 		// Placeholder: in production, this calls Land's GalleryService.
 		return new Response(null, {
 			status: 501,
-			statusText: "Not Implemented — gallery handler pending Land GalleryService wire-up",
+			statusText:
+				"Not Implemented — gallery handler pending Land GalleryService wire-up",
 		});
 	} catch {
 		return new Response(null, { status: 500 });
@@ -106,33 +114,55 @@ async function handleGalleryRequest(
 
 function installXHRInterceptor(): void {
 	const OriginalXHR = globalThis.XMLHttpRequest;
+
 	const OriginalOpen = OriginalXHR.prototype.open;
+
 	const OriginalSend = OriginalXHR.prototype.send;
 
 	OriginalXHR.prototype.open = function (
 		method: string,
+
 		url: string | URL,
+
 		async?: boolean,
+
 		username?: string | null,
+
 		password?: string | null,
 	): void {
 		// Store the resolved URL for later use in send()
 		(this as unknown as Record<string, unknown>).__land_url = extractUrl(
 			typeof url === "string" ? url : url,
 		);
-		return OriginalOpen.call(this, method, url, async ?? true, username ?? null, password ?? null);
+
+		return OriginalOpen.call(
+			this,
+
+			method,
+
+			url,
+
+			async ?? true,
+
+			username ?? null,
+
+			password ?? null,
+		);
 	};
 
 	OriginalXHR.prototype.send = function (
 		body?: Document | XMLHttpRequestBodyInit | null,
 	): void {
-		const storedUrl = (this as unknown as Record<string, unknown>).__land_url as string | undefined;
+		const storedUrl = (this as unknown as Record<string, unknown>)
+			.__land_url as string | undefined;
+
 		const url = storedUrl ?? "";
 
 		// Discard telemetry
 		if (isTelemetryEndpoint(url)) {
 			// Abort silently — the caller gets an aborted XHR
 			this.abort();
+
 			return;
 		}
 
@@ -145,10 +175,12 @@ function installXHRInterceptor(): void {
 // ──────────────────────────────────────
 
 function installFetchInterceptor(): void {
-	const originalFetch: typeof globalThis.fetch = globalThis.fetch.bind(globalThis);
+	const originalFetch: typeof globalThis.fetch =
+		globalThis.fetch.bind(globalThis);
 
 	globalThis.fetch = function (
 		input: RequestInfo | URL,
+
 		init?: RequestInit,
 	): Promise<Response> {
 		const url = extractUrl(input);
@@ -184,5 +216,6 @@ export default function installNetworkProxy(): void {
 	if (!IsEnabled) return;
 
 	installFetchInterceptor();
+
 	installXHRInterceptor();
 }

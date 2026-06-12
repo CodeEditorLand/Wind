@@ -26,11 +26,9 @@
 	"dependencies": {
 		"@codeeditorland/output": "0.0.1",
 		"@tauri-apps/api": "2.11.0",
-		"effect": "3.21.3",
 		"typescript": "6.0.3"
 	},
 	"devDependencies": {
-		"@effect/language-service": "0.86.2",
 		"@playform/build": "0.3.2",
 		"@types/node": "25.9.3",
 		"cross-env": "10.1.0",

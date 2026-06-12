@@ -531,13 +531,13 @@ Wind is designed to be compatible with:
 ## API Reference
 
 - **[Effect Service Interfaces](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Effect/)**
-  - All `Effect-TS` service tags, interfaces, and implementations
+    - All `Effect-TS` service tags, interfaces, and implementations
 - **[Preload API](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)**
-  - Environment shim and `window.vscode` globals
+    - Environment shim and `window.vscode` globals
 - **[Layer Compositions](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Effect/Layers/)**
-  - `Tauri`, `Electron`, and `Test` layer stacks
+    - `Tauri`, `Electron`, and `Test` layer stacks
 - **[Codegen Documentation](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Codegen/)**
-  - Service catalog walker, interface extraction, and bridge shape generation
+    - Service catalog walker, interface extraction, and bridge shape generation
 
 ---
 

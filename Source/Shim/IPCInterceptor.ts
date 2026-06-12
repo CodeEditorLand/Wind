@@ -16,9 +16,9 @@
  * (esbuild tree-shakes the entire module when TierShim=None).
  */
 
-import { SwallowMap } from "./SwallowMap.js";
-import { RedirectBus } from "./RedirectBus.js";
 import { IsEnabled } from "./Gate.js";
+import { RedirectBus } from "./RedirectBus.js";
+import { SwallowMap } from "./SwallowMap.js";
 import type { SwallowDecision } from "./Type.js";
 
 /**
@@ -31,7 +31,9 @@ import type { SwallowDecision } from "./Type.js";
  */
 const Intercept = async (
 	method: string,
+
 	params: unknown[],
+
 	originalInvoke: (method: string, params: unknown[]) => Promise<unknown>,
 ): Promise<unknown> => {
 	// Fast path: shim disabled — passthrough
@@ -50,9 +52,11 @@ const Intercept = async (
 			// Land handles it AND VS Code handles it.
 			// Land's result wins; VS Code result is fire-and-forget.
 			const landResult = await RedirectBus.route(method, params);
+
 			originalInvoke(method, params).catch(() => {
 				/* fire-and-forget — Land's result already returned */
 			});
+
 			return landResult;
 
 		case "DISCARD":
@@ -77,15 +81,24 @@ const Intercept = async (
  * @returns A wrapped invoke function that routes through the shim
  */
 const createInterceptedInvoke = (
-	originalInvoke: (cmd: string, args: Record<string, unknown>) => Promise<unknown>,
+	originalInvoke: (
+		cmd: string,
+
+		args: Record<string, unknown>,
+	) => Promise<unknown>,
 ) => {
-	return async (command: string, args: Record<string, unknown> = {}): Promise<unknown> => {
+	return async (
+		command: string,
+
+		args: Record<string, unknown> = {},
+	): Promise<unknown> => {
 		// Only intercept MountainIPCInvoke calls
 		if (command !== "MountainIPCInvoke") {
 			return originalInvoke(command, args);
 		}
 
 		const method = args["method"] as string;
+
 		const params = (args["params"] || []) as unknown[];
 
 		if (!method) {

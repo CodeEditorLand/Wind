@@ -22,8 +22,8 @@
  * listeners. Install at the top of Wind's bootstrap entry.
  */
 
-import { SwallowMap } from "./SwallowMap.js";
 import { RedirectBus } from "./RedirectBus.js";
+import { SwallowMap } from "./SwallowMap.js";
 import type { ShimLevel } from "./Type.js";
 
 /**
@@ -33,11 +33,10 @@ import type { ShimLevel } from "./Type.js";
  */
 declare const __LandTier_Shim__: string;
 
-const TierShim: ShimLevel = (
-	(typeof __LandTier_Shim__ === "string" && __LandTier_Shim__.length > 0
-		? __LandTier_Shim__
-		: process.env["TierShim"]) || "None"
-) as ShimLevel;
+const TierShim: ShimLevel = ((typeof __LandTier_Shim__ === "string" &&
+__LandTier_Shim__.length > 0
+	? __LandTier_Shim__
+	: process.env["TierShim"]) || "None") as ShimLevel;
 
 /**
  * Install the DOM EventTarget.addEventListener interceptor.
@@ -60,12 +59,13 @@ export default function installEventInterceptor(): void {
 		return;
 	}
 
-	const originalAddEventListener =
-		EventTarget.prototype.addEventListener;
+	const originalAddEventListener = EventTarget.prototype.addEventListener;
 
 	EventTarget.prototype.addEventListener = function landAddEventListener(
 		type: string,
+
 		listener: EventListenerOrEventListenerObject | null,
+
 		options?: boolean | AddEventListenerOptions,
 	): void {
 		// Check if this event type should be swallowed by Land
@@ -78,11 +78,13 @@ export default function installEventInterceptor(): void {
 					pattern: type,
 					handle: async (
 						_method: string,
+
 						params: unknown[],
 					): Promise<unknown> => {
 						// Invoke the listener with the event object
 						// (first element of params, if available)
 						const event = params?.[0];
+
 						if (typeof listener === "function") {
 							listener(event as Event);
 						} else if (
@@ -94,10 +96,12 @@ export default function installEventInterceptor(): void {
 								event as Event,
 							);
 						}
+
 						return undefined;
 					},
 				});
 			}
+
 			// Do NOT attach to DOM — Land owns this event type
 			return;
 		}
@@ -105,8 +109,11 @@ export default function installEventInterceptor(): void {
 		// Passthrough: attach to DOM normally
 		return originalAddEventListener.call(
 			this,
+
 			type,
+
 			listener,
+
 			options,
 		);
 	};

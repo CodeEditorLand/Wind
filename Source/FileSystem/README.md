@@ -166,7 +166,10 @@ To integrate with the VSCode browser workbench:
 // In workbench initialization
 import { FileSystemProvider } from "./FileSystem/index.js";
 
-vscode.workspace.registerFileSystemProvider("file", FileSystemProvider.provider);
+vscode.workspace.registerFileSystemProvider(
+	"file",
+	FileSystemProvider.provider,
+);
 ```
 
 2. The workbench will automatically use this provider for all file operations.

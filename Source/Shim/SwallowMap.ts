@@ -16,7 +16,7 @@
  * Default (no match): PASSTHROUGH to None.
  */
 
-import type { SwallowRule, SwallowDecision, SwallowAction } from "./Type.js";
+import type { SwallowAction, SwallowDecision, SwallowRule } from "./Type.js";
 
 class SwallowMap {
 	private static rules: SwallowRule[] = [];
@@ -39,8 +39,12 @@ class SwallowMap {
 
 			// Match: prefix check or regex
 			let matches = false;
+
 			try {
-				if (rule.pattern.startsWith("^") || rule.pattern.includes(".*")) {
+				if (
+					rule.pattern.startsWith("^") ||
+					rule.pattern.includes(".*")
+				) {
 					matches = new RegExp(rule.pattern).test(method);
 				} else {
 					matches = method.startsWith(rule.pattern);
@@ -58,6 +62,7 @@ class SwallowMap {
 
 				return {
 					action: rule.action,
+
 					redirectTo: rule.redirectTo,
 				};
 			}
@@ -72,6 +77,7 @@ class SwallowMap {
 	 */
 	static shouldSwallow(method: string): boolean {
 		const decision = this.decide(method);
+
 		return decision.action === "SWALLOW" || decision.action === "DISCARD";
 	}
 
@@ -87,9 +93,11 @@ class SwallowMap {
 	 */
 	static redirectTarget(method: string): string {
 		const decision = this.decide(method);
+
 		if (decision.action === "SWALLOW" || decision.action === "MIXED") {
 			return decision.redirectTo;
 		}
+
 		return "None";
 	}
 
@@ -114,11 +122,13 @@ class SwallowMap {
 				action: "SWALLOW",
 				redirectTo: "Wind",
 			},
+
 			{
 				pattern: "$setStatusBarMessage",
 				action: "SWALLOW",
 				redirectTo: "Wind",
 			},
+
 			{
 				pattern: "$disposeStatusBarMessage",
 				action: "SWALLOW",
@@ -131,6 +141,7 @@ class SwallowMap {
 				action: "SWALLOW",
 				redirectTo: "Cocoon",
 			},
+
 			{
 				pattern: "$scm:",
 				action: "SWALLOW",
@@ -143,6 +154,7 @@ class SwallowMap {
 				action: "SWALLOW",
 				redirectTo: "Mountain",
 			},
+
 			{
 				pattern: "workspace:find",
 				action: "SWALLOW",
@@ -162,6 +174,7 @@ class SwallowMap {
 				action: "SWALLOW",
 				redirectTo: "Output",
 			},
+
 			{
 				pattern: "sky:output",
 				action: "SWALLOW",
@@ -174,26 +187,31 @@ class SwallowMap {
 				action: "SWALLOW",
 				redirectTo: "Mountain",
 			},
+
 			{
 				pattern: "file:write",
 				action: "SWALLOW",
 				redirectTo: "Mountain",
 			},
+
 			{
 				pattern: "file:stat",
 				action: "SWALLOW",
 				redirectTo: "Mountain",
 			},
+
 			{
 				pattern: "file:delete",
 				action: "SWALLOW",
 				redirectTo: "Mountain",
 			},
+
 			{
 				pattern: "file:mkdir",
 				action: "SWALLOW",
 				redirectTo: "Mountain",
 			},
+
 			{
 				pattern: "file:readdir",
 				action: "SWALLOW",
@@ -213,11 +231,13 @@ class SwallowMap {
 				action: "SWALLOW",
 				redirectTo: "Mountain",
 			},
+
 			{
 				pattern: "showOpenDialog",
 				action: "SWALLOW",
 				redirectTo: "Mountain",
 			},
+
 			{
 				pattern: "showSaveDialog",
 				action: "SWALLOW",
@@ -230,6 +250,7 @@ class SwallowMap {
 				action: "SWALLOW",
 				redirectTo: "Wind",
 			},
+
 			{
 				pattern: "quickpick:",
 				action: "SWALLOW",
@@ -249,6 +270,7 @@ class SwallowMap {
 				action: "SWALLOW",
 				redirectTo: "Wind",
 			},
+
 			{
 				pattern: "workbenchTheme:",
 				action: "SWALLOW",
@@ -275,6 +297,7 @@ class SwallowMap {
 				action: "SWALLOW",
 				redirectTo: "Wind",
 			},
+
 			{
 				pattern: "extensionGallery:",
 				action: "SWALLOW",

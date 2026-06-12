@@ -32,10 +32,13 @@ class RedirectBus {
 		const existing = this.handlers.findIndex(
 			(h) => h.pattern === handler.pattern,
 		);
+
 		if (existing >= 0) {
 			this.handlers[existing] = handler;
+
 			return;
 		}
+
 		this.handlers.push(handler);
 	}
 
@@ -56,12 +59,14 @@ class RedirectBus {
 	 */
 	static async route(
 		method: string,
+
 		params: unknown[],
 	): Promise<unknown> {
 		for (let i = 0; i < this.handlers.length; i++) {
 			const handler = this.handlers[i];
 
 			let matches = false;
+
 			try {
 				if (
 					handler.pattern.startsWith("^") ||
@@ -77,14 +82,17 @@ class RedirectBus {
 
 			if (matches) {
 				const currentHandler = handler;
+
 				try {
 					return await currentHandler.handle(method, params);
 				} catch (error) {
 					// Handler threw — log and re-throw
 					console.error(
 						`[Shim:RedirectBus] Handler for "${currentHandler.pattern}" threw on "${method}":`,
+
 						error,
 					);
+
 					throw error;
 				}
 			}
@@ -95,6 +103,7 @@ class RedirectBus {
 		console.warn(
 			`[Shim:RedirectBus] No handler for swallowed method: ${method}`,
 		);
+
 		return undefined;
 	}
 
@@ -104,12 +113,10 @@ class RedirectBus {
 	static hasHandler(method: string): boolean {
 		return this.handlers.some((h) => {
 			try {
-				if (
-					h.pattern.startsWith("^") ||
-					h.pattern.includes(".*")
-				) {
+				if (h.pattern.startsWith("^") || h.pattern.includes(".*")) {
 					return new RegExp(h.pattern).test(method);
 				}
+
 				return method.startsWith(h.pattern);
 			} catch {
 				return false;

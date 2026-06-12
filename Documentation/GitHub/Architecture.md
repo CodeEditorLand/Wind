@@ -406,17 +406,17 @@ await workbench.startup();
 
 ## Shim Compatibility
 
-| 🟠 Low-Level Shim | 🔵 Coverage Shim |
-|-------------------|-----------------|
+| 🟠 Low-Level Shim             | 🔵 Coverage Shim                |
+| ----------------------------- | ------------------------------- |
 | Tier: `TierShim=Own\|Preempt` | Tier: `TierShim=Proxy\|Replace` |
-| Engine prototype hooks | Service routing + audit |
+| Engine prototype hooks        | Service routing + audit         |
 
 > This Element supports the Land deep-shim interception system. Gated behind
-> `TierShim` env var (default: `None` — zero overhead).
+> `TierShim` env var (default: `None` - zero overhead).
 >
-> **Wind shim architecture:** `Source/Shim/` with 11 files — SwallowMap,
+> **Wind shim architecture:** `Source/Shim/` with 11 files - SwallowMap,
 > RedirectBus, IPCInterceptor, AuditLog, EventInterceptor, NetworkProxy,
-> AsyncProxy, etc. — the 🔵 coverage hub.
+> AsyncProxy, etc. - the 🔵 coverage hub.
 
 ---
 

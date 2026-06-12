@@ -14,6 +14,9 @@ import type {
 	IServerChannel,
 } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/ipc/common/ipc.js";
 
+// ── Shim imports ──
+import { createInterceptedInvoke } from "../Shim/IPCInterceptor.js";
+import { SwallowMap } from "../Shim/SwallowMap.js";
 import * as MistWS from "./MistWebSocketTransport.js";
 
 // Inline trace - performance.mark() collected by build-baked OTELBridge.
@@ -990,8 +993,11 @@ async function _InvokeViaNode(
 
 	if (typeof Invoke !== "function") return undefined;
 
+	// Shim: wrap invoke through IPCInterceptor for TierShim gate.
+	const invoke = createInterceptedInvoke(Invoke);
+
 	try {
-		return await Invoke("MountainIPCInvoke", {
+		return await invoke("MountainIPCInvoke", {
 			method: "cocoon:request",
 			params: [Method, Params.length === 1 ? Params[0] : Params],
 		});
@@ -1015,6 +1021,11 @@ async function InvokeMountain(
 
 	if (typeof Invoke !== "function") return undefined;
 
+	// Shim: wrap invoke through IPCInterceptor for TierShim gate.
+	// When TierShim is None the interceptor is a no-op passthrough;
+	// esbuild dead-code-eliminates the wrapping when TierShim=None.
+	const invoke = createInterceptedInvoke(Invoke);
+
 	// `tauri-invoke` tag: previously fired `_DevLogForward` after EVERY
 	// successful (and failed) `MountainIPCInvoke`. Even though
 	// Mountain's `dev_log!` macro silently drops disabled tags, the
@@ -1035,7 +1046,7 @@ async function InvokeMountain(
 		typeof performance !== "undefined" ? performance.now() : Date.now();
 
 	try {
-		return await Invoke("MountainIPCInvoke", {
+		return await invoke("MountainIPCInvoke", {
 			method: Method,
 			params: Params,
 		});
@@ -1432,6 +1443,21 @@ export class TauriMainProcessService {
 
 	constructor(_WindowId: number) {
 		_Trace("ipc", `TauriMainProcessService:window=${_WindowId}`);
+
+		// ── Shim activation — gated behind TierShim ──
+		if (process.env["TierShim"] && process.env["TierShim"] !== "None") {
+			// Load SwallowMap defaults synchronously — must precede
+			// any IPCInterceptor.decide() calls so rules are in place.
+			SwallowMap.loadDefaults();
+
+			// Async shim modules — activate DOM event interception,
+			// network proxy, and async scheduling proxy.
+			import("../Shim/EventInterceptor.js").then((m) => m.default?.());
+
+			import("../Shim/NetworkProxy.js").then((m) => m.default?.());
+
+			import("../Shim/AsyncProxy.js").then((m) => m.default?.());
+		}
 	}
 
 	getChannel(ChannelName: string): IChannel {
