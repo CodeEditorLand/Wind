@@ -24,14 +24,7 @@ export {
 	WorkbenchIntegration as Workbench,
 	WorkbenchIntegrationErrorCode,
 } from "../Workbench/index.js";
-export type {
-	ActivityBarBadge,
-	ActivityBarItem,
-	ActivityBarService,
-	CreateActivityBarItem,
-} from "./ActivityBar/index.js";
-// ActivityBar (VSCode activity bar management)
-export { ActivityBarLive, ActivityBarMockLive } from "./ActivityBar/index.js";
+
 export type {
 	BootstrapLogger,
 	BootstrapOptions,
@@ -172,11 +165,7 @@ export {
 export type { FileSystemProviderService } from "../FileSystem/index.js";
 // FileSystem (VSCode-like file system access)
 export { FileSystemProvider } from "../FileSystem/index.js";
-// ActivityBar errors
-export {
-	ActivityBarItemNotFoundError,
-	ActivityBarUpdateError,
-} from "./ActivityBar/index.js";
+
 // Configuration errors
 export {
 	ConfigApplyError,
