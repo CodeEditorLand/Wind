@@ -9,7 +9,6 @@
  */
 
 import type { ISandboxConfiguration } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/sandbox/common/sandboxTypes.js";
-
 import type { ISandboxNodeProcess } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/sandbox/electron-browser/globals.js";
 
 /**
@@ -18,7 +17,6 @@ import type { ISandboxNodeProcess } from "@codeeditorland/output/Target/Microsof
 export function CreateProcess(
 	Configuration: ISandboxConfiguration,
 ): ISandboxNodeProcess {
-
 	return {
 		platform: "web",
 

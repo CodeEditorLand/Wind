@@ -2,9 +2,7 @@ import type {
 	WorkbenchProductService,
 	WorkbenchProductSnapshot,
 } from "../Interface/WorkbenchProductService.js";
-
 import { WorkbenchProductError } from "../Type/WorkbenchProductProblem.js";
-
 import type {
 	WorkbenchProductBridgeShape,
 	WorkbenchProductGlobals,

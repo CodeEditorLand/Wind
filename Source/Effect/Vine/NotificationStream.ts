@@ -52,7 +52,6 @@ import type { Channel as TauriChannel } from "@tauri-apps/api/core";
  * here; consumers should narrow per-method).
  */
 export interface NotificationFrame {
-
 	readonly sideCarIdentifier: string;
 
 	readonly method: string;
@@ -63,7 +62,6 @@ export interface NotificationFrame {
 }
 
 export class VineSubscriptionError extends Error {
-
 	readonly _tag = "VineSubscriptionError" as const;
 
 	constructor(Message: string, Cause?: unknown) {
@@ -88,7 +86,6 @@ let PendingSetup: Promise<void> | null = null;
 const ReleaseChannel = (
 	Subscription: TauriChannel<NotificationFrame>,
 ): void => {
-
 	Subscription.onmessage = () => {};
 
 	try {
@@ -105,7 +102,6 @@ const ReleaseChannel = (
  * error propagates.
  */
 const EnsureChannel = (): Promise<void> => {
-
 	if (ActiveChannel !== null) {
 		return Promise.resolve();
 	}
@@ -148,7 +144,6 @@ const EnsureChannel = (): Promise<void> => {
 const SubscribeFrames = async (
 	OnFrame: FrameSubscriber,
 ): Promise<{ readonly dispose: () => void }> => {
-
 	Subscribers.push(OnFrame);
 
 	try {
@@ -223,7 +218,6 @@ export const SubscribeMethod = (
  * for verifying registrations don't leak across reloads.
  */
 export const SubscriberCount = async (): Promise<number> => {
-
 	const Tauri = await import("@tauri-apps/api/core");
 
 	return Tauri.invoke<number>("vine_subscriber_count");

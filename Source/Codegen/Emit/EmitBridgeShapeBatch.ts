@@ -13,13 +13,10 @@
  */
 
 import type { CodegenProblem } from "../Type/CodegenProblem.js";
-
 import type { ServiceDecoratorRecord } from "../Type/ServiceDecoratorRecord.js";
-
 import { EmitBridgeShape } from "./EmitBridgeShape.js";
 
 export interface BridgeShapeManifestEntry {
-
 	readonly DecoratorName: string;
 
 	readonly ServiceFolder: string;
@@ -60,7 +57,6 @@ export interface BridgeShapeManifestEntry {
 }
 
 export interface EmitBridgeShapeBatchOptions {
-
 	readonly Records: ReadonlyArray<ServiceDecoratorRecord>;
 
 	readonly Manifest: ReadonlyArray<BridgeShapeManifestEntry>;
@@ -71,7 +67,6 @@ export interface EmitBridgeShapeBatchOptions {
 }
 
 export interface EmitBridgeShapeBatchSummary {
-
 	readonly Emitted: number;
 
 	readonly Skipped: ReadonlyArray<string>;
@@ -80,7 +75,6 @@ export interface EmitBridgeShapeBatchSummary {
 }
 
 const DefaultLog = (message: string): void => {
-
 	// eslint-disable-next-line no-console
 	console.log(`[Wind/Codegen/BridgeShape] ${message}`);
 };
@@ -88,7 +82,6 @@ const DefaultLog = (message: string): void => {
 export const EmitBridgeShapeBatch = async (
 	options: EmitBridgeShapeBatchOptions,
 ): Promise<EmitBridgeShapeBatchSummary> => {
-
 	const Log = options.Log ?? DefaultLog;
 
 	const RecordIndex = new Map<string, ServiceDecoratorRecord>();

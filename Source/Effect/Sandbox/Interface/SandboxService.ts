@@ -24,7 +24,6 @@ import type {
  * Provides safe access to window.vscode API with proper error handling and ready state management.
  */
 export interface SandboxService {
-
 	/** Access the complete sandbox globals from window.vscode */
 	readonly globals: Effect.Effect<SandboxGlobals, SandboxNotReadyError>;
 
@@ -43,7 +42,6 @@ export interface SandboxService {
 	/** Resolve configuration with proper error handling */
 	readonly resolveConfiguration: Effect.Effect<
 		ISandboxConfiguration,
-
 		ConfigurationNotReadyError
 	>;
 }

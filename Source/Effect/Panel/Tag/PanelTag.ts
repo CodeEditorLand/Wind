@@ -29,7 +29,6 @@ import type { PanelService } from "../Interface/PanelService.js";
  */
 export default class PanelTag extends Context.Tag("Panel")<
 	PanelTag,
-
 	PanelService
 >() {}
 

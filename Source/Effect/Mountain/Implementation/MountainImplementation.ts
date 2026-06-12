@@ -13,22 +13,15 @@
 import { invoke as TauriInvoke } from "@tauri-apps/api/core";
 
 import DevLog from "../../../Function/DevLog.js";
-
 import Channel from "../../../IPC/Channel.js";
-
 import { ConfigurationLive } from "../../Configuration/Implementation/ConfigurationImplementation.js";
-
 import { MountainConnectionError } from "../Error/MountainConnectionError.js";
-
 import { MountainRPCError } from "../Error/MountainRPCError.js";
-
 import { MountainSyncError } from "../Error/MountainSyncError.js";
-
 import type {
 	IDisposable,
 	MountainService,
 } from "../Interface/MountainService.js";
-
 import type {
 	MountainConnectionState,
 	SyncResource,
@@ -86,7 +79,6 @@ const SyncIntervalMilliseconds = 5_000;
  * configuration sync while connected.
  */
 export const CreateMountainService = (): MountainService => {
-
 	let State: MountainConnectionState = { _tag: "Idle" };
 
 	const StateListeners = new Set<(State: MountainConnectionState) => void>();
@@ -122,10 +114,7 @@ export const CreateMountainService = (): MountainService => {
 		DevLog("mountain", "Starting background sync");
 
 		SyncLoop = (async () => {
-			while (
-				!Controller.signal.aborted &&
-				!ServiceAbort.signal.aborted
-			) {
+			while (!Controller.signal.aborted && !ServiceAbort.signal.aborted) {
 				try {
 					await Sync("configuration");
 				} catch (Failure) {

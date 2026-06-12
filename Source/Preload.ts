@@ -105,7 +105,6 @@
  */
 
 import { invoke as tauriInvoke } from "@tauri-apps/api/core";
-
 import { emit, listen } from "@tauri-apps/api/event";
 
 // ============================================================================
@@ -126,7 +125,6 @@ const IsTauri =
 // ============================================================================
 
 const ipcRenderer = {
-
 	send: (channel: string, ...args: unknown[]) => {
 		emit(channel, args.length === 1 ? args[0] : args);
 	},
@@ -202,7 +200,6 @@ const ipcRenderer = {
 // ============================================================================
 
 const ipcMessagePort = {
-
 	acquire: (responseChannel: string, nonce: string) => {
 		// Create an in-memory MessageChannel.
 		// port2 is posted to the window so acquirePort() (ipc.mp.ts) picks it up
@@ -231,7 +228,6 @@ const ipcMessagePort = {
 				const Bytes =
 					Data instanceof Uint8Array
 						? Array.from(Data)
-
 						: Array.from(new Uint8Array(Data));
 
 				Invoke("MountainIPCInvoke", {
@@ -385,7 +381,6 @@ const ipcMessagePort = {
 // ============================================================================
 
 const webFrame = {
-
 	setZoomLevel: (level: number) => {
 		// Tauri doesn't have direct webFrame control, use CSS transform
 		document.documentElement.style.setProperty(
@@ -401,12 +396,9 @@ const webFrame = {
 // ============================================================================
 
 const process = {
-
 	platform: (navigator.platform || "unknown").toLowerCase().includes("win")
-
 		? "win32"
 		: (navigator.platform || "unknown").toLowerCase().includes("mac")
-
 			? "darwin"
 			: "linux",
 
@@ -445,7 +437,6 @@ const process = {
 let CachedConfiguration: any = null;
 
 const context = {
-
 	configuration: async () => {
 		if (CachedConfiguration) return CachedConfiguration;
 
@@ -472,7 +463,6 @@ const context = {
 // ============================================================================
 
 const webUtils = {
-
 	getPathForFile: (file: File): string => {
 		// Tauri doesn't expose full paths for security
 		// Return a pseudo-path for compatibility
@@ -485,7 +475,6 @@ const webUtils = {
 // ============================================================================
 
 const Globals = {
-
 	ipcRenderer,
 
 	ipcMessagePort,
@@ -510,7 +499,6 @@ const Globals = {
 // emitting there would claim preload success in the Astro SSR pass where
 // `window` is a Node polyfill and the shim isn't really in effect.
 const _PreloadShimLog = (Message: string): void => {
-
 	try {
 		const Internals = (window as any).__TAURI_INTERNALS__;
 
@@ -531,7 +519,6 @@ const _PreloadShimLog = (Message: string): void => {
 };
 
 if (IsTauri) {
-
 	(window as any).vscode = Globals;
 
 	_PreloadShimLog(
@@ -541,7 +528,6 @@ if (IsTauri) {
 	// Dispatch ready event
 	window.dispatchEvent(new Event("land-preload-ready"));
 } else {
-
 	_PreloadShimLog("[Preload] skipped non-Tauri host");
 }
 

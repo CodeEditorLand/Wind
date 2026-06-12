@@ -15,13 +15,9 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-
 import { TauriIPCLive } from "../IPC/index.js";
-
 import type { TextFileService } from "./Interface/TextFileService.js";
-
 import { TextFileServiceTag } from "./Tag/TextFileServiceTag.js";
-
 import type { TextFileProblem } from "./Type/TextFileProblem.js";
 
 const UriToPath = (uri: string): string =>
@@ -30,11 +26,9 @@ const UriToPath = (uri: string): string =>
 const MakeTextFileProblem = (error: unknown): TextFileProblem =>
 	error instanceof Error
 		? { _tag: "TextFileOperationFailed", error }
-
 		: { _tag: "TextFileOperationFailed", error: new Error(String(error)) };
 
 function makeLiveTextFileService(): TextFileService {
-
 	const IPCService = TauriIPCLive;
 
 	const Service: TextFileService = {

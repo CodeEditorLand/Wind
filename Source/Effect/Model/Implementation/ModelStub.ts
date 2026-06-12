@@ -3,7 +3,6 @@ import { Effect } from "effect";
 import type { ModelService } from "../Interface/ModelService.js";
 
 export const StubModelService: ModelService = {
-
 	OpenModel: (uri) =>
 		Effect.succeed({
 			uri,

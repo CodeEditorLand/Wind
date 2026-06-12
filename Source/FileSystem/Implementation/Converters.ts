@@ -8,14 +8,11 @@
  */
 
 import { InvalidPathError } from "../Error/FileSystemProviderError";
-
 import { FileType } from "../Type/FileType";
-
 import { URI } from "../Type/URI";
 
 /** Convert a VS Code URI to an absolute file-system path string. */
 export function uriToPath(uri: URI): string {
-
 	const path = uri.fsPath;
 
 	if (!path) {
@@ -27,7 +24,6 @@ export function uriToPath(uri: URI): string {
 
 /** Wrap an absolute path as a `file://` URI. */
 export function pathToUri(path: string): URI {
-
 	return URI.file(path);
 }
 
@@ -48,7 +44,6 @@ export function toIStat(stats: {
 
 	accessed?: number;
 }): {
-
 	type: number;
 
 	size: number;
@@ -59,7 +54,6 @@ export function toIStat(stats: {
 
 	permissions?: number;
 } {
-
 	let type: FileType;
 
 	if (stats.is_directory) {
@@ -88,7 +82,6 @@ export function toIStat(stats: {
 export function toDirectoryEntries(
 	entries: Array<{ name: string; is_file?: boolean; is_directory?: boolean }>,
 ): [string, FileType][] {
-
 	return entries.map((entry) => {
 		let type: FileType;
 

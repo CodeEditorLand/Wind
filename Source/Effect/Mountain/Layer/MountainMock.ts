@@ -8,7 +8,6 @@
  */
 
 import type { MountainService } from "../Interface/MountainService.js";
-
 import type { SyncResult } from "../Type/MountainType.js";
 
 // ============================================================================
@@ -20,7 +19,6 @@ import type { SyncResult } from "../Type/MountainType.js";
  * Provides simple no-op implementation for testing.
  */
 export const MountainMockLive: MountainService = {
-
 	connectionState: () => ({
 		_tag: "Connected" as const,
 		version: "mock",

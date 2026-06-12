@@ -1,7 +1,5 @@
 import type { WorkbenchClipboardService } from "../Interface/WorkbenchClipboardService.js";
-
 import { WorkbenchClipboardError } from "../Type/WorkbenchClipboardProblem.js";
-
 import type {
 	WorkbenchClipboardBridgeShape,
 	WorkbenchClipboardGlobals,

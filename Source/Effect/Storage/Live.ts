@@ -17,23 +17,17 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-
 import { TauriIPCLive } from "../IPC/index.js";
-
 import type { StorageService } from "./Interface/StorageService.js";
-
 import { StorageServiceTag } from "./Tag/StorageServiceTag.js";
-
 import type { StorageProblem } from "./Type/StorageProblem.js";
 
 const MakeStorageProblem = (error: unknown): StorageProblem =>
 	error instanceof Error
 		? { _tag: "StorageOperationFailed", error }
-
 		: { _tag: "StorageOperationFailed", error: new Error(String(error)) };
 
 function makeStorageService(): StorageService {
-
 	const IPCService = TauriIPCLive;
 
 	const Service: StorageService = {

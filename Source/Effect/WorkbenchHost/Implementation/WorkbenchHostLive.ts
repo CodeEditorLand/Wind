@@ -1,7 +1,5 @@
 import type { WorkbenchHostService } from "../Interface/WorkbenchHostService.js";
-
 import { WorkbenchHostError } from "../Type/WorkbenchHostProblem.js";
-
 import type {
 	WorkbenchHostBridgeShape,
 	WorkbenchHostGlobals,

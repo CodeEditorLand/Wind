@@ -39,7 +39,6 @@ export default function withSpan<A, E, R>(
 
 	labels?: Record<string, string>,
 ) {
-
 	return Effect.gen(function* () {
 		const telemetry = yield* Telemetry;
 

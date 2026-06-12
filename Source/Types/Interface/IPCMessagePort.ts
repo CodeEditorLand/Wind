@@ -10,6 +10,5 @@
  * IPC MessagePort interface
  */
 export interface IPCMessagePort {
-
 	readonly acquire: (responseChannel: string, nonce: string) => void;
 }

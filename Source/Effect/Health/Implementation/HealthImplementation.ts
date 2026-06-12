@@ -8,15 +8,10 @@
 import { Effect, Layer, Schedule } from "effect";
 
 import { ConfigurationLive } from "../../Configuration.js";
-
 import { EnvironmentTag } from "../../Environment.js";
-
 import { MountainLive } from "../../Mountain.js";
-
 import { TelemetryTag } from "../../Telemetry.js";
-
 import { HealthTag } from "../Tag/HealthTag.js";
-
 import type {
 	HealthService,
 	HealthStatus,

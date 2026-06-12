@@ -14,7 +14,6 @@
  * Error thrown when IPC invoke fails
  */
 export interface IPCInvokeError {
-
 	readonly _tag: "IPCInvokeError";
 
 	readonly channel: string;
@@ -30,7 +29,6 @@ export interface IPCInvokeError {
  * Error thrown when IPC send fails
  */
 export interface IPCSendError {
-
 	readonly _tag: "IPCSendError";
 
 	readonly channel: string;
@@ -46,7 +44,6 @@ export interface IPCSendError {
  * Error thrown when IPC subscription fails
  */
 export interface IPCSubscriptionError {
-
 	readonly _tag: "IPCSubscriptionError";
 
 	readonly channel: string;
@@ -106,7 +103,6 @@ const CreateIPCSubscriptionError = (
 export { CreateIPCInvokeError, CreateIPCSendError, CreateIPCSubscriptionError };
 
 export default {
-
 	CreateIPCInvokeError,
 
 	CreateIPCSendError,

@@ -15,5 +15,7 @@ export type {
 	WorkbenchCommand,
 	WorkbenchCommandServiceTag,
 } from "./Tag/WorkbenchCommandServiceTag.js";
+
 export type { WorkbenchCommandProblem } from "./Type/WorkbenchCommandProblem.js";
+
 export { WorkbenchCommandError } from "./Type/WorkbenchCommandProblem.js";

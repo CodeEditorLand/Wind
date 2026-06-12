@@ -9,7 +9,6 @@
 import type { Properties } from "./Properties.js";
 
 export type BrowserClient = {
-
 	readonly capture?: (Event: string, Properties?: Properties) => void;
 
 	readonly captureException?: (
@@ -24,7 +23,6 @@ export type BrowserClient = {
 type WindowWithPostHog = Window & { posthog?: BrowserClient };
 
 export default (): BrowserClient | undefined => {
-
 	if (typeof window === "undefined") return undefined;
 
 	return (window as WindowWithPostHog).posthog;

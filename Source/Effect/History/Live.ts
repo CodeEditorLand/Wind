@@ -17,13 +17,9 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-
 import { TauriIPCLive } from "../IPC/index.js";
-
 import type { HistoryService } from "./Interface/HistoryService.js";
-
 import { HistoryServiceTag } from "./Tag/HistoryServiceTag.js";
-
 import type { HistoryProblem } from "./Type/HistoryProblem.js";
 
 const MakeHistoryProblem = (error: unknown): HistoryProblem => ({
@@ -32,7 +28,6 @@ const MakeHistoryProblem = (error: unknown): HistoryProblem => ({
 });
 
 function makeHistoryService(): HistoryService {
-
 	const IPCService = TauriIPCLive;
 
 	const Service: HistoryService = {

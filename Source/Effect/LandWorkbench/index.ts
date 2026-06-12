@@ -12,10 +12,7 @@ export type {
 	CELWindGlobals,
 } from "./LandWorkbenchGlobal.js";
 
-export {
-	CELWind,
-	InstallLandWorkbench,
-} from "./LandWorkbenchGlobal.js";
+export { CELWind, InstallLandWorkbench } from "./LandWorkbenchGlobal.js";
 
 export type { LandWorkbenchServices } from "./LandWorkbenchRuntime.js";
 

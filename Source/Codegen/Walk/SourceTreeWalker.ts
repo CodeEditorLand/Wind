@@ -16,11 +16,9 @@
  */
 
 import { readdir, readFile, stat } from "node:fs/promises";
-
 import { join, relative, sep } from "node:path";
 
 export interface SourceFile {
-
 	readonly SourcePath: string;
 
 	readonly AbsolutePath: string;
@@ -29,7 +27,6 @@ export interface SourceFile {
 }
 
 export interface SourceTreeWalkerOptions {
-
 	readonly Root: string;
 
 	readonly IncludeExtensions: ReadonlyArray<string>;
@@ -72,7 +69,6 @@ const HasExcludedSegment = (
 
 	excludes: ReadonlyArray<string>,
 ): boolean => {
-
 	const Segments = relativePath.split(sep);
 
 	for (const Segment of Segments) {
@@ -87,7 +83,6 @@ const IsIncluded = (
 
 	extensions: ReadonlyArray<string>,
 ): boolean => {
-
 	for (const Extension of extensions) {
 		if (name.endsWith(Extension)) return true;
 	}
@@ -98,7 +93,6 @@ const IsIncluded = (
 export const WalkSourceTree = async function* (
 	options: SourceTreeWalkerOptions,
 ): AsyncIterableIterator<SourceFile> {
-
 	const Includes =
 		options.IncludeExtensions.length === 0
 			? DefaultIncludeExtensions

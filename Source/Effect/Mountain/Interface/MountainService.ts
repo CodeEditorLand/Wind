@@ -21,7 +21,6 @@ import type {
  * Handle returned by subscription methods; call `dispose` to unsubscribe.
  */
 export interface IDisposable {
-
 	readonly dispose: () => void;
 }
 
@@ -30,7 +29,6 @@ export interface IDisposable {
  * Manages connection to the Mountain backend, RPC calls, and resource sync.
  */
 export interface MountainService {
-
 	/**
 	 * Current connection state snapshot.
 	 */

@@ -10,6 +10,5 @@
  * Process environment interface
  */
 export interface ProcessEnvironment {
-
 	readonly [key: string]: string | undefined;
 }

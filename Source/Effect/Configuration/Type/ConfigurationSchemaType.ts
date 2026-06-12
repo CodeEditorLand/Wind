@@ -14,7 +14,6 @@
  * Represents a configuration schema validation issue.
  */
 export interface ConfigSchemaIssue {
-
 	/** Path to the configuration property with the issue */
 	readonly path: string;
 

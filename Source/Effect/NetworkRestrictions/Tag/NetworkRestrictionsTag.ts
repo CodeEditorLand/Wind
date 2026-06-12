@@ -20,7 +20,6 @@ import type { NetworkRestrictionsService } from "../Interface/NetworkRestriction
  */
 export class NetworkRestrictionsTag extends Context.Tag("NetworkRestrictions")<
 	NetworkRestrictionsTag,
-
 	NetworkRestrictionsService
 >() {}
 

@@ -1,7 +1,6 @@
 import type { Effect } from "effect";
 
 import type { TextModel } from "../../Model/Interface/ModelService.js";
-
 import type { TextModelResolverProblem } from "../Type/TextModelResolverProblem.js";
 
 /**
@@ -14,7 +13,6 @@ import type { TextModelResolverProblem } from "../Type/TextModelResolverProblem.
  * model registry.
  */
 export interface TextModelResolverService {
-
 	/**
 	 * Resolve a URI to a text model reference.
 	 * Opens the model if not already open (delegates to ModelService).
@@ -26,7 +24,6 @@ export interface TextModelResolverService {
 
 			readonly dispose: () => void;
 		},
-
 		TextModelResolverProblem
 	>;
 

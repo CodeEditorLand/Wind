@@ -3,7 +3,6 @@ import type { Effect } from "effect";
 import type { QuickInputProblem } from "../Type/QuickInputProblem.js";
 
 export interface QuickPickItem {
-
 	readonly label: string;
 
 	readonly description?: string;
@@ -14,7 +13,6 @@ export interface QuickPickItem {
 }
 
 export interface QuickPickOptions {
-
 	readonly placeholder?: string;
 
 	readonly canPickMany?: boolean;
@@ -23,7 +21,6 @@ export interface QuickPickOptions {
 }
 
 export interface InputBoxOptions {
-
 	readonly prompt?: string;
 
 	readonly placeholder?: string;
@@ -36,7 +33,6 @@ export interface InputBoxOptions {
 }
 
 export interface QuickInputService {
-
 	readonly ShowQuickPick: (
 		items: readonly QuickPickItem[],
 

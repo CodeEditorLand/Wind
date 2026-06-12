@@ -25,22 +25,18 @@
  */
 
 import { mkdir, writeFile } from "node:fs/promises";
-
 import { dirname, join } from "node:path";
 
 import type { CodegenProblem } from "../Type/CodegenProblem.js";
-
 import type { CommandRegistrationRecord } from "../Type/CommandRegistrationRecord.js";
 
 export interface EmitCommandCatalogOptions {
-
 	readonly Records: ReadonlyArray<CommandRegistrationRecord>;
 
 	readonly OutputRoot: string;
 }
 
 export interface EmitCommandCatalogOutcome {
-
 	readonly OutputPath: string;
 
 	readonly Bytes: number;
@@ -55,7 +51,6 @@ const FormatEntry = (
 
 	total: number,
 ): string => {
-
 	const Trailing = index === total - 1 ? "" : ",";
 
 	return [
@@ -78,7 +73,6 @@ const FormatEntry = (
 const FormatOutput = (
 	records: ReadonlyArray<CommandRegistrationRecord>,
 ): string => {
-
 	// De-duplicate while preserving the *first* registration site we
 	// saw (which is the canonical one in stock VS Code; secondary
 	// `registerCommand` calls are usually re-registrations from
@@ -175,7 +169,6 @@ const FormatOutput = (
 export const EmitCommandCatalog = async (
 	options: EmitCommandCatalogOptions,
 ): Promise<EmitCommandCatalogOutcome | CodegenProblem> => {
-
 	const Output = FormatOutput(options.Records);
 
 	const OutputPath = join(

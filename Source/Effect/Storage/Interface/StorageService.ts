@@ -3,7 +3,6 @@ import type { Effect } from "effect";
 import type { StorageProblem } from "../Type/StorageProblem.js";
 
 export interface StorageService {
-
 	readonly Get: (key: string) => Effect.Effect<unknown, StorageProblem>;
 
 	readonly Set: (
@@ -18,7 +17,6 @@ export interface StorageService {
 
 	readonly GetItems: () => Effect.Effect<
 		readonly (readonly [string, string])[],
-
 		StorageProblem
 	>;
 

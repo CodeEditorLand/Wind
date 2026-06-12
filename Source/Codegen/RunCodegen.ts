@@ -35,29 +35,18 @@
 import { existsSync } from "node:fs";
 
 import { EmitBridgeShapeBatch } from "./Emit/EmitBridgeShapeBatch.js";
-
 import { EmitCommandCatalog } from "./Emit/EmitCommandCatalog.js";
-
 import { EmitServiceCatalog } from "./Emit/EmitServiceCatalog.js";
-
 import { EmitServiceSchema } from "./Emit/EmitServiceSchema.js";
-
 import { IterateCommandRegistrations } from "./Extract/IterateCommandRegistrations.js";
-
 import { IterateServiceDecorators } from "./Extract/IterateServiceDecorators.js";
-
 import { WorkbenchBridgeShapeManifest } from "./Manifest/WorkbenchBridgeShapeManifest.js";
-
 import type { CodegenProblem } from "./Type/CodegenProblem.js";
-
 import type { CommandRegistrationRecord } from "./Type/CommandRegistrationRecord.js";
-
 import type { ServiceDecoratorRecord } from "./Type/ServiceDecoratorRecord.js";
-
 import { WalkSourceTree } from "./Walk/SourceTreeWalker.js";
 
 export interface RunCodegenOptions {
-
 	readonly SourceRoot: string;
 
 	readonly OutputRoot: string;
@@ -66,7 +55,6 @@ export interface RunCodegenOptions {
 }
 
 export interface RunCodegenSummary {
-
 	readonly RecordsEmitted: number;
 
 	readonly CatalogPath: string;
@@ -85,7 +73,6 @@ export interface RunCodegenSummary {
 }
 
 const DefaultLog = (message: string): void => {
-
 	// eslint-disable-next-line no-console
 	console.log(`[Wind/Codegen] ${message}`);
 };
@@ -93,7 +80,6 @@ const DefaultLog = (message: string): void => {
 export const RunCodegen = async (
 	options: RunCodegenOptions,
 ): Promise<RunCodegenSummary | CodegenProblem> => {
-
 	const Log = options.Log ?? DefaultLog;
 
 	const Started = performance.now();

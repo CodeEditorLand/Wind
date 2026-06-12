@@ -3,9 +3,7 @@ import type {
 	WorkbenchKeybindingResolution,
 	WorkbenchKeybindingService,
 } from "../Interface/WorkbenchKeybindingService.js";
-
 import { WorkbenchKeybindingError } from "../Type/WorkbenchKeybindingProblem.js";
-
 import type {
 	UpstreamResolvedKeybinding,
 	WorkbenchKeybindingBridgeShape,

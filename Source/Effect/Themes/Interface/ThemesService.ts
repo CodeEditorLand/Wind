@@ -9,7 +9,6 @@ export type ColorThemeKind =
 	| "highContrastLight";
 
 export interface ColorTheme {
-
 	readonly id: string;
 
 	readonly label: string;
@@ -18,12 +17,10 @@ export interface ColorTheme {
 }
 
 export interface ThemesService {
-
 	readonly GetActiveTheme: () => Effect.Effect<ColorTheme, ThemesProblem>;
 
 	readonly ListThemes: () => Effect.Effect<
 		readonly ColorTheme[],
-
 		ThemesProblem
 	>;
 

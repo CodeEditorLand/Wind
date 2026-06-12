@@ -11,7 +11,6 @@
 import type { ISandboxConfiguration } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/sandbox/common/sandboxTypes.js";
 
 const DevLog = (Tag: string, ..._Args: unknown[]): void => {
-
 	try {
 		performance.mark(`land:config:${Tag}`);
 	} catch {}
@@ -25,7 +24,6 @@ const DevLog = (Tag: string, ..._Args: unknown[]): void => {
  * boots in degraded mode (with a visible version mismatch warning).
  */
 type LandProduct = {
-
 	nameShort: string;
 
 	nameLong: string;
@@ -48,7 +46,6 @@ type LandProduct = {
 };
 
 const LoadProductJson = async (): Promise<LandProduct> => {
-
 	const Base: LandProduct = {
 		nameShort: "FIDDEE",
 
@@ -98,7 +95,6 @@ const LoadProductJson = async (): Promise<LandProduct> => {
 			if (typeof Body.quality === "string") Result.quality = Body.quality;
 
 			if (typeof Body.embedderIdentifier === "string")
-
 				Result.embedderIdentifier = Body.embedderIdentifier;
 
 			return Result;
@@ -119,7 +115,6 @@ const LoadProductJson = async (): Promise<LandProduct> => {
  * The extra fields are silently ignored by the browser workbench.
  */
 export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
-
 	// Atom I5: resolve product identity from /product.json so every
 	// consumer of this function gets the build-time-generated values.
 	const Product = await LoadProductJson();
@@ -129,7 +124,6 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 		"string"
 			? ((globalThis as Record<string, unknown>)
 					._VSCODE_FILE_ROOT as string)
-
 			: "/Static/Application/";
 
 	// Strip origin from FileRoot for appRoot (workbench.js prepends vscode-file://)
@@ -229,7 +223,6 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 
 	const FolderUri = FolderParam
 		? { scheme: "file", path: FolderParam, authority: "" }
-
 		: undefined;
 
 	// ISingleFolderWorkspaceIdentifier for the Electron (desktop) workbench.
@@ -251,7 +244,6 @@ export async function ResolveConfiguration(): Promise<ISandboxConfiguration> {
 
 					uri: FolderUri,
 				}
-
 			: undefined;
 
 	DevLog("config", "url:", window.location.href);

@@ -3,11 +3,8 @@
 import { Effect, Layer } from "effect";
 
 import TelemetryLive from "../Telemetry/Layer/TelemetryLive.js";
-
 import { BootstrapLive } from "./Implementation/BootstrapImplementation.js";
-
 import { BootstrapTag } from "./Tag/BootstrapTag.js";
-
 import type {
 	BootstrapOptions,
 	BootstrapResult,

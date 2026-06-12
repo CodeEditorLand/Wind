@@ -11,7 +11,6 @@
  * Includes the operation name and the underlying cause of the failure.
  */
 export default class TelemetryCollectionError extends Error {
-
 	readonly _tag = "TelemetryCollectionError";
 
 	readonly operation: string;

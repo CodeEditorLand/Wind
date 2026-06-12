@@ -3,14 +3,12 @@ import type {
 	WorkbenchProgressService,
 	WorkbenchProgressTaskOptions,
 } from "../Interface/WorkbenchProgressService.js";
-
 import { WorkbenchProgressError } from "../Type/WorkbenchProgressProblem.js";
-
 import {
+	WorkbenchProgressLocationCode,
 	type UpstreamProgressReporter,
 	type WorkbenchProgressBridgeShape,
 	type WorkbenchProgressGlobals,
-	WorkbenchProgressLocationCode,
 } from "./WorkbenchProgressBridgeShape.js";
 
 const Unavailable = (): WorkbenchProgressError =>

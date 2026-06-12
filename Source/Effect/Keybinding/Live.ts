@@ -15,13 +15,9 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-
 import { TauriIPCLive } from "../IPC/index.js";
-
 import type { KeybindingService } from "./Interface/KeybindingService.js";
-
 import { KeybindingServiceTag } from "./Tag/KeybindingServiceTag.js";
-
 import type { KeybindingProblem } from "./Type/KeybindingProblem.js";
 
 const MakeKeybindingProblem = (error: unknown): KeybindingProblem => ({
@@ -30,7 +26,6 @@ const MakeKeybindingProblem = (error: unknown): KeybindingProblem => ({
 });
 
 function makeKeybindingService(): KeybindingService {
-
 	const IPCService = TauriIPCLive;
 
 	const Service: KeybindingService = {

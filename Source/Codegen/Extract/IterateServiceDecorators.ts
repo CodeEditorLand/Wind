@@ -17,15 +17,10 @@
  */
 
 import { ResolveInterfaceCrossFile } from "../Resolve/ResolveInterfaceCrossFile.js";
-
 import type { InterfaceMemberRecord } from "../Type/InterfaceMemberRecord.js";
-
 import type { ServiceDecoratorRecord } from "../Type/ServiceDecoratorRecord.js";
-
 import type { SourceFile } from "../Walk/SourceTreeWalker.js";
-
 import { ExtractDecoratorMatches } from "./ExtractDecoratorMatch.js";
-
 import { ExtractInterfaceMembers } from "./ExtractInterfaceMembers.js";
 
 const FindInterfaceDocComment = (
@@ -33,7 +28,6 @@ const FindInterfaceDocComment = (
 
 	interfaceName: string,
 ): string | null => {
-
 	const Pattern = new RegExp(
 		`((?:\\s*\\/\\*\\*[\\s\\S]*?\\*\\/\\s*)*)(?:export\\s+)?interface\\s+${interfaceName}\\b`,
 	);
@@ -63,12 +57,10 @@ const ResolveMembersForRecord = async (
 
 	interfaceName: string,
 ): Promise<{
-
 	readonly Members: ReadonlyArray<InterfaceMemberRecord>;
 
 	readonly DocComment: string | null;
 }> => {
-
 	const InlineMembers = ExtractInterfaceMembers(file.Contents, interfaceName);
 
 	if (InlineMembers.length > 0) {
@@ -103,7 +95,6 @@ const ResolveMembersForRecord = async (
 export const IterateServiceDecorators = async function* (
 	files: AsyncIterable<SourceFile>,
 ): AsyncIterableIterator<ServiceDecoratorRecord> {
-
 	for await (const File of files) {
 		const Matches = ExtractDecoratorMatches(File.Contents);
 

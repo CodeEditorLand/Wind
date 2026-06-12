@@ -12,7 +12,6 @@
  * Includes the view ID that was not found.
  */
 export default class PanelViewNotFoundError extends Error {
-
 	readonly _tag = "PanelViewNotFoundError";
 
 	constructor(viewId: string) {

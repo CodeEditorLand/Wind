@@ -20,7 +20,6 @@ import type { EnvironmentService } from "../Interface/EnvironmentService.js";
  */
 export class EnvironmentTag extends Context.Tag("Effect/EnvironmentService")<
 	EnvironmentTag,
-
 	EnvironmentService
 >() {}
 

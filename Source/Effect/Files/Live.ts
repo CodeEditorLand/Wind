@@ -21,19 +21,14 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-
 import { TauriIPCLive } from "../IPC/index.js";
-
 import type { FilesService } from "./Interface/FilesService.js";
-
 import { FilesServiceTag } from "./Tag/FilesServiceTag.js";
-
 import type { FilesProblem } from "./Type/FilesProblem.js";
 
 const MakeFilesProblem = (error: unknown): FilesProblem =>
 	error instanceof Error
 		? { _tag: "FilesOperationFailed", error }
-
 		: { _tag: "FilesOperationFailed", error: new Error(String(error)) };
 
 /** Strip the `file://` scheme from a URI to get a plain filesystem path. */
@@ -41,7 +36,6 @@ const UriToPath = (uri: string): string =>
 	uri.startsWith("file://") ? uri.slice("file://".length) : uri;
 
 function makeFilesService(): FilesService {
-
 	const IPCService = TauriIPCLive;
 
 	const Service: FilesService = {
@@ -53,11 +47,9 @@ function makeFilesService(): FilesService {
 					if (Result instanceof Uint8Array) return Result;
 
 					if (typeof Result === "string")
-
 						return new TextEncoder().encode(Result);
 
 					if (Array.isArray(Result))
-
 						return new Uint8Array(Result as number[]);
 
 					return new Uint8Array();

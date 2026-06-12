@@ -8,9 +8,7 @@
  */
 
 import type { ISandboxConfiguration } from "../../../Types/Sandbox.js";
-
 import { MakeValidate } from "../Implementation/ConfigurationHelper.js";
-
 import type {
 	ConfigurationService,
 	IDisposable,
@@ -26,7 +24,6 @@ import type {
 export const makeMockConfiguration = (
 	overrides?: Partial<ISandboxConfiguration>,
 ): ConfigurationService => {
-
 	const validate = MakeValidate();
 
 	let mockConfig: ISandboxConfiguration = {

@@ -15,7 +15,6 @@ import type { IPCRendererEvent } from "../Type/IPCRendererEvent.js";
  * Matches VSCode's preload expectations
  */
 export interface IPCRenderer {
-
 	readonly send: (channel: string, ...args: unknown[]) => void;
 
 	readonly invoke: (channel: string, ...args: unknown[]) => Promise<unknown>;

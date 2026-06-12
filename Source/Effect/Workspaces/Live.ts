@@ -15,27 +15,20 @@
 import { Effect, Layer, Stream } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-
 import SkyEvent from "../../IPC/SkyEvent.js";
-
 import { TauriIPCLive } from "../IPC/index.js";
-
 import type {
 	WorkspaceFolder,
 	WorkspacesChangeEvent,
 	WorkspacesService,
 } from "./Interface/WorkspacesService.js";
-
 import { WorkspacesServiceTag } from "./Tag/WorkspacesServiceTag.js";
-
 import type { WorkspacesProblem } from "./Type/WorkspacesProblem.js";
 
 const MakeWorkspacesProblem = (error: unknown): WorkspacesProblem =>
 	error instanceof Error
 		? { _tag: "WorkspacesOperationFailed", error }
-
 		: {
-
 				_tag: "WorkspacesOperationFailed",
 
 				error: new Error(String(error)),
@@ -49,7 +42,6 @@ const MakeWorkspacesProblem = (error: unknown): WorkspacesProblem =>
  * the subscriber.
  */
 const CoerceFolder = (Entry: unknown): WorkspaceFolder | undefined => {
-
 	if (!Entry || typeof Entry !== "object") return undefined;
 
 	const Record = Entry as Record<string, unknown>;
@@ -72,7 +64,6 @@ const CoerceFolder = (Entry: unknown): WorkspaceFolder | undefined => {
 };
 
 const CoerceFolderArray = (Value: unknown): readonly WorkspaceFolder[] => {
-
 	if (!Array.isArray(Value)) return [];
 
 	const Out: WorkspaceFolder[] = [];
@@ -87,7 +78,6 @@ const CoerceFolderArray = (Value: unknown): readonly WorkspaceFolder[] => {
 };
 
 function makeWorkspacesService(): WorkspacesService {
-
 	const IPCService = TauriIPCLive;
 
 	const Service: WorkspacesService = {

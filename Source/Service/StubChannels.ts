@@ -11,7 +11,6 @@
  */
 
 export const StubChannels: Record<string, Record<string, unknown>> = {
-
 	sign: { sign: "", createNewMessage: "", validate: true },
 
 	policy: { serialize: {}, registerPolicyChange: undefined },

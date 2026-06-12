@@ -10,7 +10,6 @@
  * Service data interface
  */
 export interface ServiceData {
-
 	/** List of successfully registered service names */
 	servicesRegistered: string[];
 

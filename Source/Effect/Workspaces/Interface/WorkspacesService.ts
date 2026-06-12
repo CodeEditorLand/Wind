@@ -3,7 +3,6 @@ import type { Effect, Stream } from "effect";
 import type { WorkspacesProblem } from "../Type/WorkspacesProblem.js";
 
 export interface WorkspaceFolder {
-
 	readonly uri: string;
 
 	readonly name: string;
@@ -19,7 +18,6 @@ export interface WorkspaceFolder {
  * see identical data.
  */
 export interface WorkspacesChangeEvent {
-
 	readonly added: readonly WorkspaceFolder[];
 
 	readonly removed: readonly WorkspaceFolder[];
@@ -28,10 +26,8 @@ export interface WorkspacesChangeEvent {
 }
 
 export interface WorkspacesService {
-
 	readonly GetFolders: () => Effect.Effect<
 		readonly WorkspaceFolder[],
-
 		WorkspacesProblem
 	>;
 
@@ -47,7 +43,6 @@ export interface WorkspacesService {
 
 	readonly GetName: () => Effect.Effect<
 		string | undefined,
-
 		WorkspacesProblem
 	>;
 
@@ -64,7 +59,6 @@ export interface WorkspacesService {
 	 */
 	readonly OnChange: () => Stream.Stream<
 		WorkspacesChangeEvent,
-
 		WorkspacesProblem
 	>;
 }

@@ -4,9 +4,7 @@ import type {
 	WorkbenchWorkspaceService,
 	WorkbenchWorkspaceSnapshot,
 } from "../Interface/WorkbenchWorkspaceService.js";
-
 import { WorkbenchWorkspaceError } from "../Type/WorkbenchWorkspaceProblem.js";
-
 import type {
 	UpstreamWorkspace,
 	UpstreamWorkspaceFolder,

@@ -9,7 +9,6 @@
 
 /** Emit a `performance.mark` under the `land:<Tag>:<Message>` namespace. */
 export const Trace = (Tag: string, Message: string): void => {
-
 	try {
 		performance.mark(`land:${Tag}:${Message}`);
 	} catch {}
@@ -22,7 +21,6 @@ export const Trace = (Tag: string, Message: string): void => {
  * param-case handling doesn't require a guess.
  */
 export const DevLogForward = (Tag: string, Message: string): void => {
-
 	try {
 		const Internals = (window as any).__TAURI_INTERNALS__;
 
@@ -54,7 +52,6 @@ export const TimedTrace = async <T>(
 
 	Fn: () => Promise<T>,
 ): Promise<T> => {
-
 	const MarkName = `land:${Tag}:${Label}`;
 
 	const StartMark = `${MarkName}:start`;

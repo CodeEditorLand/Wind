@@ -16,7 +16,6 @@
  */
 
 export interface DecoratorMatch {
-
 	readonly DecoratorName: string;
 
 	readonly InterfaceName: string;

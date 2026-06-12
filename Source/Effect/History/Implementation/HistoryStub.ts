@@ -3,7 +3,6 @@ import { Effect } from "effect";
 import type { HistoryService } from "../Interface/HistoryService.js";
 
 export const StubHistoryService: HistoryService = {
-
 	GoBack: () => Effect.void,
 
 	GoForward: () => Effect.void,

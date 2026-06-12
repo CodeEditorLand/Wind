@@ -19,7 +19,6 @@ import type { NetworkRestrictionConfig } from "../Type/NetworkRestrictionConfig.
  * while allowing internal communication and specific whitelisted domains
  */
 export const DEFAULT_NETWORK_RESTRICTIONS = {
-
 	blockHTTP: true,
 
 	blockHTTPS: true,
@@ -162,7 +161,6 @@ export const BLOCKED_IPC_CHANNELS = [
 ];
 
 const constants = {
-
 	DEFAULT_NETWORK_RESTRICTIONS,
 
 	TelemetryEndpoint,

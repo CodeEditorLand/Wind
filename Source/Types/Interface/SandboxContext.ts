@@ -12,7 +12,6 @@ import type { ISandboxConfiguration } from "./ISandboxConfiguration.js";
  * Sandbox context interface
  */
 export interface SandboxContext {
-
 	readonly configuration: () => Promise<ISandboxConfiguration>;
 
 	readonly resolveConfiguration: () => Promise<ISandboxConfiguration>;

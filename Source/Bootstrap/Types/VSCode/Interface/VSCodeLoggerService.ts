@@ -13,7 +13,6 @@ import type { ILogger, ILoggerOptions } from "../Type/VSCodeLoggerType.js";
  * VSCode Logger Service interface
  */
 export interface IVSCodeLoggerService {
-
 	_serviceBrand: undefined;
 
 	createLogger(file: string, options?: ILoggerOptions): ILogger;

@@ -15,7 +15,6 @@
  * Error thrown when a network request is blocked
  */
 export interface NetworkBlockError {
-
 	readonly _tag: "NetworkBlockError";
 
 	readonly url: string;

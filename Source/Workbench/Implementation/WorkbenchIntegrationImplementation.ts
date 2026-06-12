@@ -11,17 +11,13 @@
 import { Context, Effect, Layer, Queue, Ref, Stream } from "effect";
 
 import { FileSystemProviderTag } from "../../FileSystem/Implementation/FileSystemProviderImplementation.js";
-
 // ============================================================================
 // Service Layer
 // ============================================================================
 
 import { FileSystemProviderLive } from "../../FileSystem/index.js";
-
 import { URI } from "../../FileSystem/Type/URI.js";
-
 import type { WorkbenchIntegrationService } from "../Interface/WorkbenchIntegrationService.js";
-
 import {
 	WorkbenchIntegrationError,
 	WorkbenchIntegrationErrorCode,
@@ -51,7 +47,6 @@ const DEFAULT_REGISTRATION_TIMEOUT = 10000; // 10 seconds
  * VSCode workspace API interface (simplified for browser workbench)
  */
 interface VSCodeWorkspace {
-
 	/**
 	 * Get the workspace root folder
 	 */
@@ -67,7 +62,6 @@ interface VSCodeWorkspace {
  * VSCode workspace folder interface
  */
 interface VSCodeWorkspaceFolder {
-
 	/** URI of the workspace folder */
 	readonly uri: string;
 
@@ -82,7 +76,6 @@ interface VSCodeWorkspaceFolder {
  * VSCode file system provider API (if accessible)
  */
 interface VSCodeFileSystemProvider {
-
 	/**
 	 * Read file contents
 	 */
@@ -153,7 +146,6 @@ interface VSCodeFileSystemProvider {
  * VSCode API interface (window.vscode)
  */
 interface VSCodeAPI {
-
 	/** Workspace API */
 	readonly workspace?: VSCodeWorkspace;
 
@@ -180,7 +172,6 @@ interface VSCodeAPI {
 // ============================================================================
 
 interface WorkbenchIntegrationContext {
-
 	/** Current initialization state */
 	readonly stateRef: Ref.Ref<WorkbenchInitState>;
 
@@ -275,7 +266,6 @@ const toWorkbenchError = (
 
 	code: WorkbenchIntegrationErrorCode,
 ): WorkbenchIntegrationError => {
-
 	if (error instanceof WorkbenchIntegrationError) {
 		return error;
 	}
@@ -295,7 +285,6 @@ const toWorkbenchError = (
  * Check if VSCode API is available
  */
 const isVSCodeAvailable = (): boolean => {
-
 	return (
 		typeof window !== "undefined" &&
 		typeof (window as unknown as { vscode?: VSCodeAPI }).vscode !==
@@ -307,7 +296,6 @@ const isVSCodeAvailable = (): boolean => {
  * Check if Monaco editor is available
  */
 const isMonacoAvailable = (): boolean => {
-
 	return (
 		typeof window !== "undefined" &&
 		typeof (window as unknown as { monaco?: unknown }).monaco !==
@@ -319,7 +307,6 @@ const isMonacoAvailable = (): boolean => {
  * Get VSCode API
  */
 const getVSCodeAPI = (): VSCodeAPI | undefined => {
-
 	if (typeof window === "undefined") {
 		return undefined;
 	}

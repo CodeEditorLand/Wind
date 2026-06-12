@@ -10,20 +10,14 @@
 import { Effect } from "effect";
 
 import { ConfigurationLive } from "../../Configuration.js";
-
 import {
-	type EnvironmentInfo,
 	EnvironmentTag,
+	type EnvironmentInfo,
 } from "../../Environment/index.js";
-
 import { HealthTag } from "../../Health.js";
-
 import { MountainLive } from "../../Mountain.js";
-
 import { Sandbox } from "../../Sandbox.js";
-
 import { Telemetry, withSpan } from "../../Telemetry.js";
-
 import type { StageResult } from "../Type/BootstrapType.js";
 
 // ============================================================================

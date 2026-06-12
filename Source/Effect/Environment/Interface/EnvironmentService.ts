@@ -20,7 +20,6 @@ import type { Architecture, Platform } from "../Type/EnvironmentType.js";
  * Environment service interface
  */
 export interface EnvironmentService {
-
 	/** Get comprehensive environment information */
 	readonly getInfo: Effect.Effect<
 		{
@@ -38,7 +37,6 @@ export interface EnvironmentService {
 
 			readonly language: string;
 		},
-
 		never
 	>;
 

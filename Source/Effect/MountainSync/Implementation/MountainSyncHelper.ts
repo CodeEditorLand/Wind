@@ -11,11 +11,8 @@
 import { Effect } from "effect";
 
 import type { IPCService } from "../../IPC.js";
-
 import type { MountainService } from "../../Mountain.js";
-
 import type { TelemetryService } from "../../Telemetry.js";
-
 import type { MountainSyncResult } from "../Type/MountainSyncType.js";
 
 /**

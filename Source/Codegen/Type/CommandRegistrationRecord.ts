@@ -29,7 +29,6 @@ export type CommandRegistrationKind =
 	| "ActionDescriptor";
 
 export interface CommandRegistrationRecord {
-
 	/** The command id (string literal passed to the registrar). */
 	readonly CommandIdentifier: string;
 

@@ -13,17 +13,15 @@ import type {
 	WorkbenchLifecyclePhaseChange,
 	WorkbenchLifecycleService,
 } from "../Interface/WorkbenchLifecycleService.js";
-
 import {
 	WorkbenchLifecycleError,
 	type WorkbenchLifecyclePhase,
 } from "../Type/WorkbenchLifecycleProblem.js";
-
 import {
-	type WorkbenchLifecycleBridgeShape,
-	type WorkbenchLifecycleGlobals,
 	WorkbenchLifecyclePhaseCode,
 	WorkbenchLifecyclePhaseFromCode,
+	type WorkbenchLifecycleBridgeShape,
+	type WorkbenchLifecycleGlobals,
 } from "./WorkbenchLifecycleBridgeShape.js";
 
 const Unavailable = (): WorkbenchLifecycleError =>

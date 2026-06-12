@@ -15,5 +15,7 @@ export type {
 	WorkbenchActivity,
 	WorkbenchActivityServiceTag,
 } from "./Tag/WorkbenchActivityServiceTag.js";
+
 export type { WorkbenchActivityProblem } from "./Type/WorkbenchActivityProblem.js";
+
 export { WorkbenchActivityError } from "./Type/WorkbenchActivityProblem.js";

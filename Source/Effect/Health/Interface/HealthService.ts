@@ -14,7 +14,6 @@ import type {
 } from "../Type/HealthType.js";
 
 export interface HealthService {
-
 	readonly checkService: (
 		serviceName: string,
 	) => Effect.Effect<ServiceHealth, never>;

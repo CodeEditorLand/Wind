@@ -22,7 +22,6 @@ import type { BridgeShapeManifestEntry } from "../Emit/EmitBridgeShapeBatch.js";
 export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntry> =
 	[
 		{
-
 			// @upstream src/vs/platform/clipboard/common/clipboardService.ts
 			DecoratorName: "IClipboardService",
 
@@ -48,7 +47,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/platform/commands/common/commands.ts
 			DecoratorName: "ICommandService",
 
@@ -72,7 +70,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/platform/configuration/common/configuration.ts
 			DecoratorName: "IConfigurationService",
 
@@ -98,7 +95,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/platform/contextkey/common/contextkey.ts
 			DecoratorName: "IContextKeyService",
 
@@ -124,7 +120,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/platform/dialogs/common/dialogs.ts
 			DecoratorName: "IDialogService",
 
@@ -142,7 +137,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/workbench/services/editor/common/editorService.ts
 			DecoratorName: "IEditorService",
 
@@ -168,7 +162,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/workbench/services/extensions/common/extensions.ts
 			DecoratorName: "IExtensionService",
 
@@ -194,7 +187,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/workbench/services/host/browser/host.ts
 			DecoratorName: "IHostService",
 
@@ -226,7 +218,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/platform/keybinding/common/keybinding.ts
 			DecoratorName: "IKeybindingService",
 
@@ -250,7 +241,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/workbench/services/lifecycle/common/lifecycle.ts
 			DecoratorName: "ILifecycleService",
 
@@ -268,7 +258,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/platform/notification/common/notification.ts
 			DecoratorName: "INotificationService",
 
@@ -286,7 +275,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/platform/product/common/productService.ts
 			DecoratorName: "IProductService",
 
@@ -320,7 +308,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/platform/progress/common/progress.ts
 			DecoratorName: "IProgressService",
 
@@ -338,7 +325,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/platform/storage/common/storage.ts
 			DecoratorName: "IStorageService",
 
@@ -372,7 +358,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/workbench/services/themes/common/workbenchThemeService.ts
 			DecoratorName: "IWorkbenchThemeService",
 
@@ -398,7 +383,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/platform/workspace/common/workspace.ts
 			DecoratorName: "IWorkspaceContextService",
 
@@ -422,7 +406,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/workbench/services/activity/common/activity.ts
 			DecoratorName: "IActivityService",
 
@@ -448,7 +431,6 @@ export const WorkbenchBridgeShapeManifest: ReadonlyArray<BridgeShapeManifestEntr
 		},
 
 		{
-
 			// @upstream src/vs/workbench/services/layout/browser/layoutService.ts
 			DecoratorName: "IWorkbenchLayoutService",
 

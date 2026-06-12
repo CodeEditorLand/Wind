@@ -28,7 +28,9 @@
 export { default as MountainConnectionError } from "./Error/MountainConnectionError.js";
 
 export { default as MountainRPCError } from "./Error/MountainRPCError.js";
+
 export { default as MountainStateError } from "./Error/MountainStateError.js";
+
 export { default as MountainSyncError } from "./Error/MountainSyncError.js";
 
 // Live implementation
@@ -42,13 +44,16 @@ export type {
 	IDisposable,
 	MountainService,
 } from "./Interface/MountainService.js";
+
 // Mock implementation
 export { MountainMockLive } from "./Layer/MountainMock.js";
+
 // Service type alias (former Context.Tag; consumers use the live object)
 export type {
 	MountainTag,
 	MountainTag as Mountain,
 } from "./Tag/MountainTag.js";
+
 // Type definitions
 export type {
 	MountainConnectionState,

@@ -7,7 +7,6 @@ import type { CommandsProblem } from "../Type/CommandsProblem.js";
  * Microsoft VSCode Reference: ICommandService from vs/platform/commands/common/commands.ts
  */
 export interface CommandsService {
-
 	readonly RegisterCommand: (
 		id: string,
 
@@ -25,7 +24,6 @@ export interface CommandsService {
 
 	readonly GetCommands: () => Effect.Effect<
 		readonly string[],
-
 		CommandsProblem
 	>;
 }

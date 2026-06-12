@@ -30,28 +30,24 @@ const _DeadAfterMs = 30_000;
 const _BackoffSteps = [100, 200, 400, 1_000, 2_000, 5_000] as const;
 
 const _Trace = (Tag: string, Message: string): void => {
-
 	try {
 		performance.mark(`land:${Tag}:${Message}`);
 	} catch {}
 };
 
 function _BackoffMs(): number {
-
 	const Idx = Math.min(_reconnectAttempts, _BackoffSteps.length - 1);
 
 	return _BackoffSteps[Idx]!;
 }
 
 function _DrainPending(Reason: string): void {
-
 	for (const Fn of _pending.values()) Fn(undefined, Reason);
 
 	_pending.clear();
 }
 
 function _Connect(): void {
-
 	if (!_config || _dead) return;
 
 	const { port, secret } = _config;
@@ -90,9 +86,7 @@ function _Connect(): void {
 				_pending.delete(Id);
 
 				if (Envelope.error !== undefined)
-
 					Fn(undefined, String(Envelope.error));
-
 				else Fn(Envelope.result ?? null);
 			} catch {}
 		};
@@ -112,7 +106,6 @@ function _Connect(): void {
 }
 
 function _ScheduleReconnect(): void {
-
 	if (_dead || !_config) return;
 
 	if (_reconnectAttempts === 0) _reconnectStart = Date.now();
@@ -131,7 +124,6 @@ function _ScheduleReconnect(): void {
 }
 
 export function Initialize(port: number, secret: string): void {
-
 	if (_config) return;
 
 	_config = { port, secret };
@@ -144,7 +136,6 @@ export function Initialize(port: number, secret: string): void {
 }
 
 export function ResetTransport(): void {
-
 	if (!_config) return;
 
 	if (_reconnectTimer !== null) {
@@ -163,12 +154,10 @@ export function ResetTransport(): void {
 }
 
 export function IsAvailable(): boolean {
-
 	return !_dead && _ws !== null && _ws.readyState === WebSocket.OPEN;
 }
 
 export function invoke(method: string, params: unknown[]): Promise<unknown> {
-
 	return new Promise((Resolve, Reject) => {
 		if (!IsAvailable() || !_ws) {
 			Reject(new Error("MistWS: not connected"));
@@ -180,7 +169,6 @@ export function invoke(method: string, params: unknown[]): Promise<unknown> {
 
 		_pending.set(Id, (Result, Err) => {
 			if (Err !== undefined) Reject(new Error(Err));
-
 			else Resolve(Result);
 		});
 
@@ -195,7 +183,6 @@ export function invoke(method: string, params: unknown[]): Promise<unknown> {
 }
 
 export function notify(method: string, params: unknown[]): void {
-
 	if (!IsAvailable() || !_ws) return;
 
 	try {

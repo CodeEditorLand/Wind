@@ -11,17 +11,13 @@
 import { Effect, Either, Layer } from "effect";
 
 import { Telemetry } from "../../Telemetry.js";
-
 import type { BootstrapService } from "../Interface/BootstrapService.js";
-
 import { BootstrapTag } from "../Tag/BootstrapTag.js";
-
 import type {
 	BootstrapOptions,
 	BootstrapResult,
 	StageResult,
 } from "../Type/BootstrapType.js";
-
 import {
 	stage0_Environment,
 	stage1_Preload,
@@ -95,7 +91,6 @@ const makeBootstrap = (): BootstrapService => ({
 				const Outcome = yield* Effect.either(
 					Effect.suspend(() => Stage) as unknown as Effect.Effect<
 						StageResult,
-
 						unknown
 					>,
 				);

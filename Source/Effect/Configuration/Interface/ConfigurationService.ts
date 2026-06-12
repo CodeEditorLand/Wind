@@ -17,7 +17,6 @@ import type { ISandboxConfiguration } from "../../../Types/Sandbox.js";
  * Handle returned by subscription methods; call `dispose` to unsubscribe.
  */
 export interface IDisposable {
-
 	readonly dispose: () => void;
 }
 
@@ -26,7 +25,6 @@ export interface IDisposable {
  * Manages configuration fetching, validation, and reactive updates.
  */
 export interface ConfigurationService {
-
 	/**
 	 * Get current configuration snapshot.
 	 * @throws ConfigurationNotReadyError when no configuration is loaded yet

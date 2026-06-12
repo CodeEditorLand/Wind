@@ -18,6 +18,5 @@ export type { Event, IDisposable } from "./VSCodeCommonType.js";
  * Configuration change event interface.
  */
 export interface IConfigurationChangeEvent {
-
 	affectsConfiguration(section: string, resource?: UriComponents): boolean;
 }

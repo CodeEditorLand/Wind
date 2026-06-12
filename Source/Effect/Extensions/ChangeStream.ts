@@ -28,7 +28,6 @@ import SkyEvent from "../../IPC/SkyEvent.js";
 
 export type ExtensionChange =
 	| {
-
 			readonly Kind: "Installed";
 
 			readonly Identifier: string;
@@ -37,9 +36,7 @@ export type ExtensionChange =
 
 			readonly Location: string;
 	  }
-
 	| {
-
 			readonly Kind: "Uninstalled";
 
 			readonly Identifier: string;
@@ -48,7 +45,6 @@ export type ExtensionChange =
 	  };
 
 export class ExtensionChangeSubscriptionError extends Error {
-
 	readonly _tag = "ExtensionChangeSubscriptionError" as const;
 
 	constructor(Channel: string, Cause: unknown) {
@@ -65,7 +61,6 @@ const ReadString = (
 
 	Field: string,
 ): string => {
-
 	const Value = Record[Field];
 
 	return typeof Value === "string" ? Value : "";
@@ -76,7 +71,6 @@ const ReadOptionalString = (
 
 	Field: string,
 ): string | undefined => {
-
 	const Value = Record[Field];
 
 	return typeof Value === "string" ? Value : undefined;
@@ -85,7 +79,6 @@ const ReadOptionalString = (
 const AsPayload = (Value: unknown): Readonly<Record<string, unknown>> | null =>
 	Value !== null && typeof Value === "object"
 		? (Value as Readonly<Record<string, unknown>>)
-
 		: null;
 
 /**
@@ -102,7 +95,6 @@ const AsPayload = (Value: unknown): Readonly<Record<string, unknown>> | null =>
 export default async (
 	Callback: (Change: ExtensionChange) => void,
 ): Promise<{ readonly dispose: () => void }> => {
-
 	const Unlisteners: Array<() => void> = [];
 
 	const Detach = (): void => {

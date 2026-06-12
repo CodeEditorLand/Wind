@@ -21,7 +21,6 @@ import type { ClipboardProblem } from "../Type/ClipboardProblem.js";
  * Microsoft VSCode Reference: IClipboardService from vs/platform/clipboard/common/clipboardService.ts
  */
 export interface ClipboardService {
-
 	readonly readText: () => Effect.Effect<string, ClipboardProblem>;
 
 	readonly writeText: (text: string) => Effect.Effect<void, ClipboardProblem>;

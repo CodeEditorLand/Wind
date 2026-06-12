@@ -10,7 +10,6 @@
  * Sandbox not ready error
  */
 export class SandboxNotReadyError extends Error {
-
 	readonly _tag = "SandboxNotReadyError";
 
 	constructor() {

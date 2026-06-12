@@ -12,7 +12,6 @@
 // ============================================================================
 
 export class MountainStateError extends Error {
-
 	readonly _tag = "MountainStateError";
 
 	readonly expected: string;

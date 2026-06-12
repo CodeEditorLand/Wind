@@ -11,9 +11,7 @@
 import { Effect, Layer, Stream } from "effect";
 
 import type { SidebarService } from "../Interface/SidebarService.js";
-
 import SidebarTag from "../Tag/SidebarTag.js";
-
 import type { CreateSidebarPanel, SidebarPanel } from "../Type/SidebarType.js";
 
 /**

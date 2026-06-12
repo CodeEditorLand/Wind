@@ -11,7 +11,6 @@
  * IPC message interface
  */
 export interface IPCMessage {
-
 	readonly channel: string;
 
 	readonly args: ReadonlyArray<unknown>;

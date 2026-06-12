@@ -6,9 +6,7 @@
  */
 
 import BaseConfig from "./Config/BaseConfig.js";
-
 import CompileConfig from "./Config/CompileConfig.js";
-
 import TargetConfig from "./Config/TargetConfig.js";
 
 export * from "./Constant/EnvironmentConstant.js";

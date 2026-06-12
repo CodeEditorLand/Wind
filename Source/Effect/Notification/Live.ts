@@ -15,28 +15,21 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-
 import { TauriIPCLive } from "../IPC/index.js";
-
 import type { NotificationService } from "./Interface/NotificationService.js";
-
 import { NotificationServiceTag } from "./Tag/NotificationServiceTag.js";
-
 import type { NotificationProblem } from "./Type/NotificationProblem.js";
 
 const MakeNotificationProblem = (error: unknown): NotificationProblem =>
 	error instanceof Error
 		? { _tag: "NotificationOperationFailed", error }
-
 		: {
-
 				_tag: "NotificationOperationFailed",
 
 				error: new Error(String(error)),
 			};
 
 function makeNotificationService(): NotificationService {
-
 	const IPCService = TauriIPCLive;
 
 	const Service: NotificationService = {

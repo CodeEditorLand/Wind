@@ -2,9 +2,7 @@ import type {
 	WorkbenchActivityBadge,
 	WorkbenchActivityService,
 } from "../Interface/WorkbenchActivityService.js";
-
 import { WorkbenchActivityError } from "../Type/WorkbenchActivityProblem.js";
-
 import type {
 	UpstreamWorkbenchBadge,
 	WorkbenchActivityBridgeShape,

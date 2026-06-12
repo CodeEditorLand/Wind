@@ -11,7 +11,6 @@
 import type { InterfaceMemberRecord } from "./InterfaceMemberRecord.js";
 
 export interface ServiceDecoratorRecord {
-
 	/** Decorator export name, e.g. `IConfigurationService`. */
 	readonly DecoratorName: string;
 

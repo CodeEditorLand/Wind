@@ -10,7 +10,6 @@ import type { HistoryProblem } from "../Type/HistoryProblem.js";
  * across recently visited files and cursor positions.
  */
 export interface HistoryService {
-
 	/** Navigate to the previous location in the history stack. */
 	readonly GoBack: () => Effect.Effect<void, HistoryProblem>;
 

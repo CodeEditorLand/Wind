@@ -15,15 +15,12 @@
 import { Effect, Layer } from "effect";
 
 import makeMountainSync from "../Implementation/MountainSyncImplementation.js";
-
 import type { MountainSyncService } from "../Interface/MountainSyncService.js";
-
 import MountainSyncTag from "../Tag/MountainSyncTag.js";
 
 let Resolved: MountainSyncService | null = null;
 
 const Resolve = (): MountainSyncService | null => {
-
 	if (Resolved) {
 		return Resolved;
 	}

@@ -8,20 +8,15 @@
 import { Effect, Either, Layer, Stream } from "effect";
 
 import StatusBarItemNotFoundError from "../Error/StatusBarItemNotFoundError.js";
-
 import StatusBarUpdateError from "../Error/StatusBarUpdateError.js";
-
 import type { StatusBarService } from "../Interface/StatusBarService.js";
-
 import StatusBarTag from "../Tag/StatusBarTag.js";
-
 import type {
 	CreateStatusBarItem,
 	StatusBarItem,
 } from "../Type/StatusBarType.js";
 
 function makeStatusBarService(): StatusBarService {
-
 	let _items: ReadonlyArray<StatusBarItem> = [];
 
 	const _itemsListeners: ((v: ReadonlyArray<StatusBarItem>) => void)[] = [];
@@ -71,11 +66,9 @@ function makeStatusBarService(): StatusBarService {
 		updates: Partial<Omit<StatusBarItem, "id">>,
 	): Effect.Effect<
 		void,
-
 		StatusBarItemNotFoundError | StatusBarUpdateError
 	> => {
 		if (!_items.find((i) => i.id === Id))
-
 			return Effect.fail(new StatusBarItemNotFoundError(Id));
 
 		try {
@@ -95,7 +88,6 @@ function makeStatusBarService(): StatusBarService {
 		Id: string,
 	): Effect.Effect<void, StatusBarItemNotFoundError> => {
 		if (!_items.find((i) => i.id === Id))
-
 			return Effect.fail(new StatusBarItemNotFoundError(Id));
 
 		_items = _items.filter((i) => i.id !== Id);
@@ -111,7 +103,6 @@ function makeStatusBarService(): StatusBarService {
 		visible: boolean,
 	): Effect.Effect<void, StatusBarItemNotFoundError> => {
 		if (!_items.find((i) => i.id === Id))
-
 			return Effect.fail(new StatusBarItemNotFoundError(Id));
 
 		if (!visible) return RemoveItem(Id);

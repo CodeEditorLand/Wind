@@ -8,9 +8,7 @@
 import { Effect, Either, Layer, Stream } from "effect";
 
 import type { TelemetryService } from "../Interface/TelemetryService.js";
-
 import TelemetryTag from "../Tag/TelemetryTag.js";
-
 import type {
 	SpanHandle,
 	TelemetryEvent,
@@ -20,7 +18,6 @@ import type {
 } from "../Type/TelemetryType.js";
 
 function makeTelemetryService(): TelemetryService {
-
 	const _metrics = new Map<string, TelemetryMetric[]>();
 
 	const _spans = new Map<string, TelemetrySpan[]>();

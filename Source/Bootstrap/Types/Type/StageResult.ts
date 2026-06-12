@@ -9,14 +9,12 @@
  */
 
 import type { ErrorSeverity } from "./ErrorSeverity.js";
-
 import type { StageName } from "./StageName.js";
 
 /**
  * Stage result interface
  */
 export interface StageResult {
-
 	/** Whether the stage completed successfully */
 	success: boolean;
 

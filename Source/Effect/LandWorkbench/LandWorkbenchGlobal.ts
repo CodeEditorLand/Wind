@@ -15,26 +15,24 @@
  * @category Composition
  */
 
-import type { LandWorkbenchServices } from "./LandWorkbenchRuntime.js";
-
-import { LandWorkbenchRuntime } from "./LandWorkbenchRuntime.js";
+import {
+	LandWorkbenchRuntime,
+	type LandWorkbenchServices,
+} from "./LandWorkbenchRuntime.js";
 
 export interface CELWindGlobalShape {
-
 	readonly Services: LandWorkbenchServices;
 
 	readonly Dispose: () => Promise<void>;
 }
 
 export interface CELWindGlobals {
-
 	__CEL_WIND__?: CELWindGlobalShape;
 }
 
 const InstallEvent = "cel:wind-ready";
 
 export const InstallLandWorkbench = (): CELWindGlobalShape => {
-
 	const Globals = globalThis as unknown as CELWindGlobals;
 
 	if (Globals.__CEL_WIND__) return Globals.__CEL_WIND__;
@@ -57,7 +55,6 @@ export const InstallLandWorkbench = (): CELWindGlobalShape => {
 };
 
 export const CELWind = (): CELWindGlobalShape => {
-
 	const Globals = globalThis as unknown as CELWindGlobals;
 
 	if (!Globals.__CEL_WIND__) {

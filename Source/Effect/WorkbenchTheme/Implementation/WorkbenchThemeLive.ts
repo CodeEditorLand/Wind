@@ -3,15 +3,13 @@ import type {
 	WorkbenchThemeDescriptor,
 	WorkbenchThemeService,
 } from "../Interface/WorkbenchThemeService.js";
-
 import { WorkbenchThemeError } from "../Type/WorkbenchThemeProblem.js";
-
 import {
+	WorkbenchThemeKindFromUpstream,
 	type UpstreamWorkbenchColorTheme,
 	type UpstreamWorkbenchTheme,
 	type WorkbenchThemeBridgeShape,
 	type WorkbenchThemeGlobals,
-	WorkbenchThemeKindFromUpstream,
 } from "./WorkbenchThemeBridgeShape.js";
 
 const Unavailable = (): WorkbenchThemeError =>

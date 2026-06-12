@@ -2,9 +2,7 @@ import type {
 	WorkbenchExtensionDescriptor,
 	WorkbenchExtensionService,
 } from "../Interface/WorkbenchExtensionService.js";
-
 import { WorkbenchExtensionError } from "../Type/WorkbenchExtensionProblem.js";
-
 import type {
 	UpstreamExtensionDescriptor,
 	WorkbenchExtensionBridgeShape,

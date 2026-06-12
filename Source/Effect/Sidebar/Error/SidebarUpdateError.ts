@@ -12,7 +12,6 @@
  * Includes the panel ID and the underlying cause of the failure.
  */
 export default class SidebarUpdateError extends Error {
-
 	readonly _tag = "SidebarUpdateError";
 
 	override readonly cause: unknown;

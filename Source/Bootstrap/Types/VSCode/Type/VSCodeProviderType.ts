@@ -11,7 +11,6 @@ import type { UriComponents } from "./VSCodeUtilityType.js";
  * Resource URI provider interface
  */
 export interface IResourceUriProvider {
-
 	(uri: UriComponents): UriComponents;
 }
 
@@ -19,7 +18,6 @@ export interface IResourceUriProvider {
  * External URI resolver interface
  */
 export interface IExternalUriResolver {
-
 	(uri: UriComponents): Promise<UriComponents>;
 }
 
@@ -27,6 +25,5 @@ export interface IExternalUriResolver {
  * Remote resource provider interface
  */
 export interface IRemoteResourceProvider {
-
 	provideResource(uri: UriComponents): Promise<Uint8Array>;
 }

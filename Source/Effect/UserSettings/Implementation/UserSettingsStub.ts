@@ -17,7 +17,6 @@ import type {
 	UserSettingsService,
 	UserSettingsTarget,
 } from "../Interface/UserSettingsService.js";
-
 import { UserSettingsError } from "../Type/UserSettingsProblem.js";
 
 export const MakeUserSettingsStub = (): UserSettingsService => {

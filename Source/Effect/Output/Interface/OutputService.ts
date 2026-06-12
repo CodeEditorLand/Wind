@@ -7,7 +7,6 @@ import type { OutputProblem } from "../Type/OutputProblem.js";
  * Microsoft VSCode Reference: IOutputService from vs/workbench/services/output/common/output.ts
  */
 export interface OutputService {
-
 	readonly CreateChannel: (
 		name: string,
 	) => Effect.Effect<{ readonly name: string }, OutputProblem>;

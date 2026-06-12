@@ -16,7 +16,6 @@
  * Network restriction configuration
  */
 export interface NetworkRestrictionConfig {
-
 	/** Block all HTTP requests */
 	readonly blockHTTP: boolean;
 

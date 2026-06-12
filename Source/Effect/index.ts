@@ -31,10 +31,7 @@ export {
 	ConfigurationWithSyncLive,
 } from "./Configuration.js";
 
-export type {
-	Configuration,
-	ConfigurationService,
-} from "./Configuration.js";
+export type { Configuration, ConfigurationService } from "./Configuration.js";
 
 // Telemetry (Logging, Spans, Metrics)
 export {

@@ -9,7 +9,6 @@
  */
 
 import type { Event as VSCodeEvent } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
-
 import type {
 	IChannel,
 	IServerChannel,
@@ -19,7 +18,6 @@ import * as MistWS from "./MistWebSocketTransport.js";
 
 // Inline trace - performance.mark() collected by build-baked OTELBridge.
 const _Trace = (Tag: string, Message: string): void => {
-
 	try {
 		performance.mark(`land:${Tag}:${Message}`);
 	} catch {}
@@ -33,7 +31,6 @@ const _Trace = (Tag: string, Message: string): void => {
 // so Tauri's param-case handling doesn't require a guess - the Rust
 // command coalesces whichever arrived populated.
 const _DevLogForward = (Tag: string, Message: string): void => {
-
 	try {
 		const Internals = (window as any).__TAURI_INTERNALS__;
 
@@ -62,7 +59,6 @@ const _TimedTrace = async <T>(
 
 	Fn: () => Promise<T>,
 ): Promise<T> => {
-
 	const MarkName = `land:${Tag}:${Label}`;
 
 	const StartMark = `${MarkName}:start`;
@@ -99,7 +95,6 @@ const _TimedTrace = async <T>(
 // ============================================================================
 
 const ChannelRouteMap: Record<string, string> = {
-
 	localFilesystem: "file",
 
 	storage: "storage",
@@ -242,7 +237,6 @@ const FileSystemThrowCommands = new Set([
 ]);
 
 const StubChannels: Record<string, Record<string, unknown>> = {
-
 	sign: { sign: "", createNewMessage: "", validate: true },
 
 	policy: { serialize: {}, registerPolicyChange: undefined },
@@ -700,7 +694,6 @@ const _TierIPC: string =
 // without a per-subsystem tier mapping. Keep in lockstep with the Output
 // copy at `Element/Output/Source/Service/Tauri/Main/Process/Service.ts`.
 function _ReadTier(Name: string): string | undefined {
-
 	const FromEnv = (import.meta as any).env?.[`Tier${Name}`] as
 		| string
 		| undefined;
@@ -746,7 +739,6 @@ const _TierEncryption = _ReadTier("Encryption") ?? "Mountain";
 // routing stays bidirectional. RoutePrefix values come from
 // `ChannelRouteMap` above.
 function _ResolveTierForRoute(RoutePrefix: string | null): string {
-
 	if (!RoutePrefix) return _TierIPC;
 
 	switch (RoutePrefix) {
@@ -808,7 +800,6 @@ async function _InvokeViaNode(
 
 	Params: unknown[],
 ): Promise<unknown> {
-
 	const Invoke =
 		(window as any).__TAURI__?.core?.invoke ??
 		(window as any).__TAURI__?.invoke;
@@ -834,7 +825,6 @@ async function InvokeMountain(
 
 	Params: unknown[],
 ): Promise<unknown> {
-
 	const Invoke =
 		(window as any).__TAURI__?.core?.invoke ??
 		(window as any).__TAURI__?.invoke;
@@ -886,7 +876,6 @@ async function InvokeMountain(
 // ============================================================================
 
 class TauriChannel implements IChannel {
-
 	constructor(
 		private readonly ChannelName: string,
 
@@ -998,14 +987,12 @@ class TauriChannel implements IChannel {
 				) {
 					const Raw = Result as
 						| { buffer: number[]; bytesRead?: number }
-
 						| number[]
 						| null
 						| undefined;
 
 					if (Raw !== null && Raw !== undefined) {
 						const Arr = Array.isArray(Raw)
-
 							? Raw
 							: (Raw as { buffer: number[] }).buffer;
 
@@ -1178,14 +1165,12 @@ class TauriChannel implements IChannel {
 					.then(([VSBuffer, Result]) => {
 						const Raw = Result as
 							| { buffer: number[] }
-
 							| number[]
 							| null
 							| undefined;
 
 						if (Raw !== null && Raw !== undefined) {
 							const Arr = Array.isArray(Raw)
-
 								? Raw
 								: (Raw as { buffer: number[] }).buffer;
 
@@ -1375,7 +1360,6 @@ class TauriChannel implements IChannel {
 // ============================================================================
 
 export class TauriMainProcessService {
-
 	declare readonly _serviceBrand: undefined;
 
 	private readonly Channels = new Map<string, TauriChannel>();
@@ -1410,7 +1394,6 @@ export class TauriMainProcessService {
 }
 
 export function InitializeWebSocket(port: number, secret: string): void {
-
 	MistWS.Initialize(port, secret);
 }
 

@@ -2,9 +2,7 @@ import type {
 	WorkbenchCommandExecutedEvent,
 	WorkbenchCommandService,
 } from "../Interface/WorkbenchCommandService.js";
-
 import { WorkbenchCommandError } from "../Type/WorkbenchCommandProblem.js";
-
 import type {
 	WorkbenchCommandBridgeShape,
 	WorkbenchCommandGlobals,

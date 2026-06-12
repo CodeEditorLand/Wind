@@ -23,7 +23,6 @@ import type {
  * Provides metrics recording, span tracking, and comprehensive logging capabilities.
  */
 export interface TelemetryService {
-
 	/** Record a metric value with optional labels */
 	readonly recordMetric: (
 		name: string,

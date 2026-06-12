@@ -5,12 +5,10 @@ import type { NotificationProblem } from "../Type/NotificationProblem.js";
 export type NotificationSeverity = "info" | "warning" | "error";
 
 export interface NotificationAction {
-
 	readonly title: string;
 }
 
 export interface NotificationService {
-
 	readonly Show: (
 		message: string,
 

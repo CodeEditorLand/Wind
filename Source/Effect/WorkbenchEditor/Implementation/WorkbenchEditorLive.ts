@@ -4,9 +4,7 @@ import type {
 	WorkbenchEditorOpenInput,
 	WorkbenchEditorService,
 } from "../Interface/WorkbenchEditorService.js";
-
 import { WorkbenchEditorError } from "../Type/WorkbenchEditorProblem.js";
-
 import type {
 	UpstreamEditorPaneSnapshot,
 	WorkbenchEditorBridgeShape,

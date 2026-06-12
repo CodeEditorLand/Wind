@@ -11,7 +11,6 @@ import type { Event, IDisposable } from "./VSCodeCommonType.js";
  * WebSocket factory interface
  */
 export interface IWebSocketFactory {
-
 	create(url: string): IWebSocket;
 }
 
@@ -19,7 +18,6 @@ export interface IWebSocketFactory {
  * WebSocket interface
  */
 export interface IWebSocket {
-
 	readonly onData: Event<ArrayBuffer>;
 
 	readonly onOpen: Event<void>;

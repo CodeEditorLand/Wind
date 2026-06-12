@@ -8,7 +8,6 @@
  */
 
 import { invoke as TauriInvoke } from "@tauri-apps/api/core";
-
 import { Context, Effect, Layer } from "effect";
 
 import {
@@ -16,16 +15,12 @@ import {
 	toFileSystemProviderError,
 	UnknownFileSystemError,
 } from "../Error/FileSystemProviderError";
-
 import type { FileSystemProviderService } from "../Interface/FileSystemProvider";
-
 import type {
 	IFileSystemProvider,
 	IFileWriteOptions,
 } from "../Type/FileSystemType";
-
 import { FileType } from "../Type/FileType";
-
 import { URI } from "../Type/URI";
 
 // ============================================================================
@@ -37,7 +32,6 @@ import { URI } from "../Type/URI";
  * These must match the commands defined in Element/Mountain/Source/IPC/WindServiceHandlers.rs
  */
 const MountainCommands = {
-
 	READ: "file:read",
 
 	WRITE: "file:write",
@@ -67,7 +61,6 @@ const MountainCommands = {
  * @returns File system path string
  */
 function uriToPath(uri: URI): string {
-
 	// fsPath is a getter on the real VS Code URI, not a method call.
 	const path = uri.fsPath;
 
@@ -96,7 +89,6 @@ function toIStat(stats: {
 
 	accessed?: number;
 }): {
-
 	type: number;
 
 	size: number;
@@ -107,7 +99,6 @@ function toIStat(stats: {
 
 	permissions?: number;
 } {
-
 	// Determine file type
 	let type: FileType;
 
@@ -144,7 +135,6 @@ function toDirectoryEntries(
 		is_directory?: boolean;
 	}>,
 ): [string, FileType][] {
-
 	return entries.map((entry) => {
 		let type: FileType;
 
@@ -167,7 +157,6 @@ function toDirectoryEntries(
 const createProvider = (
 	invoke: (command: string, ...args: unknown[]) => Promise<unknown>,
 ) => {
-
 	class MountainFileSystemProvider implements IFileSystemProvider {
 		async readFile(uri: URI): Promise<Uint8Array> {
 			const path = uriToPath(uri);
@@ -385,7 +374,6 @@ const createProvider = (
  * contract preserved by the error classes themselves).
  */
 function buildFileSystemService(): FileSystemProviderService {
-
 	// Create the provider with IPC access
 	const provider = createProvider((command, ...args) =>
 		TauriInvoke("MountainIPCInvoke", {

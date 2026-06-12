@@ -7,7 +7,6 @@ import type { TerminalProblem } from "../Type/TerminalProblem.js";
  * Microsoft VSCode Reference: ITerminalService from vs/workbench/contrib/terminal/browser/terminal.ts
  */
 export interface TerminalService {
-
 	readonly CreateTerminal: (options?: {
 		readonly name?: string;
 
@@ -18,7 +17,6 @@ export interface TerminalService {
 		readonly cwd?: string;
 	}) => Effect.Effect<
 		{ readonly id: number; readonly name: string },
-
 		TerminalProblem
 	>;
 

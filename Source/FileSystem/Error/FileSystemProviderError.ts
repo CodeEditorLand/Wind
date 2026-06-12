@@ -16,7 +16,6 @@ import { FileSystemErrorCode } from "../Type/FileSystemType.js";
  * emit matches what VS Code parses back.
  */
 const VsCodeErrorCodeToken: Record<FileSystemErrorCode, string> = {
-
 	[FileSystemErrorCode.FileNotFound]: "EntryNotFound",
 
 	[FileSystemErrorCode.FileExists]: "EntryExists",
@@ -49,7 +48,6 @@ const VsCodeErrorCodeToken: Record<FileSystemErrorCode, string> = {
  * `Unable to write file '.../output_<ts>/tasks.log' (Error: Failed to stat file ...)`.
  */
 export class FileSystemProviderError extends Error {
-
 	_tag: string;
 
 	readonly code: FileSystemErrorCode;
@@ -69,7 +67,6 @@ export class FileSystemProviderError extends Error {
  * File not found error
  */
 export class FileNotFoundError extends FileSystemProviderError {
-
 	constructor(path: string, cause?: unknown) {
 		super(
 			`File not found: ${path}`,
@@ -87,7 +84,6 @@ export class FileNotFoundError extends FileSystemProviderError {
  * File exists error
  */
 export class FileExistsError extends FileSystemProviderError {
-
 	constructor(path: string, cause?: unknown) {
 		super(
 			`File already exists: ${path}`,
@@ -105,7 +101,6 @@ export class FileExistsError extends FileSystemProviderError {
  * Permission error
  */
 export class PermissionError extends FileSystemProviderError {
-
 	constructor(path: string, cause?: unknown) {
 		super(
 			`Permission denied: ${path}`,
@@ -123,7 +118,6 @@ export class PermissionError extends FileSystemProviderError {
  * Invalid path error
  */
 export class InvalidPathError extends FileSystemProviderError {
-
 	constructor(path: string, cause?: unknown) {
 		super(`Invalid path: ${path}`, FileSystemErrorCode.InvalidPath, cause);
 
@@ -135,7 +129,6 @@ export class InvalidPathError extends FileSystemProviderError {
  * Not supported error
  */
 export class NotSupportedError extends FileSystemProviderError {
-
 	constructor(operation: string, cause?: unknown) {
 		super(
 			`Operation not supported: ${operation}`,
@@ -153,7 +146,6 @@ export class NotSupportedError extends FileSystemProviderError {
  * Unknown file system error
  */
 export class UnknownFileSystemError extends FileSystemProviderError {
-
 	constructor(message: string, cause?: unknown) {
 		super(
 			`Unknown file system error: ${message}`,
@@ -177,7 +169,6 @@ export class UnknownFileSystemError extends FileSystemProviderError {
 export function isFileSystemProviderError(
 	error: unknown,
 ): error is FileSystemProviderError {
-
 	return error instanceof FileSystemProviderError;
 }
 
@@ -187,7 +178,6 @@ export function isFileSystemProviderError(
 export function isFileNotFoundError(
 	error: unknown,
 ): error is FileNotFoundError {
-
 	return error instanceof FileNotFoundError;
 }
 
@@ -195,7 +185,6 @@ export function isFileNotFoundError(
  * Check if an error is a FileExistsError
  */
 export function isFileExistsError(error: unknown): error is FileExistsError {
-
 	return error instanceof FileExistsError;
 }
 
@@ -203,7 +192,6 @@ export function isFileExistsError(error: unknown): error is FileExistsError {
  * Check if an error is a PermissionError
  */
 export function isPermissionError(error: unknown): error is PermissionError {
-
 	return error instanceof PermissionError;
 }
 
@@ -211,7 +199,6 @@ export function isPermissionError(error: unknown): error is PermissionError {
  * Check if an error is an InvalidPathError
  */
 export function isInvalidPathError(error: unknown): error is InvalidPathError {
-
 	return error instanceof InvalidPathError;
 }
 
@@ -221,7 +208,6 @@ export function isInvalidPathError(error: unknown): error is InvalidPathError {
 export function isNotSupportedError(
 	error: unknown,
 ): error is NotSupportedError {
-
 	return error instanceof NotSupportedError;
 }
 
@@ -231,7 +217,6 @@ export function isNotSupportedError(
 export function isUnknownFileSystemError(
 	error: unknown,
 ): error is UnknownFileSystemError {
-
 	return error instanceof UnknownFileSystemError;
 }
 
@@ -253,7 +238,6 @@ export function toFileSystemProviderError(
 
 	contextValue?: string,
 ): FileSystemProviderError {
-
 	// Check if it's already a FileSystemProviderError
 	if (isFileSystemProviderError(error)) {
 		return error;

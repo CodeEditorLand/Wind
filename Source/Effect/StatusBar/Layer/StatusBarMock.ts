@@ -11,9 +11,7 @@
 import { Effect, Layer, Stream } from "effect";
 
 import type { StatusBarService } from "../Interface/StatusBarService.js";
-
 import StatusBarTag from "../Tag/StatusBarTag.js";
-
 import type {
 	CreateStatusBarItem,
 	StatusBarItem,

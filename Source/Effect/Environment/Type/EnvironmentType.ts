@@ -25,7 +25,6 @@ export type Architecture = "x64" | "arm64" | "arm" | "web";
  * Complete environment information interface
  */
 export interface EnvironmentInfo {
-
 	readonly platform: Platform;
 
 	readonly architecture: Architecture;

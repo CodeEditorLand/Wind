@@ -13,7 +13,6 @@
 import type { IStat } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/platform/files/common/files.js";
 
 import type { FileType } from "./FileType.js";
-
 import type { URI } from "./URI.js";
 
 export type { IStat };
@@ -26,7 +25,6 @@ export type { IStat };
  * Options for writing to files
  */
 export interface IFileWriteOptions {
-
 	/** If true, create the file if it doesn't exist */
 	readonly create: boolean;
 
@@ -42,7 +40,6 @@ export interface IFileWriteOptions {
  * Options for watching file/directory changes
  */
 export interface IWatchOptions {
-
 	/** Whether to watch recursively (for directories) */
 	readonly recursive: boolean;
 
@@ -58,7 +55,6 @@ export interface IWatchOptions {
  * Disposable resource (e.g., file watcher)
  */
 export interface IDisposable {
-
 	/** Dispose of the resource */
 	readonly dispose: () => void | Promise<void>;
 }
@@ -72,7 +68,6 @@ export interface IDisposable {
  * Provides methods for file and directory operations
  */
 export interface IFileSystemProvider {
-
 	// ============================================================================
 	// File Operations
 	// ============================================================================
@@ -180,7 +175,6 @@ export interface IFileSystemProvider {
  * Base error type for file system operations
  */
 export class FileSystemError extends Error {
-
 	constructor(
 		message: string,
 
@@ -196,7 +190,6 @@ export class FileSystemError extends Error {
  * Error codes for file system operations
  */
 export enum FileSystemErrorCode {
-
 	/** File not found */
 	FileNotFound = "FileNotFound",
 

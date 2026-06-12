@@ -10,7 +10,6 @@
 import { Layer } from "effect";
 
 import { MockClipboardService } from "./Implementation/MockClipboard.js";
-
 import { ClipboardServiceTag } from "./Tag/ClipboardServiceTag.js";
 
 // ============================================================================

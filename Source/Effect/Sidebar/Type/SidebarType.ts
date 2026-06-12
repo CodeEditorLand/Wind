@@ -13,7 +13,6 @@
  * Contains all configurable properties for a sidebar panel.
  */
 export interface SidebarPanel {
-
 	/** Unique identifier for the sidebar panel */
 	readonly id: string;
 

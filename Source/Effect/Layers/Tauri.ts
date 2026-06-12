@@ -8,71 +8,38 @@
 import { Layer } from "effect";
 
 import { ActivityBarLive } from "../ActivityBar.js";
-
 import { BootstrapLive } from "../Bootstrap.js";
-
 import { LiveClipboardServiceLayer as ClipboardLive } from "../Clipboard.js";
-
 import { LiveCommandsServiceLayer as CommandsLive } from "../Commands/Commands.js";
-
 import { LiveDecorationsServiceLayer as DecorationsLive } from "../Decorations/Decorations.js";
-
 import { LiveEditorServiceLayer as EditorLive } from "../Editor/Editor.js";
-
 import { EnvironmentLive } from "../Environment.js";
-
 import { LiveExtensionsServiceLayer as ExtensionsLive } from "../Extensions/Extensions.js";
-
 import { LiveFilesServiceLayer as FilesLive } from "../Files/Files.js";
-
 import { HealthLive } from "../Health.js";
-
 import { LiveHistoryServiceLayer as HistoryLive } from "../History/History.js";
-
 import { LiveKeybindingServiceLayer as KeybindingLive } from "../Keybinding/Keybinding.js";
-
 import { LiveLabelServiceLayer as LabelLive } from "../Label/Label.js";
-
 import { LiveLanguageServiceLayer as LanguageLive } from "../Language/Language.js";
-
 import { LiveLifecycleServiceLayer as LifecycleLive } from "../Lifecycle/Lifecycle.js";
-
 import { LiveModelServiceLayer as ModelLive } from "../Model/Model.js";
-
 import { MountainSyncLive } from "../MountainSync.js";
-
 import { LiveNotificationServiceLayer as NotificationLive } from "../Notification/Notification.js";
-
 import { LiveOutputServiceLayer as OutputLive } from "../Output/Output.js";
-
 import { PanelLive } from "../Panel.js";
-
 import { LiveProgressServiceLayer as ProgressLive } from "../Progress/Progress.js";
-
 import { LiveQuickInputServiceLayer as QuickInputLive } from "../QuickInput/QuickInput.js";
-
 import { SandboxLive } from "../Sandbox.js";
-
 import { LiveSearchServiceLayer as SearchLive } from "../Search/Search.js";
-
 import { SidebarLive } from "../Sidebar.js";
-
 import { StatusBarLive } from "../StatusBar.js";
-
 import { LiveStorageServiceLayer as StorageLive } from "../Storage/Storage.js";
-
 import { TelemetryLive } from "../Telemetry.js";
-
 import { LiveTerminalServiceLayer as TerminalLive } from "../Terminal/Terminal.js";
-
 import { default as LiveTextFileServiceLayer } from "../TextFile/Live.js";
-
 import { LiveTextModelResolverServiceLayer as TextModelResolverLive } from "../TextModelResolver/TextModelResolver.js";
-
 import { LiveThemesServiceLayer as ThemesLive } from "../Themes/Themes.js";
-
 import { LiveWorkingCopyServiceLayer as WorkingCopyLive } from "../WorkingCopy/WorkingCopy.js";
-
 import { LiveWorkspacesServiceLayer as WorkspacesLive } from "../Workspaces/Workspaces.js";
 
 // ============================================================================

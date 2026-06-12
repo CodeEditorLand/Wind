@@ -11,13 +11,9 @@
  */
 
 import GetBrowser from "./PostHog/Browser.js";
-
 import ReadConfiguration from "./PostHog/Configuration.js";
-
 import Fallback from "./PostHog/Fallback.js";
-
 import ResolveDistinctIdentifier from "./PostHog/Identifier.js";
-
 import BaseProperties, { type Properties } from "./PostHog/Properties.js";
 
 const Configuration = ReadConfiguration();
@@ -36,7 +32,6 @@ export const CaptureEvent = (
 
 	Properties: Properties = {},
 ): void => {
-
 	// Build-time gate: Vite folds `import.meta.env.DEV` to a literal in
 	// every chunk; production builds dead-code this entire function
 	// body so no string literals / payloads ship.
@@ -68,7 +63,6 @@ export const CaptureError = (
 
 	Extra: Properties = {},
 ): void => {
-
 	// Build-time gate: Vite folds `import.meta.env.DEV` to a literal in
 	// every chunk; production builds dead-code this entire function
 	// body so no string literals / payloads ship.
@@ -112,7 +106,6 @@ export const CaptureError = (
 };
 
 export const Initialize = (): void => {
-
 	// Build-time gate: Vite folds `import.meta.env.DEV` to a literal in
 	// every chunk; production builds dead-code this entire function
 	// body so no string literals / payloads ship.

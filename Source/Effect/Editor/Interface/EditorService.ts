@@ -7,16 +7,13 @@ import type { EditorProblem } from "../Type/EditorProblem.js";
  * Microsoft VSCode Reference: ICodeEditorService from vs/editor/browser/services/codeEditorService.ts
  */
 export interface EditorService {
-
 	readonly GetActiveEditor: () => Effect.Effect<
 		unknown | null,
-
 		EditorProblem
 	>;
 
 	readonly GetVisibleEditors: () => Effect.Effect<
 		readonly unknown[],
-
 		EditorProblem
 	>;
 
@@ -32,7 +29,6 @@ export interface EditorService {
 
 	readonly GetSelections: () => Effect.Effect<
 		readonly unknown[],
-
 		EditorProblem
 	>;
 

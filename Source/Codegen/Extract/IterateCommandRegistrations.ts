@@ -31,7 +31,6 @@
  */
 
 import type { CommandRegistrationRecord } from "../Type/CommandRegistrationRecord.js";
-
 import type { SourceFile } from "../Walk/SourceTreeWalker.js";
 
 const RegistrarPattern =

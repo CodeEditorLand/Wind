@@ -58,12 +58,13 @@ program."_
 
 ## Overview
 
-**Wind** is the `TypeScript`/`Effect-TS` service layer that bridges `Sky` (Land's
-VS Code-based UI) to the `Tauri` desktop shell and `Mountain`'s `Rust` backend.
-It replaces `VS Code`'s `Electron` `IPC` bridge — which forces every panel
-interaction through untyped `JSON` serialization — with typed `Tauri` commands
-routed to `Rust` handlers in `Mountain`'s core. It provides the `Effect-TS`
-native service layer that enables `Sky` to function within the `Tauri` shell.
+**Wind** is the `TypeScript`/`Effect-TS` service layer that bridges `Sky`
+(Land's VS Code-based UI) to the `Tauri` desktop shell and `Mountain`'s `Rust`
+backend. It replaces `VS Code`'s `Electron` `IPC` bridge — which forces every
+panel interaction through untyped `JSON` serialization — with typed `Tauri`
+commands routed to `Rust` handlers in `Mountain`'s core. It provides the
+`Effect-TS` native service layer that enables `Sky` to function within the
+`Tauri` shell.
 
 `Wind` recreates the essential VS Code renderer environment, implements core
 services through `Effect-TS`'s typed error and dependency injection patterns,
@@ -135,13 +136,13 @@ testing).
 
 ## Core Architecture Principles&#x2001;🏗️
 
-| Principle | Description | Key Components |
-|-----------|-------------|----------------|
-| **Compatibility** | High-fidelity VS Code renderer environment to maximize `Sky`'s reusability. Shim every `Electron` API the workbench expects. | `Preload.ts`, `Bootstrap/Types/`, `Types/` |
-| **Modularity** | Each service follows an atomic directory structure with `Interface`, `Implementation`, `Tag`, `Layer`, `Type`, and `Error` subdirectories. | All `Effect/` services |
-| **Type Safety** | `Effect-TS` powers all service implementations, ensuring tagged error types, composable `Layer` dependency injection, and deterministic error handling. | All `Effect/` services with `Layer` and `Tag` patterns |
-| **Abstraction** | Clean `Layer` over `Tauri` APIs replaces untyped `Electron` `IPC` with typed `Tauri` commands. The frontend never touches raw `invoke` calls. | `Preload.ts`, `Effect/IPC/`, `Effect/Mountain/` |
-| **Integration** | `Sky`'s frontend requests connect to `Mountain`'s backend through `Tauri`'s `invoke` and `event` system. The `ipcRenderer` shim routes every call through the `IPC` service. | `Preload.ts` (ipcRenderer shim), `Effect/Mountain/`, `Service/TauriMainProcessService.ts` |
+| Principle         | Description                                                                                                                                                                  | Key Components                                                                            |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| **Compatibility** | High-fidelity VS Code renderer environment to maximize `Sky`'s reusability. Shim every `Electron` API the workbench expects.                                                 | `Preload.ts`, `Bootstrap/Types/`, `Types/`                                                |
+| **Modularity**    | Each service follows an atomic directory structure with `Interface`, `Implementation`, `Tag`, `Layer`, `Type`, and `Error` subdirectories.                                   | All `Effect/` services                                                                    |
+| **Type Safety**   | `Effect-TS` powers all service implementations, ensuring tagged error types, composable `Layer` dependency injection, and deterministic error handling.                      | All `Effect/` services with `Layer` and `Tag` patterns                                    |
+| **Abstraction**   | Clean `Layer` over `Tauri` APIs replaces untyped `Electron` `IPC` with typed `Tauri` commands. The frontend never touches raw `invoke` calls.                                | `Preload.ts`, `Effect/IPC/`, `Effect/Mountain/`                                           |
+| **Integration**   | `Sky`'s frontend requests connect to `Mountain`'s backend through `Tauri`'s `invoke` and `event` system. The `ipcRenderer` shim routes every call through the `IPC` service. | `Preload.ts` (ipcRenderer shim), `Effect/Mountain/`, `Service/TauriMainProcessService.ts` |
 
 ---
 
@@ -200,70 +201,70 @@ graph LR
 
 **Connection paths:**
 
-| Path | Protocol | Use Case |
-|------|----------|----------|
-| Wind → Mountain via `Tauri invoke` | `Tauri` IPC (typed commands) | All frontend-to-backend requests |
-| Mountain → Wind via `Tauri listen` | `Tauri` event system (`sky://` events) | Backend notifications and state pushes |
-| Wind → Sky | Direct import of `TauriLiveLayer` + `__CEL_SERVICES__` global | UI service consumption |
-| Preload → Tauri | `window.__TAURI__` bridge | Environment emulation and API shims |
+| Path                               | Protocol                                                      | Use Case                               |
+| ---------------------------------- | ------------------------------------------------------------- | -------------------------------------- |
+| Wind → Mountain via `Tauri invoke` | `Tauri` IPC (typed commands)                                  | All frontend-to-backend requests       |
+| Mountain → Wind via `Tauri listen` | `Tauri` event system (`sky://` events)                        | Backend notifications and state pushes |
+| Wind → Sky                         | Direct import of `TauriLiveLayer` + `__CEL_SERVICES__` global | UI service consumption                 |
+| Preload → Tauri                    | `window.__TAURI__` bridge                                     | Environment emulation and API shims    |
 
 ---
 
 ## Key Components
 
-| Component | Path | Description |
-|-----------|------|-------------|
-| Preload Shim | `Source/Preload.ts` | VS Code environment emulation in Tauri WebView — shims Electron APIs, creates `window.vscode` |
-| IPC Service | `Source/Effect/IPC/` | Inter-process communication via Tauri `invoke` with typed, tagged errors |
-| Mountain RPC | `Source/Effect/Mountain/` | Backend RPC connection service for configuration, state, and native operations |
-| Mountain Sync | `Source/Effect/MountainSync/` | Background configuration synchronization with change detection |
-| Configuration | `Source/Effect/Configuration/` | Workbench configuration with sync and change detection |
-| Bootstrap | `Source/Effect/Bootstrap/` | Multi-stage bootstrap orchestration for service initialization |
-| Codegen | `Source/Codegen/` | VS Code service code generator — walks service catalog, emits bridge shapes |
-| Sandbox | `Source/Effect/Sandbox/` | Preload globals and environment service |
-| Telemetry | `Source/Effect/Telemetry/` | Logging, spans, and metrics (PostHog/OTLP) |
-| Environment | `Source/Effect/Environment/` | System and platform detection |
-| Health | `Source/Effect/Health/` | Service health checks |
-| Clipboard | `Source/Effect/Clipboard/` | System clipboard access |
-| Commands | `Source/Effect/Commands/` | VS Code command registry |
-| Editor | `Source/Effect/Editor/` | Editor service abstraction |
-| Activity Bar | `Source/Effect/ActivityBar/` | Activity bar management |
-| Panel | `Source/Effect/Panel/` | Bottom panel management |
-| Sidebar | `Source/Effect/Sidebar/` | Sidebar management |
-| Status Bar | `Source/Effect/StatusBar/` | Status bar management |
-| Decorations | `Source/Effect/Decorations/` | Editor decoration service |
-| Extensions | `Source/Effect/Extensions/` | Extension management |
-| Files | `Source/Effect/Files/` | File system operations |
-| History | `Source/Effect/History/` | Editor history service |
-| Keybinding | `Source/Effect/Keybinding/` | Keyboard shortcut binding |
-| Label | `Source/Effect/Label/` | Label service |
-| Language | `Source/Effect/Language/` | Language service |
-| Lifecycle | `Source/Effect/Lifecycle/` | Application lifecycle |
-| Model | `Source/Effect/Model/` | Text model service |
-| Notification | `Source/Effect/Notification/` | Notification service |
-| Output | `Source/Effect/Output/` | Output panel service |
-| Progress | `Source/Effect/Progress/` | Progress indication |
-| Quick Input | `Source/Effect/QuickInput/` | Quick input UI |
-| Search | `Source/Effect/Search/` | Search service |
-| Storage | `Source/Effect/Storage/` | Persistent storage |
-| Terminal | `Source/Effect/Terminal/` | Terminal service |
-| Text File | `Source/Effect/TextFile/` | Text file service |
-| Text Model Resolver | `Source/Effect/TextModelResolver/` | Text model resolver |
-| Themes | `Source/Effect/Themes/` | Theme management |
-| Working Copy | `Source/Effect/WorkingCopy/` | Working copy service |
-| Workspaces | `Source/Effect/Workspaces/` | Workspace management |
-| Network Restrictions | `Source/Effect/NetworkRestrictions/` | Network access restrictions |
-| User Settings | `Source/Effect/UserSettings/` | User settings bridge |
-| Vine | `Source/Effect/Vine/` | Notification stream |
-| Layers/Tauri | `Source/Effect/Layers/Tauri.ts` | Primary composed layer merging 40+ services into `TauriLiveLayer` |
-| Layers/Electron | `Source/Effect/Layers/Electron.ts` | Electron compatibility layer stack |
-| Layers/Test | `Source/Effect/Layers/Test.ts` | Test/mock layer stack for isolated testing |
-| File System Provider | `Source/FileSystem/` | VS Code-compatible file system provider with Mountain bridge |
-| Workbench Integration | `Source/Workbench/` | Workbench integration service |
-| Function/Install | `Source/Function/Install/` | Preload install helpers and IPC renderer creation |
-| Service | `Source/Service/` | Tauri main process service, channel routing, WebSocket transport |
-| Types | `Source/Types/` | Sandbox, IPC, and error type definitions |
-| Utility | `Source/Utility/` | Shared utility functions |
+| Component             | Path                                 | Description                                                                                   |
+| --------------------- | ------------------------------------ | --------------------------------------------------------------------------------------------- |
+| Preload Shim          | `Source/Preload.ts`                  | VS Code environment emulation in Tauri WebView — shims Electron APIs, creates `window.vscode` |
+| IPC Service           | `Source/Effect/IPC/`                 | Inter-process communication via Tauri `invoke` with typed, tagged errors                      |
+| Mountain RPC          | `Source/Effect/Mountain/`            | Backend RPC connection service for configuration, state, and native operations                |
+| Mountain Sync         | `Source/Effect/MountainSync/`        | Background configuration synchronization with change detection                                |
+| Configuration         | `Source/Effect/Configuration/`       | Workbench configuration with sync and change detection                                        |
+| Bootstrap             | `Source/Effect/Bootstrap/`           | Multi-stage bootstrap orchestration for service initialization                                |
+| Codegen               | `Source/Codegen/`                    | VS Code service code generator — walks service catalog, emits bridge shapes                   |
+| Sandbox               | `Source/Effect/Sandbox/`             | Preload globals and environment service                                                       |
+| Telemetry             | `Source/Effect/Telemetry/`           | Logging, spans, and metrics (PostHog/OTLP)                                                    |
+| Environment           | `Source/Effect/Environment/`         | System and platform detection                                                                 |
+| Health                | `Source/Effect/Health/`              | Service health checks                                                                         |
+| Clipboard             | `Source/Effect/Clipboard/`           | System clipboard access                                                                       |
+| Commands              | `Source/Effect/Commands/`            | VS Code command registry                                                                      |
+| Editor                | `Source/Effect/Editor/`              | Editor service abstraction                                                                    |
+| Activity Bar          | `Source/Effect/ActivityBar/`         | Activity bar management                                                                       |
+| Panel                 | `Source/Effect/Panel/`               | Bottom panel management                                                                       |
+| Sidebar               | `Source/Effect/Sidebar/`             | Sidebar management                                                                            |
+| Status Bar            | `Source/Effect/StatusBar/`           | Status bar management                                                                         |
+| Decorations           | `Source/Effect/Decorations/`         | Editor decoration service                                                                     |
+| Extensions            | `Source/Effect/Extensions/`          | Extension management                                                                          |
+| Files                 | `Source/Effect/Files/`               | File system operations                                                                        |
+| History               | `Source/Effect/History/`             | Editor history service                                                                        |
+| Keybinding            | `Source/Effect/Keybinding/`          | Keyboard shortcut binding                                                                     |
+| Label                 | `Source/Effect/Label/`               | Label service                                                                                 |
+| Language              | `Source/Effect/Language/`            | Language service                                                                              |
+| Lifecycle             | `Source/Effect/Lifecycle/`           | Application lifecycle                                                                         |
+| Model                 | `Source/Effect/Model/`               | Text model service                                                                            |
+| Notification          | `Source/Effect/Notification/`        | Notification service                                                                          |
+| Output                | `Source/Effect/Output/`              | Output panel service                                                                          |
+| Progress              | `Source/Effect/Progress/`            | Progress indication                                                                           |
+| Quick Input           | `Source/Effect/QuickInput/`          | Quick input UI                                                                                |
+| Search                | `Source/Effect/Search/`              | Search service                                                                                |
+| Storage               | `Source/Effect/Storage/`             | Persistent storage                                                                            |
+| Terminal              | `Source/Effect/Terminal/`            | Terminal service                                                                              |
+| Text File             | `Source/Effect/TextFile/`            | Text file service                                                                             |
+| Text Model Resolver   | `Source/Effect/TextModelResolver/`   | Text model resolver                                                                           |
+| Themes                | `Source/Effect/Themes/`              | Theme management                                                                              |
+| Working Copy          | `Source/Effect/WorkingCopy/`         | Working copy service                                                                          |
+| Workspaces            | `Source/Effect/Workspaces/`          | Workspace management                                                                          |
+| Network Restrictions  | `Source/Effect/NetworkRestrictions/` | Network access restrictions                                                                   |
+| User Settings         | `Source/Effect/UserSettings/`        | User settings bridge                                                                          |
+| Vine                  | `Source/Effect/Vine/`                | Notification stream                                                                           |
+| Layers/Tauri          | `Source/Effect/Layers/Tauri.ts`      | Primary composed layer merging 40+ services into `TauriLiveLayer`                             |
+| Layers/Electron       | `Source/Effect/Layers/Electron.ts`   | Electron compatibility layer stack                                                            |
+| Layers/Test           | `Source/Effect/Layers/Test.ts`       | Test/mock layer stack for isolated testing                                                    |
+| File System Provider  | `Source/FileSystem/`                 | VS Code-compatible file system provider with Mountain bridge                                  |
+| Workbench Integration | `Source/Workbench/`                  | Workbench integration service                                                                 |
+| Function/Install      | `Source/Function/Install/`           | Preload install helpers and IPC renderer creation                                             |
+| Service               | `Source/Service/`                    | Tauri main process service, channel routing, WebSocket transport                              |
+| Types                 | `Source/Types/`                      | Sandbox, IPC, and error type definitions                                                      |
+| Utility               | `Source/Utility/`                    | Shared utility functions                                                                      |
 
 ---
 
@@ -382,14 +383,14 @@ file operations, dialogs, configuration, and state management — all through
 typed, tagged `Effect` services rather than untyped `IPC`. Communication flows
 through `Tauri`'s `invoke` (request) and `event` (notification) channels.
 
-| Host | Language | Runtime | IPC Bridge |
-|------|----------|---------|------------|
-| **Wind** | `TypeScript` | `Effect-TS` in `Tauri` `WebView` | Typed `Tauri` `invoke`/`listen` |
-| **Grove** | `Rust`, `WASM` | `WASMtime` | `gRPC`, `IPC`, `WASM` host functions |
-| **Cocoon** | `TypeScript`, `JavaScript` | `Node.js` via `Effect-TS` | `Electron` `IPC` or `Wind` bridge |
+| Host       | Language                   | Runtime                          | IPC Bridge                           |
+| ---------- | -------------------------- | -------------------------------- | ------------------------------------ |
+| **Wind**   | `TypeScript`               | `Effect-TS` in `Tauri` `WebView` | Typed `Tauri` `invoke`/`listen`      |
+| **Grove**  | `Rust`, `WASM`             | `WASMtime`                       | `gRPC`, `IPC`, `WASM` host functions |
+| **Cocoon** | `TypeScript`, `JavaScript` | `Node.js` via `Effect-TS`        | `Electron` `IPC` or `Wind` bridge    |
 
-- **Depends on:** `Mountain` (`Rust` backend handlers), `Tauri` (`invoke`/`event`
-  system), `@tauri-apps/api` (typed JS bridge)
+- **Depends on:** `Mountain` (`Rust` backend handlers), `Tauri`
+  (`invoke`/`event` system), `@tauri-apps/api` (typed JS bridge)
 - **Consumed by:** `Sky` (Astro UI layer), `Cocoon` (extension host), `Worker`
   (service worker)
 - **Protocol:** `Tauri` IPC (`invoke` + `listen`)
@@ -406,12 +407,12 @@ pnpm add @codeeditorland/wind
 
 ### Key Dependencies
 
-| Package | Version | Purpose |
-|:--------|:--------|:--------|
-| `@tauri-apps/api` | `2.11.0` | Tauri JS bridge |
-| `@codeeditorland/output` | `0.0.1` | Shared output utilities |
-| `effect` | `3.21.2` | Structured concurrency & DI |
-| `typescript` | `6.0.3` | TypeScript compilation |
+| Package                  | Version  | Purpose                     |
+| :----------------------- | :------- | :-------------------------- |
+| `@tauri-apps/api`        | `2.11.0` | Tauri JS bridge             |
+| `@codeeditorland/output` | `0.0.1`  | Shared output utilities     |
+| `effect`                 | `3.21.2` | Structured concurrency & DI |
+| `typescript`             | `6.0.3`  | TypeScript compilation      |
 
 ### Usage
 
@@ -447,54 +448,54 @@ Runtime.runPromise(AppRuntime, InvokeEffect);
 
 ### Available Effect Services
 
-| Service | Import Path | Description |
-|:--------|:------------|:------------|
-| `IPC` | `@codeeditorland/wind/Effect` | Inter-process communication via Tauri |
-| `Sandbox` | `@codeeditorland/wind/Effect` | Preload globals and environment |
-| `Configuration` | `@codeeditorland/wind/Effect` | Workbench configuration with sync |
-| `Telemetry` | `@codeeditorland/wind/Effect` | Logging, spans, and metrics |
-| `Mountain` | `@codeeditorland/wind/Effect` | Backend RPC connection |
-| `MountainSync` | `@codeeditorland/wind/Effect` | Background configuration sync |
-| `Environment` | `@codeeditorland/wind/Effect` | System and platform detection |
-| `Health` | `@codeeditorland/wind/Effect` | Service health checks |
-| `Bootstrap` | `@codeeditorland/wind/Effect` | Multi-stage bootstrap orchestration |
-| `Clipboard` | `@codeeditorland/wind/Effect` | System clipboard access |
-| `Commands` | `@codeeditorland/wind/Effect` | VS Code command registry |
-| `Editor` | `@codeeditorland/wind/Effect` | Editor service abstraction |
-| `ActivityBar` | `@codeeditorland/wind/Effect` | Activity bar management |
-| `Panel` | `@codeeditorland/wind/Effect` | Bottom panel management |
-| `Sidebar` | `@codeeditorland/wind/Effect` | Sidebar management |
-| `StatusBar` | `@codeeditorland/wind/Effect` | Status bar management |
-| `Decorations` | `@codeeditorland/wind/Effect` | Editor decoration service |
-| `Extensions` | `@codeeditorland/wind/Effect` | Extension management |
-| `Files` | `@codeeditorland/wind/Effect` | File system operations |
-| `History` | `@codeeditorland/wind/Effect` | Editor history |
-| `Keybinding` | `@codeeditorland/wind/Effect` | Keyboard shortcut binding |
-| `Label` | `@codeeditorland/wind/Effect` | Label service |
-| `Language` | `@codeeditorland/wind/Effect` | Language service |
-| `Lifecycle` | `@codeeditorland/wind/Effect` | Application lifecycle |
-| `Model` | `@codeeditorland/wind/Effect` | Text model service |
-| `Notification` | `@codeeditorland/wind/Effect` | Notification service |
-| `Output` | `@codeeditorland/wind/Effect` | Output panel service |
-| `Progress` | `@codeeditorland/wind/Effect` | Progress indication |
-| `QuickInput` | `@codeeditorland/wind/Effect` | Quick input UI |
-| `Search` | `@codeeditorland/wind/Effect` | Search service |
-| `Storage` | `@codeeditorland/wind/Effect` | Persistent storage |
-| `Terminal` | `@codeeditorland/wind/Effect` | Terminal service |
-| `TextFile` | `@codeeditorland/wind/Effect` | Text file service |
-| `TextModelResolver` | `@codeeditorland/wind/Effect` | Text model resolver |
-| `Themes` | `@codeeditorland/wind/Effect` | Theme management |
-| `WorkingCopy` | `@codeeditorland/wind/Effect` | Working copy service |
-| `Workspaces` | `@codeeditorland/wind/Effect` | Workspace management |
-| `NetworkRestrictions` | `@codeeditorland/wind/Effect` | Network access restrictions |
-| `UserSettings` | `@codeeditorland/wind/Effect` | User settings bridge |
-| `Vine` | `@codeeditorland/wind/Effect` | Notification stream |
-| `LandWorkbench` | `@codeeditorland/wind/Effect` | Land workbench integration |
-| `Layers/Tauri` | `@codeeditorland/wind/Effect/Layers/Tauri` | Complete Tauri layer stack |
-| `Layers/Electron` | `@codeeditorland/wind/Effect/Layers/Electron` | Electron compatibility layer stack |
-| `Layers/Test` | `@codeeditorland/wind/Effect/Layers/Test` | Test/mock layer stack |
-| `FileSystem` | `@codeeditorland/wind/FileSystem` | VS Code-like file system provider |
-| `Workbench` | `@codeeditorland/wind/Workbench` | Workbench integration service |
+| Service               | Import Path                                   | Description                           |
+| :-------------------- | :-------------------------------------------- | :------------------------------------ |
+| `IPC`                 | `@codeeditorland/wind/Effect`                 | Inter-process communication via Tauri |
+| `Sandbox`             | `@codeeditorland/wind/Effect`                 | Preload globals and environment       |
+| `Configuration`       | `@codeeditorland/wind/Effect`                 | Workbench configuration with sync     |
+| `Telemetry`           | `@codeeditorland/wind/Effect`                 | Logging, spans, and metrics           |
+| `Mountain`            | `@codeeditorland/wind/Effect`                 | Backend RPC connection                |
+| `MountainSync`        | `@codeeditorland/wind/Effect`                 | Background configuration sync         |
+| `Environment`         | `@codeeditorland/wind/Effect`                 | System and platform detection         |
+| `Health`              | `@codeeditorland/wind/Effect`                 | Service health checks                 |
+| `Bootstrap`           | `@codeeditorland/wind/Effect`                 | Multi-stage bootstrap orchestration   |
+| `Clipboard`           | `@codeeditorland/wind/Effect`                 | System clipboard access               |
+| `Commands`            | `@codeeditorland/wind/Effect`                 | VS Code command registry              |
+| `Editor`              | `@codeeditorland/wind/Effect`                 | Editor service abstraction            |
+| `ActivityBar`         | `@codeeditorland/wind/Effect`                 | Activity bar management               |
+| `Panel`               | `@codeeditorland/wind/Effect`                 | Bottom panel management               |
+| `Sidebar`             | `@codeeditorland/wind/Effect`                 | Sidebar management                    |
+| `StatusBar`           | `@codeeditorland/wind/Effect`                 | Status bar management                 |
+| `Decorations`         | `@codeeditorland/wind/Effect`                 | Editor decoration service             |
+| `Extensions`          | `@codeeditorland/wind/Effect`                 | Extension management                  |
+| `Files`               | `@codeeditorland/wind/Effect`                 | File system operations                |
+| `History`             | `@codeeditorland/wind/Effect`                 | Editor history                        |
+| `Keybinding`          | `@codeeditorland/wind/Effect`                 | Keyboard shortcut binding             |
+| `Label`               | `@codeeditorland/wind/Effect`                 | Label service                         |
+| `Language`            | `@codeeditorland/wind/Effect`                 | Language service                      |
+| `Lifecycle`           | `@codeeditorland/wind/Effect`                 | Application lifecycle                 |
+| `Model`               | `@codeeditorland/wind/Effect`                 | Text model service                    |
+| `Notification`        | `@codeeditorland/wind/Effect`                 | Notification service                  |
+| `Output`              | `@codeeditorland/wind/Effect`                 | Output panel service                  |
+| `Progress`            | `@codeeditorland/wind/Effect`                 | Progress indication                   |
+| `QuickInput`          | `@codeeditorland/wind/Effect`                 | Quick input UI                        |
+| `Search`              | `@codeeditorland/wind/Effect`                 | Search service                        |
+| `Storage`             | `@codeeditorland/wind/Effect`                 | Persistent storage                    |
+| `Terminal`            | `@codeeditorland/wind/Effect`                 | Terminal service                      |
+| `TextFile`            | `@codeeditorland/wind/Effect`                 | Text file service                     |
+| `TextModelResolver`   | `@codeeditorland/wind/Effect`                 | Text model resolver                   |
+| `Themes`              | `@codeeditorland/wind/Effect`                 | Theme management                      |
+| `WorkingCopy`         | `@codeeditorland/wind/Effect`                 | Working copy service                  |
+| `Workspaces`          | `@codeeditorland/wind/Effect`                 | Workspace management                  |
+| `NetworkRestrictions` | `@codeeditorland/wind/Effect`                 | Network access restrictions           |
+| `UserSettings`        | `@codeeditorland/wind/Effect`                 | User settings bridge                  |
+| `Vine`                | `@codeeditorland/wind/Effect`                 | Notification stream                   |
+| `LandWorkbench`       | `@codeeditorland/wind/Effect`                 | Land workbench integration            |
+| `Layers/Tauri`        | `@codeeditorland/wind/Effect/Layers/Tauri`    | Complete Tauri layer stack            |
+| `Layers/Electron`     | `@codeeditorland/wind/Effect/Layers/Electron` | Electron compatibility layer stack    |
+| `Layers/Test`         | `@codeeditorland/wind/Effect/Layers/Test`     | Test/mock layer stack                 |
+| `FileSystem`          | `@codeeditorland/wind/FileSystem`             | VS Code-like file system provider     |
+| `Workbench`           | `@codeeditorland/wind/Workbench`              | Workbench integration service         |
 
 ---
 
@@ -502,14 +503,14 @@ Runtime.runPromise(AppRuntime, InvokeEffect);
 
 Wind enforces security at multiple layers:
 
-| Layer | Mechanism |
-|-------|-----------|
-| **Type safety** | Full `TypeScript` / `Effect-TS` type system across all service boundaries — every invocation carries tagged error types |
-| **IPC isolation** | All backend communication flows through typed `Tauri` commands, not raw `JSON` serialization |
-| **Sandbox** | The `Sandbox` service controls what globals and APIs are exposed to the `WebView` renderer |
-| **Network restrictions** | The `NetworkRestrictions` service enforces access controls and blocks unauthorized outbound requests |
-| **Dependency injection** | `Effect-TS` `Layer` system ensures services only receive their declared dependencies — no ambient access to globals |
-| **Telemetry privacy** | `PostHog` configuration supports opt-out, anonymous identifiers, and fallback persistence without PII |
+| Layer                    | Mechanism                                                                                                               |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| **Type safety**          | Full `TypeScript` / `Effect-TS` type system across all service boundaries — every invocation carries tagged error types |
+| **IPC isolation**        | All backend communication flows through typed `Tauri` commands, not raw `JSON` serialization                            |
+| **Sandbox**              | The `Sandbox` service controls what globals and APIs are exposed to the `WebView` renderer                              |
+| **Network restrictions** | The `NetworkRestrictions` service enforces access controls and blocks unauthorized outbound requests                    |
+| **Dependency injection** | `Effect-TS` `Layer` system ensures services only receive their declared dependencies — no ambient access to globals     |
+| **Telemetry privacy**    | `PostHog` configuration supports opt-out, anonymous identifiers, and fallback persistence without PII                   |
 
 ---
 
@@ -517,33 +518,33 @@ Wind enforces security at multiple layers:
 
 Wind is designed to be compatible with:
 
-| Target | Integration |
-|--------|-------------|
-| **Sky** | Consumes Wind services via `TauriLiveLayer` and `__CEL_SERVICES__` global |
-| **VS Code** | Emulates `vscode.d.ts` environment through `Preload.ts` shims and `Bootstrap/Types/VSCode/` |
-| **Mountain** | Connects via typed `Tauri` `invoke`/`listen` to `WindServiceHandlers` |
-| **Cocoon** | Shares service interface surface and `Effect-TS` dependency injection patterns |
-| **Tauri** | Integrates via `@tauri-apps/api` `v2.11.0` with typed command routing |
+| Target       | Integration                                                                                 |
+| ------------ | ------------------------------------------------------------------------------------------- |
+| **Sky**      | Consumes Wind services via `TauriLiveLayer` and `__CEL_SERVICES__` global                   |
+| **VS Code**  | Emulates `vscode.d.ts` environment through `Preload.ts` shims and `Bootstrap/Types/VSCode/` |
+| **Mountain** | Connects via typed `Tauri` `invoke`/`listen` to `WindServiceHandlers`                       |
+| **Cocoon**   | Shares service interface surface and `Effect-TS` dependency injection patterns              |
+| **Tauri**    | Integrates via `@tauri-apps/api` `v2.11.0` with typed command routing                       |
 
 ---
 
 ## API Reference
 
 - **[Effect Service Interfaces](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Effect/)**
-    — All `Effect-TS` service tags, interfaces, and implementations
+  — All `Effect-TS` service tags, interfaces, and implementations
 - **[Preload API](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)**
-    — Environment shim and `window.vscode` globals
+  — Environment shim and `window.vscode` globals
 - **[Layer Compositions](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Effect/Layers/)**
-    — `Tauri`, `Electron`, and `Test` layer stacks
+  — `Tauri`, `Electron`, and `Test` layer stacks
 - **[Codegen Documentation](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Codegen/)**
-    — Service catalog walker, interface extraction, and bridge shape generation
+  — Service catalog walker, interface extraction, and bridge shape generation
 
 ---
 
 ## Related Documentation
 
-- [Architecture Overview](https://Editor.Land/Doc/architecture) — Internal module
-  structure
+- [Architecture Overview](https://Editor.Land/Doc/architecture) — Internal
+  module structure
 - [Why Effect-TS](https://Editor.Land/Doc/why-effect-ts) — Design rationale for
   `Effect-TS`
 - [Why Tauri](https://Editor.Land/Doc/why-tauri) — Design rationale for `Tauri`

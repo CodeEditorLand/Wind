@@ -13,28 +13,21 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-
 import { TauriIPCLive } from "../IPC/index.js";
-
 import type { QuickInputService } from "./Interface/QuickInputService.js";
-
 import { QuickInputServiceTag } from "./Tag/QuickInputServiceTag.js";
-
 import type { QuickInputProblem } from "./Type/QuickInputProblem.js";
 
 const MakeQuickInputProblem = (error: unknown): QuickInputProblem =>
 	error instanceof Error
 		? { _tag: "QuickInputOperationFailed", error }
-
 		: {
-
 				_tag: "QuickInputOperationFailed",
 
 				error: new Error(String(error)),
 			};
 
 function makeQuickInputService(): QuickInputService {
-
 	const IPCService = TauriIPCLive;
 
 	const Service: QuickInputService = {
@@ -46,7 +39,6 @@ function makeQuickInputService(): QuickInputService {
 			]).pipe(
 				Effect.map((Result) => {
 					if (Result === null || Result === undefined)
-
 						return undefined;
 
 					return Result as {

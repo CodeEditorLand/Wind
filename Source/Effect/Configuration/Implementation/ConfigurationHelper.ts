@@ -7,11 +7,8 @@
  */
 
 import type { ISandboxConfiguration } from "../../../Types/Sandbox.js";
-
 import { ConfigApplyError } from "../Error/ConfigApplyError.js";
-
 import { ConfigValidationError } from "../Error/ConfigValidationError.js";
-
 import type { ConfigSchemaIssue } from "../Type/ConfigurationSchemaType.js";
 
 // ============================================================================
@@ -24,7 +21,6 @@ import type { ConfigSchemaIssue } from "../Type/ConfigurationSchemaType.js";
 const ValidateConfiguration = (
 	Config: unknown,
 ): ReadonlyArray<ConfigSchemaIssue> => {
-
 	const Issues: ConfigSchemaIssue[] = [];
 
 	if (!Config || typeof Config !== "object") {
@@ -68,7 +64,6 @@ const ValidateConfiguration = (
 		} else {
 			const Workspace = ConfigData["workspace"] as Record<
 				string,
-
 				unknown
 			>;
 
@@ -106,7 +101,6 @@ const ValidateConfiguration = (
  * The returned function throws {@link ConfigValidationError} on invalid input.
  */
 const MakeValidate = () => {
-
 	return (Config: unknown): ISandboxConfiguration => {
 		const Issues = ValidateConfiguration(Config);
 
@@ -126,7 +120,6 @@ const MakeValidate = () => {
  * cannot be applied.
  */
 const MakeApply = () => {
-
 	return (Config: ISandboxConfiguration): void => {
 		// Apply zoom level
 		if (Config.zoomLevel !== undefined) {
@@ -165,7 +158,6 @@ const GetConfigValue = <T>(
 
 	Path: string,
 ): T | undefined => {
-
 	const Parts = Path.split(".");
 
 	let Current: unknown = Config;

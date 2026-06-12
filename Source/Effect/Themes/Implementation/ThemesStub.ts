@@ -3,7 +3,6 @@ import { Effect } from "effect";
 import type { ThemesService } from "../Interface/ThemesService.js";
 
 const DefaultTheme = {
-
 	id: "Default Dark Modern",
 
 	label: "Default Dark Modern",
@@ -12,7 +11,6 @@ const DefaultTheme = {
 };
 
 export const StubThemesService: ThemesService = {
-
 	GetActiveTheme: () => Effect.succeed(DefaultTheme),
 
 	ListThemes: () => Effect.succeed([DefaultTheme]),

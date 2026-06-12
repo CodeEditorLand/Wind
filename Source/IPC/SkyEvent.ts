@@ -20,7 +20,6 @@
 // Acronyms stay UPPERCASE (URL, URI, API, JSON, UUID, CSS, DOM).
 
 export default {
-
 	// --- Configuration ---
 	ConfigurationChanged: "sky://configuration/changed",
 

@@ -7,7 +7,6 @@ import type { LanguageProblem } from "../Type/LanguageProblem.js";
  * Microsoft VSCode Reference: ILanguageService from vs/editor/common/languages/language.ts
  */
 export interface LanguageService {
-
 	readonly RegisterHoverProvider: (
 		selector: string,
 
@@ -58,7 +57,6 @@ export interface LanguageService {
 
 	readonly GetLanguages: () => Effect.Effect<
 		readonly string[],
-
 		LanguageProblem
 	>;
 }

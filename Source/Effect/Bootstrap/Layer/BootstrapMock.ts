@@ -11,9 +11,7 @@
 import { Effect, Layer } from "effect";
 
 import type { BootstrapService } from "../Interface/BootstrapService.js";
-
 import { BootstrapTag } from "../Tag/BootstrapTag.js";
-
 import type {
 	BootstrapOptions,
 	BootstrapResult,

@@ -15,7 +15,6 @@ import type { Effect } from "effect";
  * Contains the metric name, value, timestamp, and optional labels.
  */
 export interface TelemetryMetric {
-
 	/** Name/identifier of the metric */
 	readonly name: string;
 
@@ -34,7 +33,6 @@ export interface TelemetryMetric {
  * Tracks start/end time, success/failure, and duration.
  */
 export interface TelemetrySpan {
-
 	/** Name of the operation */
 	readonly name: string;
 
@@ -62,7 +60,6 @@ export interface TelemetrySpan {
  * Contains log level, message, and optional context.
  */
 export interface TelemetryLog {
-
 	/** Log level: debug, info, warn, or error */
 	readonly level: "debug" | "info" | "warn" | "error";
 
@@ -78,7 +75,6 @@ export interface TelemetryLog {
  * Can be a metric, span, or log event.
  */
 export interface TelemetryEvent {
-
 	/** Type of event */
 	readonly type: "metric" | "span" | "log";
 
@@ -94,7 +90,6 @@ export interface TelemetryEvent {
  * Provides a method to end the span with success/failure status.
  */
 export interface SpanHandle {
-
 	/**
 	 * End the span and record the result.
 	 * @param success - Whether the operation succeeded

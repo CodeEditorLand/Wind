@@ -4,7 +4,6 @@ import type { SearchService } from "../Interface/SearchService.js";
 
 export class SearchServiceTag extends Context.Tag("Application/SearchService")<
 	SearchServiceTag,
-
 	SearchService
 >() {}
 

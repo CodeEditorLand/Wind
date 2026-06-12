@@ -13,22 +13,16 @@
  */
 
 import type { IPCMessagePort } from "./IPCMessagePort.js";
-
 import type { IPCRenderer } from "./IPCRenderer.js";
-
 import type { SandboxContext } from "./SandboxContext.js";
-
 import type { SandboxNodeProcess } from "./SandboxNodeProcess.js";
-
 import type { WebFrame } from "./WebFrame.js";
-
 import type { WebUtils } from "./WebUtils.js";
 
 /**
  * Complete sandbox globals interface
  */
 export interface SandboxGlobals {
-
 	readonly ipcRenderer: IPCRenderer;
 
 	readonly ipcMessagePort: IPCMessagePort;

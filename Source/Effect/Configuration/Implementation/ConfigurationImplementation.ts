@@ -11,19 +11,15 @@
 import { invoke as TauriInvoke } from "@tauri-apps/api/core";
 
 import DevLog from "../../../Function/DevLog.js";
-
 import {
 	ConfigurationNotReadyError,
 	type ISandboxConfiguration,
 } from "../../../Types/Sandbox.js";
-
 import { ConfigFetchError } from "../Error/ConfigFetchError.js";
-
 import type {
 	ConfigurationService,
 	IDisposable,
 } from "../Interface/ConfigurationService.js";
-
 import { MakeApply, MakeValidate } from "./ConfigurationHelper.js";
 
 // ============================================================================
@@ -31,7 +27,6 @@ import { MakeApply, MakeValidate } from "./ConfigurationHelper.js";
 // ============================================================================
 
 interface SandboxConfigurationContext {
-
 	readonly resolveConfiguration?: () => Promise<ISandboxConfiguration>;
 }
 
@@ -41,7 +36,6 @@ interface SandboxConfigurationContext {
  * notified whenever the snapshot is replaced.
  */
 export const CreateConfigurationService = (): ConfigurationService => {
-
 	let Current: ISandboxConfiguration | null = null;
 
 	const Listeners = new Set<(Config: ISandboxConfiguration) => void>();
@@ -58,10 +52,7 @@ export const CreateConfigurationService = (): ConfigurationService => {
 			}
 		).vscode?.context;
 
-		if (
-			Context &&
-			typeof Context.resolveConfiguration === "function"
-		) {
+		if (Context && typeof Context.resolveConfiguration === "function") {
 			try {
 				return await Context.resolveConfiguration();
 			} catch (Failure) {

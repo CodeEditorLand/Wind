@@ -24,23 +24,16 @@
 import { Effect, Layer, Ref } from "effect";
 
 import { Telemetry } from "../../Telemetry.js";
-
 import { DEFAULT_NETWORK_RESTRICTIONS } from "../Constant/NetworkRestrictionsConstant.js";
-
 import CreateIPCBlockError from "../Error/IPCBlockError.js";
-
 import CreateNetworkBlockError from "../Error/NetworkBlockError.js";
-
 import type {
 	BlockedRequest,
 	NetworkRestrictionsService,
 	TelemetryLevel,
 } from "../Interface/NetworkRestrictionsService.js";
-
 import { NetworkRestrictions } from "../Tag/NetworkRestrictionsTag.js";
-
 import type { NetworkRestrictionConfig } from "../Type/NetworkRestrictionConfig.js";
-
 import {
 	IsAllowedURL,
 	IsBlockedURL,

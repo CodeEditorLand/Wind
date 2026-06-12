@@ -84,7 +84,6 @@ export const CreateSizeExceededError = (
 });
 
 const helpers = {
-
 	CreateNotAvailableError,
 
 	CreateReadError,

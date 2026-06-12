@@ -21,14 +21,11 @@ import type {
 	WorkbenchStorageService,
 	WorkbenchStorageTarget,
 } from "../Interface/WorkbenchStorageService.js";
-
 import { WorkbenchStorageError } from "../Type/WorkbenchStorageProblem.js";
-
 import type {
 	WorkbenchStorageBridgeShape,
 	WorkbenchStorageGlobals,
 } from "./WorkbenchStorageBridgeShape.js";
-
 import {
 	WorkbenchStorageScopeCode,
 	WorkbenchStorageScopeFromCode,

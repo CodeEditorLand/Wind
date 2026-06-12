@@ -9,14 +9,12 @@
  */
 
 import type { Mode } from "./Mode.js";
-
 import type { Platform } from "./Platform.js";
 
 /**
  * Environment data interface
  */
 export interface EnvironmentData {
-
 	/** Runtime platform */
 	platform: Platform;
 

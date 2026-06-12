@@ -11,7 +11,6 @@
 import type { Effect } from "effect";
 
 import type { FileSystemProviderError } from "../Error/FileSystemProviderError.js";
-
 import type { IFileSystemProvider } from "../Type/FileSystemType.js";
 
 // ============================================================================
@@ -23,7 +22,6 @@ import type { IFileSystemProvider } from "../Type/FileSystemType.js";
  * Provides methods for file system operations via Tauri IPC to Mountain.
  */
 export interface FileSystemProviderService {
-
 	/**
 	 * The underlying IFileSystemProvider (URI-object API).
 	 */
@@ -37,7 +35,6 @@ export interface FileSystemProviderService {
 	 */
 	readonly getProvider: Effect.Effect<
 		IFileSystemProvider,
-
 		FileSystemProviderError
 	>;
 

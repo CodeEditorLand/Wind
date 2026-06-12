@@ -12,14 +12,12 @@ import type { ExtensionsProblem } from "../Type/ExtensionsProblem.js";
  * Effect-TS pipeline instead of hitting the ex-no-op IPC stub.
  */
 export interface ExtensionsService {
-
 	readonly GetExtension: (
 		id: string,
 	) => Effect.Effect<unknown | undefined, ExtensionsProblem>;
 
 	readonly GetAllExtensions: () => Effect.Effect<
 		readonly unknown[],
-
 		ExtensionsProblem
 	>;
 

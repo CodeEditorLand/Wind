@@ -10,22 +10,17 @@
 import type { IMainWindowSandboxGlobals } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/parts/sandbox/electron-browser/globals.js";
 
 import { CreateIPCRenderer } from "./CreateIPCRenderer.js";
-
 import { CreateProcess } from "./CreateProcess.js";
-
 import { Fallback } from "./Fallback.js";
-
 import { ResolveConfiguration } from "./ResolveConfiguration.js";
 
 const _Trace = (Message: string): void => {
-
 	try {
 		performance.mark(`land:install:${Message}`);
 	} catch {}
 };
 
 export default async function Install(): Promise<void> {
-
 	try {
 		if (typeof window === "undefined") return;
 

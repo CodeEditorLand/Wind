@@ -72,7 +72,6 @@ let CachedTags: string[] | null = null;
 let CachedShort: boolean | null = null;
 
 const GetEnabledTags = (): string[] => {
-
 	if (CachedTags !== null) return CachedTags;
 
 	const Raw =
@@ -85,14 +84,12 @@ const GetEnabledTags = (): string[] => {
 		? String(Raw)
 				.split(",")
 				.map((S: string) => S.trim().toLowerCase())
-
 		: [];
 
 	return CachedTags;
 };
 
 const IsShort = (): boolean => {
-
 	if (CachedShort !== null) return CachedShort;
 
 	CachedShort = GetEnabledTags().includes("short");
@@ -101,7 +98,6 @@ const IsShort = (): boolean => {
 };
 
 const IsEnabled = (Tag: string): boolean => {
-
 	const Tags = GetEnabledTags();
 
 	if (Tags.length === 0) return false;
@@ -128,7 +124,6 @@ let DedupKey = "";
 let DedupCount = 0;
 
 const FlushDedup = (): void => {
-
 	if (DedupCount > 1) {
 		console.log(`  (x${DedupCount})`);
 	}
@@ -148,7 +143,6 @@ const FlushDedup = (): void => {
  * DevLog("CONFIG", "resolveConfiguration folderUri:", folderUri);
  */
 const DevLog = (Tag: string, ...Args: unknown[]): void => {
-
 	if (!IsEnabled(Tag)) return;
 
 	const TagUpper = Tag.toUpperCase();
@@ -180,7 +174,6 @@ const DevLog = (Tag: string, ...Args: unknown[]): void => {
 
 /** Force-reset the cache (call after changing window.__Trace). */
 DevLog.reset = () => {
-
 	CachedTags = null;
 
 	CachedShort = null;

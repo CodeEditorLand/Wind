@@ -10,6 +10,5 @@
  * WebUtils interface
  */
 export interface WebUtils {
-
 	readonly getPathForFile: (file: File) => string;
 }

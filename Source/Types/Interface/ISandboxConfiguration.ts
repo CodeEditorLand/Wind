@@ -13,7 +13,6 @@ import type { ProcessEnvironment } from "./ProcessEnvironment.js";
  * Workspace interface
  */
 export interface Workspace {
-
 	id: string;
 
 	uri: string;
@@ -25,7 +24,6 @@ export interface Workspace {
  * VSCode sandbox configuration interface
  */
 export interface ISandboxConfiguration {
-
 	readonly readonly?: boolean;
 
 	readonly userEnv?: ProcessEnvironment;

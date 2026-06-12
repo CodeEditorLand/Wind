@@ -3,7 +3,6 @@ import type { Effect } from "effect";
 import type { SearchProblem } from "../Type/SearchProblem.js";
 
 export interface TextSearchOptions {
-
 	readonly pattern: string;
 
 	readonly isRegex?: boolean;
@@ -20,7 +19,6 @@ export interface TextSearchOptions {
 }
 
 export interface TextSearchMatch {
-
 	readonly uri: string;
 
 	readonly lineNumber: number;
@@ -29,14 +27,12 @@ export interface TextSearchMatch {
 }
 
 export interface FileSearchOptions {
-
 	readonly pattern: string;
 
 	readonly maxResults?: number;
 }
 
 export interface SearchService {
-
 	readonly FindInFiles: (
 		options: TextSearchOptions,
 	) => Effect.Effect<readonly TextSearchMatch[], SearchProblem>;

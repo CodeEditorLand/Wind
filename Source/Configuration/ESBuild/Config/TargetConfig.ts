@@ -6,11 +6,9 @@
  * @category Config
  */
 import { deepmerge } from "deepmerge-ts";
-
 import type { BuildOptions } from "esbuild";
 
 import * as Environment from "../Constant/EnvironmentConstant.js";
-
 import BaseConfig from "./BaseConfig.js";
 
 /**
@@ -29,7 +27,6 @@ import BaseConfig from "./BaseConfig.js";
  * right of `??` here.
  */
 const PostHogDefines = {
-
 	"import.meta.env.Authorize": JSON.stringify(process.env["Authorize"] ?? ""),
 
 	"import.meta.env.Beam": JSON.stringify(
@@ -51,7 +48,6 @@ const PostHogDefines = {
 export default async function targetConfig(
 	Current: BuildOptions,
 ): Promise<BuildOptions> {
-
 	const merged = deepmerge(BaseConfig, {
 		outdir: "Target",
 		drop: Environment.On ? [] : ["debugger", "console"],
@@ -97,7 +93,6 @@ export default async function targetConfig(
 						},
 					},
 				])
-
 			: [],
 	});
 

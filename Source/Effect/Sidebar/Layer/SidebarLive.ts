@@ -9,17 +9,12 @@
 import { Effect, Either, Layer, Stream } from "effect";
 
 import SidebarPanelNotFoundError from "../Error/SidebarPanelNotFoundError.js";
-
 import SidebarUpdateError from "../Error/SidebarUpdateError.js";
-
 import type { SidebarService } from "../Interface/SidebarService.js";
-
 import SidebarTag from "../Tag/SidebarTag.js";
-
 import type { CreateSidebarPanel, SidebarPanel } from "../Type/SidebarType.js";
 
 function makeService(): SidebarService {
-
 	let _panels: ReadonlyArray<SidebarPanel> = [];
 
 	let _activePanel: string | undefined = undefined;
@@ -112,7 +107,6 @@ function makeService(): SidebarService {
 		Id: string,
 	): Effect.Effect<void, SidebarPanelNotFoundError> => {
 		if (!_panels.find((p) => p.id === Id))
-
 			return Effect.fail(new SidebarPanelNotFoundError(Id));
 
 		_panels = _panels.filter((p) => p.id !== Id);
@@ -132,7 +126,6 @@ function makeService(): SidebarService {
 		Id: string,
 	): Effect.Effect<void, SidebarPanelNotFoundError> => {
 		if (!_panels.find((p) => p.id === Id))
-
 			return Effect.fail(new SidebarPanelNotFoundError(Id));
 
 		_panels = _panels.map((p) =>

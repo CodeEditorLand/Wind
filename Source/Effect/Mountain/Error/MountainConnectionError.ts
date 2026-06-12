@@ -12,7 +12,6 @@
 // ============================================================================
 
 export class MountainConnectionError extends Error {
-
 	readonly _tag = "MountainConnectionError";
 
 	override readonly cause: unknown;

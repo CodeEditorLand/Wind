@@ -12,7 +12,6 @@
 // ============================================================================
 
 export class ConfigFetchError extends Error {
-
 	readonly _tag = "ConfigFetchError";
 
 	constructor(override readonly cause: unknown) {

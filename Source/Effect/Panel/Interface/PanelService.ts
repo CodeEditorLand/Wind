@@ -12,9 +12,7 @@
 import type { Effect, Stream } from "effect";
 
 import type PanelUpdateError from "../Error/PanelUpdateError.js";
-
 import type PanelViewNotFoundError from "../Error/PanelViewNotFoundError.js";
-
 import type {
 	CreatePanelView,
 	PanelView,
@@ -26,7 +24,6 @@ import type {
  * Provides CRUD operations, visibility control, and stream-based reactivity.
  */
 export interface PanelService {
-
 	/** Create a new panel view with auto-generated ID */
 	readonly createView: (
 		view: CreatePanelView,

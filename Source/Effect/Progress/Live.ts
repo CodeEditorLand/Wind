@@ -13,23 +13,17 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-
 import { TauriIPCLive } from "../IPC/index.js";
-
 import type { ProgressService } from "./Interface/ProgressService.js";
-
 import { ProgressServiceTag } from "./Tag/ProgressServiceTag.js";
-
 import type { ProgressProblem } from "./Type/ProgressProblem.js";
 
 const MakeProgressProblem = (error: unknown): ProgressProblem =>
 	error instanceof Error
 		? { _tag: "ProgressOperationFailed", error }
-
 		: { _tag: "ProgressOperationFailed", error: new Error(String(error)) };
 
 function makeProgressService(): ProgressService {
-
 	const IPCService = TauriIPCLive;
 
 	const Service: ProgressService = {

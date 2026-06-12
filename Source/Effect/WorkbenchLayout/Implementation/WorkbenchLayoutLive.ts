@@ -4,14 +4,12 @@ import type {
 	WorkbenchLayoutService,
 	WorkbenchLayoutSnapshot,
 } from "../Interface/WorkbenchLayoutService.js";
-
 import { WorkbenchLayoutError } from "../Type/WorkbenchLayoutProblem.js";
-
 import {
 	WorkbenchLayoutAllParts,
+	WorkbenchLayoutPartId,
 	type WorkbenchLayoutBridgeShape,
 	type WorkbenchLayoutGlobals,
-	WorkbenchLayoutPartId,
 } from "./WorkbenchLayoutBridgeShape.js";
 
 const Unavailable = (): WorkbenchLayoutError =>

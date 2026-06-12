@@ -11,9 +11,7 @@
 import { Effect, Layer, Stream } from "effect";
 
 import type { ActivityBarService } from "../Interface/ActivityBarService.js";
-
 import { ActivityBarTag } from "../Tag/ActivityBarTag.js";
-
 import type {
 	ActivityBarBadge,
 	CreateActivityBarItem,

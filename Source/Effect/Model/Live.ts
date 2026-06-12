@@ -15,13 +15,9 @@
 import { Effect, Layer } from "effect";
 
 import Channel from "../../IPC/Channel.js";
-
 import { TauriIPCLive } from "../IPC/index.js";
-
 import type { ModelService, TextModel } from "./Interface/ModelService.js";
-
 import { ModelServiceTag } from "./Tag/ModelServiceTag.js";
-
 import type { ModelProblem } from "./Type/ModelProblem.js";
 
 const MakeModelProblem = (error: unknown): ModelProblem => ({
@@ -30,7 +26,6 @@ const MakeModelProblem = (error: unknown): ModelProblem => ({
 });
 
 const ParseTextModel = (raw: unknown): TextModel | null => {
-
 	if (raw == null || typeof raw !== "object") return null;
 
 	const R = raw as Record<string, unknown>;
@@ -49,13 +44,11 @@ const ParseTextModel = (raw: unknown): TextModel | null => {
 		languageId:
 			typeof R["languageId"] === "string"
 				? (R["languageId"] as string)
-
 				: "plaintext",
 	};
 };
 
 function makeModelService(): ModelService {
-
 	const IPCService = TauriIPCLive;
 
 	const Service: ModelService = {
@@ -68,7 +61,6 @@ function makeModelService(): ModelService {
 
 					return Parsed
 						? Effect.succeed(Parsed)
-
 						: Effect.fail({
 								_tag: "ModelOperationFailed" as const,
 								error: new Error(
@@ -96,7 +88,6 @@ function makeModelService(): ModelService {
 			IPCService.invoke(Channel.ModelGetAll)([]).pipe(
 				Effect.map((Result) => {
 					if (!Array.isArray(Result))
-
 						return [] as readonly TextModel[];
 
 					return Result.flatMap((Item) => {
@@ -118,7 +109,6 @@ function makeModelService(): ModelService {
 
 					return Parsed
 						? Effect.succeed(Parsed)
-
 						: Effect.fail({
 								_tag: "ModelOperationFailed" as const,
 								error: new Error(

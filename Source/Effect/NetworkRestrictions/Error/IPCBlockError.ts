@@ -15,7 +15,6 @@
  * Error thrown when an IPC channel is blocked
  */
 export interface IPCBlockError {
-
 	readonly _tag: "IPCBlockError";
 
 	readonly channel: string;

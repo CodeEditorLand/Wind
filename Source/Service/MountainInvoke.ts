@@ -7,7 +7,6 @@
  */
 
 const _DevLogForward = (Tag: string, Message: string): void => {
-
 	try {
 		const Internals = (window as any).__TAURI_INTERNALS__;
 
@@ -37,7 +36,6 @@ export async function InvokeMountain(
 
 	Params: unknown[],
 ): Promise<unknown> {
-
 	const Invoke =
 		(window as any).__TAURI__?.core?.invoke ??
 		(window as any).__TAURI__?.invoke;
@@ -77,7 +75,6 @@ export async function InvokeViaNode(
 
 	Params: unknown[],
 ): Promise<unknown> {
-
 	const Invoke =
 		(window as any).__TAURI__?.core?.invoke ??
 		(window as any).__TAURI__?.invoke;

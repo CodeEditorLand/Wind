@@ -12,7 +12,6 @@
 // ============================================================================
 
 export class ActivityBarUpdateError extends Error {
-
 	readonly _tag = "ActivityBarUpdateError";
 
 	constructor(itemId: string, cause: unknown) {

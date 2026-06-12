@@ -3,7 +3,6 @@ import { Effect } from "effect";
 import type { FilesService } from "../Interface/FilesService.js";
 
 export const StubFilesService: FilesService = {
-
 	ReadFile: () => Effect.die(new Error("stub")),
 
 	WriteFile: () => Effect.void,

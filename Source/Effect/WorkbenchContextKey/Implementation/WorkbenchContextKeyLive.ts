@@ -2,9 +2,7 @@ import type {
 	WorkbenchContextKeyChangeEvent,
 	WorkbenchContextKeyService,
 } from "../Interface/WorkbenchContextKeyService.js";
-
 import { WorkbenchContextKeyError } from "../Type/WorkbenchContextKeyProblem.js";
-
 import type {
 	WorkbenchContextKeyBridgeShape,
 	WorkbenchContextKeyGlobals,

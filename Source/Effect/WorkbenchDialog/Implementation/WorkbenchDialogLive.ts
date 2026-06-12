@@ -4,9 +4,7 @@ import type {
 	WorkbenchDialogPickOptions,
 	WorkbenchDialogService,
 } from "../Interface/WorkbenchDialogService.js";
-
 import { WorkbenchDialogError } from "../Type/WorkbenchDialogProblem.js";
-
 import type {
 	WorkbenchDialogBridgeShape,
 	WorkbenchDialogGlobals,

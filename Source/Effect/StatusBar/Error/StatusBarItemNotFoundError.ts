@@ -12,7 +12,6 @@
  * Includes the item ID that was not found.
  */
 export default class StatusBarItemNotFoundError extends Error {
-
 	readonly _tag = "StatusBarItemNotFoundError";
 
 	constructor(readonly itemId: string) {

@@ -19,10 +19,10 @@
 
 # **Wind** 🍃 Deep Dive & Architecture
 
-**Wind** provides the technical foundation for implementing VSCode UI
-services using Effect-TS within the Land project. **Wind** serves as the
-frontend service layer that provides VSCode API compatibility through Effect-TS
-native implementations and Tauri integration.
+**Wind** provides the technical foundation for implementing VSCode UI services
+using Effect-TS within the Land project. **Wind** serves as the frontend service
+layer that provides VSCode API compatibility through Effect-TS native
+implementations and Tauri integration.
 
 ---
 
