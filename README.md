@@ -1,4 +1,4 @@
-# **Wind**&#x2001;🌬️
+# **Wind**&#x2001;🍃
 
 <table>
 	<tr>
@@ -157,11 +157,11 @@ graph LR
     classDef effectts fill:#d4f5d4,stroke:#27ae60,stroke-width:1px,color:#0a3a0a;
     classDef ipc      fill:#fff3c0,stroke:#f39c12,stroke-width:1px,stroke-dasharray:5 5,color:#5a3e00;
 
-    subgraph SKY["Sky ☀️ - Astro UI (Tauri WebView)"]
+    subgraph SKY["Sky 🌌 - Astro UI (Tauri WebView)"]
         SkyApp["Sky Workbench Pages 🖼️"]:::sky
     end
 
-    subgraph WIND["Wind 🌬️ - VS Code Env + Effect-TS Service Layer (WebView)"]
+    subgraph WIND["Wind 🍃 - VS Code Env + Effect-TS Service Layer (WebView)"]
         direction TB
         subgraph COMPAT["Compatibility Layer"]
             Preload["Preload.ts - window.vscode + ipcRenderer shim"]:::wind
@@ -550,11 +550,11 @@ Wind is designed to be compatible with:
 - [Why Tauri](https://Editor.Land/Doc/why-tauri) - Design rationale for `Tauri`
 - [Land Documentation](../../Documentation/GitHub/README.md) - Complete
   documentation index
-- [Sky ☀️](https://github.com/CodeEditorLand/Sky) - UI component layer that
+- [Sky 🌌](https://github.com/CodeEditorLand/Sky) - UI component layer that
   consumes Wind services
 - [Cocoon 🦋](https://github.com/CodeEditorLand/Cocoon) - Extension host sidecar
   (correlated frontend element)
-- [Worker ⚙️](https://github.com/CodeEditorLand/Worker) - Service worker for
+- [Worker 🍩](https://github.com/CodeEditorLand/Worker) - Service worker for
   caching and offline support
 - [Mountain ⛰️](https://github.com/CodeEditorLand/Mountain) - Native desktop
   shell and `gRPC` backend
