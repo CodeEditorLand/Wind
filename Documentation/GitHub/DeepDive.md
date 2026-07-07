@@ -9,15 +9,13 @@
 				</picture>
 			</h3>
 		</td>
-		<td colspan="3" valign="top">
-			<h3 align="center"> Wind 🍃</h3>
-		</td>
+		<td colspan="3" valign="top"><h3 align="center">Wind&#x2001;🍃</h3></td>
 	</tr>
 </table>
 
 ---
 
-# **Wind** 🍃 Deep Dive & Architecture
+# **Wind**&#x2001;🍃&#x2001;Deep Dive & Architecture
 
 **Wind** provides the technical foundation for implementing VSCode UI services
 using Effect-TS within the Land project. **Wind** serves as the frontend service

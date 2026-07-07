@@ -9,15 +9,13 @@
 				</picture>
 			</h3>
 		</td>
-		<td colspan="3" valign="top">
-			<h3 align="center"> Wind 🍃</h3>
-		</td>
+		<td colspan="3" valign="top"><h3 align="center">Wind&#x2001;🍃</h3></td>
 	</tr>
 </table>
 
 ---
 
-# **Wind** 🍃 Architecture
+# **Wind**&#x2001;🍃&#x2001;Architecture
 
 `Wind` is the `Effect-TS` service layer for the VS Code workbench.
 
@@ -73,7 +71,7 @@ graph TB
     SKY["Sky<br/>UI Components"] -->|"consumes Runtime"| TLT
 ```
 
-## Overview 📋
+## Overview&#x2001;📋
 
 `Wind` provides the `Effect-TS` native service layer that `Sky` consumes.
 
@@ -92,7 +90,7 @@ graph TB
 
 ---
 
-## Architecture 🏗️
+## Architecture&#x2001;🏗️
 
 ```
 +------------------------------------------------------------------+
@@ -118,7 +116,7 @@ graph TB
 +------------------------------------------------------------------+
 ```
 
-### Module Map 🗺️
+### Module Map&#x2001;🗺️
 
 | Path                                | Purpose                                                           |
 | ----------------------------------- | ----------------------------------------------------------------- |
@@ -135,7 +133,7 @@ graph TB
 
 ---
 
-## Service Architecture 🏗️
+## Service Architecture&#x2001;🏗️
 
 Each `Wind` service follows a consistent module structure using the
 Define/Implement/Problem pattern:
@@ -185,7 +183,7 @@ export class ClipboardProblem extends Data.TaggedError("ClipboardProblem")<{
 
 ---
 
-## Layer Composition 🧩
+## Layer Composition&#x2001;🧩
 
 `Wind` services compose into three `Layer` stacks:
 
@@ -241,7 +239,7 @@ Wind services available to Sky via Effect.flatMap
 
 ---
 
-## Preload Shim Integration 🔌
+## Preload Shim Integration&#x2001;🔌
 
 `Wind`'s `Preload.ts` (see `Polyfills.md` for full details) runs before the
 workbench bundle loads:
@@ -270,7 +268,7 @@ workbench bundle loads:
 
 ---
 
-## Service Catalog 📋
+## Service Catalog&#x2001;📋
 
 ### Core Infrastructure
 
@@ -333,7 +331,7 @@ workbench bundle loads:
 
 ---
 
-## Mountain IPC Service 🔌
+## Mountain IPC Service&#x2001;🔌
 
 The `Mountain` service (`Effect/Mountain.ts`) maintains a runtime connection to
 the Rust backend:
@@ -366,7 +364,7 @@ await listen("configuration-changed", (event) => {
 
 ---
 
-## Workbench Integration 🔌
+## Workbench Integration&#x2001;🔌
 
 `Wind` integrates with the VS Code workbench by providing service
 implementations that satisfy the workbench's dependency injection container:
@@ -387,7 +385,7 @@ await workbench.startup();
 
 ---
 
-## Related Documentation 📚
+## Related Documentation&#x2001;📚
 
 - [Sky](https://github.com/CodeEditorLand/Sky/tree/Current/Documentation/GitHub/Architecture.md) -
   UI component layer (`Wind` consumer)
