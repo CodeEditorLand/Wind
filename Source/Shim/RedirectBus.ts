@@ -16,6 +16,7 @@
 import type { RedirectHandler } from "./Type.js";
 
 class RedirectBus {
+
 	/** Registered handlers, ordered by priority (first match wins) */
 	private static handlers: RedirectHandler[] = [];
 

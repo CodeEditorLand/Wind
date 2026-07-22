@@ -17,8 +17,11 @@
  */
 
 import { IsEnabled } from "./Gate.js";
+
 import { RedirectBus } from "./RedirectBus.js";
+
 import { SwallowMap } from "./SwallowMap.js";
+
 import type { SwallowDecision } from "./Type.js";
 
 /**
@@ -36,6 +39,7 @@ const Intercept = async (
 
 	originalInvoke: (method: string, params: unknown[]) => Promise<unknown>,
 ): Promise<unknown> => {
+
 	// Fast path: shim disabled — passthrough
 	if (!IsEnabled) {
 		return originalInvoke(method, params);
@@ -87,6 +91,7 @@ const createInterceptedInvoke = (
 		args: Record<string, unknown>,
 	) => Promise<unknown>,
 ) => {
+
 	return async (
 		command: string,
 

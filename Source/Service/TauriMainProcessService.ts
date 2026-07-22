@@ -9,6 +9,7 @@
  */
 
 import type { Event as VSCodeEvent } from "@codeeditorland/output/Target/Microsoft/VSCode/vs/base/common/event.js";
+
 import type {
 	IChannel,
 	IServerChannel,
@@ -16,11 +17,14 @@ import type {
 
 // ── Shim imports ──
 import { createInterceptedInvoke } from "../Shim/IPCInterceptor.js";
+
 import { SwallowMap } from "../Shim/SwallowMap.js";
+
 import * as MistWS from "./MistWebSocketTransport.js";
 
 // Inline trace - performance.mark() collected by build-baked OTELBridge.
 const _Trace = (Tag: string, Message: string): void => {
+
 	try {
 		performance.mark(`land:${Tag}:${Message}`);
 	} catch {}
@@ -47,6 +51,7 @@ let _DevLogDropped = 0;
 let _DevLogFlushTimer: ReturnType<typeof setTimeout> | null = null;
 
 const _DevLogFlush = (): void => {
+
 	_DevLogFlushTimer = null;
 
 	const Batch = _DevLogBuffer.splice(0, _DevLogBuffer.length);
@@ -81,6 +86,7 @@ const _DevLogFlush = (): void => {
 			const Lines = ByTag.get(Entry.Tag);
 
 			if (Lines) Lines.push(Entry.Message);
+
 			else ByTag.set(Entry.Tag, [Entry.Message]);
 		}
 
@@ -98,6 +104,7 @@ const _DevLogFlush = (): void => {
 };
 
 const _DevLogForward = (Tag: string, Message: string): void => {
+
 	if (_DevLogBuffer.length >= 20) {
 		_DevLogDropped += 1;
 	} else {
@@ -118,6 +125,7 @@ const _TimedTrace = async <T>(
 
 	Fn: () => Promise<T>,
 ): Promise<T> => {
+
 	const MarkName = `land:${Tag}:${Label}`;
 
 	const StartMark = `${MarkName}:start`;
@@ -154,6 +162,7 @@ const _TimedTrace = async <T>(
 // ============================================================================
 
 const ChannelRouteMap: Record<string, string> = {
+
 	localFilesystem: "file",
 
 	storage: "storage",
@@ -275,6 +284,7 @@ const FireAndForgetChannels = new Set(["logger"]);
 // lockstep with the Output copy at
 // `Element/Output/Source/Service/Tauri/Main/Process/Service.ts`.
 type ChannelEventBridgeEntry = {
+
 	Channel: string;
 
 	Map?: (Payload: unknown) => unknown;
@@ -282,8 +292,10 @@ type ChannelEventBridgeEntry = {
 
 const ChannelEventBridge: Record<
 	string,
+
 	Record<string, ChannelEventBridgeEntry>
 > = {
+
 	localPty: {
 		// VS Code's `IPtyService.onProcessData` expects
 		// `{ id: number, event: IProcessDataEvent | string }` per
@@ -424,6 +436,7 @@ const FileSystemThrowCommands = new Set([
 ]);
 
 const StubChannels: Record<string, Record<string, unknown>> = {
+
 	sign: { sign: "", createNewMessage: "", validate: true },
 
 	policy: { serialize: {}, registerPolicyChange: undefined },
@@ -881,6 +894,7 @@ const _TierIPC: string =
 // without a per-subsystem tier mapping. Keep in lockstep with the Output
 // copy at `Element/Output/Source/Service/Tauri/Main/Process/Service.ts`.
 function _ReadTier(Name: string): string | undefined {
+
 	const FromEnv = (import.meta as any).env?.[`Tier${Name}`] as
 		string | undefined;
 
@@ -925,6 +939,7 @@ const _TierEncryption = _ReadTier("Encryption") ?? "Mountain";
 // routing stays bidirectional. RoutePrefix values come from
 // `ChannelRouteMap` above.
 function _ResolveTierForRoute(RoutePrefix: string | null): string {
+
 	if (!RoutePrefix) return _TierIPC;
 
 	switch (RoutePrefix) {
@@ -986,6 +1001,7 @@ async function _InvokeViaNode(
 
 	Params: unknown[],
 ): Promise<unknown> {
+
 	const Invoke =
 		(window as any).__TAURI__?.core?.invoke ??
 		(window as any).__TAURI__?.invoke;
@@ -1014,6 +1030,7 @@ async function InvokeMountain(
 
 	Params: unknown[],
 ): Promise<unknown> {
+
 	const Invoke =
 		(window as any).__TAURI__?.core?.invoke ??
 		(window as any).__TAURI__?.invoke;
@@ -1070,6 +1087,7 @@ async function InvokeMountain(
 // ============================================================================
 
 class TauriChannel implements IChannel {
+
 	constructor(
 		private readonly ChannelName: string,
 
@@ -1181,12 +1199,14 @@ class TauriChannel implements IChannel {
 				) {
 					const Raw = Result as
 						| { buffer: number[]; bytesRead?: number }
+
 						| number[]
 						| null
 						| undefined;
 
 					if (Raw !== null && Raw !== undefined) {
 						const Arr = Array.isArray(Raw)
+
 							? Raw
 							: (Raw as { buffer: number[] }).buffer;
 
@@ -1341,6 +1361,7 @@ class TauriChannel implements IChannel {
 						return listen(SkyEventBridge.Channel, (TauriEvent) => {
 							const Mapped = SkyEventBridge.Map
 								? SkyEventBridge.Map(TauriEvent.payload)
+
 								: TauriEvent.payload;
 
 							if (Mapped !== undefined) Listener(Mapped);
@@ -1349,6 +1370,7 @@ class TauriChannel implements IChannel {
 					.then((Result) => {
 						if (typeof Result === "function") {
 							if (Disposed) Result();
+
 							else Unlisten = Result;
 						}
 					})
@@ -1406,6 +1428,7 @@ class TauriChannel implements IChannel {
 
 						if (Raw !== null && Raw !== undefined) {
 							const Arr = Array.isArray(Raw)
+
 								? Raw
 								: (Raw as { buffer: number[] }).buffer;
 
@@ -1433,6 +1456,7 @@ class TauriChannel implements IChannel {
 // ============================================================================
 
 export class TauriMainProcessService {
+
 	declare readonly _serviceBrand: undefined;
 
 	private readonly Channels = new Map<string, TauriChannel>();
@@ -1482,6 +1506,7 @@ export class TauriMainProcessService {
 }
 
 export function InitializeWebSocket(port: number, secret: string): void {
+
 	MistWS.Initialize(port, secret);
 }
 

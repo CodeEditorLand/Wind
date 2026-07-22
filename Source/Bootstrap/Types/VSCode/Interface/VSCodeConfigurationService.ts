@@ -1,14 +1,17 @@
 import type { Event, IDisposable } from "../Type/VSCodeCommonType.js";
+
 import type {
 	ConfigurationTarget,
 	IConfigurationChangeEvent,
 } from "../Type/VSCodeConfigurationType.js";
+
 import type { URI } from "../Type/VSCodeUtilityType.js";
 
 /**
  * VSCode Configuration Service interface
  */
 export interface IVSCodeConfigurationService {
+
 	_serviceBrand: undefined;
 
 	onDidChangeConfiguration: Event<IConfigurationChangeEvent>;

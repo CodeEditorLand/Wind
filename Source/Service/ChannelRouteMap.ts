@@ -11,6 +11,7 @@
 
 /** Channel → Mountain route-prefix map. */
 export const ChannelRouteMap: Record<string, string> = {
+
 	localFilesystem: "file",
 
 	storage: "storage",

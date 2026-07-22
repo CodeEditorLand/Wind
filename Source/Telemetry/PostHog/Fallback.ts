@@ -8,6 +8,7 @@
  */
 
 import type { Configuration } from "./Configuration.js";
+
 import BaseProperties, { type Properties } from "./Properties.js";
 
 export default async (
@@ -19,6 +20,7 @@ export default async (
 
 	Properties: Properties,
 ): Promise<void> => {
+
 	if (typeof fetch === "undefined") return;
 
 	try {

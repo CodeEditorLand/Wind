@@ -8,6 +8,7 @@
  */
 
 export type Configuration = {
+
 	readonly Key: string;
 
 	readonly Host: string;
@@ -22,7 +23,9 @@ const DefaultKey = "";
 const DefaultHost = "https://eu.i.posthog.com";
 
 const ReadString = (Key: string, Fallback: string): string => {
+
 	const FromImportMeta = (import.meta as { env?: Record<string, unknown> })
+
 		?.env?.[Key];
 
 	if (typeof FromImportMeta === "string" && FromImportMeta.length > 0) {

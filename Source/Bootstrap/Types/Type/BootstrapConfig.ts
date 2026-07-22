@@ -10,6 +10,7 @@
  * Bootstrap configuration interface
  */
 export interface BootstrapConfig {
+
 	/** Enable debug mode for detailed output */
 	debugMode: boolean;
 

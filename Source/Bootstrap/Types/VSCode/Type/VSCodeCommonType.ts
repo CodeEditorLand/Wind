@@ -11,6 +11,7 @@
  * Represents an event that can be subscribed to with a listener function
  */
 export interface Event<T> {
+
 	(listener: (e: T) => any): IDisposable;
 }
 
@@ -19,5 +20,6 @@ export interface Event<T> {
  * Represents an object that can be disposed to release resources
  */
 export interface IDisposable {
+
 	dispose(): void;
 }

@@ -14,6 +14,7 @@ import type { ProcessEnvironment } from "./ProcessEnvironment.js";
  * Memory info interface
  */
 export interface ProcessMemoryInfo {
+
 	readonly private: number;
 
 	readonly residentSet: number;
@@ -25,6 +26,7 @@ export interface ProcessMemoryInfo {
  * VSCode sandbox node process interface
  */
 export interface SandboxNodeProcess {
+
 	readonly platform: NodeJS.Platform;
 
 	readonly arch: string;

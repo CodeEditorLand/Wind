@@ -29,15 +29,18 @@
  */
 
 import { readFile } from "node:fs/promises";
+
 import { dirname, join, resolve } from "node:path";
 
 import { ExtractInterfaceMembers } from "../Extract/ExtractInterfaceMembers.js";
+
 import type { InterfaceMemberRecord } from "../Type/InterfaceMemberRecord.js";
 
 const ImportLinePattern =
 	/import\s*(?:type\s*)?\{([^}]+)\}\s*from\s*['"]([^'"]+)['"]/g;
 
 const ParseImportSpecifiers = (importBlock: string): ReadonlyArray<string> => {
+
 	return importBlock
 		.split(",")
 		.map((entry) => {
@@ -57,6 +60,7 @@ const FindImportSource = (
 
 	interfaceName: string,
 ): string | null => {
+
 	ImportLinePattern.lastIndex = 0;
 
 	let Match: RegExpExecArray | null;
@@ -77,6 +81,7 @@ const NormaliseImportPath = (
 
 	importPath: string,
 ): string => {
+
 	if (importPath.endsWith(".ts")) return importPath;
 
 	if (importPath.endsWith(".js")) {
@@ -98,6 +103,7 @@ const InterfaceHeaderPattern = (interfaceName: string): RegExp =>
 // name. Qualified names (`ns.Type`) are dropped - they cannot be
 // resolved through the named-import walker.
 const ParseHeritageNames = (clause: string): ReadonlyArray<string> => {
+
 	const Parts: string[] = [];
 
 	let Depth = 0;
@@ -106,6 +112,7 @@ const ParseHeritageNames = (clause: string): ReadonlyArray<string> => {
 
 	for (const Char of clause) {
 		if (Char === "<") Depth += 1;
+
 		else if (Char === ">") Depth = Math.max(0, Depth - 1);
 
 		if (Char === "," && Depth === 0) {
@@ -129,6 +136,7 @@ const ParseHeritageNames = (clause: string): ReadonlyArray<string> => {
 const DedupeByName = (
 	members: ReadonlyArray<InterfaceMemberRecord>,
 ): ReadonlyArray<InterfaceMemberRecord> => {
+
 	const Seen = new Set<string>();
 
 	const Out: InterfaceMemberRecord[] = [];
@@ -157,6 +165,7 @@ const ResolveNamedMembers = async (
 
 	depth: number,
 ): Promise<ResolveOutcome | null> => {
+
 	if (depth > MaxResolutionDepth) return null;
 
 	const Key = `${filePath}::${interfaceName}`;
@@ -245,6 +254,7 @@ const ResolveNamedMembers = async (
 };
 
 export interface ResolveOptions {
+
 	readonly InterfaceName: string;
 
 	readonly DecoratorFilePath: string;
@@ -253,6 +263,7 @@ export interface ResolveOptions {
 }
 
 export interface ResolveOutcome {
+
 	readonly Members: ReadonlyArray<InterfaceMemberRecord>;
 
 	readonly ResolvedFromPath: string;

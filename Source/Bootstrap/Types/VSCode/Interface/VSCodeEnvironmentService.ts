@@ -10,6 +10,7 @@
  * VSCode Environment Service interface
  */
 export interface IVSCodeEnvironmentService {
+
 	_serviceBrand: undefined;
 
 	machineId: string;

@@ -14,6 +14,7 @@
  * Current workbench initialization state
  */
 export enum WorkbenchState {
+
 	/** Workbench not yet initialized */
 	NotInitialized = "NotInitialized",
 
@@ -43,6 +44,7 @@ export enum WorkbenchState {
  * Workbench initialization state with metadata
  */
 export interface WorkbenchInitState {
+
 	/** Current state enum value */
 	readonly state: WorkbenchState;
 
@@ -58,6 +60,7 @@ export interface WorkbenchInitState {
  * Configuration for workbench integration
  */
 export interface WorkbenchIntegrationConfig {
+
 	/** Root URI for the workspace (e.g., "land://workspace") */
 	readonly workspaceRootUri: string;
 
@@ -85,6 +88,7 @@ export interface WorkbenchIntegrationConfig {
  * Result of provider registration attempt
  */
 export interface ProviderRegistrationResult {
+
 	/** Whether registration was successful */
 	readonly success: boolean;
 
@@ -109,6 +113,7 @@ export interface ProviderRegistrationResult {
  * Workspace context information
  */
 export interface WorkspaceContext {
+
 	/** Root directory URI for the workspace */
 	readonly rootUri: string;
 
@@ -134,6 +139,7 @@ export interface WorkspaceContext {
  * Diagnostic information about workbench integration
  */
 export interface WorkbenchDiagnostics {
+
 	/** Workbench initialization state */
 	readonly state: WorkbenchInitState;
 
@@ -173,6 +179,7 @@ export interface WorkbenchDiagnostics {
  * Base error type for workbench integration
  */
 export class WorkbenchIntegrationError extends Error {
+
 	constructor(
 		message: string,
 
@@ -188,6 +195,7 @@ export class WorkbenchIntegrationError extends Error {
  * Error codes for workbench integration operations
  */
 export enum WorkbenchIntegrationErrorCode {
+
 	/** Workbench did not initialize within timeout */
 	InitTimeout = "InitTimeout",
 

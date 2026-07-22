@@ -19,6 +19,7 @@ import type { IFileSystemProvider } from "../Type/FileSystemType.js";
  * Provides methods for file system operations via Tauri IPC to Mountain.
  */
 export interface FileSystemProviderService {
+
 	/**
 	 * The underlying IFileSystemProvider (URI-object API).
 	 */

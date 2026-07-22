@@ -19,6 +19,7 @@
 import type { SwallowAction, SwallowDecision, SwallowRule } from "./Type.js";
 
 class SwallowMap {
+
 	private static rules: SwallowRule[] = [];
 
 	/**

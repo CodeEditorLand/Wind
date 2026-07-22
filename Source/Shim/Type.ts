@@ -20,6 +20,7 @@ export type RedirectTarget =
 
 /** A single rule in the SwallowMap */
 export interface SwallowRule {
+
 	/** Regex or prefix pattern to match against method names */
 	pattern: string;
 
@@ -35,6 +36,7 @@ export interface SwallowRule {
 
 /** The decision produced by the SwallowMap for a given method */
 export interface SwallowDecision {
+
 	action: SwallowAction;
 
 	redirectTo: RedirectTarget;
@@ -42,6 +44,7 @@ export interface SwallowDecision {
 
 /** A handler registered on the RedirectBus */
 export interface RedirectHandler {
+
 	/** The pattern this handler accepts */
 	pattern: string;
 
@@ -54,6 +57,7 @@ export type FlowDirection = "Inbound" | "Outbound";
 
 /** An event passing through the shim */
 export interface ShimEvent {
+
 	/** Original method name (e.g., "statusbar:set") */
 	method: string;
 

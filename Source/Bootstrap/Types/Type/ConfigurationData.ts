@@ -10,6 +10,7 @@
  * Configuration data interface
  */
 export interface ConfigurationData {
+
 	/** Unique window identifier */
 	windowId: string;
 

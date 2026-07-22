@@ -11,6 +11,7 @@ export type InterfaceMemberKind =
 	"Property" | "Method" | "Event" | "Getter" | "Setter" | "Index";
 
 export interface InterfaceMemberParameter {
+
 	readonly Name: string;
 
 	readonly TypeText: string;
@@ -19,6 +20,7 @@ export interface InterfaceMemberParameter {
 }
 
 export interface InterfaceMemberRecord {
+
 	readonly Kind: InterfaceMemberKind;
 
 	readonly Name: string;

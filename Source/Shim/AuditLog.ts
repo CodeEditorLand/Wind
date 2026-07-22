@@ -12,6 +12,7 @@
  */
 
 interface AuditEntry {
+
 	/** Performance.now() timestamp */
 	timestamp: number;
 
@@ -32,6 +33,7 @@ interface AuditEntry {
 }
 
 class AuditLog {
+
 	/** Ring buffer of audit entries */
 	private static entries: AuditEntry[] = [];
 
@@ -136,6 +138,7 @@ class AuditLog {
 
 						args: Record<string, unknown>,
 				  ) => Promise<unknown>)
+
 				| undefined;
 
 			if (typeof invoke === "function") {

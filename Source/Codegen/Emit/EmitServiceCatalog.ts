@@ -16,12 +16,15 @@
  */
 
 import { mkdir, writeFile } from "node:fs/promises";
+
 import { dirname, join } from "node:path";
 
 import type { CodegenProblem } from "../Type/CodegenProblem.js";
+
 import type { ServiceDecoratorRecord } from "../Type/ServiceDecoratorRecord.js";
 
 export interface ServiceCatalogEntryEmit {
+
 	readonly DecoratorName: string;
 
 	readonly DecoratorTag: string;
@@ -36,12 +39,14 @@ export interface ServiceCatalogEntryEmit {
 }
 
 export interface EmitServiceCatalogOptions {
+
 	readonly Records: ReadonlyArray<ServiceDecoratorRecord>;
 
 	readonly OutputRoot: string;
 }
 
 export interface EmitServiceCatalogOutcome {
+
 	readonly OutputPath: string;
 
 	readonly Bytes: number;
@@ -56,6 +61,7 @@ const FormatEntry = (
 
 	total: number,
 ): string => {
+
 	const Trailing = index === total - 1 ? "" : ",";
 
 	return [
@@ -80,6 +86,7 @@ const FormatEntry = (
 const FormatOutput = (
 	records: ReadonlyArray<ServiceDecoratorRecord>,
 ): string => {
+
 	const Sorted = [...records].sort((a, b) =>
 		a.DecoratorName.localeCompare(b.DecoratorName),
 	);
@@ -163,6 +170,7 @@ const FormatOutput = (
 export const EmitServiceCatalog = async (
 	options: EmitServiceCatalogOptions,
 ): Promise<EmitServiceCatalogOutcome | CodegenProblem> => {
+
 	const Output = FormatOutput(options.Records);
 
 	const OutputPath = join(

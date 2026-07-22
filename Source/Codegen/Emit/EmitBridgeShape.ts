@@ -19,12 +19,15 @@
  */
 
 import { mkdir, writeFile } from "node:fs/promises";
+
 import { dirname, join } from "node:path";
 
 import type { CodegenProblem } from "../Type/CodegenProblem.js";
+
 import type { ServiceDecoratorRecord } from "../Type/ServiceDecoratorRecord.js";
 
 export interface EmitBridgeShapeOptions {
+
 	/** Decorator record from `IterateServiceDecorators`. */
 	readonly Record: ServiceDecoratorRecord;
 
@@ -65,6 +68,7 @@ export interface EmitBridgeShapeOptions {
 }
 
 export interface EmitBridgeShapeOutcome {
+
 	readonly OutputPath: string;
 
 	readonly Bytes: number;
@@ -73,6 +77,7 @@ export interface EmitBridgeShapeOutcome {
 }
 
 const FormatPickUnion = (members: ReadonlyArray<string>): string => {
+
 	if (members.length === 0) return "never";
 
 	return members.map((m) => JSON.stringify(m)).join(" | ");
@@ -91,6 +96,7 @@ const FormatOutput = (
 
 	shapeTypeName: string,
 ): string => {
+
 	const UpstreamModule = `../../Generated/${record.DecoratorName}/${record.DecoratorName}Upstream.js`;
 
 	const UpstreamType = `${record.DecoratorName}Upstream`;
@@ -151,9 +157,11 @@ const FormatOutput = (
 export const EmitBridgeShape = async (
 	options: EmitBridgeShapeOptions,
 ): Promise<EmitBridgeShapeOutcome | CodegenProblem> => {
+
 	const ResolvedPicks =
 		options.PickMembers.length === 0
 			? options.Record.Members.map((m) => m.Name)
+
 			: options.PickMembers;
 
 	const FileName =

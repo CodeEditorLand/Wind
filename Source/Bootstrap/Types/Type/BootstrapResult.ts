@@ -13,6 +13,7 @@ import type { StageResult } from "./StageResult.js";
  * Bootstrap result interface
  */
 export interface BootstrapResult {
+
 	/** Whether the entire bootstrap process succeeded */
 	success: boolean;
 

@@ -29,6 +29,7 @@ const TelemetryPatterns: readonly string[] = [
 ];
 
 function isTelemetryEndpoint(url: string): boolean {
+
 	return TelemetryPatterns.some((p) => url.includes(p));
 }
 
@@ -43,6 +44,7 @@ const GalleryPatterns: readonly string[] = [
 ];
 
 function isGalleryEndpoint(url: string): boolean {
+
 	return GalleryPatterns.some((p) => url.includes(p));
 }
 
@@ -51,6 +53,7 @@ function isGalleryEndpoint(url: string): boolean {
 // ──────────────────────────────────────
 
 function extractUrl(input: RequestInfo | URL): string {
+
 	if (typeof input === "string") return input;
 
 	if (input instanceof URL) return input.href;
@@ -67,6 +70,7 @@ async function handleVscodeFileRequest(
 
 	_init?: RequestInit,
 ): Promise<Response> {
+
 	// Route vscode-file:// through Mountain's scheme handler.
 	// In Land's architecture, this means redirecting to the IPC layer
 	// which will resolve the virtual file system resource.
@@ -93,6 +97,7 @@ async function handleGalleryRequest(
 
 	_init?: RequestInit,
 ): Promise<Response> {
+
 	// Route extension gallery queries to Land's gallery service.
 	// This prevents direct calls to Microsoft/OpenVSX and instead
 	// goes through Land's curated extension registry.
@@ -113,6 +118,7 @@ async function handleGalleryRequest(
 // ──────────────────────────────────────
 
 function installXHRInterceptor(): void {
+
 	const OriginalXHR = globalThis.XMLHttpRequest;
 
 	const OriginalOpen = OriginalXHR.prototype.open;
@@ -175,6 +181,7 @@ function installXHRInterceptor(): void {
 // ──────────────────────────────────────
 
 function installFetchInterceptor(): void {
+
 	const originalFetch: typeof globalThis.fetch =
 		globalThis.fetch.bind(globalThis);
 
@@ -213,6 +220,7 @@ function installFetchInterceptor(): void {
  * When TierShim=None, this is a no-op and esbuild removes the call site.
  */
 export default function installNetworkProxy(): void {
+
 	if (!IsEnabled) return;
 
 	installFetchInterceptor();

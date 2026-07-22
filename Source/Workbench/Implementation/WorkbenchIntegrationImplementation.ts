@@ -10,9 +10,13 @@
  */
 
 import FileSystemProvider from "../../FileSystem/Implementation/FileSystemProviderImplementation.js";
+
 import type { IDisposable } from "../../FileSystem/Type/FileSystemType.js";
+
 import { URI } from "../../FileSystem/Type/URI.js";
+
 import type { WorkbenchIntegrationService } from "../Interface/WorkbenchIntegrationService.js";
+
 import {
 	WorkbenchIntegrationError,
 	WorkbenchIntegrationErrorCode,
@@ -40,6 +44,7 @@ const DEFAULT_INIT_TIMEOUT = 30000; // 30 seconds
  * VSCode workspace API interface (simplified for browser workbench)
  */
 interface VSCodeWorkspace {
+
 	/**
 	 * Get the workspace root folder
 	 */
@@ -55,6 +60,7 @@ interface VSCodeWorkspace {
  * VSCode workspace folder interface
  */
 interface VSCodeWorkspaceFolder {
+
 	/** URI of the workspace folder */
 	readonly uri: string;
 
@@ -69,6 +75,7 @@ interface VSCodeWorkspaceFolder {
  * VSCode file system provider API (if accessible)
  */
 interface VSCodeFileSystemProvider {
+
 	/**
 	 * Read file contents
 	 */
@@ -139,6 +146,7 @@ interface VSCodeFileSystemProvider {
  * VSCode API interface (window.vscode)
  */
 interface VSCodeAPI {
+
 	/** Workspace API */
 	readonly workspace?: VSCodeWorkspace;
 
@@ -172,6 +180,7 @@ const toWorkbenchError = (
 
 	code: WorkbenchIntegrationErrorCode,
 ): WorkbenchIntegrationError => {
+
 	if (error instanceof WorkbenchIntegrationError) {
 		return error;
 	}
@@ -191,6 +200,7 @@ const toWorkbenchError = (
  * Check if VSCode API is available
  */
 const isVSCodeAvailable = (): boolean => {
+
 	return (
 		typeof window !== "undefined" &&
 		typeof (window as unknown as { vscode?: VSCodeAPI }).vscode !==
@@ -202,6 +212,7 @@ const isVSCodeAvailable = (): boolean => {
  * Check if Monaco editor is available
  */
 const isMonacoAvailable = (): boolean => {
+
 	return (
 		typeof window !== "undefined" &&
 		typeof (window as unknown as { monaco?: unknown }).monaco !==
@@ -213,6 +224,7 @@ const isMonacoAvailable = (): boolean => {
  * Get VSCode API
  */
 const getVSCodeAPI = (): VSCodeAPI | undefined => {
+
 	if (typeof window === "undefined") {
 		return undefined;
 	}
@@ -237,6 +249,7 @@ const pollUntil = (
 
 	interval: number = DEFAULT_POLL_INTERVAL,
 ): Promise<void> => {
+
 	const controller = new AbortController();
 
 	const pollLoop = new Promise<void>((resolve) => {
@@ -302,6 +315,7 @@ const pollUntil = (
  * queue-backed stream.
  */
 const buildWorkbenchIntegrationService = (): WorkbenchIntegrationService => {
+
 	let currentState: WorkbenchInitState = {
 		state: WorkbenchState.NotInitialized,
 

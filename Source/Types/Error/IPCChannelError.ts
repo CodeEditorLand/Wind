@@ -10,6 +10,7 @@
  * IPC channel error
  */
 export class IPCChannelError extends Error {
+
 	readonly _tag = "IPCChannelError";
 
 	constructor(

@@ -19,6 +19,7 @@
 // a valid wire string, without requiring a separate type export.
 
 export default {
+
 	// --- Cocoon bridge ---
 	CocoonExtensionHostMessage: "cocoon:extensionHostMessage",
 

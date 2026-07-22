@@ -9,6 +9,7 @@
 
 // IPC Message envelope
 export interface IPCMessage {
+
 	readonly channel: string;
 
 	readonly args: ReadonlyArray<unknown>;
@@ -16,6 +17,7 @@ export interface IPCMessage {
 
 // IPC Renderer interface (matches VSCode's preload)
 export interface IPCRenderer {
+
 	readonly send: (channel: string, ...args: unknown[]) => void;
 
 	readonly invoke: (channel: string, ...args: unknown[]) => Promise<unknown>;
@@ -43,21 +45,25 @@ export interface IPCRenderer {
 
 // MessagePort acquisition (for SharedProcessWorker)
 export interface IPCMessagePort {
+
 	readonly acquire: (responseChannel: string, nonce: string) => void;
 }
 
 // WebFrame interface
 export interface WebFrame {
+
 	readonly setZoomLevel: (level: number) => void;
 }
 
 // Process environment
 export interface ProcessEnvironment {
+
 	readonly [key: string]: string | undefined;
 }
 
 // VSCode sandbox node process
 export interface SandboxNodeProcess {
+
 	readonly platform: NodeJS.Platform;
 
 	readonly arch: string;
@@ -95,6 +101,7 @@ export interface SandboxNodeProcess {
 
 // Sandbox context (configuration access)
 export interface SandboxContext {
+
 	readonly configuration: () => Promise<ISandboxConfiguration>;
 
 	readonly resolveConfiguration: () => Promise<ISandboxConfiguration>;
@@ -102,6 +109,7 @@ export interface SandboxContext {
 
 // VSCode sandbox configuration
 export interface ISandboxConfiguration {
+
 	readonly readonly?: boolean;
 
 	readonly userEnv?: ProcessEnvironment;
@@ -122,11 +130,13 @@ export interface ISandboxConfiguration {
 
 // WebUtils
 export interface WebUtils {
+
 	readonly getPathForFile: (file: File) => string;
 }
 
 // Complete sandbox globals
 export interface SandboxGlobals {
+
 	readonly ipcRenderer: IPCRenderer;
 
 	readonly ipcMessagePort: IPCMessagePort;
@@ -142,6 +152,7 @@ export interface SandboxGlobals {
 
 // Error types
 export class SandboxNotReadyError extends Error {
+
 	readonly _tag = "SandboxNotReadyError";
 
 	constructor() {
@@ -150,6 +161,7 @@ export class SandboxNotReadyError extends Error {
 }
 
 export class IPCChannelError extends Error {
+
 	readonly _tag = "IPCChannelError";
 
 	constructor(
@@ -162,6 +174,7 @@ export class IPCChannelError extends Error {
 }
 
 export class ConfigurationNotReadyError extends Error {
+
 	readonly _tag = "ConfigurationNotReadyError";
 
 	constructor() {

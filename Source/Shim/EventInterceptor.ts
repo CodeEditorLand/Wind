@@ -23,7 +23,9 @@
  */
 
 import { RedirectBus } from "./RedirectBus.js";
+
 import { SwallowMap } from "./SwallowMap.js";
+
 import type { ShimLevel } from "./Type.js";
 
 /**
@@ -54,6 +56,7 @@ __LandTier_Shim__.length > 0
  * Call this at the very top of Wind's bootstrap entry point.
  */
 export default function installEventInterceptor(): void {
+
 	// Only activate for Own and Preempt levels
 	if (TierShim !== "Own" && TierShim !== "Preempt") {
 		return;

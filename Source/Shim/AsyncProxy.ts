@@ -39,6 +39,7 @@ type AnyCallback = (...args: any[]) => void;
  * so the eager bind here has zero cost.
  */
 const Originals = {
+
 	setTimeout: globalThis.setTimeout.bind(globalThis),
 
 	clearTimeout: globalThis.clearTimeout.bind(globalThis),
@@ -58,6 +59,7 @@ const Originals = {
 					requestIdleCallback: typeof globalThis.requestIdleCallback;
 				}
 			).requestIdleCallback.bind(globalThis)
+
 		: undefined,
 
 	cancelIdleCallback: (globalThis as Record<string, unknown>)
@@ -67,6 +69,7 @@ const Originals = {
 					cancelIdleCallback: typeof globalThis.cancelIdleCallback;
 				}
 			).cancelIdleCallback.bind(globalThis)
+
 		: undefined,
 };
 
@@ -76,6 +79,7 @@ const Originals = {
 
 /** Pending timeouts waiting to be dispatched as a batch */
 const PendingTimeouts: Array<{
+
 	callback: AnyCallback;
 
 	args: unknown[];
@@ -97,6 +101,7 @@ let NextHandle = 1;
 // ──────────────────────────────────────
 
 function flushBatch(): void {
+
 	BatchScheduled = false;
 
 	// Snapshot and clear pending timeouts
@@ -113,6 +118,7 @@ function flushBatch(): void {
 }
 
 function scheduleBatch(): void {
+
 	if (BatchScheduled) return;
 
 	BatchScheduled = true;
@@ -126,6 +132,7 @@ function scheduleBatch(): void {
 // ──────────────────────────────────────
 
 function createProxySetTimeout(): typeof Originals.setTimeout {
+
 	return function proxySetTimeout(
 		callback: ((...args: any[]) => void) | string,
 
@@ -184,6 +191,7 @@ function createProxySetTimeout(): typeof Originals.setTimeout {
 // ──────────────────────────────────────
 
 function createProxySetInterval(): typeof Originals.setInterval {
+
 	return function proxySetInterval(
 		callback: ((...args: any[]) => void) | string,
 
@@ -225,6 +233,7 @@ function createProxySetInterval(): typeof Originals.setInterval {
 // ──────────────────────────────────────
 
 function createProxyClearTimeout(): typeof Originals.clearTimeout {
+
 	return function proxyClearTimeout(handle?: number): void {
 		if (handle === undefined) return;
 
@@ -245,6 +254,7 @@ function createProxyClearTimeout(): typeof Originals.clearTimeout {
 }
 
 function createProxyClearInterval(): typeof Originals.clearInterval {
+
 	return function proxyClearInterval(handle?: number): void {
 		if (handle === undefined) return;
 
@@ -271,6 +281,7 @@ function createProxyClearInterval(): typeof Originals.clearInterval {
 // ──────────────────────────────────────
 
 function createProxyRequestAnimationFrame(): typeof Originals.requestAnimationFrame {
+
 	return function proxyRequestAnimationFrame(
 		callback: FrameRequestCallback,
 	): number {
@@ -281,6 +292,7 @@ function createProxyRequestAnimationFrame(): typeof Originals.requestAnimationFr
 }
 
 function createProxyCancelAnimationFrame(): typeof Originals.cancelAnimationFrame {
+
 	return function proxyCancelAnimationFrame(handle: number): void {
 		if (Originals.cancelAnimationFrame) {
 			Originals.cancelAnimationFrame(handle);
@@ -293,6 +305,7 @@ function createProxyCancelAnimationFrame(): typeof Originals.cancelAnimationFram
 // ──────────────────────────────────────
 
 function createProxyRequestIdleCallback(): typeof Originals.requestIdleCallback {
+
 	return function proxyRequestIdleCallback(
 		callback: IdleRequestCallback,
 
@@ -305,6 +318,7 @@ function createProxyRequestIdleCallback(): typeof Originals.requestIdleCallback 
 }
 
 function createProxyCancelIdleCallback(): typeof Originals.cancelIdleCallback {
+
 	return function proxyCancelIdleCallback(handle: number): void {
 		if (Originals.cancelIdleCallback) {
 			Originals.cancelIdleCallback(handle);
@@ -324,6 +338,7 @@ function createProxyCancelIdleCallback(): typeof Originals.cancelIdleCallback {
  * When TierShim=None, this is a no-op.
  */
 export default function installAsyncProxy(): void {
+
 	if (!IsEnabled) return;
 
 	// Replace globals with proxy wrappers
