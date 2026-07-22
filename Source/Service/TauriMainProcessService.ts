@@ -882,8 +882,7 @@ const _TierIPC: string =
 // copy at `Element/Output/Source/Service/Tauri/Main/Process/Service.ts`.
 function _ReadTier(Name: string): string | undefined {
 	const FromEnv = (import.meta as any).env?.[`Tier${Name}`] as
-		| string
-		| undefined;
+		string | undefined;
 
 	if (FromEnv !== undefined) return FromEnv;
 
@@ -1403,10 +1402,7 @@ class TauriChannel implements IChannel {
 				])
 					.then(([VSBuffer, Result]) => {
 						const Raw = Result as
-							| { buffer: number[] }
-							| number[]
-							| null
-							| undefined;
+							{ buffer: number[] } | number[] | null | undefined;
 
 						if (Raw !== null && Raw !== undefined) {
 							const Arr = Array.isArray(Raw)

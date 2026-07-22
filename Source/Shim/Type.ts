@@ -16,12 +16,7 @@ export type SwallowAction = "SWALLOW" | "PASSTHROUGH" | "MIXED" | "DISCARD";
 
 /** Where to route a swallowed event */
 export type RedirectTarget =
-	| "Wind"
-	| "Cocoon"
-	| "Mountain"
-	| "Output"
-	| "Sky"
-	| "None";
+	"Wind" | "Cocoon" | "Mountain" | "Output" | "Sky" | "None";
 
 /** A single rule in the SwallowMap */
 export interface SwallowRule {

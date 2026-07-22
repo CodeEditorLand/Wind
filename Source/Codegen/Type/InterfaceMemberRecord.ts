@@ -8,12 +8,7 @@
  */
 
 export type InterfaceMemberKind =
-	| "Property"
-	| "Method"
-	| "Event"
-	| "Getter"
-	| "Setter"
-	| "Index";
+	"Property" | "Method" | "Event" | "Getter" | "Setter" | "Index";
 
 export interface InterfaceMemberParameter {
 	readonly Name: string;

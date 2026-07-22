@@ -49,10 +49,7 @@ export type TierDocumentMirrorValue = "Full" | "Lazy";
 
 // Lifecycle tiers ------------------------------------------------------------
 export type TierExtensionActivationValue =
-	| "Sequential"
-	| "Parallel4"
-	| "Parallel8"
-	| "Parallel16";
+	"Sequential" | "Parallel4" | "Parallel8" | "Parallel16";
 
 export type TierExtensionScanValue = "Sequential" | "Parallel";
 
