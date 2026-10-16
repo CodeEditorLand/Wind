@@ -25,12 +25,12 @@
 	},
 	"dependencies": {
 		"@codeeditorland/output": "0.0.1",
-		"@tauri-apps/api": "2.11.1",
+		"@tauri-apps/api": "2.12.3",
 		"typescript": "7.0.2"
 	},
 	"devDependencies": {
 		"@playform/build": "0.3.4",
-		"@types/node": "26.4.1",
+		"@types/node": "26.6.5",
 		"cross-env": "10.1.0",
 		"deepmerge-ts": "8.0.2",
 		"ulid": "3.0.2"
