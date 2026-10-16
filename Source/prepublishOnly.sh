@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 set -e
 
 # Stage 1: Build configuration files - use self-contained ESBuild.ts to

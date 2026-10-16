@@ -19,8 +19,8 @@
 	},
 	"type": "module",
 	"scripts": {
-		"Run": "sh Source/Run.sh",
-		"prepublishOnly": "sh Source/prepublishOnly.sh",
+		"Run": "bash Source/Run.sh",
+		"prepublishOnly": "bash Source/prepublishOnly.sh",
 		"type-check": "tsc --noEmit"
 	},
 	"dependencies": {
@@ -30,9 +30,9 @@
 	},
 	"devDependencies": {
 		"@playform/build": "0.3.4",
-		"@types/node": "26.2.0",
+		"@types/node": "26.4.1",
 		"cross-env": "10.1.0",
-		"deepmerge-ts": "7.1.6",
+		"deepmerge-ts": "8.0.2",
 		"ulid": "3.0.2"
 	},
 	"publishConfig": {

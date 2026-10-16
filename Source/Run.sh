@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 Build "Source/Configuration/**/*.{ts,json}" \
 	--ESBuild Source/Configuration/ESBuild/Wind.ts
