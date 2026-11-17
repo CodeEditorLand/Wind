@@ -116,6 +116,53 @@ const _DevLogForward = (Tag: string, Message: string): void => {
 	}
 };
 
+// ── Stub / failure observability ──────────────────────────────────────────
+// A deliberate static stub and a real IPC failure must be distinguishable
+// to a caller. Both warnings route through the dev-log sink above and are
+// gated to debug builds exactly like `Telemetry/PostHogBridge.ts` - Vite
+// folds `import.meta.env.DEV` to a literal, so production dead-codes the
+// payloads. Every path is wrapped: a missing logger, a malformed error or
+// a re-entrant call degrades to a no-op rather than throwing into the IPC
+// path the warning is meant to observe.
+const _WarnedStubChannels = new Set<string>();
+
+const _SafeError = (Value: unknown): string => {
+
+	try {
+		return String(Value);
+	} catch {
+		return "[unprintable error]";
+	}
+};
+
+const WarnStub = (Channel: string, Method: string): void => {
+
+	try {
+		if (!import.meta.env.DEV) return;
+
+		if (_WarnedStubChannels.has(Channel)) return;
+
+		_WarnedStubChannels.add(Channel);
+
+		_DevLogForward(
+			"channel-stub",
+			`stub channel=${Channel} method=${Method} (deliberate static response)`,
+		);
+	} catch {}
+};
+
+const WarnFailure = (Operation: string, Error: unknown): void => {
+
+	try {
+		if (!import.meta.env.DEV) return;
+
+		_DevLogForward(
+			"ipc-failure",
+			`failure ${Operation} err=${_SafeError(Error)}`,
+		);
+	} catch {}
+};
+
 // Timed trace - wraps an async operation with start/end marks + measure.
 // OTELBridge picks up the measure as a span with real duration.
 const _TimedTrace = async <T>(
@@ -1016,7 +1063,9 @@ async function _InvokeViaNode(
 			method: "cocoon:request",
 			params: [Method, Params.length === 1 ? Params[0] : Params],
 		});
-	} catch {
+	} catch (Error) {
+		WarnFailure(`_InvokeViaNode ${Method}`, Error);
+
 		return undefined;
 	}
 }
@@ -1136,6 +1185,8 @@ class TauriChannel implements IChannel {
 		) {
 			_Trace("ipc", `stub:${this.ChannelName}.${Command}`);
 
+			WarnStub(this.ChannelName, Command);
+
 			const StubValue = Stubs[Command];
 
 			return (StubValue !== undefined ? StubValue : undefined) as T;
@@ -1174,7 +1225,9 @@ class TauriChannel implements IChannel {
 			if (_EffectiveTier === "Node") {
 				try {
 					return (await _InvokeViaNode(MountainMethod, Params)) as T;
-				} catch {
+				} catch (Error) {
+					WarnFailure(`Node-tier ${MountainMethod}`, Error);
+
 					return undefined as T;
 				}
 			}
@@ -1321,7 +1374,9 @@ class TauriChannel implements IChannel {
 
 			try {
 				return (await _InvokeViaNode(NodeMethod, NodeParams)) as T;
-			} catch {
+			} catch (Error) {
+				WarnFailure(`Node-fallback ${NodeMethod}`, Error);
+
 				return undefined as T;
 			}
 		}

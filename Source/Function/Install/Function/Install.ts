@@ -17,6 +17,11 @@ import { Fallback } from "./Fallback.js";
 
 import { ResolveConfiguration } from "./ResolveConfiguration.js";
 
+import {
+	InstallDisposableLeakTracker,
+	IsLeakTrackingEnabled,
+} from "../../../Service/DisposableLeakTracker.js";
+
 const _Trace = (Message: string): void => {
 
 	try {
@@ -41,6 +46,14 @@ export default async function Install(): Promise<void> {
 		).polyfillInstalled = true;
 
 		_Trace("start");
+
+		// Dev-only leak tracking: flag-gated install, a strict no-op in
+		// production (the flag is baked to false and this branch is dead).
+		if (IsLeakTrackingEnabled()) {
+
+			InstallDisposableLeakTracker();
+
+		}
 
 		const Configuration = await ResolveConfiguration();
 

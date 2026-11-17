@@ -57,6 +57,7 @@ export default async function targetConfig(
 		drop: Environment.On ? [] : ["debugger", "console"],
 		define: {
 			__DEV__: Environment.On ? "true" : "false",
+			__TRACK_DISPOSABLES__: Environment.On ? "true" : "false",
 			__INCREMENT__: `"${`${Environment.On ? "DEVELOPMENT" : "PRODUCTION"}-${(await import("ulid")).ulid()}`}"`,
 			...PostHogDefines,
 		},
