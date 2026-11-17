@@ -70,7 +70,10 @@ const _DevLogFlush = (): void => {
 			(window as any).__TAURI__?.invoke ??
 			Internals?.invoke;
 
-		if (typeof Invoke !== "function") return;
+		if (typeof Invoke !== "function") {
+			_WarnDevLogSinkFailure("missing-invoke");
+			return;
+		}
 
 		if (Dropped > 0) {
 			Batch.push({
@@ -98,9 +101,13 @@ const _DevLogFlush = (): void => {
 				Message,
 				tag: Tag,
 				message: Message,
-			}).catch(() => {});
+			}).catch((Err: unknown) => {
+				_WarnDevLogSinkFailure("invoke", Err);
+			});
 		}
-	} catch {}
+	} catch (Err) {
+		_WarnDevLogSinkFailure("flush", Err);
+	}
 };
 
 const _DevLogForward = (Tag: string, Message: string): void => {
@@ -1458,9 +1465,11 @@ class TauriChannel implements IChannel {
 							else Unlisten = Result;
 						}
 					})
-					.catch(() => {});
+					.catch((Err) => {
+						WarnFailure(`listen:${this.ChannelName}.${Event}`, Err);
+					});
 
-				return {
+					return {
 					dispose: () => {
 						Disposed = true;
 
