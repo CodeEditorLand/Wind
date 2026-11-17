@@ -163,6 +163,35 @@ const WarnFailure = (Operation: string, Error: unknown): void => {
 	} catch {}
 };
 
+// The dev-log sink is itself the transport for `WarnStub`/`WarnFailure`;
+// a warning routed back through a broken sink would vanish with it. Sink
+// failures are therefore reported on the file's tracing channel
+// (`performance.mark` - zero console.* output) and rate-limited so a
+// persistently dead sink cannot flood the mark buffer. DEV-only and
+// non-throwing: a missing `performance`, an undefined error, a repeated
+// failure or a closed channel all degrade to no-ops.
+let _DevLogSinkFailures = 0;
+
+const _WarnDevLogSinkFailure = (Where: string, Err?: unknown): void => {
+
+	try {
+		if (!import.meta.env.DEV) return;
+
+		_DevLogSinkFailures += 1;
+
+		// First failure and every 100th thereafter - bounded regardless of
+		// volume; the running count rides in the mark detail.
+		if (_DevLogSinkFailures !== 1 && _DevLogSinkFailures % 100 !== 0) return;
+
+		performance.mark(`land:devlog-sink-failure:${Where}`, {
+			detail: {
+				count: _DevLogSinkFailures,
+				error: _SafeError(Err),
+			},
+		});
+	} catch {}
+};
+
 // Timed trace - wraps an async operation with start/end marks + measure.
 // OTELBridge picks up the measure as a span with real duration.
 const _TimedTrace = async <T>(
@@ -599,7 +628,7 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	},
 
 	// Fix: `IExtensionTipsService` - `exeBasedRecommendations.ts:54` does
-	// `this._importantTips = await …getImportantExecutableBasedTips()` and
+	// `this._importantTips = await ...getImportantExecutableBasedTips()` and
 	// the next line iterates with `.forEach`. Without a stub the IPC call
 	// rejects → `undefined` seeps through → `undefined.forEach` crashes
 	// with `undefined is not an object (evaluating 'this._importantTips.forEach')`.
@@ -619,7 +648,7 @@ const StubChannels: Record<string, Record<string, unknown>> = {
 	},
 
 	// Fix: `IMcpManagementService` channel - `mcpManagementIpc.ts:167`
-	// calls `.then(servers => servers.map(…))` expecting an array. Missing
+	// calls `.then(servers => servers.map(...))` expecting an array. Missing
 	// handler → undefined → `.map` crashes with
 	// `undefined is not an object (evaluating 'servers.map')`. Empty
 	// array = "no MCP servers installed", which matches the absence of a
@@ -1103,7 +1132,7 @@ async function InvokeMountain(
 	// nothing visible happened, then later switched focus and the
 	// queued keystrokes flushed into the new focused element. Mirror
 	// of the Output-side fix - drop the success-case forward; the
-	// Rust-side `[DEV:IPC] done: <method> ok=true t_ns=…` line
+	// Rust-side `[DEV:IPC] done: <method> ok=true t_ns=...` line
 	// already carries the same data at ns precision and is
 	// filterable via `Trace=ipc`. Failures still forward (rare,
 	// stack-trace context worth the cost).
@@ -1161,7 +1190,7 @@ class TauriChannel implements IChannel {
 				).catch(() => {});
 			}
 
-			// `_DevLogForward("channel-stub", "fire-and-forget …")`
+			// `_DevLogForward("channel-stub", "fire-and-forget ...")`
 			// dropped here for the same IPC-saturation reason as the
 			// success-case `tauri-invoke` forward above. Mirror of the
 			// Output-side fix.
@@ -1519,13 +1548,13 @@ export class TauriMainProcessService {
 	constructor(_WindowId: number) {
 		_Trace("ipc", `TauriMainProcessService:window=${_WindowId}`);
 
-		// ── Shim activation — gated behind TierShim ──
+		// ── Shim activation - gated behind TierShim ──
 		if (process.env["TierShim"] && process.env["TierShim"] !== "None") {
-			// Load SwallowMap defaults synchronously — must precede
+			// Load SwallowMap defaults synchronously - must precede
 			// any IPCInterceptor.decide() calls so rules are in place.
 			SwallowMap.loadDefaults();
 
-			// Async shim modules — activate DOM event interception,
+			// Async shim modules - activate DOM event interception,
 			// network proxy, and async scheduling proxy.
 			import("../Shim/EventInterceptor.js").then((m) => m.default?.());
 
