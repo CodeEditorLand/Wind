@@ -9,26 +9,26 @@
 				</picture>
 			</h3>
 		</td>
-		<td colspan="3" valign="top"><h3 align="center">Wind&#x2001;🍃</h3></td>
+		<td colspan="3" valign="top"><h3 align="center">Wind</h3></td>
 	</tr>
 </table>
 
 ---
 
-# **Wind**&#x2001;🍃&#x2001;Architecture
+# **Wind** Architecture
 
-`Wind` is the `Effect-TS` service layer for the VS Code workbench.
+`Wind` is the `Effect-TS` service layer for the `VS Code` workbench.
 
 - `Wind` enables the workbench to function inside a `Tauri` WebView.
-- It recreates the essential VS Code renderer environment.
+- It recreates the essential `VS Code` renderer environment.
 - It implements core services through `Effect-TS` typed error and dependency
   injection patterns.
-- It connects the frontend to `Mountain`'s Rust backend through `Tauri`'s
+- It connects the frontend to `Mountain`'s `Rust` backend through `Tauri`'s
   `invoke()` and event system.
 
 ---
 
-## Table of Contents
+## Table of Contents 📖
 
 1. [Overview](#overview)
 2. [Architecture](#architecture)
@@ -49,7 +49,7 @@ graph TB
 
         subgraph SERVICES["Effect Services (~40)"]
             CORE["Core<br/>IPC / Config /<br/>Environment / Log"]
-            EDITOR["Editor<br/>Editor / Model /<br/>Decorations / History"]
+            EDITOR["Editor<br/>Editor / Text buffer /<br/>Decorations / History"]
             FS["File System<br/>Files / WorkingCopy<br/>Workspaces"]
             UI["Window / UI<br/>ActivityBar / Sidebar<br/>StatusBar / Panel<br/>Notification / Dialog"]
             MISC["Misc<br/>Clipboard / Terminal<br/>Extensions / Themes<br/>Keybinding / Search"]
@@ -71,14 +71,14 @@ graph TB
     SKY["Sky<br/>UI Components"] -->|"consumes Runtime"| TLT
 ```
 
-## Overview&#x2001;📋
+## Overview 📋
 
 `Wind` provides the `Effect-TS` native service layer that `Sky` consumes.
 
-- It replaces VS Code's `Electron` IPC pipeline with typed `Tauri` commands.
-- These commands are routed to Rust handlers in `Mountain`.
+- It replaces `VS Code`'s `Electron` IPC pipeline with typed `Tauri` commands.
+- These commands are routed to `Rust` handlers in `Mountain`.
 - This eliminates the untyped serialization layer.
-- It preserves full VS Code workbench compatibility.
+- It preserves full `VS Code` workbench compatibility.
 
 | Attribute    | Value                                                                     |
 | ------------ | ------------------------------------------------------------------------- |
@@ -90,9 +90,9 @@ graph TB
 
 ---
 
-## Architecture&#x2001;🏗️
+## Architecture 🏗️
 
-```
+```text
 +------------------------------------------------------------------+
 |                         Wind                                      |
 |                                                                   |
@@ -116,7 +116,7 @@ graph TB
 +------------------------------------------------------------------+
 ```
 
-### Module Map&#x2001;🗺️
+### Module Map 🗺️
 
 | Path                                | Purpose                                                           |
 | ----------------------------------- | ----------------------------------------------------------------- |
@@ -124,8 +124,8 @@ graph TB
 | `Source/Effect/`                    | Service implementations (each domain as Define/Implement/Problem) |
 | `Source/Function/Install.ts`        | Layer composition and installation entry point                    |
 | `Source/Function/Install/`          | Layer composition details                                         |
-| `Source/Workbench/`                 | VS Code workbench integration                                     |
-| `Source/Telemetry/PostHogBridge.ts` | In-webview PostHog client                                         |
+| `Source/Workbench/`                 | `VS Code` workbench integration                                   |
+| `Source/Telemetry/PostHogBridge.ts` | In-webview `PostHog` client                                       |
 | `Source/IPC/Channel.ts`             | `Tauri` event channel definitions                                 |
 | `Source/Utility/Tier.ts`            | Tier configuration reader                                         |
 | `Source/Types/`                     | `TypeScript` type definitions                                     |
@@ -133,16 +133,16 @@ graph TB
 
 ---
 
-## Service Architecture&#x2001;🏗️
+## Service Architecture 🏗️
 
 Each `Wind` service follows a consistent module structure using the
 Define/Implement/Problem pattern:
 
-```
+```text
 Effect/<Service>/
     +-- Define.ts       - The service Tag (Effect-TS service identifier)
     +-- Implement.ts    - The service implementation (for TauriLiveLayer)
-    +-- Problem.ts      - Typed error effects
+    `-- Problem.ts      - Typed error effects
 ```
 
 This pattern provides:
@@ -155,7 +155,20 @@ This pattern provides:
 - **Problem.ts**: Exports typed error types as `Effect-TS` `Cause` subtypes,
   enabling structured error handling.
 
-### Example Service Structure
+```mermaid
+graph LR
+    DEFINE["Define.ts<br/>Effect-TS Tag"]
+    IMPLEMENT["Implement.ts<br/>Tauri-backed Layer"]
+    PROBLEM["Problem.ts<br/>typed error effects"]
+    LAYER["Composed Layer<br/>service instance"]
+
+    DEFINE --> IMPLEMENT
+    IMPLEMENT --> PROBLEM
+    IMPLEMENT --> LAYER
+    PROBLEM --> LAYER
+```
+
+### Example Service Structure 🔬
 
 ```typescript
 // Effect/Clipboard/Define.ts
@@ -183,7 +196,7 @@ export class ClipboardProblem extends Data.TaggedError("ClipboardProblem")<{
 
 ---
 
-## Layer Composition&#x2001;🧩
+## Layer Composition 🧩
 
 `Wind` services compose into three `Layer` stacks:
 
@@ -216,9 +229,23 @@ export const TestLayer: Layer<...> = Layer.mergeAll(
 );
 ```
 
-### Layer Resolution
+```mermaid
+graph LR
+    COMPOSE["Wind Layer Composition"]
+    TLT["TauriLiveLayer<br/>production"]
+    ELT["ElectronLiveLayer<br/>compat"]
+    TEST["TestLayer<br/>mock"]
+    SKY["Sky<br/>consumes Runtime"]
 
+    COMPOSE --> TLT
+    COMPOSE --> ELT
+    COMPOSE --> TEST
+    TLT --> SKY
 ```
+
+### Layer Resolution 🗺️
+
+```text
 Sky entry point (index.astro)
     |
     v
@@ -239,12 +266,12 @@ Wind services available to Sky via Effect.flatMap
 
 ---
 
-## Preload Shim Integration&#x2001;🔌
+## Preload Shim Integration 🔌
 
 `Wind`'s `Preload.ts` (see `Polyfills.md` for full details) runs before the
 workbench bundle loads:
 
-```
+```text
 1. Preload.ts executes (inline, synchronous)
     |
     +---> window.vscode = { ipcRenderer, process }
@@ -266,75 +293,110 @@ workbench bundle loads:
     - Uses Wind services for state and data
 ```
 
+```mermaid
+sequenceDiagram
+    participant PRE as Preload.ts
+    participant WB as Workbench bundle
+    participant APP as Wind AppLayer
+    participant SKY as Sky UI
+
+    PRE->>WB: window.vscode + polyfills ready
+    WB->>APP: load from @codeeditorland/output
+    APP->>APP: composeLayer() + Layer.toRuntime()
+    alt TierWorkbench is Mountain
+        APP->>SKY: provide TauriLiveLayer Runtime
+    else TierWorkbench is Electron
+        APP->>SKY: provide ElectronLiveLayer Runtime
+    else Test mode
+        APP->>SKY: provide TestLayer Runtime
+    end
+```
+
 ---
 
-## Service Catalog&#x2001;📋
+## Service Catalog 🧩
 
-### Core Infrastructure
+```mermaid
+graph LR
+    CATALOG["Service Catalog"]
+    CORE["Core Infrastructure"]
+    EDITOR["Editor Services"]
+    FS["File System Services"]
+    UI["Window and UI Services"]
+    MISC["Clipboard, Terminal, Extensions"]
+
+    CATALOG --> CORE
+    CATALOG --> EDITOR
+    CATALOG --> FS
+    CATALOG --> UI
+    CATALOG --> MISC
+```
+
+### Core Infrastructure 🧩
 
 | Service       | Module                    | Purpose                                           |
 | ------------- | ------------------------- | ------------------------------------------------- |
-| IPC           | `Effect/IPC.ts`           | `Tauri` command invocation and event subscription |
-| Configuration | `Effect/Configuration.ts` | Read/write settings via `Mountain`                |
-| Environment   | `Effect/Environment.ts`   | OS environment variables and paths                |
-| Mountain      | `Effect/Mountain.ts`      | `gRPC`-level communication with `Mountain`        |
-| MountainSync  | `Effect/MountainSync.ts`  | Synchronous state snapshot from `Mountain`        |
-| Log           | `Effect/Logging`          | Structured logging                                |
+| `IPC`         | `Effect/IPC.ts`           | `Tauri` command invocation and event subscription |
+| `Configuration` | `Effect/Configuration.ts` | Read/write settings via `Mountain`                |
+| `Environment` | `Effect/Environment.ts`   | OS environment variables and paths                |
+| `Mountain`    | `Effect/Mountain.ts`      | `gRPC`-level communication with `Mountain`        |
+| `MountainSync`  | `Effect/MountainSync.ts`  | Synchronous state snapshot from `Mountain`        |
+| `Log`         | `Effect/Logging`          | Structured logging                                |
 
-### Editor Services
+### Editor Services 🧩
 
 | Service           | Module                        | Purpose                                |
 | ----------------- | ----------------------------- | -------------------------------------- |
-| Editor            | `Effect/Editor.ts`            | Text editor creation, focus, layout    |
-| Model             | `Effect/Model.ts`             | Document model creation and management |
-| TextModelResolver | `Effect/TextModelResolver.ts` | URI-to-model resolution                |
-| CodeEditor        | `Effect/WorkbenchEditor/`     | Monaco editor widget                   |
-| Decorations       | `Effect/Decorations.ts`       | Editor decoration management           |
-| History           | `Effect/History.ts`           | Undo/redo stack management             |
+| `Editor`          | `Effect/Editor.ts`            | Text editor creation, focus, layout    |
+| `Model`           | `Effect/Model.ts`             | Document text buffer creation and management |
+| `TextModelResolver` | `Effect/TextModelResolver.ts` | URI-to-text buffer resolution          |
+| `CodeEditor`      | `Effect/WorkbenchEditor/`     | Monaco editor widget                   |
+| `Decorations`     | `Effect/Decorations.ts`       | Editor decoration management           |
+| `History`         | `Effect/History.ts`           | Undo/redo stack management             |
 
-### File System Services
+### File System Services 🧩
 
 | Service     | Module                  | Purpose                             |
 | ----------- | ----------------------- | ----------------------------------- |
-| Files       | `Effect/Files.ts`       | File read/write via `Mountain`      |
-| WorkingCopy | `Effect/WorkingCopy.ts` | Dirty state and conflict management |
-| Workspaces  | `Effect/Workspaces.ts`  | Workspace root resolution           |
+| `Files`     | `Effect/Files.ts`       | File read/write via `Mountain`      |
+| `WorkingCopy` | `Effect/WorkingCopy.ts` | Dirty state and conflict management |
+| `Workspaces`  | `Effect/Workspaces.ts`  | Workspace root resolution           |
 
-### Window and UI Services
+### Window and UI Services 🧩
 
 | Service      | Module                    | Purpose                                |
 | ------------ | ------------------------- | -------------------------------------- |
-| ActivityBar  | `Effect/ActivityBar.ts`   | Activity bar state                     |
-| Sidebar      | `Effect/Sidebar.ts`       | Side bar visibility and view switching |
-| StatusBar    | `Effect/StatusBar.ts`     | Status bar items                       |
-| Panel        | `Effect/Panel.ts`         | Bottom panel (terminal, output)        |
-| Notification | `Effect/Notification.ts`  | Toast notifications                    |
-| Progress     | `Effect/Progress.ts`      | Long-running operation progress        |
-| Dialog       | `Effect/WorkbenchDialog/` | Message boxes and input boxes          |
-| QuickInput   | `Effect/QuickInput.ts`    | Quick pick and input box               |
+| `ActivityBar`  | `Effect/ActivityBar.ts`   | Activity bar state                     |
+| `Sidebar`      | `Effect/Sidebar.ts`       | Side bar visibility and view switching |
+| `StatusBar`    | `Effect/StatusBar.ts`     | Status bar items                       |
+| `Panel`        | `Effect/Panel.ts`         | Bottom panel (terminal, output)        |
+| `Notification` | `Effect/Notification.ts`  | Toast notifications                    |
+| `Progress`     | `Effect/Progress.ts`      | Long-running operation progress        |
+| `Dialog`       | `Effect/WorkbenchDialog/` | Message boxes and input boxes          |
+| `QuickInput`   | `Effect/QuickInput.ts`    | Quick pick and input box               |
 
-### Clipboard, Terminal, and Extensions
+### Clipboard, Terminal, and Extensions 🧩
 
 | Service    | Module                 | Purpose                             |
 | ---------- | ---------------------- | ----------------------------------- |
-| Clipboard  | `Effect/Clipboard.ts`  | System clipboard via `Mountain`     |
-| Terminal   | `Effect/Terminal.ts`   | Integrated terminal management      |
-| Extensions | `Effect/Extensions.ts` | Extension install/uninstall/list    |
-| Language   | `Effect/Language.ts`   | Language mode detection             |
-| Themes     | `Effect/Themes.ts`     | Color theme management              |
-| Keybinding | `Effect/Keybinding.ts` | Keyboard shortcut resolution        |
-| Search     | `Effect/Search.ts`     | File and text search via `Mountain` |
-| Telemetry  | `Effect/Telemetry.ts`  | Event telemetry                     |
-| Storage    | `Effect/Storage.ts`    | Key-value storage                   |
-| Lifecycle  | `Effect/Lifecycle.ts`  | Application lifecycle events        |
-| Health     | `Effect/Health.ts`     | Service health monitoring           |
+| `Clipboard`  | `Effect/Clipboard.ts`  | System clipboard via `Mountain`     |
+| `Terminal`   | `Effect/Terminal.ts`   | Integrated terminal management      |
+| `Extensions` | `Effect/Extensions.ts` | Extension install/uninstall/list    |
+| `Language`   | `Effect/Language.ts`   | Language mode detection             |
+| `Themes`     | `Effect/Themes.ts`     | Color theme management              |
+| `Keybinding` | `Effect/Keybinding.ts` | Keyboard shortcut resolution        |
+| `Search`     | `Effect/Search.ts`     | File and text search via `Mountain` |
+| `Telemetry`  | `Effect/Telemetry.ts`  | Event telemetry                     |
+| `Storage`    | `Effect/Storage.ts`    | Key-value storage                   |
+| `Lifecycle`  | `Effect/Lifecycle.ts`  | Application lifecycle events        |
+| `Health`     | `Effect/Health.ts`     | Service health monitoring           |
 
 ---
 
-## Mountain IPC Service&#x2001;🔌
+## Mountain IPC Service 🌐
 
 The `Mountain` service (`Effect/Mountain.ts`) maintains a runtime connection to
-the Rust backend:
+the `Rust` backend:
 
 ```typescript
 // Wind sends commands to Mountain via Tauri invoke
@@ -348,9 +410,28 @@ await listen("configuration-changed", (event) => {
 });
 ```
 
-### Command Mapping
+```mermaid
+sequenceDiagram
+    participant WIND as Wind Service
+    participant TAURI as Tauri Bridge
+    participant MOUNTAIN as Mountain Backend
 
-| Wind Service      | Tauri Command       | Mountain Handler      |
+    WIND->>TAURI: invoke("read_file")
+    TAURI->>MOUNTAIN: dispatch to handler
+    MOUNTAIN-->>TAURI: Uint8Array content
+    TAURI-->>WIND: resolved content
+    loop configuration changes
+        MOUNTAIN-->>WIND: configuration-changed event
+        WIND->>WIND: syncConfiguration(event.payload)
+    end
+    alt backend unavailable
+        MOUNTAIN-->>WIND: tagged IPCError
+    end
+```
+
+### Command Mapping 📊
+
+| `Wind` Service    | `Tauri` Command     | `Mountain` Handler    |
 | ----------------- | ------------------- | --------------------- |
 | Files.read        | `read_file`         | FileSystemProvider    |
 | Files.write       | `write_file`        | FileSystemProvider    |
@@ -364,9 +445,9 @@ await listen("configuration-changed", (event) => {
 
 ---
 
-## Workbench Integration&#x2001;🔌
+## Workbench Integration 🔌
 
-`Wind` integrates with the VS Code workbench by providing service
+`Wind` integrates with the `VS Code` workbench by providing service
 implementations that satisfy the workbench's dependency injection container:
 
 ```typescript
@@ -383,9 +464,60 @@ const workbench = new Workbench({
 await workbench.startup();
 ```
 
+```mermaid
+graph LR
+    WORKBENCH["VS Code Workbench<br/>DI container"]
+    WIND["Wind<br/>service implementations"]
+    FILE["FileService<br/>IFileService"]
+    CONFIG["Configuration<br/>IConfigurationService"]
+    EDITOR["Editor<br/>IEditorService"]
+    NOTIFY["Notification<br/>INotificationService"]
+    STARTUP["Workbench.startup()"]
+
+    WORKBENCH --> WIND
+    WIND --> FILE
+    WIND --> CONFIG
+    WIND --> EDITOR
+    WIND --> NOTIFY
+    FILE --> STARTUP
+    CONFIG --> STARTUP
+    EDITOR --> STARTUP
+    NOTIFY --> STARTUP
+```
+
 ---
 
-## Related Documentation&#x2001;📚
+## Shim Compatibility 🔬
+
+| Low-Level Shim             | Coverage Shim                  |
+| -------------------------- | ------------------------------ |
+| Tier: `TierShim=Own\|Preempt` | Tier: `TierShim=Proxy\|Replace` |
+| Engine prototype hooks     | Service routing + audit        |
+
+> This Element supports the Land deep-shim interception system. Gated behind
+> `TierShim` env var (default: `None` - zero overhead).
+>
+> **`Wind` shim architecture:** `Source/Shim/` with 11 files - SwallowMap,
+> RedirectBus, IPCInterceptor, AuditLog, EventInterceptor, NetworkProxy,
+> AsyncProxy, etc. - the coverage hub.
+
+```mermaid
+graph LR
+    TIER["TierShim"]
+    OWN["Own<br/>prototype hooks"]
+    PREEMPT["Preempt<br/>prototype hooks"]
+    PROXY["Proxy<br/>service routing"]
+    REPLACE["Replace<br/>service routing + audit"]
+
+    TIER --> OWN
+    TIER --> PREEMPT
+    TIER --> PROXY
+    TIER --> REPLACE
+```
+
+---
+
+## Related Documentation 📖
 
 - [Sky](https://github.com/CodeEditorLand/Sky/tree/Current/Documentation/GitHub/Architecture.md) -
   UI component layer (`Wind` consumer)
@@ -399,22 +531,6 @@ await workbench.startup();
   `Preload.ts` shim details
 - [EditorCore](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md) -
   Editor workbench adaptation
-
----
-
-## Shim Compatibility
-
-| 🟠 Low-Level Shim             | 🔵 Coverage Shim                |
-| ----------------------------- | ------------------------------- |
-| Tier: `TierShim=Own\|Preempt` | Tier: `TierShim=Proxy\|Replace` |
-| Engine prototype hooks        | Service routing + audit         |
-
-> This Element supports the Land deep-shim interception system. Gated behind
-> `TierShim` env var (default: `None` - zero overhead).
->
-> **Wind shim architecture:** `Source/Shim/` with 11 files - SwallowMap,
-> RedirectBus, IPCInterceptor, AuditLog, EventInterceptor, NetworkProxy,
-> AsyncProxy, etc. - the 🔵 coverage hub.
 
 ---
 
