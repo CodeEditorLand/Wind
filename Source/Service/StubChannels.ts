@@ -38,6 +38,14 @@ export const StubChannels: Record<string, Record<string, unknown>> = {
 
 	sharedProcess: {},
 
+	// OBSOLETE / DEAD COPY - this module is not imported anywhere in Wind.
+	// The live stub map is the inline `StubChannels` object in
+	// `Service/TauriMainProcessService.ts`, whose `utilityProcessWorker`
+	// entry uses a settled `createWorker: Promise.resolve(undefined)`.
+	// The shape below is the superseded hanging form: a never-settling
+	// Promise wrapped in `{ onDidTerminate }`, which hung DiskFileSystemProvider
+	// and language-detection init. Kept only as a record of the old shape;
+	// it must not be treated as live code.
 	utilityProcessWorker: {
 		createWorker: { onDidTerminate: new Promise(() => {}) },
 

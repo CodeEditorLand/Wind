@@ -1469,7 +1469,7 @@ class TauriChannel implements IChannel {
 						WarnFailure(`listen:${this.ChannelName}.${Event}`, Err);
 					});
 
-					return {
+				return {
 					dispose: () => {
 						Disposed = true;
 

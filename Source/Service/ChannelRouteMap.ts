@@ -79,8 +79,15 @@ export const ChannelRouteMap: Record<string, string> = {
 	localGit: "git",
 };
 
-/** Channels where failures are silently swallowed (fire-and-forget). */
-export const FireAndForgetChannels = new Set(["logger", "output"]);
+/**
+ * Channels where failures are silently swallowed (fire-and-forget).
+ *
+ * Parallel copy of the active set defined inline in
+ * `Service/TauriMainProcessService.ts` (`FireAndForgetChannels`). Keep in sync
+ * with that one. `output` is deliberately excluded there because it returns
+ * handles, not because it is fire-and-forget.
+ */
+export const FireAndForgetChannels = new Set(["logger"]);
 
 /** Channels whose errors should propagate as typed FileSystem errors. */
 export const FileSystemChannels = new Set(["localFilesystem"]);
